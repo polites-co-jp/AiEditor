@@ -1,0 +1,18 @@
+{
+  "agent": "vlad-tepes",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": ["${CLAUDE_PROJECT_DIR}/team/hooks/guard.js", "allowlist.js"],
+            "onFailure": "block"
+          }
+        ]
+      }
+    ]
+  }
+}

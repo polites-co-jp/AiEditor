@@ -1,0 +1,5 @@
+# Python のキャッシュ（team/hooks のテストなどで生じる）
+__pycache__/
+
+# 秘密（念のため。トークンはリポジトリの外に DPAPI で置く。docs/06 の2.4）
+.env

@@ -1,0 +1,13 @@
+{
+  "bash": [],
+  "write_paths": [],
+  "read_paths": [
+    "./"
+  ],
+  "secret_paths": [
+    "%LOCALAPPDATA%/Shuko/watch/",
+    "%LOCALAPPDATA%/Shuko/secrets/"
+  ],
+  "agents": [],
+  "skills": []
+}

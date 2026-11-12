@@ -1,0 +1,41 @@
+{
+  "bash": [
+    "git status",
+    "git diff",
+    "git log",
+    "git show",
+    "git rev-parse",
+    "git ls-files",
+    "git worktree list",
+    "node --test tests/",
+    "node --test extensions-src/*/test/",
+    "node tests/*.mjs",
+    "node scripts/apply.mjs",
+    "node scripts/build.mjs",
+    "node scripts/lock-verify.mjs",
+    "pnpm --dir extensions-src/* run test",
+    "pnpm --dir C:/b/wt/* run smoketest",
+    "npx --prefix C:/b/wt/* tsc --noEmit",
+    "powershell -NoProfile -ExecutionPolicy Bypass -File tests/*.ps1",
+    "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/measure.ps1",
+    "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/netaudit.ps1",
+    "sha256sum"
+  ],
+  "write_paths": [
+    "records/",
+    "tasks/"
+  ],
+  "read_paths": [
+    "./",
+    "C:/b/"
+  ],
+  "secret_paths": [
+    "%LOCALAPPDATA%/Shuko/watch/",
+    "%LOCALAPPDATA%/Shuko/secrets/"
+  ],
+  "agents": [],
+  "skills": [],
+  "write_paths_deny": [
+    "tasks/*/brief.md"
+  ]
+}
