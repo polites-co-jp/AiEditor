@@ -169,3 +169,5 @@
 
 - `tasks/2026-11-13-p0-envs-mydist-keys/configuration-defaults.md.section3.tmp` の削除（追記2のとおり。私の許可では消せない）。
 - zip-read.mjs と zip.mjs の重なり、開発中の mydist が自分の `extensions.allowed` で止まるか（変わらない）。
+
+- 追記4（2026-11-13）: N1 を直した。`env-setup.md` の 5.5 の3「5.6 は 2 だけでよい」を「5.6 は 1 だけでよい」にした（ほかの行は変えていない）。
