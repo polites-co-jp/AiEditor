@@ -55,9 +55,13 @@ $script:P0LangPackVersion = '1.131.0'
 #  - task.allowAutomaticTasks: the folderOpen task runs without asking.
 #  - security.workspace.trust.enabled=false: tasks do not run in restricted mode, and the trust
 #    dialog would block an unattended run.
+#  - basedpyright.importStrategy=useBundled: decision 2026-11-13 (docs/user-decisions.md, the
+#    basedpyright section). mydist sets it as a default in the own build; the upstream baseline gets
+#    the same value in the user settings so both measure with the Python language server running.
 $script:P0MeasureSettings = [ordered]@{
     'task.allowAutomaticTasks'         = 'on'
     'security.workspace.trust.enabled' = $false
+    'basedpyright.importStrategy'       = 'useBundled'
 }
 
 function Get-P0LedgerIds {
@@ -120,6 +124,37 @@ function Get-P0EnvDefinitions {
         Name = 'mydist'; Base = 'upstream'; Purpose = '0-9: upstream + --extensionDevelopmentPath=extensions-src\mydist; empty user settings; sublime-keybindings installed as a non-ledger extension to see the extensions.allowed default (docs/07 2.10)'
         Extensions = @('anthropic.claude-code', $script:P0SublimeId); Settings = [ordered]@{}; Argv = [ordered]@{}
         DevPath = 'extensions-src\mydist'; Measure = $false
+    }
+    # basedpyright probe (2026-11-13): does basedpyright 1.40.2 start without ms-python.python?
+    # Same extensions and measurement settings as upstream-default, git off (do not touch the opened
+    # folder's .git), LSP trace on so the diagnostics land in the output log files.
+    # These are kept as the record of the probe (logs under C:\b\p0\data\bp-probe-*). They are NOT in
+    # p0-env.ps1 -All (InAll = $false); rebuild one only with -Name. Their base is the measurement
+    # settings as they were at the probe, i.e. WITHOUT basedpyright.importStrategy.
+    $bpBase = [ordered]@{}
+    foreach ($k in $script:P0MeasureSettings.Keys) {
+        if ($k -ne 'basedpyright.importStrategy') { $bpBase[$k] = $script:P0MeasureSettings[$k] }
+    }
+    $bpBase['git.enabled'] = $false
+    $bpBase['basedpyright.analysis.logLevel'] = 'Trace'
+    $bpBase['basedpyright.trace.server'] = 'verbose'
+    $bpBase['python.trace.server'] = 'verbose'
+    $py = 'C:\Python314\python.exe'
+    $variants = @(
+        @{ Suffix = 'a'; Note = 'as shipped (importStrategy fromEnvironment)'; Extra = [ordered]@{} },
+        @{ Suffix = 'b'; Note = 'python.defaultInterpreterPath and python.pythonPath = ' + $py; Extra = [ordered]@{ 'python.defaultInterpreterPath' = $py; 'python.pythonPath' = $py } },
+        @{ Suffix = 'c'; Note = 'basedpyright.importStrategy = useBundled'; Extra = [ordered]@{ 'basedpyright.importStrategy' = 'useBundled' } },
+        @{ Suffix = 'd'; Note = 'useBundled and python.pythonPath = ' + $py; Extra = [ordered]@{ 'basedpyright.importStrategy' = 'useBundled'; 'python.defaultInterpreterPath' = $py; 'python.pythonPath' = $py } }
+    )
+    foreach ($v in $variants) {
+        $s = [ordered]@{}
+        foreach ($k in $bpBase.Keys) { $s[$k] = $bpBase[$k] }
+        foreach ($k in $v.Extra.Keys) { $s[$k] = $v.Extra[$k] }
+        $defs += [pscustomobject]@{
+            Name = 'bp-probe-' + $v.Suffix; Base = 'upstream'; Purpose = 'basedpyright probe: upstream-default + ' + $v.Note
+            Extensions = (Get-P0LedgerIds); Settings = $s; Argv = [ordered]@{ locale = 'ja' }
+            DevPath = $null; Measure = $false; InAll = $false
+        }
     }
     return $defs
 }

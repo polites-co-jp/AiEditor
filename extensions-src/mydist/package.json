@@ -29,7 +29,8 @@
         "tomoki1207.pdf": true,
         "ms-ceintl.vscode-language-pack-ja": true
       },
-      "breadcrumbs.enabled": false
+      "breadcrumbs.enabled": false,
+      "basedpyright.importStrategy": "useBundled"
     },
     "keybindings": [
       {

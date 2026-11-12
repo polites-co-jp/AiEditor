@@ -11,7 +11,10 @@
    - docs/07 の3.2 の6「役割を `CommandLine` から付ける」: 1.146.0 では拡張ホスト・ptyHost・共有プロセスが同じ `--utility-sub-type=node.mojom.NodeService` で、`CommandLine` から区別できない（`utility-node` まで）。区別が要るなら別の手段（親子関係、ETW など）を決める。
    - 本家の既定のまま（AI 有効）で `copilot-runtime.exe`（`@github\copilot-sdk`）が常駐する。0-4・0-5 の材料になる。
    - 蒙恬の env-setup.md 6節にある「`measure.ps1` の `-Workspace` の既定は `C:\b\p0\ws` のまま」は、直して `tmp\ws` になった。
-5. Node 24 の件は変わらず（`node tests/<名前>.mjs` に直した）。
+6. **docs/07 の3.2 の2「CLI（`-r`）で決まった2つのファイル（TS と Python）を開く」（リーダーが docs を直す）**: 2つのファイルを1回の `-r` で渡すと、見えるのは最後の1つだけで、もう1つは背景のタブのまま言語が有効にならず、その言語サーバーが起動しない（1.146.0 で確かめた: TS だけ起動し、`onLanguage:python` が来なかった）。**ファイルは1つずつ、10 秒あけて `-r` で開く**と、両方の言語が有効になる。3.2 の2をそう直す案。台本は `Open-EditorFiles`（既定の間隔 10 秒）で行っている。
+   - あわせて、`powershell -File` では `-OpenFiles a,b` が配列でなく1つの文字列になるので（5.1 の仕様）、台本は `,` で分け、ちょうど2つで存在することを確かめる。docs の使い方の例にこの注意を足す案。
+   - さらに、basedpyright 1.40.2 は Python 拡張（`ms-python.python`）が無いと有効化に失敗し（`Python extension is not installed or is disabled`）、Python の言語サーバーのプロセスが出ない。台帳に Python 拡張が無い。0-4 の基準値の「言語サーバーが動いた状態」の定義と、台帳に Python 拡張を足すか（ユーザーの裁定）に関わる。
+7. Node 24 の件は変わらず（`node tests/<名前>.mjs` に直した）。
 
 ## 仕様が足りず自分で決めた点
 

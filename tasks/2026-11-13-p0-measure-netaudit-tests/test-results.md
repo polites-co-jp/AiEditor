@@ -2,7 +2,9 @@
 
 ## PowerShell（Windows PowerShell 5.1。実機なしで計算を確かめる）
 
-再差し戻し後の最新（B-5・役割・B-6・B-7・O-3 を直した後）:
+C-1 の後の最新: `tests/measure.tests.ps1` 125 通過 / 0 失敗（+11: RoleSource 5件、残った回のデータの検出・消去 6件。`-File` で `-CleanStale` を単独で走らせて、合う名前のフォルダだけが消え、エディタが起動しないことも含む）。ほかの3本は変わらず（netaudit 67、lock 115、sublime-keys 50）。
+
+再差し戻し後の（B-5・役割・B-6・B-7・O-3 を直した後）:
 
 ```
 powershell -NoProfile -ExecutionPolicy Bypass -File tests/measure.tests.ps1     -> passed: 114  failed: 0

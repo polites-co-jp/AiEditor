@@ -27,7 +27,8 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/measure.ps1 `
 | `-WorkRoot` | `C:\b\p0\run` | 毎回のデータの置き場所を作る親 |
 | `-ProcessName` | `-Exe` のファイル名 | メインプロセスの名前（Code.exe など） |
 | `-DefaultsNote` | なし | 「変えた既定値」に添える一言 |
-| `-KeepData` | なし | 回ごとのデータを消さずに残す |
+| `-KeepData` | なし | 回ごとのデータを消さずに残す（警告を出し、`summary.json` の `RunDataLeftOver` に書く。本測定の前に `-CleanStale` で消す） |
+| `-CleanStale` / `-StaleFilter` | なし / `*` | `-WorkRoot` の直下に残った回のデータ（`-KeepData`、途中で止まった回、消せなかった回）を消す。**実行中のプロセスのコマンドラインに入っているフォルダは消さない**。`-EnvDir` なしで単独で使うと、エディタを起動せずに消して終わる（例 `-CleanStale -StaleFilter trial-*`）。`-CleanStale` なしでも、始める前に残りがあれば警告を出す。netaudit.ps1 も同じ |
 | `-SkipTaskCheck` | なし | `.vscode/tasks.json` の folderOpen の確認を飛ばす（試し用） |
 
 ## 1回の流れ（docs/07 3.2 との対応）
@@ -63,10 +64,12 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/measure.ps1 `
 | extension-host | コマンドラインに `--inspect-port=0` |
 | agent-host | 子に `copilot-runtime.exe` |
 | pty-host | 子に OpenConsole / conhost / シェル |
-| shared-process | 子に file-watcher があり、上のどれでもない（推定。確かめていない） |
+| shared-process | 子に file-watcher があり、上のどれでもない。**未確認（根拠が無い推定）**: 実物でこの規則に当てはまったことが一度も無い（試しでは file-watcher の親が agent-host になった）。推定として残し、確かめるまで信用しない |
 | utility-node のまま | 手がかりが無いもの（上の試しでは2つ） |
 
-優先は上から。`roles.csv`・`<回>-processes.csv`・netaudit の `samples.csv` に付け直した役割が入る。`jsonServerMain`（拡張子なしで渡される）も language-server になる（B-6）。
+優先は上から。`roles.csv`・`<回>-processes.csv`・netaudit の `samples.csv` に付け直した役割が入る。
+
+**RoleSource 列（C-1）**: 役割の根拠を `<回>-processes.csv`・`roles.csv`・netaudit の `samples.csv` に残す。`commandline` = 名前とコマンドラインから（`--inspect-port=0` を含む）、`child` = 子プロセスから（agent-host、pty-host）、`inferred` = 推定（shared-process だけ）。`roles.csv` は `Run, Role, RoleSource` ごとの合計なので、推定の役割は `RoleSource = inferred` の行として見分けられる。`jsonServerMain`（拡張子なしで渡される）も language-server になる（B-6）。
 
 ## 合否を出す（3.4）
 

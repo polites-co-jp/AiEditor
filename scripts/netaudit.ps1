@@ -39,6 +39,8 @@ param(
     [string]$WorkRoot = 'C:\b\p0\run',
     [string]$ProcessName,
     [switch]$KeepData,
+    [switch]$CleanStale,
+    [string]$StaleFilter = '*',
     [switch]$Force
 )
 
@@ -48,6 +50,7 @@ $na = @{
     DurationSeconds = $DurationSeconds; IntervalSeconds = $IntervalSeconds; DnsIntervalSeconds = $DnsIntervalSeconds
     LaunchWaitSeconds = $LaunchWaitSeconds; OutDir = $OutDir; Allowlist = $Allowlist; Previous = $Previous
     WorkRoot = $WorkRoot; ProcessName = $ProcessName; KeepData = [bool]$KeepData; Force = [bool]$Force
+    CleanStale = [bool]$CleanStale; StaleFilter = $StaleFilter
 }
 $naIsLibrary = ($MyInvocation.InvocationName -eq '.')
 
@@ -492,6 +495,10 @@ function Invoke-NetAudit {
     $prev = Read-PreviousDestinations $P.Previous
     New-Item -ItemType Directory -Force -Path $outDir | Out-Null
 
+    $stale = @(Clear-StaleRunDirs -WorkRoot $P.WorkRoot -Filter $P.StaleFilter -Delete ([bool]$P.CleanStale))
+    if ($stale.Count -gt 0 -and -not $P.CleanStale) {
+        Write-Warning ("{0} stale run dir(s) under {1} (use -CleanStale to remove): {2}" -f $stale.Count, $P.WorkRoot, ($stale -join ', '))
+    }
     $dailyBefore = @(Get-DailyArgvState)
     $data = New-RunDataDir -EnvDir $P.EnvDir -WorkRoot $P.WorkRoot -Name ("{0}-netaudit" -f $P.Label)
     $state = @{}
@@ -500,6 +507,7 @@ function Invoke-NetAudit {
     $dnsRows = New-Object System.Collections.ArrayList
     $sampleIndex = 0
     $openIndex = 0
+    $leftovers = @()
     $launched = $null
     $t0 = Get-Date
     try {
@@ -530,7 +538,8 @@ function Invoke-NetAudit {
             $mine = @(Select-TreeConnections -Connections $conns -PidSet $pidSet)
             $now = Get-Date
             $obsElapsed = ($now - $t0).TotalSeconds   # when the connections were actually read
-            $roleMap = Get-RoleMap -Tree $tree
+            $roleSources = @{}
+            $roleMap = Get-RoleMap -Tree $tree -Sources $roleSources
             $sampleIndex++
             Update-Observations -State $state -Connections $mine -ProcessIndex $index -ClaudeIds $split.ClaudeIds -Elapsed $obsElapsed -Time $now -SampleIndex $sampleIndex -RoleMap $roleMap
             foreach ($c in $mine) {
@@ -540,7 +549,7 @@ function Invoke-NetAudit {
                 if ($split.ClaudeIds.ContainsKey($o)) { $grp = 'claude' }
                 [void]$samples.Add([pscustomobject][ordered]@{
                     Time = $now.ToString('o'); Elapsed = [math]::Round($obsElapsed, 1); ProcessId = $o
-                    ProcessName = $pr.Name; Role = $roleMap[$o]
+                    ProcessName = $pr.Name; Role = $roleMap[$o]; RoleSource = $roleSources[$o]
                     Group = $grp; RemoteAddress = $c.RemoteAddress; RemotePort = $c.RemotePort
                 })
             }
@@ -561,8 +570,13 @@ function Invoke-NetAudit {
         if ($ids2.Count -eq 0 -and $launched) { $ids2 = @([int]$launched.Id) }
         if ($ids2.Count -gt 0) { Stop-EditorTree -Tree (Get-Descendants -Processes $procs2 -RootIds $ids2) }
         Start-Sleep -Seconds 5
-        if (-not $P.KeepData) {
-            try { Remove-Item -LiteralPath $data.Root -Recurse -Force -ErrorAction Stop } catch { Write-Warning "could not remove $($data.Root): $_" }
+        if ($P.KeepData) {
+            Write-Warning "-KeepData: the data of this run stays at $($data.Root) (remove it with -CleanStale)"
+            $leftovers += $data.Root
+        }
+        elseif (-not (Remove-RunDataDir -Path $data.Root)) {
+            Write-Warning "could not remove $($data.Root)"
+            $leftovers += $data.Root
         }
     }
 
@@ -578,7 +592,7 @@ function Invoke-NetAudit {
     $meta = [ordered]@{
         Label = $P.Label; Exe = $P.Exe; ExeVersion = $ver; EnvDir = $P.EnvDir
         DurationSeconds = $P.DurationSeconds; IntervalSeconds = $P.IntervalSeconds
-        Samples = $sampleIndex; StartedAt = $t0.ToString('o'); DnsEntries = @($dnsAll).Count; DailyArgvTouched = $dailyTouched
+        Samples = $sampleIndex; StartedAt = $t0.ToString('o'); DnsEntries = @($dnsAll).Count; DailyArgvTouched = $dailyTouched; RunDataLeftOver = $leftovers
         Allowlist = $allowPath; AllowlistMissing = $allow.Missing; Previous = $P.Previous
     }
     ([ordered]@{ Meta = $meta; Destinations = $rows }) | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath (Join-Path $outDir 'destinations.json') -Encoding UTF8

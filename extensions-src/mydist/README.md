@@ -2,7 +2,8 @@
 
 Shuko の既定の設定とキー割り当てを持つ、コードの無い組み込み拡張（docs/04 の6節）。`main` を持たず、`package.json` の宣言だけで働く。
 
-- `contributes.configurationDefaults`: 既定の設定（docs/04 の6.1）。Phase 0 の試作（0-9）では5項目だけ（`chat.disableAIFeatures`、`telemetry.telemetryLevel`、`workbench.colorTheme`、`extensions.allowed`、`breadcrumbs.enabled`）。
+- `contributes.configurationDefaults`: 既定の設定（docs/04 の6.1）。Phase 0 の試作（0-9）の5項目（`chat.disableAIFeatures`、`telemetry.telemetryLevel`、`workbench.colorTheme`、`extensions.allowed`、`breadcrumbs.enabled`）と、`basedpyright.importStrategy: "useBundled"`。
+  - `basedpyright.importStrategy`: 裁定（2026-11-13、`docs/user-decisions.md` の「basedpyright が Python 拡張なしで起動しない件」）。basedpyright 1.40.2 は既定の `fromEnvironment` では Python 拡張（`ms-python.python`）の API を求め、無いと起動しない。台帳に Python 拡張は入れず、同梱の言語サーバーを使う（調べ: `tasks/2026-11-13-p0-basedpyright-probe/basedpyright-probe.md`）。
 - `contributes.keybindings`: Sublime Text のキー割り当て（docs/04 の6.2）。`node scripts/convert-sublime-keys.mjs --apply` が書く。手で直さない。
 
 ## キー割り当ての元

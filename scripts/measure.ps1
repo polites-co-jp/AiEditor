@@ -36,6 +36,8 @@ param(
     [string]$ProcessName,
     [string]$DefaultsNote,
     [switch]$KeepData,
+    [switch]$CleanStale,          # delete run dirs left under -WorkRoot (alone: only clean and exit)
+    [string]$StaleFilter = '*',   # name filter for -CleanStale, e.g. 'trial-*'
     [switch]$Force,
     [switch]$SkipTaskCheck,
     [string]$Baseline,
@@ -106,12 +108,16 @@ function Get-RoleMap {
         pty-host       : a child shell (powershell, cmd ...) or console host (OpenConsole, conhost)
         shared-process : a child file-watcher (inferred; only when none of the above fits)
       Only processes whose first-pass role is utility-node are refined; the rest keep their role.
+      Sources: optional hashtable filled with pid -> commandline | child | inferred (C-1: an
+      inferred role must stay recognisable as a guess).
     #>
-    param($Tree)
+    param($Tree, $Sources = $null)
     $roles = @{}
     $kids = @{}
+    if ($null -eq $Sources) { $Sources = @{} }
     foreach ($p in $Tree) {
         $roles[[int]$p.ProcessId] = Get-ProcessRole -Name $p.Name -CommandLine $p.CommandLine
+        $Sources[[int]$p.ProcessId] = 'commandline'
     }
     foreach ($p in $Tree) {
         $pp = [int]$p.ParentProcessId
@@ -125,10 +131,12 @@ function Get-RoleMap {
         if ($p.CommandLine) { $cl = [string]$p.CommandLine }
         $childRoles = @()
         if ($kids.ContainsKey($id)) { foreach ($k in $kids[$id]) { $childRoles += $roles[$k] } }
-        if ($cl -match '--inspect-port=0') { $roles[$id] = 'extension-host'; continue }
-        if ($childRoles -contains 'copilot-runtime') { $roles[$id] = 'agent-host'; continue }
-        if (($childRoles -contains 'shell') -or ($childRoles -contains 'console-host')) { $roles[$id] = 'pty-host'; continue }
-        if ($childRoles -contains 'file-watcher') { $roles[$id] = 'shared-process'; continue }
+        # Source of each decision: commandline = read from the command line, child = from a child process,
+        # inferred = a guess with no observed case behind it (shared-process: NOT confirmed on a real run).
+        if ($cl -match '--inspect-port=0') { $roles[$id] = 'extension-host'; $Sources[$id] = 'commandline'; continue }
+        if ($childRoles -contains 'copilot-runtime') { $roles[$id] = 'agent-host'; $Sources[$id] = 'child'; continue }
+        if (($childRoles -contains 'shell') -or ($childRoles -contains 'console-host')) { $roles[$id] = 'pty-host'; $Sources[$id] = 'child'; continue }
+        if ($childRoles -contains 'file-watcher') { $roles[$id] = 'shared-process'; $Sources[$id] = 'inferred'; continue }
     }
     return $roles
 }
@@ -229,7 +237,8 @@ function New-ProcessRows {
     <# One row per process, with role and claude flag, for the per-process CSV. #>
     param($Tree, [string]$RunName)
     $s = Split-ClaudeSubtree -Tree $Tree
-    $roleMap = Get-RoleMap -Tree $Tree
+    $sources = @{}
+    $roleMap = Get-RoleMap -Tree $Tree -Sources $sources
     $rows = @()
     foreach ($p in $Tree) {
         $rows += [pscustomobject][ordered]@{
@@ -238,6 +247,7 @@ function New-ProcessRows {
             ParentProcessId = [int]$p.ParentProcessId
             Name            = $p.Name
             Role            = $roleMap[[int]$p.ProcessId]
+            RoleSource      = $sources[[int]$p.ProcessId]
             InClaudeSubtree = $s.ClaudeIds.ContainsKey([int]$p.ProcessId)
             PrivateBytes    = [double]$p.PrivatePageCount
             WorkingSetBytes = [double]$p.WorkingSetSize
@@ -412,6 +422,52 @@ function Format-MiB {
 function Get-ProcessSnapshot {
     Get-CimInstance Win32_Process |
         Select-Object ProcessId, ParentProcessId, Name, CommandLine, PrivatePageCount, WorkingSetSize, CreationDate
+}
+
+function Find-StaleRunDirs {
+    <#
+      Direct subdirectories of WorkRoot (matching Filter) that no running process refers to
+      (no command line contains the path): data of runs that were kept (-KeepData), stopped
+      half way, or could not be removed. Reparse points are never listed.
+    #>
+    param([string]$WorkRoot, $Processes, [string]$Filter = '*')
+    $root = Assert-SafeDataPath $WorkRoot
+    if (-not (Test-Path -LiteralPath $root)) { return @() }
+    $res = @()
+    foreach ($d in @(Get-ChildItem -LiteralPath $root -Directory -Filter $Filter -ErrorAction SilentlyContinue)) {
+        if ($d.Attributes -band [IO.FileAttributes]::ReparsePoint) { continue }
+        $busy = $false
+        foreach ($p in $Processes) {
+            $cl = $p.CommandLine
+            if ($cl -and $cl.IndexOf($d.FullName, [StringComparison]::OrdinalIgnoreCase) -ge 0) { $busy = $true; break }
+        }
+        if (-not $busy) { $res += $d.FullName }
+    }
+    return $res
+}
+
+function Remove-RunDataDir {
+    <# Removes one run dir; retries because a just-stopped process may still hold a file. $true when gone. #>
+    param([string]$Path, [int]$Tries = 5)
+    for ($i = 1; $i -le $Tries; $i++) {
+        try { Remove-Item -LiteralPath $Path -Recurse -Force -ErrorAction Stop } catch { }
+        if (-not (Test-Path -LiteralPath $Path)) { return $true }
+        Start-Sleep -Seconds 2
+    }
+    return $false
+}
+
+function Clear-StaleRunDirs {
+    <# Lists (Delete = $false) or removes (Delete = $true) the stale run dirs. Returns the paths found. #>
+    param([string]$WorkRoot, [string]$Filter = '*', [bool]$Delete = $false)
+    $found = @(Find-StaleRunDirs -WorkRoot $WorkRoot -Processes @(Get-ProcessSnapshot) -Filter $Filter)
+    foreach ($f in $found) {
+        if ($Delete) {
+            if (Remove-RunDataDir -Path $f) { Write-Host "removed stale run dir: $f" }
+            else { Write-Warning "could not remove stale run dir: $f" }
+        }
+    }
+    return $found
 }
 
 function New-RunDataDir {
@@ -698,9 +754,10 @@ function Invoke-Measure {
         [int]$Runs, [int]$Warmup, [string]$OutDir, [bool]$Milestone,
         [int]$LaunchWaitSeconds, [int]$SettleSeconds, [int]$StopWaitSeconds,
         [string]$WorkRoot, [string]$ProcessName, [string]$DefaultsNote,
-        [bool]$KeepData, [bool]$Force, [bool]$SkipTaskCheck
+        [bool]$KeepData, [bool]$Force, [bool]$SkipTaskCheck, [bool]$CleanStale = $false, [string]$StaleFilter = '*'
     )
     $ErrorActionPreference = 'Stop'
+    $leftovers = @()
     if (-not $EnvDir -or -not (Test-Path -LiteralPath $EnvDir)) { throw "-EnvDir not found: $EnvDir" }
     if (-not $Exe) {
         # use the env record written by p0-env.ps1 (editor.exe)
@@ -727,6 +784,12 @@ function Invoke-Measure {
         throw "output already has runs.csv (use -Force to overwrite): $OutDir"
     }
     New-Item -ItemType Directory -Force -Path $OutDir | Out-Null
+
+    # data of earlier runs that were kept or stopped half way: clean them, or at least say so
+    $stale = @(Clear-StaleRunDirs -WorkRoot $WorkRoot -Filter $StaleFilter -Delete $CleanStale)
+    if ($stale.Count -gt 0 -and -not $CleanStale) {
+        Write-Warning ("{0} stale run dir(s) under {1} (use -CleanStale to remove): {2}" -f $stale.Count, $WorkRoot, ($stale -join ', '))
+    }
 
     $pc = Get-PcState
     $pc | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath (Join-Path $OutDir 'pc-state.json') -Encoding UTF8
@@ -791,8 +854,13 @@ function Invoke-Measure {
             if ($ids2.Count -eq 0) { $ids2 = @([int]$launched.Id) }
             Stop-EditorTree -Tree (Get-Descendants -Processes $procs2 -RootIds $ids2)
             Start-Sleep -Seconds $StopWaitSeconds
-            if (-not $KeepData) {
-                try { Remove-Item -LiteralPath $data.Root -Recurse -Force -ErrorAction Stop } catch { Write-Warning "could not remove $($data.Root): $_" }
+            if ($KeepData) {
+                Write-Warning "-KeepData: the data of this run stays at $($data.Root) (remove it with -CleanStale before the real measurement)"
+                $leftovers += $data.Root
+            }
+            elseif (-not (Remove-RunDataDir -Path $data.Root)) {
+                Write-Warning "could not remove $($data.Root)"
+                $leftovers += $data.Root
             }
         }
     }
@@ -805,10 +873,10 @@ function Invoke-Measure {
     # roles table (sum per role, per run) and summary
     $allProc | Export-Csv -LiteralPath (Join-Path $OutDir 'processes-all.csv') -NoTypeInformation -Encoding UTF8
     $roleRows = @()
-    foreach ($g in ($allProc | Group-Object Run, Role)) {
+    foreach ($g in ($allProc | Group-Object Run, Role, RoleSource)) {
         $first = $g.Group[0]
         $roleRows += [pscustomobject][ordered]@{
-            Run = $first.Run; Role = $first.Role; Count = $g.Count
+            Run = $first.Run; Role = $first.Role; RoleSource = $first.RoleSource; Count = $g.Count
             PrivateBytes = (Get-PropertySum $g.Group 'PrivateBytes')
             WorkingSetBytes = (Get-PropertySum $g.Group 'WorkingSetBytes')
         }
@@ -824,6 +892,8 @@ function Invoke-Measure {
     $summary = [ordered]@{
         DailyArgvTouched = $dailyTouched
         DailyArgvAfter = $dailyAfter
+        RunDataLeftOver = $leftovers
+        StaleRunDirsBefore = $stale
         Label = $Label; Exe = $Exe; ExeVersion = $ver; EnvDir = $EnvDir
         Workspace = $wsInfo; OpenFiles = $OpenFiles
         Warmup = $Warmup; Runs = $Runs; Milestone = $Milestone
@@ -871,8 +941,16 @@ if ($Baseline -or $Candidate) {
     if ($v.Pass) { exit 0 } else { exit 1 }
 }
 
+if ($CleanStale -and -not $EnvDir) {
+    # clean only: no editor is started
+    $gone = @(Clear-StaleRunDirs -WorkRoot $WorkRoot -Filter $StaleFilter -Delete $true)
+    Write-Host ("stale run dirs found: {0}" -f $gone.Count)
+    exit 0
+}
+
 Invoke-Measure -Exe $Exe -EnvDir $EnvDir -Workspace $Workspace -OpenFiles $OpenFiles -Label $Label `
     -Runs $Runs -Warmup $Warmup -OutDir $OutDir -Milestone ([bool]$Milestone) `
     -LaunchWaitSeconds $LaunchWaitSeconds -SettleSeconds $SettleSeconds -StopWaitSeconds $StopWaitSeconds `
     -WorkRoot $WorkRoot -ProcessName $ProcessName -DefaultsNote $DefaultsNote `
-    -KeepData ([bool]$KeepData) -Force ([bool]$Force) -SkipTaskCheck ([bool]$SkipTaskCheck) | Out-Null
+    -KeepData ([bool]$KeepData) -Force ([bool]$Force) -SkipTaskCheck ([bool]$SkipTaskCheck) `
+    -CleanStale ([bool]$CleanStale) -StaleFilter $StaleFilter | Out-Null

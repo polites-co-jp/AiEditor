@@ -40,7 +40,8 @@ $ErrorActionPreference = 'Stop'
 
 if ($List) {
     foreach ($d in Get-P0EnvDefinitions) {
-        '{0,-22} {1,-9} measure={2,-5} {3}' -f $d.Name, $d.Base, $d.Measure, $d.Purpose
+        $inAll = -not ($d.PSObject.Properties.Name -contains 'InAll') -or $d.InAll
+        '{0,-22} {1,-9} measure={2,-5} all={3,-5} {4}' -f $d.Name, $d.Base, $d.Measure, $inAll, $d.Purpose
     }
     return
 }
@@ -148,7 +149,10 @@ function New-P0Env {
 }
 
 $targets = @()
-if ($All) { $targets = @(Get-P0EnvDefinitions) } else { $targets = @(Get-P0EnvDefinition $Name) }
+if ($All) {
+    # definitions with InAll = $false (the basedpyright probe environments) are built only with -Name
+    $targets = @(Get-P0EnvDefinitions | Where-Object { -not ($_.PSObject.Properties.Name -contains 'InAll') -or $_.InAll })
+} else { $targets = @(Get-P0EnvDefinition $Name) }
 $bad = 0
 foreach ($t in $targets) {
     $n = @(New-P0Env $t)

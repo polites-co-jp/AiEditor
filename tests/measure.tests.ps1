@@ -503,6 +503,81 @@ Test-Case 'role map: the CSV rows use the refined roles and the roles table sums
 }
 Test-Case 'role map: empty tree gives an empty map' { Assert-Equal (Get-RoleMap -Tree @()).Count 0 '' }
 
+# ---- C-1: RoleSource (a guessed role must stay recognisable as a guess) ----------
+$src = @{}
+$rm2 = Get-RoleMap -Tree $rtree -Sources $src
+Test-Case 'role source: roles read from the command line say "commandline"' {
+    Assert-Equal $src[1] 'commandline' 'main'
+    Assert-Equal $src[13] 'commandline' 'language server'
+    Assert-Equal $src[40] 'commandline' 'unexplained utility-node (first pass)'
+}
+Test-Case 'role source: --inspect-port=0 is "commandline"; agent-host and pty-host are "child"' {
+    Assert-Equal $src[10] 'commandline' 'extension host'
+    Assert-Equal $src[20] 'child' 'agent host'
+    Assert-Equal $src[30] 'child' 'pty host'
+}
+Test-Case 'role source: shared-process (a file-watcher child only) is "inferred"' {
+    $s2 = @{}
+    $t = @((New-Proc 1 0 'Code.exe' $nodeCl), (New-Proc 2 1 'Code.exe' '"C:\Code.exe" --type=utility fileWatcher'))
+    $m = Get-RoleMap -Tree $t -Sources $s2
+    Assert-Equal $m[1] 'shared-process' ''
+    Assert-Equal $s2[1] 'inferred' ''
+    Assert-Equal $s2[2] 'commandline' ''
+}
+Test-Case 'role source: Get-RoleMap still works without -Sources' {
+    Assert-Equal (Get-RoleMap -Tree $rtree)[20] 'agent-host' ''
+}
+Test-Case 'role source: every row of the CSV carries RoleSource; inferred rows are findable' {
+    $t = @((New-Proc 1 0 'Code.exe' $nodeCl), (New-Proc 2 1 'Code.exe' '"C:\Code.exe" --type=utility fileWatcher'), (New-Proc 3 0 'Code.exe' $nodeCl))
+    $rows = New-ProcessRows -Tree $t -RunName 'run-1'
+    foreach ($r in $rows) { Assert-True (@('commandline', 'child', 'inferred') -contains $r.RoleSource) "row $($r.ProcessId)" }
+    $inf = @($rows | Where-Object { $_.RoleSource -eq 'inferred' })
+    Assert-Equal $inf.Count 1 ''
+    Assert-Equal $inf[0].Role 'shared-process' ''
+}
+
+# ---- stale run data (-KeepData, half-stopped runs) -----------------------------
+$tmp4 = Join-Path ([IO.Path]::GetTempPath()) ("measure-tests4-" + [guid]::NewGuid().ToString('N'))
+$root4 = Join-Path $tmp4 'run'
+foreach ($n in @('trial-a-run-1', 'trial-b-run-1', 'live-run-1', 'other-1')) { New-Item -ItemType Directory -Path (Join-Path $root4 "$n\user") -Force | Out-Null }
+Set-Content -LiteralPath (Join-Path $root4 'trial-a-run-1\user\f.txt') -Value 'x'
+try {
+    Test-Case 'stale dirs: all direct subdirectories that no process refers to are found' {
+        $f = @(Find-StaleRunDirs -WorkRoot $root4 -Processes @())
+        Assert-Equal $f.Count 4 ''
+    }
+    Test-Case 'stale dirs: a dir whose path is in a running command line is NOT stale' {
+        $live = Join-Path $root4 'live-run-1'
+        $ps = @((New-Proc 9 0 'Code.exe' ('"C:\Code.exe" --user-data-dir "' + $live + '\user\user-data"')))
+        $f = @(Find-StaleRunDirs -WorkRoot $root4 -Processes $ps)
+        Assert-Equal $f.Count 3 ''
+        Assert-True (-not (@($f | Where-Object { $_ -like '*live-run-1' }).Count)) 'live dir not listed'
+    }
+    Test-Case 'stale dirs: the name filter limits the list' {
+        $f = @(Find-StaleRunDirs -WorkRoot $root4 -Processes @() -Filter 'trial-*')
+        Assert-Equal $f.Count 2 ''
+    }
+    Test-Case 'stale dirs: a missing work root gives an empty list; the daily editor data is refused' {
+        Assert-Equal @(Find-StaleRunDirs -WorkRoot (Join-Path $tmp4 'nowhere') -Processes @()).Count 0 ''
+        if ($env:APPDATA) { Assert-Throws { Find-StaleRunDirs -WorkRoot (Join-Path $env:APPDATA 'Code') -Processes @() } 'APPDATA' }
+    }
+    Test-Case 'remove run dir: removes a dir with files and returns true' {
+        $d = Join-Path $root4 'other-1'
+        Assert-True (Remove-RunDataDir -Path $d -Tries 2) ''
+        Assert-True (-not (Test-Path -LiteralPath $d)) ''
+    }
+    $ms4 = Join-Path $repo 'scripts\measure.ps1'
+    Test-Case '-File start: -CleanStale alone removes only the matching stale dirs and exits 0 (no editor started)' {
+        $ErrorActionPreference = 'Continue'
+        $o = (& powershell.exe -NoProfile -ExecutionPolicy Bypass -File $ms4 -CleanStale -WorkRoot $root4 -StaleFilter 'trial-*' 2>&1 | Out-String)
+        Assert-Equal $LASTEXITCODE 0 $o
+        Assert-True (-not (Test-Path -LiteralPath (Join-Path $root4 'trial-a-run-1'))) 'trial-a removed'
+        Assert-True (-not (Test-Path -LiteralPath (Join-Path $root4 'trial-b-run-1'))) 'trial-b removed'
+        Assert-True (Test-Path -LiteralPath (Join-Path $root4 'live-run-1')) 'non-matching dir stays'
+    }
+}
+finally { Remove-Item -LiteralPath $tmp4 -Recurse -Force -ErrorAction SilentlyContinue }
+
 # ---- B-5: -OpenFiles (5.1 -File passes "a,b" as one string) --------------------
 $tmp3 = Join-Path ([IO.Path]::GetTempPath()) ("measure-tests3-" + [guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path (Join-Path $tmp3 'ws\src') | Out-Null

@@ -77,7 +77,17 @@
 - netaudit（60秒）も同じ条件で動いた。宛先9件。DNS キャッシュは0件のまま。普段使いの `argv.json` は作られなかった。
 - 出力: `trial/out-real2/`、`out-real3/`、`out-real4/`（最新）、`trial/net-real2/`。
 
-### 残った課題
+## 追記: C-1 と試しのデータの扱い
+
+結果: 完了。
+
+- **C-1:** `RoleSource` 列（`commandline` / `child` / `inferred`）を `<回>-processes.csv`・`roles.csv`・netaudit の `samples.csv` に足した。推定は shared-process だけで、`inferred` の行として見分けられる。**shared-process の規則は未確認（実物で当てはまったことが無い。試しでは file-watcher の親が agent-host だった）と measure-design.md に書いた。**
+- **残った回のデータ:** `C:\b\p0\run\trial-real3-run-1\`・`trial-real4-run-1\` は、新しい `-CleanStale`（`-StaleFilter trial-*`）で消した（`C:\b\p0\run\` に残りは無い）。台本の扱いを直した: `-WorkRoot` の直下に残った回のデータ（`-KeepData`、止まった回、消せなかった回）は、始める前に警告し、`-CleanStale` で消せる（実行中のプロセスが使っているフォルダは消さない。`-EnvDir` なしの単独指定ならエディタを起動せず消すだけ）。回のデータの削除は、止めた直後のファイルの保持に備えて最大5回やり直す。`-KeepData` と消せなかったデータは警告を出し、`summary.json` の `RunDataLeftOver` に残る。netaudit も同じ。
+- **docs/07 の3.2 の2:** doc-corrections.md の6に書き足した（ファイルは1つずつ10秒あけて開く。1回の `-r` で2つ渡すと背景のタブの言語が有効にならない。`-File` で `a,b` が1つの文字列になる件、basedpyright が Python 拡張を要る件）。
+- テスト: `measure.tests.ps1` 125 通過 / 0 失敗（+11）。ほかの3本は変わらず（netaudit 67、lock 115、sublime-keys 50）。
+- upstream-default だけで短い試しを1回（`trial/out-real5/`、18プロセス、`roles.csv` に RoleSource 列、回のデータは自動で消えた）。ほかの環境は起動していない。
+
+### 残った課題（再差し戻しの時点）
 
 - Python 拡張を台帳に入れるか（上）。入れるなら 0-4 の基準値の環境に Python 拡張を足してから測る。
 - shared-process の推定、utility-node の残り2つの役割は未確認。
