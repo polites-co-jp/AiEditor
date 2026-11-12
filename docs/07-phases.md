@@ -28,7 +28,7 @@
 | VSCodium の Windows x64 の zip（最新） | https://github.com/VSCodium/vscodium/releases | `C:\b\p0\vscodium-<版>\` |
 | 台帳に載せる拡張の VSIX | [04](04-bundled-extensions.md) の2節の各拡張を Open VSX から（手順 0-6） | `C:\b\p0\vsix\` |
 | Claude Code の CLI | 公式の手順 https://code.claude.com/docs/en/setup 。ログインしておく | — |
-| 計測用のワークスペース | TS と Python を含む実際のリポジトリ。コミットを固定して記録する。裁定（2026-11-13）: `E:\develop\kuebiko` を、このリポジトリの `tmp\ws\` に clone する（`tmp/` は git の管理外） | `<リポジトリ>\tmp\ws\` |
+| 計測用のワークスペース | TS と Python を含む実際のリポジトリ。コミットを固定して記録する。裁定（2026-11-13）: kuebiko を、このリポジトリの `tmp\ws\` に clone する（`tmp/` は git の管理外）。clone 元は GitHub の `polites-co-jp/kuebiko` の main、コミット `2385a2ff1ea22ceaa5a039500f3f88361eef2392`。開く2つのファイルは `C:\b\p0\ws-info.json` | `<リポジトリ>\tmp\ws\` |
 | Node.js、Git for Windows、PowerShell 7、Python 3、ShellCheck | [01](01-requirements.md) の4.1 | — |
 
 置き場所は、開発チームの書き込み先（ビルドの作業場所 `C:\b\`）の中にした（2026-11-13。もとの例は `C:\p0\`）。データの置き場所は、ビルドごとに `--user-data-dir` と `--extensions-dir` で分ける（例 `C:\b\p0\data\<名前>\user`、`C:\b\p0\data\<名前>\ext`）。普段使いのエディタの設定に触れない。

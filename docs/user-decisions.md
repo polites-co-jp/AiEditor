@@ -113,3 +113,9 @@
 | 「ソースのリポジトリに同じ版のタグかリリースがある」（[04](04-bundled-extensions.md) の4節の3） | 必須にしない。参考の項目とし、タグが無いことを記録して取り込みの判定で触れる。該当する weixu.wx-vsce-dotenv・tomoki1207.pdf・日本語パックも台帳に載せる |
 | 署名の検証に使う ovsx の版 | 固定する。`package.json` の devDependencies に ovsx 1.4.0 を置き、その版で検証する。上げるときは手で変える |
 | 曹参・大岡越前守の権限の `node --test tests/`（Node 24 では動かない） | 書き方を直す（`node --test tests/*.test.mjs`、extensions-src も同じ形）。変更は設計を行ったチーム（`E:\develop\self\Team`）の開発部が行う |
+
+## 記録（2026-11-13、計測用のワークスペースの clone 元。Phase 0 の着手のときの裁定を補う）
+
+| 論点 | 事実と扱い |
+|---|---|
+| 計測用のワークスペースの clone 元 | `E:\develop\kuebiko` の .git の所有者が別のアカウントで、ローカルからの clone を git が拒んだ。ユーザーが GitHub（`https://github.com/polites-co-jp/kuebiko.git` の main）から clone した。固定したコミットは `2385a2ff1ea22ceaa5a039500f3f88361eef2392`。開くファイルは TS `apps/api/src/routes/extraction.ts`、Python `local-apps/topic-clusterer/topic_clusterer/labeling.py` |
