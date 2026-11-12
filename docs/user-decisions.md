@@ -127,3 +127,12 @@
 | 論点 | 裁定 |
 |---|---|
 | Python の言語機能の起動（basedpyright 1.40.2 は既定の `basedpyright.importStrategy: "fromEnvironment"` では Python 拡張の API を求め、無いと起動しない） | `mydist` の既定に `basedpyright.importStrategy: "useBundled"` を入れる。台帳は今の9件のまま（`ms-python.python` は入れない）。計測では本家と自作の両方のユーザー設定に同じ値を入れて条件をそろえる |
+
+## 裁定（2026-11-13、0-4 の本番の前）
+
+手順: `tasks/2026-11-13-p0-verify-bundled-roles/p0-baseline-plan.md`
+
+| 論点 | 裁定 |
+|---|---|
+| 節目の計測で Claude Code のパネルに送る「決まった1文」（[07](07-phases.md) の3.2） | 「こんにちは。一言だけ返事をしてください。」。以後の節目もこの文を使う |
+| Process Explorer の画面の写し（3.2 の補い） | 数える5回の後に、数えない1回を足して撮る |
