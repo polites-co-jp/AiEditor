@@ -103,7 +103,7 @@
 
 | 設定 | 値 | 理由 | 外す時期 |
 |---|---|---|---|
-| `workbench.colorTheme` | Light Modern の ID（`Default Light Modern` の見込み。要確認） | 裁定のテーマ | — |
+| `workbench.colorTheme` | `Light Modern`（0-9 で 1.146.0 の実物で確かめた。2026-11-13） | 裁定のテーマ | — |
 | `telemetry.telemetryLevel` | `off` | テレメトリ（B-1 の補い） | — |
 | `chat.disableAIFeatures` | `true` | C-1 まで本家の AI を眠らせる [一次] https://code.visualstudio.com/docs/agents/reference/ai-settings | C-1 の後（設定が無くなる） |
 | `breadcrumbs.enabled` | `false` | C-7 まで隠す | C-7 の後 |
@@ -112,6 +112,7 @@
 | `extensions.autoUpdate` / `extensions.autoCheckUpdates` | `false` / `false` | 拡張の更新は台帳で行う | — |
 | `update.mode` | `none` | 本体の更新は自分で行う | — |
 | `extensions.allowed` | 5節 | 台帳の拡張だけ | — |
+| `basedpyright.importStrategy` | `useBundled` | 既定の `fromEnvironment` は Python 拡張（`ms-python.python`）の API で環境を探し、無いと basedpyright が起動しない。同梱のサーバーを使えば Python 拡張なしで動く（裁定 2026-11-13。`tasks/2026-11-13-p0-basedpyright-probe/`） | — |
 | 外向き通信を止める設定 | Phase 0 の通信の棚卸し（[07](07-phases.md) の 0-5）で決める。候補: `typescript.disableAutomaticTypeAcquisition`、`npm.fetchOnlinePackageInfo`、`json.schemaDownload.enable`、`workbench.settings.enableNaturalLanguageSearch` | 不要な外部通信 | — |
 
 - 組み込み拡張の `configurationDefaults` で、ほかの部品の設定（`chat.disableAIFeatures` など）や application スコープの設定（`extensions.allowed`）を既定にできるかは未確認。Phase 0 の 0-9 で確かめ、組み込み拡張として同梱したときの効き方を Phase 2 で確かめる。できないものは、product.json の上書きか小さなパッチで既定を変える。

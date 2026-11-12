@@ -86,7 +86,7 @@
 | 言語 | 担う拡張 | 層 | 外部ツール | 備考と出典 |
 |---|---|---|---|---|
 | TypeScript / JavaScript | `typescript-language-features`（tsserver） | 組込 | 不要 | tsserver の既定のメモリ上限は 3072 MB [一次] https://raw.githubusercontent.com/microsoft/vscode/main/extensions/typescript-language-features/package.json |
-| Python | `detachhead.basedpyright` 1.40.2（MIT、engines ^1.101.0） | 同梱 | Python 3（インタプリタ。拡張の設定 `python.pythonPath`、既定 `"python"`） | [一次] https://open-vsx.org/api/detachhead/basedpyright 。拡張だけで言語サーバーが動くか、Python 本体が要るかは未確認（Phase 0 の 0-3） |
+| Python | `detachhead.basedpyright` 1.40.2（MIT、engines ^1.101.0） | 同梱 | Python 3（インタプリタ。拡張の設定 `python.pythonPath`、既定 `"python"`） | [一次] https://open-vsx.org/api/detachhead/basedpyright 。既定の `basedpyright.importStrategy: "fromEnvironment"` では Python 拡張の API を求めて起動しない。`useBundled`（`mydist` の既定。裁定 2026-11-13）なら Python 拡張なしで起動し、Python 本体が無くても型の検査は動く（入れたパッケージの型の解決には Python が要る）。画面の問題パネルに出るかは 0-3 で確かめる |
 | HTML / CSS / JSON | `html-language-features`・`css-language-features`・`json-language-features`、`emmet` | 組込 | 不要 | `json-language-features` は Claude Code 拡張の `jsonValidation`（`.claude/settings.json` の検査）にも使われる |
 | CSV | `mechatroner.rainbow-csv` 3.24.1（MIT） | 同梱 | 不要 | 列の色分け、CSV の検査（"Automatic CSV consistency checks (CSVLint)"）[一次・要照合] https://open-vsx.org/api/mechatroner/rainbow-csv |
 | .env | `dotenv.dotenv-vscode` 1.5.8（MIT）か `weixu.wx-vsce-dotenv` 0.2.3（MIT）。文法は組み込みの `dotenv` | 同梱 | 不要 | 裁定: Phase 0 の 0-3 で両方を試し、エラー表示を持つほうを採る。`dotenv.dotenv-vscode` は補完あり、エラー表示（診断）は README に記述が無い（未確認）[一次] https://open-vsx.org/api/dotenv/dotenv-vscode 。`weixu.wx-vsce-dotenv` は README に診断7種と補完がある（要照合）[一次] https://open-vsx.org/api/weixu/wx-vsce-dotenv |

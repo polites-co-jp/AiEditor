@@ -119,3 +119,11 @@
 | 論点 | 事実と扱い |
 |---|---|
 | 計測用のワークスペースの clone 元 | `E:\develop\kuebiko` の .git の所有者が別のアカウントで、ローカルからの clone を git が拒んだ。ユーザーが GitHub（`https://github.com/polites-co-jp/kuebiko.git` の main）から clone した。固定したコミットは `2385a2ff1ea22ceaa5a039500f3f88361eef2392`。開くファイルは TS `apps/api/src/routes/extraction.ts`、Python `local-apps/topic-clusterer/topic_clusterer/labeling.py` |
+
+## 裁定（2026-11-13、basedpyright が Python 拡張なしで起動しない件）
+
+調べ: `tasks/2026-11-13-p0-basedpyright-probe/basedpyright-probe.md`
+
+| 論点 | 裁定 |
+|---|---|
+| Python の言語機能の起動（basedpyright 1.40.2 は既定の `basedpyright.importStrategy: "fromEnvironment"` では Python 拡張の API を求め、無いと起動しない） | `mydist` の既定に `basedpyright.importStrategy: "useBundled"` を入れる。台帳は今の9件のまま（`ms-python.python` は入れない）。計測では本家と自作の両方のユーザー設定に同じ値を入れて条件をそろえる |
