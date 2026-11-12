@@ -138,3 +138,45 @@ SubagentHandback がフックで止められたため、この文書を報告と
 ### 記録（追加分）
 
 - `E:\develop\self\Team\projects\ai-editor\tasks\2026-11-13-p0-verify-envs\verification-log-2.md`
+
+---
+
+## 追記（2026-11-13、3回目）: 軽微な点 M1〜M3 の直し — 合格
+
+蒙恬の `tasks/2026-11-13-p0-envs-mydist-keys/handoff-notes.md` の「追記3」を確かめた。
+
+### 判定: 合格（M1〜M3 とも直った）
+
+ユーザーは env-setup.md の5節で手の確かめを始めてよい。ただし、手順書に番号の誤りが1つある（N1）。直すまでは、リーダーからユーザーに一言伝えれば足りる。
+
+| # | 直し | 確かめたこと | 判定 |
+|---|---|---|---|
+| M1 | `scripts/lib/p0-common.ps1` の `Get-P0MainProcesses`（405〜418行） | 条件に `ExecutablePath` のフルパスがその環境の exe と同じこと（大文字小文字を区別しない）が足された。名前、データの場所、`--type=` が無いことの条件も残っている。普段使いの `Code.exe` は置き場所が違うので、名前が同じでも当たらない。`p0-stop.ps1` と `p0-launch.ps1`（引き継ぎの判定と `-SmokeSeconds` の後の残りの数え）は、どちらもこの関数を使う。蒙恬の実機の確かめ（testbed を起動、`-WhatIfOnly` で主プロセス1つと木の7つを見つけ、その7つだけを止め、後は0）と矛盾しない | 合格 |
+| M2 | `scripts/p0-scratch.ps1`（53行）と env-setup.md の 5.3 の3 | `C:\b\p0\scratch\.vscode\tasks.json` の実物を読んだ。中身は、ラベル `p0-scratch-echo`、`type: shell`、`command: echo p0-scratch-task-ok`、`problemMatcher: []`。`runOn` は無いので、開いただけでは動かない。`Write-P0Text` が `.vscode` のフォルダを作る。手順は「`Terminal > Run Task...` で `p0-scratch-echo` を選び、ターミナルに `p0-scratch-task-ok` と出れば成功」で、台本の中身と一致する。台本の先頭の説明にも、この1行が足された | 合格 |
+| M3 | env-setup.md の6節の最初の行 | 出どころが GitHub（`https://github.com/polites-co-jp/kuebiko.git` の `main`、commit `2385a2ff…`）になり、裁定の文言（`E:\develop\kuebiko`）と違うことも添えてある。すぐ下の表、`ws-info.json`、`tmp\ws\.git` と一致する | 合格 |
+
+### ついでに確かめたこと
+
+- **起動の後の argv.json**（前回は確かめられなかった点）:
+  - 蒙恬の M1 の確かめで起動した `C:\b\p0\data\testbed\user\argv.json` を読んだ。`"locale": "ja",` の後に、エディタが足したコメントと `"enable-crash-reporter": false`・`"crash-reporter-id": "…"` があり、`}` で閉じている。正しい JSONC で、`locale` も残っている。
+  - VSCodium（試験台）で、`Write-P0Argv` の直しが効いていることを実物で確かめた。
+- **VSCODE_PORTABLE が効いている実物の証拠**: 同じ起動の `C:\b\p0\data\testbed\user\user-data\logs\20261113T061120\main.log` によると、共有のストレージは `c:\b\p0\data\testbed\user\shared-data\…`、アプリのストレージは `…\user\user-data\User\globalStorage\…` に作られた。データは環境の中に置かれていて、`%APPDATA%` は使われていない。
+- **scratch の実物**: 見本の11ファイル、`image.png`、`.vscode\tasks.json`、`.git`。5.4 の5・6で開くファイル（sample.ts・.py・.html・.css・.json・.csv・.sh・.ps1・.env）は全部ある。
+- **手順に出てくるコマンドと引数**: `p0-env.ps1 -Name`、`p0-launch.ps1 -Name` / `-NoWorkspace`、`p0-stop.ps1 -Name`、`p0-scratch.ps1`、`p0-ws.ps1` は、どれも台本に実在する。手順が見る出力（`OK: pid ... is alive`、`FAILED`、`scratch: … (git commit …)`、`commit :`、`workspace has other changes:`、`installed:`）も、台本が実際に書く文言と一致する。
+
+### 手順と台本の食い違い（担当つき。手の確かめは止めない）
+
+- **N1 蒙恬（手順書の誤り。直すとよい）** env-setup.md の 5.5 の3は「この項目では `tmp\ws` を変えないので、5.6 は 2 だけでよい」としている。しかし 5.6 の2は「変わっていたときの戻し方」で、確かめは 5.6 の1にある。正しくは「5.6 は 1 だけでよい」。直すまでは、ユーザーに「5.5 の後は 5.6 の1（`p0-ws.ps1` での確かめ）だけ行う」と伝えれば足りる。
+- **N2 リーダーへ（勧め）**: 環境 `testbed` は、蒙恬が確かめのために2回起動した後の状態にある。
+  - argv.json に crash-reporter の項目が足されていて、初回の起動の画面は済んでいる。ログのフォルダもある。
+  - 0-3 の 5.4 の3「起動の警告とエラー」は初回の起動を見る形なので、`testbed-dotenv-a`・`-b`（まだ起動していない）と条件をそろえるためにも、ユーザーが始める前に `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/p0-env.ps1 -Name testbed` で作り直すことを勧める（自分の端末から）。
+  - 作り直さなくても誤りにはならない。そのときは、記録に「2回起動した後の環境」と書く。
+- **N3（注意。直しは不要）**:
+  - `p0-scratch.ps1` は、そのフォルダを開いているエディタを、コマンドラインに `C:\b\p0\scratch` を含むプロセスで探す。5.3 の3のように、`tmp\ws` で起動した窓から `File > Open Folder...` で scratch を開いた場合は見つからない。その状態で走らせると、使用中のファイルで消しに失敗するおそれがある。
+  - 5.6 の1は「全部の窓を閉じてから」で、3（scratch の作り直し）はその後なので、手順どおりなら起きない。
+  - 0-3 の 5.4 の6で `.env` に打った `API` を保存したときも、b の前に `p0-scratch.ps1` で作り直せば、a と b の条件がそろう。
+
+### リーダーへ
+
+- 手の確かめはこのまま始めてよい。ユーザーへは、N1 の一言（5.5 の後は 5.6 の1だけ）と、N2 の作り直しの勧めを添えるとよい。
+- `configuration-defaults.md.section3.tmp` の削除は、まだ残っている（リーダーの担当）。

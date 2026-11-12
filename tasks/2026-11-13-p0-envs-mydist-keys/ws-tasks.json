@@ -1,0 +1,26 @@
+{
+    "version":  "2.0.0",
+    "tasks":  [
+                  {
+                      "label":  "p0-open-terminal",
+                      "type":  "process",
+                      "command":  "powershell.exe",
+                      "args":  [
+                                   "-NoLogo",
+                                   "-NoProfile"
+                               ],
+                      "isBackground":  true,
+                      "problemMatcher":  [
+
+                                         ],
+                      "presentation":  {
+                                           "reveal":  "always",
+                                           "panel":  "dedicated",
+                                           "focus":  false
+                                       },
+                      "runOptions":  {
+                                         "runOn":  "folderOpen"
+                                     }
+                  }
+              ]
+}
