@@ -1,0 +1,26 @@
+﻿{
+    "Metric":  "PrivateExclClaude",
+    "Baseline":  "tasks/2026-11-13-p0-measure-netaudit-tests/trial/out-a",
+    "Candidate":  "tasks/2026-11-13-p0-measure-netaudit-tests/trial/out-a",
+    "BaselineValues":  [
+                           10379264,
+                           10399744
+                       ],
+    "CandidateValues":  [
+                            10379264,
+                            10399744
+                        ],
+    "Verdict":  {
+                    "Pass":  false,
+                    "BaselineMedian":  10389504,
+                    "CandidateMedian":  10389504,
+                    "Reduction":  0,
+                    "ReductionPct":  0,
+                    "BaselineRange":  20480,
+                    "CandidateRange":  20480,
+                    "WithinRange":  false,
+                    "BaselineCount":  2,
+                    "CandidateCount":  2,
+                    "Note":  "Fail. The medians are equal (must be strictly smaller)."
+                }
+}

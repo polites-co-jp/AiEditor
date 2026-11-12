@@ -1,0 +1,11 @@
+[
+  { "id": "anthropic.claude-code", "version": "2.1.322", "targetPlatform": "win32-x64", "docs": "docs/04 2節" },
+  { "id": "detachhead.basedpyright", "version": "1.40.2", "docs": "docs/04 2節" },
+  { "id": "ms-vscode.powershell", "version": "2025.4.0", "docs": "docs/04 2節" },
+  { "id": "mads-hartmann.bash-ide-vscode", "version": "1.43.2", "docs": "docs/04 2節" },
+  { "id": "mechatroner.rainbow-csv", "version": "3.24.1", "docs": "docs/04 2節" },
+  { "id": "dotenv.dotenv-vscode", "version": "1.5.8", "docs": "docs/04 2節", "note": ".env の候補A。0-3 の後に dotenv.dotenv-vscode と weixu.wx-vsce-dotenv のどちらを残すかを決める（裁定: エラー表示を持つほう）" },
+  { "id": "weixu.wx-vsce-dotenv", "version": "0.2.3", "docs": "docs/04 2節", "note": ".env の候補B。0-3 の後に dotenv.dotenv-vscode と weixu.wx-vsce-dotenv のどちらを残すかを決める（裁定: エラー表示を持つほう）" },
+  { "id": "tomoki1207.pdf", "version": "1.2.2", "docs": "docs/04 2節" },
+  { "id": "MS-CEINTL.vscode-language-pack-ja", "version": "1.131.0", "docs": "docs/04 2節" }
+]
