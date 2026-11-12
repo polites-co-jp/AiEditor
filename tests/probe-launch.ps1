@@ -11,7 +11,7 @@ $Workspace = $keepWs
 $rec = Read-P0EnvRecord $EnvDir
 $exe = $rec.editor.exe
 Write-Host "exe: $exe"
-$data = New-RunDataDir -EnvDir $EnvDir -WorkRoot 'C:\b\p0\run' -Name 'probe'
+$data = New-RunDataDir -EnvDir $EnvDir -WorkRoot 'C:\b\p0\run' -Name 'probe-run-1'
 Write-Host "user: $($data.User)"
 $ws = $Workspace
 if (-not $ws) { $ws = Join-Path (Split-Path -Parent $here) 'tmp\ws' }

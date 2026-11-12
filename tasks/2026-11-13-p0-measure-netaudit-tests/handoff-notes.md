@@ -87,6 +87,16 @@
 - テスト: `measure.tests.ps1` 125 通過 / 0 失敗（+11）。ほかの3本は変わらず（netaudit 67、lock 115、sublime-keys 50）。
 - upstream-default だけで短い試しを1回（`trial/out-real5/`、18プロセス、`roles.csv` に RoleSource 列、回のデータは自動で消えた）。ほかの環境は起動していない。
 
+## 追記: D-1（-CleanStale の範囲の制限）
+
+結果: 完了。
+
+- **消してよい場所:** `-WorkRoot` が `C:\b\p0\run`（またはその下）か、印のファイル `.p0-run-root` があるフォルダのときだけ。そうでなければ、何も消さずに止まる。印は、台本が新しく作った・空だった作業フォルダにだけ書く。`C:\b\p0`・`C:\b`・`C:\`・`C:\b\p0\runner`（接頭辞が似ているだけ）は不可。
+- **消す対象:** 名前が `<ラベル>-run-<n>`・`<ラベル>-warmup-<n>`・`<ラベル>-netaudit` で、中に `user\` と `ext\` があるフォルダだけ。回のデータを作る側（`New-RunDataDir`）も同じ名前でなければ止まる。実行中のプロセスが使っているフォルダと、リパースポイントは従来どおり消さない。measure.ps1・netaudit.ps1 の両方（同じ関数）。
+- **任意（Extension 列）:** language-server の行に拡張のフォルダ名を足した（`json-language-features`、`detachhead.basedpyright-1.40.2` など）。`roles.csv` は `Run, Role, RoleSource, Extension` ごとの合計。
+- **テスト:** `measure.tests.ps1` 134 通過 / 0 失敗（+9）。ほかの3本は変わらず。
+- **実機（upstream-default だけ）:** `-KeepData` で短く1回走らせ、`C:\b\p0\run\d1trial-run-1` を残した。`-CleanStale -WorkRoot C:/b/p0` は「refusing to delete」で終了コード 1、何も消えなかった。`-CleanStale -StaleFilter d1trial-*` は `d1trial-run-1` だけを消した。netaudit も 20 秒走って動いた。`C:\b\p0\run\` に残りは無い。ほかの環境は起動していない。
+
 ### 残った課題（再差し戻しの時点）
 
 - Python 拡張を台帳に入れるか（上）。入れるなら 0-4 の基準値の環境に Python 拡張を足してから測る。

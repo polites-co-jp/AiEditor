@@ -28,7 +28,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/measure.ps1 `
 | `-ProcessName` | `-Exe` のファイル名 | メインプロセスの名前（Code.exe など） |
 | `-DefaultsNote` | なし | 「変えた既定値」に添える一言 |
 | `-KeepData` | なし | 回ごとのデータを消さずに残す（警告を出し、`summary.json` の `RunDataLeftOver` に書く。本測定の前に `-CleanStale` で消す） |
-| `-CleanStale` / `-StaleFilter` | なし / `*` | `-WorkRoot` の直下に残った回のデータ（`-KeepData`、途中で止まった回、消せなかった回）を消す。**実行中のプロセスのコマンドラインに入っているフォルダは消さない**。`-EnvDir` なしで単独で使うと、エディタを起動せずに消して終わる（例 `-CleanStale -StaleFilter trial-*`）。`-CleanStale` なしでも、始める前に残りがあれば警告を出す。netaudit.ps1 も同じ |
+| `-CleanStale` / `-StaleFilter` | なし / `*` | **消してよい場所と対象に制限がある（D-1）**。`-WorkRoot` が `C:\b\p0\run`（またはその下）か、台本が作った印のファイル `.p0-run-root` があるフォルダでなければ、消さずに止まる（`-WorkRoot C:\b\p0` と書き誤っても `data\`・`vsix\`・`vscode-1.146.0\` は消えない）。印は、台本が新しく作った・空だった作業フォルダにだけ書く（中身のあるフォルダには書かない）。消す対象も、名前が `<ラベル>-run-<n>`・`<ラベル>-warmup-<n>`・`<ラベル>-netaudit` で、中に `user\` と `ext\` があるフォルダだけ。台本が回のデータを作るときも、この名前でなければ止まる。以下は消す動作: `-WorkRoot` の直下に残った回のデータ（`-KeepData`、途中で止まった回、消せなかった回）を消す。**実行中のプロセスのコマンドラインに入っているフォルダは消さない**。`-EnvDir` なしで単独で使うと、エディタを起動せずに消して終わる（例 `-CleanStale -StaleFilter trial-*`）。`-CleanStale` なしでも、始める前に残りがあれば警告を出す。netaudit.ps1 も同じ |
 | `-SkipTaskCheck` | なし | `.vscode/tasks.json` の folderOpen の確認を飛ばす（試し用） |
 
 ## 1回の流れ（docs/07 3.2 との対応）
@@ -68,6 +68,8 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/measure.ps1 `
 | utility-node のまま | 手がかりが無いもの（上の試しでは2つ） |
 
 優先は上から。`roles.csv`・`<回>-processes.csv`・netaudit の `samples.csv` に付け直した役割が入る。
+
+**Extension 列**: 役割が language-server のプロセスに、拡張のフォルダ名（コマンドラインの `extensions\<名前>\` か `ext\<名前>\` から。例 `json-language-features`、`detachhead.basedpyright-1.40.2`）を付ける。json と basedpyright が両方 language-server でも見分けられる。`roles.csv` は `Run, Role, RoleSource, Extension` ごと。それ以外の役割は空。
 
 **RoleSource 列（C-1）**: 役割の根拠を `<回>-processes.csv`・`roles.csv`・netaudit の `samples.csv` に残す。`commandline` = 名前とコマンドラインから（`--inspect-port=0` を含む）、`child` = 子プロセスから（agent-host、pty-host）、`inferred` = 推定（shared-process だけ）。`roles.csv` は `Run, Role, RoleSource` ごとの合計なので、推定の役割は `RoleSource = inferred` の行として見分けられる。`jsonServerMain`（拡張子なしで渡される）も language-server になる（B-6）。
 

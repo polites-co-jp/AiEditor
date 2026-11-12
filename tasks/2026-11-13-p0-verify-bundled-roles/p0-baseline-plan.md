@@ -1,15 +1,15 @@
 # 0-4 の本番の手順（本家の基準値と、参考の試験台）
 
-- 作成: 大岡越前守（2026-11-13）。この手順で使える状態であることは、`verification-log.md` の検証（4）で確かめた。
-- 根拠: docs/07 の2.5（本家を5回、参考に試験台を5回）、3.1（そろえる条件）、3.2（台本と集計。節目の計測）、3.4（合格の基準）
+- 作成: 大岡越前守（2026-11-13）。この手順で使える状態であることは、`verification-log.md` の検証（4）で確かめた。D-1 の直しの確認は `handoff-notes.md` の追記。
+- 根拠: docs/07 の2.5（本家を5回、参考に試験台を5回）、3.1（そろえる条件）、3.2（台本と集計。節目の計測）、3.4（合格の基準）、docs/user-decisions.md の「裁定（2026-11-13、0-4 の本番の前）」
 - 行うのはユーザー（節目の計測で、手で Claude Code のパネルに1文を送るため）。台本は `Read-Host` で止まるので、ユーザー自身の PowerShell の窓で走らせる。エージェントからは走らせない。
 
-## 0. 始める前に決めること
+## 0. 決めたこと（裁定 2026-11-13）
 
-| 決めること | 案 | 理由 |
-|---|---|---|
-| 節目の計測で送る「決まった1文」（docs/07 の3.2。docs に文が書かれていない） | （推奨）`こんにちは。一言だけ返事をしてください。` | 道具（ファイルの読み書き・コマンド）を使わせない短い文にする。毎回の応答の長さと処理が揃い、ワークスペースも変わらない |
-| Process Explorer の画面（docs/07 の3.2 の補い。合否には使わない） | （推奨）数える5回の後に、別の1回（数えない）で撮る | 数える回の途中で Process Explorer を開くと、窓が1つ増えて値が変わる |
+| 論点 | 裁定 |
+|---|---|
+| 節目の計測で Claude Code のパネルに送る「決まった1文」 | **「こんにちは。一言だけ返事をしてください。」**。以後の節目もこの文を使う |
+| Process Explorer の画面の写し（docs/07 の3.2 の補い。合否には使わない） | **数える5回の後に、数えない1回を足して撮る**（手順は5節の4） |
 
 ## 1. 前の準備（10分ほど）
 
@@ -19,7 +19,12 @@
    - 本家と試験台は、同じ状態で続けて測る。
 3. 電源の設定はそのまま（検証の時点は「バランス」）。途中で変えない。
 4. リポジトリの直下で、次を確かめる。
-   - `C:\b\p0\run\` が空であること（中身があれば、リーダーに知らせる。`-CleanStale` は使わない。理由は `verification-log.md` の D-1）。
+   - `C:\b\p0\run\` に回のデータのフォルダ（`<ラベル>-run-<n>` など）が無いこと。印のファイル `.p0-run-root` はあってよい。
+     - 残っていたら、ほかの計測が動いていないことを確かめてから、次で消す（D-1 の直しで、消すのは `C:\b\p0\run` の下の回のデータの名前と形を持つフォルダだけ。使用中のフォルダは消さない。検証で確かめた）。
+       ```
+       powershell -NoProfile -ExecutionPolicy Bypass -File scripts/measure.ps1 -CleanStale
+       ```
+     - `-WorkRoot` は付けない（既定の `C:\b\p0\run`）。
    - `tmp\ws` のコミットが `2385a2ff1ea22ceaa5a039500f3f88361eef2392` で、`.vscode\tasks.json` があること。
    - `C:\b\p0\data\upstream-default\` と `C:\b\p0\data\testbed-measure\` が 07:36〜07:38 に作り直したもので、`user\user-data\User\settings.json` に `basedpyright.importStrategy: "useBundled"` があること。
 5. 同じ PowerShell の窓を、本家と試験台の両方で使う（PATH を揃える。basedpyright は PATH の Python 3.14 を使う）。
@@ -39,7 +44,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/measure.ps1 -EnvDir 
 2. 30秒後に、TS のファイルと Python のファイルが10秒あけて開く（自動）。ターミナルが1つ開く（tasks.json）。
 3. 窓に `MILESTONE: send the fixed sentence ...` と出て止まる。**ここからがユーザーの手の操作。**
    1. Claude Code のパネルを開く（活動バーか、エディタの右上の Claude のアイコン）。
-   2. 決まった1文を貼って送る。
+   2. **「こんにちは。一言だけ返事をしてください。」** を貼って送る。
    3. 応答が出終わるのを待つ。
    4. PowerShell の窓に戻って Enter を押す。
    - パネルがログインや初回の案内を求めたら、その回は Ctrl+C で止め、リーダーに知らせる（普段のログインが使われる見込みだが、未確認）。
@@ -53,7 +58,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/measure.ps1 -EnvDir 
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/measure.ps1 -EnvDir C:/b/p0/data/testbed-measure -Label phase0-testbed -Milestone
 ```
 
-- 流れは2節と同じ。実行ファイルは VSCodium（`C:\b\p0\testbed\VSCodium.exe`、環境の記録から）。
+- 流れは2節と同じ（送る文も同じ）。実行ファイルは VSCodium（`C:\b\p0\testbed\VSCodium.exe`、環境の記録から）。
 - **試験台では台本をまだ試していない**（検証の間、ユーザーの手の確かめのため起動を控えた）。捨てる1回が終わったときに、窓の `processes` が 10 以上、`private` が数百 MiB 以上あることを見る。1桁や `no editor process found` なら、Ctrl+C で止めてリーダーに知らせる。
 
 ## 4. 所要時間の見込み
@@ -67,24 +72,25 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/measure.ps1 -EnvDir 
 | 集める・止める・消す | 20〜40秒 | |
 | 計 | 約5〜6分 | 約30〜36分 |
 
-本家と試験台で約60〜75分。準備と確認を入れて **1時間半ほど**。途中で PC を使わない。
+本家と試験台で約60〜75分。Process Explorer の1回（約5分）と、準備・確認を入れて **1時間半ほど**。途中で PC を使わない。
 
 ## 5. 終わった後（リーダー・大岡越前守）
 
 1. 出力（`runs.csv`・`summary.md`・`roles.csv`・`<回>-processes.csv`・`pc-state.json`・`defaults-changed.md`）がそろっていることを見る。`summary.json` の `DailyArgvTouched`・`RunDataLeftOver` が空であること。
-2. 各回に ts-server と、basedpyright の language-server（コマンドラインに `detachhead.basedpyright-1.40.2\dist\server.js`）があることを `<回>-processes.csv` で見る。無い回があれば、その回は条件が揃っていないので、記録に書いて判断を仰ぐ。
+2. 各回に ts-server と、basedpyright の language-server があることを `roles.csv` で見る（`Extension` の列が `detachhead.basedpyright-1.40.2` の行）。無い回があれば、その回は条件が揃っていないので、記録に書いて判断を仰ぐ。
 3. 5回の中央値と範囲（主は `PrivateExclClaude`）を `records/measurements/<日付>-phase0-upstream/summary.md` から読む。試験台の値は参考として並べる（合否には使わない）。
-4. Process Explorer の画面: 0節で決めたとおり、別の1回で撮る。撮るなら、出力を分けて数えない形にする。
-
-```
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/measure.ps1 -EnvDir C:/b/p0/data/upstream-default -Label phase0-upstream-pe -Runs 1 -Warmup 0 -Milestone
-```
-
-   `MILESTONE` で止まったら1文を送り、ヘルプ → Process Explorer を開いて画面を撮ってから Enter を押す。画像は `records/measurements/<日付>-phase0-upstream/` に置く。
+4. Process Explorer の画面（裁定: 数える5回の後に、数えない1回を足して撮る）。本家の5回が終わった後に、続けて次を走らせる。出力は数える回と分ける。
+   ```
+   powershell -NoProfile -ExecutionPolicy Bypass -File scripts/measure.ps1 -EnvDir C:/b/p0/data/upstream-default -Label phase0-upstream-pe -Runs 1 -Warmup 0 -Milestone
+   ```
+   1. `MILESTONE` で止まったら、決まった1文を送り、応答を待つ。
+   2. メニューの「ヘルプ」→「Process Explorer を開く」を選び、窓を撮る。
+   3. Process Explorer の窓を閉じてから Enter を押す。
+   4. 画像は `records/measurements/<日付>-phase0-upstream/process-explorer.png` に置く。この回の値（`<日付>-phase0-upstream-pe/`）は数えない。
 5. 0-5（10分の監査）は別の手順。この手順には含めない。
 
 ## 6. 止めるとき
 
 - 途中で Ctrl+C で止めると、その回のエディタが残ることがある。そのときは、ユーザーがその窓を閉じる。`p0-stop.ps1` は使わない（手の確かめのエディタまで止めないため）。
-- 止めた回のデータは `C:\b\p0\run\` に残る。リーダーに知らせる。消し方は D-1 が直るまで、リーダーが決める。
+- 止めた回のデータは `C:\b\p0\run\` に残る。ほかの計測が動いていないときに、`powershell -NoProfile -ExecutionPolicy Bypass -File scripts/measure.ps1 -CleanStale` で消す（1節の4と同じ。`-WorkRoot` は付けない）。
 - 出力の場所に `runs.csv` が残っているため、やり直すときは `-Force` を付けるか、別の `-Label` にする。

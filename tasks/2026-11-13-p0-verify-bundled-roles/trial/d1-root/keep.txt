@@ -1,0 +1,1 @@
+a plain file in the root: must stay

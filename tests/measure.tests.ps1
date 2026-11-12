@@ -536,21 +536,56 @@ Test-Case 'role source: every row of the CSV carries RoleSource; inferred rows a
     Assert-Equal $inf[0].Role 'shared-process' ''
 }
 
+# ---- extension of a language server (basedpyright vs json both are language-server) ----
+Test-Case 'extension folder: builtin and installed extensions, node_modules and empty input' {
+    Assert-Equal (Get-ExtensionFolder 'C:\Code.exe c:\x\69047191fc\resources\app\extensions\json-language-features\server\dist\node\jsonServerMain --node-ipc') 'json-language-features' 'builtin json'
+    Assert-Equal (Get-ExtensionFolder '"node.exe" c:\b\p0\run\a-run-1\ext\detachhead.basedpyright-1.40.2\dist\server.js --stdio') 'detachhead.basedpyright-1.40.2' 'installed'
+    Assert-Equal (Get-ExtensionFolder 'node.exe C:\x\resources\app\extensions\node_modules\typescript\lib\tsserver.js') '' 'node_modules is not an extension'
+    Assert-Equal (Get-ExtensionFolder '') '' ''
+    Assert-Equal (Get-ExtensionFolder $null) '' ''
+}
+Test-Case 'extension folder: the CSV rows tell the two language servers apart' {
+    $t = @(
+        (New-Proc 1 0 'Code.exe' '"C:\Code.exe" --user-data-dir "C:\u\user-data" --extensions-dir "C:\e" "E:\ws"'),
+        (New-Proc 2 1 'Code.exe' 'C:\Code.exe c:\x\resources\app\extensions\json-language-features\server\dist\node\jsonServerMain --node-ipc'),
+        (New-Proc 3 1 'node.exe' '"node.exe" c:\e\detachhead.basedpyright-1.40.2\ext\server.js'),
+        (New-Proc 4 1 'node.exe' '"node.exe" c:\b\ext\detachhead.basedpyright-1.40.2\dist\languageserver.js --stdio')
+    )
+    $rows = New-ProcessRows -Tree $t -RunName 'run-1'
+    $json = $rows | Where-Object { $_.ProcessId -eq 2 }
+    $py = $rows | Where-Object { $_.ProcessId -eq 4 }
+    Assert-Equal $json.Role 'language-server' ''
+    Assert-Equal $json.Extension 'json-language-features' ''
+    Assert-Equal $py.Role 'language-server' ''
+    Assert-Equal $py.Extension 'detachhead.basedpyright-1.40.2' ''
+    $main = $rows | Where-Object { $_.ProcessId -eq 1 }
+    Assert-Equal $main.Extension '' 'only language servers get an extension'
+}
+
 # ---- stale run data (-KeepData, half-stopped runs) -----------------------------
 $tmp4 = Join-Path ([IO.Path]::GetTempPath()) ("measure-tests4-" + [guid]::NewGuid().ToString('N'))
 $root4 = Join-Path $tmp4 'run'
-foreach ($n in @('trial-a-run-1', 'trial-b-run-1', 'live-run-1', 'other-1')) { New-Item -ItemType Directory -Path (Join-Path $root4 "$n\user") -Force | Out-Null }
+# run dirs (name <label>-run-<n> and user\ + ext\) and things that must never be touched
+foreach ($n in @('trial-a-run-1', 'trial-b-run-1', 'live-run-1')) { New-Item -ItemType Directory -Path (Join-Path $root4 "$n\user"), (Join-Path $root4 "$n\ext") -Force | Out-Null }
+New-Item -ItemType Directory -Path (Join-Path $root4 'other-1\user'), (Join-Path $root4 'other-1\ext') -Force | Out-Null      # wrong name
+New-Item -ItemType Directory -Path (Join-Path $root4 'data\user'), (Join-Path $root4 'data\ext') -Force | Out-Null            # wrong name
+New-Item -ItemType Directory -Path (Join-Path $root4 'noext-run-1\user') -Force | Out-Null                                    # wrong shape
 Set-Content -LiteralPath (Join-Path $root4 'trial-a-run-1\user\f.txt') -Value 'x'
 try {
-    Test-Case 'stale dirs: all direct subdirectories that no process refers to are found' {
+    Test-Case 'stale dirs: only dirs with a run dir name AND shape are found (D-1)' {
         $f = @(Find-StaleRunDirs -WorkRoot $root4 -Processes @())
-        Assert-Equal $f.Count 4 ''
+        Assert-Equal $f.Count 3 (($f | Out-String))
+        Assert-True (-not (@($f | Where-Object { $_ -like '*other-1' -or $_ -like '*\data' -or $_ -like '*noext-run-1' }).Count)) 'wrong name / shape are not listed'
+    }
+    Test-Case 'run dir name: the three forms are accepted, others are not' {
+        foreach ($ok in @('x-run-1', 'x-warmup-2', 'x-netaudit', 'a-b-run-10')) { Assert-True (Test-RunDirName $ok) $ok }
+        foreach ($bad in @('data', 'vsix', 'vscode-1.146.0', 'x-run', 'x-run-', 'run-1', 'x-runs-1', 'x-netaudit2', '')) { Assert-True (-not (Test-RunDirName $bad)) "bad: $bad" }
     }
     Test-Case 'stale dirs: a dir whose path is in a running command line is NOT stale' {
         $live = Join-Path $root4 'live-run-1'
         $ps = @((New-Proc 9 0 'Code.exe' ('"C:\Code.exe" --user-data-dir "' + $live + '\user\user-data"')))
         $f = @(Find-StaleRunDirs -WorkRoot $root4 -Processes $ps)
-        Assert-Equal $f.Count 3 ''
+        Assert-Equal $f.Count 2 ''
         Assert-True (-not (@($f | Where-Object { $_ -like '*live-run-1' }).Count)) 'live dir not listed'
     }
     Test-Case 'stale dirs: the name filter limits the list' {
@@ -562,18 +597,70 @@ try {
         if ($env:APPDATA) { Assert-Throws { Find-StaleRunDirs -WorkRoot (Join-Path $env:APPDATA 'Code') -Processes @() } 'APPDATA' }
     }
     Test-Case 'remove run dir: removes a dir with files and returns true' {
-        $d = Join-Path $root4 'other-1'
+        $d = Join-Path $tmp4 'scratch-dir'
+        New-Item -ItemType Directory -Path (Join-Path $d 'sub') -Force | Out-Null
+        Set-Content -LiteralPath (Join-Path $d 'sub\f.txt') -Value 'x'
         Assert-True (Remove-RunDataDir -Path $d -Tries 2) ''
         Assert-True (-not (Test-Path -LiteralPath $d)) ''
     }
     $ms4 = Join-Path $repo 'scripts\measure.ps1'
-    Test-Case '-File start: -CleanStale alone removes only the matching stale dirs and exits 0 (no editor started)' {
+    # D-1: where -CleanStale may delete
+    Test-Case 'cleanable root: C:\b\p0\run and below are allowed; C:\b\p0, C:\b, C:\, a look-alike are not' {
+        Assert-True (Test-CleanableRoot 'C:\b\p0\run') 'run'
+        Assert-True (Test-CleanableRoot 'C:\b\p0\run\sub') 'below run'
+        Assert-True (Test-CleanableRoot 'c:\B\P0\RUN') 'case'
+        Assert-True (-not (Test-CleanableRoot 'C:\b\p0')) 'C:\b\p0'
+        Assert-True (-not (Test-CleanableRoot 'C:\b\p0\')) 'C:\b\p0\'
+        Assert-True (-not (Test-CleanableRoot 'C:\b')) 'C:\b'
+        Assert-True (-not (Test-CleanableRoot 'C:\')) 'C:\'
+        Assert-True (-not (Test-CleanableRoot 'C:\b\p0\runner')) 'look-alike prefix'
+        Assert-True (-not (Test-CleanableRoot 'C:\b\p0\data')) 'data'
+    }
+    Test-Case 'cleanable root: an unmarked folder outside C:\b\p0\run is refused, the marker allows it' {
+        Assert-True (-not (Test-CleanableRoot $root4)) 'no marker'
+        Assert-Throws { Clear-StaleRunDirs -WorkRoot $root4 -Filter 'trial-*' -Delete $true } 'delete refused'
+        Assert-True (Test-Path -LiteralPath (Join-Path $root4 'trial-a-run-1')) 'nothing was deleted'
+        Assert-Equal @(Clear-StaleRunDirs -WorkRoot $root4 -Filter 'trial-*' -Delete $false).Count 2 'listing is allowed'
+    }
+    Test-Case 'cleanable root: -WorkRoot C:\b\p0 stops -CleanStale (a mistyped path), exit code non-zero' {
+        $ErrorActionPreference = 'Continue'
+        $o = (& powershell.exe -NoProfile -ExecutionPolicy Bypass -File $ms4 -CleanStale -WorkRoot 'C:\b\p0' 2>&1 | Out-String)
+        Assert-True ($LASTEXITCODE -ne 0) 'must fail'
+        Assert-True ($o -match 'refusing') $o
+        if (Test-Path 'C:\b\p0\data') { Assert-True $true 'data still there' }
+    }
+    Test-Case '-File start: -CleanStale on an unmarked folder stops with exit code non-zero and deletes nothing' {
         $ErrorActionPreference = 'Continue'
         $o = (& powershell.exe -NoProfile -ExecutionPolicy Bypass -File $ms4 -CleanStale -WorkRoot $root4 -StaleFilter 'trial-*' 2>&1 | Out-String)
+        Assert-True ($LASTEXITCODE -ne 0) 'must fail'
+        Assert-True (Test-Path -LiteralPath (Join-Path $root4 'trial-a-run-1')) 'still there'
+    }
+    Set-Content -LiteralPath (Join-Path $root4 $script:P0RunRootMarker) -Value 'marker' -Encoding ASCII
+    Test-Case '-File start: with the marker, -CleanStale removes only matching run dirs; other folders stay (no editor started)' {
+        $ErrorActionPreference = 'Continue'
+        $o = (& powershell.exe -NoProfile -ExecutionPolicy Bypass -File $ms4 -CleanStale -WorkRoot $root4 -StaleFilter '*' 2>&1 | Out-String)
         Assert-Equal $LASTEXITCODE 0 $o
-        Assert-True (-not (Test-Path -LiteralPath (Join-Path $root4 'trial-a-run-1'))) 'trial-a removed'
-        Assert-True (-not (Test-Path -LiteralPath (Join-Path $root4 'trial-b-run-1'))) 'trial-b removed'
-        Assert-True (Test-Path -LiteralPath (Join-Path $root4 'live-run-1')) 'non-matching dir stays'
+        foreach ($gone in @('trial-a-run-1', 'trial-b-run-1', 'live-run-1')) { Assert-True (-not (Test-Path -LiteralPath (Join-Path $root4 $gone))) "$gone removed" }
+        foreach ($stay in @('other-1', 'data', 'noext-run-1')) { Assert-True (Test-Path -LiteralPath (Join-Path $root4 $stay)) "$stay stays (wrong name or shape)" }
+        Assert-True (Test-Path -LiteralPath (Join-Path $root4 $script:P0RunRootMarker)) 'marker stays'
+    }
+    Test-Case 'work root marker: written into a new or empty work root, never into a non-empty folder' {
+        $envx = Join-Path $tmp4 'envx'
+        New-Item -ItemType Directory -Path (Join-Path $envx 'user'), (Join-Path $envx 'ext') -Force | Out-Null
+        Set-Content -LiteralPath (Join-Path $envx 'user\a.txt') -Value 'a'
+        $newRoot = Join-Path $tmp4 'newroot'
+        $d = New-RunDataDir -EnvDir $envx -WorkRoot $newRoot -Name 'x-run-1'
+        Assert-True (Test-Path -LiteralPath (Join-Path $newRoot $script:P0RunRootMarker)) 'marker in a new root'
+        Assert-True (Test-Path -LiteralPath (Join-Path $d.User 'a.txt')) 'template copied'
+        $busy = Join-Path $tmp4 'busyroot'
+        New-Item -ItemType Directory -Path (Join-Path $busy 'precious') -Force | Out-Null
+        [void](New-RunDataDir -EnvDir $envx -WorkRoot $busy -Name 'x-run-1')
+        Assert-True (-not (Test-Path -LiteralPath (Join-Path $busy $script:P0RunRootMarker))) 'no marker in a non-empty folder'
+        Assert-True (-not (Test-CleanableRoot $busy)) 'so it can not be cleaned'
+    }
+    Test-Case 'run dir name check: New-RunDataDir refuses other names' {
+        $envx = Join-Path $tmp4 'envx'
+        Assert-Throws { New-RunDataDir -EnvDir $envx -WorkRoot (Join-Path $tmp4 'r2') -Name 'data' } 'name data'
     }
 }
 finally { Remove-Item -LiteralPath $tmp4 -Recurse -Force -ErrorAction SilentlyContinue }

@@ -1,0 +1,30 @@
+﻿{
+    "CapturedAt":  "2026-11-13T07:50:46.7176200+09:00",
+    "OS":  "Microsoft Windows 11 Pro 10.0.26300",
+    "TotalMemoryMiB":  64633,
+    "FreeMemoryMiB":  23350,
+    "LastBoot":  "2026-11-06T14:49:05.5000000+09:00",
+    "Cpu":  "AMD Ryzen 9 7950X 16-Core Processor            ",
+    "Cores":  16,
+    "LogicalProcessors":  32,
+    "PowerPlan":  "電源設定の GUID: 381b4222-f694-41f0-9685-ff5bb260df2e  (バランス)",
+    "Battery":  "none",
+    "RunningProcessCount":  541,
+    "TopProcessesByWorkingSet":  [
+                                     "vmmemWSL (pid 67312) 5,493 MiB",
+                                     "Memory Compression (pid 5148) 4,112 MiB",
+                                     "brave (pid 63748) 1,041 MiB",
+                                     "brave (pid 75244) 676 MiB",
+                                     "Cursor (pid 49820) 663 MiB",
+                                     "node (pid 19352) 649 MiB",
+                                     "Cursor (pid 77356) 548 MiB",
+                                     "Cursor (pid 48600) 507 MiB",
+                                     "claude (pid 16924) 493 MiB",
+                                     "explorer (pid 78452) 472 MiB",
+                                     "ekrn (pid 4172) 472 MiB",
+                                     "Cursor (pid 27824) 472 MiB",
+                                     "Cursor (pid 20184) 456 MiB",
+                                     "brave (pid 25604) 449 MiB",
+                                     "Cursor (pid 60704) 433 MiB"
+                                 ]
+}

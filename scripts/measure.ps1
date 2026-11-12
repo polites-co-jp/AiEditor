@@ -248,6 +248,7 @@ function New-ProcessRows {
             Name            = $p.Name
             Role            = $roleMap[[int]$p.ProcessId]
             RoleSource      = $sources[[int]$p.ProcessId]
+            Extension       = $(if ($roleMap[[int]$p.ProcessId] -eq 'language-server') { Get-ExtensionFolder -CommandLine $p.CommandLine } else { '' })
             InClaudeSubtree = $s.ClaudeIds.ContainsKey([int]$p.ProcessId)
             PrivateBytes    = [double]$p.PrivatePageCount
             WorkingSetBytes = [double]$p.WorkingSetSize
@@ -424,11 +425,50 @@ function Get-ProcessSnapshot {
         Select-Object ProcessId, ParentProcessId, Name, CommandLine, PrivatePageCount, WorkingSetSize, CreationDate
 }
 
+$script:P0DefaultRunRoot = 'C:\b\p0\run'
+$script:P0RunRootMarker = '.p0-run-root'
+
+function Test-RunDirName {
+    <# Names this script gives to run dirs: <label>-run-<n>, <label>-warmup-<n>, <label>-netaudit. #>
+    param([string]$Name)
+    return [bool]($Name -match '^.+-(run-\d+|warmup-\d+|netaudit)$')
+}
+
+function Test-RunDirShape {
+    <# A run dir has user\ and ext\ (copied from the env template). #>
+    param([string]$Path)
+    return ((Test-Path -LiteralPath (Join-Path $Path 'user') -PathType Container) -and (Test-Path -LiteralPath (Join-Path $Path 'ext') -PathType Container))
+}
+
+function Test-CleanableRoot {
+    <#
+      D-1: only a work root this script owns may be cleaned: C:\b\p0\run (or below it), or a
+      folder carrying the marker file .p0-run-root (written by New-RunDataDir into a work root
+      it created or found empty). C:\b\p0 itself, a drive root, etc. are refused.
+    #>
+    param([string]$WorkRoot)
+    $full = [IO.Path]::GetFullPath($WorkRoot).TrimEnd('\')
+    $def = $script:P0DefaultRunRoot
+    if ($full -ieq $def -or $full.StartsWith($def + '\', [StringComparison]::OrdinalIgnoreCase)) { return $true }
+    return (Test-Path -LiteralPath (Join-Path $full $script:P0RunRootMarker))
+}
+
+function Get-ExtensionFolder {
+    <# Folder name of the extension a language server belongs to, from its command line ('' if unknown). #>
+    param([string]$CommandLine)
+    if (-not $CommandLine) { return '' }
+    $m = [regex]::Match($CommandLine, '(?i)[\\/](?:extensions|ext)[\\/]([^\\/"\s]+)[\\/]')
+    if ($m.Success -and $m.Groups[1].Value -ine 'node_modules') { return $m.Groups[1].Value }
+    return ''
+}
+
 function Find-StaleRunDirs {
     <#
       Direct subdirectories of WorkRoot (matching Filter) that no running process refers to
       (no command line contains the path): data of runs that were kept (-KeepData), stopped
-      half way, or could not be removed. Reparse points are never listed.
+      half way, or could not be removed. Only dirs with a run dir NAME (Test-RunDirName) and
+      SHAPE (Test-RunDirShape) are listed, so nothing else in the work root can be touched.
+      Reparse points are never listed.
     #>
     param([string]$WorkRoot, $Processes, [string]$Filter = '*')
     $root = Assert-SafeDataPath $WorkRoot
@@ -436,6 +476,8 @@ function Find-StaleRunDirs {
     $res = @()
     foreach ($d in @(Get-ChildItem -LiteralPath $root -Directory -Filter $Filter -ErrorAction SilentlyContinue)) {
         if ($d.Attributes -band [IO.FileAttributes]::ReparsePoint) { continue }
+        if (-not (Test-RunDirName $d.Name)) { continue }
+        if (-not (Test-RunDirShape $d.FullName)) { continue }
         $busy = $false
         foreach ($p in $Processes) {
             $cl = $p.CommandLine
@@ -460,6 +502,9 @@ function Remove-RunDataDir {
 function Clear-StaleRunDirs {
     <# Lists (Delete = $false) or removes (Delete = $true) the stale run dirs. Returns the paths found. #>
     param([string]$WorkRoot, [string]$Filter = '*', [bool]$Delete = $false)
+    if ($Delete -and -not (Test-CleanableRoot $WorkRoot)) {
+        throw "refusing to delete under $WorkRoot : only C:\b\p0\run (or below it) or a work root with the marker file $($script:P0RunRootMarker) may be cleaned"
+    }
     $found = @(Find-StaleRunDirs -WorkRoot $WorkRoot -Processes @(Get-ProcessSnapshot) -Filter $Filter)
     foreach ($f in $found) {
         if ($Delete) {
@@ -479,6 +524,14 @@ function New-RunDataDir {
     if (-not (Test-Path -LiteralPath $tplExt)) { throw "env template has no ext dir: $tplExt" }
     $workFull = Assert-SafeDataPath $WorkRoot
     [void](Assert-SafeDataPath $EnvDir)
+    if (-not (Test-RunDirName $Name)) { throw "run dir name must look like <label>-run-<n>, <label>-warmup-<n> or <label>-netaudit: $Name" }
+    # mark a work root that is new or empty as ours (never a non-empty folder such as C:\b\p0)
+    $existed = Test-Path -LiteralPath $workFull
+    $isEmpty = $existed -and -not (Get-ChildItem -LiteralPath $workFull -Force -ErrorAction SilentlyContinue | Select-Object -First 1)
+    if (-not $existed) { New-Item -ItemType Directory -Force -Path $workFull | Out-Null }
+    if (-not $existed -or $isEmpty) {
+        Set-Content -LiteralPath (Join-Path $workFull $script:P0RunRootMarker) -Value 'work root of measure.ps1 / netaudit.ps1; -CleanStale may delete run dirs here' -Encoding ASCII
+    }
     $root = Join-Path $workFull $Name
     if (Test-Path -LiteralPath $root) { Remove-Item -LiteralPath $root -Recurse -Force }
     $u = Join-Path $root 'user'
@@ -873,10 +926,10 @@ function Invoke-Measure {
     # roles table (sum per role, per run) and summary
     $allProc | Export-Csv -LiteralPath (Join-Path $OutDir 'processes-all.csv') -NoTypeInformation -Encoding UTF8
     $roleRows = @()
-    foreach ($g in ($allProc | Group-Object Run, Role, RoleSource)) {
+    foreach ($g in ($allProc | Group-Object Run, Role, RoleSource, Extension)) {
         $first = $g.Group[0]
         $roleRows += [pscustomobject][ordered]@{
-            Run = $first.Run; Role = $first.Role; RoleSource = $first.RoleSource; Count = $g.Count
+            Run = $first.Run; Role = $first.Role; RoleSource = $first.RoleSource; Extension = $first.Extension; Count = $g.Count
             PrivateBytes = (Get-PropertySum $g.Group 'PrivateBytes')
             WorkingSetBytes = (Get-PropertySum $g.Group 'WorkingSetBytes')
         }

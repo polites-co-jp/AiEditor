@@ -1,0 +1,1 @@
+decoy with a run name but no ext\ (wrong shape): must stay

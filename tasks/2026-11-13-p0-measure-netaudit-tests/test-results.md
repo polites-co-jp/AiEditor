@@ -2,7 +2,9 @@
 
 ## PowerShell（Windows PowerShell 5.1。実機なしで計算を確かめる）
 
-C-1 の後の最新: `tests/measure.tests.ps1` 125 通過 / 0 失敗（+11: RoleSource 5件、残った回のデータの検出・消去 6件。`-File` で `-CleanStale` を単独で走らせて、合う名前のフォルダだけが消え、エディタが起動しないことも含む）。ほかの3本は変わらず（netaudit 67、lock 115、sublime-keys 50）。
+D-1 の後の最新: `tests/measure.tests.ps1` 134 通過 / 0 失敗（+9）。ほかの3本は変わらず（netaudit 67、lock 115、sublime-keys 50）。足したテスト: 消してよい作業フォルダの境界（`C:\b\p0\run` と下は可、`C:\b\p0`・`C:\b`・`C:\`・`C:\b\p0\runner`・`C:\b\p0\data` は不可、印のあるフォルダは可）、`-WorkRoot C:\b\p0` を渡すと止まり終了コードが 0 でない、印のないフォルダは止まって何も消えない、印があれば名前と形の合う回のデータだけが消え `data`・名前の違うフォルダ・`user` だけで `ext` のないフォルダは残る、印は新しい・空の作業フォルダにだけ書かれる、回のデータの名前の検査、拡張のフォルダ名（Extension 列）。
+
+C-1 の後: `tests/measure.tests.ps1` 125 通過 / 0 失敗（+11: RoleSource 5件、残った回のデータの検出・消去 6件。`-File` で `-CleanStale` を単独で走らせて、合う名前のフォルダだけが消え、エディタが起動しないことも含む）。ほかの3本は変わらず（netaudit 67、lock 115、sublime-keys 50）。
 
 再差し戻し後の（B-5・役割・B-6・B-7・O-3 を直した後）:
 
