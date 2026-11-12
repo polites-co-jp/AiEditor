@@ -1,0 +1,18 @@
+﻿{
+    "Meta":  {
+                 "Label":  "trial-n",
+                 "Exe":  "tests/fixtures/fake-editor.cmd",
+                 "ExeVersion":  null,
+                 "EnvDir":  "tasks/2026-11-13-p0-measure-netaudit-tests/trial/env",
+                 "DurationSeconds":  14,
+                 "IntervalSeconds":  2,
+                 "Samples":  7,
+                 "StartedAt":  "2026-11-13T05:17:38.3906593+09:00",
+                 "Allowlist":  "tests/fixtures/network-allowlist.example.json",
+                 "AllowlistMissing":  false,
+                 "Previous":  ""
+             },
+    "Destinations":  [
+
+                     ]
+}

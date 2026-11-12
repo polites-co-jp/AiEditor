@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "updated": "2026-11-13",
+  "note": "EXAMPLE used only as test material. The real list is records/network-allowlist.json (made at 0-5).",
+  "allow": [
+    { "host": "api.notion.com", "ports": [443], "reason": "Notion sync (docs/05)" },
+    { "host": "api.anthropic.com", "ports": [443], "processes": ["claude.exe"], "reason": "Claude Code CLI" },
+    { "host": "*.anthropic.com", "ports": [443], "processes": ["claude.exe"], "reason": "Claude Code CLI (other hosts)" },
+    { "host": "*.claude.ai", "reason": "Claude Code login / downloads" },
+    { "host": "198.51.100.7", "reason": "example literal IP (documentation range)" }
+  ]
+}

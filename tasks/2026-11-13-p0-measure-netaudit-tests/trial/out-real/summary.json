@@ -1,0 +1,91 @@
+﻿{
+    "DailyArgvTouched":  [
+
+                         ],
+    "DailyArgvAfter":  [
+                           {
+                               "Path":  "C:\\Users\\kou_z\\.vscode\\argv.json",
+                               "Exists":  false,
+                               "LastWriteUtc":  null
+                           },
+                           {
+                               "Path":  "C:\\Users\\kou_z\\.vscode-oss\\argv.json",
+                               "Exists":  false,
+                               "LastWriteUtc":  null
+                           },
+                           {
+                               "Path":  "C:\\Users\\kou_z\\.shuko\\argv.json",
+                               "Exists":  false,
+                               "LastWriteUtc":  null
+                           }
+                       ],
+    "Label":  "trial-real",
+    "Exe":  "C:\\b\\p0\\vscode-1.146.0\\Code.exe",
+    "ExeVersion":  "1.146.0",
+    "EnvDir":  "C:/b/p0/data/upstream-default",
+    "Workspace":  {
+                      "Path":  "E:/develop/self/Team/projects/ai-editor/tasks/2026-11-13-p0-measure-netaudit-tests/trial/ws",
+                      "Commit":  "d12a7cce644df56884f37a0edb04a5280cfe5875",
+                      "Dirty":  true
+                  },
+    "OpenFiles":  [
+                      "a.ts,b.py"
+                  ],
+    "Warmup":  0,
+    "Runs":  1,
+    "Milestone":  false,
+    "LaunchWaitSeconds":  20,
+    "SettleSeconds":  25,
+    "StopWaitSeconds":  5,
+    "PrimaryMetric":  "PrivateExclClaude",
+    "Metrics":  {
+                    "PrivateExclClaude":  {
+                                              "Values":  [
+                                                             1382490112
+                                                         ],
+                                              "Stats":  {
+                                                            "Count":  1,
+                                                            "Median":  1382490112,
+                                                            "Min":  1382490112,
+                                                            "Max":  1382490112,
+                                                            "Range":  0
+                                                        }
+                                          },
+                    "PrivateInclClaude":  {
+                                              "Values":  [
+                                                             1382490112
+                                                         ],
+                                              "Stats":  {
+                                                            "Count":  1,
+                                                            "Median":  1382490112,
+                                                            "Min":  1382490112,
+                                                            "Max":  1382490112,
+                                                            "Range":  0
+                                                        }
+                                          },
+                    "WorkingSetExclClaude":  {
+                                                 "Values":  [
+                                                                1730322432
+                                                            ],
+                                                 "Stats":  {
+                                                               "Count":  1,
+                                                               "Median":  1730322432,
+                                                               "Min":  1730322432,
+                                                               "Max":  1730322432,
+                                                               "Range":  0
+                                                           }
+                                             },
+                    "WorkingSetInclClaude":  {
+                                                 "Values":  [
+                                                                1730322432
+                                                            ],
+                                                 "Stats":  {
+                                                               "Count":  1,
+                                                               "Median":  1730322432,
+                                                               "Min":  1730322432,
+                                                               "Max":  1730322432,
+                                                               "Range":  0
+                                                           }
+                                             }
+                }
+}

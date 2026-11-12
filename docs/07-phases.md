@@ -135,7 +135,7 @@
    - Phase 0 で分かった事実（2026-11-13）: `argv.json` は `--user-data-dir` の下ではなく、普段使いの `%USERPROFILE%\.vscode\argv.json`（VSCodium は `~\.vscode-oss\`）から読まれ、無ければ作られる。そこで、環境ごとの `user` フォルダを環境変数 `VSCODE_PORTABLE` に渡して起動する（ユーザーのデータは `<VSCODE_PORTABLE>\user-data` に固定され、`--user-data-dir` より優先される）。普段使いの `argv.json` が作られていないことを、計測の前後で確かめる。
    - 子のプロセスから `ELECTRON_RUN_AS_NODE`・`ELECTRON_NO_ATTACH_CONSOLE`・`VSCODE_*`（`VSCODE_PORTABLE` を除く）を外す。Claude Code から起動した環境には `ELECTRON_RUN_AS_NODE=1` が入っていて、そのままでは Code.exe が終了コード 9 で終わる。
    - 台本 `scripts/measure.ps1`、環境のひな形は `scripts/p0-env.ps1` が作る `C:\b\p0\data\<名前>\`。
-2. 30秒待ち、CLI（`-r`）で決まった2つのファイル（TS と Python）を開く。
+2. 30秒待ち、CLI（`-r`）で決まった2つのファイル（TS と Python）を開く。1回の `-r` で2つを渡すと背景のタブの言語が有効にならない（2026-11-13 の試しで、Python の `onLanguage` が来なかった）ので、1つずつ10秒あけて開く。
 3. ワークスペースの `.vscode/tasks.json` に、フォルダを開いたときに動くタスク（`"runOptions": {"runOn": "folderOpen"}`）を置き、ターミナルを1つ開かせる。
 4. 120秒待ってから測る。
 5. 起動した実行ファイルのプロセスとその子孫を、`Get-CimInstance Win32_Process`（`ProcessId`、`ParentProcessId`、`Name`、`CommandLine`、`PrivatePageCount`、`WorkingSetSize`）で集める。

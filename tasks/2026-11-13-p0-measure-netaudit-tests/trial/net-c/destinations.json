@@ -1,0 +1,19 @@
+﻿{
+    "Meta":  {
+                 "Label":  "trial-n3",
+                 "Exe":  "tests/fixtures/fake-editor.cmd",
+                 "ExeVersion":  null,
+                 "EnvDir":  "tasks/2026-11-13-p0-measure-netaudit-tests/trial/env",
+                 "DurationSeconds":  6,
+                 "IntervalSeconds":  2,
+                 "Samples":  3,
+                 "StartedAt":  "2026-11-13T05:23:51.3477823+09:00",
+                 "DnsEntries":  0,
+                 "Allowlist":  "E:\\develop\\self\\Team\\projects\\ai-editor\\records\\network-allowlist.json",
+                 "AllowlistMissing":  true,
+                 "Previous":  ""
+             },
+    "Destinations":  [
+
+                     ]
+}

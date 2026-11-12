@@ -1,0 +1,33 @@
+﻿{
+    "Meta":  {
+                 "Label":  "trial-n2",
+                 "Exe":  "tests/fixtures/fake-net-editor.cmd",
+                 "ExeVersion":  null,
+                 "EnvDir":  "tasks/2026-11-13-p0-measure-netaudit-tests/trial/env",
+                 "DurationSeconds":  24,
+                 "IntervalSeconds":  2,
+                 "Samples":  12,
+                 "StartedAt":  "2026-11-13T05:18:25.6451781+09:00",
+                 "Allowlist":  "tests/fixtures/network-allowlist.example.json",
+                 "AllowlistMissing":  false,
+                 "Previous":  "tasks/2026-11-13-p0-measure-netaudit-tests/trial/net-a"
+             },
+    "Destinations":  [
+                         {
+                             "Group":  "editor",
+                             "HostKey":  "104.20.23.154",
+                             "Resolved":  false,
+                             "Names":  "",
+                             "Addresses":  "104.20.23.154",
+                             "Port":  443,
+                             "FirstSeen":  "2026-11-13T05:18:29.6833148+09:00",
+                             "FirstSeenSeconds":  0,
+                             "Processes":  "powershell.exe",
+                             "Roles":  "shell",
+                             "SampleCount":  9,
+                             "New":  true,
+                             "Allowed":  false,
+                             "AllowReason":  ""
+                         }
+                     ]
+}

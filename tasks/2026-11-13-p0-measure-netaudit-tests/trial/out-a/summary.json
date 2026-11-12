@@ -1,0 +1,75 @@
+﻿{
+    "Label":  "trial-a",
+    "Exe":  "tests/fixtures/fake-editor.cmd",
+    "ExeVersion":  null,
+    "EnvDir":  "tasks/2026-11-13-p0-measure-netaudit-tests/trial/env",
+    "Workspace":  {
+                      "Path":  "tasks/2026-11-13-p0-measure-netaudit-tests/trial/ws",
+                      "Commit":  "b96e889462868d8b49a52fb4463d9493438e3a4b",
+                      "Dirty":  true
+                  },
+    "OpenFiles":  [
+                      "a.ts,b.py"
+                  ],
+    "Warmup":  1,
+    "Runs":  2,
+    "Milestone":  false,
+    "LaunchWaitSeconds":  3,
+    "SettleSeconds":  3,
+    "StopWaitSeconds":  2,
+    "PrimaryMetric":  "PrivateExclClaude",
+    "Metrics":  {
+                    "PrivateExclClaude":  {
+                                              "Values":  [
+                                                             10379264,
+                                                             10399744
+                                                         ],
+                                              "Stats":  {
+                                                            "Count":  2,
+                                                            "Median":  10389504,
+                                                            "Min":  10379264,
+                                                            "Max":  10399744,
+                                                            "Range":  20480
+                                                        }
+                                          },
+                    "PrivateInclClaude":  {
+                                              "Values":  [
+                                                             10379264,
+                                                             10399744
+                                                         ],
+                                              "Stats":  {
+                                                            "Count":  2,
+                                                            "Median":  10389504,
+                                                            "Min":  10379264,
+                                                            "Max":  10399744,
+                                                            "Range":  20480
+                                                        }
+                                          },
+                    "WorkingSetExclClaude":  {
+                                                 "Values":  [
+                                                                28844032,
+                                                                28848128
+                                                            ],
+                                                 "Stats":  {
+                                                               "Count":  2,
+                                                               "Median":  28846080,
+                                                               "Min":  28844032,
+                                                               "Max":  28848128,
+                                                               "Range":  4096
+                                                           }
+                                             },
+                    "WorkingSetInclClaude":  {
+                                                 "Values":  [
+                                                                28844032,
+                                                                28848128
+                                                            ],
+                                                 "Stats":  {
+                                                               "Count":  2,
+                                                               "Median":  28846080,
+                                                               "Min":  28844032,
+                                                               "Max":  28848128,
+                                                               "Range":  4096
+                                                           }
+                                             }
+                }
+}

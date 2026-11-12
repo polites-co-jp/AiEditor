@@ -1,0 +1,4 @@
+﻿"Run","ProcessId","ParentProcessId","Name","Role","InClaudeSubtree","PrivateBytes","WorkingSetBytes","CommandLine"
+"run-1","15132","24220","cmd.exe","shell","False","7598080","11943936","C:\WINDOWS\system32\cmd.exe /c """"E:\develop\self\Team\projects\ai-editor\tests\fixtures\fake-editor.cmd"" --user-data-dir ""e:\develop\self\Team\projects\ai-editor\tasks\2026-11-13-p0-measure-netaudit-tests\trial\run\trial-a-run-1\user"" --extensions-dir ""e:\develop\self\Team\projects\ai-editor\tasks\2026-11-13-p0-measure-netaudit-tests\trial\run\trial-a-run-1\ext"" ""tasks/2026-11-13-p0-measure-netaudit-tests/trial/ws"" """
+"run-1","41352","15132","conhost.exe","console-host","False","1691648","11104256","\??\C:\WINDOWS\system32\conhost.exe 0x4"
+"run-1","15080","15132","PING.EXE","main","False","1089536","5795840","ping  -n 300 127.0.0.1 "
