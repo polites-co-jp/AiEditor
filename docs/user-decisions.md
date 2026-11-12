@@ -95,3 +95,10 @@
 | 権限に残る小さな穴（pnpm の場所の上書き・`--config.*`、fetch の取得元、tsc の `-p`） | 直さず、既知の限界として受け入れる（[08](08-risks-and-open-items.md) の1節） |
 | `node --check` の後ろにオプションを付けられる穴 | 許可を場所まで書く形にして塞ぐ。蒙恬は `scripts/`・`tools/`・`extensions-src/`、曹参は `tests/`・`extensions-src/` |
 | フックの実機の確認（e2e）の記録 | Team リポジトリにすべてコミットして残す |
+
+## 裁定（2026-11-13、Phase 0 の着手のとき）
+
+| 論点 | 裁定 |
+|---|---|
+| Phase 0 の計測用のワークスペース（[07](07-phases.md) の2.1・3節） | `E:\develop\kuebiko`（TS と Python を含む）を `C:\b\p0\ws\` へ clone し、コミットを固定して使う。元の作業ツリーには触れない。計測用のタスク定義はコピーのほうに足す |
+| PowerShell 7 と ShellCheck（[01](01-requirements.md) の4.1） | ユーザーが自分で winget で入れる。0-3 で sh の警告と PowerShell 7 のセッションまで確かめる |

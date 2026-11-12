@@ -24,14 +24,14 @@
 
 | もの | 取り方 | 置き場所の例 |
 |---|---|---|
-| 本家 VS Code の zip（Windows x64、版は本家の最新の安定版。2026-11-12 時点で 1.146.0） | 公式のダウンロードの「zip」。版を指定する URL は `https://update.code.visualstudio.com/<版>/win32-x64-archive/stable` の見込み（推定） | `C:\p0\vscode-<版>\` |
-| VSCodium の Windows x64 の zip（最新） | https://github.com/VSCodium/vscodium/releases | `C:\p0\vscodium-<版>\` |
-| 台帳に載せる拡張の VSIX | [04](04-bundled-extensions.md) の2節の各拡張を Open VSX から（手順 0-6） | `C:\p0\vsix\` |
+| 本家 VS Code の zip（Windows x64、版は本家の最新の安定版。2026-11-12 時点で 1.146.0） | 公式のダウンロードの「zip」。版を指定する URL は `https://update.code.visualstudio.com/<版>/win32-x64-archive/stable` の見込み（推定） | `C:\b\p0\vscode-<版>\` |
+| VSCodium の Windows x64 の zip（最新） | https://github.com/VSCodium/vscodium/releases | `C:\b\p0\vscodium-<版>\` |
+| 台帳に載せる拡張の VSIX | [04](04-bundled-extensions.md) の2節の各拡張を Open VSX から（手順 0-6） | `C:\b\p0\vsix\` |
 | Claude Code の CLI | 公式の手順 https://code.claude.com/docs/en/setup 。ログインしておく | — |
-| 計測用のワークスペース | TS と Python を含む実際のリポジトリ。コミットを固定して記録する | `C:\p0\ws\` |
+| 計測用のワークスペース | TS と Python を含む実際のリポジトリ。コミットを固定して記録する。裁定（2026-11-13）: `E:\develop\kuebiko` を clone する | `C:\b\p0\ws\` |
 | Node.js、Git for Windows、PowerShell 7、Python 3、ShellCheck | [01](01-requirements.md) の4.1 | — |
 
-データの置き場所は、ビルドごとに `--user-data-dir` と `--extensions-dir` で分ける（例 `C:\p0\data\<名前>\user`、`C:\p0\data\<名前>\ext`）。普段使いのエディタの設定に触れない。
+置き場所は、開発チームの書き込み先（ビルドの作業場所 `C:\b\`）の中にした（2026-11-13。もとの例は `C:\p0\`）。データの置き場所は、ビルドごとに `--user-data-dir` と `--extensions-dir` で分ける（例 `C:\b\p0\data\<名前>\user`、`C:\b\p0\data\<名前>\ext`）。普段使いのエディタの設定に触れない。
 
 ### 2.2 0-1 Claude Code 拡張の manifest とファイル一覧
 
