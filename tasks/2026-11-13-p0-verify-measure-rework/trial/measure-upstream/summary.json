@@ -1,0 +1,91 @@
+﻿{
+    "DailyArgvTouched":  [
+
+                         ],
+    "DailyArgvAfter":  [
+                           {
+                               "Path":  "C:\\Users\\kou_z\\.vscode\\argv.json",
+                               "Exists":  false,
+                               "LastWriteUtc":  null
+                           },
+                           {
+                               "Path":  "C:\\Users\\kou_z\\.vscode-oss\\argv.json",
+                               "Exists":  false,
+                               "LastWriteUtc":  null
+                           },
+                           {
+                               "Path":  "C:\\Users\\kou_z\\.shuko\\argv.json",
+                               "Exists":  false,
+                               "LastWriteUtc":  null
+                           }
+                       ],
+    "Label":  "ooka-trial-upstream",
+    "Exe":  "C:\\b\\p0\\vscode-1.146.0\\Code.exe",
+    "ExeVersion":  "1.146.0",
+    "EnvDir":  "C:/b/p0/data/upstream-default",
+    "Workspace":  {
+                      "Path":  "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\ws",
+                      "Commit":  "2385a2ff1ea22ceaa5a039500f3f88361eef2392",
+                      "Dirty":  true
+                  },
+    "OpenFiles":  [
+                      "apps/api/src/routes/extraction.ts,local-apps/topic-clusterer/topic_clusterer/labeling.py"
+                  ],
+    "Warmup":  0,
+    "Runs":  1,
+    "Milestone":  false,
+    "LaunchWaitSeconds":  30,
+    "SettleSeconds":  120,
+    "StopWaitSeconds":  10,
+    "PrimaryMetric":  "PrivateExclClaude",
+    "Metrics":  {
+                    "PrivateExclClaude":  {
+                                              "Values":  [
+                                                             1480892416
+                                                         ],
+                                              "Stats":  {
+                                                            "Count":  1,
+                                                            "Median":  1480892416,
+                                                            "Min":  1480892416,
+                                                            "Max":  1480892416,
+                                                            "Range":  0
+                                                        }
+                                          },
+                    "PrivateInclClaude":  {
+                                              "Values":  [
+                                                             1480892416
+                                                         ],
+                                              "Stats":  {
+                                                            "Count":  1,
+                                                            "Median":  1480892416,
+                                                            "Min":  1480892416,
+                                                            "Max":  1480892416,
+                                                            "Range":  0
+                                                        }
+                                          },
+                    "WorkingSetExclClaude":  {
+                                                 "Values":  [
+                                                                1896361984
+                                                            ],
+                                                 "Stats":  {
+                                                               "Count":  1,
+                                                               "Median":  1896361984,
+                                                               "Min":  1896361984,
+                                                               "Max":  1896361984,
+                                                               "Range":  0
+                                                           }
+                                             },
+                    "WorkingSetInclClaude":  {
+                                                 "Values":  [
+                                                                1896361984
+                                                            ],
+                                                 "Stats":  {
+                                                               "Count":  1,
+                                                               "Median":  1896361984,
+                                                               "Min":  1896361984,
+                                                               "Max":  1896361984,
+                                                               "Range":  0
+                                                           }
+                                             }
+                }
+}

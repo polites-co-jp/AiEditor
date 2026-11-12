@@ -1,0 +1,11 @@
+{
+  "name": "shuko-build",
+  "private": true,
+  "description": "AiEditor（仮称 Shuko）のビルドリポジトリの道具の依存。scripts/ の台本が使う。",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "devDependencies": {
+    "ovsx": "1.4.0"
+  }
+}

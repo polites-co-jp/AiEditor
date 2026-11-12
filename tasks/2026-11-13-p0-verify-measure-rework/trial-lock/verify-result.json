@@ -1,0 +1,329 @@
+{
+  "verifiedAt": "2026-11-12T20:50:28.442Z",
+  "vscode": "1.146.0",
+  "dir": "C:\\b\\p0\\vsix",
+  "results": [
+    {
+      "id": "weixu.wx-vsce-dotenv",
+      "version": "0.2.3",
+      "targetPlatform": "universal",
+      "skip": [
+        "defender"
+      ],
+      "publisher": {
+        "status": "pass",
+        "verified": true,
+        "namespace": "weixu",
+        "namespaceDisplayName": "weixu",
+        "publishedBy": "xuwaters",
+        "publishedByProvider": "github",
+        "publishedWithTrustedPublishing": false,
+        "previousPublishedBy": null,
+        "publishedByChanged": null
+      },
+      "sha256": {
+        "status": "pass",
+        "computed": "9c081a0e26328c86055bf722b9d99237a88151622187ef9709c54380198f2b1a",
+        "published": "9c081a0e26328c86055bf722b9d99237a88151622187ef9709c54380198f2b1a"
+      },
+      "sigzipEntries": [
+        ".signature.sig",
+        ".signature.manifest",
+        ".signature.p7s"
+      ],
+      "signature": {
+        "status": "pass",
+        "algorithm": "ed25519",
+        "signatureValid": true,
+        "manifestEntries": 12,
+        "entriesChecked": 12,
+        "issues": [],
+        "issueCount": 0
+      },
+      "ovsx": {
+        "status": "error",
+        "reason": "node_modules に入っていない（依存の導入が要る）。リポジトリの直下で依存を導入する（package.json の devDependencies の ovsx 1.4.0）。npx で別の版は取りに行かない",
+        "declared": "1.4.0",
+        "installed": null
+      },
+      "soak": {
+        "status": "pass",
+        "publishedAt": "2026-10-15T04:16:45.844718Z",
+        "now": "2026-11-12T20:50:26.807Z",
+        "soaked": true,
+        "listedInAllVersions": true,
+        "security": false
+      },
+      "engines": {
+        "status": "pass",
+        "range": "^1.96.0",
+        "vscode": "1.146.0"
+      },
+      "files": {
+        "status": "info",
+        "files": 12,
+        "totalSize": 234368,
+        "executables": [],
+        "folders": [
+          {
+            "folder": "extension/wasm/",
+            "files": 3,
+            "size": 167767
+          },
+          {
+            "folder": "extension/",
+            "files": 5,
+            "size": 53725
+          },
+          {
+            "folder": "extension/dist/",
+            "files": 1,
+            "size": 6528
+          },
+          {
+            "folder": "extension/syntaxes/",
+            "files": 1,
+            "size": 3228
+          },
+          {
+            "folder": "(直下)",
+            "files": 2,
+            "size": 3120
+          }
+        ]
+      },
+      "manifest": {
+        "status": "info",
+        "digest": {
+          "activationEvents": [
+            "onLanguage:dotenv"
+          ],
+          "enabledApiProposals": [],
+          "extensionDependencies": [],
+          "extensionPack": [],
+          "main": "./dist/extension.js",
+          "browser": null,
+          "engines": {
+            "vscode": "^1.96.0"
+          },
+          "extensionKind": null,
+          "capabilities": null,
+          "contributesKeys": [
+            "configuration",
+            "grammars",
+            "languages"
+          ],
+          "contributes.chatParticipants": 0,
+          "contributes.languageModelTools": 0,
+          "contributes.languageModelChatProviders": 0,
+          "contributes.mcpServerDefinitionProviders": 0,
+          "contributes.debuggers": 0,
+          "contributes.notebooks": 0
+        }
+      },
+      "license": {
+        "status": "info",
+        "file": "extension/LICENSE.md",
+        "sha256": "f1c342b0e6e3fc9d9bc9e68d490d91437db08962e56aa7f9e10c5675a0fbee41",
+        "apiLicense": "MIT"
+      },
+      "defender": {
+        "status": "skip"
+      },
+      "references": {
+        "sourceTag": {
+          "status": "not-found",
+          "required": false,
+          "repository": "xuwaters/vscode-extensions",
+          "matchingTags": [],
+          "tagCount": 0
+        }
+      },
+      "failed": [
+        "ovsx"
+      ],
+      "skipped": [
+        "defender"
+      ],
+      "ok": false,
+      "verifiedAt": "2026-11-12T20:50:26.807Z"
+    },
+    {
+      "id": "tomoki1207.pdf",
+      "version": "1.2.2",
+      "targetPlatform": "universal",
+      "skip": [
+        "defender"
+      ],
+      "publisher": {
+        "status": "pass",
+        "verified": true,
+        "namespace": "tomoki1207",
+        "namespaceDisplayName": "tomoki1207",
+        "publishedBy": "open-vsx",
+        "publishedByProvider": "github",
+        "publishedWithTrustedPublishing": false,
+        "previousPublishedBy": null,
+        "publishedByChanged": null
+      },
+      "sha256": {
+        "status": "pass",
+        "computed": "5697cd022caf93fa0fdb8c5b9c3624951394d8126ed09184ad4fdbcad62dadce",
+        "published": "5697cd022caf93fa0fdb8c5b9c3624951394d8126ed09184ad4fdbcad62dadce"
+      },
+      "sigzipEntries": [
+        ".signature.sig",
+        ".signature.manifest",
+        ".signature.p7s"
+      ],
+      "signature": {
+        "status": "pass",
+        "algorithm": "ed25519",
+        "signatureValid": true,
+        "manifestEntries": 380,
+        "entriesChecked": 380,
+        "issues": [],
+        "issueCount": 0
+      },
+      "ovsx": {
+        "status": "error",
+        "reason": "node_modules に入っていない（依存の導入が要る）。リポジトリの直下で依存を導入する（package.json の devDependencies の ovsx 1.4.0）。npx で別の版は取りに行かない",
+        "declared": "1.4.0",
+        "installed": null
+      },
+      "soak": {
+        "status": "pass",
+        "publishedAt": "2022-12-23T03:58:06.463846Z",
+        "now": "2026-11-12T20:50:27.513Z",
+        "soaked": true,
+        "listedInAllVersions": true,
+        "security": false
+      },
+      "engines": {
+        "status": "pass",
+        "range": "^1.46.0",
+        "vscode": "1.146.0"
+      },
+      "files": {
+        "status": "info",
+        "files": 380,
+        "totalSize": 7899489,
+        "executables": [],
+        "folders": [
+          {
+            "folder": "extension/lib/web/",
+            "files": 356,
+            "size": 3983754
+          },
+          {
+            "folder": "extension/lib/build/",
+            "files": 3,
+            "size": 3395362
+          },
+          {
+            "folder": "extension/node_modules/@types/",
+            "files": 4,
+            "size": 452569
+          },
+          {
+            "folder": "extension/out/src/",
+            "files": 6,
+            "size": 35013
+          },
+          {
+            "folder": "extension/",
+            "files": 6,
+            "size": 15443
+          },
+          {
+            "folder": "extension/lib/",
+            "files": 3,
+            "size": 13756
+          },
+          {
+            "folder": "(直下)",
+            "files": 2,
+            "size": 3592
+          }
+        ]
+      },
+      "manifest": {
+        "status": "info",
+        "digest": {
+          "activationEvents": [
+            "onCustomEditor:pdf.preview"
+          ],
+          "enabledApiProposals": [],
+          "extensionDependencies": [],
+          "extensionPack": [],
+          "main": "./out/src/extension",
+          "browser": null,
+          "engines": {
+            "vscode": "^1.46.0"
+          },
+          "extensionKind": [
+            "ui"
+          ],
+          "capabilities": null,
+          "contributesKeys": [
+            "capabilities",
+            "configuration",
+            "customEditors"
+          ],
+          "contributes.chatParticipants": 0,
+          "contributes.languageModelTools": 0,
+          "contributes.languageModelChatProviders": 0,
+          "contributes.mcpServerDefinitionProviders": 0,
+          "contributes.debuggers": 0,
+          "contributes.notebooks": 0
+        }
+      },
+      "license": {
+        "status": "info",
+        "file": "extension/LICENSE.txt",
+        "sha256": "4a122ef7d968fb456f9ae28b8af03d45ece22438ac61556bf7121ca41ac4fba3",
+        "apiLicense": null
+      },
+      "defender": {
+        "status": "skip"
+      },
+      "references": {
+        "sourceTag": {
+          "status": "not-found",
+          "required": false,
+          "repository": "tomoki1207/vscode-pdfviewer",
+          "matchingTags": [],
+          "tagCount": 4
+        }
+      },
+      "failed": [
+        "ovsx"
+      ],
+      "skipped": [
+        "defender"
+      ],
+      "ok": false,
+      "verifiedAt": "2026-11-12T20:50:27.513Z"
+    }
+  ],
+  "lockWrite": {
+    "path": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-13-p0-verify-measure-rework\\trial-lock\\lock.json",
+    "written": [],
+    "kept": [
+      "tomoki1207.pdf"
+    ],
+    "omitted": [
+      "anthropic.claude-code",
+      "detachhead.basedpyright",
+      "ms-vscode.powershell",
+      "mads-hartmann.bash-ide-vscode",
+      "mechatroner.rainbow-csv",
+      "dotenv.dotenv-vscode",
+      "weixu.wx-vsce-dotenv",
+      "MS-CEINTL.vscode-language-pack-ja"
+    ],
+    "untouched": [
+      "ooka.not-in-fetch"
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+[
+  {
+    "id": "TOMOKI1207.PDF",
+    "version": "0.0.0-ooka-kept-marker",
+    "note": "trial row by ooka-echizen: must be kept unchanged when pdf does not pass"
+  },
+  {
+    "id": "ooka.not-in-fetch",
+    "version": "1.0.0",
+    "note": "trial row: not in fetch-result, must stay at the end (untouched)"
+  }
+]

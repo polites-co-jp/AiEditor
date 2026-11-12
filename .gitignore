@@ -3,3 +3,9 @@ __pycache__/
 
 # 秘密（念のため。トークンはリポジトリの外に DPAPI で置く。docs/06 の2.4）
 .env
+
+# 道具の依存（package.json の devDependencies。版は package.json と lockfile で固定する）
+node_modules/
+
+# 作業用の一時置き場（計測用のワークスペース tmp/ws/ など。裁定 2026-11-13）
+tmp/

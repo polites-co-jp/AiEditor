@@ -80,7 +80,42 @@ A-3 で選ばなかった案は、通らなかった行を書かない形。こ�
 
 なお、走らせ直しで `C:\b\p0\vsix\tomoki1207.pdf-1.2.2\` の `sig\`・`files.json` が同じ中身で書き直された。本番の `verify-result.json`・`extensions.lock.json` は変わっていない。
 
+## 追記（2026-11-13）: A-4 ovsx の版の固定と、ソースのタグを参考の項目にする
+
+### ovsx の版の固定（一部完了: 依存の導入で止めた）
+
+- `package.json` をリポジトリの直下に新しく作り、`devDependencies` に `"ovsx": "1.4.0"` と書いた（`^` は付けていない。ほかに `private: true`、`engines.node >=22.0.0`）。ovsx 1.4.0 の `engines.node` は `>=22.0.0`。出典: https://registry.npmjs.org/ovsx/1.4.0 。この PC の Node は v24.16.0。
+- `.gitignore` に `node_modules/` を足した。
+- lock-verify.mjs の呼び方:
+  - npx をやめた。`<repo>/node_modules/ovsx/package.json` を読み、package.json の `devDependencies.ovsx` と版が同じかを確かめる。同じなら、その `bin.ovsx`（`bin/ovsx`）を node で直に起動する。シェルは通さない。
+  - 起動の形: `<node> <repo>\node_modules\ovsx\bin\ovsx verify-signature -i <vsix> -m <.signature.manifest> -s <.signature.sig> -k <public-key.pem>`
+  - 入っていない・版が違う・package.json の指定が正確な x.y.z でないときは、ovsx の項目を `error` にする（必須なので ok にならない）。npm の最新を取りに行くことはしない。結果には `declared`・`installed`・`reason` を残し、通ったときは `ovsxVersion` を残す。
+- 分けた純粋な関数: `checkPinnedTool(declared, installed)` → `{ ok, reason }`（`scripts/lib/lock.mjs`）。
+  - `declared` は正確な `x.y.z` だけを認める。`^1.4.0`・`~1.4.0`・`>=1.4.0`・`latest`・空は ok にならない。
+  - `installed` が null・undefined・空なら ok にならない（「node_modules に入っていない」）。`declared` と違えば ok にならない。
+  - 同じなら `{ ok: true, reason: null }`。
+- **止めたところ（私の許可では走らせられない）**: 依存の導入。リポジトリの直下で、次のどちらかが要る。
+  - 推奨: pnpm（`C:\b\wt` の本家のビルドでも使う）。初回に `pnpm install`（直下で。`pnpm-lock.yaml` ができる）。以後は `pnpm install --frozen-lockfile`。
+  - 別案: npm。初回に `npm install`（`package-lock.json` ができる）。以後は `npm ci`。
+  - どちらも、lockfile をコミットして初めて、ovsx の依存（`@vscode/vsce ^4.0.0`・`commander ^14.0.3`・`yauzl-promise ^4.0.0` など。どれも `^` の範囲）の版まで固定できる。どちらで入れるかと、許可にコマンドを足すかは、リーダー（とユーザー）に決めてほしい。
+  - 依存の中に、ネイティブのビルドが要るもの（例 `cross-keychain`）があるかは確かめていない。
+- **影響**: 依存を入れるまでは、lock-verify.mjs の ovsx の項目が全部の拡張で `error` になり、ok にならない。そのため `--write-lock` は今の台帳の行を残す（A-3）。**Claude Code の走らせ直しの前に、依存の導入を済ませる必要がある**。済ませないと、Claude Code の行は古いまま残る。
+- 確かめたこと:
+  - `node --check` が通った。
+  - 試しの結果と台帳（`C:\b\p0\trial\`）で `--only weixu.wx-vsce-dotenv` を走らせた。ovsx は `error`、理由は「node_modules に入っていない（依存の導入が要る）…」で、npx は呼ばれなかった。
+  - 入れた後の実際の起動（`node bin/ovsx`）は、まだ確かめていない（依存の導入の後に要確認）。
+
+### ソースのタグは参考の項目（必須にしない）
+
+- 前から必須の一覧（REQUIRED）に入っておらず、ok には効いていなかった。ただ、結果が `pass` / `fail` で、台帳の `checks` にも並んでいた。そのため、必須の項目と見分けにくかった。次のように直した。
+  - 結果の置き場所を `references.sourceTag` に移した。status は `found`（同じ版のタグがある）・`not-found`（無い）・`skip`（GitHub でない）・`error`（取れない）で、`required: false` を付けた。pass / fail は使わない。
+  - 台帳では `checks` から外し、`references: { "sourceTag": "found" | "not-found" | ... }` に分けた。`crossCheck.sourceTag`（見つかったタグの名前）・`sourceRepository` は今までどおり。
+  - 画面には「参考（必須ではない）: ソースのタグ 見つからない」のように出す。
+  - 古い形の結果（`sourceTag` に pass / fail）を台帳に書くときは、found / not-found に読み替える。試しでは、前の結果の pdf の `fail` が、台帳で `references.sourceTag: "not-found"` になった。
+- 今の `extensions.lock.json` は書き換えていない（`checks.sourceTag` が残っている）。次に `--write-lock` で書き直すとき、検証を通った行は新しい形になる。
+
 ## 未解決
+0. 依存の導入（ovsx 1.4.0。上の A-4）。Claude Code の走らせ直しより先に要る。
 1. Claude Code の走らせ直し（11:30:52 の後。リーダーが別に頼む）。直した後の `--write-lock` は、Claude Code が通れば新しい値で書き、通らなければ今の台帳の行を残す。
 2. ソースのタグを必須にするか。
 3. ovsx の版の固定。

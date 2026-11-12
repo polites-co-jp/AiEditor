@@ -68,3 +68,73 @@ SubagentHandback がフックで止められたため、この文書を報告と
 - `E:\develop\self\Team\projects\ai-editor\tasks\2026-11-13-p0-verify-envs\verification-log.md`
 - `E:\develop\self\Team\projects\ai-editor\records\phase0\sublime-keys.md`
 - `E:\develop\self\Team\projects\ai-editor\tasks\2026-11-13-p0-verify-envs\handoff-notes.md`（この文書）
+
+---
+
+## 追記（2026-11-13、再検証）: 差し戻しの直し — 合格
+
+詳しくは `verification-log-2.md`。
+
+### 判定: 合格
+
+ユーザーに手の確かめ（0-2・0-3・0-7・0-8 (b)(c)・0-9）を頼んでよい。順は env-setup.md の 5.2（準備）から。
+
+| # | 見ること | 判定 |
+|---|---|---|
+| 1 | F1〜F9 の直し、手順書、新しい台本 `p0-scratch.ps1`・`p0-stop.ps1` | 合格（軽微な点 M1〜M3。手の確かめは止めない） |
+| 2 | argv.json の直し（`Write-P0Argv`）と10の環境の argv.json | 合格（起動の後の形は、コードから導いた） |
+| 3 | 曹参の T1 | 合格（50件すべて通過） |
+| 4 | records/phase0/ の5つの清書の書き方 | 決めた（`verification-log-2.md` の4節） |
+
+### 確かめた成果
+
+- 蒙恬: 「追記2」の直し。`p0-launch.ps1`・`p0-stop.ps1`・`p0-scratch.ps1`・`p0-ws.ps1`・`lib/p0-common.ps1`、手順書3本、`doc-corrections.md`、`sublime-keys.md`、作り直した10の環境、`C:\b\p0\scratch\`、`ws-info.json`
+- 曹参: `tests/sublime-keys.test.mjs`（T1）
+
+### 根拠
+
+- **流したコマンド**: `node tests/sublime-keys.test.mjs` は 50件すべて通過（前回の27件から23件増えた）。
+- **手順書**（F1〜F4）:
+  - `tmp\ws` は見るだけ。編集・保存・置換・コミット・Claude への変更の依頼は、どれも `C:\b\p0\scratch\` を指している。
+  - 前後に `p0-ws.ps1` で、commit `2385a2ff…` と `dirtyExceptTasks: []` を確かめる。戻し方（`restore`・`reset --hard`。tasks.json は追跡されていないので残る）は正しい。
+  - 0-8 は `-NoWorkspace` で起動し、`tmp\ws` を開かない。
+  - 0-9 の手順5は、キーボードショートカットの画面で割り当て元の拡張を見る形になり、本家の既定と違う4つのキーで読み分ける。
+  - 作業する場所、自分の端末から起動すること、ログの場所、0-3 の前提、信頼の確認、`vscode://` の注意が書かれた。
+  - docs/07 の2.3・2.4・2.8〜2.10 が求める記録は、すべて「記録すること」に入っている。
+- **F8**:
+  - `p0-launch.ps1` は `Invoke-P0WithEditorEnv` で `ELECTRON_RUN_AS_NODE`・`ELECTRON_NO_ATTACH_CONSOLE`・`VSCODE_*` を外し、`VSCODE_PORTABLE` だけを設定して起動する（`measure.ps1` と同じ形）。
+  - 起動の8秒後に生きているかを見て、終わっていれば `FAILED` と出し、終了コード 1 にする。
+  - 蒙恬が claude の下から testbed を起動し、成功している。
+- **F9**: `Invoke-P0Cli` も同じ部品を通る。10の環境の導入は全部終了コード 0。
+- **F5〜F7**: 直っている。
+  - `media-preview` の行は、本家に「無い」となった。
+  - `ws-info.json` の `source` は GitHub の URL で、commit は変わらず、`dirtyExceptTasks` は空。
+  - sublime-keys.md の見出しも直った。
+- **p0-stop.ps1**: 普段使いのエディタは止めない。
+  - 止めるのは、プロセス名が環境の exe と同じで、コマンドラインにその環境の `C:\b\p0\data\<名前>\user\user-data` を含み、`--type=` の無い主プロセスと、その子孫だけ。
+- **p0-scratch.ps1**: `C:\b\p0\` の下に限ってから、消して作る。git の名前とメールは、そのリポジトリの中だけに設定する。実物に見本の12ファイルとコミット `d630653` がある。
+- **argv.json**:
+  - 本家 1.146.0 の `out/mainImpl.js` の168行に、`t.substring(0,t.length-2).concat(",\n", …)` がある。末尾の2文字を切ってつなぐという蒙恬の説明と一致する。
+  - 10本とも、末尾がちょうど `\n}` で、CR も末尾の空白も無い（Grep の multiline で確かめた）。
+  - 中身は、`locale: ja` が7本、コメントだけが3本。
+  - 起動の後の形はコードから導き、どちらの形でも正しい JSONC になる（コメントだけの環境では、足される `,` がコメントの中に入る）。
+  - 実物の起動の後の形は確かめられなかった。testbed は起動の後に作り直されて残っていない。VSCodium の `mainImpl.js` も読んでいない。
+- **10の環境の残りの中身**: 拡張・設定は前回と同じ。`failed` は全部空。
+- **T1**:
+  - 知らない修飾キーの6通り、実物の例、2段のキー、`win` で判定することを足した。知っている修飾キーと別名の12通りが残ることも確かめている。
+  - 規則を外すとテストは落ちる。緩めた箇所は無い。
+
+### 軽微な点（担当つき。手の確かめは止めない）
+
+- **M1 蒙恬** `Get-P0MainProcesses` は、プロセスの名前だけで比べている。`ExecutablePath` がその環境の exe と同じことも条件に足すと、より固い。
+- **M2 蒙恬** env-setup.md の 5.3 の3: 「タスクの実行」を scratch で行うとあるが、scratch には tasks.json が無く、一覧が空になる見込み（推定）。`tmp\ws` の `p0-open-terminal` を使うか、scratch に tasks.json を足す。
+- **M3 蒙恬** env-setup.md の6節の最初の行が、まだ「`E:\develop\kuebiko` を clone」のまま。すぐ下の表（GitHub）と食い違う。L2 とあわせて扱う。
+
+### リーダーへ
+
+- `configuration-defaults.md.section3.tmp` の削除はリーダーの担当（蒙恬も私も消す許可を持たない）。
+- 清書（records/phase0/ の5つ）は、ユーザーの結果（`tasks/2026-11-13-p0-envs-mydist-keys/hand-<項目>.md`）が出たら、`verification-log-2.md` の4節の形で書く。
+
+### 記録（追加分）
+
+- `E:\develop\self\Team\projects\ai-editor\tasks\2026-11-13-p0-verify-envs\verification-log-2.md`
