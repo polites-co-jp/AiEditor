@@ -132,11 +132,14 @@
 ### 3.2 台本と集計
 
 1. 起動: `<exe> --user-data-dir <U> --extensions-dir <E> <ワークスペース>`。
+   - Phase 0 で分かった事実（2026-11-13）: `argv.json` は `--user-data-dir` の下ではなく、普段使いの `%USERPROFILE%\.vscode\argv.json`（VSCodium は `~\.vscode-oss\`）から読まれ、無ければ作られる。そこで、環境ごとの `user` フォルダを環境変数 `VSCODE_PORTABLE` に渡して起動する（ユーザーのデータは `<VSCODE_PORTABLE>\user-data` に固定され、`--user-data-dir` より優先される）。普段使いの `argv.json` が作られていないことを、計測の前後で確かめる。
+   - 子のプロセスから `ELECTRON_RUN_AS_NODE`・`ELECTRON_NO_ATTACH_CONSOLE`・`VSCODE_*`（`VSCODE_PORTABLE` を除く）を外す。Claude Code から起動した環境には `ELECTRON_RUN_AS_NODE=1` が入っていて、そのままでは Code.exe が終了コード 9 で終わる。
+   - 台本 `scripts/measure.ps1`、環境のひな形は `scripts/p0-env.ps1` が作る `C:\b\p0\data\<名前>\`。
 2. 30秒待ち、CLI（`-r`）で決まった2つのファイル（TS と Python）を開く。
 3. ワークスペースの `.vscode/tasks.json` に、フォルダを開いたときに動くタスク（`"runOptions": {"runOn": "folderOpen"}`）を置き、ターミナルを1つ開かせる。
 4. 120秒待ってから測る。
 5. 起動した実行ファイルのプロセスとその子孫を、`Get-CimInstance Win32_Process`（`ProcessId`、`ParentProcessId`、`Name`、`CommandLine`、`PrivatePageCount`、`WorkingSetSize`）で集める。
-6. 合計を2つ出す。**プライベートバイトの合計（主）**と**ワーキングセットの合計（従）**。プロセスごとの値も CSV に残し、役割（`--type=renderer`、拡張ホスト、ptyHost、言語サーバーなど。`CommandLine` から分かる範囲）を付ける。
+6. 合計を2つ出す。**プライベートバイトの合計（主）**と**ワーキングセットの合計（従）**。プロセスごとの値も CSV に残し、役割（`--type=renderer`、拡張ホスト、ptyHost、言語サーバーなど。`CommandLine` から分かる範囲）を付ける。1.146.0 では拡張ホスト・ptyHost・共有プロセス・AgentHost が同じ `--utility-sub-type=node.mojom.NodeService` で `CommandLine` だけでは区別できず、合計の4割ほどを占めた（2026-11-13 の試し）。そこで、親子の関係と引数の手がかり（拡張ホストは `--inspect-port=0`、ptyHost は子に OpenConsole とシェル、AgentHost は子に copilot-runtime など）で役割を付け直す。合否は合計だけで決まるので、役割は重い部分を示すために使う。
 7. Claude Code の CLI（claude.exe）とその子孫は別に集計し、「含めた合計」と「含めない合計」の両方を記録する。合否は「含めない合計」で見る（CLI はエディタの削る対象ではないため）。
 8. プロセスを止め、10秒待つ。
 
