@@ -102,3 +102,4 @@
 |---|---|
 | Phase 0 の計測用のワークスペース（[07](07-phases.md) の2.1・3節） | `E:\develop\kuebiko`（TS と Python を含む）を `C:\b\p0\ws\` へ clone し、コミットを固定して使う。元の作業ツリーには触れない。計測用のタスク定義はコピーのほうに足す |
 | PowerShell 7 と ShellCheck（[01](01-requirements.md) の4.1） | ユーザーが自分で winget で入れる。0-3 で sh の警告と PowerShell 7 のセッションまで確かめる |
+| 計測用のワークスペースの置き場所（上の行を改める） | このリポジトリの `tmp\ws\` に clone する（`C:\b\p0\ws\` をやめた）。`tmp/` は `.gitignore` に入れる。蒙恬の書き込み先に `tmp/` を足す権限の変更を承認した（変更は設計を行ったチーム `E:\develop\self\Team` の開発部が行う）。そこで動く Claude Code は親の `CLAUDE.md` も読むが、計測の合否は CLI を含めない合計で見るので受け入れる |

@@ -40,7 +40,7 @@ Phase 0（docs/07 の2節）の材料をそろえ、Claude Code 拡張の manife
 
 - 書き込みは自分の書き込み先（`scripts/`・`extensions.lock.json`・`tasks/`・`C:\b\` など）だけ。`records/` は大岡越前守が書くので書かない。
 - 別の蒙恬（タスク `2026-11-13-p0-envs-mydist-keys`）が並行して `scripts/p0-env.ps1`・`scripts/p0-launch.ps1`・`scripts/convert-sublime-keys.mjs`・`scripts/lib/sublime-keys.mjs`・`extensions-src/mydist/` を書く。それらに触れない。
-- 計測用のワークスペース（`C:\b\p0\ws\`）は、ユーザーが `E:\develop\kuebiko` から clone する。触れない。
+- 計測用のワークスペース（このリポジトリの `tmp\ws\`）は、ユーザーが `E:\develop\kuebiko` から clone する。触れない。
 
 ## 完了条件
 

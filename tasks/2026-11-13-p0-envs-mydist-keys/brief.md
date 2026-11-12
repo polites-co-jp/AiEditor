@@ -25,8 +25,8 @@ Phase 0 の手で確かめる項目（0-2・0-3・0-7・0-8・0-9）と計測（
    - `ext-allowed`: 本家に `extensions.allowed` を `{"*": false, "anthropic.claude-code": true}`（0-8）
    - `mydist`: 本家に `--extensionDevelopmentPath=extensions-src/mydist` で読み込ませる（0-9）
    - 計測用の設定（`task.allowAutomaticTasks: "on"` など、docs/07 の3.1 で台本に要るもの）は計測に使う環境に入れる
-2. `scripts/p0-launch.ps1 -Name <環境の名前>`: その環境のエディタを、計測用のワークスペース `C:\b\p0\ws\` を開いて起動する（ユーザーが手で確かめるときに使う）。
-3. 計測用のワークスペースの準備: ユーザーが `E:\develop\kuebiko` を `C:\b\p0\ws\` に clone する（裁定 2026-11-13）。clone があれば、コミットを記録し、`.vscode/tasks.json` に、フォルダを開いたときにターミナルを1つ開くタスク（`"runOptions": {"runOn": "folderOpen"}`）を足す。計測で開く2つのファイル（TS と Python）を選んで記録する。clone がまだ無ければ、これを行う台本（例 `scripts/p0-ws.ps1`）を作るところまででよい。
+2. `scripts/p0-launch.ps1 -Name <環境の名前>`: その環境のエディタを、計測用のワークスペース（このリポジトリの `tmp\ws\`）を開いて起動する（ユーザーが手で確かめるときに使う）。
+3. 計測用のワークスペースの準備: ユーザーが `E:\develop\kuebiko` をこのリポジトリの `tmp\ws\` に clone する（裁定 2026-11-13。はじめは `C:\b\p0\ws\` だったが改めた）。`.gitignore` に `tmp/` を足す。clone があれば、コミットを記録し、`.vscode/tasks.json` に、フォルダを開いたときにターミナルを1つ開くタスク（`"runOptions": {"runOn": "folderOpen"}`）を足す。計測で開く2つのファイル（TS と Python）を選んで記録する。clone がまだ無ければ、これを行う台本（例 `scripts/p0-ws.ps1`）を作るところまででよい。
 4. 0-8 の自動の部分: (a) 許可していない VSIX を CLI の `--install-extension` で入れたときどうなるか、(c) すでに入っている許可外の拡張がどうなるか（拡張の一覧の CLI の出力で分かる範囲）。(b) 画面の「VSIX からインストール」はユーザーが手で行う。
 5. 0-9: `extensions-src/mydist/package.json`（`main` なし、宣言だけ）。`configurationDefaults` に `chat.disableAIFeatures`、`telemetry.telemetryLevel`、`workbench.colorTheme`、`extensions.allowed`、`breadcrumbs.enabled`。値は docs/04 の6.1。設定の画面での確かめはユーザーが手で行う。
 6. 0-10: `ms-vscode.sublime-keybindings` 4.1.10 の VSIX を Open VSX から取り、`contributes.keybindings` を docs/04 の6.2 のとおり変換する `scripts/convert-sublime-keys.mjs` を作る。Claude Code の既定のキー（Claude Code の manifest の `contributes.keybindings`）との衝突の一覧を作る。
@@ -36,7 +36,7 @@ Phase 0 の手で確かめる項目（0-2・0-3・0-7・0-8・0-9）と計測（
 
 ## 守ること
 
-- 書き込みは自分の書き込み先（`scripts/`・`extensions-src/`・`tasks/`・`C:\b\` など）だけ。`records/` は大岡越前守が書くので書かない。`C:\b\p0\ws\` には `.vscode/tasks.json` を足すだけにする。
+- 書き込みは自分の書き込み先（`scripts/`・`extensions-src/`・`tasks/`・`C:\b\` など）だけ。`records/` は大岡越前守が書くので書かない。`tmp\ws\` には `.vscode/tasks.json` を足すだけにする。あなたの書き込み先に `tmp/` を足す権限の変更はユーザーが承認済みで、Team の開発部が入れる。入る前にそこへの書き込みが止められたら、tasks.json の中身をこのタスクディレクトリに置いて報告する（迂回しない）。
 - 別の蒙恬（タスク `2026-11-13-p0-fetch-and-lock`）が並行して材料を取り、`scripts/p0-fetch.mjs`・`scripts/lock-fetch.mjs`・`scripts/lock-verify.mjs`・`scripts/lib/lock.mjs`・`extensions.lock.json` を書く。それらに触れない。材料の置き場所は `C:\b\p0\vscode-1.146.0\`、`C:\b\p0\vscodium-<版>\`、`C:\b\p0\vsix\`。
 - 材料がまだ届いていなければ、台本を書き、`node --check` と PowerShell の構文の検査までを済ませ、材料が要らない部分（5・6）を走らせて報告する。環境を実際に作るのは、リーダーが材料の届いたことを知らせてからでよい。
 - 普段使いのエディタの設定とデータに触れない。
