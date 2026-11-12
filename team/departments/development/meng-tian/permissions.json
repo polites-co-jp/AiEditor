@@ -59,6 +59,7 @@
     "package.json",
     ".gitignore",
     "tasks/",
+    "tmp/",
     "C:/b/"
   ],
   "write_paths_deny": [
