@@ -17,7 +17,7 @@
 4. 入口は空にして残す: 拡張 API の名前空間（`vscode.debug`、`vscode.notebooks`、`vscode.lm`、`vscode.chat` など）は、消した機能の分を「何もしない実装」にして残す。同梱する拡張が起動時にそれらを呼んで失敗しないようにするため（例: PowerShell 拡張はデバッガを持つので、起動時にデバッグの API を呼ぶ見込み。推定）。空の実装は新しいファイル（`src/vs/workbench/api/common/extHostRemovedApi.ts`、仮）にまとめ、本家のファイルの変更を減らす。裁定: 入口は何もしない実装にして残し、中身のコードは消す（[00](00-overview.md) の4.3）。
 5. 残る機能が依存する部品は残す: 消すと、残す機能が壊れる部品は残し、`unit.json` の `kept` に理由を書く。Claude Code 拡張が依存する部分も同じ扱い。
 6. 型検査を関門にする: 消したあとの参照の残りは、本家の型検査で見つける。型検査が通らない単位は有効にしない。
-7. 浅いものから深いものへ: 段階 A（組み込み拡張）→ B（軽い部分）→ C（深い部分）。各単位の後に計測と動作の確認を挟む。
+7. 浅いものから深いものへ: 段階 A（組み込み拡張）→ B（軽い部分）→ C（深い部分）。各単位の後に動作の確認を挟む（計測は裁定 2026-11-13 でやめた）。
 
 ## 3. 削除の単位の形
 
@@ -96,15 +96,15 @@
 
 | 単位 | 消すもの | 注意 |
 |---|---|---|
-| A-1-copilot-extension | `extensions/copilot`。`build/npm/dirs.ts` の `'extensions/copilot'` の要素、Copilot 拡張のビルドタスク（`build/gulpfile.vscode.ts`、`build/gulpfile.reh.ts`、`build/lib/copilot.ts`）、`build/npm/postinstall.ts` の `.claude/` の symlink | VSCodium が同じことをしている（`patches/52-ext-copilot-remove-it.json` が 125 のパスを消し、`53-ext-copilot-remove-it.patch` がビルドの一覧と依存を直す）[一次] https://raw.githubusercontent.com/VSCodium/vscodium/master/patches/52-ext-copilot-remove-it.json 。VSCodium の版は 1.143.1 向けなので、行は合わない。中身の参考にとどめる |
+| A-1-copilot-extension | `extensions/copilot`。`build/npm/dirs.ts` の `'extensions/copilot'` の要素、Copilot 拡張のビルドタスク（`build/gulpfile.vscode.ts`、`build/gulpfile.reh.ts`、`build/lib/copilot.ts`）、`build/npm/postinstall.ts` の `.claude/` の symlink | VSCodium が同じことをしている（`patches/52-ext-copilot-remove-it.json` が 125 のパスを消し、`53-ext-copilot-remove-it.patch` がビルドの一覧と依存を直す）[一次] https://raw.githubusercontent.com/VSCodium/vscodium/master/patches/52-ext-copilot-remove-it.json 。VSCodium の版は 1.143.1 向けなので、行は合わない。中身の参考にとどめる。Phase 0 で、本家 1.146.0 の zip に分類の無い AI 寄りの組み込み拡張 `TypeScriptTeam.jsts-chat-features`（TS/JS のチャット向けの機能と推定）と `prompt-basics`（プロンプトファイルの言語と推定）を見つけた。この単位に足す見込みで、Phase 2 でソースの場所と中身を見て決める |
 | A-2-accounts-extensions | `extensions/github`、`extensions/github-authentication`、`extensions/microsoft-authentication` | `microsoft-authentication` は `build/lib/extensions.ts` の `nativeExtensions` に載っている。product.json の `defaultChatAgent.providerExtensionId` が `vscode.github-authentication` を指すので、C-1 までチャットの設定の画面がエラーを出す恐れがある（推定。スモークで見る） |
 | A-3-debug-extensions | product.json の `builtInExtensions` を `[]` にする（js-debug 系3件）。`extensions/debug-auto-launch`、`extensions/debug-server-ready` | — |
 | A-4-notebook-extensions | `extensions/ipynb`、`extensions/notebook-renderers` | — |
 | A-5-remote-extensions | `extensions/tunnel-forwarding` | テスト用の `vscode-test-resolver` などは同梱されない（`build/lib/extensions.ts` の `excludedExtensions`）ので残す |
-| A-6-themes | `extensions/theme-*` のうち `theme-defaults`（Light Modern を含む）と `theme-seti`（ファイルのアイコン）以外 | product.json の `onboardingThemes` が消した名前を指すので、B-2 まで歓迎画面が警告を出す恐れがある（推定） |
+| A-6-themes | `extensions/theme-*` のうち `theme-defaults`（Light Modern を含む）と `theme-seti`（ファイルのアイコン）以外。`theme-modern-icons`（アイコンのテーマ `vscode-modern-icons`。Phase 0 で確認）も消す（既定のアイコンのテーマは `vs-seti`） | product.json の `onboardingThemes` が消した名前を指すので、B-2 まで歓迎画面が警告を出す恐れがある（推定） |
 | A-7-unused-extensions | `grunt`、`gulp`、`jake`、`simple-browser`、`mermaid-markdown-features`、`extension-editing`、`terminal-suggest`（ターミナルの入力候補。裁定で消す）、対象外の言語の言語機能（例 `php-language-features`） | 文法だけの拡張（色付け）は残す |
 
-**残す組み込み拡張**は `builtin/keep.json` に理由つきで持つ。少なくとも次を載せる: `git`、`git-base`、`merge-conflict`、`search-result`、`markdown-language-features`、`markdown-math`、`markdown-basics`、`typescript-language-features`、`html-language-features`、`css-language-features`、`json-language-features`、`emmet`、`configuration-editing`、`npm`、`references-view`、`theme-defaults`、`theme-seti`、各言語の文法（`powershell`・`dotenv`・`shellscript`・`bat`・`python` を含む）、テスト用で同梱されないもの。**本家のタグのすべての `extensions/*` は、`keep.json` か削除の単位のどちらかに載っていなければならない**。どちらにも無いもの（本家が新しく足したもの）があれば、取り込みは止まり、Claude が分類を提案する（6節）。
+**残す組み込み拡張**は `builtin/keep.json` に理由つきで持つ。少なくとも次を載せる: `git`、`git-base`、`merge-conflict`、`search-result`、`markdown-language-features`、`markdown-math`、`markdown-basics`、`typescript-language-features`、`html-language-features`、`css-language-features`、`json-language-features`、`emmet`、`configuration-editing`、`npm`、`references-view`、`theme-defaults`、`theme-seti`、各言語の文法（`powershell`・`dotenv`・`shellscript`・`bat`・`python` を含む。`powershell` は台帳の `ms-vscode.powershell` の `extensionDependencies` でもある。Phase 0 で確認）、テスト用で同梱されないもの。`media-preview`（画像などのプレビュー）は VSCodium 1.143 にはあるが本家 1.146.0 の zip には無い。画像のプレビュー（裁定で残す）が 1.146 でどこにあるかを Phase 2 のスモークで確かめる。**本家のタグのすべての `extensions/*` は、`keep.json` か削除の単位のどちらかに載っていなければならない**。どちらにも無いもの（本家が新しく足したもの）があれば、取り込みは止まり、Claude が分類を提案する（6節）。
 
 ### 段階 B: 軽い部分（Phase 2）
 
@@ -132,7 +132,7 @@ workbench の contrib のうち、他の部品から参照されることが少�
 | C-6-settings-sync | `contrib/userDataSync`、`services/userDataSync` の workbench 側（common・desktop の import 7行）、アカウントのメニュー（`services/accounts`。依存が無ければ） | プロファイルなどが `platform/userDataSync` を使っている見込み（推定）。使っていれば `kept` に入れる。拡張 API の `vscode.authentication` は残す |
 | C-7-breadcrumbs-outline | `browser/parts/editor/breadcrumbs*`（推定）、`services/outline`、`contrib/codeEditor/browser/outline` | 本家の共有部品（エディタの枠）に入っているので、パッチが大きく、本家の変更とも衝突しやすい見込み。関門を2回続けて通らなければ、ユーザーに諮る（[08](08-risks-and-open-items.md) の別案） |
 
-テスト（`contrib/testing`）とコメント（`contrib/comments`）は裁定で残す。計測で重ければ改めてユーザーに諮る。ほかに、裁定に挙がっていない機能を消すときは、ユーザーの確認を経て単位を足す。
+テスト（`contrib/testing`）とコメント（`contrib/comments`）は裁定で残す。使って重ければ改めてユーザーに諮る。ほかに、裁定に挙がっていない機能を消すときは、ユーザーの確認を経て単位を足す。
 
 ## 5. 当て方
 
@@ -186,9 +186,9 @@ workbench の contrib のうち、他の部品から参照されることが少�
 
 1. 当たる: 6節の検査を通る。
 2. 型検査とビルドが通る: [02](02-repository-and-build.md) の4節の5・6。
-3. 消えている: `checks` の `absentCommands`（コマンドパレットに出ない）、`absentViews`（ビュー・メニューに出ない）、`absentSettings`（設定の画面に出ない）、`absentProcesses`（Process Explorer にその機能のプロセスが無い）、`absentHosts`（その機能の外向きの接続が無い）。
+3. 消えている: `checks` の `absentCommands`（コマンドパレットに出ない）、`absentViews`（ビュー・メニューに出ない）、`absentSettings`（設定の画面に出ない）、`absentProcesses`（Process Explorer にその機能のプロセスが無い）。`absentHosts`（その機能の外向きの接続が無い）は、通信の監査をやめたので見ない（裁定 2026-11-13）。
 4. 壊れていない: 単位の `smoke` の組を通る（[06](06-update-watch-and-take-in.md) の5節）。特に Claude Code 拡張の確認の組。起動時の開発者ツールのコンソールと拡張ホストのログに、前の段階に無かったエラーが出ない。
-5. 増えていない: メモリの計測（[07](07-phases.md) の3節）で、5回の中央値が前の段階を上回らない（ばらつきの範囲は許す）。段階 A・B を終えた時点、その後の各単位の後で、本家より少ないことを保つ。
+5. （やめた）増えていない: メモリの計測で前の段階を上回らない。計測をやめたので見ない（裁定 2026-11-13）。
 
 通らないときは、直すか、`enabled: false` のままにして理由を README に書き、次の単位へ進む。ただし、無効のままにした単位を `after` に挙げている後の単位は当てられない（5.1）。その単位も無効にするか、`after` を見直す。
 
@@ -204,6 +204,6 @@ workbench の contrib のうち、他の部品から参照されることが少�
 ## 9. Claude Code 拡張が依存する部分の扱い
 
 - manifest（2.1.322、win32-x64）に、`chatParticipants`・`languageModelTools`・`languageModelChatProviders`・`mcpServerDefinitionProviders`・`enabledApiProposals`・`extensionDependencies` は無い [一次] https://open-vsx.org/api/Anthropic/claude-code/win32-x64/2.1.322/file/package.json 。宣言の上では、本家のチャットにも提案中の API にも依存していない。
-- contributes にあるのは `configuration`・`jsonValidation`・`commands`・`keybindings`・`viewsContainers`（アクティビティバーと**セカンダリサイドバー**）・`views`（Webview）・`walkthroughs`・`menus`。起動は `onStartupFinished` と `onWebviewPanel:claudeVSCodePanel`。これらの受け手（Webview、セカンダリサイドバー、JSON の検査、ワークスペースの信頼）は消さない。
+- contributes にあるのは `configuration`・`jsonValidation`・`commands`・`keybindings`・`viewsContainers`（アクティビティバーと**セカンダリサイドバー**）・`views`（Webview）・`walkthroughs`・`menus`。起動は `onStartupFinished` と `onWebviewPanel:claudeVSCodePanel`。これらの受け手（Webview、セカンダリサイドバー、JSON の検査、ワークスペースの信頼）は消さない。Phase 0 の 0-1 で `menus` に、`comments/commentThread/title`（`commentController == claude-code-hunks`。変更の塊の受け入れ・却下にコメントの API を使う見込み）、`editor/context`・`editor/title`（独自のファイルシステムの提供者 `_claude_vscode_fs_right` と差分エディタ）、`webview/context`、`commandPalette` も見つけた。コメント（`contrib/comments`）、差分エディタ、拡張のファイルシステムの提供者、これらのメニューの場所も消さない（`records/phase0/claude-code-manifest.md`）。
 - 宣言に出ない実行時の依存（コードの中で `vscode.lm` などを呼ぶか）は、圧縮されたコードを読まずには分からない（裁定で読まない）。C-1 の関門のスモークで確かめる。壊れたら、拡張ホストのログの誤りから使われた API を特定し、その部分を `kept` に入れて残す。
 - manifest の確認は、Claude Code 拡張の版を上げるたびに行う（[04](04-bundled-extensions.md) の4節の5）。上の項目が増えたら、残す部分を見直す。

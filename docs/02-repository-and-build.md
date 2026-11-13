@@ -98,7 +98,7 @@ C:\b\dist\                        zip の置き場
 4. 依存の導入: 本家のタグの手順に従う。1.146.0 は pnpm を使っている見込み（`extensions/pnpm-workspace.yaml` があり、smoke テストの README が `pnpm install` と書く）。How-to-Contribute の wiki はまだ `npm install` と書いている [一次] `sources/research-vscode-source.md` の2節・10節。どちらで動くかは Phase 1 で確かめる。消した拡張の分だけロックファイルが変わる。ロックファイルはパッチにせず、ここで作り直し、差分を記録に残す（[03](03-removal-design.md) の5.4）。
 5. 型検査: 本家の package.json の scripts から、型検査だけを走らせるものを Phase 1 で選ぶ（推定の候補 `compile`、`valid-layers-check`）。コードを消したあとの参照の残りは、ここで見つかる。
 6. パッケージ化: `npm run gulp vscode-win32-x64-min`（タグが pnpm なら `pnpm run gulp ...`）。gulp は npm 経由で動かす（"Run gulp via npm to avoid potential out of memory issues"）[一次] https://github.com/microsoft/vscode/wiki/How-to-Contribute 。タスク名と出力先（作業ツリーの親の直下の `VSCode-win32-x64`）は 1.146.0 の `build/gulpfile.vscode.ts` で確かめた [一次] `sources/research-vscode-source.md` の4節。
-7. 後処理: 出力の `resources/app/extensions` に、消した拡張のフォルダが残っていないこと、`builtin/keep.json` の拡張がそろっていることを確かめる。LICENSE と ThirdPartyNotices を残す。
+7. 後処理: 出力の `resources/app/extensions` に、消した拡張のフォルダが残っていないこと、`builtin/keep.json` の拡張がそろっていることを確かめる。LICENSE と ThirdPartyNotices を残す。本家 1.146 系の公式の zip は `resources\app\` を commit の先頭10桁のフォルダの下に置く（`<展開先>\69047191fc\resources\app\`。Phase 0 で確認）。自分のビルドの出力が同じ形かを Phase 1 で確かめ、後処理と `switch.ps1` が `resources\app` を直下と決めつけないようにする。
 8. zip: 本家の gulp には zip を作るタスクが見当たらない（`build/gulpfile.vscode.ts` と `build/gulpfile.vscode.win32.ts` には無い。ビルド全体は未確認）。出力のフォルダを `Shuko-win32-x64-<label>` に改名し、Windows 標準の `tar.exe` で `tar -a -c -f <label>.zip <フォルダ>` とする（tar.exe の zip 作成は推定。Phase 1 で確かめ、だめなら 7-Zip）。zip の SHA-256 を記録する。
 
 ### 4.1 自前の組み込み拡張の入れ方
@@ -120,7 +120,7 @@ C:\b\dist\                        zip の置き場
 | Claude Code の CLI | 取り込みの判定（`claude -p`） |
 
 - Electron の版はルートの package.json の `nativeBuild.target` で決まる（1.146.0 は 43.8.6）。Electron は本家のタグに付いてくるので、別に上げない。取得物は `build/checksums/electron.txt` で照合される [一次] `sources/research-vscode-source.md` の2節。
-- 所要時間・ディスク・ピークのメモリの公式の値は見つからなかった。Phase 1 で測って記録する。
+- 所要時間・ディスク・ピークのメモリの公式の値は見つからなかった。Phase 1 で所要時間とディスクを記録する。
 - 失敗したときは、本家の案内どおり `git clean -xfd` してから入れ直す。node-gyp のキャッシュ（`%USERPROFILE%\AppData\Local\node-gyp`）を消すことも案内されている。
 
 ## 6. 配布の形（版ごとのフォルダと切り替え）

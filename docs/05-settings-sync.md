@@ -88,7 +88,7 @@
 - Notion-Version ヘッダは必須 [一次] https://developers.notion.com/reference/versioning 。`2025-09-03` を使う（更新の検知と同じ版）。
 - レート制限: 平均 3 回/秒（Business・Enterprise 以外）。超えると 429 と `Retry-After`（秒）が返るので、それに従って待つ。529 も同じに扱う [一次] https://developers.notion.com/reference/request-limits 。
 - 1回の書き換えで送るのは、変わったファイルのブロックと manifest だけ。1リクエストは 500KB・1000 ブロック要素まで（同ページ）。
-- 外向きの接続先は `api.notion.com` だけ。外向き通信の監査で、許した宛先として扱う。
+- 外向きの接続先は `api.notion.com` だけ。
 
 ## 9. 拡張の設計の大枠
 
@@ -96,5 +96,5 @@
 - 設定: `notionSync.pageId`、`notionSync.ignoredSettings`、`notionSync.enabled`（既定 false。トークンとページを設定したら true にする）。
 - コマンド: 取り込む、書き出す、差分を見る、トークンを設定、トークンを消す。
 - 状態: ステータスバーに「同期済み」「未同期」「競合あり」。
-- メモリ: Claude Code などと同じ拡張ホストで動く小さな拡張（推定で小さい）。計測の対象に含める。
+- メモリ: Claude Code などと同じ拡張ホストで動く小さな拡張（推定で小さい）。
 - テスト: Notion API の呼び出しを差し替えられるようにし、競合の3通り、分割（2000 文字の境目）、ignoredSettings の保ち方、429 の再試行を単体テストにする。

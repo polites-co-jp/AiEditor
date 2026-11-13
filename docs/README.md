@@ -10,7 +10,7 @@ Claude Code でのコーディングに特化した、省メモリの VS Code �
 | 順 | ファイル | 中身 | いつ読むか |
 |---|---|---|---|
 | 1 | [00-overview.md](00-overview.md) | 目的、使う場面、方針、ユーザーの裁定の一覧、用語 | 最初に必ず |
-| 2 | [07-phases.md](07-phases.md) | Phase 0 から運用までの段取り、各段階の完了条件、メモリの計測手順 | 次に。Phase 0 の手順はここにある |
+| 2 | [07-phases.md](07-phases.md) | Phase 0 から運用までの段取り、各段階の完了条件（計測の手順は残すが使わない） | 次に。Phase 0 の手順はここにある |
 | 3 | [01-requirements.md](01-requirements.md) | 残す・足す・消す機能の一覧、言語ごとの言語機能、外部ツールの入れ方 | 何を作るかを知るとき |
 | 4 | [02-repository-and-build.md](02-repository-and-build.md) | リポジトリの構成、product.json の上書き、Windows でのビルド、zip、版ごとのフォルダ | Phase 1 の前 |
 | 5 | [03-removal-design.md](03-removal-design.md) | コードを消す方法（削除の単位、適用の順、パッチの保ち方、戻し方）、削除の単位の一覧 | Phase 2 の前 |

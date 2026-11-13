@@ -32,12 +32,12 @@
 | スニペット | 本体 | `contrib/snippets` | 同期の対象（[05](05-settings-sync.md)） |
 | 自動整形 | 本体＋各言語 | `contrib/format` と各言語機能 | — |
 | タイムライン・ローカル履歴 | 本体 | `contrib/timeline`、`contrib/localHistory` | — |
-| テスト（テストの一覧と実行） | 本体 | `contrib/testing` | 裁定で残す。計測で重ければ改めて諮る。デバッグを消す C-2 の影響を受ける見込み（推定） |
-| コメント | 本体 | `contrib/comments` | 裁定で残す。計測で重ければ改めて諮る |
+| テスト（テストの一覧と実行） | 本体 | `contrib/testing` | 裁定で残す。使って重ければ改めて諮る。デバッグを消す C-2 の影響を受ける見込み（推定） |
+| コメント | 本体 | `contrib/comments` | 裁定で残す。使って重ければ改めて諮る |
 | ワークスペースの信頼・制限モード | 本体 | `contrib/workspace`、`services/workspaces` | **必須**。Claude Code 拡張は制限モードで動かない（manifest の `capabilities.untrustedWorkspaces.supported: false`）[一次] https://open-vsx.org/api/Anthropic/claude-code/win32-x64/2.1.322/file/package.json |
 | 拡張の実行（拡張ホスト） | 本体 | `src/vs/workbench/api`、`services/extensions` | 同梱した拡張を動かすために必須 |
 | 拡張のインストール（CLI のみ） | 本体 | `src/vs/platform/extensionManagement` | 台帳の VSIX を `--install-extension` で入れるために残す。画面からの検索・追加は消す（C-5） |
-| 動作中の拡張の一覧・Process Explorer | 本体 | `contrib/extensions/electron-browser` の runtime extensions、`contrib/processExplorer` | 計測と不具合の調査に使う。C-5 で消さずに残す |
+| 動作中の拡張の一覧・Process Explorer | 本体 | `contrib/extensions/electron-browser` の runtime extensions、`contrib/processExplorer` | 不具合の調査と、関門の「消えている」の確認に使う。C-5 で消さずに残す |
 | 日本語の表示 | 同梱 | 言語パック `MS-CEINTL.vscode-language-pack-ja` | [04](04-bundled-extensions.md) |
 | Sublime Text のキー割り当て | 自前 | `mydist` の `contributes.keybindings` | `ms-vscode.sublime-keybindings`（MIT）から一度だけ変換する（[04](04-bundled-extensions.md)） |
 | 固定のテーマ（Light Modern） | 組込＋設定 | `extensions/theme-defaults`、`workbench.colorTheme` を既定で固定 | 他の色のテーマは消す（A-6）。ファイルのアイコン `extensions/theme-seti` は残す |
@@ -55,7 +55,7 @@
 | 更新の検知と ToDo の書き込み | ビルドリポジトリ | `tools/watch/` | [06](06-update-watch-and-take-in.md) |
 | 取り込みと判定 | ビルドリポジトリ | `scripts/take-in.mjs`、`TAKE-IN.md` | [06](06-update-watch-and-take-in.md) |
 | 版ごとのフォルダと切り替え | ビルドリポジトリ | `scripts/switch.ps1` | [02](02-repository-and-build.md) の6節 |
-| メモリの計測と外向き通信の監査 | ビルドリポジトリ | `scripts/measure.ps1`、`scripts/netaudit.ps1` | [07](07-phases.md) の3節 |
+| メモリの計測と外向き通信の監査 | ビルドリポジトリ | `scripts/measure.ps1`、`scripts/netaudit.ps1` | [07](07-phases.md) の3節。使わない（裁定 2026-11-13。台本は残す） |
 
 ## 3. 消す機能
 

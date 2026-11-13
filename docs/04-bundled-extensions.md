@@ -19,7 +19,7 @@
 | ms-vscode.powershell | 2025.4.0 | 2025-10-09 | "SEE LICENSE IN LICENSE.txt"。GitHub と VSIX 内の LICENSE.txt はどちらも MIT License [一次] https://raw.githubusercontent.com/PowerShell/vscode-powershell/main/LICENSE.txt 。サーバー側（PSES）のライセンスは未確認 | ^1.101.0 | true | PowerShell |
 | mads-hartmann.bash-ide-vscode | 1.43.2 | 2026-09-21 | MIT | ^1.91.0 | true | sh |
 | mechatroner.rainbow-csv | 3.24.1 | 2026-03-01 | MIT | ^1.95.0 | true | CSV |
-| dotenv.dotenv-vscode または weixu.wx-vsce-dotenv | 1.5.8 / 0.2.3 | 2026-10-01 / 2026-10-15 | MIT / MIT | ^1.65.0 / ^1.96.0（要照合） | true / true | .env。裁定: Phase 0 の 0-3 で両方を試し、エラー表示を持つほうを1つ載せる |
+| dotenv.dotenv-vscode または weixu.wx-vsce-dotenv | 1.5.8 / 0.2.3 | 2026-10-01 / 2026-10-15 | MIT / MIT | ^1.65.0 / ^1.96.0 | true / true | .env。裁定: Phase 0 の 0-3 で両方を試し、エラー表示を持つほうを1つ載せる |
 | tomoki1207.pdf | 1.2.2 | 2022-12-23 | API に表示なし。GitHub の LICENSE と VSIX 内の LICENSE.txt はどちらも MIT License（著作権者 tomoki1207。冒頭に PDF.js などの第三者の表記あり）[一次] https://raw.githubusercontent.com/tomoki1207/vscode-pdfviewer/master/LICENSE | ^1.46.0 | true | PDF プレビュー |
 | MS-CEINTL.vscode-language-pack-ja | 1.131.0 | 2026-07-28 | "SEE MIT LICENSE IN LICENSE.md" | ^1.131.0 | true | 日本語化 |
 
@@ -83,8 +83,8 @@
 4. **寝かせる期間（裁定）**: 公開から72時間未満の版は、セキュリティ修正でない限り入れない。確認の時点でその版が取り下げられていないことも見る。取り下げの確認には、判定の時刻に取り直した版の一覧を使う。毎週の取り込みでは `lock-fetch` と `lock-verify` を続けて走らせる（Phase 0 の 0-6 の検証の指摘 N-2 を受けたリーダーの判断。Phase 0 では取得から7時間後の一覧で判定した）。理由: 2.1.313 の悪性版が Open VSX に出たという報道（[二次・本文未読] https://runtimewire.com/article/trojanized-claude-code-extension-open-vsx-ssh-backdoor）と、Open VSX が誤って悪性と判定した件（[一次] https://github.com/anthropics/claude-code/issues/5762）。
 5. **manifest の差分**: 前の版からの package.json の変化を Claude が読む。見る項目: `activationEvents`、`contributes`（特に `chatParticipants`・`languageModelTools`・`languageModelChatProviders`・`mcpServerDefinitionProviders`・`debuggers`・`notebooks` が増えていないか）、`extensionDependencies`、`enabledApiProposals`、`engines`、`main`、`capabilities`。増えていたら、消した機能に依存し始めた恐れとして判定に書く（[03](03-removal-design.md) の9節）。
 6. **ファイル一覧の差分**: VSIX（zip）の中のファイルの一覧を前の版と比べる。新しい実行ファイル（.exe・.dll・.node）、大きなサイズの変化を見る。圧縮された JS の中身は読まない（裁定）。
-7. **ライセンス**: 本文のハッシュが前の版と同じ。変わっていれば本文の差分を判定に書く。
-8. **ウイルスの走査**: Microsoft Defender で VSIX を走査する（例 `MpCmdRun.exe -Scan -ScanType 3 -File <vsix>`。引数は推定。Phase 0 で確かめる）。
+7. **ライセンス**: 本文のハッシュが前の版と同じ。変わっていれば本文の差分を判定に書く。VSIX に LICENSE のファイルが無い拡張（Claude Code・bash-ide-vscode・言語パック。Phase 0 で確認）は、manifest の `license` の文を比べる。
+8. **ウイルスの走査**: Microsoft Defender で VSIX を走査する（`MpCmdRun.exe -Scan -ScanType 3 -File <vsix> -DisableRemediation`。Phase 0 で公式の文書と実機で確かめた。戻り値 0＝検出なし、2＝検出か誤り。場所は `C:\ProgramData\Microsoft\Windows Defender\Platform\<版>\MpCmdRun.exe`）。
 9. **engines**: `engines.vscode` が、今の本体の版（と、取り込み中の新しい本体の版）を満たす。
 10. **一時的な置き場所でのスモーク**: `--user-data-dir` と `--extensions-dir` を一時フォルダにして入れ、スモークの組（[06](06-update-watch-and-take-in.md) の5節）を通す。
 
@@ -96,7 +96,7 @@
 2. SHA-256 を台帳と照合する。違えば止める。
 3. 言語パックを先に、残りを台帳の順に `<editor> --install-extension <vsix> --force` で入れる。
 4. 台帳に無い拡張が入っていたら、一覧を出して止める（消すかはユーザーが決める）。
-5. `argv.json` に `"locale": "ja"` を書く（7節）。
+5. `argv.json` に `"locale": "ja"` を書く（7節）。ファイルの末尾は `\n}` で終える（既存の中身を書き換えるときも同じ）。エディタは初めての起動で末尾の2文字を切って `enable-crash-reporter` などを足すため、`}` の後に改行があると壊れた JSON になり、`locale` が効かなくなる（Phase 0 で実際に起きた）。
 
 - 拡張の置き場所はユーザーごとに1つ（推定 `%USERPROFILE%\.shuko\extensions`）。版のフォルダを切り替えても拡張はそのまま。`switch.ps1` は、切り替える先の本体の版が台帳の `engines` を満たすかを確かめ、満たさなければ止まる。
 - **戻し方**: 台帳はビルドリポジトリの git にある。`install-extensions.mjs --rev <コミット>` で、その時点の台帳の版を入れ直す。前の版の VSIX はキャッシュに残す。
@@ -128,7 +128,7 @@
 ### 6.2 Sublime Text のキー割り当て
 
 - 元: `ms-vscode.sublime-keybindings` 4.1.10（MIT、Open VSX で verified、2024-01-22 から更新なし）[一次] https://open-vsx.org/api/ms-vscode/sublime-keybindings 、https://github.com/microsoft/vscode-sublime-keybindings/blob/main/LICENSE.md 。
-- `scripts/convert-sublime-keys.mjs` で、元の `contributes.keybindings` の各項目から Windows 向けのキー（`win` があればそれ、無ければ `key`）と `command`・`when` を抜き出し、`mydist` の `contributes.keybindings` に書く。一度だけ行い、結果をビルドリポジトリに置く。元の版を README に書く。
+- `scripts/convert-sublime-keys.mjs` で、元の `contributes.keybindings` の各項目から Windows 向けのキー（`win` があればそれ、無ければ `key`）と `command`・`when`・`args` を抜き出し、`mydist` の `contributes.keybindings` に書く。選んだキーが `none` の項目と、知らない修飾キーを含む項目（4.1.10 の `ctr+shift+[` など）は落とす（Phase 0 の 0-10。`records/phase0/sublime-keys.md`）。一度だけ行い、結果をビルドリポジトリに置く。元の版を README に書く。
 - MIT の著作権表示と許諾文を `extensions-src/mydist/ThirdPartyNotices.txt` に残す。
 - 消した機能（デバッグなど）のコマンドを指す項目は落とす（落とした一覧を残す）。
 - Claude Code 拡張の既定のキー（`ctrl+escape`、`ctrl+shift+escape`、`ctrl+alt+f`、`ctrl+alt+k` など。manifest の `keybindings` 9件）と衝突しないかを、変換のときに一覧にする [一次] Claude Code の manifest。
@@ -141,7 +141,7 @@
 
 ## 7. 日本語化
 
-- 言語パック `MS-CEINTL.vscode-language-pack-ja` を台帳に載せて入れる。表示言語は `argv.json` の `"locale": "ja"` で決める（`argv.json` の場所は推定 `%USERPROFILE%\.shuko\argv.json`。Phase 1 で確かめる）。
+- 言語パック `MS-CEINTL.vscode-language-pack-ja` を台帳に載せて入れる。表示言語は `argv.json` の `"locale": "ja"` で決める（`argv.json` の場所は `%USERPROFILE%\<product の dataFolderName>\argv.json`。`dataFolderName` を `.shuko` にすれば `%USERPROFILE%\.shuko\argv.json`。環境変数 `VSCODE_PORTABLE` があれば `<VSCODE_PORTABLE>\argv.json`。`--user-data-dir` は関係しない [一次] 本家 1.146.0 の `src/mainImpl.ts` の `getArgvConfigPath`（Phase 0 で確認）。Phase 1 で実際の場所を確かめる）。
 - Open VSX の最新は 1.131.0（engines ^1.131.0）で、本体の 1.146.0 より古い。版の番号は VS Code の版と一致している [二次] Open VSX の版の一覧。新しい本体で使うと、未訳の部分が英語で出るだけで済む見込み（推定）。Phase 0 の 0-7 で確かめる。
 - 裁定: 未訳の部分が英語になるのを受け入れる。目立つなら改めてユーザーに諮る。
 - 目立つときに諮る別案: vscode-loc（MIT）のソースから、本体と同じ版の言語パックを自分で包んで台帳に載せる。ただし vscode-loc の文字列の最終更新は 2026-09-04 で、どの本体の版に対応するかの記述は無い [一次] https://github.com/microsoft/vscode-loc/commits/main 。

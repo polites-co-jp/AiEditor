@@ -22,7 +22,6 @@
 | 新しい版がユーザーのデータ（`state.vscdb` など）を書き換え、前の版に戻すと不具合 | 戻したあとに設定や状態がおかしい | 切り替えの前にユーザーのデータを写す（[02](02-repository-and-build.md) の6節） | 切り替えのたび |
 | Notion のトークンの漏れ | 設定ページや ToDo を読み書きされる | インテグレーションを用途ごとに分け、接続先を1ページ・1データベースに絞る。SecretStorage と DPAPI で保管し、ログに出さない | Phase 4 |
 | Notion API の版の変化 | 同期や ToDo の書き込みが止まる | Notion-Version を固定（`2025-09-03`）。検知の失敗を3日で知らせる | 運用 |
-| 計測のばらつき | 合否が揺れる | 1回目を捨て、5回の中央値と範囲を記録する。差が範囲より小さいことも記録する | 毎週 |
 | 署名の無い実行ファイル | SmartScreen や Defender の誤検知 | 手元でビルドしたものはダウンロードの印が付かないので出にくい（推定）。誤検知が出たら記録し、ユーザーに知らせる | Phase 1 |
 | 毎週の検証で、セキュリティ修正の取り込みが遅れる | 攻撃を受けうる期間が延びる | セキュリティ修正の ToDo は優先度「高」・期限は翌日。当て直しが壊れたら、壊れた単位を無効にした版を作る案を判定に書く（[03](03-removal-design.md) の8節） | 運用 |
 | 開発チームの権限のフック（`team/hooks/`）には限界があり、次の形は止まらない。(1) メンバーが書いたスクリプトを走らせたとき、その中の動き。(2) 蒙恬の pnpm で、2つ目の `--dir`、`--store-dir` などの場所の上書き、`--config.*`。(3) `git -C C:/b/vscode fetch --tags` の後ろの任意の取得元。(4) `npx --prefix … tsc --noEmit -p <自分で書いた tsconfig>` による書き出し。(5) glob・8.3 の短い名前・組み立てたパスによる秘密の場所の参照 | 許可の意図から外れた場所に書く・読む | 蒙恬と曹参は自分のコードを走らせられるので、(2)〜(4) は新しい危険ではない（裁定 2026-11-13: 既知の限界として受け入れる）。`node --check` は許可を場所まで書く形にして塞いだ。大岡越前守の検証で、書き込み先の外の変更を `git status` で確かめる。根本の対策は OS のサンドボックス（未着手） | 運用 |
@@ -35,7 +34,7 @@
 | `chat.disableAIFeatures: true` で Claude Code の全機能が動き、表示場所が隠れない | 0-2 |
 | Code - OSS 系のビルドで組み込み拡張を消しても Claude Code が動く。提案中の API の許可が要らない。消した拡張による警告 | 0-3 |
 | basedpyright が Python 本体なしで動くか。.env の拡張の診断の有無 | 0-3 |
-| 計測の手順と本家の基準値 | 0-4 |
+| 計測の手順と本家の基準値 | 0-4（中止。裁定 2026-11-13） |
 | 外向き通信の一覧 | 0-5 |
 | VSIX の SHA-256 と `.sha256` の一致、`ovsx verify-signature` の手順、同梱の CLI と Anthropic の manifest の一致、Authenticode | 0-6 |
 | 言語パック 1.131.0 を新しい本体で使ったときの表示 | 0-7 |
@@ -43,7 +42,7 @@
 | 組み込み拡張の `configurationDefaults` で、ほかの部品の設定と application スコープの設定を既定にできるか | 0-9 |
 | 公式 zip の版を指定する URL（`https://update.code.visualstudio.com/<版>/win32-x64-archive/stable`） | 0 の用意 |
 | npm か pnpm か、型検査の script、実行ファイルの名前、ユーザーのデータ・拡張・`argv.json` の場所、`tar.exe` での zip、`test/smoke` の `--build` | Phase 1 |
-| ビルドの所要時間・ディスク・ピークのメモリ | Phase 1 |
+| ビルドの所要時間・ディスク | Phase 1 |
 | `urlProtocol` を変えたときの Claude Code の URI ハンドラ | Phase 1 |
 | `extensions/mydist` が `extensions/*/package.json` の走査で同梱されるか。先にビルドした `notion-sync` が同梱されるか | Phase 2 |
 | ロックファイルの差分が「消した依存の削除」だけになるか | Phase 2 |
@@ -72,7 +71,7 @@
 | 論点 | 決定 | 反映した箇所 |
 |---|---|---|
 | 拡張 API の入口（`vscode.debug`・`vscode.notebooks`・`vscode.lm`・`vscode.chat` など） | 入口は何もしない実装にして残し、中身のコードは消す | [03](03-removal-design.md) の2節の4 |
-| 裁定に無かった機能 | `terminal-suggest` は消す（A-7）。テストとコメントは残す。計測で重ければ改めて諮る | [01](01-requirements.md)、[03](03-removal-design.md) |
+| 裁定に無かった機能 | `terminal-suggest` は消す（A-7）。テストとコメントは残す。使って重ければ改めて諮る | [01](01-requirements.md)、[03](03-removal-design.md) |
 | .env の拡張 | Phase 0 で `dotenv.dotenv-vscode` と `weixu.wx-vsce-dotenv` を試し、エラー表示を持つほうを採る | [01](01-requirements.md) の4節、[04](04-bundled-extensions.md) の2節、[07](07-phases.md) の 0-3 |
 | 拡張の新版を寝かせる期間 | 公開から72時間未満の版は、セキュリティ修正でない限り入れない | [04](04-bundled-extensions.md) の4節の4、[06](06-update-watch-and-take-in.md) の2.3 |
 | 更新の検知のトークン | DPAPI で暗号化したファイルに置く | [06](06-update-watch-and-take-in.md) の2.4 |
@@ -92,9 +91,8 @@
    - 言語パックの英語の表示が目立つとき（0-7）。
    - Claude Code が動かず、残す部分が裁定の範囲で決められないとき。
 4. **運用しながら諮ること**:
-   - テストとコメントが、計測で重いと分かったとき。
+   - テストとコメントが、使って重いと分かったとき。
    - C-7（パンくずリスト）が関門を2回続けて通らないとき（5節の別案）。
-   - Phase 2 で合格しないとき、次に消す候補（[07](07-phases.md) の5節）。
    - `urlProtocol` を本家と分けたことで、日常の操作に要る Claude Code の URI ハンドラが効かないとき（1節）。
 
 ## 5. 別案（裁定や推奨と違う案）
