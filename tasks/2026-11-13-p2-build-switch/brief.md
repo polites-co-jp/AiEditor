@@ -2,7 +2,7 @@
 
 - 担当: meng-tian（蒙恬）
 - 依頼日: 2026-11-13
-- 状態: 依頼中
+- 状態: 完了
 
 ## 目的
 
@@ -42,11 +42,11 @@
 
 ## 結果
 
-<完了後にリーダーが記入する。成果の要点と採否>
+採用。`build.mjs`・`install-extensions.mjs`・`configure.ps1`・`switch.ps1`（`-ExpandOnly` を含む）・`local-config.*`。検証で合格。ビルドの一連の実行は道具の導入の後。
 
 ## 未解決
 
-<残った課題・持ち越し。無ければ「なし」>
+- ビルドの一連（install・typecheck・package）の実行。
 
 ## 次の担当
 

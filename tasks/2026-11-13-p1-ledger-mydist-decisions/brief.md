@@ -2,7 +2,7 @@
 
 - 担当: meng-tian（蒙恬）
 - 依頼日: 2026-11-13
-- 状態: 依頼中
+- 状態: 完了
 
 ## 目的
 
@@ -48,11 +48,11 @@
 
 ## 結果
 
-<完了後にリーダーが記入する。成果の要点と採否>
+採用。台帳を8件に（.env は weixu.wx-vsce-dotenv）、mydist の既定を裁定に合わせた（通信を止める4件、`claudeCode.environmentVariables`、application スコープの6件は外す）。application スコープの既定は案B-2（product.json と小さなパッチ）に決めた。検証（3）で合格。
 
 ## 未解決
 
-<残った課題・持ち越し。無ければ「なし」>
+なし
 
 ## 次の担当
 
