@@ -124,6 +124,7 @@
 | `npm.fetchOnlinePackageInfo` | `false` | npm のパッケージ情報の取得を止める（同上） | — |
 | `json.schemaDownload.enable` | `false` | JSON の schema の取得を止める（同上） | — |
 | `workbench.settings.enableNaturalLanguageSearch` | `false` | 設定の検索の通信を止める（同上） | — |
+| Claude Code の拡張が CLI に渡す環境変数 | `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1` | CLI の付帯の通信（テレメトリ、エラーの報告、自動更新の確認など）を止める（裁定 2026-11-13）。設定の名前と形は Claude Code の manifest の `configuration` で確かめる（Phase 2） | — |
 
 - 組み込み拡張の `configurationDefaults` で、ほかの部品の設定（`chat.disableAIFeatures` など）や application スコープの設定（`extensions.allowed`）を既定にできるかは未確認。Phase 0 の 0-9 で確かめ、組み込み拡張として同梱したときの効き方を Phase 2 で確かめる。できないものは、product.json の上書きか小さなパッチで既定を変える。
 - `files.watcherExclude` を広げるとメモリが大きく減ったという報告がある（[二次] Stack Overflow の回答へのコメント。版不明）。Phase 2 で、`node_modules` などを足した既定を測って決める。
