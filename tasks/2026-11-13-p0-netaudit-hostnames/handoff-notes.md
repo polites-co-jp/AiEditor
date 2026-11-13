@@ -42,4 +42,14 @@
 5. **試しの跡。**
    - `tests/probe-dns.ps1`、`tests/probe-netlog.ps1`、`tests/probe-netlog2.ps1`、`tests/probe-nodedebug.ps1` は調べ用の使い捨て（テストではない）。私の権限では消せないので、不要ならリーダーが消す。`probe-netlog*.ps1` はネットのログのイベントを生で表示するので、秘密が出る恐れがある。
    - `trial/net60/netlog-hosts.csv` は途中の版の出力の残り（最新は `named-hosts.csv`）。`trial/probe1/` は最初の予備（40秒、名前なしの版との比較用）。
+## 追記: 検証の指摘3点（verification-log.md の1.6）への対応
+
+- 結果: 完了。エディタを起動する実機の試しはしていない（依頼どおり）。
+- 指摘1（Node の接続に Chromium 側の強い名前が付く）: `New-DestinationRows` が、ネットのログの対応表（`OnlyRoles = utility-network, main`）の名前を、行の Roles がすべてその2つのときだけ「強い名前」にするようにした。行に extension-host や agent-host などが混じるときは、名前を `名前 [netlog, shared with other process]` のヒントに落とす（`HostKey` は IP のまま、`Resolved` と `Allowed` に効かない）。DNS キャッシュの名前は従来どおり強い名前。
+  - 影響: 実機で Roles が混じった行（例: `default.exp-tas.com`、`mobile.events.data.microsoft.com`）は、これまで名前が付いていたが、ヒント表示になる。ホストごとの表（Hosts seen by name）には両方とも出るので、ホストは見落とさない。Chromium と Node を分けて数えれば混じった行の名前も保てるが、行の作り方が変わるので今回は見送った。必要ならリーダーの判断。
+  - audit.md の Limits の文も、この規則に合わせて直した。
+- 指摘2（`ExtraEnv` の戻しの単体テスト）: `tests/measure.tests.ps1` に4件を足した。子が値を見る・元が無ければ親に残らない、元の値を戻す（`VSCODE_PORTABLE` と併用）、起動に失敗しても戻る、`-StdoutFile`/`-StderrFile` に出力が入る。
+- 指摘3（冒頭の説明のファイル名）: `scripts/netaudit.ps1` の説明を `named-hosts.csv` に直した。
+- テスト: `tests/netaudit.tests.ps1` 通過102 / 失敗0（指摘1の4件を足した）。`tests/measure.tests.ps1` 通過138 / 失敗0（指摘2の4件を足した）。ASCII のみの検査も通っている。
+
 6. 10分の本番（0-5）はまだ行っていない。ネットのログは10分で 25 MB 前後になる見込み（40秒で 1.8 MB から見積もり。実測ではない）。

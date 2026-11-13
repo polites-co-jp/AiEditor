@@ -408,6 +408,49 @@ Test-Case 'portable env: our own value is restored when it was already set' {
     }
     finally { if ($null -ne $saved) { $env:VSCODE_PORTABLE = $saved } else { Remove-Item Env:\VSCODE_PORTABLE -ErrorAction SilentlyContinue } }
 }
+Test-Case 'extra env: the child sees ExtraEnv, our own environment gets nothing (variable was unset)' {
+    $name = 'P0TEST_EXTRA_A'
+    [Environment]::SetEnvironmentVariable($name, $null, 'Process')
+    $p = Start-EditorProcess -Exe 'cmd.exe' -Arguments ('/c if "%' + $name + '%"=="net" (exit 7) else (exit 3)') -Portable 'C:\p0test\user' -ExtraEnv @{ P0TEST_EXTRA_A = 'net' }
+    [void]$p.WaitForExit(20000)
+    Assert-Equal $p.ExitCode 7 'child saw the value'
+    Assert-True ($null -eq [Environment]::GetEnvironmentVariable($name, 'Process')) 'removed again in the parent'
+}
+Test-Case 'extra env: a value we already had is put back; VSCODE_PORTABLE is still handled' {
+    $name = 'P0TEST_EXTRA_B'
+    [Environment]::SetEnvironmentVariable($name, 'mine', 'Process')
+    $savedPortable = $env:VSCODE_PORTABLE
+    Remove-Item Env:\VSCODE_PORTABLE -ErrorAction SilentlyContinue
+    try {
+        $p = Start-EditorProcess -Exe 'cmd.exe' -Arguments ('/c if "%' + $name + '%"=="theirs" (if "%VSCODE_PORTABLE%"=="C:\p0test\user" (exit 7))') -Portable 'C:\p0test\user' -ExtraEnv @{ P0TEST_EXTRA_B = 'theirs' }
+        [void]$p.WaitForExit(20000)
+        Assert-Equal $p.ExitCode 7 'child saw both'
+        Assert-Equal ([Environment]::GetEnvironmentVariable($name, 'Process')) 'mine' 'restored'
+        Assert-True (-not (Test-Path Env:\VSCODE_PORTABLE)) 'portable not left behind'
+    }
+    finally {
+        [Environment]::SetEnvironmentVariable($name, $null, 'Process')
+        if ($null -ne $savedPortable) { $env:VSCODE_PORTABLE = $savedPortable }
+    }
+}
+Test-Case 'extra env: the variables are restored even when the start fails' {
+    $name = 'P0TEST_EXTRA_C'
+    [Environment]::SetEnvironmentVariable($name, $null, 'Process')
+    Assert-Throws { Start-EditorProcess -Exe 'C:\no-such-dir\no-such.exe' -Arguments '' -Portable 'C:\p0test\user' -ExtraEnv @{ P0TEST_EXTRA_C = 'x' } } 'start must fail'
+    Assert-True ($null -eq [Environment]::GetEnvironmentVariable($name, 'Process')) 'removed after the failure'
+    Assert-True (-not (Test-Path Env:\VSCODE_PORTABLE)) 'portable not left behind'
+}
+Test-Case 'extra env: StdoutFile and StderrFile receive the child output' {
+    $so = Join-Path ([IO.Path]::GetTempPath()) ("p0-so-" + [guid]::NewGuid().ToString('N') + '.txt')
+    $se = Join-Path ([IO.Path]::GetTempPath()) ("p0-se-" + [guid]::NewGuid().ToString('N') + '.txt')
+    try {
+        $p = Start-EditorProcess -Exe 'cmd.exe' -Arguments '/c echo out-line& echo err-line 1>&2' -Portable 'C:\p0test\user' -StdoutFile $so -StderrFile $se
+        [void]$p.WaitForExit(20000)
+        Assert-True ((Get-Content -LiteralPath $so -Raw) -match 'out-line') 'stdout'
+        Assert-True ((Get-Content -LiteralPath $se -Raw) -match 'err-line') 'stderr'
+    }
+    finally { Remove-Item -LiteralPath $so, $se -Force -ErrorAction SilentlyContinue }
+}
 $tmp2 = Join-Path ([IO.Path]::GetTempPath()) ("measure-tests2-" + [guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path $tmp2 | Out-Null
 try {

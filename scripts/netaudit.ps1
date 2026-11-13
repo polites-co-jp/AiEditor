@@ -13,7 +13,7 @@
   (at the start, at the end, and every -DnsIntervalSeconds; often empty, see
   hostname-design.md), (3) weak hints only (reverse lookup, forward lookup of the
   allowlist hosts) that never make a destination "allowed" (-NoHints skips them).
-  Output: samples.csv, destinations.csv/json (with NameMethod), netlog-hosts.csv,
+  Output: samples.csv, destinations.csv/json (with NameMethod), named-hosts.csv,
   dns-cache.csv, audit.md. -NoNetLog starts the editor without the log.
 
   Destinations are split in two groups: "editor" and "claude" (claude.exe and its
@@ -675,12 +675,22 @@ function New-DestinationRows {
     foreach ($r in @($State.Values | Sort-Object FirstSeenElapsed, RemoteAddress)) {
         $names = @()
         $methods = @()
+        $weak = @()
         foreach ($sm in $strongMaps) {
             $got = @(Get-HostNames -Map $sm.Map -Address $r.RemoteAddress)
+            # A map with OnlyRoles (the net log: it only knows what the Chromium network service connected to) names a
+            # row only when every process role on the row is one of those. If Node code (extension host ...) also
+            # connected to the same address, the name may belong to another host, so it stays a hint.
+            if ($got.Count -gt 0 -and $sm.PSObject.Properties['OnlyRoles'] -and $sm.OnlyRoles) {
+                $foreign = @($r.Roles.Keys | Where-Object { @($sm.OnlyRoles) -notcontains $_ })
+                if ($foreign.Count -gt 0) {
+                    foreach ($g in $got) { $tag = "$g [$($sm.Method), shared with other process]"; if ($weak -notcontains $tag) { $weak += $tag } }
+                    continue
+                }
+            }
             if ($got.Count -gt 0) { $methods += $sm.Method }
             foreach ($g in $got) { if ($names -notcontains $g) { $names += $g } }
         }
-        $weak = @()
         if ($names.Count -eq 0) {
             foreach ($wm in $weakMaps) {
                 foreach ($g in @(Get-HostNames -Map $wm.Map -Address $r.RemoteAddress)) {
@@ -859,7 +869,7 @@ function New-AuditMarkdown {
     $md += '', '## Limits', '',
         '- UDP and connections shorter than the interval are missed (docs/07 3.3). Use pktmon or Resource Monitor if needed.',
         '- Loopback destinations are left out. They stay in samples.csv only if they were seen (they are not collected).',
-        '- Column "name from": netlog = the Chromium net log of the editor (resolver answers; valid for any process that reached the same address), dns-cache = Get-DnsClientCache, none = unresolved. A "hint only" name (reverse or forward lookup) never makes a destination allowed.',
+        '- Column "name from": netlog = the Chromium net log of the editor (names the host a Chromium socket was opened for; used only for rows whose processes are all the network service or main, otherwise it is shown as a hint), dns-cache = Get-DnsClientCache, none = unresolved. A "hint only" name (reverse or forward lookup) never makes a destination allowed.',
         '- The net log covers only the Chromium network service of the editor (requests from the windows and the main process). Node code (extension host, agent host) looks names up through Windows; its host names come from NODE_DEBUG=net ("node") - the host list is exact, the pairing of a host with an address is a hint (order of appearance within one pid).',
         '- claude.exe is not Node-instrumented here: its addresses are named only by a forward lookup of the allowlist hosts (hint) or when the same address is in the net log.',
         '- Not covered without administrator rights: lookups by processes that print nothing (DNS client event log, pktmon, TLS SNI). See hostname-design.md.'
@@ -1031,7 +1041,7 @@ function Invoke-NetAudit {
     }
     $extra = @()
     if ($nodeInfo -and $nodeInfo.Map.Count -gt 0) { $extra += [pscustomobject]@{ Method = 'node-debug'; Map = $nodeInfo.Map; Weak = $true } }
-    if ($netLog -and $netLog.Map.Count -gt 0) { $extra += [pscustomobject]@{ Method = 'netlog'; Map = $netLog.Map; Weak = $false } }
+    if ($netLog -and $netLog.Map.Count -gt 0) { $extra += [pscustomobject]@{ Method = 'netlog'; Map = $netLog.Map; Weak = $false; OnlyRoles = @('utility-network', 'main') } }
     if ($netLog -and $netLog.AnswerMap.Count -gt 0) { $extra += [pscustomobject]@{ Method = 'netlog-answer'; Map = $netLog.AnswerMap; Weak = $true } }
     # weak hints for addresses still unnamed after the net log and the DNS cache (never used for "allowed")
     $firstPass = @(New-DestinationRows -State $state -DnsMap $map -Previous $prev -List $allow.List -ExtraMaps $extra)

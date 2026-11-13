@@ -489,6 +489,38 @@ Test-Case 'rows+netlog: a host named by the net log and listed in the allowlist 
     $rows = @(New-DestinationRows -State $st -DnsMap @{} -Previous $null -List $list -ExtraMaps @($m))
     Assert-True $rows[0].Allowed ''
 }
+$nlOnly = [pscustomobject]@{ Method = 'netlog'; Map = $nlMap; Weak = $false; OnlyRoles = @('utility-network', 'main') }
+Test-Case 'rows+netlog: Node code (extension host) reaching the same address does not get the Chromium name - it stays a hint' {
+    $st = @{}
+    Update-Observations -State $st -Connections @((New-Conn 11 '13.107.5.93')) -ProcessIndex $index -ClaudeIds $claudeIds -Elapsed 2 -Time $tA -SampleIndex 1
+    $rows = @(New-DestinationRows -State $st -DnsMap @{} -Previous $null -List $null -ExtraMaps @($nlOnly))
+    Assert-Equal $rows[0].HostKey '13.107.5.93' 'host key stays the address'
+    Assert-True (-not $rows[0].Resolved) ''
+    Assert-Equal $rows[0].NameMethod 'none' ''
+    Assert-True ($rows[0].WeakNames -match 'default\.exp-tas\.com \[netlog, shared with other process\]') 'shown as a hint'
+}
+Test-Case 'rows+netlog: a row that has both the network service and the extension host is not named by the net log either' {
+    $st = @{}
+    Update-Observations -State $st -Connections @((New-Conn 10 '13.107.5.93'), (New-Conn 11 '13.107.5.93')) -ProcessIndex $index -ClaudeIds $claudeIds -Elapsed 2 -Time $tA -SampleIndex 1
+    $rows = @(New-DestinationRows -State $st -DnsMap @{} -Previous $null -List $list -ExtraMaps @($nlOnly))
+    Assert-True (-not $rows[0].Resolved) ''
+    Assert-True (-not $rows[0].Allowed) 'a hint never allows'
+}
+Test-Case 'rows+netlog: a row of the network service only still gets the net log name' {
+    $st = @{}
+    Update-Observations -State $st -Connections @((New-Conn 10 '13.107.5.93')) -ProcessIndex $index -ClaudeIds $claudeIds -Elapsed 2 -Time $tA -SampleIndex 1
+    $rows = @(New-DestinationRows -State $st -DnsMap @{} -Previous $null -List $null -ExtraMaps @($nlOnly))
+    Assert-Equal $rows[0].HostKey 'default.exp-tas.com' ''
+    Assert-Equal $rows[0].NameMethod 'netlog' ''
+}
+Test-Case 'rows+netlog: the DNS cache still names a Node row even when the net log may not' {
+    $st = @{}
+    Update-Observations -State $st -Connections @((New-Conn 11 '13.107.5.93')) -ProcessIndex $index -ClaudeIds $claudeIds -Elapsed 2 -Time $tA -SampleIndex 1
+    $dns = Get-DnsMap @((New-Dns 'dns.example.net' 1 '13.107.5.93'))
+    $rows = @(New-DestinationRows -State $st -DnsMap $dns -Previous $null -List $null -ExtraMaps @($nlOnly))
+    Assert-Equal $rows[0].HostKey 'dns.example.net' ''
+    Assert-Equal $rows[0].NameMethod 'dns-cache' ''
+}
 Test-Case 'rows: existing callers without ExtraMaps still work (four arguments)' {
     $rows = @(New-DestinationRows -State (New-StateFrom) -DnsMap $dnsMap -Previous $null -List $list)
     Assert-True ($rows.Count -ge 1) ''

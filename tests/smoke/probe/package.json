@@ -1,0 +1,12 @@
+{
+  "name": "smoke-probe",
+  "displayName": "Smoke probe (test only)",
+  "description": "tests/smoke の台本が --extensionDevelopmentPath で読み込む、動作確認用の拡張。配らない。",
+  "publisher": "smoke",
+  "version": "0.0.1",
+  "private": true,
+  "license": "MIT",
+  "engines": { "vscode": "^1.90.0" },
+  "main": "./extension.js",
+  "activationEvents": ["onStartupFinished"]
+}
