@@ -98,3 +98,12 @@
 - 状態: ステータスバーに「同期済み」「未同期」「競合あり」。
 - メモリ: Claude Code などと同じ拡張ホストで動く小さな拡張（推定で小さい）。
 - テスト: Notion API の呼び出しを差し替えられるようにし、競合の3通り、分割（2000 文字の境目）、ignoredSettings の保ち方、429 の再試行を単体テストにする。
+
+
+## 10. 実装で決めた細目（2026-11-14）
+
+細目は `tasks/2026-11-14-p4-notion-sync/notion-sync-design.md` と `doc-corrections.md` を正とする（この資料と食い違ったら、設計の書き物に合わせてこの資料を直す）。主なもの:
+
+- 基底はファイルごとに2つの sha256（手元と Notion）を持つ。rev は「読んだときの rev」と比べる。ブロックの ID は覚えない。
+- `ignoredSettings` は最上位のキーだけを扱う。構文の誤りのあるファイルは同期しない。
+- 依存は版を固定し、install スクリプトを走らせない（`extensions-src/notion-sync/pnpm-workspace.yaml` の `allowBuilds`）。ビルドは本体の道具を要らない。

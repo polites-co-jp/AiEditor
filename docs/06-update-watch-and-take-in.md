@@ -192,3 +192,19 @@ Claude Code の項目は、裁定の「実機の動作で判断する」に当�
 戻す:
 - エディタを閉じ、`switch.ps1 -Previous` を実行する。設定がおかしければ `backups\<日時>\` から戻す。
 - 原因を `records/take-in/<label>/issues.md` に書く。次の取り込みのとき Claude が読む。
+
+
+## 9. Phase 3・4 の実装で決めた細目（2026-11-14、リーダーの判断）
+
+台本の細目は設計の書き物を正とする: 取り込み `tasks/2026-11-14-p3-take-in/take-in-design.md`、検知 `tasks/2026-11-14-p4-watch/watch-design.md`。この資料と食い違ったら、設計の書き物に合わせてこの資料を直す。
+
+- 版のフォルダへの展開: 取り込みは `switch.ps1 <label> -Zip <zip> -Sha256 <sha> -ExpandOnly` で展開と確かめだけを行い、`current`・`history.txt`・`backups` に触らない。切り替えはユーザーが行う（裁定）。
+- 修理の `claude -p` の道具: 読む・探す・編集（`Read,Glob,Grep,Edit,Write`）だけ。Bash は渡さない。`git status`・`git diff` の中身は台本が依頼文に入れ、git の操作（`add`・`am --continue`・`format-patch`・`commit`）は台本が `shuko-apply` の名前で行う。`--strict-mcp-config` を付け、作業ツリーの `.mcp.json` のサーバーにつながない。
+- 修理の追加の作業場所: 取り込みのブランチ `take-in/<label>` の作業ツリー（`<buildRoot>\take-in\<label>\repo`。main から作る）。修理はそこの `removals/`・`patches/` を直し、main の作業ツリーは変えない。
+- 判定の形（7.3）に `kind`・`reasons`・`materialsRead`・`missingMaterials`・`userChecksBeforeSwitch`・`markdown` を足す。判定に要る材料（ビルド・スモーク・通信の監査の記録など）が足りないときは、合格にしない。
+- 記録 `records/take-in/<label>/` は判定役が読めるよう main の作業ツリーに書き、`adopt.mjs` がマージの後に記録のコミットを作る。プッシュはしない（ユーザーかリーダーが行う）。
+- 通信の監査の環境: 取り込みのたびに、新しい版の CLI で `install-extensions.mjs --portable` を使い、台帳の拡張を入れた一時の環境を作って `netaudit.ps1 -EnvDir` に渡す。
+- スモークの基準: 取り込みの手順 6 で、今の版の基準と比べたうえで、`--prime` の3回の和を `C:\b\smoke\baseline-<新しい版のラベル>.json` として残す。採った後は、それが次の基準になる。
+- ロックファイルの検査は、取り込みのブランチの `removals/` を読む（`build.mjs` から `apply.mjs --lockfile-check` に `--removals` を渡す）。
+- 衝突の解決の記録（rerere）は常設の clone で作業ツリーの間で共有する。
+- 検知（2節）の事実: 本家のリリースの `body` はリリースノートの URL だけで、security の記述はリリースノートのページで見る。Windows の既定の実行ポリシーでは `-File` の台本が動かないので、`read-secret.ps1` は `-ExecutionPolicy Bypass` を付けて呼ぶ。アドバイザリの「前回以降」は、公開の日時でなく、まだ見ていない ID で数える（`state.json` の `seenAdvisories`）。Notion の部品は `scripts/lib/notion-client.mjs`・`notion-todo.mjs` に置き、取り込みの書き戻しと共有する。
