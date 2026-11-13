@@ -1,0 +1,69 @@
+{
+  "label": "1.146.0-d3",
+  "upstream": {
+    "tag": "1.146.0",
+    "commit": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+  },
+  "units": [],
+  "patches": [],
+  "lockfileDiff": "tasks/2026-11-13-p2-build-switch/trial/take-in-d3b/lockfile.diff",
+  "toolchain": null,
+  "durations": {},
+  "zip": null,
+  "extensionsLockSha256": "6b4c3ceae7d6cb407f62bbcbd57ca50267e998975887884cc325fd26a85cce10",
+  "result": "error",
+  "stoppedAt": "lockfile",
+  "dryRun": false,
+  "startedAt": "2026-11-13T17:01:30.419Z",
+  "finishedAt": "2026-11-13T17:01:30.559Z",
+  "paths": {
+    "buildRoot": "C:\\b",
+    "worktree": "C:\\b\\wt\\dev-d3",
+    "packageDir": "C:\\b\\wt\\VSCode-win32-x64",
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-13-p2-build-switch\\trial\\take-in-d3b\\checks.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "removals": "C:\\b\\trial-build\\fixtures\\removals-ok",
+    "dist": "C:\\b\\dist",
+    "logs": "C:\\b\\logs\\1.146.0-d3"
+  },
+  "config": {
+    "path": "C:/b/trial-install/cfg/none.json",
+    "exists": false,
+    "buildRootFrom": "default"
+  },
+  "stepsSelected": [
+    "lockfile"
+  ],
+  "envRemovedForChildren": [
+    "ELECTRON_RUN_AS_NODE",
+    "VSCODE_CODE_CACHE_PATH",
+    "VSCODE_CRASH_REPORTER_PROCESS_TYPE",
+    "VSCODE_CWD",
+    "VSCODE_ESM_ENTRYPOINT",
+    "VSCODE_HANDLES_UNCAUGHT_ERRORS",
+    "VSCODE_IPC_HOOK",
+    "VSCODE_NLS_CONFIG",
+    "VSCODE_PID",
+    "VSCODE_PROCESS_TITLE"
+  ],
+  "steps": [
+    {
+      "name": "lockfile",
+      "status": "error",
+      "startedAt": "2026-11-13T17:01:30.423Z",
+      "command": "C:\\Program Files\\nodejs\\node.exe e:\\develop\\self\\Team\\projects\\ai-editor\\scripts\\apply.mjs C:\\b\\wt\\dev-d3 --label 1.146.0-d3 --lockfile-check --checks-out e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-13-p2-build-switch\\trial\\take-in-d3b\\checks.json --diff-out e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-13-p2-build-switch\\trial\\take-in-d3b\\lockfile.diff --removals C:\\b\\trial-build\\fixtures\\removals-ok --build-root C:\\b --config C:/b/trial-install/cfg/none.json",
+      "cwd": "e:\\develop\\self\\Team\\projects\\ai-editor",
+      "log": "C:\\b\\logs\\1.146.0-d3\\lockfile.log",
+      "seconds": 0.134,
+      "exitCode": 2,
+      "tail": "[apply] 引数の誤り: checks.json の当てた単位の unit.json が C:\\b\\trial-build\\fixtures\\removals-ok に無い: A-5-remote-extensions\n",
+      "lockfile": {
+        "status": "pending",
+        "reason": "依存の導入の後に --lockfile-check（build.mjs は checkLockfiles）で埋める"
+      },
+      "message": "ロックファイルの検査が通らない（apply.mjs --lockfile-check が 2）"
+    }
+  ],
+  "warnings": [],
+  "message": "lockfile で止まった: ロックファイルの検査が通らない（apply.mjs --lockfile-check が 2）"
+}

@@ -1,0 +1,22 @@
+{
+  // 型検査だけに使う（出力は esbuild が作る）。src は Node.js の型の除去でそのまま動く書き方に限る
+  // （erasableSyntaxOnly・verbatimModuleSyntax）。テストが src/*.mts を Node.js で直接読めるようにするため。
+  "compilerOptions": {
+    "target": "es2023",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "lib": ["es2023"],
+    "types": ["node", "vscode"],
+    "strict": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "erasableSyntaxOnly": true,
+    "verbatimModuleSyntax": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*.mts", "dev/**/*.mts"]
+}

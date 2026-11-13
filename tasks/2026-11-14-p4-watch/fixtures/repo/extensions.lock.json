@@ -1,0 +1,18 @@
+[
+  {
+    "id": "anthropic.claude-code",
+    "version": "2.1.322",
+    "targetPlatform": "win32-x64",
+    "source": "open-vsx"
+  },
+  {
+    "id": "mechatroner.rainbow-csv",
+    "version": "3.24.1",
+    "source": "open-vsx"
+  },
+  {
+    "id": "tomoki1207.pdf",
+    "version": "1.2.2",
+    "source": "open-vsx"
+  }
+]

@@ -1,0 +1,44 @@
+{
+  "https://api.github.com/repos/microsoft/vscode/releases?per_page=10": {
+    "status": 200,
+    "json": [
+      { "tag_name": "1.148.0", "draft": false, "prerelease": true, "published_at": "2026-11-19T10:00:00Z", "html_url": "https://github.com/microsoft/vscode/releases/tag/1.148.0", "body": "pre-release (filtered out)" },
+      { "tag_name": "vsda-v1.2.3", "draft": false, "prerelease": false, "published_at": "2026-11-19T09:00:00Z", "html_url": "https://github.com/microsoft/vscode/releases/tag/vsda-v1.2.3", "body": "not a core tag (filtered out)" },
+      { "tag_name": "1.147.0", "draft": false, "prerelease": false, "published_at": "2026-11-18T10:00:00Z", "html_url": "https://github.com/microsoft/vscode/releases/tag/1.147.0", "body": "https://code.visualstudio.com/updates/v1_147" },
+      { "tag_name": "1.146.0", "draft": false, "prerelease": false, "published_at": "2026-11-11T10:07:14Z", "html_url": "https://github.com/microsoft/vscode/releases/tag/1.146.0", "body": "https://code.visualstudio.com/updates/v1_146" },
+      { "tag_name": "1.145.3", "draft": false, "prerelease": false, "published_at": "2026-11-10T18:53:52Z", "html_url": "https://github.com/microsoft/vscode/releases/tag/1.145.3", "body": "https://code.visualstudio.com/updates/v1_145" }
+    ]
+  },
+  "https://api.github.com/repos/microsoft/vscode/security-advisories?state=published&sort=published&direction=desc&per_page=50": {
+    "status": 200,
+    "json": [
+      {
+        "ghsa_id": "GHSA-f56j-7499-5hch",
+        "cve_id": "CVE-2026-102230",
+        "html_url": "https://github.com/microsoft/vscode/security/advisories/GHSA-f56j-7499-5hch",
+        "summary": "Information Disclosure via Integrated Browser File Uploads",
+        "severity": "high",
+        "published_at": "2026-11-10T19:37:26Z",
+        "vulnerabilities": [
+          { "package": { "ecosystem": "vs code", "name": "" }, "vulnerable_version_range": "< 1.145.3", "patched_versions": "1.145.3" }
+        ]
+      }
+    ]
+  },
+  "https://code.visualstudio.com/updates/v1_147": {
+    "status": 200,
+    "text": "<html><body><h1>November 2026 (version 1.147)</h1><p>Welcome to the 1.147 release.</p><h2>Workspace Trust</h2><p>New security settings for the integrated browser.</p></body></html>"
+  },
+  "https://open-vsx.org/api/anthropic/claude-code/win32-x64": {
+    "status": 200,
+    "json": { "namespace": "Anthropic", "name": "claude-code", "version": "2.1.330", "timestamp": "2026-11-19T01:00:00.000000Z", "verified": true, "preRelease": false, "targetPlatform": "win32-x64" }
+  },
+  "https://open-vsx.org/api/mechatroner/rainbow-csv": {
+    "status": 200,
+    "json": { "namespace": "mechatroner", "name": "rainbow-csv", "version": "3.24.1", "timestamp": "2026-03-01T03:14:35.623063Z", "verified": true, "targetPlatform": "universal" }
+  },
+  "https://open-vsx.org/api/tomoki1207/pdf": {
+    "status": 200,
+    "json": { "namespace": "tomoki1207", "name": "pdf", "version": "1.2.2", "timestamp": "2022-12-23T03:58:06.463846Z", "verified": true, "targetPlatform": "universal" }
+  }
+}

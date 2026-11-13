@@ -1,0 +1,19 @@
+{
+  "label": "1.147.1-1",
+  "verdict": "conditional",
+  "security": {
+    "advisories": ["GHSA-test-aaaa-0001", "GHSA-test-bbbb-0002"],
+    "relevantToThisBuild": [
+      { "id": "GHSA-test-aaaa-0001", "relevant": true, "why": "trial" },
+      { "id": "GHSA-test-bbbb-0002", "relevant": false, "why": "消したリモートの機能の修正（試し）" }
+    ]
+  },
+  "patches": { "changed": [], "why": "" },
+  "checks": "ok",
+  "build": "ok",
+  "smoke": { "auto": "ok", "manualToDo": ["claude-code のパネルで送信"] },
+  "network": { "newHosts": [] },
+  "newUpstreamParts": [{ "path": "extensions/foo", "proposal": "keep", "why": "trial" }],
+  "conditions": ["未分類の組み込み拡張 extensions/foo の扱いを決める（試し）"],
+  "recommendation": "条件を満たしてから"
+}

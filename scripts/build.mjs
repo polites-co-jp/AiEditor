@@ -16,6 +16,8 @@
 //   node scripts/build.mjs <tag> [--label <label>] [--commit <sha>] [--build-root <dir>] [--config <local.json>]
 //                          [--record <json>] [--dry-run] [--from <step>] [--to <step>] [--fresh]
 //                          [--worktree <dir>] [--package-dir <dir>] [--keep <file>] [--removals <dir>] [--take-in-dir <dir>]
+//                          [--prev-tag <tag>] [--keep-conflict] [--patches <dir>] [--assets <dir>] [--overlay <file>]
+//                          [--lock <file>] [--extensions-src <dir>]
 //                          [--typecheck-script <name>] [--gulp-task <name>] [--force-zip] [--no-size]
 //     <tag>              本家のタグ（upstream.json の tag と違えば --commit が要る。prepare.mjs の規則）
 //     --label            版のラベル。既定 <tag>-<n>（n は records/builds/<tag>-*.json の最大＋1）
@@ -29,12 +31,15 @@
 //     --package-dir      gulp の出力（既定 <作業ツリーの親>\VSCode-win32-x64）。postprocess と zip はこれを読むだけで、動かさない
 //     --keep / --removals  既定 builtin/keep.json / removals/
 //     --take-in-dir      checks.json と lockfile.diff の置き場所（既定 records/take-in/<label>。試しでリポジトリの記録を汚さないため）
+//     --prev-tag <tag> / --keep-conflict / --patches <dir> / --assets <dir> / --overlay <file> / --lock <file> / --extensions-src <dir>
+//                        apply の手順で apply.mjs にそのまま渡す（取り込みのブランチの中身を当てるため。docs/06 の9節）。
+//                        --removals は apply・lockfile・postprocess のすべてで同じ場所を使う
 //     --force-zip        <label>.zip があれば上書きする（既定は止める）
 // 終了コード: 0 = result が ok か dry-run、1 = error、2 = 引数の誤り
 //
 // 書き出している関数（テストの入口。tasks/2026-11-13-p2-build-switch/build-switch-design.md の3節）:
 //   STEPS, parseArgs, selectSteps, nextLabel, findAppDir, resolveEditorLayout, childEnv, appliedUnitsFrom,
-//   checkBuiltinExtensions, parseExcludedExtensions, zipFolderName, quoteCmdArg, toolchainWarnings
+//   checkBuiltinExtensions, parseExcludedExtensions, zipFolderName, quoteCmdArg, toolchainWarnings, applyPassThrough
 
 import fs from "node:fs";
 import path from "node:path";
@@ -61,6 +66,8 @@ export function parseArgs(argv) {
   const a = {
     tag: null, label: null, commit: null, buildRoot: null, config: null, record: null, dryRun: false,
     from: null, to: null, fresh: false, worktree: null, packageDir: null, keep: null, removals: null, takeInDir: null,
+    // apply.mjs へそのまま渡すもの（取り込みのブランチの中身を当てるため。docs/06 の9節）
+    prevTag: null, keepConflict: false, patches: null, assets: null, overlay: null, lock: null, extensionsSrc: null,
     typecheckScript: "typecheck-client", gulpTask: "vscode-win32-x64-min", forceZip: false, size: true,
   };
   const need = (i, name) => {
@@ -84,6 +91,13 @@ export function parseArgs(argv) {
       case "--keep": a.keep = need(++i, x); break;
       case "--removals": a.removals = need(++i, x); break;
       case "--take-in-dir": a.takeInDir = need(++i, x); break;
+      case "--prev-tag": a.prevTag = need(++i, x); break;
+      case "--keep-conflict": a.keepConflict = true; break;
+      case "--patches": a.patches = need(++i, x); break;
+      case "--assets": a.assets = need(++i, x); break;
+      case "--overlay": a.overlay = need(++i, x); break;
+      case "--lock": a.lock = need(++i, x); break;
+      case "--extensions-src": a.extensionsSrc = need(++i, x); break;
       case "--typecheck-script": a.typecheckScript = need(++i, x); break;
       case "--gulp-task": a.gulpTask = need(++i, x); break;
       case "--force-zip": a.forceZip = true; break;
@@ -97,8 +111,21 @@ export function parseArgs(argv) {
   if (!a.tag) throw new ArgError("タグが無い（node scripts/build.mjs <tag>）");
   if (!/^[0-9A-Za-z][0-9A-Za-z._-]*$/.test(a.tag)) throw new ArgError(`タグの形が違う: ${a.tag}`);
   if (a.label !== null && !/^[0-9A-Za-z][0-9A-Za-z._-]*$/.test(a.label)) throw new ArgError(`ラベルの形が違う: ${a.label}`);
+  if (a.prevTag !== null && !/^[0-9A-Za-z][0-9A-Za-z._-]*$/.test(a.prevTag)) throw new ArgError(`--prev-tag の形が違う: ${a.prevTag}`);
   selectSteps(a.from, a.to); // 名前の確かめ
   return a;
+}
+
+// apply の手順で apply.mjs にそのまま渡す引数（parseArgs の結果から。指定の無いものは渡さない）。
+// 順: --prev-tag、--keep-conflict、--patches、--assets、--overlay、--lock、--extensions-src。パスは絶対パスにする。
+export function applyPassThrough(a) {
+  const out = [];
+  if (a.prevTag) out.push("--prev-tag", a.prevTag);
+  if (a.keepConflict) out.push("--keep-conflict");
+  for (const [key, flag] of [["patches", "--patches"], ["assets", "--assets"], ["overlay", "--overlay"], ["lock", "--lock"], ["extensionsSrc", "--extensions-src"]]) {
+    if (a[key]) out.push(flag, path.resolve(a[key]));
+  }
+  return out;
 }
 
 // from〜to の手順の名前の配列（両端を含む）。知らない名前と、from が to より後ろは誤り。
@@ -446,13 +473,19 @@ async function main() {
   }
 
   const node = process.execPath;
+  // apply.mjs に渡す場所の設定。buildRoot は build.mjs が決めた値（オプション → local.json → 既定）、local.json は同じファイル
+  const applyConfigArgs = ["--build-root", buildRoot, "--config", cfg.configPath];
+  // apply の手順にだけ渡す引数（指定があったものだけ。パスは絶対にする）
+  const applyPassArgs = applyPassThrough(args);
   const pnpmCmd = (scriptArgs) => ({ cmd: "pnpm", args: scriptArgs, cwd: worktree, useShell: true });
   const plan = {
     // --worktree を prepare まで通す（--fresh・apply 以降と同じ場所を見る。検証 D1）
     prepare: { cmd: node, args: [path.join(SCRIPT_DIR, "prepare.mjs"), "--tag", args.tag, "--build-root", buildRoot, "--worktree", worktree, ...(args.commit ? ["--commit", args.commit] : []), "--out", prepareRecord], cwd: REPO },
-    apply: { cmd: node, args: [path.join(SCRIPT_DIR, "apply.mjs"), worktree, "--label", label, "--checks-out", checksPath, "--removals", removalsDir, "--keep", keepPath], cwd: REPO },
+    // --build-root・--config を渡し、apply.mjs の --manifests の既定（<buildRoot>\cache\vsix）を build.mjs と同じ場所にそろえる
+    apply: { cmd: node, args: [path.join(SCRIPT_DIR, "apply.mjs"), worktree, "--label", label, "--checks-out", checksPath, "--removals", removalsDir, "--keep", keepPath, ...applyPassArgs, ...applyConfigArgs], cwd: REPO },
     install: pnpmCmd(["install", "--no-frozen-lockfile"]),
-    lockfile: { cmd: node, args: [path.join(SCRIPT_DIR, "apply.mjs"), worktree, "--label", label, "--lockfile-check", "--checks-out", checksPath, "--diff-out", lockfileDiff], cwd: REPO },
+    // --removals: 取り込みのブランチの removals/ でロックファイルを検査する（docs/06 の9節）
+    lockfile: { cmd: node, args: [path.join(SCRIPT_DIR, "apply.mjs"), worktree, "--label", label, "--lockfile-check", "--checks-out", checksPath, "--diff-out", lockfileDiff, "--removals", removalsDir, ...applyConfigArgs], cwd: REPO },
     typecheck: pnpmCmd(["run", args.typecheckScript]),
     package: pnpmCmd(["run", "gulp", args.gulpTask]),
   };

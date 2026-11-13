@@ -1,0 +1,92 @@
+{
+  "name": "notion-sync",
+  "displayName": "Shuko Notion Sync",
+  "description": "ユーザーの設定ファイルを Notion の設定ページで複数の PC にそろえる組み込み拡張（docs/05）",
+  "publisher": "shuko",
+  "version": "0.0.1",
+  "private": true,
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.146.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": true
+    },
+    "virtualWorkspaces": true
+  },
+  "contributes": {
+    "configuration": {
+      "title": "Notion 同期",
+      "properties": {
+        "notionSync.enabled": {
+          "type": "boolean",
+          "default": false,
+          "scope": "application",
+          "description": "Notion との設定の同期を行う。トークン（コマンド「Notion 同期: トークンを設定」）と notionSync.pageId を設定してから true にする。"
+        },
+        "notionSync.pageId": {
+          "type": "string",
+          "default": "",
+          "scope": "application",
+          "description": "同期先の Notion の設定ページの ID（32 桁の16進。ページの URL をそのまま入れてもよい）。秘密ではない。"
+        },
+        "notionSync.ignoredSettings": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "scope": "application",
+          "description": "PC ごとの設定のキー。書き出すときに除き、取り込むときは手元の値を残す（settings.json の最上位のキーだけが対象）。"
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "notionSync.import",
+        "title": "取り込む",
+        "category": "Notion 同期"
+      },
+      {
+        "command": "notionSync.export",
+        "title": "書き出す",
+        "category": "Notion 同期"
+      },
+      {
+        "command": "notionSync.showDiff",
+        "title": "差分を見る",
+        "category": "Notion 同期"
+      },
+      {
+        "command": "notionSync.setToken",
+        "title": "トークンを設定",
+        "category": "Notion 同期"
+      },
+      {
+        "command": "notionSync.clearToken",
+        "title": "トークンを消す",
+        "category": "Notion 同期"
+      }
+    ]
+  },
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "dependencies": {
+    "jsonc-parser": "3.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.2",
+    "@types/vscode": "1.146.0",
+    "esbuild": "0.28.2",
+    "typescript": "7.0.2"
+  }
+}

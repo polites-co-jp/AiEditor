@@ -1,0 +1,110 @@
+{
+  "label": "1.146.0-d3",
+  "upstream": {
+    "tag": "1.146.0",
+    "commit": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+  },
+  "units": [],
+  "patches": [
+    {
+      "file": "patches/20-product-configuration-defaults.patch",
+      "applied": "ok"
+    },
+    {
+      "file": "patches/30-proxy-direct-without-settings.patch",
+      "applied": "ok"
+    }
+  ],
+  "lockfileDiff": "tasks/2026-11-13-p2-build-switch/trial/take-in-d3/lockfile.diff",
+  "toolchain": null,
+  "durations": {},
+  "zip": null,
+  "extensionsLockSha256": "6b4c3ceae7d6cb407f62bbcbd57ca50267e998975887884cc325fd26a85cce10",
+  "result": "ok",
+  "stoppedAt": null,
+  "dryRun": false,
+  "startedAt": "2026-11-13T16:58:03.861Z",
+  "finishedAt": "2026-11-13T16:58:55.003Z",
+  "paths": {
+    "buildRoot": "C:\\b",
+    "worktree": "C:\\b\\wt\\dev-d3",
+    "packageDir": "C:\\b\\wt\\VSCode-win32-x64",
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-13-p2-build-switch\\trial\\take-in-d3\\checks.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\removals",
+    "dist": "C:\\b\\dist",
+    "logs": "C:\\b\\logs\\1.146.0-d3"
+  },
+  "config": {
+    "path": "C:/b/trial-install/cfg/none.json",
+    "exists": false,
+    "buildRootFrom": "default"
+  },
+  "stepsSelected": [
+    "prepare",
+    "apply"
+  ],
+  "envRemovedForChildren": [
+    "ELECTRON_RUN_AS_NODE",
+    "VSCODE_CODE_CACHE_PATH",
+    "VSCODE_CRASH_REPORTER_PROCESS_TYPE",
+    "VSCODE_CWD",
+    "VSCODE_ESM_ENTRYPOINT",
+    "VSCODE_HANDLES_UNCAUGHT_ERRORS",
+    "VSCODE_IPC_HOOK",
+    "VSCODE_NLS_CONFIG",
+    "VSCODE_PID",
+    "VSCODE_PROCESS_TITLE"
+  ],
+  "steps": [
+    {
+      "name": "prepare",
+      "status": "ok",
+      "startedAt": "2026-11-13T16:58:03.867Z",
+      "command": "C:\\Program Files\\nodejs\\node.exe e:\\develop\\self\\Team\\projects\\ai-editor\\scripts\\prepare.mjs --tag 1.146.0 --build-root C:\\b --worktree C:\\b\\wt\\dev-d3 --out C:\\b\\wt\\dev-d3.prepare.json",
+      "cwd": "e:\\develop\\self\\Team\\projects\\ai-editor",
+      "log": "C:\\b\\logs\\1.146.0-d3\\prepare.log",
+      "seconds": 41.281,
+      "exitCode": 0,
+      "prepare": {
+        "result": "ok",
+        "worktree": "C:\\b\\wt\\dev-d3",
+        "tagCommit": "69047191fc427f2f92828279aae1d90d8eeda7ab",
+        "worktreeHead": "69047191fc427f2f92828279aae1d90d8eeda7ab",
+        "worktreeClean": true,
+        "disk": {
+          "cloneGitDir": {
+            "bytes": 1864222745,
+            "gb": 1.74,
+            "files": 439
+          },
+          "cloneCheckout": {
+            "bytes": 366071116,
+            "gb": 0.34,
+            "files": 21342
+          },
+          "worktree": {
+            "bytes": 359848892,
+            "gb": 0.34,
+            "files": 21005
+          },
+          "countedSeconds": 2.863
+        },
+        "record": "C:\\b\\wt\\dev-d3.prepare.json"
+      }
+    },
+    {
+      "name": "apply",
+      "status": "ok",
+      "startedAt": "2026-11-13T16:58:45.151Z",
+      "command": "C:\\Program Files\\nodejs\\node.exe e:\\develop\\self\\Team\\projects\\ai-editor\\scripts\\apply.mjs C:\\b\\wt\\dev-d3 --label 1.146.0-d3 --checks-out e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-13-p2-build-switch\\trial\\take-in-d3\\checks.json --removals e:\\develop\\self\\Team\\projects\\ai-editor\\removals --keep e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json --prev-tag 1.145.3 --keep-conflict --build-root C:\\b --config C:/b/trial-install/cfg/none.json",
+      "cwd": "e:\\develop\\self\\Team\\projects\\ai-editor",
+      "log": "C:\\b\\logs\\1.146.0-d3\\apply.log",
+      "seconds": 9.849,
+      "exitCode": 0,
+      "checksResult": "ok"
+    }
+  ],
+  "warnings": [],
+  "applyResult": "ok"
+}

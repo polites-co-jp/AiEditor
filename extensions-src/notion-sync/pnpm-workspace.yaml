@@ -1,0 +1,6 @@
+# このフォルダを独立した pnpm の作業場所にする（上のリポジトリ直下の pnpm-workspace.yaml に含めない）。
+# 依存の install スクリプトは走らせない（ルートの pnpm-workspace.yaml にならう）。
+# esbuild の postinstall（node install.js）は、プラットフォームの別パッケージ（@esbuild/win32-x64）の
+# 確かめと置き換えだけをする。走らせなくても、optionalDependencies のバイナリで動く。
+allowBuilds:
+  esbuild: false

@@ -21,6 +21,11 @@
   switch.ps1 -Previous  switch back to the "from" of the last history line that switched to the
                         current label. Running it twice toggles between two versions.
   switch.ps1 -List      print the versions, current, the last history lines and the removable folders.
+  switch.ps1 <label> [-Zip <zip> [-Sha256 <hex>]] -ExpandOnly
+                        step 0 (unpack, when -Zip) and the exe/CLI check of versions\<label> only. It does not
+                        check engines, does not look for running editors, and never touches current,
+                        history.txt, backups or the user data (docs/06 section 9: the take-in unpacks, the
+                        user switches later with "switch.ps1 <label>").
 
   The user data dir defaults to %VSCODE_APPDATA% or %APPDATA%, plus the product's nameShort
   (src/vs/platform/environment/node/userDataPath.ts of 1.146.0). -UserDataDir overrides it (trials:
@@ -34,6 +39,7 @@
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts/switch.ps1 1.147.0-1 -Zip C:\b\dist\1.147.0-1.zip
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts/switch.ps1 -Previous
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts/switch.ps1 -List
+  powershell -NoProfile -ExecutionPolicy Bypass -File scripts/switch.ps1 1.147.0-1 -Zip C:\b\dist\1.147.0-1.zip -Sha256 <hex> -ExpandOnly
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts/switch.ps1 1.146.0-t1 -ConfigPath C:\b\trial-install\local.json -UserDataDir C:\b\trial-install\userdata
 
   NOTE: this file is ASCII only on purpose (Windows PowerShell 5.1 reads BOM-less scripts as ANSI).
@@ -43,6 +49,7 @@ param(
     [Parameter(Position = 0)][string]$Label,
     [switch]$Previous,
     [switch]$List,
+    [switch]$ExpandOnly,
     [string]$Zip,
     [string]$Sha256,
     [string]$InstallRoot,
@@ -272,6 +279,7 @@ try {
     }
     $history = Read-History $historyPath
 
+    if ($ExpandOnly -and ($List -or $Previous)) { throw '-ExpandOnly cannot be used with -List or -Previous' }
     if ($List) {
         $summary.current = $currentLabel
         $summary.keepVersions = $cfg.keepVersions
@@ -309,6 +317,14 @@ try {
     $targetDir = Join-Path $versionsDir $Label
     $info = Get-ShukoEditorInfo $targetDir
     $summary.target = [ordered]@{ dir = $targetDir; version = $info.version; commit = $info.commit; exe = $info.exe; cli = $info.cli; versionedFolder = $info.versionedFolder }
+
+    if ($ExpandOnly) {
+        # Unpack (when -Zip) and check exe/CLI only: current, history.txt, backups and the user data are not touched
+        # (docs/06 section 9: the take-in unpacks; the user switches).
+        $summary.expandOnly = $true
+        $summary.current = $currentLabel
+        Out-Summary -Result 'ok' -Message "expanded/checked $Label only; current is still $(if ($currentLabel) { $currentLabel } else { '(none)' })" -Code 0
+    }
 
     if ($Label -eq $currentLabel) {
         $summary.removable = Get-RemovableVersions -Names $versionNames -Current $currentLabel -Keep $cfg.keepVersions

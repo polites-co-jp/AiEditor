@@ -1,0 +1,10 @@
+[
+  { "id": "anthropic.claude-code", "version": "2.1.322", "targetPlatform": "win32-x64", "source": "open-vsx" },
+  { "id": "detachhead.basedpyright", "version": "1.40.2", "source": "open-vsx" },
+  { "id": "ms-vscode.powershell", "version": "2025.4.0", "source": "open-vsx" },
+  { "id": "mads-hartmann.bash-ide-vscode", "version": "1.43.2", "source": "open-vsx" },
+  { "id": "mechatroner.rainbow-csv", "version": "3.24.1", "source": "open-vsx" },
+  { "id": "weixu.wx-vsce-dotenv", "version": "0.2.3", "source": "open-vsx" },
+  { "id": "tomoki1207.pdf", "version": "1.2.2", "source": "open-vsx" },
+  { "id": "MS-CEINTL.vscode-language-pack-ja", "version": "1.131.0", "source": "open-vsx" }
+]

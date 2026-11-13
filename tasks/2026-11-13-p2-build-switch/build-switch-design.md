@@ -68,14 +68,15 @@ node scripts/build.mjs <tag> [--label <label>] [--commit <sha>] [--build-root <d
 ```
 
 - `--take-in-dir`: `checks.json` と `lockfile.diff` の置き場所（既定 `records/take-in/<label>`）。試しでリポジトリの記録を汚さないために使う。
+- `--prev-tag`・`--keep-conflict`・`--patches`・`--assets`・`--overlay`・`--lock`・`--extensions-src`（2026-11-14 追加）: apply の手順で apply.mjs にそのまま渡す（指定のあるものだけ。パスは絶対パスにする。順は `applyPassThrough` のとおり）。取り込み（take-in.mjs）が build.mjs を区切らずに、取り込みのブランチの中身を当てられるようにするため（docs/06 の9節、`tasks/2026-11-14-p3-take-in/doc-corrections.md` の6）。lockfile の手順には `--removals` だけを渡す（lockfile の検査が使うのは単位だけ）。`--keep-conflict` で apply が衝突で止まったときは、build.mjs も apply で止まる（`stoppedAt: "apply"`）。
 - `--worktree`・`--package-dir`: 既定 `<buildRoot>\wt\<tag>`・`<作業ツリーの親>\VSCode-win32-x64`。
 
 | 手順（`STEPS`） | 中身 | 止まる条件 |
 |---|---|---|
 | `prepare` | `node scripts/prepare.mjs --tag <tag> --build-root <br> --worktree <作業ツリー> [--commit] --out <作業ツリー>.prepare.json`。`--fresh` なら先に `git -C <br>\vscode worktree remove --force <作業ツリー>`。`--worktree` は prepare・`--fresh`・apply 以降のすべてが同じ場所を見る（2026-11-14 の検証 D1 で直した） | 終了コードが 0 でない（SHA の不一致、作業ツリーに変更がある、など） |
-| `apply` | `node scripts/apply.mjs <作業ツリー> --label <label> --checks-out records/take-in/<label>/checks.json --removals <dir> --keep <file>`（p2-apply の入口） | `apply.mjs` が無い、終了コードが 0 でない（`fail`）。`hold` は止めずに `warnings` に書く |
+| `apply` | `node scripts/apply.mjs <作業ツリー> --label <label> --checks-out records/take-in/<label>/checks.json --removals <dir> --keep <file> --build-root <br> --config <local.json>`（p2-apply の入口。`--build-root`・`--config` は build.mjs が決めた値をそのまま渡し、apply.mjs の `--manifests` の既定 `<br>\cache\vsix` を同じ場所にそろえる。`lockfile` の手順にも同じ2つを渡す。2026-11-14） | `apply.mjs` が無い、終了コードが 0 でない（`fail`）。`hold` は止めずに `warnings` に書く |
 | `install` | 作業ツリーで `pnpm install --no-frozen-lockfile`（cmd.exe 経由） | 終了コードが 0 でない |
-| `lockfile` | `node scripts/apply.mjs <作業ツリー> --label <label> --lockfile-check --checks-out <同じ> --diff-out records/take-in/<label>/lockfile.diff`（docs/03 の5.4） | 終了コードが 0 でない |
+| `lockfile` | `node scripts/apply.mjs <作業ツリー> --label <label> --lockfile-check --checks-out <同じ> --diff-out records/take-in/<label>/lockfile.diff --removals <dir> --build-root <br> --config <local.json>`（docs/03 の5.4。`--removals` は apply・postprocess と同じ場所。取り込みのブランチの `removals/` を読ませるため。docs/06 の9節。2026-11-14） | 終了コードが 0 でない |
 | `typecheck` | `pnpm run typecheck-client`（`--typecheck-script` で変えられる） | 作業ツリーの package.json にその script が無い、終了コードが 0 でない |
 | `package` | `pnpm run gulp vscode-win32-x64-min` | 終了コードが 0 でない、出力のフォルダが無い |
 | `postprocess` | 出力（既定 `<作業ツリーの親>\VSCode-win32-x64`）を読むだけで確かめる。下の 3.2 | 問題が1つでもある |
@@ -152,10 +153,11 @@ docs/02 の7節の項目に、止まった場所と手順ごとの結果を足�
 | `findAppDir(root)` | フォルダ | `{ appDir, versionedFolder }`。無い・2つ以上は例外 |
 | `resolveEditorLayout(root)` | フォルダ | `{ root, appDir, versionedFolder, product, version, commit, nameShort, applicationName, dataFolderName, exe, cli }`（`version` は `resources\app\package.json`、無ければ product.json） |
 | `zipFolderName(nameShort, label)` | 名前、ラベル | `<nameShort の英数字と . 以外を - にしたもの>-win32-x64-<label>`（`Code - OSS` → `Code-OSS`） |
+| `applyPassThrough(args)` | `parseArgs` の結果 | apply.mjs に渡す引数の配列。順は `--prev-tag <tag>`、`--keep-conflict`、`--patches`、`--assets`、`--overlay`、`--lock`、`--extensions-src`（パスは `path.resolve` した絶対パス）。指定の無いものは入れない（何も無ければ `[]`）。2026-11-14 追加 |
 | `toolchainWarnings(toolchain)` | `toolchainOf` の結果（`node`・`nvmrc`・`packageManager`・`packageManagerDeclared`） | 警告の文字列の配列。node は `.nvmrc`、pnpm は `packageManager`（`pnpm@x.y.z`）に照らし、メジャーが同じで求める版以上でなければ警告（check-env.ps1 と本家の preinstall.ts と同じ規則）。読めない値も警告。`--dry-run` と `install` の手順で `warnings` に足す（止めない）。2026-11-14 追加 |
 | `quoteCmdArg(s)` | 文字列 | cmd.exe に渡す引数（英数字と `_-.:\/=@` だけならそのまま、ほかは `"` で囲む。`"` を含めば例外） |
 
-#### `parseArgs` が返す項目（2026-11-14 追記）
+#### `parseArgs` が返す項目（2026-11-14 追記。`prevTag` 以下の7項目は同日の取り込みの依頼で追加し、全部で 26 項目）
 
 すべての項目を必ず持つ（指定が無ければ既定値）。パスは渡された文字列のまま（解決は main で行う）。
 
@@ -176,6 +178,13 @@ docs/02 の7節の項目に、止まった場所と手順ごとの結果を足�
 | `keep` | `--keep` | 文字列か `null` | `null` |
 | `removals` | `--removals` | 文字列か `null` | `null` |
 | `takeInDir` | `--take-in-dir` | 文字列か `null` | `null` |
+| `prevTag` | `--prev-tag` | タグの形の文字列か `null`（形が違えば `ArgError`） | `null` |
+| `keepConflict` | `--keep-conflict` | 真偽 | `false` |
+| `patches` | `--patches` | 文字列か `null` | `null` |
+| `assets` | `--assets` | 文字列か `null` | `null` |
+| `overlay` | `--overlay` | 文字列か `null` | `null` |
+| `lock` | `--lock` | 文字列か `null` | `null` |
+| `extensionsSrc` | `--extensions-src` | 文字列か `null` | `null` |
 | `typecheckScript` | `--typecheck-script` | 文字列 | `"typecheck-client"` |
 | `gulpTask` | `--gulp-task` | 文字列 | `"vscode-win32-x64-min"` |
 | `forceZip` | `--force-zip` | 真偽 | `false` |
@@ -246,7 +255,10 @@ node scripts/install-extensions.mjs [--install-root <dir>] [--build-root <dir>] 
 switch.ps1 <label> [-Zip <zip>] [-Sha256 <hex>] [-InstallRoot <dir>] [-ConfigPath <file>] [-UserDataDir <dir>] [-LedgerPath <file>]
 switch.ps1 -Previous [...]
 switch.ps1 -List [...]
+switch.ps1 <label> [-Zip <zip> [-Sha256 <hex>]] -ExpandOnly [...]
 ```
+
+- `-ExpandOnly`（2026-11-14 追加。docs/06 の9節）: 下の表の 0（`-Zip` があれば展開。`-Sha256` があれば先に照合）と、版のフォルダの exe・CLI の確かめ（`Get-ShukoEditorInfo`）だけを行って `result: ok`、`expandOnly: true`、`current`（今のラベル。変わらない）を出して終わる。engines の確かめ・動いているエディタの確かめ・ユーザーのデータの写し・`current` の付け替え・`history.txt` は行わない。`versions\` が無ければ作る（`current`・`history.txt`・`backups\` は作らない）。`-Zip` が無ければ、既にある `versions\<label>` を確かめるだけ。`-List`・`-Previous` と一緒には使えない（誤り）。既にあるラベルへの `-Zip` は、普段と同じく誤り。取り込みは展開だけを行い、切り替えはユーザーが後で `switch.ps1 <label>` で行う。
 
 | 順 | 中身 |
 |---|---|

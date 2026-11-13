@@ -1,5 +1,23 @@
 # 曹参 p2-tests-build 完了報告
 
+## 追記2（2026-11-14、直しの分のテスト。リーダーの申し送り）
+
+### 足したテスト `tests/build-fixes.test.mjs`（17 件、すべて pass）と補助 `tests/build/path-entries-probe.ps1`
+入口は `tasks/2026-11-13-p2-build-switch/handoff-notes.md` の追記2。
+- `build.mjs` の `toolchainWarnings`: 合えば `[]`、node が違えば1件（マイナー・メジャーとも）、pnpm が違えば1件（古くても新しくても）、pnpm の版が `null` なら「確かめられない」1件、`packageManager` が `npm@…` なら1件、`.nvmrc` が無ければ node の警告なし、両方違えば2件、入力を変えない。
+- `prepare.mjs` の `resolveBuildRoot`（オプション → local.json → `C:\b`、共通の部品と同じ規則で知らないキー・型・知らない `%NAME%`・相対パス・壊れた JSON は例外）と `resolveWorktree`（既定 `<buildRoot>\wt\<tag>`、`--worktree` はその絶対パス）。`prepare.mjs --config <誤り>` は終了コード 1 で、出力ファイルを作らない。
+- `build.mjs --dry-run` の plan: prepare に `--worktree` と `--out <作業ツリー>.prepare.json`、`--fresh` と apply が同じ作業ツリー、既定は `<buildRoot>\wt\<tag>`。
+- **apply への `--build-root` の受け渡し**: 蒙恬の直しが入っていた（plan の apply と lockfile の `command` に `--build-root <buildRoot>` が付く）。値が使う buildRoot と一致することを確かめた。
+- `configure.ps1` の `Update-PathEntries`: 台本の構文木から関数だけを取り出して試す（台本は走らせない。**本物の PATH・レジストリには触れない**）。9 通り: 前の bin → 新しい bin でほかの項目と `%VAR%` の形を残す、大文字小文字と末尾の `\` を問わない、`%VAR%\current\bin` は展開して一致すれば置き換える、一致なし・空は `$null`、前の bin の一部（`bin2`）は置き換えない、2か所あれば両方、空の項目と区切りの形を保つ、前後の空白。あわせて、台本が PATH を `SetEnvironmentVariable('Path'…)` で書かず、`DoNotExpandEnvironmentNames` で読み `GetValueKind` の種類で書き戻すことを、ソースの文字列で確かめた（レジストリへの書き込みそのものは試さない）。
+
+### 全体の走らせ直し（`node tests/run-all.mjs`、`run-all-result.txt`）
+合計 1194 件、pass 1095、fail 1、skip 98。
+- 私のファイルはすべて fail 0（build-fixes 17、apply-commits 18、apply-prune 7、build-parts 38、configure 17、install-ext 46、local-config 46、make-icons 17、switch 22、apply 系 130、removals 145＋skip 14、smoke 75、lock 115、sublime-keys 50、measure 138、netaudit 102、absent 14）。
+- **fail 1: `take-in.test.mjs` の `outsideAllowed: ../ で外へ出るパスを通さない`**。take-in は私の担当の外のファイルで（走らせるたびに件数が変わっており、別の担当が作業中の見込み。前回は 47 件・fail 0、今回は 95 件）、切り分けはしていない。テストの誤りか実装の不具合かは、そのファイルの担当が確かめる。
+- skip 98 は前回と同じ（removals 14、notion-sync 47、watch 37）。
+
+---
+
 ## 追記（2026-11-14、リーダーの追加の指示への対応）
 
 ### 1. 本家のソースは clone のタグから読む

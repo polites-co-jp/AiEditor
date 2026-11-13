@@ -1,0 +1,64 @@
+{
+  "claudePath": {
+    "cmd": "C:\\Users\\kou_z\\AppData\\Roaming\\npm\\node_modules\\@anthropic-ai\\claude-code\\bin\\claude.exe",
+    "prefixArgs": [],
+    "via": "C:\\Users\\kou_z\\AppData\\Roaming\\npm\\claude.cmd"
+  },
+  "version": {
+    "ok": true,
+    "version": "2.1.318",
+    "raw": "2.1.318 (Claude Code)"
+  },
+  "invocation": {
+    "kind": "probe",
+    "cmd": "C:\\Users\\kou_z\\AppData\\Roaming\\npm\\node_modules\\@anthropic-ai\\claude-code\\bin\\claude.exe",
+    "args": [
+      "-p",
+      "--output-format",
+      "json",
+      "--agent",
+      "di-renjie",
+      "--json-schema",
+      "<schema 137 文字>",
+      "--permission-mode",
+      "dontAsk",
+      "--strict-mcp-config",
+      "--no-session-persistence",
+      "--max-turns",
+      "5",
+      "これは take-in.mjs の起動の試しである。ファイルを読まず、ほかの道具も使わず、ok に true、agent にあなたの名前（定義の name）を入れて構造化出力で返せ。"
+    ],
+    "cwd": "e:\\develop\\self\\Team\\projects\\ai-editor",
+    "envRemoved": [
+      "CLAUDECODE",
+      "CLAUDE_CODE_ENTRYPOINT",
+      "ELECTRON_RUN_AS_NODE",
+      "VSCODE_CODE_CACHE_PATH",
+      "VSCODE_CRASH_REPORTER_PROCESS_TYPE",
+      "VSCODE_CWD",
+      "VSCODE_ESM_ENTRYPOINT",
+      "VSCODE_HANDLES_UNCAUGHT_ERRORS",
+      "VSCODE_IPC_HOOK",
+      "VSCODE_NLS_CONFIG",
+      "VSCODE_PID",
+      "VSCODE_PROCESS_TITLE"
+    ],
+    "stdinChars": 0
+  },
+  "exitCode": 0,
+  "parsed": {
+    "ok": true,
+    "structured": {
+      "ok": true,
+      "agent": "di-renjie"
+    },
+    "result": "{\"ok\":true,\"agent\":\"di-renjie\"}",
+    "isError": false,
+    "subtype": "success",
+    "sessionId": "e901549f-c007-4298-9635-9c968b59b3dc",
+    "costUsd": 0.086575,
+    "numTurns": 2,
+    "error": null
+  },
+  "seconds": 15.225
+}

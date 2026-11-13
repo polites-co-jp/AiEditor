@@ -1,0 +1,92 @@
+{
+  "label": "1.146.0-d3",
+  "upstream": {
+    "tag": "1.146.0",
+    "commit": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+  },
+  "units": [],
+  "patches": [],
+  "lockfileDiff": "records/take-in/1.146.0-d3/lockfile.diff",
+  "toolchain": null,
+  "durations": {},
+  "zip": null,
+  "extensionsLockSha256": "6b4c3ceae7d6cb407f62bbcbd57ca50267e998975887884cc325fd26a85cce10",
+  "result": "ok",
+  "stoppedAt": null,
+  "dryRun": false,
+  "startedAt": "2026-11-13T16:59:40.347Z",
+  "finishedAt": "2026-11-13T17:00:48.989Z",
+  "paths": {
+    "buildRoot": "C:\\b",
+    "worktree": "C:\\b\\wt\\dev-d3",
+    "packageDir": "C:\\b\\wt\\VSCode-win32-x64",
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\records\\take-in\\1.146.0-d3\\checks.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\removals",
+    "dist": "C:\\b\\dist",
+    "logs": "C:\\b\\logs\\1.146.0-d3"
+  },
+  "config": {
+    "path": "C:/b/trial-install/cfg/none.json",
+    "exists": false,
+    "buildRootFrom": "default"
+  },
+  "stepsSelected": [
+    "prepare"
+  ],
+  "envRemovedForChildren": [
+    "ELECTRON_RUN_AS_NODE",
+    "VSCODE_CODE_CACHE_PATH",
+    "VSCODE_CRASH_REPORTER_PROCESS_TYPE",
+    "VSCODE_CWD",
+    "VSCODE_ESM_ENTRYPOINT",
+    "VSCODE_HANDLES_UNCAUGHT_ERRORS",
+    "VSCODE_IPC_HOOK",
+    "VSCODE_NLS_CONFIG",
+    "VSCODE_PID",
+    "VSCODE_PROCESS_TITLE"
+  ],
+  "steps": [
+    {
+      "name": "prepare",
+      "status": "ok",
+      "startedAt": "2026-11-13T16:59:40.353Z",
+      "fresh": {
+        "status": 0,
+        "stderr": ""
+      },
+      "command": "C:\\Program Files\\nodejs\\node.exe e:\\develop\\self\\Team\\projects\\ai-editor\\scripts\\prepare.mjs --tag 1.146.0 --build-root C:\\b --worktree C:\\b\\wt\\dev-d3 --out C:\\b\\wt\\dev-d3.prepare.json",
+      "cwd": "e:\\develop\\self\\Team\\projects\\ai-editor",
+      "log": "C:\\b\\logs\\1.146.0-d3\\prepare.log",
+      "seconds": 51.911,
+      "exitCode": 0,
+      "prepare": {
+        "result": "ok",
+        "worktree": "C:\\b\\wt\\dev-d3",
+        "tagCommit": "69047191fc427f2f92828279aae1d90d8eeda7ab",
+        "worktreeHead": "69047191fc427f2f92828279aae1d90d8eeda7ab",
+        "worktreeClean": true,
+        "disk": {
+          "cloneGitDir": {
+            "bytes": 1864291599,
+            "gb": 1.74,
+            "files": 414
+          },
+          "cloneCheckout": {
+            "bytes": 366071116,
+            "gb": 0.34,
+            "files": 21342
+          },
+          "worktree": {
+            "bytes": 359848892,
+            "gb": 0.34,
+            "files": 21005
+          },
+          "countedSeconds": 3.573
+        },
+        "record": "C:\\b\\wt\\dev-d3.prepare.json"
+      }
+    }
+  ],
+  "warnings": []
+}

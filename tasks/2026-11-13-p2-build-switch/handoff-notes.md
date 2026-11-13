@@ -3,6 +3,47 @@
 - 作成: 蒙恬（2026-11-14）
 - 宛先: ヴラド・ツェペシュ
 
+## 追記4（2026-11-14）: 取り込みのための switch.ps1 -ExpandOnly と、build.mjs から apply.mjs への受け渡し
+
+リーダーの依頼（docs/06 の9節。`tasks/2026-11-14-p3-take-in/doc-corrections.md` の1・6）。
+
+- 結果: 完了
+- 直したもの:
+  1. `scripts/switch.ps1` に `-ExpandOnly` を足した。`-Zip` の展開（`-Sha256` の照合を含む）と、版のフォルダの exe・CLI の確かめまでで `result: ok`・`expandOnly: true` を出して終わる。engines・動いているエディタの確かめ、ユーザーのデータの写し、`current`・`history.txt`・`backups\` には触れない。`-Zip` が無ければ既にある `versions\<label>` を確かめるだけ。`-List`・`-Previous` と一緒なら誤り。
+  2. `scripts/build.mjs`: lockfile の手順（`apply.mjs --lockfile-check`）に `--removals <dir>` を渡す（apply・postprocess と同じ場所）。あわせて `--prev-tag`・`--keep-conflict`・`--patches`・`--assets`・`--overlay`・`--lock`・`--extensions-src` を受け取り、apply の手順で apply.mjs にそのまま渡す（純粋な関数 `applyPassThrough`）。取り込みの apply の呼び方（take-in-design.md の手順 2）に要る引数がすべて build.mjs から渡せるので、take-in が build.mjs を区切らずに済む。`--prev-tag`・`--keep-conflict` の2つのほか、5つのパスの受け渡しも足した点は、依頼の範囲を少し広げている（取り込みのブランチの中身を当てるのに要るため）。
+  3. `build-switch-design.md` の3節（引数・手順の表・`parseArgs` の 26 項目・`applyPassThrough`）と5節（`-ExpandOnly`）に書いた。
+- 確かめたこと:
+  - `node --check scripts/build.mjs`: 誤りなし。`scripts/p0-check-ps.ps1`: 16 本で構文の誤り 0、ASCII 以外 0 バイト。
+  - `-ExpandOnly`（試しの installRoot `C:\b\trial-install\B`）:
+    - `1.146.0-4 -Zip <公式の展開の zip> -Sha256 <値> -ExpandOnly`: SHA-256 が一致し、`versions\1.146.0-4` に展開、exe・CLI を確かめて ok。前後の `-List` で `current` は `1.146.0-3` のまま、history は6行のまま、`backups\` は6つのまま。
+    - `1.146.0-t2 -ExpandOnly`（`-Zip` なし）: 確かめだけで ok。`1.146.0-9 -ExpandOnly`（無い版）: 終了コード 1。`-Previous -ExpandOnly`: 終了コード 1。`1.146.0-4 -Zip ... -ExpandOnly`（既にある）: 終了コード 1。
+  - build.mjs（記録は `trial/d3-*.json`、試しの作業ツリー `C:\b\wt\dev-d3`。終わって消した）:
+    - `--dry-run`: plan の apply に `--prev-tag 1.145.3 --keep-conflict --patches <絶対> --assets <絶対> --overlay <絶対> --lock <絶対> --extensions-src <絶対>`、lockfile に `--removals <絶対>` が付いた（d3-0）。
+    - `--to apply --prev-tag 1.145.3 --keep-conflict`: apply が ok。checks.json の `prevTag: "1.145.3"`、`options.keepConflict: true`、`upstreamAdditions.prevTag: "1.145.3"`（d3-1）。
+    - 単位 A-5 を当てた作業ツリーで `--from lockfile --to lockfile`: `--removals` に A-5 の無いフォルダを渡すと apply.mjs が「当てた単位の unit.json が <そのフォルダ> に無い」で止まり（終了コード 2、build は `stoppedAt: lockfile`。d3-5）、本物の `removals/` を渡すと ok（d3-6）。lockfile の検査が渡した `removals/` を読むことを確かめた。
+- テストの入口（曹参へ）:
+  - `applyPassThrough({prevTag:"1.145.3", keepConflict:true, patches:"p", assets:null, overlay:null, lock:null, extensionsSrc:null})` → `["--prev-tag","1.145.3","--keep-conflict","--patches",<path.resolve("p")>]`。全部 null・偽 → `[]`。`parseArgs([..., "--prev-tag", "a b"])` → `ArgError`。
+  - `switch.ps1 <label> -Zip <zip> -ExpandOnly -ConfigPath <試し>`: 終了コード 0、出力に `expandOnly: true`、前後で `current` の指す先・`history.txt`・`backups\` が変わらない。`-ExpandOnly -List` / `-ExpandOnly -Previous` は終了コード 1。
+- docs/ との食い違い: 無し（docs/06 の9節のとおり）。take-in-design.md の手順 1・2・5 は、build.mjs を区切らない形に直せる（take-in の担当の判断）。
+- 未解決: 無し（SubagentHandback の件は前のまま）。
+
+## 追記3（2026-11-14）: build.mjs から apply.mjs へ --build-root・--config を渡す
+
+リーダーの申し送り（`tasks/2026-11-14-p2-verify-prebuild/handoff-notes.md` の追記の申し送り2。コミット 3efe9fd の後）。
+
+- 結果: 完了
+- 直したもの:
+  1. `scripts/build.mjs`: apply の手順と lockfile の手順（`apply.mjs --lockfile-check`）の両方に、build.mjs が決めた `--build-root <buildRoot>` と `--config <local.json の場所>`（`--config` が無ければ既定の `%LOCALAPPDATA%\Shuko\local.json`）を渡す。既定と違う buildRoot でビルドしても、apply.mjs の `--manifests` の既定（`<buildRoot>\cache\vsix`）が build.mjs と同じ場所になる。
+  2. `scripts/apply.mjs`: `--config <local.json>` を足した（`--build-root` が無いとき、buildRoot をそのファイルから読む。今までは既定の場所の local.json しか読めなかった）。ほかの動きは変えていない。
+  3. `build-switch-design.md` の3節の apply の行と、`tasks/2026-11-13-p2-apply/apply-design.md` の引数の表と変更の記録に書いた。
+- 確かめたこと:
+  - `node --check scripts/build.mjs`・`scripts/apply.mjs`: 誤りなし。
+  - `node scripts/build.mjs 1.146.0 --dry-run --from apply --to lockfile --config C:/b/trial-install/cfg/local.json`（buildRoot が `C:\b\trial-build` の試しの local.json）: plan の apply と lockfile の両方に `--build-root C:\b\trial-build --config C:/b/trial-install/cfg/local.json` が付いた（`trial/d2-dry-run-apply-config.json`）。
+  - `node scripts/apply.mjs C:/b/wt/1.146.0 --label 1.146.0-d2 --dry-run --build-root C:/b/trial-build --config <同じ>`: `result: ok`、checks.json の `inputs.manifests` が `C:\b\trial-build\cache\vsix`（`trial/take-in-d2/checks.json`）。`--build-root` なしで `--config` だけを渡しても同じ場所になった（`trial/take-in-d2b/checks.json`）。dry-run なので `C:\b\wt\1.146.0` は書き換えていない。
+- テストの入口（曹参へ）: `apply.mjs` の `parseArgs([..., "--config", <file>])` は `config` に絶対パスを持ち、`--build-root` が無ければ `manifests` が `<そのファイルの buildRoot>\cache\vsix` になる。誤りのある local.json を渡すと `UsageError`（終了コード 2）。build.mjs の `--dry-run` の `plan.apply.command` と `plan.lockfile.command` に `--build-root` と `--config` が入る。
+- docs/ との食い違い: 無し。
+- 未解決: 無し（lock-fetch.mjs の既定の `--out` の件と SubagentHandback の件は、前の追記のまま）。
+
 ## 追記2（2026-11-14）: 大岡越前守の検証の D1 と、4節の蒙恬宛ての点
 
 リーダーの指示（`tasks/2026-11-14-p2-verify-prebuild/handoff-notes.md` の「直す必要がある点」、`verification-log.md` の4節）で直した。作業ツリー `C:\b\wt\<tag>` はビルドで書き換わる使い捨てのまま（リーダーの決定。テストの読み方は曹参が直す）なので、build.mjs の既定の場所は変えていない。
