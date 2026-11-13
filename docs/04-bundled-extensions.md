@@ -100,7 +100,7 @@
 
 - 拡張の置き場所はユーザーごとに1つ（推定 `%USERPROFILE%\.shuko\extensions`）。版のフォルダを切り替えても拡張はそのまま。`switch.ps1` は、切り替える先の本体の版が台帳の `engines` を満たすかを確かめ、満たさなければ止まる。
 - **戻し方**: 台帳はビルドリポジトリの git にある。`install-extensions.mjs --rev <コミット>` で、その時点の台帳の版を入れ直す。前の版の VSIX はキャッシュに残す。
-- `extensions.allowed`（1.96 から。拡張の ID ごと、または版ごとに許可を列挙できる。範囲指定は不可）[一次] https://code.visualstudio.com/docs/enterprise/extensions を、`mydist` の既定で `{"*": false, "<台帳の ID>": true, ...}` にする。ID だけを載せ、版は台帳で固定する（版まで載せると拡張の差し替えのたびに本体の再ビルドが要るため）。VSIX の手動インストールにも効き、パッケージ内の ID で判定する（同ページ）。CLI の `--install-extension` に効くか、組み込み拡張が対象外か、`configurationDefaults` で既定にできるかは未確認。Phase 0 の 0-8・0-9 で確かめ、`mydist` を組み込み拡張として同梱したときの効き方を Phase 2 で確かめる。
+- `extensions.allowed`（1.96 から。拡張の ID ごと、または版ごとに許可を列挙できる。範囲指定は不可）[一次] https://code.visualstudio.com/docs/enterprise/extensions を、`{"*": false, "<台帳の ID>": true, ...}` にする。application スコープなので `mydist` の既定では入らず、product.json の `shukoConfigurationDefaults` と小さなパッチで既定にする（[02](02-repository-and-build.md) の3節。2026-11-13）。ID だけを載せ、版は台帳で固定する（版まで載せると拡張の差し替えのたびに本体の再ビルドが要るため）。VSIX の手動インストールにも効き、パッケージ内の ID で判定する（同ページ）。CLI の `--install-extension` に効くか、組み込み拡張が対象外か、`configurationDefaults` で既定にできるかは未確認。Phase 0 の 0-8・0-9 で確かめ、`mydist` を組み込み拡張として同梱したときの効き方を Phase 2 で確かめる。
 
 ## 6. 自前の組み込み拡張 `mydist`
 
@@ -126,7 +126,7 @@
 | `workbench.settings.enableNaturalLanguageSearch` | `false` | 設定の検索の通信を止める（同上） | — |
 | `claudeCode.environmentVariables` | `[{"name": "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC", "value": "1"}, {"name": "CLAUDE_CODE_DISABLE_OFFICIAL_MARKETPLACE_AUTOINSTALL", "value": "1"}]` | CLI の付帯の通信を止める（裁定 2026-11-13）。前者は自動更新・テレメトリ・エラーの報告・フィードバック・リリースノートなど、後者は公式のプラグインのマーケットプレイスの自動登録（前者で止まらない分。リーダーの判断で、裁定の「付帯の通信」に当てはめた）[一次] https://code.claude.com/docs/en/env-vars 。WebFetch の宛先の安全確認（`api.anthropic.com`）は Claude の作業の一部で安全のためのものなので止めない。設定は machine スコープで、既定が効くのは起動の処理の順による見込み（Phase 2 で実物で確かめ、毎週の取り込みでも見る）。ユーザー設定にこの配列を書くと丸ごと置き換わる（[05](05-settings-sync.md) の注意） | — |
 
-- 拡張の `configurationDefaults` で既定にできるのは、machine-overridable・window・resource・language-overridable のスコープの設定だけ。**application スコープの設定は既定にできない**（警告を出して捨てる。組み込み拡張も同じ）[一次] 本家 1.146.0 の `src/vs/workbench/api/common/configurationExtensionPoint.ts`（`tasks/2026-11-13-p1-ledger-mydist-decisions/doc-corrections.md` の1）。上の表のうち `extensions.allowed`・`telemetry.telemetryLevel`・`update.mode`・`workbench.enableExperiments`・`extensions.autoUpdate`・`extensions.autoCheckUpdates` の6件が当たる。この6件は、product.json の上書きか小さなパッチで既定を変える。どちらにするかは Phase 2 の初めに決める（蒙恬が両案の事実を調べる）。`chat.disableAIFeatures`（window）は効く。
+- 拡張の `configurationDefaults` で既定にできるのは、machine-overridable・window・resource・language-overridable のスコープの設定だけ。**application スコープの設定は既定にできない**（警告を出して捨てる。組み込み拡張も同じ）[一次] 本家 1.146.0 の `src/vs/workbench/api/common/configurationExtensionPoint.ts`（`tasks/2026-11-13-p1-ledger-mydist-decisions/doc-corrections.md` の1）。上の表のうち `extensions.allowed`・`telemetry.telemetryLevel`・`update.mode`・`workbench.enableExperiments`・`extensions.autoUpdate`・`extensions.autoCheckUpdates` の6件が当たる。この6件は、product.json の独自のキー `shukoConfigurationDefaults` に値を置き、それを既定として登録する小さなパッチ（1か所）で既定を変える（2026-11-13 リーダーの判断。`tasks/2026-11-13-p1-ledger-mydist-decisions/app-scope-options.md` の案B-2。[02](02-repository-and-build.md) の3節）。product.json には設定の既定を入れる仕組みが無く、設定ごとにソースの既定を書き換える案は6か所に散って壊れやすいため。`chat.disableAIFeatures`（window）は効く。
 - `files.watcherExclude` を広げるとメモリが大きく減ったという報告がある（[二次] Stack Overflow の回答へのコメント。版不明）。Phase 2 で、`node_modules` などを足した既定を測って決める。
 
 ### 6.2 Sublime Text のキー割り当て
