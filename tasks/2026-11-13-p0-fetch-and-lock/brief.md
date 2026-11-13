@@ -60,7 +60,7 @@ Phase 0（docs/07 の2節）の材料をそろえ、Claude Code 拡張の manife
 
 ## 結果
 
-採用。本家 1.146.0 と VSCodium を `C:\p0\` に展開し、台帳の9件の VSIX と検証の材料を取った。`lock-fetch.mjs`・`lock-verify.mjs`・`lib/lock.mjs` と `extensions.lock.json`（9件）を作った。大岡越前守の検証で、Claude Code の寝かせる期間を除いて合格（records/phase0/claude-code-manifest.md・lock-verification.md）。ソースのタグは参考の項目、ovsx は 1.4.0 に固定と裁定。
+採用。本家 1.146.0 と VSCodium を `C:\b\p0\` に展開し、台帳の9件の VSIX と検証の材料を取った。`lock-fetch.mjs`・`lock-verify.mjs`・`lib/lock.mjs` と `extensions.lock.json`（9件）を作った。大岡越前守の検証で、Claude Code の寝かせる期間を除いて合格（records/phase0/claude-code-manifest.md・lock-verification.md）。ソースのタグは参考の項目、ovsx は 1.4.0 に固定と裁定。
 
 ## 未解決
 
