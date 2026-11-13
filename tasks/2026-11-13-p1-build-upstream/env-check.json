@@ -1,0 +1,104 @@
+{
+    "checkedAt":  "2026-11-13T21:33:42.7441903+09:00",
+    "os":  {
+               "caption":  "Microsoft Windows 11 Pro",
+               "version":  "10.0.26300.0",
+               "is64":  true,
+               "processorArch":  "AMD64"
+           },
+    "required":  {
+                     "node":  "24.22.1",
+                     "pnpm":  "12.16.0",
+                     "source":  "defaults (1.146.0)"
+                 },
+    "git":  {
+                "found":  true,
+                "version":  "git version 2.54.0.windows.1",
+                "path":  "E:\\ProgramFiles\\Git\\mingw64\\bin\\git.exe",
+                "coreLongpathsGlobal":  ""
+            },
+    "node":  {
+                 "found":  true,
+                 "version":  "v24.16.0",
+                 "arch":  "x64",
+                 "path":  "C:\\Program Files\\nodejs\\node.exe",
+                 "allOnPath":  "C:\\Program Files\\nodejs\\node.exe",
+                 "satisfies":  false
+             },
+    "nodeVersionManagers":  {
+                                "nvm":  null,
+                                "fnm":  null,
+                                "volta":  null
+                            },
+    "pnpm":  {
+                 "found":  true,
+                 "version":  "11.8.0",
+                 "path":  "C:\\Users\\kou_z\\AppData\\Roaming\\npm\\pnpm.ps1",
+                 "allOnPath":  [
+                                   "C:\\Users\\kou_z\\AppData\\Roaming\\npm\\pnpm.ps1",
+                                   "C:\\Users\\kou_z\\AppData\\Roaming\\npm\\pnpm.CMD",
+                                   "C:\\Users\\kou_z\\AppData\\Roaming\\npm\\pnpm"
+                               ],
+                 "satisfies":  false
+             },
+    "corepack":  {
+                     "found":  true,
+                     "version":  "0.35.0",
+                     "path":  "C:\\Program Files\\nodejs\\corepack.cmd"
+                 },
+    "npm":  {
+                "found":  true,
+                "version":  "11.13.0",
+                "path":  "C:\\Program Files\\nodejs\\npm.ps1"
+            },
+    "python":  {
+                   "found":  true,
+                   "version":  "Python 3.14.7",
+                   "executable":  "C:\\Python314\\python.exe",
+                   "commandPath":  "C:\\Python314\\python.exe",
+                   "allOnPath":  [
+                                     "C:\\Python314\\python.exe",
+                                     "C:\\Users\\kou_z\\AppData\\Local\\Microsoft\\WindowsApps\\python.exe"
+                                 ],
+                   "setuptools":  null,
+                   "setuptoolsError":  "Traceback (most recent call last):\n  File \"\u003cstring\u003e\", line 1, in \u003cmodule\u003e\n    import setuptools; print(setuptools.__version__)\n    ^^^^^^^^^^^^^^^^^\nModuleNotFoundError: No module named \u0027setuptools\u0027",
+                   "pyLauncher":  "-V:3.14 *        C:\\Python314\\python.exe"
+               },
+    "visualStudio":  {
+                         "vswhere":  false,
+                         "preinstallFolders":  [
+
+                                               ],
+                         "preinstallCheckPasses":  false,
+                         "instances":  [
+
+                                       ]
+                     },
+    "windowsKits":  null,
+    "tar":  {
+                "onPath":  "E:\\ProgramFiles\\Git\\usr\\bin\\tar.exe",
+                "onPathVersion":  "tar (GNU tar) 1.35",
+                "system32":  "C:\\WINDOWS\\System32\\tar.exe",
+                "system32Version":  "bsdtar 3.8.9 - libarchive 3.8.9 zlib/1.2.13.1-motley liblzma/5.8.3 bz2lib/1.0.8 libzstd/1.5.7 cng/2.0 libb2/bundled",
+                "found":  true
+            },
+    "disk":  {
+                 "buildRoot":  "C:\\b",
+                 "drive":  "C",
+                 "freeGB":  137.1,
+                 "buildRootExists":  true
+             },
+    "longPathsEnabled":  0,
+    "envVars":  {
+                    "ELECTRON_RUN_AS_NODE":  "1",
+                    "VSCODE_SKIP_NODE_VERSION_CHECK":  null,
+                    "npm_config_node_gyp":  null
+                },
+    "missing":  [
+                    "node (need 24.22.1 x64, same major and \u003e=)",
+                    "pnpm (need 12.16.0, same major and \u003e=)",
+                    "python setuptools",
+                    "Visual Studio / Build Tools (folder that preinstall.ts looks for)",
+                    "Visual Studio components listed by the wiki (VCTools, Windows11SDK.26100, Spectre x86.x64, ATL.Spectre, ATLMFC.Spectre)"
+                ]
+}

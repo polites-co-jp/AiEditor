@@ -1,0 +1,66 @@
+{
+  "tag": "1.146.0",
+  "expectedCommit": "69047191fc427f2f92828279aae1d90d8eeda7ab",
+  "buildRoot": "C:\\b",
+  "clone": "C:\\b\\vscode",
+  "worktree": "C:\\b\\wt\\1.146.0",
+  "startedAt": "2026-11-13T12:39:32.589Z",
+  "git": "git version 2.54.0.windows.1",
+  "steps": [
+    {
+      "name": "clone",
+      "seconds": 171.351,
+      "status": 0
+    },
+    {
+      "name": "fetch --tags",
+      "seconds": 51.931,
+      "status": 0
+    },
+    {
+      "name": "rev-parse tag",
+      "seconds": 0.019,
+      "status": 0,
+      "value": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+    },
+    {
+      "name": "worktree add",
+      "seconds": 43.251,
+      "status": 0
+    },
+    {
+      "name": "rev-parse worktree HEAD",
+      "seconds": 0.036,
+      "status": 0,
+      "value": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+    },
+    {
+      "name": "status --porcelain",
+      "seconds": 0.429,
+      "status": 0
+    }
+  ],
+  "result": "ok",
+  "tagCommit": "69047191fc427f2f92828279aae1d90d8eeda7ab",
+  "worktreeHead": "69047191fc427f2f92828279aae1d90d8eeda7ab",
+  "worktreeClean": true,
+  "disk": {
+    "cloneGitDir": {
+      "bytes": 1755875426,
+      "gb": 1.64,
+      "files": 72
+    },
+    "cloneCheckout": {
+      "bytes": 366071116,
+      "gb": 0.34,
+      "files": 21342
+    },
+    "worktree": {
+      "bytes": 359848892,
+      "gb": 0.34,
+      "files": 21005
+    },
+    "countedSeconds": 2.449
+  },
+  "finishedAt": "2026-11-13T12:44:02.143Z"
+}
