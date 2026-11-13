@@ -136,6 +136,16 @@ Phase 2 の作業で表から変えた点（2026-11-14）: B-1 に `terminalCont
 | C-6-settings-sync | `contrib/userDataSync`、`services/userDataSync` の workbench 側（common・desktop の import 7行）、アカウントのメニュー（`services/accounts`。依存が無ければ） | プロファイルなどが `platform/userDataSync` を使っている見込み（推定）。使っていれば `kept` に入れる。拡張 API の `vscode.authentication` は残す |
 | C-7-breadcrumbs-outline | `browser/parts/editor/breadcrumbs*`（推定）、`services/outline`、`contrib/codeEditor/browser/outline` | 本家の共有部品（エディタの枠）に入っているので、パッチが大きく、本家の変更とも衝突しやすい見込み。関門を2回続けて通らなければ、ユーザーに諮る（[08](08-risks-and-open-items.md) の別案） |
 
+段階 C の下準備（2026-11-14）で表から変えた点。リーダーが認めた。各単位の README と `tasks/2026-11-14-p5-units-c-prep/` の `units-c-notes-*.md` が細目を持つ。
+
+- C-1 は、表の部品に加え、エージェントの窓（`src/vs/sessions`。AI の窓）と本体側のエージェントのセッション・チャットの窓などを消す。`services/chat`（`IChatEntitlementService`）は残る約12の部品が注入するので、消さずに何もしない実装を登録する。
+- C-1 が `src/vs/sessions` を消すので、C-2 以降は sessions の入口を `removeLines` で直さず、`after` に C-1 を挙げる。段階 C の単位は前の単位を前提にする（C-3〜C-7 は C-1、C-4 は C-2、C-7 は C-4）。5.3 の「sessions の main も直す」は、段階 A・B と C-1 に当てはまる。
+- C-2 は `contrib/debug/common` と、拡張ホストの起動に要る `extensionHostDebugService` を残し、本家の `NullDebugService` を登録する。
+- C-3 は `services/tunnel`（Webview＝Claude Code のパネルが注入する）・`sharedProcessTunnelService`・`remoteExplorerService` を残す。
+- C-4 は `contrib/notebook/common`（拡張 API の中心が型を使う）を残す。全文検索がノートブックの部品と強く結びついていて、直しは検索の約15ファイルに及ぶ見込み。
+- C-5 は `extensionGalleryManifestService` のワークベンチ側を残す（共有プロセスの待ち合わせに要る）。
+- C-6 は、型検査に掛からず起動時に壊れる注入が2か所ある（`IUserDataSyncWorkbenchService`）。関門のスモークで見る。
+
 テスト（`contrib/testing`）とコメント（`contrib/comments`）は裁定で残す。使って重ければ改めてユーザーに諮る。ほかに、裁定に挙がっていない機能を消すときは、ユーザーの確認を経て単位を足す。
 
 ## 5. 当て方
