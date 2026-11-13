@@ -82,8 +82,10 @@ C:\b\dist\                        zip の置き場
 | reportIssueUrl | remove | — | 課題報告を消す（B-3） |
 | server*、tunnel*、win32Tunnel* | remove（C-3） | — | リモートを消すとき。先に消すと参照するコードが値を見失う |
 | builtInExtensions | set（A-3） | `[]` | js-debug 系3件（GitHub から取得される）を入れない。1.146.0 は `extensionsGallery` が無いので、取得元は GitHub [一次] `build/lib/builtInExtensions.ts`（`sources/research-vscode-source.md` の3節） |
-| defaultChatAgent、trustedExtensionAuthAccess、builtInExtensionsEnabledWithAutoUpdates、sessionsWindowAllowedExtensions、voiceWsUrl、agentsTelemetryAppName | remove（C-1） | — | AI を消すとき。C-1 より前に消すと、残っている AI のコードが値を見失って起動時のエラーになる恐れがある（推定） |
+| defaultChatAgent、trustedExtensionAuthAccess、builtInExtensionsEnabledWithAutoUpdates、sessionsWindowAllowedExtensions、voiceWsUrl、agentsTelemetryAppName、chatParticipantRegistry、agentSdks、dictationRuntime、copilotVersions | remove（C-1。後の4つは 0-5 の棚卸しで `main.vscode-cdn.net` への通信の元と見たもの `records/phase0/network-inventory.md`） | — | AI を消すとき。C-1 より前に消すと、残っている AI のコードが値を見失って起動時のエラーになる恐れがある（推定） |
 | onboardingKeymaps / onboardingThemes | remove（B-2） | — | 歓迎画面を消すとき |
+| tasConfig | remove（B-2。1.146.0 の product.json にあれば） | — | 実験の設定の取得（`default.exp-tas.com`）を止める（0-5 の棚卸し） |
+| emergencyAlertUrl、profileTemplatesUrl | remove（B-6。1.146.0 の product.json にあれば） | — | `main.vscode-cdn.net` への通信（AI 以外の分）を止める（0-5 の棚卸し） |
 | webviewContentExternalBaseUrlTemplate | 残す | — | Webview の読み込みに関わるキー（推定）。Claude Code のパネルは Webview（manifest の `views` が `webview`）なので触らない。外向き通信の棚卸しで宛先を確かめる |
 
 `apply.mjs` は、`remove` に挙げたキーが本家に無くなっていたら警告を出す（本家の改名を見つけるため）。

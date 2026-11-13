@@ -193,7 +193,7 @@ UDP や、2秒より短い接続は取りこぼす。必要になったら、Win
 
 1. ビルドリポジトリの骨組み（[02](02-repository-and-build.md) の2節）、`product.overlay.json`、ブランドの資産、`mydist`、台帳と `install-extensions.mjs`、`switch.ps1`、PC ごとの設定ファイル `local.json` とそれを読む共通の部品・`configure.ps1`（[02](02-repository-and-build.md) の6.1）を作る。`configure.ps1 -InstallRoot` で場所を変え、切り替えと戻しが新しい場所で動くことを確かめる。
 2. 単位を1つも有効にしない状態でビルドし、動作の確認を通す（上書きと `mydist` だけの状態）。
-3. A-1 から B-5 まで、1単位ずつ: 単位を作る → 関門（[03](03-removal-design.md) の7節）→ `enabled: true`。各単位の関門の記録を残す。
+3. A-1 から B-6 まで、1単位ずつ: 単位を作る → 関門（[03](03-removal-design.md) の7節）→ `enabled: true`。各単位の関門の記録を残す。
 4. 全部を有効にした版で、スモークの全部の組（[06](06-update-watch-and-take-in.md) の5節）と通信の監査（3.3）を通す。ユーザーに渡して使ってもらう。
 
 完了の条件: 段階 A・B の各単位が有効か、無効の理由が書いてある。全部を有効にした版が、スモークの全部の組を通る。外向き通信が許した宛先だけになっている（残るものは理由つき）。

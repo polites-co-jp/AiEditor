@@ -120,7 +120,10 @@
 | `update.mode` | `none` | 本体の更新は自分で行う | — |
 | `extensions.allowed` | 5節 | 台帳の拡張だけ | — |
 | `basedpyright.importStrategy` | `useBundled` | 既定の `fromEnvironment` は Python 拡張（`ms-python.python`）の API で環境を探し、無いと basedpyright が起動しない。同梱のサーバーを使えば Python 拡張なしで動く（裁定 2026-11-13。`tasks/2026-11-13-p0-basedpyright-probe/`） | — |
-| 外向き通信を止める設定 | Phase 0 の通信の棚卸し（[07](07-phases.md) の 0-5）で決める。候補: `typescript.disableAutomaticTypeAcquisition`、`npm.fetchOnlinePackageInfo`、`json.schemaDownload.enable`、`workbench.settings.enableNaturalLanguageSearch` | 不要な外部通信 | — |
+| `typescript.disableAutomaticTypeAcquisition` | `true` | 型定義の自動取得の通信を止める（不要な通信。裁定 2026-11-13 の「通信の扱いの訂正」。0-5 の棚卸し `records/phase0/network-inventory.md` の4節） | — |
+| `npm.fetchOnlinePackageInfo` | `false` | npm のパッケージ情報の取得を止める（同上） | — |
+| `json.schemaDownload.enable` | `false` | JSON の schema の取得を止める（同上） | — |
+| `workbench.settings.enableNaturalLanguageSearch` | `false` | 設定の検索の通信を止める（同上） | — |
 
 - 組み込み拡張の `configurationDefaults` で、ほかの部品の設定（`chat.disableAIFeatures` など）や application スコープの設定（`extensions.allowed`）を既定にできるかは未確認。Phase 0 の 0-9 で確かめ、組み込み拡張として同梱したときの効き方を Phase 2 で確かめる。できないものは、product.json の上書きか小さなパッチで既定を変える。
 - `files.watcherExclude` を広げるとメモリが大きく減ったという報告がある（[二次] Stack Overflow の回答へのコメント。版不明）。Phase 2 で、`node_modules` などを足した既定を測って決める。
