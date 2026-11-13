@@ -161,7 +161,11 @@
 ### 3.3 外向き通信の監査
 
 1. 起動から10分、2秒ごとに `Get-NetTCPConnection -State Established` を取り、エディタのプロセスとその子孫の接続だけを残す（3.2 の5の方法で PID を集める）。
-2. 始めと終わりに `Get-DnsClientCache` を取り、IP アドレスとホスト名を結びつける。
+2. IP アドレスとホスト名を結びつける。Chromium は OS の DNS クライアントを通さずに名前を引き、この PC では `Get-DnsClientCache` が空のままだった（2026-11-13。`tasks/2026-11-13-p0-netaudit-hostnames/hostname-design.md`）。そこで次の順で名前を付け、どれで付けたかを記録する。
+   1. Electron の `--log-net-log=<file>`（ネットのログ。本体・レンダラーなど Chromium 側の通信）。ログには秘密が載りうるので、リポジトリの外（既定 `C:\b\p0\netlog\`）に置き、記録にはホスト名と回数だけを写す。
+   2. `Get-DnsClientCache`（取れたとき）。
+   3. ヒント: Node のプロセス（拡張ホストなど）の `NODE_DEBUG=net` の出力、逆引き、順引き。ヒントの名前は許可の判定に使わない。
+   - Claude Code の CLI（claude.exe）の接続は名前が付かない。CLI の表で IP と接続先の組で見る。
 3. 宛先ごとに、初めて見えた時刻、プロセス、回数を出す。
 4. 前の版（Phase 0 では本家）の一覧と比べ、新しい宛先を目立たせる。
 5. 許した宛先の一覧（`records/network-allowlist.json`。例: `api.notion.com`、Claude Code が使う宛先）にないものは、判定で報告する。
