@@ -180,3 +180,9 @@
 | 論点 | 扱い |
 |---|---|
 | .env の拡張（裁定「エラー表示を持つほうを1つ載せる。両方持つか両方持たないときは諮る」） | `weixu.wx-vsce-dotenv` 0.2.3 に決めた。誤りを含む .env で、`weixu.wx-vsce-dotenv` は診断4件、`dotenv.dotenv-vscode` 1.5.8 は0件で、片方だけが持っていたので諮らずに当てはめた。`dotenv.dotenv-vscode` は台帳から外す。事実: `tasks/2026-11-13-p1-smoke/handoff-notes.md` の「合図後の実行の結果」6節 |
+
+## 記録（2026-11-13、CLI の付帯の通信の裁定の当てはめ。リーダーの判断）
+
+| 論点 | 扱い |
+|---|---|
+| `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC` で止まらない CLI の通信 | 公式のプラグインのマーケットプレイスの自動登録は「付帯の通信」に当たるので、`CLAUDE_CODE_DISABLE_OFFICIAL_MARKETPLACE_AUTOINSTALL=1` も渡して止める。WebFetch の宛先の安全確認（`api.anthropic.com`）は Claude の作業に伴う安全のための確認なので止めない。根拠: `tasks/2026-11-13-p1-ledger-mydist-decisions/handoff-notes.md` の「未解決の点」3 |

@@ -39,7 +39,7 @@
 | VSIX の SHA-256 と `.sha256` の一致、`ovsx verify-signature` の手順、同梱の CLI と Anthropic の manifest の一致、Authenticode | 0-6 |
 | 言語パック 1.131.0 を新しい本体で使ったときの表示 | 0-7 |
 | `extensions.allowed` の CLI・VSIX・既存の拡張への効き方 | 0-8 |
-| 組み込み拡張の `configurationDefaults` で、ほかの部品の設定と application スコープの設定を既定にできるか | 0-9 |
+| 組み込み拡張の `configurationDefaults` で、ほかの部品の設定と application スコープの設定を既定にできるか | 答えが出た: application スコープはできない（ソース。[04](04-bundled-extensions.md) の6.1 の注）。product.json かパッチかは Phase 2 の初めに決める |
 | 公式 zip の版を指定する URL（`https://update.code.visualstudio.com/<版>/win32-x64-archive/stable`） | 0 の用意 |
 | npm か pnpm か、型検査の script、実行ファイルの名前、ユーザーのデータ・拡張・`argv.json` の場所、`tar.exe` での zip、`test/smoke` の `--build` | Phase 1 |
 | ビルドの所要時間・ディスク | Phase 1 |
@@ -72,7 +72,7 @@
 |---|---|---|
 | 拡張 API の入口（`vscode.debug`・`vscode.notebooks`・`vscode.lm`・`vscode.chat` など） | 入口は何もしない実装にして残し、中身のコードは消す | [03](03-removal-design.md) の2節の4 |
 | 裁定に無かった機能 | `terminal-suggest` は消す（A-7）。テストとコメントは残す。使って重ければ改めて諮る | [01](01-requirements.md)、[03](03-removal-design.md) |
-| .env の拡張 | Phase 0 で `dotenv.dotenv-vscode` と `weixu.wx-vsce-dotenv` を試し、エラー表示を持つほうを採る | [01](01-requirements.md) の4節、[04](04-bundled-extensions.md) の2節、[07](07-phases.md) の 0-3 |
+| .env の拡張 | `weixu.wx-vsce-dotenv` に決めた（2026-11-13。エラー表示を持つほう） | [01](01-requirements.md) の4節、[04](04-bundled-extensions.md) の2節、[07](07-phases.md) の 0-3 |
 | 拡張の新版を寝かせる期間 | 公開から72時間未満の版は、セキュリティ修正でない限り入れない | [04](04-bundled-extensions.md) の4節の4、[06](06-update-watch-and-take-in.md) の2.3 |
 | 更新の検知のトークン | DPAPI で暗号化したファイルに置く | [06](06-update-watch-and-take-in.md) の2.4 |
 | Notion のインテグレーション | 2つに分ける（設定の同期用は設定ページだけ、更新の検知用は ToDo データベースだけ） | [05](05-settings-sync.md) の7節、[06](06-update-watch-and-take-in.md) の2.4 |

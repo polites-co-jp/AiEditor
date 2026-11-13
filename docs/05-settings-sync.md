@@ -10,7 +10,7 @@
 
 | 対象 | 同期 | 理由 |
 |---|---|---|
-| ユーザーの `settings.json` | する | `notionSync.ignoredSettings` のキーを除く（5節） |
+| ユーザーの `settings.json` | する | `notionSync.ignoredSettings` のキーを除く（5節）。注意: `claudeCode.environmentVariables` をユーザー設定に書くと、`mydist` の既定の配列（CLI の付帯の通信を止める変数）が丸ごと置き換わる。書くときは既定の2件も含める |
 | ユーザーの `keybindings.json` | する | 個人の上書きだけ（Sublime のキーは `mydist` が持つ） |
 | ユーザーの `snippets/*.json`・`*.code-snippets` | する | ファイルごと |
 | ユーザーの `tasks.json` | する | — |

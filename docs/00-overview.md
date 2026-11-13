@@ -79,7 +79,7 @@
 |---|---|---|
 | 拡張 API の入口（`vscode.debug`・`vscode.notebooks`・`vscode.lm`・`vscode.chat` など） | 入口は何もしない実装にして残し、中身のコードは消す | [03](03-removal-design.md) の2節の4 |
 | 裁定に無かった機能 | ターミナルの入力候補（`terminal-suggest`）は消す。テスト（`contrib/testing`）とコメント（`contrib/comments`）は残す。使って重ければ改めて諮る | [01](01-requirements.md) の1節・3節、[03](03-removal-design.md) の A-7 |
-| .env の拡張 | Phase 0 で `dotenv.dotenv-vscode` と `weixu.wx-vsce-dotenv` を試し、エラー表示を持つほうを採る | [01](01-requirements.md) の4節、[07](07-phases.md) の 0-3 |
+| .env の拡張 | `weixu.wx-vsce-dotenv`（エラー表示を持つほう。2026-11-13 に試して決めた） | [01](01-requirements.md) の4節、[07](07-phases.md) の 0-3 |
 | 拡張の新版を寝かせる期間 | 公開から72時間未満の版は、セキュリティ修正でない限り入れない | [04](04-bundled-extensions.md) の4節の4 |
 | 更新の検知の Notion トークン | DPAPI で暗号化したファイルに置く | [06](06-update-watch-and-take-in.md) の2.4 |
 | Notion のインテグレーション | 2つに分ける。設定の同期用は設定ページだけ、更新の検知用は ToDo データベースだけに接続する | [05](05-settings-sync.md) の7節、[06](06-update-watch-and-take-in.md) の2.4 |
