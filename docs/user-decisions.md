@@ -207,3 +207,15 @@
 | アイコンの PNG・ICO | Node.js 標準の zlib で書き出す台本を作り、自作の意匠で作る |
 | `terminalContrib/telemetry` | B-1 に足して消す（テレメトリは裁定で消す） |
 | `services/suggest` | ターミナルの入力候補だけが使うなら B-7 で消す。ほかの残る機能が使うなら残す |
+
+## 記録（2026-11-14、段階 C の下準備で出た点。リーダーの判断）
+
+根拠: `tasks/2026-11-14-p5-units-c-prep/handoff-notes-c1-c2.md`・`handoff-notes-c3-c7.md`、`tasks/2026-11-14-p5-verify-c-prep/handoff-notes.md`
+
+| 論点 | 扱い |
+|---|---|
+| C-1 の範囲 | 表の部品に加え、エージェントの窓（`src/vs/sessions`）、AI の検索（`contrib/search/browser/AISearch`）を消す（裁定「本家の AI は消す」）。`services/chat` は残る部品が注入するので、何もしない実装で残す |
+| C-1 で消すか迷った部品（`contrib/speech`、`agentsColors`・`agentsSizes`、`platform/artifactIntegrations`、`contrib/imageCarousel`、`platform/otel`、`@modelcontextprotocol/sdk`） | 消す AI の部品だけが使うものは消す。残る部品が使うものは使い手を書いて残す。`platform/otel` はテレメトリなので、使い手が残らなければ消す |
+| `extHost.protocol.ts` | 消した API の Shape と ID を消す |
+| 段階 C の単位の順 | C-3〜C-7 は C-1 を前提にする。C-2 は C-1 を前提にしない |
+| 段階 C で表から変えて残す部品 | C-2 の `contrib/debug/common` と `extensionHostDebugService`、C-3 の `services/tunnel` など、C-4 の `contrib/notebook/common` と `services/notebook`、C-5 のギャラリーの manifest のワークベンチ側（docs/03 の4節の末尾） |
