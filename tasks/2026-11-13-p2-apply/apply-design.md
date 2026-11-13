@@ -29,6 +29,7 @@ node scripts/apply.mjs <作業ツリー> --label <label> --lockfile-check [--bas
 | `--extensions-src <dir>` | `extensions-src/` | 自前の組み込み拡張（`mydist`・`notion-sync`） |
 | `--manifests <dir>` | `<buildRoot>\cache\vsix`（docs/02 の8節） | 台帳の拡張の manifest（`<dir>/<id>-<版>[@<target>]/package.json`。`lock-fetch.mjs`・`install-extensions.mjs` の VSIX のキャッシュの置き方）。mydist の既定のキーが第三者の拡張の設定かを確かめるのに使う。無ければその拡張の設定のキーは `unverified`（`warn`） |
 | `--build-root <dir>` | `local.json` の `buildRoot`、無ければ `C:\b` | `--manifests` の既定を決めるためだけに使う（`scripts/lib/local-config.mjs` の `resolveLocalConfig`）。local.json が読めない・誤りなら引数の誤り（終了コード 2） |
+| `--config <local.json>` | `%LOCALAPPDATA%\Shuko\local.json` | `--build-root` が無いときに buildRoot を読む local.json（2026-11-14 追加。build.mjs は自分の `--config` を渡す） |
 | `--lock <file>` | `extensions.lock.json` | 台帳（manifest を探すため） |
 | `--keep-conflict` | 偽 | `git am -3` が当たらなかったとき、`git am --abort` せずに衝突のまま残す（取り込みの修理で使う） |
 | `--lockfile-check` | — | 依存の導入の後に、ロックファイルの検査（docs/03 の5.4）だけを行い、既存の `checks.json` の `checks.lockfile` と `result` を書き換える。`--base` が無ければ `checks.json` の `baseCommit` を使う。当てた単位は `checks.json` の `units`（`applied: "ok"`）の ID で `--removals` から読む。`checks.json` が無ければ単位なしで比べ、警告を残す |
@@ -320,3 +321,4 @@ p2-units-a の `builtin/keep.json`（`{ "$comment", "upstreamTag", "keep": [{ na
 - 2026-11-14 リーダーの指示（p2-units-b の未解決の4）: 設定のキーの登録を、文字列の有無でなく設定の登録の形（properties のキー）で見るように直した。`unregistered` を足した。見分けられる範囲と限りを4.1 に書いた
 - 2026-11-14 リーダーの判断（p2-units-b の追記の未解決1）: mydist を写すとき、当てた単位の `checks.absentSettings` のキーを configurationDefaults から外し、`builtinExtensions.removedDefaults` に記録する（2.6）。`pruneConfigurationDefaults` を足した
 - 2026-11-14 大岡越前守の検証の軽微1: `--manifests` の既定を `C:/b/p0/vsix` から `<buildRoot>\cache\vsix` に改め、`--build-root` を足した
+- 2026-11-14 リーダーの申し送り（p2-verify-prebuild の追記の2）: `--config <local.json>` を足した（`--build-root` が無いとき buildRoot を読む local.json。既定 `%LOCALAPPDATA%\Shuko\local.json`）。build.mjs は apply と `--lockfile-check` の両方に、自分が決めた `--build-root` と `--config` を渡す（p2-build-switch）

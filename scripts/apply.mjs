@@ -7,6 +7,7 @@
 //   node scripts/apply.mjs <作業ツリー> --label <label> [--only <id,...>] [--until <id>] [--dry-run]
 //        [--checks-out <path>] [--prev-tag <tag>] [--removals <dir>] [--patches <dir>] [--assets <dir>]
 //        [--overlay <file>] [--keep <file>] [--extensions-src <dir>] [--manifests <dir>] [--keep-conflict]
+//        [--build-root <dir>] [--config <local.json>]（--manifests の既定 <buildRoot>\cache\vsix を決めるため）
 //   node scripts/apply.mjs <作業ツリー> --label <label> --lockfile-check [--base <ref>] [--checks-out <path>] [--diff-out <path>]
 // 終了コード: 0 = result が ok か hold、1 = fail、2 = 引数の誤り
 
@@ -62,6 +63,7 @@ export function parseArgs(argv) {
     extensionsSrc: path.join(REPO, "extensions-src"),
     manifests: null, // 既定は <buildRoot>\cache\vsix（docs/02 の8節）。buildRoot は --build-root → local.json → C:\b
     buildRoot: null,
+    config: null, // local.json の場所（既定 %LOCALAPPDATA%\Shuko\local.json）。build.mjs は自分の --config を渡す
     lock: path.join(REPO, "extensions.lock.json"),
     keepConflict: false,
     lockfileCheck: false,
@@ -91,6 +93,7 @@ export function parseArgs(argv) {
       case "--extensions-src": a.extensionsSrc = p(val(i++, x)); break;
       case "--manifests": a.manifests = p(val(i++, x)); break;
       case "--build-root": a.buildRoot = val(i++, x); break;
+      case "--config": a.config = p(val(i++, x)); break;
       case "--lock": a.lock = p(val(i++, x)); break;
       case "--keep-conflict": a.keepConflict = true; break;
       case "--lockfile-check": a.lockfileCheck = true; break;
@@ -111,7 +114,7 @@ export function parseArgs(argv) {
     // 台帳の拡張の manifest は VSIX のキャッシュ <buildRoot>\cache\vsix\<id>-<版>[@<target>]\package.json（docs/02 の8節）
     let cfg;
     try {
-      cfg = resolveLocalConfig({ overrides: { buildRoot: a.buildRoot } });
+      cfg = resolveLocalConfig({ configPath: a.config || undefined, overrides: { buildRoot: a.buildRoot || undefined } });
     } catch (err) {
       throw new UsageError(`buildRoot を決められない: ${err.message}`);
     }

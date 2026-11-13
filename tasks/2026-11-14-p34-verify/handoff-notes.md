@@ -3,6 +3,64 @@
 - 日付: 2026-11-14
 - 詳しい記録: `verification-log.md`（先頭の「追記 A」が2回目）。全体の走らせの結果: `run-all-result.txt`（1回目）、`run-all-result-2.txt`（2回目）
 
+## 追記2（3回目: `scripts/apply.mjs` の未コミットの `--config`）
+
+### 判定: **合格**
+
+### 差分（`git diff scripts/apply.mjs`）
+
+- 使い方のコメントに `[--build-root <dir>] [--config <local.json>]` を1行足した。
+- `parseArgs` の既定に `config: null` を足した。
+- `case "--config": a.config = p(val(i++, x))` を足した（絶対パスにする）。
+- `resolveLocalConfig({ overrides: { buildRoot } })` を `resolveLocalConfig({ configPath: a.config || undefined, overrides: { buildRoot: a.buildRoot || undefined } })` に変えた。
+- ほかの動きは変えていない。`--build-root` があればそれが先に効き、無ければ `--config` の local.json の `buildRoot`、それも無ければ既定の local.json → `C:\b` の順で決まる。
+- `apply-design.md` の差分は2行: 引数の表の `--config` の行と、変更の記録の1行。中身はコードと合う。
+- build.mjs は apply と `--lockfile-check` に `--config <cfg.configPath>` を渡し、take-in.mjs も M-1 の直しで `--config` を渡す。この差分は、それを受けるための直しである。差分が無いと、apply.mjs は `--config` を「知らない引数」として終了コード 2 で止まる。
+
+### 既存のテスト
+
+`node --test` で次のファイルを流し、232 件すべてが通った（fail 0）。
+
+- apply-cli・apply・apply-parts・apply-commits・apply-prune・apply-selfcheck
+- build-fixes・switch-expand・take-in-more（`--config` を渡す側）
+
+2回目の run-all（1386 件、fail 0）も、この差分の入った同じ `apply.mjs`（SHA-256 `241a8618…`）で走らせている。
+
+### `--config` で manifests の既定が決まること
+
+既存のテストには、apply.mjs の `--config` を直接見るものが無かった。そのため、試しの local.json で `--dry-run` を走らせた。作業ツリーは `C:\b\wt\1.146.0` で、dry-run なので書き換えない。出力は `tasks/2026-11-14-p34-verify/trial/` にある。
+
+| 回 | 引数 | 結果（`checks.json` の `inputs.manifests`） |
+|---|---|---|
+| 1 | `--config C:/b/trial-install/cfg/local.json`（buildRoot `C:\b\trial-build`） | `C:\b\trial-build\cache\vsix`、result ok |
+| 2 | `--config trial/local-alt.json`（buildRoot `C:\b\trial-alt-apply-config`） | `C:\b\trial-alt-apply-config\cache\vsix`、result ok |
+| 3 | 2 に `--build-root C:/b/trial-override` を足す | `C:\b\trial-override\cache\vsix`（`--build-root` が先に効く） |
+| 4 | `--config trial/local-bad.json`（知らないキー `noSuchKey`） | 終了コード 2「buildRoot を決められない: … noSuchKey: 知らないキー」 |
+
+manifests の既定は、`--config` の local.json の buildRoot から決まる。`--build-root` が優先され、誤りのある local.json は引数の誤りとして止まる。apply-design.md の表のとおりである。
+
+実際の `%LOCALAPPDATA%\Shuko\local.json` は使っていない（どの回も `--config` を渡した）。
+
+### 指摘（合否に含めない）
+
+- apply.mjs の `--config` を直接見るテストが無い。上の試しの 1〜4 を、曹参のテストにしておくとよい。
+
+### SHA-256
+
+```
+241a8618fdbb81398bc121de6d64f19e2379f1c0f130b2d44a49bf1f4ed37b6b  scripts/apply.mjs
+c10eba062638ff7b509dc283b223c73056edeb7b60f6b6612cf3eec7431ecf25  tasks/2026-11-13-p2-apply/apply-design.md
+0fcc7ea644b37abfb149f75c39cbc913214d9dcbdd31f2451fea75a11c2cf01e  tasks/2026-11-14-p34-verify/trial/apply-config-1.json
+b5ef7571bed68d02991c32fe8e0bb60fc81d5e52ad9677f39230a539f16cff13  tasks/2026-11-14-p34-verify/trial/apply-config-2.json
+4b1424815cc97e347a12265419d066167a99ea34e29d828b57091bd993a4fd29  tasks/2026-11-14-p34-verify/trial/apply-config-3.json
+bac039a6c41eea4bd938cfc86b2ae0182ffe1654291e64eb53fd1b6d6a57e22e  tasks/2026-11-14-p34-verify/trial/local-alt.json
+9e157a52467ed3955eda4c0fa15245b142efdd727cd3b1a7593611798c00de0f  tasks/2026-11-14-p34-verify/trial/local-bad.json
+```
+
+`scripts/apply.mjs` の値は、1回目・2回目に確かめた値と同じ（差分は1回目から入っていた）。
+
+---
+
 ## 追記（2回目の確かめ。判定できなかった分を曹参のテストで埋めた。権限は変えていない）
 
 ### 判定: **合格**
@@ -159,5 +217,6 @@
 
 - `tasks/2026-11-14-p34-verify/verification-log.md`
 - `tasks/2026-11-14-p34-verify/handoff-notes.md`（この報告）
-- `tasks/2026-11-14-p34-verify/run-all-result.txt`
+- `tasks/2026-11-14-p34-verify/run-all-result.txt`、`run-all-result-2.txt`
+- `tasks/2026-11-14-p34-verify/trial/`（追記2 の apply.mjs の `--config` の試し: `apply-config-1〜3.json`・`local-alt.json`・`local-bad.json`）
 - `records/` には書いていない（計測・ビルドの記録の対象が無い）。
