@@ -186,7 +186,7 @@ workbench の contrib のうち、他の部品から参照されることが少�
 
 1. 当たる: 6節の検査を通る。
 2. 型検査とビルドが通る: [02](02-repository-and-build.md) の4節の5・6。
-3. 消えている: `checks` の `absentCommands`（コマンドパレットに出ない）、`absentViews`（ビュー・メニューに出ない）、`absentSettings`（設定の画面に出ない）、`absentProcesses`（Process Explorer にその機能のプロセスが無い）。`absentHosts`（その機能の外向きの接続が無い）は、通信の監査をやめたので見ない（裁定 2026-11-13）。
+3. 消えている: `checks` の `absentCommands`（コマンドパレットに出ない）、`absentViews`（ビュー・メニューに出ない）、`absentSettings`（設定の画面に出ない）、`absentProcesses`（Process Explorer にその機能のプロセスが無い）、`absentHosts`（その機能の外向きの接続が無い）。
 4. 壊れていない: 単位の `smoke` の組を通る（[06](06-update-watch-and-take-in.md) の5節）。特に Claude Code 拡張の確認の組。起動時の開発者ツールのコンソールと拡張ホストのログに、前の段階に無かったエラーが出ない。
 5. （やめた）増えていない: メモリの計測で前の段階を上回らない。計測をやめたので見ない（裁定 2026-11-13）。
 

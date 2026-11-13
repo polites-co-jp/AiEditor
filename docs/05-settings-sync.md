@@ -88,7 +88,7 @@
 - Notion-Version ヘッダは必須 [一次] https://developers.notion.com/reference/versioning 。`2025-09-03` を使う（更新の検知と同じ版）。
 - レート制限: 平均 3 回/秒（Business・Enterprise 以外）。超えると 429 と `Retry-After`（秒）が返るので、それに従って待つ。529 も同じに扱う [一次] https://developers.notion.com/reference/request-limits 。
 - 1回の書き換えで送るのは、変わったファイルのブロックと manifest だけ。1リクエストは 500KB・1000 ブロック要素まで（同ページ）。
-- 外向きの接続先は `api.notion.com` だけ。
+- 外向きの接続先は `api.notion.com` だけ。外向き通信の監査で、許した宛先として扱う。
 
 ## 9. 拡張の設計の大枠
 

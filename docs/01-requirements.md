@@ -55,7 +55,7 @@
 | 更新の検知と ToDo の書き込み | ビルドリポジトリ | `tools/watch/` | [06](06-update-watch-and-take-in.md) |
 | 取り込みと判定 | ビルドリポジトリ | `scripts/take-in.mjs`、`TAKE-IN.md` | [06](06-update-watch-and-take-in.md) |
 | 版ごとのフォルダと切り替え | ビルドリポジトリ | `scripts/switch.ps1` | [02](02-repository-and-build.md) の6節 |
-| メモリの計測と外向き通信の監査 | ビルドリポジトリ | `scripts/measure.ps1`、`scripts/netaudit.ps1` | [07](07-phases.md) の3節。使わない（裁定 2026-11-13。台本は残す） |
+| メモリの計測と外向き通信の監査 | ビルドリポジトリ | `scripts/measure.ps1`、`scripts/netaudit.ps1` | [07](07-phases.md) の3節。`measure.ps1` は使わない（裁定 2026-11-13。台本は残す）。`netaudit.ps1` は不要な通信が止まったことの確かめに使う |
 
 ## 3. 消す機能
 
