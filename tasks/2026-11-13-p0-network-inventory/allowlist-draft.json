@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "updated": "2026-11-13",
+  "note": "DRAFT used only for the 0-5 runs (forward-lookup hints for claude.exe and a first allowed/not-allowed split). Not the real list. The real list is records/network-allowlist.json, written from the results.",
+  "allow": [
+    { "host": "api.anthropic.com", "ports": [443], "reason": "Claude (Claude Code CLI / extension)" },
+    { "host": "claude.ai", "ports": [443], "reason": "Claude (login)" },
+    { "host": "platform.claude.com", "ports": [443], "reason": "Claude (login)" },
+    { "host": "console.anthropic.com", "ports": [443], "reason": "Claude (login)" },
+    { "host": "downloads.claude.ai", "ports": [443], "reason": "Claude (CLI downloads)" },
+    { "host": "api.notion.com", "ports": [443], "reason": "Notion (settings sync / update watch, docs/05, docs/06)" },
+    { "host": "github.com", "ports": [443], "reason": "git remote (GitHub)" }
+  ]
+}

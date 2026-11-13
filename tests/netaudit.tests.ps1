@@ -336,6 +336,283 @@ Test-Case 'previous list: destinations.json written by a run can be read back' {
     finally { Remove-Item -LiteralPath $dir -Recurse -Force -ErrorAction SilentlyContinue }
 }
 
+# ---- host names from the Chromium net log ------------------------------------
+# Synthetic lines in the shape of a real --log-net-log file (checked against Electron 1.146.0 / Chromium output, 2026-11-13).
+function New-NlResolve { param([int]$Sid, [string]$HostText) '{"params":{"allow_cached_response":true,"dns_query_type":"UNSPECIFIED","host":"' + $HostText + '","is_speculative":false,"network_anonymization_key":"null","secure_dns_policy":0},"phase":1,"source":{"id":' + $Sid + ',"start_time":"1","type":5},"time":"2","type":5},' }
+function New-NlAnswer { param([int]$Sid, [string[]]$Aliases, [string[]]$Canon, [string[]]$Ips)
+    $al = ($Aliases | ForEach-Object { '"' + $_ + '"' }) -join ','
+    $ca = ($Canon | ForEach-Object { '"' + $_ + '"' }) -join ','
+    $ep = ($Ips | ForEach-Object { '{"endpoint_address":"' + $_ + '","endpoint_port":0}' }) -join ','
+    '{"params":{"results":{"aliases":[' + $al + '],"canonical_names":[' + $ca + '],"endpoint_metadatas":[],"expiration":"1","host_ports":[],"hostname_results":[],"ip_endpoints":[' + $ep + '],"text_records":[]}},"phase":0,"source":{"id":' + $Sid + ',"start_time":"1","type":5},"time":"3","type":8},'
+}
+function New-NlConnect { param([int]$Sid, [string]$Addr) '{"params":{"address":"' + $Addr + '","source_dependency":{"id":99,"type":10}},"phase":0,"source":{"id":' + $Sid + ',"start_time":"1","type":5},"time":"4","type":110},' }
+function New-NlUrl { param([int]$Sid, [string]$Url) '{"params":{"initiator":"vscode-file://vscode-app","load_flags":64,"method":"GET","url":"' + $Url + '"},"phase":1,"source":{"id":' + $Sid + ',"start_time":"1","type":1},"time":"5","type":133},' }
+$nlHead = '{"constants":{"logEventTypes":{"HOST_RESOLVER_MANAGER_REQUEST":5}},'
+$nlLines = @(
+    $nlHead, '"events": [',
+    (New-NlResolve 10 'https://marketplace.visualstudio.com'),
+    (New-NlAnswer 10 @('market.bx-0007.bx-msedge.net', 'marketplace.visualstudio.com', 'bx-0007.bx-msedge.net') @('bx-0007.bx-msedge.net') @('2603:1061:10:1::16', '13.107.5.93')),
+    (New-NlConnect 10 '[2603:1061:10:1::16]:443'),
+    (New-NlResolve 11 'default.exp-tas.com:443'),
+    (New-NlAnswer 11 @('default.exp-tas.com', 'e-0014.e-msedge.net') @('e-0014.e-msedge.net') @('13.107.5.93')),
+    (New-NlConnect 11 '13.107.5.93:443'),
+    (New-NlResolve 12 'wpad:80'),
+    (New-NlUrl 20 'https://user:pw@marketplace.visualstudio.com/_apis/x?token=SECRET123'),
+    (New-NlUrl 21 'https://marketplace.visualstudio.com/other'),
+    (New-NlUrl 22 'vscode-file://vscode-app/c:/x'),
+    '{"phase":2,"source":{"id":10,"start_time":"1","type":5},"time":"9","type":5}',
+    ']', '}'
+)
+$nl = Get-NetLogInfo $nlLines
+Test-Case 'netlog name: URL, host:port and scheme-host forms give a lower-case host; IP literals and empty give null' {
+    Assert-Equal (ConvertTo-NetLogHostName 'https://Marketplace.VisualStudio.com:443/x?y=1') 'marketplace.visualstudio.com' ''
+    Assert-Equal (ConvertTo-NetLogHostName 'wpad:80') 'wpad' ''
+    Assert-Equal (ConvertTo-NetLogHostName 'api.notion.com.') 'api.notion.com' 'trailing dot'
+    Assert-Equal (ConvertTo-NetLogHostName 'https://u:p@a.example.com/') 'a.example.com' 'user info dropped'
+    Assert-True ($null -eq (ConvertTo-NetLogHostName '203.0.113.5:443')) 'ipv4'
+    Assert-True ($null -eq (ConvertTo-NetLogHostName '[2001:db8::1]:443')) 'ipv6'
+    Assert-True ($null -eq (ConvertTo-NetLogHostName '')) 'empty'
+}
+Test-Case 'netlog url: only http/https/ws/wss are kept, port defaults by scheme' {
+    $u = Get-NetLogUrlParts 'https://a.example.com/p?q=1'
+    Assert-Equal "$($u.Host):$($u.Port)" 'a.example.com:443' ''
+    $u = Get-NetLogUrlParts 'http://a.example.com:8080/'
+    Assert-Equal "$($u.Host):$($u.Port)" 'a.example.com:8080' ''
+    Assert-Equal (Get-NetLogUrlParts 'wss://a.example.com/s').Port 443 ''
+    Assert-True ($null -eq (Get-NetLogUrlParts 'vscode-file://vscode-app/x')) 'file scheme'
+    Assert-True ($null -eq (Get-NetLogUrlParts 'https://203.0.113.5/x')) 'ip literal'
+}
+Test-Case 'netlog: an address a socket was opened to is named after the host it was opened for (asked-for name first, canonical last)' {
+    Assert-Equal (@(Get-HostNames $nl.Map '2603:1061:10:1::16') -join ',') 'marketplace.visualstudio.com,market.bx-0007.bx-msedge.net,bx-0007.bx-msedge.net' ''
+    Assert-Equal (@(Get-HostNames $nl.Map '13.107.5.93') -join ',') 'default.exp-tas.com,e-0014.e-msedge.net' 'host:port form'
+}
+Test-Case 'netlog: an address that is only in a resolver answer is not in Map (shared CDN addresses), but is in AnswerMap with both hosts' {
+    # 13.107.5.93 was an answer for marketplace too, but the socket was opened for default.exp-tas.com
+    Assert-True (@(Get-HostNames $nl.Map '13.107.5.93') -notcontains 'marketplace.visualstudio.com') 'not attributed to marketplace in Map'
+    Assert-True (@(Get-HostNames $nl.AnswerMap '13.107.5.93') -contains 'marketplace.visualstudio.com') 'but listed in AnswerMap'
+    Assert-True (@(Get-HostNames $nl.AnswerMap '13.107.5.93') -contains 'default.exp-tas.com') ''
+}
+Test-Case 'netlog: hosts get request and resolution counts; wpad is there with no answer; file scheme is not a host' {
+    Assert-Equal $nl.Hosts['marketplace.visualstudio.com'].Requests 2 'two url requests'
+    Assert-Equal $nl.Hosts['marketplace.visualstudio.com'].Resolutions 1 ''
+    Assert-True $nl.Hosts['marketplace.visualstudio.com'].Answered ''
+    Assert-True (-not $nl.Hosts['wpad'].Answered) ''
+    Assert-Equal $nl.Hosts['wpad'].Port 80 ''
+    Assert-Equal $nl.Hosts['default.exp-tas.com'].Port 443 ''
+    Assert-True (-not $nl.Hosts.ContainsKey('vscode-app')) ''
+}
+Test-Case 'netlog: nothing but host names and counts is kept (no path, query, user info, secrets)' {
+    $json = ($nl | ConvertTo-Json -Depth 6)
+    Assert-True ($json -notmatch 'SECRET123') 'query value'
+    Assert-True ($json -notmatch '_apis') 'path'
+    Assert-True ($json -notmatch 'user:pw') 'user info'
+}
+Test-Case 'netlog: a complete file ends with a closing brace; a truncated one still gives names and is flagged' {
+    Assert-True $nl.Complete 'complete'
+    $cut = Get-NetLogInfo @($nlLines[0..7])
+    Assert-True (-not $cut.Complete) 'truncated'
+    Assert-Equal (@(Get-HostNames $cut.Map '13.107.5.93') -join ',') 'default.exp-tas.com,e-0014.e-msedge.net' ''
+}
+Test-Case 'netlog: garbage, empty lines and half lines are skipped without an error' {
+    $r = Get-NetLogInfo @('', 'not json "ip_endpoints":[ {{{', '{"params":{"dns_query_type":"X","host":"ok.example.com:443"},"phase":1,"source":{"id":1},"time":"1","type":5},')
+    Assert-True $r.Hosts.ContainsKey('ok.example.com') ''
+    Assert-Equal $r.Map.Count 0 ''
+}
+Test-Case 'netlog: an empty line list gives empty results' {
+    $r = Get-NetLogInfo @()
+    Assert-Equal $r.Map.Count 0 ''
+    Assert-Equal $r.Hosts.Count 0 ''
+    Assert-True (-not $r.Complete) ''
+}
+Test-Case 'netlog file: read from disk (shared read), missing file gives null' {
+    $f = Join-Path ([IO.Path]::GetTempPath()) ("nl-" + [guid]::NewGuid().ToString('N') + '.json')
+    try {
+        Set-Content -LiteralPath $f -Value $nlLines -Encoding UTF8
+        $r = Read-NetLogFile $f
+        Assert-Equal $r.Path $f ''
+        Assert-True (@(Get-HostNames $r.Map '13.107.5.93').Count -ge 1) ''
+        Assert-True ($null -eq (Read-NetLogFile (Join-Path ([IO.Path]::GetTempPath()) 'no-such-netlog.json'))) 'missing'
+        Set-Content -LiteralPath $f -Value '' -Encoding ASCII
+        Assert-True ($null -eq (Read-NetLogFile $f)) 'empty'
+    }
+    finally { Remove-Item -LiteralPath $f -Force -ErrorAction SilentlyContinue }
+}
+
+# ---- name sources in the destination rows ----------------------------------
+$nlMap = $nl.Map
+Test-Case 'rows+netlog: the net log names an address the DNS cache does not know; method is netlog' {
+    $st = @{}
+    Update-Observations -State $st -Connections @((New-Conn 10 '13.107.5.93')) -ProcessIndex $index -ClaudeIds $claudeIds -Elapsed 2 -Time $tA -SampleIndex 1
+    $rows = @(New-DestinationRows -State $st -DnsMap @{} -Previous $null -List $null -ExtraMaps @([pscustomobject]@{ Method = 'netlog'; Map = $nlMap; Weak = $false }))
+    Assert-Equal $rows[0].HostKey 'default.exp-tas.com' ''
+    Assert-True $rows[0].Resolved ''
+    Assert-Equal $rows[0].NameMethod 'netlog' ''
+}
+Test-Case 'rows+netlog: both sources name it -> method lists both, net log names first' {
+    $st = @{}
+    Update-Observations -State $st -Connections @((New-Conn 10 '13.107.5.93')) -ProcessIndex $index -ClaudeIds $claudeIds -Elapsed 2 -Time $tA -SampleIndex 1
+    $dns = Get-DnsMap @((New-Dns 'dns.example.net' 1 '13.107.5.93'))
+    $rows = @(New-DestinationRows -State $st -DnsMap $dns -Previous $null -List $null -ExtraMaps @([pscustomobject]@{ Method = 'netlog'; Map = $nlMap; Weak = $false }))
+    Assert-Equal $rows[0].NameMethod 'netlog+dns-cache' ''
+    Assert-Equal $rows[0].HostKey 'default.exp-tas.com' ''
+    Assert-True ($rows[0].Names -match 'dns\.example\.net') ''
+}
+Test-Case 'rows+netlog: only the DNS cache names it -> method dns-cache; nothing names it -> none' {
+    $st = @{}
+    Update-Observations -State $st -Connections @((New-Conn 10 '104.18.1.1'), (New-Conn 10 '203.0.113.77')) -ProcessIndex $index -ClaudeIds $claudeIds -Elapsed 2 -Time $tA -SampleIndex 1
+    $rows = @(New-DestinationRows -State $st -DnsMap $dnsMap -Previous $null -List $list -ExtraMaps @())
+    Assert-Equal ($rows | Where-Object { $_.HostKey -eq 'api.notion.com' }).NameMethod 'dns-cache' ''
+    Assert-Equal ($rows | Where-Object { $_.HostKey -eq '203.0.113.77' }).NameMethod 'none' ''
+}
+Test-Case 'rows+hints: a weak name stays a hint - the host key is still the IP, it is not resolved, and it never makes the row allowed' {
+    $st = @{}
+    Update-Observations -State $st -Connections @((New-Conn 10 '198.51.100.99')) -ProcessIndex $index -ClaudeIds $claudeIds -Elapsed 2 -Time $tA -SampleIndex 1
+    $weak = [pscustomobject]@{ Method = 'forward'; Map = @{ '198.51.100.99' = @('api.notion.com') }; Weak = $true }
+    $rows = @(New-DestinationRows -State $st -DnsMap @{} -Previous $null -List $list -ExtraMaps @($weak))
+    Assert-Equal $rows[0].HostKey '198.51.100.99' ''
+    Assert-True (-not $rows[0].Resolved) ''
+    Assert-True (-not $rows[0].Allowed) 'weak name must not allow'
+    Assert-Equal $rows[0].WeakNames 'api.notion.com [forward]' ''
+    Assert-Equal $rows[0].NameMethod 'none' ''
+}
+Test-Case 'rows+hints: weak names are not looked at when a strong source already named the address' {
+    $st = @{}
+    Update-Observations -State $st -Connections @((New-Conn 10 '13.107.5.93')) -ProcessIndex $index -ClaudeIds $claudeIds -Elapsed 2 -Time $tA -SampleIndex 1
+    $weak = [pscustomobject]@{ Method = 'rdns'; Map = @{ '13.107.5.93' = @('whatever.example.net') }; Weak = $true }
+    $rows = @(New-DestinationRows -State $st -DnsMap @{} -Previous $null -List $null -ExtraMaps @([pscustomobject]@{ Method = 'netlog'; Map = $nlMap; Weak = $false }, $weak))
+    Assert-Equal $rows[0].WeakNames '' ''
+}
+Test-Case 'rows+netlog: a host named by the net log and listed in the allowlist is allowed' {
+    $st = @{}
+    Update-Observations -State $st -Connections @((New-Conn 10 '104.18.1.9')) -ProcessIndex $index -ClaudeIds $claudeIds -Elapsed 2 -Time $tA -SampleIndex 1
+    $m = [pscustomobject]@{ Method = 'netlog'; Map = @{ '104.18.1.9' = @('api.notion.com') }; Weak = $false }
+    $rows = @(New-DestinationRows -State $st -DnsMap @{} -Previous $null -List $list -ExtraMaps @($m))
+    Assert-True $rows[0].Allowed ''
+}
+Test-Case 'rows: existing callers without ExtraMaps still work (four arguments)' {
+    $rows = @(New-DestinationRows -State (New-StateFrom) -DnsMap $dnsMap -Previous $null -List $list)
+    Assert-True ($rows.Count -ge 1) ''
+    Assert-True ($rows[0].PSObject.Properties['NameMethod']) 'new column present'
+}
+
+# ---- weak hints: reverse lookup and forward lookup of the allowlist --------
+Test-Case 'reverse hints: names from an injected PTR resolver are cleaned, empty answers are skipped, the number of lookups is capped' {
+    $calls = 0
+    $res = { param($ip) $script:revCalls++; if ($ip -eq '198.51.100.1') { @('Host-1.Example.NET.') } else { @() } }
+    $script:revCalls = 0
+    $m = Get-ReverseNameMap -Ips @('198.51.100.1', '198.51.100.2', '198.51.100.3') -Resolver $res -Max 2
+    Assert-Equal (@(Get-HostNames $m '198.51.100.1') -join ',') 'host-1.example.net' ''
+    Assert-Equal @(Get-HostNames $m '198.51.100.2').Count 0 ''
+    Assert-Equal $script:revCalls 2 'capped at 2'
+}
+Test-Case 'reverse hints: a failing resolver does not stop the run' {
+    $m = Get-ReverseNameMap -Ips @('198.51.100.1') -Resolver { param($ip) throw 'boom' }
+    Assert-Equal $m.Count 0 ''
+}
+Test-Case 'forward hints: exact allowlist hosts are resolved; wildcards and IP literals are not' {
+    $asked = @()
+    $res = { param($n) $script:fwdAsked += $n; if ($n -eq 'api.notion.com') { @('104.18.1.1', '::ffff:104.18.1.2') } else { @() } }
+    $script:fwdAsked = @()
+    $m = Get-ForwardNameMap -List $list -Resolver $res
+    Assert-Equal (@(Get-HostNames $m '104.18.1.1') -join ',') 'api.notion.com' ''
+    Assert-Equal (@(Get-HostNames $m '104.18.1.2') -join ',') 'api.notion.com' 'mapped address normalised'
+    Assert-True (-not (@($script:fwdAsked) | Where-Object { "$_".Contains('*') -or $_ -match '^\d+\.\d+\.\d+\.\d+$' })) 'no wildcard or IP literal was resolved'
+}
+Test-Case 'forward hints: no allowlist gives an empty map' {
+    Assert-Equal (Get-ForwardNameMap -List $null -Resolver { param($n) @('1.2.3.4') }).Count 0 ''
+}
+
+# ---- Node code: NODE_DEBUG=net text -----------------------------------------
+$nodeLines = @(
+    '[main 2026-11-13T12:56:46.117Z] [AgentHost:stderr] NET 40864: connect: find host mobile.events.data.microsoft.com',
+    '[main 2026-11-13T12:56:46.181Z] [AgentHost:stderr] NET 40864: connect: attempting to connect to 20.184.175.17:443 (addressType: 4)',
+    '[24684:1113/215646.575:INFO:CONSOLE:39] "%c  ERR color: #f33 [Extension Host] NET 5188: connect: find host default.exp-tas.com", source: vscode-file://vscode-app/x.js (39)',
+    '[24684:1113/215646.575:INFO:CONSOLE:721] "%c[Extension Host] %cNET 5188: connect: find host default.exp-tas.com color: blue color: ", source: x',
+    '[24684:1113/215646.581:INFO:CONSOLE:39] "%c  ERR color: #f33 [Extension Host] NET 5188: connect: find host exp.individual.githubcopilot.com", source: x',
+    '[24684:1113/215646.584:INFO:CONSOLE:39] "%c  ERR color: #f33 [Extension Host] NET 5188: connect: attempting to connect to 13.107.5.93:443 (addressType: 4)", source: x',
+    '[24684:1113/215646.584:INFO:CONSOLE:721] "%c[Extension Host] %cNET 5188: connect: attempting to connect to 13.107.5.93:443 (addressType: 4) color: blue", source: x',
+    '%cNET 5188: connect: attempting to connect to 52.175.140.176:443 (addressType: 4)',
+    'NET 5188: _read - n 16384 isConnecting? false hasHandle? true',
+    'NET 77: connect: find host a.example.com',
+    'NET 77: connect: find host b.example.com',
+    'NET 77: connect: attempting to connect to 203.0.113.5:443 (addressType: 4)'
+)
+$nd = Get-NodeDebugInfo $nodeLines
+Test-Case 'node debug: host names are cut at the end of the name (no quote or comma from a console echo) and lower-cased' {
+    Assert-True $nd.Hosts.ContainsKey('default.exp-tas.com') ''
+    Assert-True (-not (@($nd.Hosts.Keys) | Where-Object { $_ -match '[",\s]' })) 'no stray characters'
+}
+Test-Case 'node debug: a repeated echo of the same line counts once per pid' {
+    Assert-Equal $nd.Hosts['default.exp-tas.com'].Lookups 1 ''
+}
+Test-Case 'node debug: same number of hosts and addresses in one pid -> paired in order of appearance' {
+    Assert-Equal (@(Get-HostNames $nd.Map '13.107.5.93') -join ',') 'default.exp-tas.com' ''
+    Assert-Equal (@(Get-HostNames $nd.Map '52.175.140.176') -join ',') 'exp.individual.githubcopilot.com' ''
+    Assert-Equal (@(Get-HostNames $nd.Map '20.184.175.17') -join ',') 'mobile.events.data.microsoft.com' ''
+}
+Test-Case 'node debug: different counts in one pid -> every host of that pid is a candidate' {
+    Assert-Equal (@(Get-HostNames $nd.Map '203.0.113.5') -join ',') 'a.example.com,b.example.com' ''
+}
+Test-Case 'node debug: lines about other things are ignored; no input gives empty results; the port is the connect port' {
+    Assert-Equal (Get-NodeDebugInfo @('NET 1: close handle', '')).Hosts.Count 0 ''
+    Assert-Equal $nd.Hosts['default.exp-tas.com'].Port 443 ''
+}
+Test-Case 'node debug file: lines are read from disk, others are dropped; none gives null' {
+    $f = Join-Path ([IO.Path]::GetTempPath()) ("nd-" + [guid]::NewGuid().ToString('N') + '.txt')
+    try {
+        Set-Content -LiteralPath $f -Value (@('unrelated') + $nodeLines) -Encoding UTF8
+        $r = Read-NodeDebugFiles @($f, (Join-Path ([IO.Path]::GetTempPath()) 'no-such-file.txt'))
+        Assert-True $r.Hosts.ContainsKey('a.example.com') ''
+        Set-Content -LiteralPath $f -Value 'unrelated' -Encoding UTF8
+        Assert-True ($null -eq (Read-NodeDebugFiles @($f))) 'no connect lines'
+    }
+    finally { Remove-Item -LiteralPath $f -Force -ErrorAction SilentlyContinue }
+}
+
+# ---- hosts seen by name ------------------------------------------------------
+Test-Case 'named hosts: net log and Node lookups are merged per host; each host is checked against the allowlist by itself' {
+    $nodeHosts = @{ 'api.notion.com' = [pscustomobject]@{ Lookups = 1; Pids = @(5); Port = 443 }; 'tracker.example.net' = [pscustomobject]@{ Lookups = 2; Pids = @(5, 6); Port = 443 } }
+    $logHosts = @{ 'api.notion.com' = [pscustomobject]@{ Requests = 3; Resolutions = 4; Answered = $true; Port = 443 }; 'telemetry.example.com' = [pscustomobject]@{ Requests = 1; Resolutions = 1; Answered = $true; Port = 443 } }
+    $rows = @(New-DestinationRows -State (New-StateFrom) -DnsMap $dnsMap -Previous $null -List $list)
+    $r = @(New-NamedHostRows -Hosts $logHosts -NodeHosts $nodeHosts -Rows $rows -List $list -ProcessName 'Code.exe')
+    Assert-Equal $r.Count 3 ''
+    $n = $r | Where-Object { $_.Host -eq 'api.notion.com' }
+    Assert-Equal $n.SeenBy 'netlog+node' ''
+    Assert-True $n.Allowed ''
+    Assert-True $n.SeenInSampling 'its name is in a destination row'
+    Assert-Equal $n.Requests 3 ''
+    Assert-Equal $n.NodeLookups 1 ''
+    $t = $r | Where-Object { $_.Host -eq 'tracker.example.net' }
+    Assert-Equal $t.SeenBy 'node' ''
+    Assert-True (-not $t.Allowed) ''
+    Assert-True (-not $t.SeenInSampling) ''
+    Assert-Equal $r[0].Host 'api.notion.com' 'most requests first'
+}
+Test-Case 'named hosts: no net log and no Node output gives no rows' {
+    Assert-Equal @(New-NamedHostRows -Hosts $null -NodeHosts $null -Rows @() -List $list -ProcessName 'Code.exe').Count 0 ''
+}
+Test-Case 'markdown: has the "name from" column, the hint, the by-name table and the by-name unlisted entry' {
+    $st = @{}
+    Update-Observations -State $st -Connections @((New-Conn 10 '13.107.5.93'), (New-Conn 10 '198.51.100.99')) -ProcessIndex $index -ClaudeIds $claudeIds -Elapsed 2 -Time $tA -SampleIndex 1
+    $weak = [pscustomobject]@{ Method = 'rdns'; Map = @{ '198.51.100.99' = @('hint.example.net') }; Weak = $true }
+    $rows = @(New-DestinationRows -State $st -DnsMap @{} -Previous $null -List $list -ExtraMaps @([pscustomobject]@{ Method = 'netlog'; Map = $nlMap; Weak = $false }, $weak))
+    $named = @(New-NamedHostRows -Hosts $nl.Hosts -NodeHosts $null -Rows $rows -List $list -ProcessName 'Code.exe')
+    $meta = [pscustomobject]@{ Label = 't'; Exe = 'x'; DurationSeconds = 60; IntervalSeconds = 2; Samples = 1; NetLogEvents = 12; NetLogComplete = $true; NetLogPath = 'C:\b\p0\netlog\x.json'; DnsEntries = 0 }
+    $md = (New-AuditMarkdown -Meta $meta -Rows $rows -HasPrevious $false -AllowlistInfo ([pscustomobject]@{ Missing = $false }) -NetLogHostRows $named) -join "`n"
+    Assert-True ($md -match '\| name from \|') 'column'
+    Assert-True ($md -match 'hint only: hint\.example\.net \[rdns\]') 'hint'
+    Assert-True ($md -match 'Hosts seen by name') 'section'
+    Assert-True ($md -match '\[by name: netlog\] marketplace\.visualstudio\.com') 'unlisted by name'
+    Assert-True ($md -match 'net log: 12 events, complete') 'meta line'
+    Assert-True ($md -notmatch 'WARNING: Get-DnsClientCache') 'empty DNS cache is only a note when the net log is there'
+}
+Test-Case 'markdown: without a net log an empty DNS cache is still a warning; an unreadable net log is a warning' {
+    $meta = [pscustomobject]@{ Label = 't'; Exe = 'x'; DurationSeconds = 60; IntervalSeconds = 2; Samples = 1; DnsEntries = 0; NetLogPath = 'C:\b\p0\netlog\x.json'; NetLogEvents = 0 }
+    $md = (New-AuditMarkdown -Meta $meta -Rows @() -HasPrevious $false -AllowlistInfo ([pscustomobject]@{ Missing = $false })) -join "`n"
+    Assert-True ($md -match 'WARNING: Get-DnsClientCache') ''
+    Assert-True ($md -match 'WARNING: the net log is missing or empty') ''
+}
+
 Write-Host ''
 Write-Host ("passed: {0}  failed: {1}" -f $script:Pass, $script:Fail)
 exit $script:Fail

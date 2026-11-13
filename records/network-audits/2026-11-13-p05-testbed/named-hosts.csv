@@ -1,0 +1,4 @@
+﻿"Host","Port","SeenBy","Requests","Resolutions","Answered","NodeLookups","SeenInSampling","Allowed","AllowReason"
+"open-vsx.org","443","netlog","14","36","True","0","True","False",""
+"raw.githubusercontent.com","443","netlog","5","17","True","0","True","False",""
+"wpad","80","netlog","0","5","False","0","False","False",""

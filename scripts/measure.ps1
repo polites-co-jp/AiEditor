@@ -569,7 +569,8 @@ function Get-EditorArguments {
 
 function Start-EditorProcess {
     <# Starts Exe with VSCODE_PORTABLE set (only for the child), then restores our own environment. #>
-    param([string]$Exe, [string]$Arguments, [string]$Portable)
+    param([string]$Exe, [string]$Arguments, [string]$Portable, [hashtable]$ExtraEnv = $null, [string]$StdoutFile = '', [string]$StderrFile = '')
+    # ExtraEnv: more variables for the child only (netaudit.ps1 uses NODE_DEBUG=net). StdoutFile / StderrFile: redirect the child's output.
     # Variables inherited from a parent editor / Electron app would change how the child starts
     # (ELECTRON_RUN_AS_NODE=1 makes Code.exe run as plain node and exit with code 9 on --user-data-dir).
     $saved = @{}
@@ -578,8 +579,21 @@ function Start-EditorProcess {
     }
     foreach ($k in $saved.Keys) { Remove-Item -LiteralPath ("Env:\" + $k) -ErrorAction SilentlyContinue }
     $env:VSCODE_PORTABLE = $Portable
-    try { return Start-Process -FilePath $Exe -ArgumentList $Arguments -PassThru }
+    $extraSaved = @{}
+    if ($ExtraEnv) {
+        foreach ($k in $ExtraEnv.Keys) {
+            $extraSaved[$k] = [Environment]::GetEnvironmentVariable($k, 'Process')
+            [Environment]::SetEnvironmentVariable($k, [string]$ExtraEnv[$k], 'Process')
+        }
+    }
+    try {
+        $sp = @{ FilePath = $Exe; ArgumentList = $Arguments; PassThru = $true }
+        if ($StdoutFile) { $sp['RedirectStandardOutput'] = $StdoutFile }
+        if ($StderrFile) { $sp['RedirectStandardError'] = $StderrFile }
+        return Start-Process @sp
+    }
     finally {
+        foreach ($k in $extraSaved.Keys) { [Environment]::SetEnvironmentVariable($k, $extraSaved[$k], 'Process') }
         Remove-Item Env:\VSCODE_PORTABLE -ErrorAction SilentlyContinue
         foreach ($k in $saved.Keys) { Set-Item -LiteralPath ("Env:\" + $k) -Value $saved[$k] }
     }

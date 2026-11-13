@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "updated": "2026-11-13",
+  "note": "First version (0-5, records/phase0/network-inventory.md). Only the destinations the ruling of 2026-11-13 (user-decisions: 'communication correction') calls needed: Claude, the git remote, Notion. None of them was seen in the 0-5 runs (claude.exe was not started, git did not fetch, notion-sync does not exist yet); the hosts come from the ruling and the docs, and are to be checked against a run that uses them. github.com is limited to git processes, because the agent host of the upstream editor also reaches github.com (not a git remote).",
+  "allow": [
+    { "host": "api.anthropic.com", "ports": [443], "processes": ["claude.exe"], "reason": "Claude: Claude Code CLI (API)" },
+    { "host": "*.anthropic.com", "ports": [443], "processes": ["claude.exe"], "reason": "Claude: Claude Code CLI (other Anthropic hosts; narrow after a run with the panel open)" },
+    { "host": "claude.ai", "ports": [443], "reason": "Claude: login of Claude Code" },
+    { "host": "platform.claude.com", "ports": [443], "reason": "Claude: login of Claude Code" },
+    { "host": "api.notion.com", "ports": [443], "reason": "Notion: settings sync and update watch (docs/05, docs/06)" },
+    { "host": "github.com", "ports": [443, 22], "processes": ["git.exe", "git-remote-https.exe", "ssh.exe"], "reason": "git remote (GitHub), git processes only" }
+  ]
+}

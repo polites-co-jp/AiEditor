@@ -1,0 +1,7 @@
+﻿"Host","Port","SeenBy","Requests","Resolutions","Answered","NodeLookups","SeenInSampling","Allowed","AllowReason"
+"main.vscode-cdn.net","443","netlog","5","17","True","0","True","False",""
+"mobile.events.data.microsoft.com","443","netlog","5","16","True","0","True","False",""
+"marketplace.visualstudio.com","443","netlog","5","15","True","0","True","False",""
+"default.exp-tas.com","443","netlog","2","6","True","0","True","False",""
+"update.code.visualstudio.com","443","netlog","2","5","True","0","True","False",""
+"wpad","80","netlog","0","7","False","0","False","False",""

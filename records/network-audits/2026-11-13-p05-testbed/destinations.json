@@ -1,0 +1,63 @@
+﻿{
+    "Meta":  {
+                 "Label":  "p05-testbed",
+                 "Exe":  "C:\\b\\p0\\testbed\\VSCodium.exe",
+                 "ExeVersion":  "1.143.17232",
+                 "EnvDir":  "C:/b/p0/data/testbed",
+                 "DurationSeconds":  600,
+                 "IntervalSeconds":  2,
+                 "Samples":  300,
+                 "StartedAt":  "2026-11-13T22:34:16.7583738+09:00",
+                 "DnsEntries":  0,
+                 "DailyArgvTouched":  [
+
+                                      ],
+                 "RunDataLeftOver":  [
+
+                                     ],
+                 "Allowlist":  "tasks/2026-11-13-p0-network-inventory/allowlist-draft.json",
+                 "AllowlistMissing":  false,
+                 "Previous":  "",
+                 "NetLogPath":  "C:\\b\\p0\\netlog\\p05-testbed-20261113-223346.netlog.json",
+                 "NetLogEvents":  2732,
+                 "NetLogComplete":  true
+             },
+    "Destinations":  [
+                         {
+                             "Group":  "editor",
+                             "HostKey":  "raw.githubusercontent.com",
+                             "Resolved":  true,
+                             "Names":  "raw.githubusercontent.com",
+                             "NameMethod":  "netlog",
+                             "WeakNames":  "",
+                             "Addresses":  "2606:50c0:8000::154 2606:50c0:8001::154",
+                             "Port":  443,
+                             "FirstSeen":  "2026-11-13T22:34:21.3574866+09:00",
+                             "FirstSeenSeconds":  4.6,
+                             "Processes":  "VSCodium.exe",
+                             "Roles":  "utility-network",
+                             "SampleCount":  596,
+                             "New":  false,
+                             "Allowed":  false,
+                             "AllowReason":  ""
+                         },
+                         {
+                             "Group":  "editor",
+                             "HostKey":  "open-vsx.org",
+                             "Resolved":  true,
+                             "Names":  "open-vsx.org",
+                             "NameMethod":  "netlog",
+                             "WeakNames":  "",
+                             "Addresses":  "2a04:4e42::498",
+                             "Port":  443,
+                             "FirstSeen":  "2026-11-13T22:34:23.3143873+09:00",
+                             "FirstSeenSeconds":  6.6,
+                             "Processes":  "VSCodium.exe",
+                             "Roles":  "utility-network",
+                             "SampleCount":  297,
+                             "New":  false,
+                             "Allowed":  false,
+                             "AllowReason":  ""
+                         }
+                     ]
+}

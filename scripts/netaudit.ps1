@@ -7,8 +7,14 @@
   measure.ps1), then for -DurationSeconds (default 600) every -IntervalSeconds
   (default 2) takes Get-NetTCPConnection -State Established, keeps only the
   connections of the editor process tree, and ties remote IPs to host names with
-  Get-DnsClientCache (at the start, at the end, and every -DnsIntervalSeconds).
-  Output: samples.csv, destinations.csv/json, dns-cache.csv, audit.md.
+  (1) the Chromium net log (the editor is started with --log-net-log=<file>; the
+  file goes to <WorkRoot parent>\netlog, outside the repo, because it can hold secrets;
+  only host names and counts are copied into the output), (2) Get-DnsClientCache
+  (at the start, at the end, and every -DnsIntervalSeconds; often empty, see
+  hostname-design.md), (3) weak hints only (reverse lookup, forward lookup of the
+  allowlist hosts) that never make a destination "allowed" (-NoHints skips them).
+  Output: samples.csv, destinations.csv/json (with NameMethod), netlog-hosts.csv,
+  dns-cache.csv, audit.md. -NoNetLog starts the editor without the log.
 
   Destinations are split in two groups: "editor" and "claude" (claude.exe and its
   descendants; not a removal target, listed in a separate table).
@@ -38,6 +44,10 @@ param(
     [string]$Previous,
     [string]$WorkRoot = 'C:\b\p0\run',
     [string]$ProcessName,
+    [string]$NetLogDir,        # default <WorkRoot parent>\netlog (C:\b\p0\netlog)
+    [switch]$NoNetLog,
+    [switch]$NoNodeDebug,      # do not set NODE_DEBUG=net / ELECTRON_ENABLE_LOGGING=1 (host names of Node code)
+    [switch]$NoHints,          # skip the weak name hints (reverse lookup, forward lookup of allowlist hosts)
     [switch]$KeepData,
     [switch]$CleanStale,
     [string]$StaleFilter = '*',
@@ -49,6 +59,7 @@ $na = @{
     Exe = $Exe; EnvDir = $EnvDir; Workspace = $Workspace; OpenFiles = $OpenFiles; Label = $Label
     DurationSeconds = $DurationSeconds; IntervalSeconds = $IntervalSeconds; DnsIntervalSeconds = $DnsIntervalSeconds
     LaunchWaitSeconds = $LaunchWaitSeconds; OutDir = $OutDir; Allowlist = $Allowlist; Previous = $Previous
+    NetLogDir = $NetLogDir; NoNetLog = [bool]$NoNetLog; NoNodeDebug = [bool]$NoNodeDebug; NoHints = [bool]$NoHints
     WorkRoot = $WorkRoot; ProcessName = $ProcessName; KeepData = [bool]$KeepData; Force = [bool]$Force
     CleanStale = [bool]$CleanStale; StaleFilter = $StaleFilter
 }
@@ -161,6 +172,343 @@ function Get-HostNames {
     $ip = ConvertTo-NormalIp $Address
     if ($ip -and $Map.ContainsKey($ip)) { return $Map[$ip] }
     return @()
+}
+
+# ---- host names from the Chromium net log (--log-net-log) ---------------------
+# Why: Chromium resolves names itself (built-in resolver / DoH) and never asks the Windows DNS client,
+# so Get-DnsClientCache has no entry for it. The net log has the names (see hostname-design.md).
+# Only host names and counts are kept from the log; URL paths, queries, headers and user info are dropped.
+
+function ConvertTo-NetLogHostName {
+    <# 'https://Host.Example.com:443/x?y' / 'host:80' / 'host' -> 'host.example.com'. $null for IP literals and empty input. #>
+    param([string]$Text)
+    if (-not $Text) { return $null }
+    $t = $Text.Trim()
+    $t = [regex]::Replace($t, '^[A-Za-z][A-Za-z0-9+.-]*://', '')
+    $i = $t.IndexOfAny([char[]]@('/', '?', '#'))
+    if ($i -ge 0) { $t = $t.Substring(0, $i) }
+    $at = $t.LastIndexOf('@')
+    if ($at -ge 0) { $t = $t.Substring($at + 1) }
+    if ($t.StartsWith('[')) { return $null }
+    $t = [regex]::Replace($t, ':\d+$', '').TrimEnd('.').ToLowerInvariant()
+    if (-not $t) { return $null }
+    if (ConvertTo-NormalIp $t) { return $null }
+    return $t
+}
+
+function Get-NetLogUrlParts {
+    <# http/https/ws/wss URL -> @{ Host; Port }, else $null. Nothing but the host and the port is kept. #>
+    param([string]$Url)
+    $m = [regex]::Match("$Url", '^(?<s>[A-Za-z][A-Za-z0-9+.-]*)://(?:[^/@?#]*@)?(?<h>\[[^\]]+\]|[^/:?#]+)(?::(?<p>\d+))?')
+    if (-not $m.Success) { return $null }
+    $s = $m.Groups['s'].Value.ToLowerInvariant()
+    $port = 0
+    switch ($s) {
+        'https' { $port = 443 }
+        'wss' { $port = 443 }
+        'http' { $port = 80 }
+        'ws' { $port = 80 }
+        default { return $null }
+    }
+    if ($m.Groups['p'].Success) { $port = [int]$m.Groups['p'].Value }
+    $h = ConvertTo-NetLogHostName $m.Groups['h'].Value
+    if (-not $h) { return $null }
+    return [pscustomobject]@{ Host = $h; Port = $port }
+}
+
+function Get-NetLogInfo {
+    <#
+      Lines: the lines of a net log file (one JSON event per line; a truncated file is fine).
+      Returns:
+        Map      IP -> string[] host names, for addresses a socket was opened to: the host the socket was opened
+                 for first, then its aliases, canonical name last (connect job + resolver answer of the same source)
+        AnswerMap  IP -> string[] for every address in a resolver answer (shared CDN addresses get many hosts: hint only)
+        Hosts    host -> @{ Requests; Resolutions; Answered; Port }  (Requests = URL requests started,
+                 Resolutions = resolver requests; Answered = got addresses)
+        Events   number of lines read, Complete = the file ended properly
+    #>
+    param($Lines)
+    $sources = @{}
+    $hosts = @{}
+    $count = 0
+    $last = ''
+    function Add-HostEntry { param($Table, [string]$Name, [int]$Port)
+        if (-not $Table.ContainsKey($Name)) { $Table[$Name] = [pscustomobject]@{ Requests = 0; Resolutions = 0; Answered = $false; Port = $Port } }
+        return $Table[$Name]
+    }
+    foreach ($line in $Lines) {
+        if (-not $line) { continue }
+        $count++
+        $last = $line
+        $hasAnswer = $line.Contains('"ip_endpoints":[')
+        $hasResolve = ($line.Contains('"dns_query_type":"') -and $line.Contains('"host":"'))
+        $hasUrl = ($line.Contains('"url":"') -and $line.Contains('"load_flags":') -and $line.Contains('"method":"'))
+        # the connect job of one socket: {"address":"1.2.3.4:443","source_dependency":{...}} in the source that asked for the host
+        $hasConnect = ($line.Contains('"address":"') -and $line.Contains('"source_dependency":'))
+        if (-not ($hasAnswer -or $hasResolve -or $hasUrl -or $hasConnect)) { continue }
+        $o = $null
+        try { $o = $line.Trim().TrimEnd(',') | ConvertFrom-Json } catch { continue }
+        if (-not $o -or -not $o.params) { continue }
+        $sid = -1
+        if ($o.source -and $null -ne $o.source.id) { $sid = [int]$o.source.id }
+        if ($hasResolve -and $o.params.host) {
+            $raw = "$($o.params.host)"
+            $h = ConvertTo-NetLogHostName $raw
+            if ($h) {
+                $port = 443
+                $pm = [regex]::Match($raw, ':(\d+)$')
+                if ($pm.Success) { $port = [int]$pm.Groups[1].Value }
+                elseif ($raw -match '^http://') { $port = 80 }
+                $e = Add-HostEntry $hosts $h $port
+                $e.Resolutions++
+                if (-not $sources.ContainsKey($sid)) { $sources[$sid] = [pscustomobject]@{ Host = $null; Aliases = @(); Canon = @(); Ips = @(); Connected = @() } }
+                $sources[$sid].Host = $h
+            }
+        }
+        if ($hasUrl -and $o.params.url) {
+            $u = Get-NetLogUrlParts "$($o.params.url)"
+            if ($u) { $e = Add-HostEntry $hosts $u.Host $u.Port; $e.Requests++ }
+        }
+        if ($hasConnect -and $o.params.address) {
+            $am = [regex]::Match("$($o.params.address)", '^\[?(?<ip>[^\]]+?)\]?:(?<port>\d+)$')
+            if ($am.Success) {
+                $cip = ConvertTo-NormalIp $am.Groups['ip'].Value
+                if ($cip) {
+                    if (-not $sources.ContainsKey($sid)) { $sources[$sid] = [pscustomobject]@{ Host = $null; Aliases = @(); Canon = @(); Ips = @(); Connected = @() } }
+                    if ($sources[$sid].Connected -notcontains $cip) { $sources[$sid].Connected += $cip }
+                }
+            }
+        }
+        if ($hasAnswer -and $o.params.results) {
+            $res = $o.params.results
+            if (-not $sources.ContainsKey($sid)) { $sources[$sid] = [pscustomobject]@{ Host = $null; Aliases = @(); Canon = @(); Ips = @(); Connected = @() } }
+            $s = $sources[$sid]
+            foreach ($a in @($res.aliases)) { $n = ConvertTo-NetLogHostName "$a"; if ($n -and $s.Aliases -notcontains $n) { $s.Aliases += $n } }
+            foreach ($a in @($res.canonical_names)) { $n = ConvertTo-NetLogHostName "$a"; if ($n -and $s.Canon -notcontains $n) { $s.Canon += $n } }
+            foreach ($ep in @($res.ip_endpoints)) {
+                $ip = ConvertTo-NormalIp "$($ep.endpoint_address)"
+                if ($ip -and $s.Ips -notcontains $ip) { $s.Ips += $ip }
+            }
+        }
+    }
+    # Map = addresses a socket was really opened to, named after the host it was opened for.
+    # AnswerMap = every address a resolver answer contained. Many hosts share one CDN address, so
+    # AnswerMap is ambiguous and only a hint; Map is the fact "a connection to this address was opened for this host".
+    $map = @{}
+    $answerMap = @{}
+    foreach ($s in $sources.Values) {
+        $names = @()
+        if ($s.Host) { $names += $s.Host }
+        foreach ($a in @($s.Aliases | Sort-Object)) { if ($names -notcontains $a -and $s.Canon -notcontains $a) { $names += $a } }
+        foreach ($c in $s.Canon) { if ($names -notcontains $c) { $names += $c } }
+        if ($s.Ips.Count -gt 0 -and $s.Host -and $hosts.ContainsKey($s.Host)) { $hosts[$s.Host].Answered = $true }
+        foreach ($ip in $s.Ips) {
+            if (-not $answerMap.ContainsKey($ip)) { $answerMap[$ip] = @() }
+            foreach ($n in $names) { if ($answerMap[$ip] -notcontains $n) { $answerMap[$ip] = @($answerMap[$ip]) + $n } }
+        }
+        if ($s.Host) {
+            foreach ($ip in $s.Connected) {
+                if (-not $map.ContainsKey($ip)) { $map[$ip] = @() }
+                foreach ($n in $names) { if ($map[$ip] -notcontains $n) { $map[$ip] = @($map[$ip]) + $n } }
+            }
+        }
+    }
+    return [pscustomobject]@{ Map = $map; AnswerMap = $answerMap; Hosts = $hosts; Events = $count; Complete = ($last.Trim() -eq '}') }
+}
+
+function Read-NetLogFile {
+    <# Reads a net log written by --log-net-log. Returns the Get-NetLogInfo result plus Path; $null when the file is missing or empty. #>
+    param([string]$Path)
+    if (-not $Path -or -not (Test-Path -LiteralPath $Path)) { return $null }
+    $fs = New-Object System.IO.FileStream($Path, [IO.FileMode]::Open, [IO.FileAccess]::Read, [IO.FileShare]::ReadWrite)
+    $sr = New-Object System.IO.StreamReader($fs, [Text.Encoding]::UTF8)
+    try {
+        $lines = New-Object System.Collections.Generic.List[string]
+        while ($null -ne ($ln = $sr.ReadLine())) { $lines.Add($ln) }
+    }
+    finally { $sr.Dispose() }
+    if ($lines.Count -eq 0) { return $null }
+    $info = Get-NetLogInfo $lines
+    if ($info.Events -eq 0) { return $null }
+    $info | Add-Member -NotePropertyName Path -NotePropertyValue $Path -Force
+    return $info
+}
+
+# ---- host names of Node code from NODE_DEBUG=net -----------------------------
+# Node (extension host, agent host) looks names up through Windows, not through Chromium. With NODE_DEBUG=net it
+# prints "NET <pid>: connect: find host <name>" and "NET <pid>: connect: attempting to connect to <ip>:<port>"
+# to stderr (ELECTRON_ENABLE_LOGGING=1 makes the extension host's console reach stderr too).
+
+function Get-NodeDebugInfo {
+    <#
+      Lines: text captured from the editor's stderr/stdout. The same event often appears 2-3 times (console echo), so
+      first appearances per pid are used. Returns:
+        Hosts   host -> @{ Lookups (distinct pids); Pids; Port }   (a host that Node code asked for: a fact)
+        Map     IP -> string[] hosts: pairs host and address in order of appearance within one pid when both lists
+                have the same length; otherwise every host of that pid is a candidate. A hint (order is not guaranteed).
+    #>
+    param($Lines)
+    $pidHosts = @{}   # pid -> ordered distinct hosts
+    $pidIps = @{}     # pid -> ordered distinct ips
+    $ports = @{}      # ip -> port
+    $reHost = [regex]'NET (?<pid>\d+): connect: find host (?<h>[A-Za-z0-9._-]+)'
+    $reAddr = [regex]'NET (?<pid>\d+): connect: attempting to connect to (?<a>\S+?):(?<port>\d+) '
+    foreach ($line in $Lines) {
+        if (-not $line -or -not $line.Contains('connect: ')) { continue }
+        $m = $reHost.Match($line)
+        if ($m.Success) {
+            $id = [int]$m.Groups['pid'].Value
+            $h = ConvertTo-NetLogHostName $m.Groups['h'].Value
+            if ($h) {
+                if (-not $pidHosts.ContainsKey($id)) { $pidHosts[$id] = @() }
+                if ($pidHosts[$id] -notcontains $h) { $pidHosts[$id] = @($pidHosts[$id]) + $h }
+            }
+            continue
+        }
+        $m = $reAddr.Match($line)
+        if ($m.Success) {
+            $id = [int]$m.Groups['pid'].Value
+            $ip = ConvertTo-NormalIp ($m.Groups['a'].Value.Trim('[', ']'))
+            if ($ip) {
+                if (-not $pidIps.ContainsKey($id)) { $pidIps[$id] = @() }
+                if ($pidIps[$id] -notcontains $ip) { $pidIps[$id] = @($pidIps[$id]) + $ip }
+                $ports[$ip] = [int]$m.Groups['port'].Value
+            }
+        }
+    }
+    $hosts = @{}
+    foreach ($id in $pidHosts.Keys) {
+        foreach ($h in $pidHosts[$id]) {
+            if (-not $hosts.ContainsKey($h)) { $hosts[$h] = [pscustomobject]@{ Lookups = 0; Pids = @(); Port = 443 } }
+            $hosts[$h].Lookups++
+            $hosts[$h].Pids += $id
+        }
+    }
+    $map = @{}
+    foreach ($id in $pidIps.Keys) {
+        $hs = @()
+        if ($pidHosts.ContainsKey($id)) { $hs = @($pidHosts[$id]) }
+        $ips = @($pidIps[$id])
+        for ($i = 0; $i -lt $ips.Count; $i++) {
+            $cand = $hs
+            if ($hs.Count -eq $ips.Count) { $cand = @($hs[$i]) }
+            if ($cand.Count -eq 0) { continue }
+            if (-not $map.ContainsKey($ips[$i])) { $map[$ips[$i]] = @() }
+            foreach ($c in $cand) { if ($map[$ips[$i]] -notcontains $c) { $map[$ips[$i]] = @($map[$ips[$i]]) + $c } }
+            if ($hs.Count -eq $ips.Count -and $hosts.ContainsKey($hs[$i])) { $hosts[$hs[$i]].Port = $ports[$ips[$i]] }
+        }
+    }
+    return [pscustomobject]@{ Hosts = $hosts; Map = $map }
+}
+
+function Read-NodeDebugFiles {
+    <# Reads the captured stderr/stdout files (shared read: the editor may still hold them). $null when none has content. #>
+    param([string[]]$Paths)
+    $lines = New-Object System.Collections.Generic.List[string]
+    foreach ($pth in @($Paths)) {
+        if (-not $pth -or -not (Test-Path -LiteralPath $pth)) { continue }
+        $fs = New-Object System.IO.FileStream($pth, [IO.FileMode]::Open, [IO.FileAccess]::Read, [IO.FileShare]::ReadWrite)
+        $sr = New-Object System.IO.StreamReader($fs, [Text.Encoding]::UTF8)
+        try { while ($null -ne ($ln = $sr.ReadLine())) { if ($ln.Contains('connect: ')) { $lines.Add($ln) } } }
+        finally { $sr.Dispose() }
+    }
+    if ($lines.Count -eq 0) { return $null }
+    return (Get-NodeDebugInfo $lines)
+}
+
+function New-NamedHostRows {
+    <#
+      One row per host that was seen by name: in the net log (browser-side requests, including ones too short for the
+      2 s sampling) and/or in Node lookups (NODE_DEBUG=net). Each host is checked against the allowlist by itself, so a
+      shared CDN address cannot hide one. SeenInSampling = the host is among the names of a destination row.
+    #>
+    param($Hosts, $NodeHosts, $Rows, $List, [string]$ProcessName)
+    $seen = @{}
+    foreach ($r in @($Rows)) { foreach ($n in @("$($r.Names)" -split ' / ')) { if ($n) { $seen[$n] = $true } } }
+    $all = @{}
+    if ($Hosts) { foreach ($k in $Hosts.Keys) { $all[$k] = $true } }
+    if ($NodeHosts) { foreach ($k in $NodeHosts.Keys) { $all[$k] = $true } }
+    $out = @()
+    foreach ($k in $all.Keys) {
+        $e = $null; $nd = $null
+        if ($Hosts -and $Hosts.ContainsKey($k)) { $e = $Hosts[$k] }
+        if ($NodeHosts -and $NodeHosts.ContainsKey($k)) { $nd = $NodeHosts[$k] }
+        $port = 443
+        if ($e) { $port = $e.Port } elseif ($nd) { $port = $nd.Port }
+        $by = @()
+        if ($e) { $by += 'netlog' }
+        if ($nd) { $by += 'node' }
+        $a = Test-DestinationAllowed -List $List -Names @($k) -Port $port -ProcessNames @($ProcessName)
+        $out += [pscustomobject][ordered]@{
+            Host = $k; Port = $port; SeenBy = ($by -join '+')
+            Requests = $(if ($e) { $e.Requests } else { 0 })
+            Resolutions = $(if ($e) { $e.Resolutions } else { 0 })
+            Answered = $(if ($e) { $e.Answered } else { $false })
+            NodeLookups = $(if ($nd) { $nd.Lookups } else { 0 })
+            SeenInSampling = $seen.ContainsKey($k); Allowed = $a.Allowed; AllowReason = $a.Reason
+        }
+    }
+    return @($out | Sort-Object @{ Expression = 'Requests'; Descending = $true }, @{ Expression = 'Resolutions'; Descending = $true }, @{ Expression = 'NodeLookups'; Descending = $true }, Host)
+}
+
+function Get-ReverseNameMap {
+    <#
+      Weak hint: PTR lookup of addresses nobody named. Resolver = scriptblock { param($ip) -> string[] } (injectable for tests).
+      CDN addresses often have no or unrelated PTR names, and a PTR name is chosen by the address owner, so it never decides "allowed".
+    #>
+    param([string[]]$Ips, [scriptblock]$Resolver = $null, [int]$Max = 40)
+    if (-not $Resolver) {
+        $Resolver = {
+            param($ip)
+            $r = Resolve-DnsName -Name $ip -Type PTR -QuickTimeout -DnsOnly -ErrorAction SilentlyContinue
+            @($r | Where-Object { $_.Type -eq 'PTR' } | ForEach-Object { "$($_.NameHost)" })
+        }
+    }
+    $map = @{}
+    $n = 0
+    foreach ($ip in @($Ips)) {
+        if ($n -ge $Max) { break }
+        $n++
+        $names = @()
+        try { $names = @(& $Resolver $ip) } catch { }
+        $clean = @()
+        foreach ($nm in $names) { $c = ConvertTo-NetLogHostName "$nm"; if ($c -and $clean -notcontains $c) { $clean += $c } }
+        if ($clean.Count -gt 0) { $map[(ConvertTo-NormalIp $ip)] = $clean }
+    }
+    return $map
+}
+
+function Get-ForwardNameMap {
+    <#
+      Weak hint: resolves the exact (non-wildcard) hosts of the allowlist now and ties the addresses to them.
+      Used for destinations of processes that do their own lookups (claude.exe, Node) when nothing else named them.
+      A shared CDN address can belong to several hosts, so this is a hint only and never decides "allowed".
+      Resolver = scriptblock { param($name) -> string[] of IPs } (injectable for tests).
+    #>
+    param($List, [scriptblock]$Resolver = $null)
+    if (-not $Resolver) {
+        $Resolver = {
+            param($name)
+            $ips = @()
+            try { $ips = @([System.Net.Dns]::GetHostAddresses($name) | ForEach-Object { $_.ToString() }) } catch { }
+            $ips
+        }
+    }
+    $map = @{}
+    if (-not $List -or -not $List.PSObject.Properties['allow']) { return $map }
+    foreach ($e in @($List.allow)) {
+        $h = "$($e.host)".Trim().ToLowerInvariant()
+        if (-not $h -or $h.Contains('*') -or (ConvertTo-NormalIp $h)) { continue }
+        $ips = @()
+        try { $ips = @(& $Resolver $h) } catch { }
+        foreach ($ip in $ips) {
+            $n = ConvertTo-NormalIp "$ip"
+            if (-not $n) { continue }
+            if (-not $map.ContainsKey($n)) { $map[$n] = @() }
+            if ($map[$n] -notcontains $h) { $map[$n] = @($map[$n]) + $h }
+        }
+    }
+    return $map
 }
 
 function Select-TreeConnections {
@@ -314,10 +662,33 @@ function New-DestinationRows {
       Group and HostKey; $null = no previous list, then New is always false) and
       Allowed against the allowlist. Sorted by first seen.
     #>
-    param($State, $DnsMap, $Previous, $List)
+    param($State, $DnsMap, $Previous, $List, $ExtraMaps = @())
+    # Name sources, in this order of trust: ExtraMaps without Weak (e.g. 'netlog'), then the DNS cache,
+    # then ExtraMaps with Weak (reverse lookup, forward lookup of allowlist hosts). Weak names are only a
+    # hint (WeakNames): they never become the host key and never make a destination "allowed".
+    $strongMaps = @()
+    foreach ($em in @($ExtraMaps)) { if (-not $em.Weak) { $strongMaps += $em } }
+    $strongMaps += [pscustomobject]@{ Method = 'dns-cache'; Map = $DnsMap; Weak = $false }
+    $weakMaps = @()
+    foreach ($em in @($ExtraMaps)) { if ($em.Weak) { $weakMaps += $em } }
     $merged = @{}
     foreach ($r in @($State.Values | Sort-Object FirstSeenElapsed, RemoteAddress)) {
-        $names = @(Get-HostNames -Map $DnsMap -Address $r.RemoteAddress)
+        $names = @()
+        $methods = @()
+        foreach ($sm in $strongMaps) {
+            $got = @(Get-HostNames -Map $sm.Map -Address $r.RemoteAddress)
+            if ($got.Count -gt 0) { $methods += $sm.Method }
+            foreach ($g in $got) { if ($names -notcontains $g) { $names += $g } }
+        }
+        $weak = @()
+        if ($names.Count -eq 0) {
+            foreach ($wm in $weakMaps) {
+                foreach ($g in @(Get-HostNames -Map $wm.Map -Address $r.RemoteAddress)) {
+                    $tag = "$g [$($wm.Method)]"
+                    if ($weak -notcontains $tag) { $weak += $tag }
+                }
+            }
+        }
         $hostKey = $r.RemoteAddress
         $resolved = $false
         if ($names.Count -gt 0) { $hostKey = $names[0]; $resolved = $true }
@@ -326,11 +697,14 @@ function New-DestinationRows {
             $merged[$key] = [pscustomobject]@{
                 Group = $r.Group; HostKey = $hostKey; Resolved = $resolved
                 Names = @(); Addresses = @(); Port = $r.RemotePort
+                Methods = @(); WeakNames = @()
                 FirstSeen = $r.FirstSeen; FirstSeenElapsed = $r.FirstSeenElapsed
                 SampleCount = 0; Processes = @{}; Roles = @{}
             }
         }
         $m = $merged[$key]
+        foreach ($mt in $methods) { if ($m.Methods -notcontains $mt) { $m.Methods += $mt } }
+        foreach ($wn in $weak) { if ($m.WeakNames -notcontains $wn) { $m.WeakNames += $wn } }
         foreach ($n in $names) { if ($m.Names -notcontains $n) { $m.Names += $n } }
         if ($m.Addresses -notcontains $r.RemoteAddress) { $m.Addresses += $r.RemoteAddress }
         if ($r.FirstSeen -lt $m.FirstSeen) { $m.FirstSeen = $r.FirstSeen; $m.FirstSeenElapsed = $r.FirstSeenElapsed }
@@ -354,6 +728,8 @@ function New-DestinationRows {
             HostKey          = $m.HostKey
             Resolved         = $m.Resolved
             Names            = ($m.Names -join ' / ')
+            NameMethod       = $(if ($m.Methods.Count -gt 0) { $m.Methods -join '+' } else { 'none' })
+            WeakNames        = ($m.WeakNames -join ' / ')
             Addresses        = ($m.Addresses -join ' ')
             Port             = $m.Port
             FirstSeen        = $m.FirstSeen.ToString('o')
@@ -407,19 +783,24 @@ function Read-PreviousDestinations {
 
 function Format-DestTable {
     param($Rows)
-    $lines = @('| host | port | first seen (s) | processes | samples | new | in allowlist |', '|---|---|---|---|---|---|---|')
+    $lines = @('| host | name from | port | first seen (s) | processes | samples | new | in allowlist |', '|---|---|---|---|---|---|---|---|')
     foreach ($r in $Rows) {
         $h = $r.HostKey
-        if (-not $r.Resolved) { $h = "$($r.HostKey) (unresolved)" }
+        $from = ''
+        if ($r.PSObject.Properties['NameMethod']) { $from = $r.NameMethod }
+        if (-not $r.Resolved) {
+            $h = "$($r.HostKey) (unresolved)"
+            if ($r.PSObject.Properties['WeakNames'] -and $r.WeakNames) { $h += " - hint only: $($r.WeakNames)" }
+        }
         elseif ($r.Names -ne $r.HostKey) { $h = $r.Names }
-        $lines += "| $h | $($r.Port) | $($r.FirstSeenSeconds) | $($r.Processes) | $($r.SampleCount) | $(if ($r.New) { 'NEW' } else { '' }) | $(if ($r.Allowed) { 'yes' } else { 'NO' }) |"
+        $lines += "| $h | $from | $($r.Port) | $($r.FirstSeenSeconds) | $($r.Processes) | $($r.SampleCount) | $(if ($r.New) { 'NEW' } else { '' }) | $(if ($r.Allowed) { 'yes' } else { 'NO' }) |"
     }
-    if (@($Rows).Count -eq 0) { $lines += '| (none) | | | | | | |' }
+    if (@($Rows).Count -eq 0) { $lines += '| (none) | | | | | | | |' }
     return $lines
 }
 
 function New-AuditMarkdown {
-    param($Meta, $Rows, [bool]$HasPrevious, $AllowlistInfo)
+    param($Meta, $Rows, [bool]$HasPrevious, $AllowlistInfo, $NetLogHostRows = $null)
     $editor = @($Rows | Where-Object { $_.Group -eq 'editor' })
     $claude = @($Rows | Where-Object { $_.Group -eq 'claude' })
     $unlisted = @(Get-UnlistedDestinations $Rows)
@@ -433,8 +814,20 @@ function New-AuditMarkdown {
     if ($Meta.PSObject.Properties['DailyArgvTouched'] -and @($Meta.DailyArgvTouched).Count -gt 0) {
         $md += "- WARNING: the daily argv.json was created or changed during the run: $(@($Meta.DailyArgvTouched) -join ', ')"
     }
+    $netLogUsed = ($Meta.PSObject.Properties['NetLogEvents'] -and [int]$Meta.NetLogEvents -gt 0)
+    if ($netLogUsed) {
+        $md += "- net log: $($Meta.NetLogEvents) events, $(if ($Meta.NetLogComplete) { 'complete' } else { 'INCOMPLETE (the editor was stopped before Chromium closed the file)' }); host names come from it first, then the DNS client cache"
+    }
+    elseif ($Meta.PSObject.Properties['NetLogPath'] -and $Meta.NetLogPath) {
+        $md += '- WARNING: the net log is missing or empty, so names come only from the DNS client cache.'
+    }
     if ($Meta.PSObject.Properties['DnsEntries'] -and [int]$Meta.DnsEntries -eq 0) {
-        $md += '- WARNING: Get-DnsClientCache returned no entries in any snapshot, so every destination is shown as an IP address. Check the permissions / DNS Client service, or add pktmon.'
+        if ($netLogUsed) {
+            $md += '- note: Get-DnsClientCache returned no entries (Chromium does its own lookups; on this PC the cache stays empty even for lookups made by PowerShell). Names for the Chromium side come from the net log.'
+        }
+        else {
+            $md += '- WARNING: Get-DnsClientCache returned no entries in any snapshot, so every destination is shown as an IP address. Check the permissions / DNS Client service, or add pktmon.'
+        }
     }
     if ($AllowlistInfo.Missing) { $md += '- allowlist: file not found, so everything is reported as not allowed' }
     $md += '', '## Editor destinations (removal targets live here)', ''
@@ -445,14 +838,31 @@ function New-AuditMarkdown {
     if ($unlisted.Count -eq 0) { $md += '(none)' } else {
         foreach ($r in $unlisted) { $md += "- [$($r.Group)] $($r.HostKey):$($r.Port) via $($r.Processes), first seen $($r.FirstSeenSeconds) s" }
     }
+    if ($null -ne $NetLogHostRows) {
+        $nlUnlisted = @($NetLogHostRows | Where-Object { -not $_.Allowed -and ($_.Requests -gt 0 -or $_.Answered -or $_.NodeLookups -gt 0) })
+        $md += '', '(Hosts seen by name that are not in the allowlist. Checked one host at a time, so a shared CDN address cannot hide one.)', ''
+        if ($nlUnlisted.Count -eq 0) { $md += '(none)' }
+        else { foreach ($h in $nlUnlisted) { $md += "- [by name: $($h.SeenBy)] $($h.Host):$($h.Port), $($h.Requests) url requests, $($h.Resolutions) resolutions, $($h.NodeLookups) node lookups" } }
+    }
     $md += '', '## New destinations (not in the previous list)', ''
     if (-not $HasPrevious) { $md += '(no previous list given; pass -Previous <dir or destinations.json>)' }
     elseif ($new.Count -eq 0) { $md += '(none)' }
     else { foreach ($r in $new) { $md += "- **NEW** [$($r.Group)] $($r.HostKey):$($r.Port) via $($r.Processes), first seen $($r.FirstSeenSeconds) s" } }
+    if ($null -ne $NetLogHostRows) {
+        $md += '', '## Hosts seen by name (net log = browser side, node = lookups by Node code; includes ones too short for the sampling)', ''
+        $md += '| host | port | seen by | url requests | resolutions | answered | node lookups | seen in sampling | in allowlist |', '|---|---|---|---|---|---|---|---|---|'
+        foreach ($h in @($NetLogHostRows)) {
+            $md += "| $($h.Host) | $($h.Port) | $($h.SeenBy) | $($h.Requests) | $($h.Resolutions) | $(if ($h.Answered) { 'yes' } else { 'no' }) | $($h.NodeLookups) | $(if ($h.SeenInSampling) { 'yes' } else { 'no' }) | $(if ($h.Allowed) { 'yes' } else { 'NO' }) |"
+        }
+        if (@($NetLogHostRows).Count -eq 0) { $md += '| (none) | | | | | | | | |' }
+    }
     $md += '', '## Limits', '',
         '- UDP and connections shorter than the interval are missed (docs/07 3.3). Use pktmon or Resource Monitor if needed.',
         '- Loopback destinations are left out. They stay in samples.csv only if they were seen (they are not collected).',
-        '- Host names come from the DNS client cache; entries that expired between snapshots are lost. Unresolved addresses are shown as IPs.'
+        '- Column "name from": netlog = the Chromium net log of the editor (resolver answers; valid for any process that reached the same address), dns-cache = Get-DnsClientCache, none = unresolved. A "hint only" name (reverse or forward lookup) never makes a destination allowed.',
+        '- The net log covers only the Chromium network service of the editor (requests from the windows and the main process). Node code (extension host, agent host) looks names up through Windows; its host names come from NODE_DEBUG=net ("node") - the host list is exact, the pairing of a host with an address is a hint (order of appearance within one pid).',
+        '- claude.exe is not Node-instrumented here: its addresses are named only by a forward lookup of the allowlist hosts (hint) or when the same address is in the net log.',
+        '- Not covered without administrator rights: lookups by processes that print nothing (DNS client event log, pktmon, TLS SNI). See hostname-design.md.'
     return $md
 }
 
@@ -499,6 +909,20 @@ function Invoke-NetAudit {
     if ($stale.Count -gt 0 -and -not $P.CleanStale) {
         Write-Warning ("{0} stale run dir(s) under {1} (use -CleanStale to remove): {2}" -f $stale.Count, $P.WorkRoot, ($stale -join ', '))
     }
+    # Chromium net log (host names of the browser-side network stack). Kept outside the repo: it can hold secrets.
+    $netLogPath = $null
+    $nodeOut = $null
+    $nodeErr = $null
+    $nlDir = $P.NetLogDir
+    if (-not $nlDir) { $nlDir = Join-Path (Split-Path $P.WorkRoot -Parent) 'netlog' }
+    $stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
+    if (-not $P.NoNetLog -or -not $P.NoNodeDebug) { New-Item -ItemType Directory -Force -Path $nlDir | Out-Null }
+    if (-not $P.NoNetLog) { $netLogPath = Join-Path $nlDir ("{0}-{1}.netlog.json" -f $P.Label, $stamp) }
+    if (-not $P.NoNodeDebug) {
+        # NODE_DEBUG=net output (host names of Node code). Same place and same care as the net log: outside the repo.
+        $nodeOut = Join-Path $nlDir ("{0}-{1}.node-stdout.txt" -f $P.Label, $stamp)
+        $nodeErr = Join-Path $nlDir ("{0}-{1}.node-stderr.txt" -f $P.Label, $stamp)
+    }
     $dailyBefore = @(Get-DailyArgvState)
     $data = New-RunDataDir -EnvDir $P.EnvDir -WorkRoot $P.WorkRoot -Name ("{0}-netaudit" -f $P.Label)
     $state = @{}
@@ -513,7 +937,14 @@ function Invoke-NetAudit {
     try {
         # time zero = just before the editor is started (B-7); first-seen seconds are measured from here
         $t0 = Get-Date
-        $launched = Start-Editor -Exe $P.Exe -User $data.User -Ext $data.Ext -Workspace $P.Workspace
+        $launchArgs = Get-EditorArguments -User $data.User -Ext $data.Ext -Workspace $P.Workspace
+        if ($netLogPath) { $launchArgs = $launchArgs + ' --log-net-log="' + $netLogPath + '"' }
+        if ($nodeOut) {
+            $launched = Start-EditorProcess -Exe $P.Exe -Arguments $launchArgs -Portable $data.User -ExtraEnv @{ NODE_DEBUG = 'net'; ELECTRON_ENABLE_LOGGING = '1' } -StdoutFile $nodeOut -StderrFile $nodeErr
+        }
+        else {
+            $launched = Start-EditorProcess -Exe $P.Exe -Arguments $launchArgs -Portable $data.User
+        }
         $nextDns = 0
         $nextTick = 0.0
         while ($true) {
@@ -568,7 +999,14 @@ function Invoke-NetAudit {
         $m2 = @(Find-MainProcesses -Processes $procs2 -ExeName $procName -UserDir $data.User)
         $ids2 = @($m2 | ForEach-Object { [int]$_.ProcessId })
         if ($ids2.Count -eq 0 -and $launched) { $ids2 = @([int]$launched.Id) }
-        if ($ids2.Count -gt 0) { Stop-EditorTree -Tree (Get-Descendants -Processes $procs2 -RootIds $ids2) }
+        $tree2 = @()
+        if ($ids2.Count -gt 0) { $tree2 = @(Get-Descendants -Processes $procs2 -RootIds $ids2) }
+        # Ask the main window to close first so Chromium can finish the net log file; then force-stop what is left (our PID tree only).
+        if ($netLogPath -and $launched) {
+            try { [void]$launched.CloseMainWindow() } catch { }
+            try { [void]$launched.WaitForExit(15000) } catch { }
+        }
+        if ($tree2.Count -gt 0) { Stop-EditorTree -Tree $tree2 }
         Start-Sleep -Seconds 5
         if ($P.KeepData) {
             Write-Warning "-KeepData: the data of this run stays at $($data.Root) (remove it with -CleanStale)"
@@ -583,9 +1021,37 @@ function Invoke-NetAudit {
     $dailyTouched = @(Compare-DailyArgvState -Before $dailyBefore -After @(Get-DailyArgvState))
     if ($dailyTouched.Count -gt 0) { Write-Warning ("daily argv.json was created or changed: " + ($dailyTouched -join ', ')) }
     $map = Get-DnsMap $dnsAll
-    $rows = @(New-DestinationRows -State $state -DnsMap $map -Previous $prev -List $allow.List)
+    $netLog = $null
+    if ($netLogPath) {
+        try { $netLog = Read-NetLogFile $netLogPath } catch { Write-Warning "could not read the net log: $_" }
+    }
+    $nodeInfo = $null
+    if ($nodeOut) {
+        try { $nodeInfo = Read-NodeDebugFiles @($nodeOut, $nodeErr) } catch { Write-Warning "could not read the Node debug output: $_" }
+    }
+    $extra = @()
+    if ($nodeInfo -and $nodeInfo.Map.Count -gt 0) { $extra += [pscustomobject]@{ Method = 'node-debug'; Map = $nodeInfo.Map; Weak = $true } }
+    if ($netLog -and $netLog.Map.Count -gt 0) { $extra += [pscustomobject]@{ Method = 'netlog'; Map = $netLog.Map; Weak = $false } }
+    if ($netLog -and $netLog.AnswerMap.Count -gt 0) { $extra += [pscustomobject]@{ Method = 'netlog-answer'; Map = $netLog.AnswerMap; Weak = $true } }
+    # weak hints for addresses still unnamed after the net log and the DNS cache (never used for "allowed")
+    $firstPass = @(New-DestinationRows -State $state -DnsMap $map -Previous $prev -List $allow.List -ExtraMaps $extra)
+    $unnamed = @($firstPass | Where-Object { -not $_.Resolved } | ForEach-Object { @("$($_.Addresses)" -split ' ') } | Where-Object { $_ } | Select-Object -Unique)
+    if (-not $P.NoHints -and $unnamed.Count -gt 0) {
+        $fwd = Get-ForwardNameMap -List $allow.List
+        if ($fwd.Count -gt 0) { $extra += [pscustomobject]@{ Method = 'forward'; Map = $fwd; Weak = $true } }
+        $rev = Get-ReverseNameMap -Ips $unnamed
+        if ($rev.Count -gt 0) { $extra += [pscustomobject]@{ Method = 'rdns'; Map = $rev; Weak = $true } }
+    }
+    $rows = @(New-DestinationRows -State $state -DnsMap $map -Previous $prev -List $allow.List -ExtraMaps $extra)
+    $nlRows = $null
+    if ($netLog -or $nodeInfo) {
+        $nlHosts = $null; if ($netLog) { $nlHosts = $netLog.Hosts }
+        $ndHosts = $null; if ($nodeInfo) { $ndHosts = $nodeInfo.Hosts }
+        $nlRows = @(New-NamedHostRows -Hosts $nlHosts -NodeHosts $ndHosts -Rows $rows -List $allow.List -ProcessName $procName)
+    }
     $samples | Export-Csv -LiteralPath (Join-Path $outDir 'samples.csv') -NoTypeInformation -Encoding UTF8
     $rows | Export-Csv -LiteralPath (Join-Path $outDir 'destinations.csv') -NoTypeInformation -Encoding UTF8
+    if ($nlRows) { $nlRows | Export-Csv -LiteralPath (Join-Path $outDir 'named-hosts.csv') -NoTypeInformation -Encoding UTF8 }
     $dnsAll | Export-Csv -LiteralPath (Join-Path $outDir 'dns-cache.csv') -NoTypeInformation -Encoding UTF8
     $ver = $null
     try { $ver = (Get-Item -LiteralPath $P.Exe).VersionInfo.ProductVersion } catch { }
@@ -594,9 +1060,10 @@ function Invoke-NetAudit {
         DurationSeconds = $P.DurationSeconds; IntervalSeconds = $P.IntervalSeconds
         Samples = $sampleIndex; StartedAt = $t0.ToString('o'); DnsEntries = @($dnsAll).Count; DailyArgvTouched = $dailyTouched; RunDataLeftOver = $leftovers
         Allowlist = $allowPath; AllowlistMissing = $allow.Missing; Previous = $P.Previous
+        NetLogPath = $netLogPath; NetLogEvents = $(if ($netLog) { $netLog.Events } else { 0 }); NetLogComplete = $(if ($netLog) { $netLog.Complete } else { $false })
     }
     ([ordered]@{ Meta = $meta; Destinations = $rows }) | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath (Join-Path $outDir 'destinations.json') -Encoding UTF8
-    $md = New-AuditMarkdown -Meta ([pscustomobject]$meta) -Rows $rows -HasPrevious ($null -ne $prev) -AllowlistInfo $allow
+    $md = New-AuditMarkdown -Meta ([pscustomobject]$meta) -Rows $rows -HasPrevious ($null -ne $prev) -AllowlistInfo $allow -NetLogHostRows $nlRows
     Set-Content -LiteralPath (Join-Path $outDir 'audit.md') -Value $md -Encoding UTF8
     Write-Host ($md -join "`n")
     return $outDir
