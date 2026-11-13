@@ -118,6 +118,7 @@ workbench の contrib のうち、他の部品から参照されることが少�
 | B-4-outline-view | `contrib/outline`（アウトラインのビュー） | `services/outline` と `contrib/codeEditor/browser/outline/documentSymbolsOutline.ts` はパンくずリストが使う見込み（推定）なので、C-7 まで残す |
 | B-5-theme-switching | `contrib/themes/browser/themes.contribution.ts`（テーマを選ぶコマンドなど。推定）と desktop の `themes.test.contribution.ts` | テーマのサービス（`services/themes`）は残す。`workbench.colorTheme` は `mydist` の既定で Light Modern に固定する |
 | B-6-online-feeds | product.json の `emergencyAlertUrl`・`profileTemplatesUrl`（1.146.0 にあれば）を消し、それを読む部品が値の無いときに通信しないことを確かめる | 0-5 の棚卸しで、AI を止めても `main.vscode-cdn.net` へ必ず通信していた（`records/phase0/network-inventory.md`）。裁定（2026-11-13 の「通信の扱いの訂正」）の「不要な通信はすべて止める」を実行するために足した単位（リーダーの判断）。どのキーが通信の元かは未確認なので、Phase 2 で product.json とソースで確かめ、自作のビルドの監査で宛先が消えたことを見る。WPAD（`wpad` の名前の問い合わせ）の止め方も未確認で、ここで調べる |
+| B-7-terminal-suggest | 本体の `src/vs/workbench/contrib/terminalContrib/suggest` と設定 `terminal.integrated.suggest.enabled`。ほかの terminalContrib からの参照は edits.patch で直す | 拡張の `terminal-suggest` は A-7 で消えるが、本体側の部品が残ると Phase 2 の段階 A の作業で分かった（`tasks/2026-11-13-p2-units-a/handoff-notes.md`）。裁定「ターミナルの入力候補は消す」「不要な機能はコードごと消す」を実行するために足した単位（リーダーの判断 2026-11-14）。有効になるまでは `mydist` の既定で `terminal.integrated.suggest.enabled: false`（スコープを確かめてから） |
 
 ### 段階 C: 深い部分（Phase 5。1単位ずつ）
 

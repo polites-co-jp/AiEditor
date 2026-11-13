@@ -186,3 +186,11 @@
 | 論点 | 扱い |
 |---|---|
 | `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC` で止まらない CLI の通信 | 公式のプラグインのマーケットプレイスの自動登録は「付帯の通信」に当たるので、`CLAUDE_CODE_DISABLE_OFFICIAL_MARKETPLACE_AUTOINSTALL=1` も渡して止める。WebFetch の宛先の安全確認（`api.anthropic.com`）は Claude の作業に伴う安全のための確認なので止めない。根拠: `tasks/2026-11-13-p1-ledger-mydist-decisions/handoff-notes.md` の「未解決の点」3 |
+
+## 記録（2026-11-14、Phase 2 の段階 A の作業で出た点。リーダーの判断）
+
+| 論点 | 扱い |
+|---|---|
+| ターミナルの入力候補の本体の部品（`contrib/terminalContrib/suggest`）が、拡張 `terminal-suggest` を消しても残る | 裁定「ターミナルの入力候補は消す」「コードごと消す」の範囲なので、新しい単位 B-7-terminal-suggest で本体の部品も消す。有効になるまでは `mydist` の既定で切る |
+| A-3 の `builtInExtensions: []` | `product.overlay.json` の `set` に置く（キーを消すと gulpfile が止まるため） |
+| A-1 の後処理（`build/lib/copilot.ts`）の止め方 | 拡張のフォルダが無ければ戻る3行を足す形（触るのは1か所）を採る |
