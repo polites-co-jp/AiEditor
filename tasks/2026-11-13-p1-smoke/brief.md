@@ -2,7 +2,7 @@
 
 - 担当: cao-shen（曹参）
 - 依頼日: 2026-11-13
-- 状態: 依頼中
+- 状態: 差し戻し（2026-11-13: 大岡越前守の検証の A〜E。`tasks/2026-11-13-p1-verify-smoke-prepare/handoff-notes.md`）
 
 ## 目的
 
