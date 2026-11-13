@@ -120,7 +120,7 @@ workbench の contrib のうち、他の部品から参照されることが少�
 | B-6-online-feeds | product.json の `emergencyAlertUrl`・`profileTemplatesUrl`（1.146.0 にあれば）を消し、それを読む部品が値の無いときに通信しないことを確かめる | 0-5 の棚卸しで、AI を止めても `main.vscode-cdn.net` へ必ず通信していた（`records/phase0/network-inventory.md`）。裁定（2026-11-13 の「通信の扱いの訂正」）の「不要な通信はすべて止める」を実行するために足した単位（リーダーの判断）。どのキーが通信の元かは未確認なので、Phase 2 で product.json とソースで確かめ、自作のビルドの監査で宛先が消えたことを見る。WPAD（`wpad` の名前の問い合わせ）の止め方も未確認で、ここで調べる |
 | B-7-terminal-suggest | 本体の `src/vs/workbench/contrib/terminalContrib/suggest` と設定 `terminal.integrated.suggest.enabled`。ほかの terminalContrib からの参照は edits.patch で直す | 拡張の `terminal-suggest` は A-7 で消えるが、本体側の部品が残ると Phase 2 の段階 A の作業で分かった（`tasks/2026-11-13-p2-units-a/handoff-notes.md`）。裁定「ターミナルの入力候補は消す」「不要な機能はコードごと消す」を実行するために足した単位（リーダーの判断 2026-11-14）。有効になるまでは `mydist` の既定で `terminal.integrated.suggest.enabled: false`（スコープを確かめてから） |
 
-Phase 2 の作業で表から変えた点（2026-11-14）: B-1 に `terminalContrib/telemetry` を足す、B-2 は `contrib/onboarding` を残す（残る部品が使う）、B-6 は `contrib/emergencyAlert` を消し WPAD を小さなパッチで止める。根拠は `docs/user-decisions.md` の「Phase 2 の段階 B の作業で出た点」と各単位の README。
+Phase 2 の作業で表から変えた点（2026-11-14）: B-1 に `terminalContrib/telemetry` を足す、B-7 に `services/suggest`（ターミナルの入力候補だけが使う）を足す、B-2 は `contrib/onboarding` を残す（残る部品が使う）、B-6 は `contrib/emergencyAlert` を消す。WPAD は何も消さない振る舞いの変更なので、単位でなく `patches/30-proxy-direct-without-settings.patch` で止める（5.3 の単位の独立）。単位が消した設定に `mydist` の既定があるときは、`apply.mjs` が作業ツリーへ写す `mydist` から、有効な単位の `checks.absentSettings` に載ったキーを外す（リポジトリの `mydist` は書き換えない。リーダーの判断）。根拠は `docs/user-decisions.md` の「Phase 2 の段階 B の作業で出た点」と各単位の README。
 
 ### 段階 C: 深い部分（Phase 5。1単位ずつ）
 

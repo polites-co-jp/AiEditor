@@ -24,7 +24,8 @@
       README.md                   何を消し、何が残るか、壊れたときの症状
     ...
   patches/                        削除以外の変更（ブランド、テレメトリの差し替えは B-1 の単位に入れる）
-    10-brand-assets.patch など
+    20-product-configuration-defaults.patch   shukoConfigurationDefaults を既定として登録する（3節）
+    30-proxy-direct-without-settings.patch    WPAD の通信を止める
   assets/                         アイコンなど、作業ツリーに写すファイル（ブランド）
   builtin/
     keep.json                     残す組み込み拡張の一覧（理由つき）
@@ -39,6 +40,7 @@
     take-in.mjs                   取り込みの一連（06）
     adopt.mjs                     判定を見て採ると決めた版の確定（取り込みのブランチを main へ、タグ）
     convert-sublime-keys.mjs      Sublime のキーの一度だけの変換（04 の6.2）
+    make-icons.mjs                assets/ の PNG・ICO を自作の意匠で書き出す
     lock-fetch.mjs / lock-verify.mjs / install-extensions.mjs   台帳（04）
     switch.ps1                    版の切り替え（6節）
     configure.ps1                 PC ごとの設定ファイル local.json の作成・変更（6.1）
