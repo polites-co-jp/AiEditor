@@ -79,7 +79,7 @@ C:\b\dist\                        zip の置き場
 | win32MutexName、win32DirName、win32NameVersion、win32RegValueName、win32AppUserModelId、win32ShellNameShort | set | `shuko`、`Shuko`、`Shuko`、`Shuko`、`Shuko.Editor`、`&Shuko` | 本家・Code - OSS と衝突させない |
 | win32x64AppId、win32x64UserAppId（arm64 も） | set | 新しく作った GUID | 同上。インストーラーは作らないが、値は本家と分ける |
 | licenseName / licenseUrl / licenseFileName | 残す | — | MIT の表示 |
-| reportIssueUrl | remove | — | 課題報告を消す（B-3） |
+| reportIssueUrl | remove（B-3 の `productRemove` で消す。単位と時期をそろえるため） | — | 課題報告を消す（B-3） |
 | shukoConfigurationDefaults | set | `{"extensions.allowed": {"*": false, <台帳の ID>: true, ...}, "telemetry.telemetryLevel": "off", "update.mode": "none", "workbench.enableExperiments": false, "extensions.autoUpdate": "off", "extensions.autoCheckUpdates": false}` | application スコープの設定の既定。拡張の `configurationDefaults` では既定にできないので、`patches/` の小さなパッチ（`src/vs/platform/configuration/common/configurationRegistry.ts` の登録の直後で、このキーを既定として登録する）で読む（2026-11-13 リーダーの判断。`tasks/2026-11-13-p1-ledger-mydist-decisions/app-scope-options.md` の案B-2）。`extensions.allowed` の ID が台帳と合っているかを単体テストで照合する |
 | enableTelemetry、aiConfig、updateUrl、tasConfig、extensionsGallery | 本家が足したら remove | — | 1.146.0 の OSS の product.json には無く、無いことでテレメトリ・更新の確認・実験・ギャラリーが働かない。本家が足したら `apply.mjs` が外して警告する |
 | server*、tunnel*、win32Tunnel* | remove（C-3） | — | リモートを消すとき。先に消すと参照するコードが値を見失う |
