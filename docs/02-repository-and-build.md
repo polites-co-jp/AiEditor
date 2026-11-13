@@ -66,7 +66,7 @@ C:\b\dist\                        zip の置き場
 
 ## 3. product.json の上書き
 
-`product.overlay.json` は `set`（値を入れる・置き換える）と `remove`（キーを消す）の2つを持つ。`apply.mjs` が作業ツリーの `product.json` に当てる。
+`product.overlay.json` は `set`（値を入れる・置き換える）、`remove`（キーを消す。本家に無ければ警告）、`removeIfPresent`（本家が足したら外す。無ければ何もせず、あれば消して警告）の3つを持つ（2026-11-14、`tasks/2026-11-13-p2-apply/doc-corrections.md` の2）。`apply.mjs` が作業ツリーの `product.json` に当てる。
 
 1.146.0 の OSS の product.json には `extensionsGallery`・`aiConfig`・`ariaKey`（テレメトリの鍵）・`updateUrl`・`extensionEnabledApiProposals` が無い [一次] https://raw.githubusercontent.com/microsoft/vscode/1.146.0/product.json 。これらは足さない。
 
@@ -123,7 +123,7 @@ C:\b\dist\                        zip の置き場
 | パッケージマネージャー | タグの手順に従う（1.146.0 は pnpm の見込み。4節） |
 | Claude Code の CLI | 取り込みの判定（`claude -p`） |
 
-- Electron の版はルートの package.json の `nativeBuild.target` で決まる（1.146.0 は 43.8.6）。Electron は本家のタグに付いてくるので、別に上げない。取得物は `build/checksums/electron.txt` で照合される [一次] `sources/research-vscode-source.md` の2節。
+- Electron の版はルートの package.json の `nativeBuild.target` で決まる（1.146.0 は 43.8.6）。Electron は本家のタグに付いてくるので、別に上げない。取得物は `build/checksums/electron.txt` で照合される [一次] `sources/research-vscode-source.md` の2節。 1.145 系までは `.npmrc` の `target` にある（`tasks/2026-11-13-p2-apply/doc-corrections.md` の5）。`apply.mjs` はどちらからでも読む。
 - 所要時間・ディスク・ピークのメモリの公式の値は見つからなかった。Phase 1 で所要時間とディスクを記録する。
 - 失敗したときは、本家の案内どおり `git clean -xfd` してから入れ直す。node-gyp のキャッシュ（`%USERPROFILE%\AppData\Local\node-gyp`）を消すことも案内されている。
 

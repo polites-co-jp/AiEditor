@@ -69,7 +69,7 @@
 | removeDependencies | package.json ごとに、消す依存の名前 |
 | removeLines | 1行で完結する参照（import の行、一覧の1要素）を消す。前後の空白を除いて**完全に一致する行**を探し、**ちょうど1行**見つかれば消す。0行か2行以上なら止める（`count` で別の数を指定できる）。正規表現は使わない |
 | productRemove | product.json から消すキー（[02](02-repository-and-build.md) の3節の表と同じもの） |
-| patch | 残るファイルへの変更（4節の作り方）。無ければ書かない |
+| patch | 残るファイルへの変更（5.2 の作り方）。単位のフォルダの中のファイルの名前で、既定は `edits.patch`。無ければ書かない |
 | kept | 消さずに残した部品と理由 |
 | checks | 消えたことの確かめ方（7節） |
 | smoke | この単位の後に通すスモークテストの組（[06](06-update-watch-and-take-in.md) の5節） |
@@ -154,19 +154,20 @@ workbench の contrib のうち、他の部品から参照されることが少�
 ### 5.2 パッチの作り方と直し方
 
 - 作り方: 作業ツリーで前の単位までを当てた状態から、`ops` のコミットを作り、型検査の誤りを直してコミットする。`git format-patch -1 <edits のコミット> --stdout > removals/<id>/edits.patch`。
+- edits のコミットは `git -c user.name=shuko-apply -c user.email=apply@shuko.invalid commit` で作る。利用者の名前とメールをパッチの `From:` に残さないため（2026-11-14 リーダーの判断。`tasks/2026-11-13-p2-apply/doc-corrections.md` の4）。修理のときの `claude -p` も同じ（`TAKE-IN.md` の規約）。
 - `git rerere` を有効にしておく（`git config rerere.enabled true`）。3-way で当てるので、前後の行がずれても大半は自動で当たる。常設の clone は前のタグを持っているので、3-way の基底が見つかる。
 - 取り込みで当たらなかったとき: 作業ツリーで衝突を解き、同じ手順で `edits.patch` を書き戻す。`TAKE-IN.md` の規約（本家側の変更を採る、消す意図が消えたら単位の README を直す）に従う。
 
 ### 5.3 単位どうしを独立に保つ規則
 
 - パッチは、自分の単位が消した部品への参照だけを直す。ほかの単位の都合の変更を入れない。
-- 本家の多くの単位が触るファイル（`workbench.common.main.ts`、`workbench.desktop.main.ts`、`build/npm/dirs.ts` などの一覧）は、`removeLines` で直し、パッチに入れない。こうしておけば、単位を1つ無効にしても、後の単位のパッチの前後の行が変わらない。
+- 本家の多くの単位が触るファイル（`workbench.common.main.ts`・`workbench.web.main.ts`・`src/vs/sessions/sessions.*.main.ts`（1.146.0 では sessions の main も workbench の contrib を import する。`tasks/2026-11-13-p2-apply/doc-corrections.md` の3）、`workbench.desktop.main.ts`、`build/npm/dirs.ts` などの一覧）は、`removeLines` で直し、パッチに入れない。こうしておけば、単位を1つ無効にしても、後の単位のパッチの前後の行が変わらない。
 - 拡張 API の空の実装は、単位ごとに新しいファイル（例 `extHostRemovedApi.debug.ts`）に置く。`extHost.api.impl.ts` への変更は、その単位の名前空間の行だけにする。
 - 単位を無効にしたら、後の単位を当て直し、当たらなければ後の単位のパッチを直す。この手間は Phase 3 で測る。
 
 ### 5.4 ロックファイル
 
-依存とワークスペースの一覧を消すと、ロックファイル（1.146.0 は `pnpm-lock.yaml` の見込み）が変わる。ロックファイルはパッチにしない。依存の導入のときに作り直し、本家のロックファイルとの差分を `records/take-in/<label>/lockfile.diff` に残す。**差分が「消した依存の削除」だけであること**を適用後の検査で確かめる（残った依存の版が変わっていたら止める。推定の手順なので Phase 2 で確かめる）。
+依存とワークスペースの一覧を消すと、ロックファイルが変わる。1.146.0 には `pnpm-lock.yaml` が6つある（ルート、`build/`、`extensions/`、`extensions/copilot/`、`remote/`、`test/sanity/`。`tasks/2026-11-13-p2-apply/doc-corrections.md` の1）。`lockfile.diff` は6つ分の差分。単位が消したフォルダの中のものは「無いこと」を確かめる。単位が依存を消すので、依存の導入は `--frozen-lockfile` を付けずに行い、その後に比べる。ロックファイルはパッチにしない。依存の導入のときに作り直し、本家のロックファイルとの差分を `records/take-in/<label>/lockfile.diff` に残す。**差分が「消した依存の削除」だけであること**を適用後の検査で確かめる（残った依存の版が変わっていたら止める。推定の手順なので Phase 2 で確かめる）。
 
 ## 6. 適用後の検査（単位に共通）
 
@@ -178,7 +179,7 @@ workbench の contrib のうち、他の部品から参照されることが少�
 | 消え残り | `delete` のパスが無いこと |
 | 参照の残り | 単位の `checks.absentStrings`（例: `contrib/debug/`）が `src/` と `build/` に無いこと（`kept` に挙げたファイルを除く） |
 | 未分類の組み込み拡張 | 本家の `extensions/*` のうち、`builtin/keep.json` にも単位にも無いもの |
-| 本家が足した部品 | 前のタグから増えた `src/vs/workbench/contrib/*`、`src/vs/workbench/services/*`、`src/vs/platform/*` のフォルダと、`workbench.*.main.ts` の import の行。名前に chat・agent・copilot・mcp・telemetry・experiment・survey などを含むものは目立たせる |
+| 本家が足した部品 | 前のタグから増えた `src/vs/workbench/contrib/*`、`src/vs/workbench/services/*`、`src/vs/platform/*` のフォルダと、`workbench.*.main.ts`・`src/vs/sessions/sessions.*.main.ts` の import の行。名前に chat・agent・copilot・mcp・telemetry・experiment・survey などを含むものは目立たせる |
 | 依存の変化 | ルートの package.json に増えた依存（特に AI・テレメトリの SDK） |
 | ロックファイル | 5.4 |
 
