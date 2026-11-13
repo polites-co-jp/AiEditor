@@ -194,3 +194,16 @@
 | ターミナルの入力候補の本体の部品（`contrib/terminalContrib/suggest`）が、拡張 `terminal-suggest` を消しても残る | 裁定「ターミナルの入力候補は消す」「コードごと消す」の範囲なので、新しい単位 B-7-terminal-suggest で本体の部品も消す。有効になるまでは `mydist` の既定で切る |
 | A-3 の `builtInExtensions: []` | `product.overlay.json` の `set` に置く（キーを消すと gulpfile が止まるため） |
 | A-1 の後処理（`build/lib/copilot.ts`）の止め方 | 拡張のフォルダが無ければ戻る3行を足す形（触るのは1か所）を採る |
+
+## 記録（2026-11-14、Phase 2 の段階 B の作業で出た点。リーダーの判断）
+
+根拠: `tasks/2026-11-13-p2-units-b/handoff-notes.md`、`units-b-notes.md`、`doc-corrections.md`
+
+| 論点 | 扱い |
+|---|---|
+| B-2 の `contrib/onboarding` | 残す。残る部品が使っているため（docs/03 の表との違い） |
+| B-6 の `contrib/emergencyAlert` | 消す（表に無かった部品。不要な通信を止める裁定に当たる） |
+| WPAD（プロキシの自動探索の `wpad` の名前の問い合わせ） | 小さなパッチ（`windowImpl.ts`）で止める |
+| アイコンの PNG・ICO | Node.js 標準の zlib で書き出す台本を作り、自作の意匠で作る |
+| `terminalContrib/telemetry` | B-1 に足して消す（テレメトリは裁定で消す） |
+| `services/suggest` | ターミナルの入力候補だけが使うなら B-7 で消す。ほかの残る機能が使うなら残す |
