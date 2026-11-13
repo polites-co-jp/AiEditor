@@ -89,7 +89,7 @@ records/take-in/1.147.0-1/verdict.md（合格・条件付き・不合格）
 
 ## 3. 取り込みの起動
 
-- ToDo を見たユーザーが、ビルドリポジトリで `node scripts/take-in.mjs core <tag>` または `node scripts/take-in.mjs ext <id> <version>` を実行する。
+- ToDo を見たユーザーが、ビルドリポジトリで `node scripts/take-in.mjs core <tag>` または `node scripts/take-in.mjs ext <id> [<version>]` を実行する（版を省くと、寝かせる期間を満たした最新の版。2026-11-14 リーダーの判断）。
 - 本体は、新版が出た週ごとに1回行う（裁定の「毎週すべて検証」）。その週に新版が複数出たときは、最新のタグで1回ビルドして検証し、前回の取り込みから後のすべての版のリリースノートとアドバイザリを判定の対象に含める。最新のタグはそれまでの版の修正を含むので、途中の版の中身も漏れなく確かめられる。当て直しとビルドは1回で済む。セキュリティ修正を含む版が出たら、その週のうちに行う。
 - 取り込みは今使っている版に触らない。新しい版はブランチ `take-in/<label>` と版のフォルダ `<installRoot>\versions\<label>` に作る（`installRoot` は `local.json` から読む。[02](02-repository-and-build.md) の6.1）。
 
@@ -144,7 +144,7 @@ Claude Code の項目は、裁定の「実機の動作で判断する」に当�
 ### 7.1 起動のしかた
 
 - `take-in.mjs` が `claude -p` を子プロセスとして起動する。ユーザーがログインした Claude Code の CLI を使い、API キーは使わない。子プロセスの環境変数から `ANTHROPIC_API_KEY` を外す。
-- 作業の場所は作業ツリー。ビルドリポジトリを追加の作業場所として渡す。使ってよい道具は、読む・探す・`removals/` と `patches/` と作業ツリーの中の編集・`git diff` と `git status` だけにする。オプションの書き方（`--output-format json`、`--allowedTools`、`--add-dir` など）は、実装のときに `claude --help` で確かめる。
+- 修理（手順 3・5）の作業の場所は作業ツリー。ビルドリポジトリを追加の作業場所として渡す。判定（手順 9。`--agent di-renjie`）は、作業の場所をビルドリポジトリの直下にする（直下でないとフックの相対パスの読みが止まり、判定役の守りが効かない。CLAUDE.md の規約）。判定に要る作業ツリーの記録は、`records/take-in/<label>/` に写してから渡す（2026-11-14 リーダーの判断）。使ってよい道具は、読む・探す・`removals/` と `patches/` と作業ツリーの中の編集・`git diff` と `git status` だけにする。オプションの書き方（`--output-format json`、`--allowedTools`、`--add-dir` など）は、実装のときに `claude --help` で確かめる。
 - 渡すもの: `TAKE-IN.md`（規約）、`checks.json`、ビルドと型検査のログの末尾、スモークの結果、通信の監査の差分、前回の取り込みから後のすべての版のリリースノートとアドバイザリ、ロックファイルの差分、本家が足した部品の一覧、変わったパッチ。
 
 ### 7.2 `TAKE-IN.md` に書く規約
