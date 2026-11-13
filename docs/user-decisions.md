@@ -136,3 +136,12 @@
 |---|---|
 | 節目の計測で Claude Code のパネルに送る「決まった1文」（[07](07-phases.md) の3.2） | 「こんにちは。一言だけ返事をしてください。」。以後の節目もこの文を使う |
 | Process Explorer の画面の写し（3.2 の補い） | 数える5回の後に、数えない1回を足して撮る |
+
+## 裁定（2026-11-13、ovsx の依存の install スクリプト）
+
+調べ: `tasks/2026-11-13-p0-lock-final/lock-rerun.md` の1節・2節
+
+| 論点 | 裁定 |
+|---|---|
+| `@vscode/vsce-sign` 2.1.0（ovsx 1.4.0 が `@vscode/vsce` を通して連れてくる）の install スクリプトを、pnpm に走らせるか | 走らせない。`pnpm-workspace.yaml` の `allowBuilds` に `'@vscode/vsce-sign': false` と書く。ovsx 1.4.0 の `verify-signature` はこの道具を使わず、Node.js の `crypto` で検証する（走らせない状態で9件とも検証を通った） |
+| 道具の依存の固定の仕方（「ovsx の版の固定」を補う。リーダーの判断） | 入れる道具は pnpm。`package.json`・`pnpm-lock.yaml`・`pnpm-workspace.yaml` をコミットし、ovsx とその依存の版を固定する |
