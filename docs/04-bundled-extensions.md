@@ -100,7 +100,7 @@
 
 - 拡張の置き場所はユーザーごとに1つ（推定 `%USERPROFILE%\.shuko\extensions`）。版のフォルダを切り替えても拡張はそのまま。`switch.ps1` は、切り替える先の本体の版が台帳の `engines` を満たすかを確かめ、満たさなければ止まる。
 - **戻し方**: 台帳はビルドリポジトリの git にある。`install-extensions.mjs --rev <コミット>` で、その時点の台帳の版を入れ直す。前の版の VSIX はキャッシュに残す。
-- `extensions.allowed`（1.96 から。拡張の ID ごと、または版ごとに許可を列挙できる。範囲指定は不可）[一次] https://code.visualstudio.com/docs/enterprise/extensions を、`{"*": false, "<台帳の ID>": true, ...}` にする。application スコープなので `mydist` の既定では入らず、product.json の `shukoConfigurationDefaults` と小さなパッチで既定にする（[02](02-repository-and-build.md) の3節。2026-11-13）。ID だけを載せ、版は台帳で固定する（版まで載せると拡張の差し替えのたびに本体の再ビルドが要るため）。VSIX の手動インストールにも効き、パッケージ内の ID で判定する（同ページ）。CLI の `--install-extension` に効くか、組み込み拡張が対象外か、`configurationDefaults` で既定にできるかは未確認。Phase 0 の 0-8・0-9 で確かめ、`mydist` を組み込み拡張として同梱したときの効き方を Phase 2 で確かめる。
+- `extensions.allowed`（1.96 から。拡張の ID ごと、または版ごとに許可を列挙できる。範囲指定は不可）[一次] https://code.visualstudio.com/docs/enterprise/extensions を、`{"*": false, "<台帳の ID>": true, ...}` にする。application スコープなので `mydist` の既定では入らず、product.json の `shukoConfigurationDefaults` と小さなパッチで既定にする（[02](02-repository-and-build.md) の3節。2026-11-13）。ID だけを載せ、版は台帳で固定する（版まで載せると拡張の差し替えのたびに本体の再ビルドが要るため）。VSIX の手動インストールにも効き、パッケージ内の ID で判定する（同ページ）。CLI の `--install-extension` に効くかは、Phase 0 の 0-8 の自動の部分で確かめた（効く。`tasks/2026-11-13-p0-envs-mydist-keys/extensions-allowed.md`）。組み込み拡張が対象外かと、画面の「VSIX からインストール」に効くかは、Phase 2 の自作のビルドで確かめる。`configurationDefaults` では既定にできない（application スコープ。6.1 の注）。
 
 ## 6. 自前の組み込み拡張 `mydist`
 
