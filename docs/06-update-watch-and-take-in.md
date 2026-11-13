@@ -208,3 +208,4 @@ Claude Code の項目は、裁定の「実機の動作で判断する」に当�
 - ロックファイルの検査は、取り込みのブランチの `removals/` を読む（`build.mjs` から `apply.mjs --lockfile-check` に `--removals` を渡す）。
 - 衝突の解決の記録（rerere）は常設の clone で作業ツリーの間で共有する。
 - 検知（2節）の事実: 本家のリリースの `body` はリリースノートの URL だけで、security の記述はリリースノートのページで見る。Windows の既定の実行ポリシーでは `-File` の台本が動かないので、`read-secret.ps1` は `-ExecutionPolicy Bypass` を付けて呼ぶ。アドバイザリの「前回以降」は、公開の日時でなく、まだ見ていない ID で数える（`state.json` の `seenAdvisories`）。Notion の部品は `scripts/lib/notion-client.mjs`・`notion-todo.mjs` に置き、取り込みの書き戻しと共有する。
+- 既存の ToDo を直すとき（2.3）、優先度は高いほう、期限は早いほうに寄せる（下げない・延ばさない）。「更新の検知が失敗しています」の ToDo は、優先度を高、期限を翌日にする。
