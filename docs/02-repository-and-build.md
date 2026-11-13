@@ -59,7 +59,7 @@
 ```
 C:\b\vscode\                      本家の常設 clone（fetch だけする）
 C:\b\wt\<tag>\                    タグごとの作業ツリー（git worktree。使い捨て）
-C:\b\VSCode-win32-x64\            gulp の出力（作業ツリーの親の直下に出る）
+C:\b\wt\VSCode-win32-x64\         gulp の出力（作業ツリーの親の直下。作業ツリーが C:\b\wt\<tag> なので C:\b\wt の下）
 C:\b\cache\vsix\                  台帳の VSIX のキャッシュ
 C:\b\dist\                        zip の置き場
 ```
@@ -101,9 +101,10 @@ C:\b\dist\                        zip の置き場
 3. 適用後の検査: [03](03-removal-design.md) の6節と [06](06-update-watch-and-take-in.md) の4節。結果は `records/take-in/<label>/checks.json`。
 4. 依存の導入: 本家のタグの手順に従う。1.146.0 は pnpm を使っている見込み（`extensions/pnpm-workspace.yaml` があり、smoke テストの README が `pnpm install` と書く）。How-to-Contribute の wiki はまだ `npm install` と書いている [一次] `sources/research-vscode-source.md` の2節・10節。どちらで動くかは Phase 1 で確かめる。消した拡張の分だけロックファイルが変わる。ロックファイルはパッチにせず、ここで作り直し、差分を記録に残す（[03](03-removal-design.md) の5.4）。
 5. 型検査: 本家の package.json の scripts から、型検査だけを走らせるものを Phase 1 で選ぶ（推定の候補 `compile`、`valid-layers-check`）。コードを消したあとの参照の残りは、ここで見つかる。
-6. パッケージ化: `npm run gulp vscode-win32-x64-min`（タグが pnpm なら `pnpm run gulp ...`）。gulp は npm 経由で動かす（"Run gulp via npm to avoid potential out of memory issues"）[一次] https://github.com/microsoft/vscode/wiki/How-to-Contribute 。タスク名と出力先（作業ツリーの親の直下の `VSCode-win32-x64`）は 1.146.0 の `build/gulpfile.vscode.ts` で確かめた [一次] `sources/research-vscode-source.md` の4節。
-7. 後処理: 出力の `resources/app/extensions` に、消した拡張のフォルダが残っていないこと、`builtin/keep.json` の拡張がそろっていることを確かめる。LICENSE と ThirdPartyNotices を残す。本家 1.146 系の公式の zip は `resources\app\` を commit の先頭10桁のフォルダの下に置く（`<展開先>\69047191fc\resources\app\`。Phase 0 で確認）。自分のビルドの出力が同じ形かを Phase 1 で確かめ、後処理と `switch.ps1` が `resources\app` を直下と決めつけないようにする。
-8. zip: 本家の gulp には zip を作るタスクが見当たらない（`build/gulpfile.vscode.ts` と `build/gulpfile.vscode.win32.ts` には無い。ビルド全体は未確認）。出力のフォルダを `Shuko-win32-x64-<label>` に改名し、Windows 標準の `tar.exe` で `tar -a -c -f <label>.zip <フォルダ>` とする（tar.exe の zip 作成は推定。Phase 1 で確かめ、だめなら 7-Zip）。zip の SHA-256 を記録する。
+6. パッケージ化: `pnpm run gulp vscode-win32-x64-min`（1.146.0 は pnpm 12.16.0 だけで動く。npm は preinstall が止める）。gulp は npm 経由で動かす（"Run gulp via npm to avoid potential out of memory issues"）[一次] https://github.com/microsoft/vscode/wiki/How-to-Contribute 。タスク名と出力先（作業ツリーの親の直下の `VSCode-win32-x64`）は 1.146.0 の `build/gulpfile.vscode.ts` で確かめた [一次] `sources/research-vscode-source.md` の4節。
+7. 後処理: 出力の `resources/app/extensions` に、消した拡張のフォルダが残っていないこと、`builtin/keep.json` の拡張がそろっていることを確かめる。LICENSE と ThirdPartyNotices を残す。本家 1.146 系の公式の zip は `resources\app\` を commit の先頭10桁のフォルダの下に置く（`<展開先>\69047191fc\resources\app\`）。これは product.json に `win32VersionedUpdate` があるときだけで、OSS の product.json には無いので、自分のビルドは直下に置く見込み（`build/lib/util.ts` の `getVersionedResourcesFolder`。`tasks/2026-11-13-p2-build-switch/doc-corrections.md` の6）。後処理と `switch.ps1` はどちらの形でも読む。
+8. zip: 本家の gulp には zip を作るタスクが見当たらない。`C:\Windows\System32\tar.exe`（bsdtar。PATH の先頭の Git の GNU tar は zip を作れないのでフルパスで呼ぶ）で作る（2026-11-14 に試して作れた）。bsdtar には名前の置き換え（`-s`）が無いので、出力を改名せず、`<dist>\.stage-<label>\Shuko-win32-x64-<label>` のジャンクションを `tar -H` で包む。zip の SHA-256 を記録する（`tasks/2026-11-13-p2-build-switch/doc-corrections.md` の1）。
+   - やり直すとき: 当てた後の作業ツリーは `prepare.mjs` が拒むので、`build.mjs --fresh`（作り直す）か `--from <手順>`（途中から）を使う。子のプロセスには `ELECTRON_RUN_AS_NODE`・`ELECTRON_NO_ATTACH_CONSOLE`・`VSCODE_*` を渡さない。
 
 ### 4.1 自前の組み込み拡張の入れ方
 
@@ -138,16 +139,16 @@ C:\b\dist\                        zip の置き場
   versions\1.146.0-1\            zip を展開したもの（版のラベル = 本家のタグ-ビルドの番号）
   versions\1.147.0-1\
   current  →  versions\1.147.0-1  ジャンクション
-  history.txt                    切り替えの履歴（日時、前、後）
+  history.txt                    切り替えの履歴。1行 `<ISO 8601>\t<前のラベルか ->\t<後のラベル>`（パスは書かない）
   backups\<日時>\                切り替えの前に取ったユーザー設定の写し
 ```
 
-- スタートメニューのショートカットと PATH は `current` を指す。CLI は `current\bin\<editor>.cmd`（実行ファイルの名前は nameShort から決まる見込み。推定。Phase 1 で確かめる）。
+- スタートメニューのショートカットと PATH は `current` を指す。CLI は `current\bin\<applicationName>.cmd`、実行ファイルは `<nameShort>.exe`（1.146.0 の `build/gulpfile.vscode.ts`）。ユーザーのデータは `%APPDATA%\<nameShort>`（`VSCODE_APPDATA` があればその下。`src/vs/platform/environment/node/userDataPath.ts`）。
 - `switch.ps1 <label>` は次の順に動く。
   1. `current` の版のプロセスが動いていたら止まる（閉じてから実行するよう促す）。
   2. ユーザーのデータ（`settings.json`、`keybindings.json`、`snippets`、`tasks.json`、`globalStorage\state.vscdb`）を `backups\<日時>\` に写す。
   3. `current` のジャンクションを付け替え、`history.txt` に書く。
-- **戻し方**: `switch.ps1 <前のラベル>`。`switch.ps1 -Previous` で `history.txt` の1つ前へ戻す。新しい版がユーザーのデータを書き換えていて前の版で不具合が出たときは、`backups\` から戻す。
+- **戻し方**: `switch.ps1 <前のラベル>`。`switch.ps1 -Previous` で、`history.txt` を後ろから見て、今の版へ切り替えた最初の行の「前」へ戻す（2回続けると2つの版を行き来する）。新しい版がユーザーのデータを書き換えていて前の版で不具合が出たときは、`backups\` から戻す。
 - 版のフォルダは `keepVersions`（既定3。6.1）の数だけ残す。それより古いものは、`switch.ps1` が一覧を出し、ユーザーが消す。
 - ユーザーのデータの置き場所は、product.json の `nameShort`・`dataFolderName` から決まる（推定: `%APPDATA%\Shuko\User`、拡張は `%USERPROFILE%\.shuko\extensions`）。版のフォルダとは別なので、切り替えても設定と拡張はそのまま。Phase 1 で実際の場所を確かめて、この節を直す。
 - 署名はしない。手元でビルドしたものにはダウンロードの印が付かないので、SmartScreen は出にくい（推定）。
@@ -230,3 +231,12 @@ C:\b\dist\                        zip の置き場
 ```
 
 採用した版には、ビルドリポジトリでタグ（例 `1.146.0-1`）を打つ。
+
+
+## 8. Phase 2 で決めた細目（2026-11-14）
+
+台本の細目（`local.json` の読み方の規則、`switch.ps1` が台帳も読むこと、場所を変えるときに向け直すショートカットと PATH の範囲、`records/builds/<label>.json` の項目、VSIX のキャッシュの並べ方、`argv.json` のコメントを残す書き方、本家の `dataFolderName` の CLI を守りなしで走らせない守り）は、`tasks/2026-11-13-p2-build-switch/build-switch-design.md` と `tasks/2026-11-13-p2-build-switch/doc-corrections.md` にある。台本と食い違ったら、台本の設計の書き物を正とし、この資料を直す。
+
+- 版のフォルダへの展開は `switch.ps1 -Zip` が行う。取り込み（`take-in.mjs`・`adopt.mjs`）もこの入口を使う（リーダーの判断）。
+- VSIX のキャッシュは `<buildRoot>\cache\vsix\`。`lock-fetch.mjs` の既定もここにそろえる（Phase 0 の `C:\b\p0\vsix` は使わない）。
+- スタートメニューと PATH の初めての登録の手順は `docs/install.md`（Phase 4 の3）に書く。
