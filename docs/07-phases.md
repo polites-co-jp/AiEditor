@@ -82,7 +82,7 @@
 
 1. VSIX、`.sha256`、`.sigzip`、公開鍵、manifest を取る。
 2. `Get-FileHash <vsix> -Algorithm SHA256` を `.sha256` の値と比べる（Claude Code 2.1.322 win32-x64 の公開値は `8c0b09c6aefbca3196bcfe87e33b4e531cab3c13b2d9fd43a441562c74c5e4a4`）。
-3. `npx ovsx verify-signature -i <vsix> -m <manifest> -s <sigzip> -k <公開鍵>` を試す。`-m` に何を渡すかを、ovsx の README とヘルプで確かめる。通らなければ、何が足りないかを書く。
+3. `ovsx verify-signature -i <vsix> -m <manifest> -s <sigzip> -k <公開鍵>` を試す。ovsx は `package.json` で固定した版（1.4.0）を pnpm で入れたものを使い、`npx` で npm の最新を取らない（裁定 2026-11-13）。`-m` に何を渡すかを、ovsx の README とヘルプで確かめる。通らなければ、何が足りないかを書く。
 4. Claude Code の VSIX のファイル一覧から同梱の CLI を見つけ、SHA-256 を `https://downloads.claude.ai/claude-code-releases/<版>/manifest.json` の該当プラットフォームの `checksum` と比べる。`manifest.json.sig` を GPG で検証する（鍵 `https://downloads.claude.ai/keys/claude-code.asc`、指紋 `31DD DE24 DDFA B679 F42D 7BD2 BAA9 29FF 1A7E CACE`）。`Get-AuthenticodeSignature` で "Anthropic, PBC" の署名を見る。
 5. Defender で走査する（`MpCmdRun.exe` の引数を確かめる）。
 6. 出力: `records/phase0/lock-verification.md`、台帳の最初の版 `extensions.lock.json`。

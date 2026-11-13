@@ -85,3 +85,48 @@
 3. `npx ovsx` の版が固定されていない（実行のたびに npm の最新を取る。今回は 1.4.0）。
 4. `audio-capture.node` の署名とハッシュは見ていない（docs の対象外）。
 5. Defender の走査が管理者の権限を要るかは切り分けていない（今回の実行では通った）。
+
+## 7. 追記（2026-11-13）: 台帳の確定（固定した ovsx での全件の走らせ直し）
+
+- 記録: 大岡越前守（2026-11-13）。蒙恬の走らせ直し `tasks/2026-11-13-p0-lock-final/lock-rerun.md` を確かめた。検証の記録は `tasks/2026-11-13-p0-verify-lock-final/verification-log.md`。判定は合格。
+- 蒙恬の実行: `node scripts/lock-verify.mjs --dir C:/b/p0/vsix --vscode 1.146.0 --write-lock extensions.lock.json`（`--only` なし）。判定の時刻は 2026-11-13T03:25:31.820Z〜03:26:01.687Z（日本時間 12:25:31〜12:26:01）。終了コード 0。記録は `C:\b\p0\vsix\verify-result.json`（`verifiedAt` 2026-11-13T03:26:03.284Z）。
+- 結果: 9件とも `ok: true`。`failed`・`skipped` はどれも空。台帳への書き込み（`lockWrite`）は9件とも `written` で、`kept`・`omitted`・`untouched` は無い。
+- 1〜3節は前の回（2026-11-12T20:30Z）の記録としてそのまま残す。2節の表と違うのは、Claude Code の「4 72時間」が「通」になったことと、「3 ソースのタグ」が参考の項目になったこと（下の 7.3）だけ。
+
+### 7.1 Claude Code 2.1.322 の寝かせる期間
+
+- 公開 2026-11-10T02:30:51.973288Z、判定 2026-11-13T03:25:31.820Z。経過は72時間54分39.85秒で、`isSoaked` は真。`checks.soak` は `pass`。
+- `listedInAllVersions` は `lock-fetch` の時点（2026-11-12T20:18:09Z）の値で `true`。判定の時刻に Open VSX の `allVersions` を取り直してはいない（1節の「取り直さずに走らせ直す」に従った。7.5 の2）。Marketplace の 2.1.322（win32-x64）は判定の時刻に確かめていて、残っている。
+
+### 7.2 ovsx の版の固定（A-4）
+
+- `package.json` の devDependencies が `ovsx: "1.4.0"`。`pnpm-lock.yaml` の importer も `specifier: 1.4.0`、`version: 1.4.0`。`ovsx@1.4.0` の完全性 `sha512-QrbKEXh9EEaDfZ8kojxtsRkJTXXdhX4zH3gweANSbonDlMF69vDjLm0cYQFQOExlVAQ+0A0F5CATawTG/iN4iw==`。
+- 入っている依存の木は lockfile のとおり（`pnpm-lock.yaml` と `node_modules/.pnpm/lock.yaml` の SHA-256 が同じ `92478f97...bcaf`）。pnpm は 11.8.0。
+- 起動は `node.exe <repo>\node_modules\ovsx\bin\ovsx verify-signature -i <vsix> -m <.signature.manifest> -s <.signature.sig> -k <公開鍵の PEM>`。npx は使っていない。9件とも `ovsxVersion: "1.4.0"`、終了コード 0、`✅  Signature is valid.`。
+- 私も `node scripts/lock-verify.mjs --dir C:/b/p0/vsix --only tomoki1207.pdf --result C:/b/p0/trial/verify-result.json` で試し、同じ起動の形と出力を確かめた（判定の時刻 2026-11-13T03:33:35.876Z、pdf の `ok: true`）。
+- 依存の `@vscode/vsce-sign@2.1.0` の install スクリプト（`postinstall`。同じ PC 向けの包みの `vsce-sign.exe` を `bin/` に写す）は、pnpm が走らせていない（`ignoredBuilds`）。ovsx 1.4.0 の `verify-signature` はこの道具を使わず、Node.js の `crypto`（Ed25519）と manifest の各エントリーの SHA-256 で検証する。`bin/` が無い状態で9件とも通った。裁定（2026-11-13）は「走らせない。`allowBuilds` に `false`」。
+
+### 7.3 台帳の差（`git diff extensions.lock.json`）
+
+- 変わったのは次の3つだけ。版・`sha256`・`publishedAt`・`crossCheck`・`manifestDigest`・ライセンスの値は変わっていない。
+  1. 9件の `verifiedAt`。
+  2. Claude Code の `checks.soak`（`fail` → `pass`）。
+  3. Claude Code 以外の8件で、ソースのタグを `checks.sourceTag`（pass / fail）から `references.sourceTag`（found / not-found）に移した（裁定 2026-11-13: 参考の項目）。`found` は basedpyright・powershell・bash-ide-vscode・rainbow-csv・dotenv-vscode、`not-found` は wx-vsce-dotenv・pdf・言語パック。
+- 9件とも docs/04 の3節の形（`validateLockEntry` の規則）に合う。`checks` は必須の項目だけで、値は全部 `pass`。
+- 9件の VSIX をもう一度 `sha256sum` でハッシュし、台帳の `sha256` と9件とも一致した。
+
+### 7.4 6節の残っている点の状態
+
+| 6節 | 状態 |
+|---|---|
+| 1 Claude Code の寝かせる期間 | **片付いた**（7.1） |
+| 2 ソースのタグの3件の扱い | 裁定で片付いた（2026-11-13: 必須にせず、参考の項目として記録し、取り込みの判定で触れる）。台帳は `references.sourceTag` に記録した |
+| 3 ovsx の版が固定されていない | **片付いた**（7.2） |
+| 4 `audio-capture.node` の署名とハッシュ | 残る（docs の対象外） |
+| 5 Defender の走査に管理者の権限が要るか | 残る（今回の実行でも通った） |
+
+### 7.5 新しく残った点
+
+1. `pnpm-workspace.yaml` の `allowBuilds` が、まだ pnpm の仮の値（`set this to true or false`）のまま。裁定の `'@vscode/vsce-sign': false` に直してから、`pnpm-lock.yaml`・`pnpm-workspace.yaml` をコミットする。直した後に `pnpm install` が 0 で終わるかは、まだ確かめていない。
+2. 取り下げの確認（docs/04 の4節の4「確認の時点で」）は、`lock-fetch` の時点のメタデータを使っている。毎週の取り込みでは、判定の時刻に取り直すか、`lock-fetch` と `lock-verify` を続けて走らせるかを決める（リーダーの判断）。
+3. Claude Code 2.1.323 が Marketplace と Open VSX に出ている（Open VSX の公開 2026-11-12T22:13:36Z。72時間が満ちるのは 2026-11-15T22:13:36Z）。台帳は 2.1.322 のまま。上げるかは取り込みの流れで扱う。

@@ -30,14 +30,14 @@
       "enabledApiProposals": [],
       "extensionDependencies": []
     },
-    "verifiedAt": "2026-11-12T20:21:03.553Z",
+    "verifiedAt": "2026-11-13T03:25:31.820Z",
     "verdict": "records/phase0/lock-verification.md",
     "checks": {
       "publisher": "pass",
       "sha256": "pass",
       "signature": "pass",
       "ovsx": "pass",
-      "soak": "fail",
+      "soak": "pass",
       "engines": "pass",
       "defender": "pass",
       "bundledCli": "pass",
@@ -74,7 +74,7 @@
       "enabledApiProposals": [],
       "extensionDependencies": []
     },
-    "verifiedAt": "2026-11-12T20:19:21.544Z",
+    "verifiedAt": "2026-11-13T03:25:45.412Z",
     "verdict": "records/phase0/lock-verification.md",
     "checks": {
       "publisher": "pass",
@@ -83,8 +83,10 @@
       "ovsx": "pass",
       "soak": "pass",
       "engines": "pass",
-      "defender": "pass",
-      "sourceTag": "pass"
+      "defender": "pass"
+    },
+    "references": {
+      "sourceTag": "found"
     }
   },
   {
@@ -119,7 +121,7 @@
         "vscode.powershell"
       ]
     },
-    "verifiedAt": "2026-11-12T20:19:48.370Z",
+    "verifiedAt": "2026-11-13T03:25:50.123Z",
     "verdict": "records/phase0/lock-verification.md",
     "checks": {
       "publisher": "pass",
@@ -128,8 +130,10 @@
       "ovsx": "pass",
       "soak": "pass",
       "engines": "pass",
-      "defender": "pass",
-      "sourceTag": "pass"
+      "defender": "pass"
+    },
+    "references": {
+      "sourceTag": "found"
     }
   },
   {
@@ -157,7 +161,7 @@
       "enabledApiProposals": [],
       "extensionDependencies": []
     },
-    "verifiedAt": "2026-11-12T20:20:00.828Z",
+    "verifiedAt": "2026-11-13T03:25:52.784Z",
     "verdict": "records/phase0/lock-verification.md",
     "checks": {
       "publisher": "pass",
@@ -166,8 +170,10 @@
       "ovsx": "pass",
       "soak": "pass",
       "engines": "pass",
-      "defender": "pass",
-      "sourceTag": "pass"
+      "defender": "pass"
+    },
+    "references": {
+      "sourceTag": "found"
     }
   },
   {
@@ -206,7 +212,7 @@
       "enabledApiProposals": [],
       "extensionDependencies": []
     },
-    "verifiedAt": "2026-11-12T20:20:21.239Z",
+    "verifiedAt": "2026-11-13T03:25:55.853Z",
     "verdict": "records/phase0/lock-verification.md",
     "checks": {
       "publisher": "pass",
@@ -215,8 +221,10 @@
       "ovsx": "pass",
       "soak": "pass",
       "engines": "pass",
-      "defender": "pass",
-      "sourceTag": "pass"
+      "defender": "pass"
+    },
+    "references": {
+      "sourceTag": "found"
     }
   },
   {
@@ -246,7 +254,7 @@
       "enabledApiProposals": [],
       "extensionDependencies": []
     },
-    "verifiedAt": "2026-11-12T20:20:24.002Z",
+    "verifiedAt": "2026-11-13T03:25:56.943Z",
     "verdict": "records/phase0/lock-verification.md",
     "checks": {
       "publisher": "pass",
@@ -255,8 +263,10 @@
       "ovsx": "pass",
       "soak": "pass",
       "engines": "pass",
-      "defender": "pass",
-      "sourceTag": "pass"
+      "defender": "pass"
+    },
+    "references": {
+      "sourceTag": "found"
     },
     "note": ".env の候補A。0-3 の後に dotenv.dotenv-vscode と weixu.wx-vsce-dotenv のどちらを残すかを決める（裁定: エラー表示を持つほう）"
   },
@@ -286,7 +296,7 @@
       "enabledApiProposals": [],
       "extensionDependencies": []
     },
-    "verifiedAt": "2026-11-12T20:20:30.359Z",
+    "verifiedAt": "2026-11-13T03:25:58.419Z",
     "verdict": "records/phase0/lock-verification.md",
     "checks": {
       "publisher": "pass",
@@ -295,8 +305,10 @@
       "ovsx": "pass",
       "soak": "pass",
       "engines": "pass",
-      "defender": "pass",
-      "sourceTag": "fail"
+      "defender": "pass"
+    },
+    "references": {
+      "sourceTag": "not-found"
     },
     "note": ".env の候補B。0-3 の後に dotenv.dotenv-vscode と weixu.wx-vsce-dotenv のどちらを残すかを決める（裁定: エラー表示を持つほう）"
   },
@@ -325,7 +337,7 @@
       "enabledApiProposals": [],
       "extensionDependencies": []
     },
-    "verifiedAt": "2026-11-12T20:21:29.855Z",
+    "verifiedAt": "2026-11-13T03:26:00.369Z",
     "verdict": "records/phase0/lock-verification.md",
     "checks": {
       "publisher": "pass",
@@ -334,8 +346,10 @@
       "ovsx": "pass",
       "soak": "pass",
       "engines": "pass",
-      "defender": "pass",
-      "sourceTag": "fail"
+      "defender": "pass"
+    },
+    "references": {
+      "sourceTag": "not-found"
     }
   },
   {
@@ -361,7 +375,7 @@
       "enabledApiProposals": [],
       "extensionDependencies": []
     },
-    "verifiedAt": "2026-11-12T20:20:36.376Z",
+    "verifiedAt": "2026-11-13T03:26:01.687Z",
     "verdict": "records/phase0/lock-verification.md",
     "checks": {
       "publisher": "pass",
@@ -370,8 +384,10 @@
       "ovsx": "pass",
       "soak": "pass",
       "engines": "pass",
-      "defender": "pass",
-      "sourceTag": "fail"
+      "defender": "pass"
+    },
+    "references": {
+      "sourceTag": "not-found"
     }
   }
 ]

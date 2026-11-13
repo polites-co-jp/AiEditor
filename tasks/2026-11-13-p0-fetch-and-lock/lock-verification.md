@@ -116,3 +116,24 @@
 ## 4. 材料の置き場所
 
 `C:\b\p0\vsix\<id>-<版>[@<target>]\`（fetch-log.md の2節）。全体の記録は `C:\b\p0\vsix\fetch-result.json`・`verify-result.json`。
+
+## 追記（2026-11-13）: 固定した ovsx での走らせ直し
+
+ユーザーがリポジトリの直下で `pnpm install` を済ませ、ovsx 1.4.0 が `node_modules` に入った。そのあと、9件すべて（`--only` なし）を走らせ直した。詳しくは `tasks/2026-11-13-p0-lock-final/lock-rerun.md`。
+
+- 時刻: 2026-11-13T03:25:31Z〜03:26:03Z（日本時間 12:25:31〜12:26:03）。
+- コマンド: `node scripts/lock-verify.mjs --dir C:/b/p0/vsix --vscode 1.146.0 --write-lock extensions.lock.json`。終了コード 0。
+- `C:\b\p0\vsix\verify-result.json` と `extensions.lock.json` を書き直した。この下書きの1〜3節は、前の回（2026-11-12T20:19Z〜20:21Z）の記録としてそのまま残す。
+
+上の節と違った点は次の5つ。
+
+1. **1節の表の「4 72時間」**: Claude Code が「×（時間待ち）」から「通」になった。
+   - 公開 2026-11-10T02:30:51.973288Z、判定 2026-11-13T03:25:31.820Z で、経過は72時間54分40秒。
+   - 台帳の `checks.soak` は `pass`。9件とも `ok: true` で、通らない必須の項目は無い。
+2. **2節の「2 ovsx」**: 起動が `npx ovsx` から、固定した `node <repo>\node_modules\ovsx\bin\ovsx verify-signature ...`（ovsx 1.4.0）になった。9件とも終了コード 0、`✅  Signature is valid.` で、結果は前と同じ。2節の終わりの「`npx ovsx` は初回に ovsx 1.4.0 を npm から取って入れた」は、もう当てはまらない。
+   - `@vscode/vsce-sign` の install スクリプトは、pnpm が走らせなかった（`ERR_PNPM_IGNORED_BUILDS`）。それでも ovsx の `verify-signature` は動く。ovsx の `verify-signature` は vsce-sign を使わず、Node.js の `crypto` だけで検証するため（lock-rerun.md の1節）。
+3. **3節（台帳）の `checks`**: ソースのタグを `checks.sourceTag`（pass / fail）から外し、`references.sourceTag`（found / not-found）に分けた（A-4 の直しの新しい形）。見つからない3件は前と同じで、wx-vsce-dotenv・pdf・言語パック。
+4. **2節の「3 (a) Marketplace」**: Marketplace の最新が、2.1.322 から 2.1.323 になった。
+   - Open VSX の 2.1.323（win32-x64）の公開は 2026-11-12T22:13:36.105878Z で、72時間を満たすのは 2026-11-15T22:13:36Z。
+   - 今回は取り直していないので、台帳は 2.1.322 のまま。
+5. **台帳の値**: 変わったのは `verifiedAt`・Claude Code の `checks.soak`・`checks` と `references` の分け方の3つだけ。版・`sha256`・`publishedAt`・`crossCheck`・`manifestDigest`・ライセンスの値は前と同じ。

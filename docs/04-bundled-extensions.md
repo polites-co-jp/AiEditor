@@ -60,7 +60,14 @@
 }
 ```
 
-上の `sha256` は Open VSX が公開している値（2026-11-12 取得）。VSIX 本体との照合はまだしていない（Phase 0 の 0-6 で行う）。
+上の `sha256` は Open VSX が公開している値（2026-11-12 取得）。Phase 0 の 0-6 で VSIX 本体と照合し、一致した（`records/phase0/lock-verification.md`）。
+
+実際の台帳（Phase 0 の 0-6 で `scripts/lock-verify.mjs` が書いたもの）は、上の形に次を足している。足した項目は形の誤りではない（`scripts/lib/lock.mjs` の `validateLockEntry` は拒まない）。
+
+- `checks`: 4節の項目ごとの結果（`pass` / `fail` など）。
+- `references`: 参考の項目の結果。今はソースのタグ（`sourceTag`: `found` / `not-found`。裁定 2026-11-13 で必須にしない）。
+- `crossCheck` の追加の項目: Claude Code に `bundledCliPath`・`bundledCliSha256`・`manifestGpgSignature`、ほかの拡張に `sourceTag`・`sourceRepository`。
+- `note`: 補足（.env の2件の候補など）。
 
 ## 4. 検証の項目
 
@@ -73,7 +80,7 @@
 3. **公式配布物との一致**:
    - Claude Code 拡張: (a) 同じ版が Marketplace に Anthropic 名義で出ていることを、メタデータで確かめる（VSIX は取らない）。(b) 拡張は CLI を同梱し、拡張の版が CLI の版と同じ [一次] https://code.claude.com/docs/en/vs-code 。VSIX のファイル一覧から同梱の CLI の実行ファイルを見つけ（ファイルの中身は読まず、ハッシュと署名だけを見る）、SHA-256 を、Anthropic が版ごとに出す `https://downloads.claude.ai/claude-code-releases/<版>/manifest.json` の `platforms.<platform>.checksum` と照合する。`manifest.json.sig` は Anthropic の GPG の鍵（`https://downloads.claude.ai/keys/claude-code.asc`、指紋 `31DD DE24 DDFA B679 F42D 7BD2 BAA9 29FF 1A7E CACE`）で検証する。署名があるのは 2.1.89 以降 [一次] https://code.claude.com/docs/en/setup 。(c) Windows の実行ファイルは "Anthropic, PBC" の Authenticode 署名を持つ（同ページ）ので、`Get-AuthenticodeSignature` で確かめる。同梱の CLI は VSIX の `extension/resources/native-binary/claude.exe`、manifest の platform の名前は `win32-x64`（0-6 で確かめた。2026-11-13）。
    - ほかの拡張（参考の項目。裁定 2026-11-13 で必須にしない）: ソースのリポジトリに同じ版のリリースかタグがあるかを見て記録し、無ければ判定で触れる。2026-11-13 の時点で、weixu.wx-vsce-dotenv（タグが無い）・tomoki1207.pdf・日本語パックは同じ版のタグが無い。
-4. **寝かせる期間（裁定）**: 公開から72時間未満の版は、セキュリティ修正でない限り入れない。確認の時点でその版が取り下げられていないことも見る。理由: 2.1.313 の悪性版が Open VSX に出たという報道（[二次・本文未読] https://runtimewire.com/article/trojanized-claude-code-extension-open-vsx-ssh-backdoor）と、Open VSX が誤って悪性と判定した件（[一次] https://github.com/anthropics/claude-code/issues/5762）。
+4. **寝かせる期間（裁定）**: 公開から72時間未満の版は、セキュリティ修正でない限り入れない。確認の時点でその版が取り下げられていないことも見る。取り下げの確認には、判定の時刻に取り直した版の一覧を使う。毎週の取り込みでは `lock-fetch` と `lock-verify` を続けて走らせる（Phase 0 の 0-6 の検証の指摘 N-2 を受けたリーダーの判断。Phase 0 では取得から7時間後の一覧で判定した）。理由: 2.1.313 の悪性版が Open VSX に出たという報道（[二次・本文未読] https://runtimewire.com/article/trojanized-claude-code-extension-open-vsx-ssh-backdoor）と、Open VSX が誤って悪性と判定した件（[一次] https://github.com/anthropics/claude-code/issues/5762）。
 5. **manifest の差分**: 前の版からの package.json の変化を Claude が読む。見る項目: `activationEvents`、`contributes`（特に `chatParticipants`・`languageModelTools`・`languageModelChatProviders`・`mcpServerDefinitionProviders`・`debuggers`・`notebooks` が増えていないか）、`extensionDependencies`、`enabledApiProposals`、`engines`、`main`、`capabilities`。増えていたら、消した機能に依存し始めた恐れとして判定に書く（[03](03-removal-design.md) の9節）。
 6. **ファイル一覧の差分**: VSIX（zip）の中のファイルの一覧を前の版と比べる。新しい実行ファイル（.exe・.dll・.node）、大きなサイズの変化を見る。圧縮された JS の中身は読まない（裁定）。
 7. **ライセンス**: 本文のハッシュが前の版と同じ。変わっていれば本文の差分を判定に書く。
