@@ -1,0 +1,92 @@
+{
+  "label": "1.146.0-d1",
+  "upstream": {
+    "tag": "1.146.0",
+    "commit": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+  },
+  "units": [],
+  "patches": [],
+  "lockfileDiff": "records/take-in/1.146.0-d1/lockfile.diff",
+  "toolchain": null,
+  "durations": {},
+  "zip": null,
+  "extensionsLockSha256": "6b4c3ceae7d6cb407f62bbcbd57ca50267e998975887884cc325fd26a85cce10",
+  "result": "error",
+  "stoppedAt": "prepare",
+  "dryRun": false,
+  "startedAt": "2026-11-13T16:29:27.874Z",
+  "finishedAt": "2026-11-13T16:29:34.362Z",
+  "paths": {
+    "buildRoot": "C:\\b",
+    "worktree": "C:\\b\\wt\\dev-d1",
+    "packageDir": "C:\\b\\wt\\VSCode-win32-x64",
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\records\\take-in\\1.146.0-d1\\checks.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\removals",
+    "dist": "C:\\b\\dist",
+    "logs": "C:\\b\\logs\\1.146.0-d1"
+  },
+  "config": {
+    "path": "C:/b/trial-install/cfg/none.json",
+    "exists": false,
+    "buildRootFrom": "default"
+  },
+  "stepsSelected": [
+    "prepare"
+  ],
+  "envRemovedForChildren": [
+    "ELECTRON_RUN_AS_NODE",
+    "VSCODE_CODE_CACHE_PATH",
+    "VSCODE_CRASH_REPORTER_PROCESS_TYPE",
+    "VSCODE_CWD",
+    "VSCODE_ESM_ENTRYPOINT",
+    "VSCODE_HANDLES_UNCAUGHT_ERRORS",
+    "VSCODE_IPC_HOOK",
+    "VSCODE_NLS_CONFIG",
+    "VSCODE_PID",
+    "VSCODE_PROCESS_TITLE"
+  ],
+  "steps": [
+    {
+      "name": "prepare",
+      "status": "error",
+      "startedAt": "2026-11-13T16:29:27.881Z",
+      "command": "C:\\Program Files\\nodejs\\node.exe e:\\develop\\self\\Team\\projects\\ai-editor\\scripts\\prepare.mjs --tag 1.146.0 --build-root C:\\b --worktree C:\\b\\wt\\dev-d1 --out C:\\b\\wt\\dev-d1.prepare.json",
+      "cwd": "e:\\develop\\self\\Team\\projects\\ai-editor",
+      "log": "C:\\b\\logs\\1.146.0-d1\\prepare.log",
+      "seconds": 6.477,
+      "exitCode": 1,
+      "tail": "From https://github.com/microsoft/vscode\n   754c6334f4f..ad1c10525dd  main       -> origin/main\n   277bcaeb41a..6b633d53f7f  sandy081/agents/infra-i3-listing-scope -> origin/sandy081/agents/infra-i3-listing-scope\n[prepare] fetch --tags: status 0, 2.7 s\n[prepare] rev-parse tag: status 0, 0.0 s\n[prepare] rev-parse worktree HEAD: status 0, 0.0 s\n[prepare] status --porcelain: status 0, 0.1 s\n{\n  \"tag\": \"1.146.0\",\n  \"expectedCommit\": \"69047191fc427f2f92828279aae1d90d8eeda7ab\",\n  \"buildRoot\": \"C:\\\\b\",\n  \"clone\": \"C:\\\\b\\\\vscode\",\n  \"worktree\": \"C:\\\\b\\\\wt\\\\dev-d1\",\n  \"startedAt\": \"2026-11-13T16:29:27.953Z\",\n  \"git\": \"git version 2.54.0.windows.1\",\n  \"steps\": [\n    {\n      \"name\": \"clone\",\n      \"skipped\": \"already exists\"\n    },\n    {\n      \"name\": \"fetch --tags\",\n      \"seconds\": 2.665,\n      \"status\": 0\n    },\n    {\n      \"name\": \"rev-parse tag\",\n      \"seconds\": 0.037,\n      \"status\": 0,\n      \"value\": \"69047191fc427f2f92828279aae1d90d8eeda7ab\"\n    },\n    {\n      \"name\": \"worktree add\",\n      \"skipped\": \"already exists\"\n    },\n    {\n      \"name\": \"rev-parse worktree HEAD\",\n      \"seconds\": 0.035,\n      \"status\": 0,\n      \"value\": \"3b73491c672c249852ebeb52bf5defa369d42f03\"\n    },\n    {\n      \"name\": \"status --porcelain\",\n      \"seconds\": 0.12,\n      \"status\": 0\n    }\n  ],\n  \"result\": \"error\",\n  \"tagCommit\": \"69047191fc427f2f92828279aae1d90d8eeda7ab\",\n  \"worktreeHead\": \"3b73491c672c249852ebeb52bf5defa369d42f03\",\n  \"worktreeClean\": true,\n  \"disk\": {\n    \"cloneGitDir\": {\n      \"bytes\": 1858853833,\n      \"gb\": 1.73,\n      \"files\": 315\n    },\n    \"cloneCheckout\": {\n      \"bytes\": 366071116,\n      \"gb\": 0.34,\n      \"files\": 21342\n    },\n    \"worktree\": {\n      \"bytes\": 359775561,\n      \"gb\": 0.34,\n      \"files\": 21008\n    },\n    \"countedSeconds\": 3.508\n  },\n  \"message\": \"作業ツリーの HEAD 3b73491c672c249852ebeb52bf5defa369d42f03 がタグの commit と違う\",\n  \"finishedAt\": \"2026-11-13T16:29:34.353Z\"\n}\n",
+      "prepare": {
+        "result": "error",
+        "message": "作業ツリーの HEAD 3b73491c672c249852ebeb52bf5defa369d42f03 がタグの commit と違う",
+        "worktree": "C:\\b\\wt\\dev-d1",
+        "tagCommit": "69047191fc427f2f92828279aae1d90d8eeda7ab",
+        "worktreeHead": "3b73491c672c249852ebeb52bf5defa369d42f03",
+        "worktreeClean": true,
+        "disk": {
+          "cloneGitDir": {
+            "bytes": 1858853833,
+            "gb": 1.73,
+            "files": 315
+          },
+          "cloneCheckout": {
+            "bytes": 366071116,
+            "gb": 0.34,
+            "files": 21342
+          },
+          "worktree": {
+            "bytes": 359775561,
+            "gb": 0.34,
+            "files": 21008
+          },
+          "countedSeconds": 3.508
+        },
+        "record": "C:\\b\\wt\\dev-d1.prepare.json"
+      },
+      "message": "prepare.mjs が 1 で終わった"
+    }
+  ],
+  "warnings": [],
+  "message": "prepare で止まった: prepare.mjs が 1 で終わった"
+}

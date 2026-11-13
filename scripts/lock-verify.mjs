@@ -25,7 +25,8 @@
 //   marketplace     Marketplace に同じ版（win32-x64）が Anthropic 名義で出ている（メタデータだけ。VSIX は取らない）
 //
 // 使い方:
-//   node scripts/lock-verify.mjs [--dir C:/b/p0/vsix] [--vscode 1.146.0] [--write-lock extensions.lock.json]
+//   node scripts/lock-verify.mjs [--dir <dir>] [--build-root <dir>] [--vscode 1.146.0] [--write-lock extensions.lock.json]
+//     --dir        lock-fetch.mjs の置き場所（既定 <buildRoot>\cache\vsix。docs/02 の8節。buildRoot は --build-root → local.json → C:\b）
 //                                [--prev-lock <前の台帳>] [--prev-dir <前の lock-fetch の置き場所>]
 //                                [--only <id>[,<id>...]] [--skip defender,ovsx] [--now <ISO 8601>] [--result <file>]
 //     --prev-lock  publishedBy が前の台帳から変わったかを見る
@@ -58,6 +59,7 @@ import {
   mergeLock,
   checkPinnedTool,
 } from "./lib/lock.mjs";
+import { resolveLocalConfig } from "./lib/local-config.mjs";
 
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -75,11 +77,12 @@ const REQUIRED = ["publisher", "sha256", "signature", "ovsx", "soak", "engines",
 const CLAUDE_REQUIRED = ["bundledCli", "manifestGpg", "authenticode", "marketplace"];
 
 function parseArgs(argv) {
-  const args = { dir: "C:/b/p0/vsix", vscode: "1.146.0", writeLock: null, prevLock: null, prevDir: null, only: null, skip: [], now: null };
+  const args = { dir: null, buildRoot: null, vscode: "1.146.0", writeLock: null, prevLock: null, prevDir: null, only: null, skip: [], now: null };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     const list = () => argv[++i].split(",").map((s) => s.trim()).filter(Boolean);
     if (a === "--dir") args.dir = argv[++i];
+    else if (a === "--build-root") args.buildRoot = argv[++i];
     else if (a === "--vscode") args.vscode = argv[++i];
     else if (a === "--write-lock") args.writeLock = argv[++i];
     else if (a === "--prev-lock") args.prevLock = argv[++i];
@@ -90,6 +93,8 @@ function parseArgs(argv) {
     else if (a === "--result") args.result = argv[++i];
     else throw new Error(`知らない引数: ${a}`);
   }
+  // 既定は VSIX のキャッシュ <buildRoot>\cache\vsix（docs/02 の8節。Phase 0 の C:\b\p0\vsix は使わない）
+  if (!args.dir) args.dir = path.join(resolveLocalConfig({ overrides: { buildRoot: args.buildRoot } }).buildRoot, "cache", "vsix");
   return args;
 }
 

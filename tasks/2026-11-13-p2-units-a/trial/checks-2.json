@@ -1,0 +1,1309 @@
+{
+  "label": "p2-units-a-trial2",
+  "worktree": "C:\\b\\wt\\dev-a-apply",
+  "tag": "1.146.0",
+  "baseCommit": "69047191fc427f2f92828279aae1d90d8eeda7ab",
+  "headCommit": "ab35efb88397f20372b3e1c6f909c97e45ab2725",
+  "prevTag": null,
+  "dryRun": false,
+  "options": {
+    "only": [
+      "A-1-copilot-extension",
+      "A-2-accounts-extensions",
+      "A-3-debug-extensions",
+      "A-4-notebook-extensions",
+      "A-5-remote-extensions",
+      "A-6-themes",
+      "A-7-unused-extensions"
+    ],
+    "until": null,
+    "keepConflict": false
+  },
+  "inputs": {
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\removals",
+    "patches": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-13-p2-units-a\\trial\\no-patches",
+    "assets": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-13-p2-units-a\\trial\\no-assets",
+    "overlay": "e:\\develop\\self\\Team\\projects\\ai-editor\\product.overlay.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "extensionsSrc": "e:\\develop\\self\\Team\\projects\\ai-editor\\extensions-src",
+    "manifests": "C:/b/p0/vsix"
+  },
+  "startedAt": "2026-11-13T15:36:30.605Z",
+  "finishedAt": "2026-11-13T15:36:48.564Z",
+  "result": "fail",
+  "stoppedAt": null,
+  "overlay": {
+    "applied": "ok",
+    "set": [
+      "nameShort",
+      "nameLong",
+      "applicationName",
+      "dataFolderName",
+      "sharedDataFolderName",
+      "urlProtocol",
+      "win32MutexName",
+      "win32DirName",
+      "win32NameVersion",
+      "win32RegValueName",
+      "win32AppUserModelId",
+      "win32ShellNameShort",
+      "win32x64AppId",
+      "win32arm64AppId",
+      "win32x64UserAppId",
+      "win32arm64UserAppId",
+      "builtInExtensions",
+      "shukoConfigurationDefaults"
+    ],
+    "removed": [],
+    "removedIfPresent": [],
+    "commit": "72a29629b655f467e2a77a75c5809fb951d95865"
+  },
+  "units": [
+    {
+      "id": "A-1-copilot-extension",
+      "order": 110,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "5838e86528b3b38608366b56de7b7ec4b2591df6",
+        "deleted": [
+          "extensions/copilot",
+          "extensions/prompt-basics"
+        ],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/copilot',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/copilot': ['extensions/copilot/chat-lib'],",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "package.json",
+            "line": "\"compile-copilot\": \"pnpm -C extensions/copilot run compile\",",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "package.json",
+            "line": "\"watch-copilot\": \"pnpm -C extensions/copilot run watch\",",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "package.json",
+            "line": "\"watch-copilotd\": \"deemon pnpm run watch-copilot\",",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "package.json",
+            "line": "\"kill-watch-copilotd\": \"deemon --kill pnpm run watch-copilot\",",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "package.json",
+            "line": "\"copilot:setup\": \"pnpm -C extensions/copilot run setup\",",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "package.json",
+            "line": "\"copilot:get_token\": \"pnpm -C extensions/copilot run get_token\",",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          }
+        ],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "ok",
+        "commit": "f0c6dea001d41285fb54bd4faf4dfa91fae0fa36",
+        "subject": "unit A-1-copilot-extension: edits",
+        "conflicts": []
+      },
+      "warnings": []
+    },
+    {
+      "id": "A-2-accounts-extensions",
+      "order": 120,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "bcd3e78b61313288acfcf4793e1762fd5dcb4075",
+        "deleted": [
+          "extensions/github",
+          "extensions/github-authentication",
+          "extensions/microsoft-authentication"
+        ],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/github',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/github-authentication',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/microsoft-authentication',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- github",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- github-authentication",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- microsoft-authentication",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/github/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/github-authentication/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/microsoft-authentication/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/lib/extensions.ts",
+            "line": "'microsoft-authentication',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          }
+        ],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "none",
+        "commit": null,
+        "subject": null,
+        "conflicts": []
+      },
+      "warnings": []
+    },
+    {
+      "id": "A-3-debug-extensions",
+      "order": 130,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "a5c6fa14ed9bff2532ae3110ce27826b003c7f98",
+        "deleted": [
+          "extensions/debug-auto-launch",
+          "extensions/debug-server-ready"
+        ],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/debug-auto-launch',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/debug-server-ready',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- debug-auto-launch",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- debug-server-ready",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/debug-auto-launch/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/debug-server-ready/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          }
+        ],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "none",
+        "commit": null,
+        "subject": null,
+        "conflicts": []
+      },
+      "warnings": []
+    },
+    {
+      "id": "A-4-notebook-extensions",
+      "order": 140,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "b02426a22096384e5e4df7f91d310fbaa7491ba1",
+        "deleted": [
+          "extensions/ipynb",
+          "extensions/notebook-renderers"
+        ],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/ipynb',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/notebook-renderers',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- ipynb",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- notebook-renderers",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/ipynb/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/notebook-renderers/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/lib/extensions.ts",
+            "line": "{ script: 'ipynb/esbuild.notebook.mts', tsconfig: 'ipynb/notebook-src/tsconfig.json' },",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/lib/extensions.ts",
+            "line": "{ script: 'notebook-renderers/esbuild.notebook.mts', tsconfig: 'notebook-renderers/tsconfig.json' },",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          }
+        ],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "none",
+        "commit": null,
+        "subject": null,
+        "conflicts": []
+      },
+      "warnings": []
+    },
+    {
+      "id": "A-5-remote-extensions",
+      "order": 150,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "ac39957af2be51a4fd2817d5e3763d5733e0b9bc",
+        "deleted": [
+          "extensions/tunnel-forwarding"
+        ],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/tunnel-forwarding',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- tunnel-forwarding",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/tunnel-forwarding/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          }
+        ],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "none",
+        "commit": null,
+        "subject": null,
+        "conflicts": []
+      },
+      "warnings": []
+    },
+    {
+      "id": "A-6-themes",
+      "order": 160,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "a0fdd2a0c3764b3c93cb0f204776d1e3f9d768e5",
+        "deleted": [
+          "extensions/theme-abyss",
+          "extensions/theme-kimbie-dark",
+          "extensions/theme-modern-icons",
+          "extensions/theme-monokai",
+          "extensions/theme-monokai-dimmed",
+          "extensions/theme-quietlight",
+          "extensions/theme-red",
+          "extensions/theme-solarized-dark",
+          "extensions/theme-solarized-light",
+          "extensions/theme-tomorrow-night-blue"
+        ],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "ok",
+        "commit": "4baf6c4a00b5e96001c0f2dad9da0273a80be58c",
+        "subject": "unit A-6-themes: edits",
+        "conflicts": []
+      },
+      "warnings": []
+    },
+    {
+      "id": "A-7-unused-extensions",
+      "order": 170,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "0de1d6083506b0c3c3d1521a35931acc358049f4",
+        "deleted": [
+          "extensions/grunt",
+          "extensions/gulp",
+          "extensions/jake",
+          "extensions/simple-browser",
+          "extensions/mermaid-markdown-features",
+          "extensions/extension-editing",
+          "extensions/terminal-suggest",
+          "extensions/php-language-features"
+        ],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/extension-editing',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/grunt',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/gulp',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/jake',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/mermaid-markdown-features',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/php-language-features',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/simple-browser',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/terminal-suggest',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- extension-editing",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- grunt",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- gulp",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- jake",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- mermaid-markdown-features",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- php-language-features",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- simple-browser",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- terminal-suggest",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/extension-editing/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/grunt/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/gulp/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/jake/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/mermaid-markdown-features/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/terminal-suggest/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/php-language-features/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/simple-browser/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/lib/extensions.ts",
+            "line": "{ script: 'mermaid-markdown-features/esbuild.webview.mts', tsconfig: 'mermaid-markdown-features/preview-src/tsconfig.json' },",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/lib/extensions.ts",
+            "line": "{ script: 'simple-browser/esbuild.webview.mts', tsconfig: 'simple-browser/preview-src/tsconfig.json' },",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          }
+        ],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "none",
+        "commit": null,
+        "subject": null,
+        "conflicts": []
+      },
+      "warnings": []
+    }
+  ],
+  "unitsSkipped": [
+    {
+      "id": "B-1-telemetry",
+      "reason": "not in --only"
+    },
+    {
+      "id": "B-2-onboarding-experiments-surveys",
+      "reason": "not in --only"
+    },
+    {
+      "id": "B-3-issue-share",
+      "reason": "not in --only"
+    },
+    {
+      "id": "B-4-outline-view",
+      "reason": "not in --only"
+    },
+    {
+      "id": "B-5-theme-switching",
+      "reason": "not in --only"
+    },
+    {
+      "id": "B-6-online-feeds",
+      "reason": "not in --only"
+    },
+    {
+      "id": "B-7-terminal-suggest",
+      "reason": "not in --only"
+    }
+  ],
+  "patches": [],
+  "assets": {
+    "applied": "none",
+    "copied": [],
+    "commit": null
+  },
+  "builtinExtensions": {
+    "applied": "ok",
+    "copied": [
+      {
+        "name": "mydist",
+        "files": 3,
+        "list": [
+          "README.md",
+          "ThirdPartyNotices.txt",
+          "package.json"
+        ]
+      }
+    ],
+    "commit": "ab35efb88397f20372b3e1c6f909c97e45ab2725"
+  },
+  "checks": {
+    "remnants": {
+      "status": "ok",
+      "items": []
+    },
+    "absentStrings": {
+      "status": "ok",
+      "items": [
+        {
+          "unit": "A-1-copilot-extension",
+          "text": "'extensions/copilot'",
+          "in": [
+            "build/npm/dirs.ts"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-1-copilot-extension",
+          "text": "-C extensions/copilot",
+          "in": [
+            "package.json"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-1-copilot-extension",
+          "text": "watch-copilot",
+          "in": [
+            "package.json"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-1-copilot-extension",
+          "text": "ensureAgentHarnessLink",
+          "in": [
+            "build/npm/postinstall.ts"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-1-copilot-extension",
+          "text": "copilot-instructions.md",
+          "in": [
+            "build/npm/postinstall.ts"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-2-accounts-extensions",
+          "text": "github-authentication",
+          "in": [
+            "build/npm/dirs.ts",
+            "build/gulpfile.extensions.ts",
+            "build/lib/extensions.ts",
+            "extensions/pnpm-workspace.yaml"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-2-accounts-extensions",
+          "text": "microsoft-authentication",
+          "in": [
+            "build/npm/dirs.ts",
+            "build/gulpfile.extensions.ts",
+            "build/lib/extensions.ts"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-2-accounts-extensions",
+          "text": "'extensions/github",
+          "in": [
+            "build/npm/dirs.ts",
+            "build/gulpfile.extensions.ts"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-3-debug-extensions",
+          "text": "debug-auto-launch",
+          "in": [
+            "build/npm/dirs.ts",
+            "build/gulpfile.extensions.ts",
+            "extensions/pnpm-workspace.yaml"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-3-debug-extensions",
+          "text": "debug-server-ready",
+          "in": [
+            "build/npm/dirs.ts",
+            "build/gulpfile.extensions.ts",
+            "extensions/pnpm-workspace.yaml"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-3-debug-extensions",
+          "text": "ms-vscode.js-debug",
+          "in": [
+            "product.json"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-4-notebook-extensions",
+          "text": "ipynb",
+          "in": [
+            "build/npm/dirs.ts",
+            "build/gulpfile.extensions.ts",
+            "build/lib/extensions.ts",
+            "extensions/pnpm-workspace.yaml"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-4-notebook-extensions",
+          "text": "notebook-renderers",
+          "in": [
+            "build/npm/dirs.ts",
+            "build/gulpfile.extensions.ts",
+            "build/lib/extensions.ts",
+            "extensions/pnpm-workspace.yaml"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-5-remote-extensions",
+          "text": "tunnel-forwarding",
+          "in": [
+            "build/npm/dirs.ts",
+            "build/gulpfile.extensions.ts",
+            "extensions/pnpm-workspace.yaml"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-6-themes",
+          "text": "extensions/theme-abyss/",
+          "in": [
+            "src/vs/workbench/test/browser/componentFixtures"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-6-themes",
+          "text": "extensions/theme-monokai/",
+          "in": [
+            "src/vs/workbench/test/browser/componentFixtures"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-6-themes",
+          "text": "extensions/theme-quietlight/",
+          "in": [
+            "src/vs/workbench/test/browser/componentFixtures"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-6-themes",
+          "text": "extensions/theme-solarized-dark/",
+          "in": [
+            "src/vs/workbench/test/browser/componentFixtures"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-6-themes",
+          "text": "extensions/theme-solarized-light/",
+          "in": [
+            "src/vs/workbench/test/browser/componentFixtures"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-7-unused-extensions",
+          "text": "simple-browser",
+          "in": [
+            "build/npm/dirs.ts",
+            "build/gulpfile.extensions.ts",
+            "build/lib/extensions.ts",
+            "extensions/pnpm-workspace.yaml"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-7-unused-extensions",
+          "text": "mermaid-markdown-features",
+          "in": [
+            "build/npm/dirs.ts",
+            "build/gulpfile.extensions.ts",
+            "build/lib/extensions.ts",
+            "extensions/pnpm-workspace.yaml"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-7-unused-extensions",
+          "text": "terminal-suggest",
+          "in": [
+            "build/npm/dirs.ts",
+            "build/gulpfile.extensions.ts",
+            "extensions/pnpm-workspace.yaml"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-7-unused-extensions",
+          "text": "php-language-features",
+          "in": [
+            "build/npm/dirs.ts",
+            "build/gulpfile.extensions.ts",
+            "extensions/pnpm-workspace.yaml"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-7-unused-extensions",
+          "text": "extension-editing",
+          "in": [
+            "build/npm/dirs.ts",
+            "build/gulpfile.extensions.ts",
+            "extensions/pnpm-workspace.yaml"
+          ],
+          "hitCount": 0,
+          "hits": []
+        }
+      ]
+    },
+    "unclassifiedExtensions": {
+      "status": "ok",
+      "upstreamCount": 95,
+      "items": [],
+      "nonExtensionDirs": [
+        "types"
+      ]
+    },
+    "upstreamAdditions": {
+      "status": "skipped",
+      "reason": "--prev-tag が無い"
+    },
+    "dependencies": {
+      "status": "skipped",
+      "reason": "--prev-tag が無い"
+    },
+    "toolchain": {
+      "status": "info",
+      "nvmrc": {
+        "prev": null,
+        "now": "24.22.1",
+        "changed": null
+      },
+      "electron": {
+        "prev": null,
+        "now": "43.8.6",
+        "changed": null
+      },
+      "reason": "--prev-tag が無い"
+    },
+    "registeredKeys": {
+      "status": "fail",
+      "product": [
+        {
+          "key": "nameShort",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "nameLong",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "applicationName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "dataFolderName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "sharedDataFolderName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "urlProtocol",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32MutexName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32DirName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32NameVersion",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32RegValueName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32AppUserModelId",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32ShellNameShort",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32x64AppId",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32arm64AppId",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32x64UserAppId",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32arm64UserAppId",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "builtInExtensions",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "shukoConfigurationDefaults",
+          "status": "missing",
+          "foundIn": null
+        }
+      ],
+      "settings": [
+        {
+          "key": "chat.disableAIFeatures",
+          "from": "mydist",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/sessions/providers/remoteAgentHost/electron-browser/remotesEditor.ts"
+        },
+        {
+          "key": "workbench.colorTheme",
+          "from": "mydist",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/services/themes/common/workbenchThemeService.ts"
+        },
+        {
+          "key": "breadcrumbs.enabled",
+          "from": "mydist",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/browser/parts/editor/breadcrumbs.ts"
+        },
+        {
+          "key": "workbench.startupEditor",
+          "from": "mydist",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/welcomeGettingStarted/browser/gettingStarted.contribution.ts"
+        },
+        {
+          "key": "basedpyright.importStrategy",
+          "from": "mydist",
+          "status": "lockManifest",
+          "foundIn": "detachhead.basedpyright"
+        },
+        {
+          "key": "typescript.disableAutomaticTypeAcquisition",
+          "from": "mydist",
+          "status": "extension",
+          "foundIn": "extensions/typescript-language-features/package.json"
+        },
+        {
+          "key": "npm.fetchOnlinePackageInfo",
+          "from": "mydist",
+          "status": "extension",
+          "foundIn": "extensions/npm/package.json"
+        },
+        {
+          "key": "json.schemaDownload.enable",
+          "from": "mydist",
+          "status": "extension",
+          "foundIn": "extensions/json-language-features/package.json"
+        },
+        {
+          "key": "workbench.settings.enableNaturalLanguageSearch",
+          "from": "mydist",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/preferences/common/preferences.ts"
+        },
+        {
+          "key": "terminal.integrated.suggest.enabled",
+          "from": "mydist",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/terminalContrib/suggest/common/terminalSuggestConfiguration.ts"
+        },
+        {
+          "key": "claudeCode.environmentVariables",
+          "from": "mydist",
+          "status": "lockManifest",
+          "foundIn": "anthropic.claude-code"
+        },
+        {
+          "key": "extensions.allowed",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/platform/extensionManagement/common/extensionManagement.ts"
+        },
+        {
+          "key": "telemetry.telemetryLevel",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/platform/telemetry/common/telemetry.ts"
+        },
+        {
+          "key": "update.mode",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/update/browser/updateTooltip.ts"
+        },
+        {
+          "key": "workbench.enableExperiments",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/services/telemetry/common/workbenchTelemetryUtils.ts"
+        },
+        {
+          "key": "extensions.autoUpdate",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/telemetry/browser/telemetry.contribution.ts"
+        },
+        {
+          "key": "extensions.autoCheckUpdates",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/extensions/common/extensions.ts"
+        }
+      ],
+      "manifestsMissing": []
+    },
+    "lockfile": {
+      "status": "pending",
+      "reason": "依存の導入の後に --lockfile-check（build.mjs は checkLockfiles）で埋める"
+    },
+    "commitIdentity": {
+      "status": "ok",
+      "expected": "shuko-apply <apply@shuko.invalid>",
+      "items": []
+    }
+  },
+  "warnings": [],
+  "errors": [],
+  "commits": [
+    {
+      "sha": "72a29629b655f467e2a77a75c5809fb951d95865",
+      "subject": "apply: product.json overlay",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "5838e86528b3b38608366b56de7b7ec4b2591df6",
+      "subject": "unit A-1-copilot-extension: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "f0c6dea001d41285fb54bd4faf4dfa91fae0fa36",
+      "subject": "unit A-1-copilot-extension: edits",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "bcd3e78b61313288acfcf4793e1762fd5dcb4075",
+      "subject": "unit A-2-accounts-extensions: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "a5c6fa14ed9bff2532ae3110ce27826b003c7f98",
+      "subject": "unit A-3-debug-extensions: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "b02426a22096384e5e4df7f91d310fbaa7491ba1",
+      "subject": "unit A-4-notebook-extensions: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "ac39957af2be51a4fd2817d5e3763d5733e0b9bc",
+      "subject": "unit A-5-remote-extensions: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "a0fdd2a0c3764b3c93cb0f204776d1e3f9d768e5",
+      "subject": "unit A-6-themes: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "4baf6c4a00b5e96001c0f2dad9da0273a80be58c",
+      "subject": "unit A-6-themes: edits",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "0de1d6083506b0c3c3d1521a35931acc358049f4",
+      "subject": "unit A-7-unused-extensions: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "ab35efb88397f20372b3e1c6f909c97e45ab2725",
+      "subject": "apply: builtin extensions",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    }
+  ]
+}

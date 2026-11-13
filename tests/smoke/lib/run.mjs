@@ -12,7 +12,7 @@ import { join, resolve } from 'node:path';
 import { homedir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 import {
-  DEFAULT_BUILD, SMOKE_ROOT, assertSafeWritePath, claudeIdeDir, cleanEditorEnv, collectLogErrors, errorKeys, extractChromiumErrors,
+  DEFAULT_BUILD, KEEP_MARK, SMOKE_ROOT, assertSafeWritePath, claudeIdeDir, cleanEditorEnv, collectLogErrors, resolveVsixRoot, errorKeys, extractChromiumErrors,
   findOnPath, listProcesses, lockBelongsTo, newErrors, newLocks, normalizeError, readLock, resolveEditor, selectPrune, snapshotLocks, splitByCutoff, stopByRunDir, stopTree, treeFromProcesses,
 } from './common.mjs';
 import { buildUserSettings, defaultExtensionIds, findVsix, prepareExtensions, prepareRunDir, readLedger } from './env.mjs';
@@ -32,9 +32,9 @@ export function parseArgs(argv) {
     build: DEFAULT_BUILD, label: 'official', mode: 'upstream', groups: [...ALL_GROUPS], ext: null,
     lock: join(REPO_ROOT, 'extensions.lock.json'), root: SMOKE_ROOT, timeout: 600, baseline: null, saveBaseline: null,
     rebuildExt: false, secondWindow: true, keepLocks: false, locale: 'ja', help: false,
-    mergeBaseline: false, keepRuns: 10, prime: false, reuseExt: false,
+    mergeBaseline: false, keepRuns: 10, prime: false, reuseExt: false, vsixRoot: null,
   };
-  const takes = new Set(['build', 'label', 'mode', 'groups', 'ext', 'lock', 'root', 'timeout', 'baseline', 'save-baseline', 'locale', 'keep-runs']);
+  const takes = new Set(['build', 'label', 'mode', 'groups', 'ext', 'lock', 'root', 'timeout', 'baseline', 'save-baseline', 'locale', 'keep-runs', 'vsix-root']);
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (!a.startsWith('--')) throw new Error(`知らない引数: ${a}`);
@@ -53,6 +53,7 @@ export function parseArgs(argv) {
     else if (k === 'ext') o.ext = v.split(',').map((s) => s.trim()).filter(Boolean);
     else if (k === 'timeout') o.timeout = Number(v);
     else if (k === 'keep-runs') o.keepRuns = Number(v);
+    else if (k === 'vsix-root') o.vsixRoot = v;
     else if (k === 'save-baseline') o.saveBaseline = v;
     else o[k] = v;
   }
@@ -72,6 +73,7 @@ export const USAGE = `使い方: node tests/smoke-run.mjs [オプション]
   --groups a,b           base,claude-code,languages のうち走らせる組（既定は全部）
   --ext id,id            入れる拡張（既定: 台帳のとおり全部。台帳に無い拡張を試すときだけ明示する。拡張フォルダは別に作られる）
   --lock <path>          台帳（既定 extensions.lock.json）
+  --vsix-root <dir>      VSIX のキャッシュ（既定 <buildRoot>\\cache\\vsix。buildRoot は local.json、既定 C:\\b）
   --timeout <秒>         probe の完了を待つ上限（既定 600）
   --baseline <json>      前の版の誤りの鍵。これに無い誤りを「新しい誤り」として落とす
   --save-baseline <json> 今回の誤りの鍵を書き出す（既存のファイルは上書き）
@@ -112,14 +114,15 @@ export function mergeBaseline(existing, newKeys, meta = {}) {
   return { ...meta, runs: existing ? (existing.runs ?? 1) + 1 : 1, keys: Object.keys(seen).sort(), seen };
 }
 
-/** runs\ の下から、最新の keep 個（と current）を残して古い置き場所を消す。消した名前を返す。 */
 /** 同じプロセスか（PID が使い回されていないか）。名前と親が同じなら同じとみなす。 */
 export function sameProc(a, b) {
   return String(a.Name).toLowerCase() === String(b.Name).toLowerCase() && Number(a.ParentProcessId) === Number(b.ParentProcessId);
 }
 
-export const KEEP_MARK = '.keep';
+// 印のファイル名は common.mjs（markKeep と共有）。ここからも使えるようにしておく
+export { KEEP_MARK };
 
+/** runs\ の下から、最新の keep 個（と current）を残して古い置き場所を消す。.keep のある置き場所は消さない。消した名前を返す。 */
 export function pruneRuns(root, keep, current = null) {
   const runsDir = join(root, 'runs');
   if (!existsSync(runsDir)) return [];
@@ -275,9 +278,12 @@ export async function runSmoke(opts, log = console.log) {
   // ---- 拡張 ----
   const ledger = readLedger(opts.lock);
   const ids = opts.ext ?? defaultExtensionIds(ledger);
+  // VSIX のキャッシュ: --vsix-root、無ければ <buildRoot>\cache\vsix（buildRoot は local.json。既定 C:\b）
+  const vsixRoot = resolveVsixRoot({ vsixRoot: opts.vsixRoot });
+  log(`VSIX のキャッシュ: ${vsixRoot}`);
   const vsix = ids.map((id) => {
     const want = ledger.find((e) => e.id.toLowerCase() === id.toLowerCase())?.version;
-    const f = findVsix(id, want);
+    const f = findVsix(id, want, vsixRoot);
     return { id, version: f.version, path: f.path };
   });
   const profile = `${editor.version}-${opts.label.replace(/[^A-Za-z0-9._-]/g, '_')}${opts.ext ? '-custom' : ''}`;

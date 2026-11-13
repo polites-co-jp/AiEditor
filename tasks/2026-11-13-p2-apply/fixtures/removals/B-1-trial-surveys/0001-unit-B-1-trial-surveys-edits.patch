@@ -1,0 +1,27 @@
+From 648e98a58de7731cf37e9c2686a9c508606da2e9 Mon Sep 17 00:00:00 2001
+From: shuko-apply <apply@shuko.invalid>
+Date: Sat, 14 Nov 2026 00:17:45 +0900
+Subject: [PATCH] unit B-1-trial-surveys: edits
+
+---
+ .../common/feedbackSurvey/chatModelFeedbackSurveyConfig.ts    | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/src/vs/workbench/contrib/chat/common/feedbackSurvey/chatModelFeedbackSurveyConfig.ts b/src/vs/workbench/contrib/chat/common/feedbackSurvey/chatModelFeedbackSurveyConfig.ts
+index 47960f7ec4c..e0b419f9d34 100644
+--- a/src/vs/workbench/contrib/chat/common/feedbackSurvey/chatModelFeedbackSurveyConfig.ts
++++ b/src/vs/workbench/contrib/chat/common/feedbackSurvey/chatModelFeedbackSurveyConfig.ts
+@@ -7,9 +7,7 @@
+  * Contract for the inline model feedback survey.
+  *
+  * A survey is fully described by a versioned JSON payload delivered as an experiment treatment,
+- * so one can be authored or retired without shipping code. The shapes stay close to the editor
+- * pane survey in `contrib/surveys/browser/surveyQuestions.ts` so the two can converge later,
+- * but cannot share code today because that renderer needs telemetry keys known at compile time.
++ * so one can be authored or retired without shipping code.
+  */
+ 
+ import { expandModelMatchCandidates, ID_PATTERN, isObject, MAX_ID_LENGTH, normalizeSelector, parseExpPayloadEnvelope, readSelectorList, readText } from '../expPayload.js';
+-- 
+2.54.0.windows.1
+

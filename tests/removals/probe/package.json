@@ -1,0 +1,12 @@
+{
+  "name": "absent-probe",
+  "displayName": "Absent probe (test only)",
+  "description": "tests/removals/run-absent.mjs が --extensionDevelopmentPath で読み込む、消えたことの確認用の拡張。配らない。",
+  "publisher": "smoke",
+  "version": "0.0.1",
+  "private": true,
+  "license": "MIT",
+  "engines": { "vscode": "^1.90.0" },
+  "main": "./extension.js",
+  "activationEvents": ["onStartupFinished"]
+}

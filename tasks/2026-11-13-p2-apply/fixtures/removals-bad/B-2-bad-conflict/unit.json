@@ -1,0 +1,11 @@
+{
+  "id": "B-2-bad-conflict",
+  "stage": "B",
+  "order": 202,
+  "enabled": false,
+  "intent": "試し用（止まることの確かめ）。ops で消した行のすぐ隣を edits.patch が書き換えるので、git am -3 が衝突する",
+  "removeLines": [
+    { "file": "src/vs/workbench/contrib/chat/common/feedbackSurvey/chatModelFeedbackSurveyConfig.ts", "line": "* A survey is fully described by a versioned JSON payload delivered as an experiment treatment," }
+  ],
+  "patch": "edits.patch"
+}

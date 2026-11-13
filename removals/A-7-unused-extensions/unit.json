@@ -1,0 +1,77 @@
+{
+  "id": "A-7-unused-extensions",
+  "stage": "A",
+  "order": 170,
+  "enabled": false,
+  "intent": "使わない組み込み拡張を消す: タスクの自動検出（grunt・gulp・jake）、簡易ブラウザ（simple-browser）、Markdown の Mermaid（mermaid-markdown-features）、拡張の開発の補助（extension-editing）、ターミナルの入力候補（terminal-suggest。裁定で消す）、対象外の言語の言語機能（php-language-features）。文法だけの拡張（色付け）は残す（builtin/keep.json）",
+  "after": [],
+  "delete": [
+    "extensions/grunt",
+    "extensions/gulp",
+    "extensions/jake",
+    "extensions/simple-browser",
+    "extensions/mermaid-markdown-features",
+    "extensions/extension-editing",
+    "extensions/terminal-suggest",
+    "extensions/php-language-features"
+  ],
+  "removeDependencies": {},
+  "removeLines": [
+    { "file": "build/npm/dirs.ts", "line": "'extensions/extension-editing'," },
+    { "file": "build/npm/dirs.ts", "line": "'extensions/grunt'," },
+    { "file": "build/npm/dirs.ts", "line": "'extensions/gulp'," },
+    { "file": "build/npm/dirs.ts", "line": "'extensions/jake'," },
+    { "file": "build/npm/dirs.ts", "line": "'extensions/mermaid-markdown-features'," },
+    { "file": "build/npm/dirs.ts", "line": "'extensions/php-language-features'," },
+    { "file": "build/npm/dirs.ts", "line": "'extensions/simple-browser'," },
+    { "file": "build/npm/dirs.ts", "line": "'extensions/terminal-suggest'," },
+    { "file": "extensions/pnpm-workspace.yaml", "line": "- extension-editing" },
+    { "file": "extensions/pnpm-workspace.yaml", "line": "- grunt" },
+    { "file": "extensions/pnpm-workspace.yaml", "line": "- gulp" },
+    { "file": "extensions/pnpm-workspace.yaml", "line": "- jake" },
+    { "file": "extensions/pnpm-workspace.yaml", "line": "- mermaid-markdown-features" },
+    { "file": "extensions/pnpm-workspace.yaml", "line": "- php-language-features" },
+    { "file": "extensions/pnpm-workspace.yaml", "line": "- simple-browser" },
+    { "file": "extensions/pnpm-workspace.yaml", "line": "- terminal-suggest" },
+    { "file": "build/gulpfile.extensions.ts", "line": "'extensions/extension-editing/tsconfig.json'," },
+    { "file": "build/gulpfile.extensions.ts", "line": "'extensions/grunt/tsconfig.json'," },
+    { "file": "build/gulpfile.extensions.ts", "line": "'extensions/gulp/tsconfig.json'," },
+    { "file": "build/gulpfile.extensions.ts", "line": "'extensions/jake/tsconfig.json'," },
+    { "file": "build/gulpfile.extensions.ts", "line": "'extensions/mermaid-markdown-features/tsconfig.json'," },
+    { "file": "build/gulpfile.extensions.ts", "line": "'extensions/terminal-suggest/tsconfig.json'," },
+    { "file": "build/gulpfile.extensions.ts", "line": "'extensions/php-language-features/tsconfig.json'," },
+    { "file": "build/gulpfile.extensions.ts", "line": "'extensions/simple-browser/tsconfig.json'," },
+    { "file": "build/lib/extensions.ts", "line": "{ script: 'mermaid-markdown-features/esbuild.webview.mts', tsconfig: 'mermaid-markdown-features/preview-src/tsconfig.json' }," },
+    { "file": "build/lib/extensions.ts", "line": "{ script: 'simple-browser/esbuild.webview.mts', tsconfig: 'simple-browser/preview-src/tsconfig.json' }," }
+  ],
+  "productRemove": [],
+  "kept": [
+    { "path": "src/vs/workbench/contrib/terminalContrib/suggest", "reason": "ターミナルの入力候補の本体の部品。この単位は組み込み拡張 terminal-suggest だけを消し、本体の部品（と services/suggest）と設定 terminal.integrated.suggest.* は B-7-terminal-suggest が消す。A-7 と B-7 は互いに after を持たず独立。B-7 が有効でない間は、mydist の既定 terminal.integrated.suggest.enabled: false で候補を止める" }
+  ],
+  "checks": {
+    "absentCommands": [
+      "simpleBrowser.show",
+      "terminal.integrated.suggest.clearCachedGlobals",
+      "_mermaid-markdown.openInEditor"
+    ],
+    "absentViews": [],
+    "absentSettings": [
+      "grunt.autoDetect",
+      "gulp.autoDetect",
+      "jake.autoDetect",
+      "simpleBrowser.focusLockIndicator.enabled",
+      "markdown-mermaid.languages",
+      "php.validate.enable"
+    ],
+    "absentStrings": [
+      { "in": ["build/npm/dirs.ts", "build/gulpfile.extensions.ts", "build/lib/extensions.ts", "extensions/pnpm-workspace.yaml"], "text": "simple-browser" },
+      { "in": ["build/npm/dirs.ts", "build/gulpfile.extensions.ts", "build/lib/extensions.ts", "extensions/pnpm-workspace.yaml"], "text": "mermaid-markdown-features" },
+      { "in": ["build/npm/dirs.ts", "build/gulpfile.extensions.ts", "extensions/pnpm-workspace.yaml"], "text": "terminal-suggest" },
+      { "in": ["build/npm/dirs.ts", "build/gulpfile.extensions.ts", "extensions/pnpm-workspace.yaml"], "text": "php-language-features" },
+      { "in": ["build/npm/dirs.ts", "build/gulpfile.extensions.ts", "extensions/pnpm-workspace.yaml"], "text": "extension-editing" }
+    ],
+    "absentProcesses": [],
+    "absentHosts": []
+  },
+  "smoke": ["base", "claude-code", "languages", "absence"]
+}

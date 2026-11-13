@@ -1,0 +1,44 @@
+{
+  "id": "A-4-notebook-extensions",
+  "stage": "A",
+  "order": 140,
+  "enabled": false,
+  "intent": "Jupyter ノートブックの組み込み拡張（extensions/ipynb・notebook-renderers）を消す。本体のノートブック（contrib/notebook など）と vscode.notebooks は C-4 まで残す",
+  "after": [],
+  "delete": [
+    "extensions/ipynb",
+    "extensions/notebook-renderers"
+  ],
+  "removeDependencies": {},
+  "removeLines": [
+    { "file": "build/npm/dirs.ts", "line": "'extensions/ipynb'," },
+    { "file": "build/npm/dirs.ts", "line": "'extensions/notebook-renderers'," },
+    { "file": "extensions/pnpm-workspace.yaml", "line": "- ipynb" },
+    { "file": "extensions/pnpm-workspace.yaml", "line": "- notebook-renderers" },
+    { "file": "build/gulpfile.extensions.ts", "line": "'extensions/ipynb/tsconfig.json'," },
+    { "file": "build/gulpfile.extensions.ts", "line": "'extensions/notebook-renderers/tsconfig.json'," },
+    { "file": "build/lib/extensions.ts", "line": "{ script: 'ipynb/esbuild.notebook.mts', tsconfig: 'ipynb/notebook-src/tsconfig.json' }," },
+    { "file": "build/lib/extensions.ts", "line": "{ script: 'notebook-renderers/esbuild.notebook.mts', tsconfig: 'notebook-renderers/tsconfig.json' }," }
+  ],
+  "productRemove": [],
+  "kept": [
+    { "path": "build/lib/electron.ts", "reason": "macOS のファイルの関連づけ（'Jupyter': 'ipynb'）。Windows のビルドでは使わない" }
+  ],
+  "checks": {
+    "absentCommands": [
+      "ipynb.newUntitledIpynb",
+      "ipynb.openIpynbInNotebookEditor"
+    ],
+    "absentViews": [],
+    "absentSettings": [
+      "ipynb.pasteImagesAsAttachments.enabled"
+    ],
+    "absentStrings": [
+      { "in": ["build/npm/dirs.ts", "build/gulpfile.extensions.ts", "build/lib/extensions.ts", "extensions/pnpm-workspace.yaml"], "text": "ipynb" },
+      { "in": ["build/npm/dirs.ts", "build/gulpfile.extensions.ts", "build/lib/extensions.ts", "extensions/pnpm-workspace.yaml"], "text": "notebook-renderers" }
+    ],
+    "absentProcesses": [],
+    "absentHosts": []
+  },
+  "smoke": ["base", "claude-code", "absence"]
+}

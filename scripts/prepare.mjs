@@ -4,10 +4,13 @@
 // 各手順の所要時間と、clone・作業ツリーのディスクの大きさを JSON に書く。本家のコードは変えない。
 //
 // 使い方:
-//   node scripts/prepare.mjs [--tag <tag>] [--commit <sha>] [--build-root C:/b] [--out <json>] [--no-size]
+//   node scripts/prepare.mjs [--tag <tag>] [--commit <sha>] [--build-root C:/b] [--config <local.json>]
+//                            [--worktree <dir>] [--out <json>] [--no-size]
 //     --tag / --commit  既定は upstream.json の tag / commit
-//     --build-root      既定は %LOCALAPPDATA%\Shuko\local.json の buildRoot、無ければ C:\b（docs/02 の6.1）
-//     --out             記録の JSON の書き出し先（既定 <build-root>/wt/<tag>.prepare.json）
+//     --build-root      既定は local.json の buildRoot、無ければ C:\b（docs/02 の6.1。共通の部品 scripts/lib/local-config.mjs の規則）
+//     --config          local.json の場所（試し。既定 %LOCALAPPDATA%\Shuko\local.json）
+//     --worktree        作業ツリーの場所（既定 <build-root>/wt/<tag>）。build.mjs --worktree はこれを渡す
+//     --out             記録の JSON の書き出し先（既定 <作業ツリー>.prepare.json。既定の作業ツリーなら <build-root>/wt/<tag>.prepare.json）
 //     --no-size         ディスクの大きさを数えない
 // 終了コード: 0 = 一致、1 = 誤り（git の失敗、SHA の不一致、照合する SHA が無いなど）
 // upstream.json に commit が無く --commit も無いときは、clone・fetch・worktree に進まずに止める（照合しないまま ok にしない）。
@@ -17,44 +20,40 @@ import path from "node:path";
 import fs from "node:fs";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import { resolveLocalConfig } from "./lib/local-config.mjs";
 
 const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(SCRIPT_DIR, "..");
 
 function parseArgs(argv) {
-  const args = { tag: null, commit: null, buildRoot: null, out: null, size: true };
+  const args = { tag: null, commit: null, buildRoot: null, config: null, worktree: null, out: null, size: true };
+  const need = (i, name) => {
+    if (i >= argv.length || String(argv[i]).startsWith("--")) throw new Error(`${name} に値が無い`);
+    return argv[i];
+  };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
-    if (a === "--tag") args.tag = argv[++i];
-    else if (a === "--commit") args.commit = argv[++i];
-    else if (a === "--build-root") args.buildRoot = argv[++i];
-    else if (a === "--out") args.out = argv[++i];
+    if (a === "--tag") args.tag = need(++i, a);
+    else if (a === "--commit") args.commit = need(++i, a);
+    else if (a === "--build-root") args.buildRoot = need(++i, a);
+    else if (a === "--config") args.config = need(++i, a);
+    else if (a === "--worktree") args.worktree = need(++i, a);
+    else if (a === "--out") args.out = need(++i, a);
     else if (a === "--no-size") args.size = false;
     else throw new Error(`知らない引数: ${a}`);
   }
   return args;
 }
 
-function expandEnv(s) {
-  return s.replace(/%([^%]+)%/g, (m, name) => (process.env[name] !== undefined ? process.env[name] : m));
+// docs/02 の6.1: オプション → local.json → 既定値（C:\b）。規則は共通の部品（scripts/lib/local-config.mjs）に任せる
+// （読めない・知らないキー・型の違い・相対パスは止める）。configPath を省くと %LOCALAPPDATA%\Shuko\local.json。
+export function resolveBuildRoot(cliValue, { configPath } = {}) {
+  return resolveLocalConfig({ configPath: configPath || undefined, overrides: { buildRoot: cliValue || undefined } }).buildRoot;
 }
 
-// docs/02 の6.1: ファイルやキーが無ければ既定値。読めない・型が違うときは止める。
-// （共通の部品 scripts/lib/local-config.mjs ができたら、そちらに置き換える）
-export function resolveBuildRoot(cliValue) {
-  if (cliValue) return path.resolve(expandEnv(cliValue));
-  const la = process.env.LOCALAPPDATA;
-  if (la) {
-    const p = path.join(la, "Shuko", "local.json");
-    if (fs.existsSync(p)) {
-      const j = JSON.parse(fs.readFileSync(p, "utf8"));
-      if (j.buildRoot !== undefined) {
-        if (typeof j.buildRoot !== "string") throw new Error(`${p} の buildRoot が文字列でない`);
-        return path.resolve(expandEnv(j.buildRoot));
-      }
-    }
-  }
-  return path.resolve("C:\\b");
+// 作業ツリーの場所: --worktree があればそれ、無ければ <buildRoot>\wt\<tag>。
+export function resolveWorktree(buildRoot, tag, cliValue) {
+  return cliValue ? path.resolve(cliValue) : path.join(buildRoot, "wt", tag);
 }
 
 function git(args, { inherit = false } = {}) {
@@ -99,15 +98,22 @@ export function dirSize(root, { skip = [] } = {}) {
 }
 
 function main() {
-  const args = parseArgs(process.argv.slice(2));
+  let args;
+  let buildRoot;
+  try {
+    args = parseArgs(process.argv.slice(2));
+    buildRoot = resolveBuildRoot(args.buildRoot, { configPath: args.config });
+  } catch (err) {
+    console.error(`[prepare] ${err.message}`);
+    process.exit(1);
+  }
   const upstream = JSON.parse(fs.readFileSync(path.join(REPO, "upstream.json"), "utf8"));
   const tag = args.tag || upstream.tag;
   const expected = (args.commit || upstream.commit || "").toLowerCase();
   const remote = upstream.repository || "https://github.com/microsoft/vscode.git";
-  const buildRoot = resolveBuildRoot(args.buildRoot);
   const clone = path.join(buildRoot, "vscode");
-  const wt = path.join(buildRoot, "wt", tag);
-  const out = args.out ? path.resolve(args.out) : path.join(buildRoot, "wt", `${tag}.prepare.json`);
+  const wt = resolveWorktree(buildRoot, tag, args.worktree);
+  const out = args.out ? path.resolve(args.out) : `${wt}.prepare.json`;
 
   const rec = {
     tag,
@@ -140,7 +146,11 @@ function main() {
   // 照合の相手が無ければ、何もせずに止める（照合しないまま ok にしない）
   if (!expected) finish("error", "upstream.json に commit が無く、--commit も無い。タグの commit を照合できない");
 
-  fs.mkdirSync(path.join(buildRoot, "wt"), { recursive: true });
+  // 作業ツリーの親（既定は <buildRoot>\wt）。作業ツリーそのものは git worktree add が作る
+  if (path.resolve(wt) === path.resolve(clone) || path.resolve(wt).toLowerCase().startsWith(path.resolve(clone).toLowerCase() + path.sep)) {
+    finish("error", `作業ツリー ${wt} が常設の clone ${clone} と同じか、その中にある`);
+  }
+  fs.mkdirSync(path.dirname(wt), { recursive: true });
 
   // 1. 常設の clone
   if (!fs.existsSync(path.join(clone, ".git"))) {

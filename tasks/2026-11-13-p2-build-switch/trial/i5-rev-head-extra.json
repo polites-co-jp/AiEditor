@@ -1,0 +1,258 @@
+{
+  "startedAt": "2026-11-13T15:24:37.349Z",
+  "result": "extra-extensions",
+  "dryRun": false,
+  "steps": [
+    {
+      "step": "install",
+      "id": "MS-CEINTL.vscode-language-pack-ja",
+      "exitCode": 0,
+      "seconds": 7.43,
+      "output": [
+        "Installing extensions...",
+        "Extension 'MS-CEINTL.vscode-language-pack-ja-1.131.0.vsix' was successfully installed.",
+        "(node:65608) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.",
+        "(Use `Code --trace-deprecation ...` to show where the warning was created)"
+      ]
+    },
+    {
+      "step": "install",
+      "id": "anthropic.claude-code",
+      "exitCode": 0,
+      "seconds": 8.313,
+      "output": [
+        "Installing extensions...",
+        "Extension 'Anthropic.claude-code-2.1.322@win32-x64.vsix' was successfully installed.",
+        "(node:25960) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.",
+        "(Use `Code --trace-deprecation ...` to show where the warning was created)"
+      ]
+    },
+    {
+      "step": "install",
+      "id": "detachhead.basedpyright",
+      "exitCode": 0,
+      "seconds": 10.774,
+      "output": [
+        "Installing extensions...",
+        "Extension 'detachhead.basedpyright-1.40.2.vsix' was successfully installed.",
+        "(node:63384) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.",
+        "(Use `Code --trace-deprecation ...` to show where the warning was created)"
+      ]
+    },
+    {
+      "step": "install",
+      "id": "ms-vscode.powershell",
+      "exitCode": 0,
+      "seconds": 4.681,
+      "output": [
+        "Installing extensions...",
+        "Extension 'ms-vscode.powershell-2025.4.0.vsix' was successfully installed.",
+        "(node:21108) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.",
+        "(Use `Code --trace-deprecation ...` to show where the warning was created)"
+      ]
+    },
+    {
+      "step": "install",
+      "id": "mads-hartmann.bash-ide-vscode",
+      "exitCode": 0,
+      "seconds": 3.256,
+      "output": [
+        "Installing extensions...",
+        "Extension 'mads-hartmann.bash-ide-vscode-1.43.2.vsix' was successfully installed.",
+        "(node:18640) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.",
+        "(Use `Code --trace-deprecation ...` to show where the warning was created)"
+      ]
+    },
+    {
+      "step": "install",
+      "id": "mechatroner.rainbow-csv",
+      "exitCode": 0,
+      "seconds": 0.402,
+      "output": [
+        "Installing extensions...",
+        "Extension 'mechatroner.rainbow-csv-3.24.1.vsix' was successfully installed.",
+        "(node:8248) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.",
+        "(Use `Code --trace-deprecation ...` to show where the warning was created)"
+      ]
+    },
+    {
+      "step": "install",
+      "id": "weixu.wx-vsce-dotenv",
+      "exitCode": 0,
+      "seconds": 0.423,
+      "output": [
+        "Installing extensions...",
+        "Extension 'weixu.wx-vsce-dotenv-0.2.3.vsix' was successfully installed.",
+        "(node:5188) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.",
+        "(Use `Code --trace-deprecation ...` to show where the warning was created)"
+      ]
+    },
+    {
+      "step": "install",
+      "id": "tomoki1207.pdf",
+      "exitCode": 0,
+      "seconds": 0.771,
+      "output": [
+        "Installing extensions...",
+        "Extension 'tomoki1207.pdf-1.2.2.vsix' was successfully installed.",
+        "(node:60744) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.",
+        "(Use `Code --trace-deprecation ...` to show where the warning was created)"
+      ]
+    },
+    {
+      "step": "list",
+      "exitCode": 0,
+      "seconds": 0.231
+    }
+  ],
+  "config": {
+    "path": "C:/b/trial-install/cfg/local.json",
+    "installRoot": "C:\\b\\trial-install\\A",
+    "buildRoot": "C:\\b\\trial-build",
+    "cache": "C:\\b\\p0\\vsix"
+  },
+  "ledger": {
+    "source": "git HEAD:extensions.lock.json",
+    "count": 8
+  },
+  "cli": "C:\\b\\trial-install\\A\\current\\bin\\code.cmd",
+  "editor": {
+    "root": "C:\\b\\trial-install\\A\\current",
+    "version": "1.146.0",
+    "nameShort": "Code",
+    "dataFolderName": ".vscode"
+  },
+  "vsix": [
+    {
+      "id": "MS-CEINTL.vscode-language-pack-ja",
+      "version": "1.131.0",
+      "file": "C:\\b\\p0\\vsix\\MS-CEINTL.vscode-language-pack-ja-1.131.0\\MS-CEINTL.vscode-language-pack-ja-1.131.0.vsix",
+      "languagePack": true,
+      "sha256": "fae5a90170d48121bd8fe246d7d8ecbdab5bf88f21a0d58c94a3cc3af8c0f601",
+      "sha256Ok": true
+    },
+    {
+      "id": "anthropic.claude-code",
+      "version": "2.1.322",
+      "file": "C:\\b\\p0\\vsix\\anthropic.claude-code-2.1.322@win32-x64\\Anthropic.claude-code-2.1.322@win32-x64.vsix",
+      "languagePack": false,
+      "sha256": "8c0b09c6aefbca3196bcfe87e33b4e531cab3c13b2d9fd43a441562c74c5e4a4",
+      "sha256Ok": true
+    },
+    {
+      "id": "detachhead.basedpyright",
+      "version": "1.40.2",
+      "file": "C:\\b\\p0\\vsix\\detachhead.basedpyright-1.40.2\\detachhead.basedpyright-1.40.2.vsix",
+      "languagePack": false,
+      "sha256": "9c87b0b992714ca2f9298cb7e98bda621612f0ee96121a8e77ee7fcccce2f351",
+      "sha256Ok": true
+    },
+    {
+      "id": "ms-vscode.powershell",
+      "version": "2025.4.0",
+      "file": "C:\\b\\p0\\vsix\\ms-vscode.powershell-2025.4.0\\ms-vscode.powershell-2025.4.0.vsix",
+      "languagePack": false,
+      "sha256": "458eef45b6110e3d9867d23943b843ca4a9d0d96d1672db5ad156bc178f6b283",
+      "sha256Ok": true
+    },
+    {
+      "id": "mads-hartmann.bash-ide-vscode",
+      "version": "1.43.2",
+      "file": "C:\\b\\p0\\vsix\\mads-hartmann.bash-ide-vscode-1.43.2\\mads-hartmann.bash-ide-vscode-1.43.2.vsix",
+      "languagePack": false,
+      "sha256": "2eb16563ed946b801a45d3d298f0ca35a268d39656ea18f33062ff9d65fc04c2",
+      "sha256Ok": true
+    },
+    {
+      "id": "mechatroner.rainbow-csv",
+      "version": "3.24.1",
+      "file": "C:\\b\\p0\\vsix\\mechatroner.rainbow-csv-3.24.1\\mechatroner.rainbow-csv-3.24.1.vsix",
+      "languagePack": false,
+      "sha256": "0ecb7da3fb2a54517cd41fce8e858d6276ea8523bed6fbfd64d5ed281bd7514a",
+      "sha256Ok": true
+    },
+    {
+      "id": "weixu.wx-vsce-dotenv",
+      "version": "0.2.3",
+      "file": "C:\\b\\p0\\vsix\\weixu.wx-vsce-dotenv-0.2.3\\weixu.wx-vsce-dotenv-0.2.3.vsix",
+      "languagePack": false,
+      "sha256": "9c081a0e26328c86055bf722b9d99237a88151622187ef9709c54380198f2b1a",
+      "sha256Ok": true
+    },
+    {
+      "id": "tomoki1207.pdf",
+      "version": "1.2.2",
+      "file": "C:\\b\\p0\\vsix\\tomoki1207.pdf-1.2.2\\tomoki1207.pdf-1.2.2.vsix",
+      "languagePack": false,
+      "sha256": "5697cd022caf93fa0fdb8c5b9c3624951394d8126ed09184ad4fdbcad62dadce",
+      "sha256Ok": true
+    }
+  ],
+  "argv": {
+    "path": "C:\\b\\trial-install\\portable\\argv.json",
+    "locale": "ja"
+  },
+  "envRemovedForChildren": [
+    "ELECTRON_RUN_AS_NODE",
+    "VSCODE_CODE_CACHE_PATH",
+    "VSCODE_CRASH_REPORTER_PROCESS_TYPE",
+    "VSCODE_CWD",
+    "VSCODE_ESM_ENTRYPOINT",
+    "VSCODE_HANDLES_UNCAUGHT_ERRORS",
+    "VSCODE_IPC_HOOK",
+    "VSCODE_NLS_CONFIG",
+    "VSCODE_PID",
+    "VSCODE_PROCESS_TITLE"
+  ],
+  "installed": [
+    {
+      "id": "anthropic.claude-code",
+      "version": "2.1.322"
+    },
+    {
+      "id": "detachhead.basedpyright",
+      "version": "1.40.2"
+    },
+    {
+      "id": "dotenv.dotenv-vscode",
+      "version": "1.5.8"
+    },
+    {
+      "id": "mads-hartmann.bash-ide-vscode",
+      "version": "1.43.2"
+    },
+    {
+      "id": "mechatroner.rainbow-csv",
+      "version": "3.24.1"
+    },
+    {
+      "id": "ms-ceintl.vscode-language-pack-ja",
+      "version": "1.131.0"
+    },
+    {
+      "id": "ms-vscode.powershell",
+      "version": "2025.4.0"
+    },
+    {
+      "id": "tomoki1207.pdf",
+      "version": "1.2.2"
+    },
+    {
+      "id": "weixu.wx-vsce-dotenv",
+      "version": "0.2.3"
+    }
+  ],
+  "compare": {
+    "ok": false,
+    "extra": [
+      {
+        "id": "dotenv.dotenv-vscode",
+        "version": "1.5.8"
+      }
+    ],
+    "missing": [],
+    "versionMismatch": []
+  },
+  "message": "台帳に無い拡張が入っている（消すかはユーザーが決める。argv.json は書いていない）: dotenv.dotenv-vscode@1.5.8",
+  "finishedAt": "2026-11-13T15:25:13.835Z"
+}

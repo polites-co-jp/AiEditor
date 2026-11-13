@@ -1,0 +1,19 @@
+absent.test.mjs                    tests   14  pass   14  fail   0  skip   0
+apply-cli.test.mjs                 tests    7  pass    7  fail   0  skip   0
+apply-parts.test.mjs               tests   57  pass   57  fail   0  skip   0
+apply-prune.test.mjs               tests    7  pass    7  fail   0  skip   0
+apply-selfcheck.test.mjs           tests   33  pass   33  fail   0  skip   0
+apply.test.mjs                     tests   33  pass   33  fail   0  skip   0
+build-parts.test.mjs               tests   38  pass   38  fail   0  skip   0
+configure.test.mjs                 tests   17  pass   17  fail   0  skip   0
+install-ext.test.mjs               tests   46  pass   46  fail   0  skip   0
+local-config.test.mjs              tests   46  pass   46  fail   0  skip   0
+lock.test.mjs                      tests  115  pass  115  fail   0  skip   0
+make-icons.test.mjs                tests   17  pass   17  fail   0  skip   0
+removals.test.mjs                  tests  159  pass  145  fail   0  skip  14
+smoke.test.mjs                     tests   74  pass   74  fail   0  skip   0
+sublime-keys.test.mjs              tests   50  pass   50  fail   0  skip   0
+switch.test.mjs                    tests   22  pass   22  fail   0  skip   0
+measure.tests.ps1                  tests  138  pass  138  fail   0  skip   0  exit 0
+netaudit.tests.ps1                 tests  102  pass  102  fail   0  skip   0  exit 0
+TOTAL                              tests  975  pass  961  fail   0  skip  14

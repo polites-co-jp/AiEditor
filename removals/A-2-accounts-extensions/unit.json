@@ -1,0 +1,51 @@
+{
+  "id": "A-2-accounts-extensions",
+  "stage": "A",
+  "order": 120,
+  "enabled": false,
+  "intent": "GitHub と Microsoft のアカウントの組み込み拡張（extensions/github・github-authentication・microsoft-authentication）を消す。認証の仕組み（services/authentication）と拡張 API の vscode.authentication は残す",
+  "after": [],
+  "delete": [
+    "extensions/github",
+    "extensions/github-authentication",
+    "extensions/microsoft-authentication"
+  ],
+  "removeDependencies": {},
+  "removeLines": [
+    { "file": "build/npm/dirs.ts", "line": "'extensions/github'," },
+    { "file": "build/npm/dirs.ts", "line": "'extensions/github-authentication'," },
+    { "file": "build/npm/dirs.ts", "line": "'extensions/microsoft-authentication'," },
+    { "file": "extensions/pnpm-workspace.yaml", "line": "- github" },
+    { "file": "extensions/pnpm-workspace.yaml", "line": "- github-authentication" },
+    { "file": "extensions/pnpm-workspace.yaml", "line": "- microsoft-authentication" },
+    { "file": "build/gulpfile.extensions.ts", "line": "'extensions/github/tsconfig.json'," },
+    { "file": "build/gulpfile.extensions.ts", "line": "'extensions/github-authentication/tsconfig.json'," },
+    { "file": "build/gulpfile.extensions.ts", "line": "'extensions/microsoft-authentication/tsconfig.json'," },
+    { "file": "build/lib/extensions.ts", "line": "'microsoft-authentication'," }
+  ],
+  "productRemove": [],
+  "kept": [
+    { "path": "extensions/pnpm-workspace.yaml", "reason": "allowBuilds の '@azure/msal-node-extensions@5.3.2'・'@azure/msal-node-runtime@0.20.1' と、overrides の '@azure/msal-node-extensions@5.3.2>keytar': file:microsoft-authentication/packageMocks/keytar は残す。版を含む行なので removeLines にすると本家が msal を上げるたびに取り込みが止まる。依存の木に msal が無くなれば効かない見込み（推定。依存の導入で確かめる。README の未確認）" },
+    { "path": "product.json", "reason": "defaultChatAgent.providerExtensionId と trustedExtensionAuthAccess が vscode.github-authentication を指すが、AI のキーは C-1 で消す（docs/02 の3節）" }
+  ],
+  "checks": {
+    "absentCommands": [
+      "github.publish",
+      "github.copyVscodeDevLink"
+    ],
+    "absentViews": [],
+    "absentSettings": [
+      "github.gitAuthentication",
+      "github-authentication.preferDeviceCodeFlow",
+      "microsoft-authentication.implementation"
+    ],
+    "absentStrings": [
+      { "in": ["build/npm/dirs.ts", "build/gulpfile.extensions.ts", "build/lib/extensions.ts", "extensions/pnpm-workspace.yaml"], "text": "github-authentication" },
+      { "in": ["build/npm/dirs.ts", "build/gulpfile.extensions.ts", "build/lib/extensions.ts"], "text": "microsoft-authentication" },
+      { "in": ["build/npm/dirs.ts", "build/gulpfile.extensions.ts"], "text": "'extensions/github" }
+    ],
+    "absentProcesses": [],
+    "absentHosts": []
+  },
+  "smoke": ["base", "claude-code", "absence"]
+}

@@ -1,0 +1,10 @@
+{
+  "id": "A-3-bad-count",
+  "stage": "A",
+  "order": 103,
+  "enabled": false,
+  "intent": "試し用（止まることの確かめ）。removeLines の count が 2 だが一致は1行",
+  "removeLines": [
+    { "file": "build/npm/dirs.ts", "line": "'extensions/grunt',", "count": 2 }
+  ]
+}

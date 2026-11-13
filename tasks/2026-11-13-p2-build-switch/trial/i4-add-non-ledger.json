@@ -1,0 +1,146 @@
+{
+  "startedAt": "2026-11-13T15:24:31.516Z",
+  "result": "extra-extensions",
+  "dryRun": false,
+  "steps": [
+    {
+      "step": "install",
+      "id": "dotenv.dotenv-vscode",
+      "exitCode": 0,
+      "seconds": 0.762,
+      "output": [
+        "Installing extensions...",
+        "Extension 'dotenv.dotenv-vscode-1.5.8.vsix' was successfully installed.",
+        "(node:54216) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.",
+        "(Use `Code --trace-deprecation ...` to show where the warning was created)"
+      ]
+    },
+    {
+      "step": "list",
+      "exitCode": 0,
+      "seconds": 0.252
+    }
+  ],
+  "config": {
+    "path": "C:/b/trial-install/cfg/local.json",
+    "installRoot": "C:\\b\\trial-install\\A",
+    "buildRoot": "C:\\b\\trial-build",
+    "cache": "C:\\b\\p0\\vsix"
+  },
+  "ledger": {
+    "source": "C:\\b\\trial-install\\cfg\\ledger-dotenv.json",
+    "count": 1
+  },
+  "cli": "C:\\b\\trial-install\\A\\current\\bin\\code.cmd",
+  "editor": {
+    "root": "C:\\b\\trial-install\\A\\current",
+    "version": "1.146.0",
+    "nameShort": "Code",
+    "dataFolderName": ".vscode"
+  },
+  "vsix": [
+    {
+      "id": "dotenv.dotenv-vscode",
+      "version": "1.5.8",
+      "file": "C:\\b\\p0\\vsix\\dotenv.dotenv-vscode-1.5.8\\dotenv.dotenv-vscode-1.5.8.vsix",
+      "languagePack": false,
+      "sha256": "c8905977784ddebcc2fd45ecafd7ce66d7675f7c3435c2a2d41c7023161f2537",
+      "sha256Ok": true
+    }
+  ],
+  "argv": {
+    "path": "C:\\b\\trial-install\\portable\\argv.json",
+    "locale": "ja"
+  },
+  "envRemovedForChildren": [
+    "ELECTRON_RUN_AS_NODE",
+    "VSCODE_CODE_CACHE_PATH",
+    "VSCODE_CRASH_REPORTER_PROCESS_TYPE",
+    "VSCODE_CWD",
+    "VSCODE_ESM_ENTRYPOINT",
+    "VSCODE_HANDLES_UNCAUGHT_ERRORS",
+    "VSCODE_IPC_HOOK",
+    "VSCODE_NLS_CONFIG",
+    "VSCODE_PID",
+    "VSCODE_PROCESS_TITLE"
+  ],
+  "installed": [
+    {
+      "id": "anthropic.claude-code",
+      "version": "2.1.322"
+    },
+    {
+      "id": "detachhead.basedpyright",
+      "version": "1.40.2"
+    },
+    {
+      "id": "dotenv.dotenv-vscode",
+      "version": "1.5.8"
+    },
+    {
+      "id": "mads-hartmann.bash-ide-vscode",
+      "version": "1.43.2"
+    },
+    {
+      "id": "mechatroner.rainbow-csv",
+      "version": "3.24.1"
+    },
+    {
+      "id": "ms-ceintl.vscode-language-pack-ja",
+      "version": "1.131.0"
+    },
+    {
+      "id": "ms-vscode.powershell",
+      "version": "2025.4.0"
+    },
+    {
+      "id": "tomoki1207.pdf",
+      "version": "1.2.2"
+    },
+    {
+      "id": "weixu.wx-vsce-dotenv",
+      "version": "0.2.3"
+    }
+  ],
+  "compare": {
+    "ok": false,
+    "extra": [
+      {
+        "id": "anthropic.claude-code",
+        "version": "2.1.322"
+      },
+      {
+        "id": "detachhead.basedpyright",
+        "version": "1.40.2"
+      },
+      {
+        "id": "mads-hartmann.bash-ide-vscode",
+        "version": "1.43.2"
+      },
+      {
+        "id": "mechatroner.rainbow-csv",
+        "version": "3.24.1"
+      },
+      {
+        "id": "ms-ceintl.vscode-language-pack-ja",
+        "version": "1.131.0"
+      },
+      {
+        "id": "ms-vscode.powershell",
+        "version": "2025.4.0"
+      },
+      {
+        "id": "tomoki1207.pdf",
+        "version": "1.2.2"
+      },
+      {
+        "id": "weixu.wx-vsce-dotenv",
+        "version": "0.2.3"
+      }
+    ],
+    "missing": [],
+    "versionMismatch": []
+  },
+  "message": "台帳に無い拡張が入っている（消すかはユーザーが決める。argv.json は書いていない）: anthropic.claude-code@2.1.322, detachhead.basedpyright@1.40.2, mads-hartmann.bash-ide-vscode@1.43.2, mechatroner.rainbow-csv@3.24.1, ms-ceintl.vscode-language-pack-ja@1.131.0, ms-vscode.powershell@2025.4.0, tomoki1207.pdf@1.2.2, weixu.wx-vsce-dotenv@0.2.3",
+  "finishedAt": "2026-11-13T15:24:32.541Z"
+}

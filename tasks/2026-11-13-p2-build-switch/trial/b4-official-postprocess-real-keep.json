@@ -1,0 +1,133 @@
+{
+  "label": "1.146.0-t1",
+  "upstream": {
+    "tag": "1.146.0",
+    "commit": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+  },
+  "units": [],
+  "patches": [],
+  "lockfileDiff": "records/take-in/1.146.0-t1/lockfile.diff",
+  "toolchain": null,
+  "durations": {},
+  "zip": null,
+  "extensionsLockSha256": "6b4c3ceae7d6cb407f62bbcbd57ca50267e998975887884cc325fd26a85cce10",
+  "result": "error",
+  "stoppedAt": "postprocess",
+  "dryRun": false,
+  "startedAt": "2026-11-13T15:30:45.167Z",
+  "finishedAt": "2026-11-13T15:30:45.187Z",
+  "paths": {
+    "buildRoot": "C:\\b\\trial-build",
+    "worktree": "C:\\b\\wt\\1.146.0",
+    "packageDir": "C:\\b\\p0\\vscode-1.146.0",
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\records\\take-in\\1.146.0-t1\\checks.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\removals",
+    "dist": "C:\\b\\trial-build\\dist",
+    "logs": "C:\\b\\trial-build\\logs\\1.146.0-t1"
+  },
+  "config": {
+    "path": "C:/b/trial-install/cfg/none.json",
+    "exists": false,
+    "buildRootFrom": "option"
+  },
+  "stepsSelected": [
+    "postprocess"
+  ],
+  "envRemovedForChildren": [
+    "ELECTRON_RUN_AS_NODE",
+    "VSCODE_CODE_CACHE_PATH",
+    "VSCODE_CRASH_REPORTER_PROCESS_TYPE",
+    "VSCODE_CWD",
+    "VSCODE_ESM_ENTRYPOINT",
+    "VSCODE_HANDLES_UNCAUGHT_ERRORS",
+    "VSCODE_IPC_HOOK",
+    "VSCODE_NLS_CONFIG",
+    "VSCODE_PID",
+    "VSCODE_PROCESS_TITLE"
+  ],
+  "steps": [
+    {
+      "name": "postprocess",
+      "status": "error",
+      "startedAt": "2026-11-13T15:30:45.174Z",
+      "layout": {
+        "appDir": "C:\\b\\p0\\vscode-1.146.0\\69047191fc\\resources\\app",
+        "versionedFolder": "69047191fc",
+        "exe": "Code.exe",
+        "cli": "bin\\code.cmd",
+        "version": "1.146.0",
+        "commit": "69047191fc427f2f92828279aae1d90d8eeda7ab",
+        "nameShort": "Code"
+      },
+      "license": {
+        "LICENSE.rtf": true,
+        "ThirdPartyNotices.txt": true
+      },
+      "extensions": {
+        "unitsFrom": "removals (enabled)",
+        "unitIds": [],
+        "removed": [],
+        "presentCount": 95,
+        "nonExtensionDirs": [
+          "node_modules"
+        ],
+        "ok": false,
+        "residual": [],
+        "missingKeep": [],
+        "notShipped": [
+          "vscode-api-tests",
+          "vscode-colorize-perf-tests",
+          "vscode-colorize-tests",
+          "vscode-test-resolver"
+        ],
+        "missingOwn": [
+          "mydist"
+        ],
+        "unexpected": [
+          "TypeScriptTeam.jsts-chat-features",
+          "copilot",
+          "debug-auto-launch",
+          "debug-server-ready",
+          "extension-editing",
+          "github",
+          "github-authentication",
+          "grunt",
+          "gulp",
+          "ipynb",
+          "jake",
+          "mermaid-markdown-features",
+          "microsoft-authentication",
+          "ms-vscode.js-debug",
+          "ms-vscode.js-debug-companion",
+          "ms-vscode.vscode-js-profile-table",
+          "notebook-renderers",
+          "php-language-features",
+          "prompt-basics",
+          "simple-browser",
+          "terminal-suggest",
+          "theme-abyss",
+          "theme-kimbie-dark",
+          "theme-modern-icons",
+          "theme-monokai",
+          "theme-monokai-dimmed",
+          "theme-quietlight",
+          "theme-red",
+          "theme-solarized-dark",
+          "theme-solarized-light",
+          "theme-tomorrow-night-blue",
+          "tunnel-forwarding"
+        ]
+      },
+      "seconds": 0.013,
+      "problems": [
+        "自前の拡張が無い: mydist"
+      ],
+      "message": "自前の拡張が無い: mydist"
+    }
+  ],
+  "warnings": [
+    "keep.json に無い拡張が出力にある（情報）: TypeScriptTeam.jsts-chat-features, copilot, debug-auto-launch, debug-server-ready, extension-editing, github, github-authentication, grunt, gulp, ipynb, jake, mermaid-markdown-features, microsoft-authentication, ms-vscode.js-debug, ms-vscode.js-debug-companion, ms-vscode.vscode-js-profile-table, notebook-renderers, php-language-features, prompt-basics, simple-browser, terminal-suggest, theme-abyss, theme-kimbie-dark, theme-modern-icons, theme-monokai, theme-monokai-dimmed, theme-quietlight, theme-red, theme-solarized-dark, theme-solarized-light, theme-tomorrow-night-blue, tunnel-forwarding"
+  ],
+  "message": "postprocess で止まった: 自前の拡張が無い: mydist"
+}

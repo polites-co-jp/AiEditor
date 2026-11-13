@@ -1,0 +1,29 @@
+From b13374ec6309681d04cc4970eca4fe7f8b392d5f Mon Sep 17 00:00:00 2001
+From: shuko-apply <apply@shuko.invalid>
+Date: Sat, 14 Nov 2026 00:40:22 +0900
+Subject: [PATCH] shuko: connect directly when no proxy is configured
+
+Without http.proxy or a proxy environment variable, Chromium follows the OS settings and may look up WPAD. Set the window session and the app to direct mode in that case. Setting http.proxy still uses the proxy.
+---
+ src/vs/platform/windows/electron-main/windowImpl.ts | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/src/vs/platform/windows/electron-main/windowImpl.ts b/src/vs/platform/windows/electron-main/windowImpl.ts
+index 8f69473fb8f..39d10e14c09 100644
+--- a/src/vs/platform/windows/electron-main/windowImpl.ts
++++ b/src/vs/platform/windows/electron-main/windowImpl.ts
+@@ -1290,6 +1290,12 @@ export class CodeWindow extends BaseWindow implements ICodeWindow {
+ 				this.logService.trace(`Setting proxy to '${proxyRules}', bypassing '${proxyBypassRules}'`);
+ 				this._win.webContents.session.setProxy({ proxyRules, proxyBypassRules, pacScript: '' });
+ 				electron.app.setProxy({ proxyRules, proxyBypassRules, pacScript: '' });
++			} else if (!e && !newHttpProxy) {
++				// Shuko: with no proxy configured, connect directly instead of following the OS settings,
++				// so that Chromium does not look up WPAD (`wpad`). Set `http.proxy` to use a proxy.
++				this.logService.trace('Setting proxy to direct (no proxy configured)');
++				this._win.webContents.session.setProxy({ mode: 'direct' });
++				electron.app.setProxy({ mode: 'direct' });
+ 			}
+ 		}
+ 	}
+--
+2.54.0.windows.1

@@ -1,0 +1,100 @@
+{
+  "label": "1.146.0-t0v",
+  "upstream": {
+    "tag": "1.146.0",
+    "commit": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+  },
+  "units": [],
+  "patches": [],
+  "lockfileDiff": "records/take-in/1.146.0-t0v/lockfile.diff",
+  "toolchain": null,
+  "durations": {},
+  "zip": null,
+  "extensionsLockSha256": "6b4c3ceae7d6cb407f62bbcbd57ca50267e998975887884cc325fd26a85cce10",
+  "result": "error",
+  "stoppedAt": "postprocess",
+  "dryRun": false,
+  "startedAt": "2026-11-13T15:19:36.252Z",
+  "finishedAt": "2026-11-13T15:19:36.811Z",
+  "paths": {
+    "buildRoot": "C:\\b\\trial-build",
+    "worktree": "C:\\b\\wt\\1.146.0",
+    "packageDir": "C:\\b\\trial-build\\fake-versioned\\VSCode-win32-x64",
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\records\\take-in\\1.146.0-t0v\\checks.json",
+    "keep": "C:\\b\\trial-build\\fixtures\\keep.json",
+    "removals": "C:\\b\\trial-build\\fixtures\\removals-bad",
+    "dist": "C:\\b\\trial-build\\dist",
+    "logs": "C:\\b\\trial-build\\logs\\1.146.0-t0v"
+  },
+  "config": {
+    "path": "C:/b/trial-install/cfg/none.json",
+    "exists": false,
+    "buildRootFrom": "option"
+  },
+  "stepsSelected": [
+    "postprocess"
+  ],
+  "envRemovedForChildren": [
+    "ELECTRON_RUN_AS_NODE",
+    "VSCODE_CODE_CACHE_PATH",
+    "VSCODE_CRASH_REPORTER_PROCESS_TYPE",
+    "VSCODE_CWD",
+    "VSCODE_ESM_ENTRYPOINT",
+    "VSCODE_HANDLES_UNCAUGHT_ERRORS",
+    "VSCODE_IPC_HOOK",
+    "VSCODE_NLS_CONFIG",
+    "VSCODE_PID",
+    "VSCODE_PROCESS_TITLE"
+  ],
+  "steps": [
+    {
+      "name": "postprocess",
+      "status": "error",
+      "startedAt": "2026-11-13T15:19:36.256Z",
+      "layout": {
+        "appDir": "C:\\b\\trial-build\\fake-versioned\\VSCode-win32-x64\\69047191fc\\resources\\app",
+        "versionedFolder": "69047191fc",
+        "exe": "Shuko.exe",
+        "cli": "bin\\shuko.cmd",
+        "version": "1.146.0",
+        "commit": "69047191fc427f2f92828279aae1d90d8eeda7ab",
+        "nameShort": "Shuko"
+      },
+      "license": {
+        "LICENSE.txt": true,
+        "ThirdPartyNotices.txt": false
+      },
+      "extensions": {
+        "unitsFrom": "removals (enabled)",
+        "unitIds": [
+          "A-9-trial"
+        ],
+        "removed": [
+          "git"
+        ],
+        "presentCount": 2,
+        "ok": false,
+        "residual": [
+          "git"
+        ],
+        "missingKeep": [
+          "theme-defaults"
+        ],
+        "notShipped": [
+          "vscode-test-resolver"
+        ],
+        "missingOwn": [],
+        "unexpected": []
+      },
+      "seconds": 0.002,
+      "problems": [
+        "ThirdPartyNotices.txt が resources/app に無い",
+        "消した拡張が残っている: git",
+        "keep.json の拡張が無い: theme-defaults"
+      ],
+      "message": "ThirdPartyNotices.txt が resources/app に無い / 消した拡張が残っている: git / keep.json の拡張が無い: theme-defaults"
+    }
+  ],
+  "warnings": [],
+  "message": "postprocess で止まった: ThirdPartyNotices.txt が resources/app に無い / 消した拡張が残っている: git / keep.json の拡張が無い: theme-defaults"
+}

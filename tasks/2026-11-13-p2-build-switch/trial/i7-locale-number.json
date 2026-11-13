@@ -1,0 +1,81 @@
+{
+  "startedAt": "2026-11-13T16:10:22.097Z",
+  "result": "error",
+  "dryRun": false,
+  "steps": [
+    {
+      "step": "install",
+      "id": "dotenv.dotenv-vscode",
+      "exitCode": 0,
+      "seconds": 0.712,
+      "output": [
+        "Installing extensions...",
+        "Extension 'dotenv.dotenv-vscode-1.5.8.vsix' was successfully installed.",
+        "(node:44160) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.",
+        "(Use `Code --trace-deprecation ...` to show where the warning was created)"
+      ]
+    },
+    {
+      "step": "list",
+      "exitCode": 0,
+      "seconds": 0.227
+    }
+  ],
+  "config": {
+    "path": "C:/b/trial-install/cfg/local.json",
+    "installRoot": "C:\\b\\trial-install\\B",
+    "buildRoot": "C:\\b\\trial-build",
+    "cache": "C:\\b\\p0\\vsix"
+  },
+  "ledger": {
+    "source": "C:\\b\\trial-install\\cfg\\ledger-dotenv.json",
+    "count": 1
+  },
+  "cli": "C:\\b\\trial-install\\B\\current\\bin\\code.cmd",
+  "editor": {
+    "root": "C:\\b\\trial-install\\B\\current",
+    "version": "1.146.0",
+    "nameShort": "Code",
+    "dataFolderName": ".vscode"
+  },
+  "vsix": [
+    {
+      "id": "dotenv.dotenv-vscode",
+      "version": "1.5.8",
+      "file": "C:\\b\\p0\\vsix\\dotenv.dotenv-vscode-1.5.8\\dotenv.dotenv-vscode-1.5.8.vsix",
+      "languagePack": false,
+      "sha256": "c8905977784ddebcc2fd45ecafd7ce66d7675f7c3435c2a2d41c7023161f2537",
+      "sha256Ok": true
+    }
+  ],
+  "argv": {
+    "path": "C:\\b\\trial-install\\portable2\\argv.json",
+    "locale": "ja"
+  },
+  "envRemovedForChildren": [
+    "ELECTRON_RUN_AS_NODE",
+    "VSCODE_CODE_CACHE_PATH",
+    "VSCODE_CRASH_REPORTER_PROCESS_TYPE",
+    "VSCODE_CWD",
+    "VSCODE_ESM_ENTRYPOINT",
+    "VSCODE_HANDLES_UNCAUGHT_ERRORS",
+    "VSCODE_IPC_HOOK",
+    "VSCODE_NLS_CONFIG",
+    "VSCODE_PID",
+    "VSCODE_PROCESS_TITLE"
+  ],
+  "installed": [
+    {
+      "id": "dotenv.dotenv-vscode",
+      "version": "1.5.8"
+    }
+  ],
+  "compare": {
+    "ok": true,
+    "extra": [],
+    "missing": [],
+    "versionMismatch": []
+  },
+  "message": "\"locale\" の値が文字列でない",
+  "finishedAt": "2026-11-13T16:10:23.046Z"
+}

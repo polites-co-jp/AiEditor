@@ -1,0 +1,33 @@
+{
+  "id": "A-5-remote-extensions",
+  "stage": "A",
+  "order": 150,
+  "enabled": false,
+  "intent": "ポートの転送（dev tunnels）の組み込み拡張（extensions/tunnel-forwarding）を消す。本体のリモート（contrib/remote・ポートのビュー）は C-3 まで残す。テスト用の vscode-test-resolver は同梱されないので残す（builtin/keep.json）",
+  "after": [],
+  "delete": [
+    "extensions/tunnel-forwarding"
+  ],
+  "removeDependencies": {},
+  "removeLines": [
+    { "file": "build/npm/dirs.ts", "line": "'extensions/tunnel-forwarding'," },
+    { "file": "extensions/pnpm-workspace.yaml", "line": "- tunnel-forwarding" },
+    { "file": "build/gulpfile.extensions.ts", "line": "'extensions/tunnel-forwarding/tsconfig.json'," }
+  ],
+  "productRemove": [],
+  "kept": [],
+  "checks": {
+    "absentCommands": [
+      "tunnel-forwarding.showLog",
+      "tunnel-forwarding.restart"
+    ],
+    "absentViews": [],
+    "absentSettings": [],
+    "absentStrings": [
+      { "in": ["build/npm/dirs.ts", "build/gulpfile.extensions.ts", "extensions/pnpm-workspace.yaml"], "text": "tunnel-forwarding" }
+    ],
+    "absentProcesses": [],
+    "absentHosts": []
+  },
+  "smoke": ["base", "claude-code", "absence"]
+}

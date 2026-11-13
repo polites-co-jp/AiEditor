@@ -1,0 +1,126 @@
+{
+  "label": "1.146.0-t1",
+  "upstream": {
+    "tag": "1.146.0",
+    "commit": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+  },
+  "units": [],
+  "patches": [],
+  "lockfileDiff": "records/take-in/1.146.0-t1/lockfile.diff",
+  "toolchain": null,
+  "durations": {},
+  "zip": null,
+  "extensionsLockSha256": "6b4c3ceae7d6cb407f62bbcbd57ca50267e998975887884cc325fd26a85cce10",
+  "result": "ok",
+  "stoppedAt": null,
+  "dryRun": false,
+  "startedAt": "2026-11-13T15:31:14.924Z",
+  "finishedAt": "2026-11-13T15:31:25.385Z",
+  "paths": {
+    "buildRoot": "C:\\b",
+    "worktree": "C:\\b\\wt\\1.146.0",
+    "packageDir": "C:\\b\\wt\\VSCode-win32-x64",
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\records\\take-in\\1.146.0-t1\\checks.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\removals",
+    "dist": "C:\\b\\dist",
+    "logs": "C:\\b\\logs\\1.146.0-t1"
+  },
+  "config": {
+    "path": "C:/b/trial-install/cfg/none.json",
+    "exists": false,
+    "buildRootFrom": "default"
+  },
+  "stepsSelected": [
+    "prepare"
+  ],
+  "envRemovedForChildren": [
+    "ELECTRON_RUN_AS_NODE",
+    "VSCODE_CODE_CACHE_PATH",
+    "VSCODE_CRASH_REPORTER_PROCESS_TYPE",
+    "VSCODE_CWD",
+    "VSCODE_ESM_ENTRYPOINT",
+    "VSCODE_HANDLES_UNCAUGHT_ERRORS",
+    "VSCODE_IPC_HOOK",
+    "VSCODE_NLS_CONFIG",
+    "VSCODE_PID",
+    "VSCODE_PROCESS_TITLE"
+  ],
+  "steps": [
+    {
+      "name": "prepare",
+      "status": "ok",
+      "startedAt": "2026-11-13T15:31:14.932Z",
+      "command": "C:\\Program Files\\nodejs\\node.exe e:\\develop\\self\\Team\\projects\\ai-editor\\scripts\\prepare.mjs --tag 1.146.0 --build-root C:\\b --out C:\\b\\wt\\1.146.0.prepare.json",
+      "cwd": "e:\\develop\\self\\Team\\projects\\ai-editor",
+      "log": "C:\\b\\logs\\1.146.0-t1\\prepare.log",
+      "seconds": 10.449,
+      "exitCode": 0,
+      "prepare": {
+        "tag": "1.146.0",
+        "expectedCommit": "69047191fc427f2f92828279aae1d90d8eeda7ab",
+        "buildRoot": "C:\\b",
+        "clone": "C:\\b\\vscode",
+        "worktree": "C:\\b\\wt\\1.146.0",
+        "startedAt": "2026-11-13T15:31:15.006Z",
+        "git": "git version 2.54.0.windows.1",
+        "steps": [
+          {
+            "name": "clone",
+            "skipped": "already exists"
+          },
+          {
+            "name": "fetch --tags",
+            "seconds": 7.01,
+            "status": 0
+          },
+          {
+            "name": "rev-parse tag",
+            "seconds": 0.034,
+            "status": 0,
+            "value": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+          },
+          {
+            "name": "worktree add",
+            "skipped": "already exists"
+          },
+          {
+            "name": "rev-parse worktree HEAD",
+            "seconds": 0.02,
+            "status": 0,
+            "value": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+          },
+          {
+            "name": "status --porcelain",
+            "seconds": 0.112,
+            "status": 0
+          }
+        ],
+        "result": "ok",
+        "tagCommit": "69047191fc427f2f92828279aae1d90d8eeda7ab",
+        "worktreeHead": "69047191fc427f2f92828279aae1d90d8eeda7ab",
+        "worktreeClean": true,
+        "disk": {
+          "cloneGitDir": {
+            "bytes": 1780715259,
+            "gb": 1.66,
+            "files": 696
+          },
+          "cloneCheckout": {
+            "bytes": 366071116,
+            "gb": 0.34,
+            "files": 21342
+          },
+          "worktree": {
+            "bytes": 359848892,
+            "gb": 0.34,
+            "files": 21005
+          },
+          "countedSeconds": 3.156
+        },
+        "finishedAt": "2026-11-13T15:31:25.376Z"
+      }
+    }
+  ],
+  "warnings": []
+}

@@ -1,0 +1,32 @@
+{
+  "id": "B-6-online-feeds",
+  "stage": "B",
+  "order": 260,
+  "enabled": false,
+  "intent": "外から一覧や知らせを取りに行く部品を消す。緊急の知らせ（contrib/emergencyAlert。product.json の emergencyAlertUrl を定期的に取りに行く）を消す。emergencyAlertUrl・profileTemplatesUrl は 1.146.0 の OSS の product.json に無いので、product.overlay.json の removeIfPresent で本家が足したときに外す",
+  "after": [],
+  "delete": [
+    "src/vs/workbench/contrib/emergencyAlert"
+  ],
+  "removeDependencies": {},
+  "removeLines": [
+    { "file": "src/vs/workbench/workbench.desktop.main.ts", "line": "import './contrib/emergencyAlert/electron-browser/emergencyAlert.contribution.js';" },
+    { "file": "src/vs/sessions/sessions.desktop.main.ts", "line": "import '../workbench/contrib/emergencyAlert/electron-browser/emergencyAlert.contribution.js';" }
+  ],
+  "productRemove": [],
+  "kept": [
+    { "path": "src/vs/workbench/services/userDataProfile/browser/userDataProfileManagement.ts", "reason": "プロファイルのひな形の取得（162〜164行）は productService.profileTemplatesUrl が無ければ通信しない。プロファイルの管理そのものは残す機能なので、ファイルは直さず、キーを product.json に入れないことで止める（product.overlay.json の removeIfPresent）" }
+  ],
+  "checks": {
+    "absentCommands": [],
+    "absentViews": [],
+    "absentSettings": [],
+    "absentStrings": [
+      { "in": ["src/vs"], "text": "contrib/emergencyAlert/electron-browser/emergencyAlert.contribution.js'" },
+      { "in": ["src/vs"], "text": "productService.emergencyAlertUrl" }
+    ],
+    "absentProcesses": [],
+    "absentHosts": ["main.vscode-cdn.net"]
+  },
+  "smoke": ["base", "claude-code", "absence"]
+}

@@ -210,7 +210,24 @@ node tests/smoke-run.mjs --build <出力フォルダ> --label built --mode built
 
 `C:\b\smoke\baseline-official-1.146.0.json`（3 回の和・鍵 4 個）は、**dotenv が `dotenv.dotenv-vscode` だった台帳**で作ったもの。weixu の台帳で比べても `errors.new` は PASS だった（新しい誤りなし）ので、いまは作り直していない。気になるなら、`--prime --save-baseline <json>` の後に `--merge-baseline` を 2 回で作り直せる（所要約 5 分）。
 
+## 追記: `.keep` を置く入口（2026-11-13、リーダーの依頼）
+
+- 入口: `node tests/smoke-stop.mjs --mark-keep <runs の直下の置き場所の名前>`（例: `official-20261113T143803`）。`C:\b\smoke\runs\` の直下の、名前が `<label>-<時刻>` の**既存のフォルダ**にだけ空の `.keep` を書く（`markKeep`、`tests/smoke/lib/common.mjs`）。パス（`\`・`/`）・`..`・名前の形が違うもの・無いもの・フォルダでないものは拒み、終了コード 2 を返す。既にあれば何もしない。エディタは止めない。書くのは `.keep` の 1 ファイルだけ。
+- 名前の形は `[A-Za-z0-9._-]+-<8桁>T<6桁>`。ラベルに `-` を含む実行（`env-b-…`）も通す（最初に `-` を許していなくて単体テストで見つけ、直した）。
+- 実機: `official-20261113T143803` に `.keep` を置いた（`C:\b\smoke\runs\official-20261113T143803\.keep`、大岡越前守の検証の根拠）。`../ext` を渡すと拒まれることも確かめた。
+- 単体テスト 4 件を足し、**74 件すべて PASS**: `markKeep`（書く・空・2回目は何もしない・拒むもの 8 通り・ほかのフォルダに書かれない・`pruneRuns` が消さない）、`isRunDirName`、`--mark-keep` の入口と `smoke-design.md` の記述、`pruneRuns` の注の位置。
+- 軽微: `run.mjs` の `pruneRuns` の説明の注が `sameProc` の上に離れて残っていたのを、`pruneRuns` の直前に移し、`.keep` のことも書いた（`KEEP_MARK` は `common.mjs` に移し、`run.mjs` から再公開）。
+- `smoke-design.md` の `.keep` の項に入口の使い方を足した。
+
+## 追記: VSIX のキャッシュを <buildRoot>\cache\vsix にそろえた（リーダーの依頼）
+
+- `tests/smoke/lib/common.mjs` の固定の `VSIX_ROOT = 'C:\b\p0\vsix'` を外し、`resolveVsixRoot()` に替えた。`scripts/lib/local-config.mjs` の `resolveLocalConfig` で `buildRoot` を読み（オプション → `%LOCALAPPDATA%\Shuko\local.json` → 既定 `C:\b`）、`<buildRoot>\cache\vsix` を返す。`findVsix` の既定の探し先もこれ。
+- 上書き: `smoke-run.mjs --vsix-root <dir>`、`smoke-launch.mjs --vsix-root <dir>`（優先は `--vsix-root` → `buildRoot`（`local.json`）→ 既定）。実行の最初に `VSIX のキャッシュ: <path>` を表示する。壊れた `local.json` は既定に戻さず止まる（`resolveLocalConfig` の規則のまま）。
+- 単体テスト 75 件すべて PASS（1 件足した: `local.json` が無いと `C:\b\cache\vsix`、`buildRoot` を読む、オプションが勝つ、`--vsix-root` が最優先、`%NAME%` の展開、壊れた設定で止まる、固定の `VSIX_ROOT` が残っていない）。
+- 公式の zip で 1 回（`--prime --baseline`、`official-20261113T163920`）: **PASS 49 / FAIL 0 / INFO 9**。表示は `VSIX のキャッシュ: C:\b\cache\vsix`、拡張の印が（VSIX の置き場所が変わったため）変わり、`C:\b\smoke\ext\1.146.0-official\` が自動で作り直されて **8 件がキャッシュから入った**（`base.ext-install` 8 件、`probe.snapshot` 拡張 13 件・コマンド 3403 件）。`errors.new` は新しい誤りなし。
+- 触れていない物: `C:\b\wt\verify-p2`。`C:\b\smoke\`（実行の置き場所・拡張フォルダ・基準）の場所は、今回は `buildRoot` に追従させていない（`SMOKE_ROOT` は固定の `C:\b\smoke`）。追従させるなら別の依頼にする。
+
 ## 注意（引き継ぎ）
 
-- 検証の根拠にする実行の置き場所には `.keep` を置くこと（`--keep-runs` の既定 10 で消えるため）。
+- 検証の根拠にする実行の置き場所には `.keep` を置くこと（`node tests/smoke-stop.mjs --mark-keep <名前>`）（`--keep-runs` の既定 10 で消えるため）。
 - 台本を終了コード 2 で落とした原因（日本語のコマンドラインによる JSON の破損）は先に直してある。それとは別に、今回見つけた PID 使い回しは「止めた後の確認」だけを誤らせていた（実際に止めたのは起動した木だけ）。普段使いのブラウザのプロセスには触れていない。

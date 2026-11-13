@@ -4,13 +4,28 @@
 // 純粋な関数は tests/smoke.test.mjs が試す。
 
 import { spawnSync } from 'node:child_process';
-import { existsSync, readFileSync, readdirSync, statSync, unlinkSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, statSync, unlinkSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve, sep } from 'node:path';
 import { homedir } from 'node:os';
+import { resolveLocalConfig } from '../../../scripts/lib/local-config.mjs';
 
 export const SMOKE_ROOT = 'C:\\b\\smoke';
 export const DEFAULT_BUILD = 'C:\\b\\p0\\vscode-1.146.0';
-export const VSIX_ROOT = 'C:\\b\\p0\\vsix';
+
+/**
+ * VSIX のキャッシュの場所: <buildRoot>\cache\vsix（既定 C:\b\cache\vsix。docs/02 の8節）。
+ * buildRoot は scripts/lib/local-config.mjs の resolveLocalConfig で読む（オプション → local.json → 既定 C:\b）。
+ * vsixRoot を渡せばそれを使う（--vsix-root）。以前は C:\b\p0\vsix に固定していた。
+ */
+export function vsixRootFor(buildRoot) {
+  return join(buildRoot, 'cache', 'vsix');
+}
+
+export function resolveVsixRoot({ vsixRoot = null, buildRoot = null, configPath, env = process.env } = {}) {
+  if (vsixRoot) return resolve(vsixRoot);
+  const cfg = resolveLocalConfig({ configPath, overrides: { buildRoot }, env });
+  return vsixRootFor(cfg.buildRoot);
+}
 
 // ---------------------------------------------------------------------------
 // 環境変数（docs/07 の3.2 の1）
@@ -175,6 +190,30 @@ function listProcessesOnce() {
 export function isRunDirPath(p, runsRoot) {
   const full = resolve(p);
   return norm(resolve(full, '..')) === norm(runsRoot) && norm(full) !== norm(runsRoot);
+}
+
+/** 記録の根拠にする実行の置き場所に置く印のファイル名。ある置き場所は --keep-runs が消さない。 */
+export const KEEP_MARK = '.keep';
+
+/** 実行の置き場所の名前（<label>-<時刻>）か。パスの区切りや .. を含むものは false。 */
+export function isRunDirName(name) {
+  return typeof name === 'string' && /^[A-Za-z0-9._-]+-\d{8}T\d{6}$/.test(name) && !name.includes('..');
+}
+
+/**
+ * runsRoot（C:\b\smoke\runs）の直下の、名前が <label>-<時刻> の既存のフォルダにだけ、空の .keep を書く。
+ * それ以外（名前の形が違う、パスを渡した、無い、フォルダでない）は投げる。既にあれば何もしない。書いたファイルのパスを返す。
+ */
+export function markKeep(name, runsRoot = join(SMOKE_ROOT, 'runs')) {
+  if (!isRunDirName(name)) throw new Error(`置き場所の名前（<label>-<時刻>。パスは不可）を渡す: ${name}`);
+  const dir = join(runsRoot, name);
+  if (!isRunDirPath(dir, runsRoot)) throw new Error(`${runsRoot} の直下ではない: ${dir}`);
+  let st;
+  try { st = statSync(dir); } catch { throw new Error(`置き場所が無い: ${dir}`); }
+  if (!st.isDirectory()) throw new Error(`フォルダではない: ${dir}`);
+  const mark = join(dir, KEEP_MARK);
+  if (!existsSync(mark)) writeFileSync(mark, '', { flag: 'wx' });
+  return mark;
 }
 
 /** 木の根の実行ファイルが期待どおりか。expectedExe が null なら確かめない。 */

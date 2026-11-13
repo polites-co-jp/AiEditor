@@ -111,7 +111,7 @@ node tests/smoke-run.mjs --prime --baseline C:/b/smoke/baseline-official-1.146.0
 - `--merge-baseline`: `--save-baseline` と一緒に使い、既存のファイルと鍵の和を取る。ファイルには `runs`（何回分か）と、鍵ごとに何回の実行で見えたか（`seen`）が残る。`--save-baseline` だけだと上書き。
 - `--prime`: 新しいユーザーデータの初回の起動は、言語パックが未登録で表示が英語になる。一度起動して `languagepacks.json` ができたら、その木だけを止めて起動し直す（probe は動かさない）。`base.ui-language` が `vscode.env.language = ja` を確かめる。`smoke-launch.mjs` も同じ手順を既定で踏む（`--no-prime` で省く）。prime が作った `~/.claude/ide/*.lock` は、smoke-run・smoke-launch のどちらも、起動した木の pid か開いたフォルダが一致するものだけを消す。
 - `--keep-runs <N>`（既定 10）: 実行の最後に、`C:\b\smoke\runs\` 直下の `<label>-<時刻>` のフォルダを、最新の N 個を残して消す（今回の分は除く）。消すのは `runs\` の下だけで、`ext\` と基準のファイルは消さない。
-- **`.keep`**: 置き場所の直下に `.keep` という空のファイルを置くと、`--keep-runs` が消さず、残す数 N にも数えない。記録の根拠にする実行には、検証する側（大岡越前守）がこの印を置く（記録が指す置き場所が消えないようにするため）。
+- **`.keep`**: 置き場所の直下に `.keep` という空のファイルを置くと、`--keep-runs` が消さず、残す数 N にも数えない。記録の根拠にする実行には、検証する側（大岡越前守）がこの印を置く（記録が指す置き場所が消えないようにするため）。書き込み先を持たない検証役のために、印を置く入口がある: `node tests/smoke-stop.mjs --mark-keep <runs の直下の置き場所の名前>`（例: `official-20261113T143803`）。`C:\b\smoke\runs\` の直下の、名前が `<label>-<時刻>` の既存のフォルダにだけ空の `.keep` を書き、パス・`..`・名前の形が違うもの・無いもの・フォルダでないものは拒む。エディタは止めない。
 - `--reuse-ext`: 拡張フォルダ（`C:\b\smoke\ext\<版>-<label>\`）が既にあれば、台帳や VSIX の印が変わっていても入れ直さない。台帳（`extensions.lock.json`）を別の担当が直している最中に走らせるときに使う。
 - 最後の一覧: probe は実行の最後に、動作中の拡張・登録済みコマンド・診断の合計を取り、`probe-result.json` と `commands.json`（コマンド ID の全一覧）に残す。取れなければ `probe.snapshot` が FAIL。Phase 2 の `absentCommands` はこの `commands.json` で足りる。
 - 置換の後、`base.fixtures-intact` が試験用ワークスペースの全ファイルを fixtures と照らし、意図した 3 つ（`edit/replace.txt`・`edit/target.txt`・`tracked.txt`）以外が変わっていれば FAIL にする。

@@ -1,0 +1,45 @@
+{
+  "id": "B-3-issue-share",
+  "stage": "B",
+  "order": 230,
+  "enabled": false,
+  "intent": "課題の報告（Issue Reporter）と共有（Share）を消す。サービスの ID は何もしない実装にして残す。product.json の reportIssueUrl を消す",
+  "after": [],
+  "delete": [
+    "src/vs/workbench/contrib/issue/browser",
+    "src/vs/workbench/contrib/issue/electron-browser",
+    "src/vs/workbench/contrib/issue/test",
+    "src/vs/workbench/contrib/issue/common/issue.contribution.ts",
+    "src/vs/workbench/contrib/issue/common/issueReporterTarget.ts",
+    "src/vs/workbench/contrib/issue/common/issueReporterUtil.ts",
+    "src/vs/workbench/contrib/share/browser"
+  ],
+  "removeDependencies": {},
+  "removeLines": [
+    { "file": "src/vs/workbench/workbench.desktop.main.ts", "line": "import './contrib/issue/electron-browser/issue.contribution.js';" },
+    { "file": "src/vs/workbench/workbench.web.main.ts", "line": "import './contrib/issue/browser/issue.contribution.js';" },
+    { "file": "src/vs/workbench/workbench.common.main.ts", "line": "import './contrib/share/browser/share.contribution.js';" },
+    { "file": "src/vs/sessions/sessions.desktop.main.ts", "line": "import '../workbench/contrib/issue/electron-browser/issue.contribution.js';" },
+    { "file": "src/vs/sessions/sessions.web.main.ts", "line": "import '../workbench/contrib/issue/browser/issue.contribution.js';" },
+    { "file": "src/vs/sessions/sessions.common.main.ts", "line": "import '../workbench/contrib/share/browser/share.contribution.js';" }
+  ],
+  "productRemove": ["reportIssueUrl"],
+  "patch": "edits.patch",
+  "kept": [
+    { "path": "src/vs/workbench/contrib/issue/common/issue.ts", "reason": "サービスの ID（IWorkbenchIssueService）を contrib/extensions（拡張の「問題を報告」）と contrib/userDataSync が注入している。edits.patch で何もしない実装を登録する" },
+    { "path": "src/vs/workbench/contrib/share/common/share.ts", "reason": "拡張 API の mainThreadShare.ts（提案中の API の共有の提供者）がサービスの ID（IShareService）を注入している。拡張ホストの起動で作られるので、edits.patch で何もしない実装を登録する" }
+  ],
+  "checks": {
+    "absentCommands": ["workbench.action.openIssueReporter", "workbench.action.share"],
+    "absentViews": [],
+    "absentSettings": ["issueReporter.wizard.enabled", "workbench.experimental.share.enabled"],
+    "absentStrings": [
+      { "in": ["src/vs"], "text": "contrib/issue/browser/issue.contribution.js'" },
+      { "in": ["src/vs"], "text": "contrib/issue/electron-browser/issue.contribution.js'" },
+      { "in": ["src/vs"], "text": "contrib/share/browser/share.contribution.js'" }
+    ],
+    "absentProcesses": [],
+    "absentHosts": []
+  },
+  "smoke": ["base", "claude-code", "absence"]
+}

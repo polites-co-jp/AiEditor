@@ -1,0 +1,101 @@
+{
+  "label": "1.146.0-t1",
+  "upstream": {
+    "tag": "1.146.0",
+    "commit": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+  },
+  "units": [],
+  "patches": [],
+  "lockfileDiff": "tasks/2026-11-13-p2-build-switch/trial/take-in-dev-build/lockfile.diff",
+  "toolchain": null,
+  "durations": {},
+  "zip": null,
+  "extensionsLockSha256": "6b4c3ceae7d6cb407f62bbcbd57ca50267e998975887884cc325fd26a85cce10",
+  "result": "ok",
+  "stoppedAt": null,
+  "dryRun": false,
+  "startedAt": "2026-11-13T15:32:33.283Z",
+  "finishedAt": "2026-11-13T15:32:33.835Z",
+  "paths": {
+    "buildRoot": "C:\\b",
+    "worktree": "C:\\b\\wt\\dev-build",
+    "packageDir": "C:\\b\\wt\\VSCode-win32-x64",
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-13-p2-build-switch\\trial\\take-in-dev-build\\checks.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\removals",
+    "dist": "C:\\b\\dist",
+    "logs": "C:\\b\\logs\\1.146.0-t1"
+  },
+  "config": {
+    "path": "C:/b/trial-install/cfg/none.json",
+    "exists": false,
+    "buildRootFrom": "default"
+  },
+  "stepsSelected": [
+    "lockfile"
+  ],
+  "envRemovedForChildren": [
+    "ELECTRON_RUN_AS_NODE",
+    "VSCODE_CODE_CACHE_PATH",
+    "VSCODE_CRASH_REPORTER_PROCESS_TYPE",
+    "VSCODE_CWD",
+    "VSCODE_ESM_ENTRYPOINT",
+    "VSCODE_HANDLES_UNCAUGHT_ERRORS",
+    "VSCODE_IPC_HOOK",
+    "VSCODE_NLS_CONFIG",
+    "VSCODE_PID",
+    "VSCODE_PROCESS_TITLE"
+  ],
+  "steps": [
+    {
+      "name": "lockfile",
+      "status": "ok",
+      "startedAt": "2026-11-13T15:32:33.289Z",
+      "command": "C:\\Program Files\\nodejs\\node.exe e:\\develop\\self\\Team\\projects\\ai-editor\\scripts\\apply.mjs C:\\b\\wt\\dev-build --label 1.146.0-t1 --lockfile-check --checks-out e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-13-p2-build-switch\\trial\\take-in-dev-build\\checks.json --diff-out e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-13-p2-build-switch\\trial\\take-in-dev-build\\lockfile.diff",
+      "cwd": "e:\\develop\\self\\Team\\projects\\ai-editor",
+      "log": "C:\\b\\logs\\1.146.0-t1\\lockfile.log",
+      "seconds": 0.543,
+      "exitCode": 0,
+      "lockfile": {
+        "status": "ok",
+        "files": [
+          {
+            "path": "build/pnpm-lock.yaml",
+            "status": "ok",
+            "unchanged": true
+          },
+          {
+            "path": "extensions/copilot/pnpm-lock.yaml",
+            "status": "ok",
+            "unchanged": true
+          },
+          {
+            "path": "extensions/pnpm-lock.yaml",
+            "status": "ok",
+            "unchanged": true
+          },
+          {
+            "path": "pnpm-lock.yaml",
+            "status": "ok",
+            "unchanged": true
+          },
+          {
+            "path": "remote/pnpm-lock.yaml",
+            "status": "ok",
+            "unchanged": true
+          },
+          {
+            "path": "test/sanity/pnpm-lock.yaml",
+            "status": "ok",
+            "unchanged": true
+          }
+        ],
+        "diff": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-13-p2-build-switch\\trial\\take-in-dev-build\\lockfile.diff",
+        "checkedAt": "2026-11-13T15:32:33.826Z",
+        "baseRef": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+      },
+      "diff": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-13-p2-build-switch\\trial\\take-in-dev-build\\lockfile.diff"
+    }
+  ],
+  "warnings": []
+}

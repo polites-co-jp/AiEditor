@@ -1,0 +1,72 @@
+{
+  "label": "1.146.0-t1",
+  "upstream": {
+    "tag": "1.146.0",
+    "commit": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+  },
+  "units": [],
+  "patches": [],
+  "lockfileDiff": "records/take-in/1.146.0-t1/lockfile.diff",
+  "toolchain": null,
+  "durations": {
+    "zip": 72.347
+  },
+  "zip": {
+    "path": "C:\\b\\trial-build\\dist\\1.146.0-t1.zip",
+    "sha256": "49baf53be7db6b46ef4d8dbc7176547ae4a95fe25805aa2bfb5e6ff7ac0b205a",
+    "bytes": 414537065,
+    "topFolder": "Code-win32-x64-1.146.0-t1"
+  },
+  "extensionsLockSha256": "6b4c3ceae7d6cb407f62bbcbd57ca50267e998975887884cc325fd26a85cce10",
+  "result": "ok",
+  "stoppedAt": null,
+  "dryRun": false,
+  "startedAt": "2026-11-13T15:19:43.389Z",
+  "finishedAt": "2026-11-13T15:20:55.744Z",
+  "paths": {
+    "buildRoot": "C:\\b\\trial-build",
+    "worktree": "C:\\b\\wt\\1.146.0",
+    "packageDir": "C:\\b\\p0\\vscode-1.146.0",
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\records\\take-in\\1.146.0-t1\\checks.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\removals",
+    "dist": "C:\\b\\trial-build\\dist",
+    "logs": "C:\\b\\trial-build\\logs\\1.146.0-t1"
+  },
+  "config": {
+    "path": "C:/b/trial-install/cfg/none.json",
+    "exists": false,
+    "buildRootFrom": "option"
+  },
+  "stepsSelected": [
+    "zip"
+  ],
+  "envRemovedForChildren": [
+    "ELECTRON_RUN_AS_NODE",
+    "VSCODE_CODE_CACHE_PATH",
+    "VSCODE_CRASH_REPORTER_PROCESS_TYPE",
+    "VSCODE_CWD",
+    "VSCODE_ESM_ENTRYPOINT",
+    "VSCODE_HANDLES_UNCAUGHT_ERRORS",
+    "VSCODE_IPC_HOOK",
+    "VSCODE_NLS_CONFIG",
+    "VSCODE_PID",
+    "VSCODE_PROCESS_TITLE"
+  ],
+  "steps": [
+    {
+      "name": "zip",
+      "status": "ok",
+      "startedAt": "2026-11-13T15:19:43.395Z",
+      "command": "C:\\WINDOWS\\System32\\tar.exe -a -c -H -f C:\\b\\trial-build\\dist\\1.146.0-t1.zip -C C:\\b\\trial-build\\dist\\.stage-1.146.0-t1 Code-win32-x64-1.146.0-t1",
+      "log": "C:\\b\\trial-build\\logs\\1.146.0-t1\\zip.log",
+      "exitCode": 0,
+      "topFolders": [
+        "Code-win32-x64-1.146.0-t1"
+      ],
+      "entries": 3944,
+      "seconds": 72.347
+    }
+  ],
+  "warnings": []
+}

@@ -1,0 +1,35 @@
+{
+  "startedAt": "2026-11-13T15:24:26.259Z",
+  "result": "sha256-mismatch",
+  "dryRun": false,
+  "steps": [],
+  "config": {
+    "path": "C:/b/trial-install/cfg/local.json",
+    "installRoot": "C:\\b\\trial-install\\A",
+    "buildRoot": "C:\\b\\trial-build",
+    "cache": "C:\\b\\p0\\vsix"
+  },
+  "ledger": {
+    "source": "C:\\b\\trial-install\\cfg\\ledger-badsha.json",
+    "count": 1
+  },
+  "cli": "C:\\b\\trial-install\\A\\current\\bin\\code.cmd",
+  "editor": {
+    "root": "C:\\b\\trial-install\\A\\current",
+    "version": "1.146.0",
+    "nameShort": "Code",
+    "dataFolderName": ".vscode"
+  },
+  "vsix": [
+    {
+      "id": "tomoki1207.pdf",
+      "version": "1.2.2",
+      "file": "C:\\b\\p0\\vsix\\tomoki1207.pdf-1.2.2\\tomoki1207.pdf-1.2.2.vsix",
+      "languagePack": false,
+      "sha256": "5697cd022caf93fa0fdb8c5b9c3624951394d8126ed09184ad4fdbcad62dadce",
+      "sha256Ok": false
+    }
+  ],
+  "message": "SHA-256 が台帳と違う（何も入れていない）: tomoki1207.pdf",
+  "finishedAt": "2026-11-13T15:24:26.269Z"
+}

@@ -1,0 +1,450 @@
+{
+  "label": "trial-rerere-1",
+  "worktree": "C:\\b\\wt\\dev-apply",
+  "tag": "1.146.0",
+  "baseCommit": "69047191fc427f2f92828279aae1d90d8eeda7ab",
+  "headCommit": "6644e7cfd995f3348a626aa30c52ad605fb28d90",
+  "prevTag": null,
+  "dryRun": false,
+  "options": {
+    "only": [
+      "B-2-bad-conflict"
+    ],
+    "until": null,
+    "keepConflict": true
+  },
+  "inputs": {
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-13-p2-apply\\fixtures\\removals-bad",
+    "patches": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-13-p2-apply\\fixtures\\no-patches",
+    "assets": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-13-p2-apply\\fixtures\\no-assets",
+    "overlay": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-13-p2-apply\\fixtures\\product.overlay.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-13-p2-apply\\fixtures\\keep.json",
+    "extensionsSrc": "e:\\develop\\self\\Team\\projects\\ai-editor\\extensions-src",
+    "manifests": "C:/b/p0/vsix"
+  },
+  "startedAt": "2026-11-13T15:22:24.507Z",
+  "finishedAt": "2026-11-13T15:22:28.663Z",
+  "result": "fail",
+  "stoppedAt": {
+    "phase": "unit",
+    "id": "B-2-bad-conflict",
+    "message": "B-2-bad-conflict: edits.patch が当たらない（衝突: src/vs/workbench/contrib/chat/common/feedbackSurvey/chatModelFeedbackSurveyConfig.ts）"
+  },
+  "overlay": {
+    "applied": "ok",
+    "set": [
+      "nameShort",
+      "nameLong",
+      "applicationName",
+      "dataFolderName",
+      "win32ShellNameShort",
+      "builtInExtensions",
+      "shukoConfigurationDefaults"
+    ],
+    "removed": [
+      "onboardingKeymaps"
+    ],
+    "removedIfPresent": [
+      "voiceWsUrl"
+    ],
+    "commit": "4ceacea532e7ba926e57b353be58828184b9923e"
+  },
+  "units": [
+    {
+      "id": "B-2-bad-conflict",
+      "order": 202,
+      "enabled": false,
+      "applied": "error",
+      "ops": {
+        "commit": "6644e7cfd995f3348a626aa30c52ad605fb28d90",
+        "deleted": [],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [
+          {
+            "file": "src/vs/workbench/contrib/chat/common/feedbackSurvey/chatModelFeedbackSurveyConfig.ts",
+            "line": "* A survey is fully described by a versioned JSON payload delivered as an experiment treatment,",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          }
+        ],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "conflict",
+        "commit": null,
+        "subject": null,
+        "conflicts": [
+          "src/vs/workbench/contrib/chat/common/feedbackSurvey/chatModelFeedbackSurveyConfig.ts"
+        ],
+        "message": "Recorded preimage for 'src/vs/workbench/contrib/chat/common/feedbackSurvey/chatModelFeedbackSurveyConfig.ts'\nerror: Failed to merge in the changes.\nhint: Use 'git am --show-current-patch=diff' to see the failed patch\nhint: When you have resolved this problem, run \"git am --continue\".\nhint: If you prefer to skip this patch, run \"git am --skip\" instead.\nhint: To restore the original branch and stop patching, run \"git am --abort\".\nhint: Disable this message with \"git config set advice.mergeConflict false\"\nApplying: unit B-2-bad-conflict: edits\nUsing index info to reconstruct a base tree...\nM\tsrc/vs/workbench/contrib/chat/common/feedbackSurvey/chatModelFeedbackSurveyConfig.ts\nFalling back to patching base and 3-way merge...\nAuto-merging src/vs/workbench/contrib/chat/common/feedbackSurvey/chatModelFeedbackSurveyConfig.ts\nCONFLICT (content): Merge conflict in src/vs/workbench/contrib/chat/common/feedbackSurvey/chatModelFeedbackSurveyConfig.ts\nPatch failed at 0001 unit B-2-bad-conflict: edits",
+        "keptConflict": true
+      },
+      "warnings": []
+    }
+  ],
+  "unitsSkipped": [
+    {
+      "id": "A-2-bad-zero",
+      "reason": "not in --only"
+    },
+    {
+      "id": "A-3-bad-count",
+      "reason": "not in --only"
+    },
+    {
+      "id": "B-3-bad-after",
+      "reason": "not in --only"
+    }
+  ],
+  "patches": [],
+  "assets": null,
+  "builtinExtensions": null,
+  "checks": {
+    "remnants": {
+      "status": "skipped",
+      "reason": "途中で止めた"
+    },
+    "absentStrings": {
+      "status": "skipped",
+      "reason": "途中で止めた"
+    },
+    "unclassifiedExtensions": {
+      "status": "hold",
+      "upstreamCount": 95,
+      "items": [
+        {
+          "name": "clojure",
+          "highlight": []
+        },
+        {
+          "name": "coffeescript",
+          "highlight": []
+        },
+        {
+          "name": "copilot",
+          "highlight": [
+            "copilot"
+          ]
+        },
+        {
+          "name": "cpp",
+          "highlight": []
+        },
+        {
+          "name": "csharp",
+          "highlight": []
+        },
+        {
+          "name": "css",
+          "highlight": []
+        },
+        {
+          "name": "dart",
+          "highlight": []
+        },
+        {
+          "name": "debug-auto-launch",
+          "highlight": []
+        },
+        {
+          "name": "debug-server-ready",
+          "highlight": []
+        },
+        {
+          "name": "diff",
+          "highlight": []
+        },
+        {
+          "name": "docker",
+          "highlight": []
+        },
+        {
+          "name": "extension-editing",
+          "highlight": []
+        },
+        {
+          "name": "fsharp",
+          "highlight": []
+        },
+        {
+          "name": "github",
+          "highlight": []
+        },
+        {
+          "name": "github-authentication",
+          "highlight": []
+        },
+        {
+          "name": "go",
+          "highlight": []
+        },
+        {
+          "name": "groovy",
+          "highlight": []
+        },
+        {
+          "name": "grunt",
+          "highlight": []
+        },
+        {
+          "name": "handlebars",
+          "highlight": []
+        },
+        {
+          "name": "hlsl",
+          "highlight": []
+        },
+        {
+          "name": "html",
+          "highlight": []
+        },
+        {
+          "name": "ini",
+          "highlight": []
+        },
+        {
+          "name": "ipynb",
+          "highlight": []
+        },
+        {
+          "name": "jake",
+          "highlight": []
+        },
+        {
+          "name": "java",
+          "highlight": []
+        },
+        {
+          "name": "javascript",
+          "highlight": []
+        },
+        {
+          "name": "json",
+          "highlight": []
+        },
+        {
+          "name": "julia",
+          "highlight": []
+        },
+        {
+          "name": "latex",
+          "highlight": []
+        },
+        {
+          "name": "less",
+          "highlight": []
+        },
+        {
+          "name": "log",
+          "highlight": []
+        },
+        {
+          "name": "lua",
+          "highlight": []
+        },
+        {
+          "name": "make",
+          "highlight": []
+        },
+        {
+          "name": "mermaid-markdown-features",
+          "highlight": []
+        },
+        {
+          "name": "microsoft-authentication",
+          "highlight": []
+        },
+        {
+          "name": "notebook-renderers",
+          "highlight": []
+        },
+        {
+          "name": "objective-c",
+          "highlight": []
+        },
+        {
+          "name": "perl",
+          "highlight": []
+        },
+        {
+          "name": "php",
+          "highlight": []
+        },
+        {
+          "name": "php-language-features",
+          "highlight": []
+        },
+        {
+          "name": "prompt-basics",
+          "highlight": []
+        },
+        {
+          "name": "pug",
+          "highlight": []
+        },
+        {
+          "name": "r",
+          "highlight": []
+        },
+        {
+          "name": "razor",
+          "highlight": []
+        },
+        {
+          "name": "restructuredtext",
+          "highlight": []
+        },
+        {
+          "name": "ruby",
+          "highlight": []
+        },
+        {
+          "name": "rust",
+          "highlight": []
+        },
+        {
+          "name": "scss",
+          "highlight": []
+        },
+        {
+          "name": "shaderlab",
+          "highlight": []
+        },
+        {
+          "name": "simple-browser",
+          "highlight": []
+        },
+        {
+          "name": "sql",
+          "highlight": []
+        },
+        {
+          "name": "swift",
+          "highlight": []
+        },
+        {
+          "name": "terminal-suggest",
+          "highlight": []
+        },
+        {
+          "name": "theme-abyss",
+          "highlight": []
+        },
+        {
+          "name": "theme-kimbie-dark",
+          "highlight": []
+        },
+        {
+          "name": "theme-modern-icons",
+          "highlight": []
+        },
+        {
+          "name": "theme-monokai",
+          "highlight": []
+        },
+        {
+          "name": "theme-monokai-dimmed",
+          "highlight": []
+        },
+        {
+          "name": "theme-quietlight",
+          "highlight": []
+        },
+        {
+          "name": "theme-red",
+          "highlight": []
+        },
+        {
+          "name": "theme-solarized-dark",
+          "highlight": []
+        },
+        {
+          "name": "theme-solarized-light",
+          "highlight": []
+        },
+        {
+          "name": "theme-tomorrow-night-blue",
+          "highlight": []
+        },
+        {
+          "name": "tunnel-forwarding",
+          "highlight": []
+        },
+        {
+          "name": "typescript-basics",
+          "highlight": []
+        },
+        {
+          "name": "vb",
+          "highlight": []
+        },
+        {
+          "name": "vscode-api-tests",
+          "highlight": []
+        },
+        {
+          "name": "vscode-colorize-perf-tests",
+          "highlight": []
+        },
+        {
+          "name": "vscode-colorize-tests",
+          "highlight": []
+        },
+        {
+          "name": "vscode-test-resolver",
+          "highlight": []
+        },
+        {
+          "name": "xml",
+          "highlight": []
+        },
+        {
+          "name": "yaml",
+          "highlight": []
+        }
+      ],
+      "nonExtensionDirs": [
+        "types"
+      ]
+    },
+    "upstreamAdditions": {
+      "status": "skipped",
+      "reason": "--prev-tag が無い"
+    },
+    "dependencies": {
+      "status": "skipped",
+      "reason": "--prev-tag が無い"
+    },
+    "toolchain": {
+      "status": "info",
+      "nvmrc": {
+        "prev": null,
+        "now": "24.22.1",
+        "changed": null
+      },
+      "electron": {
+        "prev": null,
+        "now": "43.8.6",
+        "changed": null
+      },
+      "reason": "--prev-tag が無い"
+    },
+    "registeredKeys": {
+      "status": "skipped",
+      "reason": "途中で止めた"
+    },
+    "lockfile": {
+      "status": "pending",
+      "reason": "依存の導入の後に --lockfile-check（build.mjs は checkLockfiles）で埋める"
+    }
+  },
+  "warnings": [
+    "overlay.remove: noSuchKeyForWarning が本家の product.json に無い（改名の恐れ）",
+    "overlay.removeIfPresent: 本家の product.json に voiceWsUrl がある（本家が足した）。外した"
+  ],
+  "errors": []
+}

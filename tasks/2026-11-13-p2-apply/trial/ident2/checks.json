@@ -1,0 +1,524 @@
+{
+  "label": "trial-ident2",
+  "worktree": "C:\\b\\wt\\dev-apply",
+  "tag": "1.146.0",
+  "baseCommit": "69047191fc427f2f92828279aae1d90d8eeda7ab",
+  "headCommit": "ffe1148ee46e1bdbfb8cec5d2fea9788bd852a8b",
+  "prevTag": null,
+  "dryRun": false,
+  "options": {
+    "only": [
+      "A-6-themes"
+    ],
+    "until": null,
+    "keepConflict": false
+  },
+  "inputs": {
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\removals",
+    "patches": "e:\\develop\\self\\Team\\projects\\ai-editor\\patches",
+    "assets": "e:\\develop\\self\\Team\\projects\\ai-editor\\assets",
+    "overlay": "e:\\develop\\self\\Team\\projects\\ai-editor\\product.overlay.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "extensionsSrc": "e:\\develop\\self\\Team\\projects\\ai-editor\\extensions-src",
+    "manifests": "C:/b/p0/vsix"
+  },
+  "startedAt": "2026-11-13T15:34:08.252Z",
+  "finishedAt": "2026-11-13T15:34:17.633Z",
+  "result": "ok",
+  "stoppedAt": null,
+  "overlay": {
+    "applied": "ok",
+    "set": [
+      "nameShort",
+      "nameLong",
+      "applicationName",
+      "dataFolderName",
+      "sharedDataFolderName",
+      "urlProtocol",
+      "win32MutexName",
+      "win32DirName",
+      "win32NameVersion",
+      "win32RegValueName",
+      "win32AppUserModelId",
+      "win32ShellNameShort",
+      "win32x64AppId",
+      "win32arm64AppId",
+      "win32x64UserAppId",
+      "win32arm64UserAppId",
+      "builtInExtensions",
+      "shukoConfigurationDefaults"
+    ],
+    "removed": [],
+    "removedIfPresent": [],
+    "commit": "72a8de3fda5afc392eaee8927ebb834365355dcc"
+  },
+  "units": [
+    {
+      "id": "A-6-themes",
+      "order": 160,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "37d5ad4c5ef5c09e8a4ff600ec6ad4d9e6da3e64",
+        "deleted": [
+          "extensions/theme-abyss",
+          "extensions/theme-kimbie-dark",
+          "extensions/theme-modern-icons",
+          "extensions/theme-monokai",
+          "extensions/theme-monokai-dimmed",
+          "extensions/theme-quietlight",
+          "extensions/theme-red",
+          "extensions/theme-solarized-dark",
+          "extensions/theme-solarized-light",
+          "extensions/theme-tomorrow-night-blue"
+        ],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "ok",
+        "commit": "3b9e4ecf18d61973dccf1a0447663955ac6c1972",
+        "subject": "unit A-6-themes: edits",
+        "conflicts": []
+      },
+      "warnings": []
+    }
+  ],
+  "unitsSkipped": [
+    {
+      "id": "A-1-copilot-extension",
+      "reason": "not in --only"
+    },
+    {
+      "id": "A-2-accounts-extensions",
+      "reason": "not in --only"
+    },
+    {
+      "id": "A-3-debug-extensions",
+      "reason": "not in --only"
+    },
+    {
+      "id": "A-4-notebook-extensions",
+      "reason": "not in --only"
+    },
+    {
+      "id": "A-5-remote-extensions",
+      "reason": "not in --only"
+    },
+    {
+      "id": "A-7-unused-extensions",
+      "reason": "not in --only"
+    },
+    {
+      "id": "B-1-telemetry",
+      "reason": "not in --only"
+    },
+    {
+      "id": "B-2-onboarding-experiments-surveys",
+      "reason": "not in --only"
+    },
+    {
+      "id": "B-3-issue-share",
+      "reason": "not in --only"
+    },
+    {
+      "id": "B-4-outline-view",
+      "reason": "not in --only"
+    },
+    {
+      "id": "B-5-theme-switching",
+      "reason": "not in --only"
+    },
+    {
+      "id": "B-6-online-feeds",
+      "reason": "not in --only"
+    },
+    {
+      "id": "B-7-terminal-suggest",
+      "reason": "not in --only"
+    }
+  ],
+  "patches": [
+    {
+      "file": "patches/20-product-configuration-defaults.patch",
+      "applied": "ok",
+      "commit": "f2cda0b36bd08aa8ac553a19281683e437f6e11d",
+      "subject": "shuko: register product.json shukoConfigurationDefaults as configuration defaults",
+      "conflicts": []
+    }
+  ],
+  "assets": {
+    "applied": "ok",
+    "copied": [
+      "src/vs/workbench/browser/media/code-icon.svg",
+      "src/vs/workbench/browser/parts/editor/media/letterpress-dark.svg",
+      "src/vs/workbench/browser/parts/editor/media/letterpress-hcDark.svg",
+      "src/vs/workbench/browser/parts/editor/media/letterpress-hcLight.svg",
+      "src/vs/workbench/browser/parts/editor/media/letterpress-light.svg"
+    ],
+    "commit": "646a854ca965ac484ccaa0cdd3aebbd82228b4e6"
+  },
+  "builtinExtensions": {
+    "applied": "ok",
+    "copied": [
+      {
+        "name": "mydist",
+        "files": 3,
+        "list": [
+          "README.md",
+          "ThirdPartyNotices.txt",
+          "package.json"
+        ]
+      }
+    ],
+    "commit": "ffe1148ee46e1bdbfb8cec5d2fea9788bd852a8b"
+  },
+  "checks": {
+    "remnants": {
+      "status": "ok",
+      "items": []
+    },
+    "absentStrings": {
+      "status": "ok",
+      "items": [
+        {
+          "unit": "A-6-themes",
+          "text": "extensions/theme-abyss/",
+          "in": [
+            "src/vs/workbench/test/browser/componentFixtures"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-6-themes",
+          "text": "extensions/theme-monokai/",
+          "in": [
+            "src/vs/workbench/test/browser/componentFixtures"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-6-themes",
+          "text": "extensions/theme-quietlight/",
+          "in": [
+            "src/vs/workbench/test/browser/componentFixtures"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-6-themes",
+          "text": "extensions/theme-solarized-dark/",
+          "in": [
+            "src/vs/workbench/test/browser/componentFixtures"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-6-themes",
+          "text": "extensions/theme-solarized-light/",
+          "in": [
+            "src/vs/workbench/test/browser/componentFixtures"
+          ],
+          "hitCount": 0,
+          "hits": []
+        }
+      ]
+    },
+    "unclassifiedExtensions": {
+      "status": "ok",
+      "upstreamCount": 95,
+      "items": [],
+      "nonExtensionDirs": [
+        "types"
+      ]
+    },
+    "upstreamAdditions": {
+      "status": "skipped",
+      "reason": "--prev-tag が無い"
+    },
+    "dependencies": {
+      "status": "skipped",
+      "reason": "--prev-tag が無い"
+    },
+    "toolchain": {
+      "status": "info",
+      "nvmrc": {
+        "prev": null,
+        "now": "24.22.1",
+        "changed": null
+      },
+      "electron": {
+        "prev": null,
+        "now": "43.8.6",
+        "changed": null
+      },
+      "reason": "--prev-tag が無い"
+    },
+    "registeredKeys": {
+      "status": "ok",
+      "product": [
+        {
+          "key": "nameShort",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "nameLong",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "applicationName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "dataFolderName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "sharedDataFolderName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "urlProtocol",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32MutexName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32DirName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32NameVersion",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32RegValueName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32AppUserModelId",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32ShellNameShort",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32x64AppId",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32arm64AppId",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32x64UserAppId",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32arm64UserAppId",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "builtInExtensions",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "shukoConfigurationDefaults",
+          "status": "referenced",
+          "foundIn": "src/vs/platform/configuration/common/configurationRegistry.ts"
+        }
+      ],
+      "settings": [
+        {
+          "key": "chat.disableAIFeatures",
+          "from": "mydist",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/sessions/providers/remoteAgentHost/electron-browser/remotesEditor.ts"
+        },
+        {
+          "key": "workbench.colorTheme",
+          "from": "mydist",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/services/themes/common/workbenchThemeService.ts"
+        },
+        {
+          "key": "breadcrumbs.enabled",
+          "from": "mydist",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/browser/parts/editor/breadcrumbs.ts"
+        },
+        {
+          "key": "workbench.startupEditor",
+          "from": "mydist",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/welcomeGettingStarted/browser/gettingStarted.contribution.ts"
+        },
+        {
+          "key": "basedpyright.importStrategy",
+          "from": "mydist",
+          "status": "lockManifest",
+          "foundIn": "detachhead.basedpyright"
+        },
+        {
+          "key": "typescript.disableAutomaticTypeAcquisition",
+          "from": "mydist",
+          "status": "extension",
+          "foundIn": "extensions/typescript-language-features/package.json"
+        },
+        {
+          "key": "npm.fetchOnlinePackageInfo",
+          "from": "mydist",
+          "status": "extension",
+          "foundIn": "extensions/npm/package.json"
+        },
+        {
+          "key": "json.schemaDownload.enable",
+          "from": "mydist",
+          "status": "extension",
+          "foundIn": "extensions/json-language-features/package.json"
+        },
+        {
+          "key": "workbench.settings.enableNaturalLanguageSearch",
+          "from": "mydist",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/preferences/common/preferences.ts"
+        },
+        {
+          "key": "terminal.integrated.suggest.enabled",
+          "from": "mydist",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/terminalContrib/suggest/common/terminalSuggestConfiguration.ts"
+        },
+        {
+          "key": "claudeCode.environmentVariables",
+          "from": "mydist",
+          "status": "lockManifest",
+          "foundIn": "anthropic.claude-code"
+        },
+        {
+          "key": "extensions.allowed",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/platform/extensionManagement/common/extensionManagement.ts"
+        },
+        {
+          "key": "telemetry.telemetryLevel",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/platform/telemetry/common/telemetry.ts"
+        },
+        {
+          "key": "update.mode",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/update/browser/updateTooltip.ts"
+        },
+        {
+          "key": "workbench.enableExperiments",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/services/telemetry/common/workbenchTelemetryUtils.ts"
+        },
+        {
+          "key": "extensions.autoUpdate",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/telemetry/browser/telemetry.contribution.ts"
+        },
+        {
+          "key": "extensions.autoCheckUpdates",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/extensions/common/extensions.ts"
+        }
+      ],
+      "manifestsMissing": []
+    },
+    "lockfile": {
+      "status": "pending",
+      "reason": "依存の導入の後に --lockfile-check（build.mjs は checkLockfiles）で埋める"
+    },
+    "commitIdentity": {
+      "status": "warn",
+      "expected": "shuko-apply <apply@shuko.invalid>",
+      "items": [
+        {
+          "sha": "3b9e4ecf18d61973dccf1a0447663955ac6c1972",
+          "subject": "unit A-6-themes: edits",
+          "author": "Shuko removals <removals@shuko.invalid>",
+          "committer": "shuko-apply <apply@shuko.invalid>"
+        }
+      ]
+    }
+  },
+  "warnings": [
+    "コミットの名前が shuko-apply <apply@shuko.invalid> でない: unit A-6-themes: edits（作者 Shuko removals <removals@shuko.invalid>、コミッター shuko-apply <apply@shuko.invalid>）"
+  ],
+  "errors": [],
+  "commits": [
+    {
+      "sha": "72a8de3fda5afc392eaee8927ebb834365355dcc",
+      "subject": "apply: product.json overlay",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "37d5ad4c5ef5c09e8a4ff600ec6ad4d9e6da3e64",
+      "subject": "unit A-6-themes: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "3b9e4ecf18d61973dccf1a0447663955ac6c1972",
+      "subject": "unit A-6-themes: edits",
+      "author": "Shuko removals <removals@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "f2cda0b36bd08aa8ac553a19281683e437f6e11d",
+      "subject": "shuko: register product.json shukoConfigurationDefaults as configuration defaults",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "646a854ca965ac484ccaa0cdd3aebbd82228b4e6",
+      "subject": "apply: assets",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "ffe1148ee46e1bdbfb8cec5d2fea9788bd852a8b",
+      "subject": "apply: builtin extensions",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    }
+  ]
+}

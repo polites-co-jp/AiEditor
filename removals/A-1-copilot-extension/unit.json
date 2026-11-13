@@ -1,0 +1,50 @@
+{
+  "id": "A-1-copilot-extension",
+  "stage": "A",
+  "order": 110,
+  "enabled": false,
+  "intent": "組み込みの GitHub Copilot 拡張（extensions/copilot。GitHub.copilot-chat 0.74.0）と、AI のプロンプト・指示・エージェント・スキルのファイルの言語（extensions/prompt-basics）を消す。ビルドの一覧と、拡張の分のビルドの手順・postinstall の .claude/ の symlink も外す。本体の AI（contrib/chat など）と @github/copilot-sdk は C-1 で消す",
+  "after": [],
+  "delete": [
+    "extensions/copilot",
+    "extensions/prompt-basics"
+  ],
+  "removeDependencies": {},
+  "removeLines": [
+    { "file": "build/npm/dirs.ts", "line": "'extensions/copilot'," },
+    { "file": "build/npm/dirs.ts", "line": "'extensions/copilot': ['extensions/copilot/chat-lib']," },
+    { "file": "package.json", "line": "\"compile-copilot\": \"pnpm -C extensions/copilot run compile\"," },
+    { "file": "package.json", "line": "\"watch-copilot\": \"pnpm -C extensions/copilot run watch\"," },
+    { "file": "package.json", "line": "\"watch-copilotd\": \"deemon pnpm run watch-copilot\"," },
+    { "file": "package.json", "line": "\"kill-watch-copilotd\": \"deemon --kill pnpm run watch-copilot\"," },
+    { "file": "package.json", "line": "\"copilot:setup\": \"pnpm -C extensions/copilot run setup\"," },
+    { "file": "package.json", "line": "\"copilot:get_token\": \"pnpm -C extensions/copilot run get_token\"," }
+  ],
+  "productRemove": [],
+  "patch": "edits.patch",
+  "kept": [
+    { "path": "build/lib/copilot.ts", "reason": "本体の @github/copilot-sdk（エージェントのホスト）の梱包も担うので C-1 まで残す。拡張の分の prepareBuiltInCopilotRipgrepShim は、拡張のフォルダが無ければ何もしないようにした（edits.patch）" },
+    { "path": "build/next/build-fast.ts", "reason": "開発用の速いビルド（pnpm run build-fast）。extensions/copilot を読むので動かなくなるが、本ビルド（gulp vscode-win32-x64-min）では使わない。直すとパッチが大きくなるので残す" },
+    { "path": "eslint.config.js", "reason": "extensions/copilot/.eslintplugin を import しているので eslint は動かなくなる。eslint は関門（docs/03 の7節）に入っていないので直さない" }
+  ],
+  "checks": {
+    "absentCommands": [
+      "github.copilot.cli.sessions.delete",
+      "github.copilot.chat.triggerPermissiveSignIn"
+    ],
+    "absentViews": [],
+    "absentSettings": [
+      "github.copilot.chat.backgroundAgent.enabled"
+    ],
+    "absentStrings": [
+      { "in": ["build/npm/dirs.ts"], "text": "'extensions/copilot'" },
+      { "in": ["package.json"], "text": "-C extensions/copilot" },
+      { "in": ["package.json"], "text": "watch-copilot" },
+      { "in": ["build/npm/postinstall.ts"], "text": "ensureAgentHarnessLink" },
+      { "in": ["build/npm/postinstall.ts"], "text": "copilot-instructions.md" }
+    ],
+    "absentProcesses": [],
+    "absentHosts": []
+  },
+  "smoke": ["base", "claude-code", "languages", "absence"]
+}

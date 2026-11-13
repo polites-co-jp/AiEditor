@@ -11,7 +11,7 @@ import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { SMOKE_ROOT, VSIX_ROOT, assertSafeWritePath, cleanEditorEnv, readJson } from './common.mjs';
+import { SMOKE_ROOT, assertSafeWritePath, cleanEditorEnv, readJson, resolveVsixRoot } from './common.mjs';
 
 /** 台帳（extensions.lock.json）の id と版。 */
 export function readLedger(lockPath) {
@@ -32,7 +32,7 @@ export function defaultExtensionIds(ledger) {
  * C:\b\p0\vsix の下から VSIX を探す。台帳の版を優先し、無ければ新しい版。
  * ファイル名: <id>-<version>[@<platform>].vsix（id の大文字小文字は問わない）。
  */
-export function findVsix(id, wantVersion, root = VSIX_ROOT) {
+export function findVsix(id, wantVersion, root = resolveVsixRoot()) {
   const files = [];
   const rd = (d) => (existsSync(d) ? readdirSync(d, { withFileTypes: true }) : []);
   for (const e of rd(root)) {

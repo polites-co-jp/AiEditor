@@ -1,0 +1,24 @@
+From 4dc955d6c6ab9c90ed294ac8eb7ea38e1b091498 Mon Sep 17 00:00:00 2001
+From: shuko-apply <apply@shuko.invalid>
+Date: Sat, 14 Nov 2026 00:18:00 +0900
+Subject: [PATCH] patch: trial shukoConfigurationDefaults type
+
+---
+ src/vs/base/common/product.ts | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/vs/base/common/product.ts b/src/vs/base/common/product.ts
+index 37cbeefd169..69cb87589d2 100644
+--- a/src/vs/base/common/product.ts
++++ b/src/vs/base/common/product.ts
+@@ -284,6 +284,7 @@ export interface IProductConfiguration {
+ 	readonly chatSessionRecommendations?: IChatSessionRecommendation[];
+ 	readonly emergencyAlertUrl?: string;
+ 	readonly voiceWsUrl?: string;
++	readonly shukoConfigurationDefaults?: IStringDictionary<unknown>;
+ 
+ 	readonly remoteDefaultExtensionsIfInstalledLocally?: string[];
+ 
+-- 
+2.54.0.windows.1
+

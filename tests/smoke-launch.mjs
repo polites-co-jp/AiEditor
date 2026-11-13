@@ -5,7 +5,7 @@
 import { spawn } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
-import { DEFAULT_BUILD, SMOKE_ROOT, cleanEditorEnv, listProcesses, removeOwnLocks, resolveEditor, snapshotLocks, stopTree, treeFromProcesses } from './smoke/lib/common.mjs';
+import { DEFAULT_BUILD, SMOKE_ROOT, cleanEditorEnv, listProcesses, removeOwnLocks, resolveEditor, resolveVsixRoot, snapshotLocks, stopTree, treeFromProcesses } from './smoke/lib/common.mjs';
 import { buildUserSettings, defaultExtensionIds, findVsix, prepareExtensions, prepareRunDir, readLedger } from './smoke/lib/env.mjs';
 import { createWorkspace } from './smoke/lib/fixtures.mjs';
 import { REPO_ROOT } from './smoke/lib/run.mjs';
@@ -20,8 +20,9 @@ try {
   const editor = resolveEditor(build);
   if (!editor.portableOk) throw new Error('product.json に "target" がある（ポータブルにできない）。普段使いのデータを避けられないので止める');
   const ledger = readLedger(join(REPO_ROOT, 'extensions.lock.json'));
+  const vsixRoot = resolveVsixRoot({ vsixRoot: get('vsix-root', null) }); // 既定 <buildRoot>\cache\vsix
   const vsix = defaultExtensionIds(ledger).map((id) => {
-    const f = findVsix(id, ledger.find((e) => e.id.toLowerCase() === id.toLowerCase())?.version);
+    const f = findVsix(id, ledger.find((e) => e.id.toLowerCase() === id.toLowerCase())?.version, vsixRoot);
     return { id, version: f.version, path: f.path };
   });
   const ext = prepareExtensions({ editor, vsix, profile: `${editor.version}-${label}`, log: console.log });

@@ -1,0 +1,27 @@
+{
+  "$comment": "試し用（apply.mjs の確かめ）。本物は builtin/keep.json（p2-units-a）。docs/03 の4節の「少なくとも次を載せる」だけを写した",
+  "keep": [
+    { "name": "git", "reason": "試し" },
+    { "name": "git-base", "reason": "試し" },
+    { "name": "merge-conflict", "reason": "試し" },
+    { "name": "search-result", "reason": "試し" },
+    { "name": "markdown-language-features", "reason": "試し" },
+    { "name": "markdown-math", "reason": "試し" },
+    { "name": "markdown-basics", "reason": "試し" },
+    { "name": "typescript-language-features", "reason": "試し" },
+    { "name": "html-language-features", "reason": "試し" },
+    { "name": "css-language-features", "reason": "試し" },
+    { "name": "json-language-features", "reason": "試し" },
+    { "name": "emmet", "reason": "試し" },
+    { "name": "configuration-editing", "reason": "試し" },
+    { "name": "npm", "reason": "試し" },
+    { "name": "references-view", "reason": "試し" },
+    { "name": "theme-defaults", "reason": "試し" },
+    { "name": "theme-seti", "reason": "試し" },
+    { "name": "powershell", "reason": "試し" },
+    { "name": "dotenv", "reason": "試し" },
+    { "name": "shellscript", "reason": "試し" },
+    { "name": "bat", "reason": "試し" },
+    { "name": "python", "reason": "試し" }
+  ]
+}

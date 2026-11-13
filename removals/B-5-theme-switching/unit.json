@@ -1,0 +1,42 @@
+{
+  "id": "B-5-theme-switching",
+  "stage": "B",
+  "order": 250,
+  "enabled": false,
+  "intent": "テーマの切り替えの画面とコマンド（色・ファイルアイコン・製品アイコンのテーマの選択、明暗の切り替え、マーケットプレイスのテーマの閲覧、テーマの試し）を消す。テーマのサービスは残し、テーマは mydist の既定 workbench.colorTheme で Light Modern に固定する",
+  "after": [],
+  "delete": [
+    "src/vs/workbench/contrib/themes/browser"
+  ],
+  "removeDependencies": {},
+  "removeLines": [
+    { "file": "src/vs/workbench/workbench.common.main.ts", "line": "import './contrib/themes/browser/themes.contribution.js';" },
+    { "file": "src/vs/workbench/workbench.desktop.main.ts", "line": "import './contrib/themes/browser/themes.test.contribution.js';" },
+    { "file": "src/vs/sessions/sessions.common.main.ts", "line": "import '../workbench/contrib/themes/browser/themes.contribution.js';" },
+    { "file": "src/vs/sessions/sessions.desktop.main.ts", "line": "import '../workbench/contrib/themes/browser/themes.test.contribution.js';" }
+  ],
+  "productRemove": [],
+  "kept": [
+    { "path": "src/vs/workbench/services/themes", "reason": "テーマのサービス。色の適用と workbench.colorTheme の設定はここが行う（docs/03 の表のとおり残す）" },
+    { "path": "src/vs/workbench/contrib/themes/test", "reason": "色の登録の試験。消した browser の部分を import していない" }
+  ],
+  "checks": {
+    "absentCommands": [
+      "workbench.action.selectTheme",
+      "workbench.action.selectIconTheme",
+      "workbench.action.selectProductIconTheme",
+      "workbench.action.toggleLightDarkThemes",
+      "workbench.action.browseColorThemesInMarketplace",
+      "workbench.action.generateColorTheme"
+    ],
+    "absentViews": [],
+    "absentSettings": [],
+    "absentStrings": [
+      { "in": ["src/vs"], "text": "contrib/themes/browser/themes.contribution.js'" },
+      { "in": ["src/vs"], "text": "contrib/themes/browser/themes.test.contribution.js'" }
+    ],
+    "absentProcesses": [],
+    "absentHosts": []
+  },
+  "smoke": ["base", "claude-code", "absence"]
+}

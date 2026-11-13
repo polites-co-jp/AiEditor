@@ -1,0 +1,38 @@
+{
+  "id": "A-3-debug-extensions",
+  "stage": "A",
+  "order": 130,
+  "enabled": false,
+  "intent": "デバッグの組み込み拡張（extensions/debug-auto-launch・debug-server-ready）を消す。product.json の builtInExtensions（js-debug 系3件。ビルドのときに GitHub から取得される）を [] にするのは product.overlay.json の set（docs/02 の3節の表の『set（A-3）』）。本体のデバッガ（contrib/debug）と vscode.debug は C-2 まで残す",
+  "after": [],
+  "delete": [
+    "extensions/debug-auto-launch",
+    "extensions/debug-server-ready"
+  ],
+  "removeDependencies": {},
+  "removeLines": [
+    { "file": "build/npm/dirs.ts", "line": "'extensions/debug-auto-launch'," },
+    { "file": "build/npm/dirs.ts", "line": "'extensions/debug-server-ready'," },
+    { "file": "extensions/pnpm-workspace.yaml", "line": "- debug-auto-launch" },
+    { "file": "extensions/pnpm-workspace.yaml", "line": "- debug-server-ready" },
+    { "file": "build/gulpfile.extensions.ts", "line": "'extensions/debug-auto-launch/tsconfig.json'," },
+    { "file": "build/gulpfile.extensions.ts", "line": "'extensions/debug-server-ready/tsconfig.json'," }
+  ],
+  "productRemove": [],
+  "kept": [],
+  "checks": {
+    "absentCommands": [
+      "extension.node-debug.toggleAutoAttach"
+    ],
+    "absentViews": [],
+    "absentSettings": [],
+    "absentStrings": [
+      { "in": ["build/npm/dirs.ts", "build/gulpfile.extensions.ts", "extensions/pnpm-workspace.yaml"], "text": "debug-auto-launch" },
+      { "in": ["build/npm/dirs.ts", "build/gulpfile.extensions.ts", "extensions/pnpm-workspace.yaml"], "text": "debug-server-ready" },
+      { "in": ["product.json"], "text": "ms-vscode.js-debug" }
+    ],
+    "absentProcesses": [],
+    "absentHosts": []
+  },
+  "smoke": ["base", "claude-code", "absence"]
+}

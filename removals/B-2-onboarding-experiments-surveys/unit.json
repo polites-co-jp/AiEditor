@@ -1,0 +1,63 @@
+{
+  "id": "B-2-onboarding-experiments-surveys",
+  "stage": "B",
+  "order": 220,
+  "enabled": false,
+  "intent": "歓迎画面・ウォークスルー・新しい初回案内・アンケートを消す。実験（services/assignment）は多くの部品が注入しているので、割り当てを取りに行かない実装に差し替える。product.json の onboardingKeymaps・onboardingThemes を消す",
+  "after": [],
+  "delete": [
+    "src/vs/workbench/contrib/welcomeGettingStarted",
+    "src/vs/workbench/contrib/welcomeWalkthrough",
+    "src/vs/workbench/contrib/welcomeOnboarding",
+    "src/vs/workbench/contrib/surveys"
+  ],
+  "removeDependencies": {},
+  "removeLines": [
+    { "file": "src/vs/workbench/workbench.common.main.ts", "line": "import './contrib/surveys/browser/nps.contribution.js';" },
+    { "file": "src/vs/workbench/workbench.common.main.ts", "line": "import './contrib/surveys/browser/languageSurveys.contribution.js';" },
+    { "file": "src/vs/workbench/workbench.common.main.ts", "line": "import './contrib/welcomeGettingStarted/browser/gettingStarted.contribution.js';" },
+    { "file": "src/vs/workbench/workbench.common.main.ts", "line": "import './contrib/welcomeWalkthrough/browser/walkThrough.contribution.js';" },
+    { "file": "src/vs/workbench/workbench.common.main.ts", "line": "import './contrib/welcomeOnboarding/browser/welcomeOnboarding.contribution.js';" },
+    { "file": "src/vs/workbench/workbench.desktop.main.ts", "line": "import './contrib/surveys/browser/survey.contribution.js';" },
+    { "file": "src/vs/workbench/workbench.web.main.ts", "line": "import './contrib/surveys/browser/survey.contribution.js';" },
+    { "file": "src/vs/sessions/sessions.desktop.main.ts", "line": "import '../workbench/contrib/surveys/browser/survey.contribution.js';" },
+    { "file": "src/vs/sessions/sessions.web.main.ts", "line": "import '../workbench/contrib/surveys/browser/survey.contribution.js';" },
+    { "file": "src/vs/workbench/test/browser/componentFixtures/fixtureUtilsCss.ts", "line": "import '../../../contrib/welcomeGettingStarted/browser/gettingStartedColors.js';" },
+    { "file": "src/vs/workbench/test/browser/componentFixtures/editor/tabs.fixture.ts", "line": "import '../../../../contrib/welcomeGettingStarted/browser/media/gettingStarted.css';" },
+    { "file": "src/vs/workbench/test/browser/componentFixtures/welcome/welcomePageAgentsWindowGraphic.fixture.ts", "line": "import '../../../../contrib/welcomeGettingStarted/browser/media/gettingStarted.css';" }
+  ],
+  "productRemove": ["onboardingKeymaps", "onboardingThemes"],
+  "patch": "edits.patch",
+  "kept": [
+    { "path": "src/vs/workbench/contrib/onboarding", "reason": "案内の枠組み（スポットライト・ツアー・お試し）で、残る部品のリリースノート（contrib/update）・差分エディタのお試し（contrib/codeEditor/browser/diffEditorTryout.contribution.ts）・変更のビュー（contrib/sessionChanges）と、chat・sessions（C-1）の約70ファイルが import している。消すと残す部品へのパッチが大きくなるので残す。C-1 で消すかを決める" },
+    { "path": "src/vs/workbench/contrib/welcomeViews", "reason": "エクスプローラーの「フォルダーを開く」などの案内（docs/03 の表で消さないと決めたもの）" },
+    { "path": "src/vs/workbench/services/assignment", "reason": "実験のサービスの ID（IWorkbenchAssignmentService）を約40ファイルが注入している。edits.patch で割り当てを取りに行かない実装（noopAssignmentService.ts）を登録する。TAS の実装のクラスは残るが作られない" }
+  ],
+  "checks": {
+    "absentCommands": [
+      "workbench.action.openWalkthrough",
+      "welcome.showAllWalkthroughs",
+      "workbench.action.showInteractivePlayground",
+      "workbench.action.welcomeOnboarding2026",
+      "workbench.action.openSurvey"
+    ],
+    "absentViews": [],
+    "absentSettings": [
+      "workbench.startupEditor",
+      "workbench.welcomePage.walkthroughs.openOnInstall",
+      "workbench.welcomePage.experimentalOnboarding"
+    ],
+    "absentStrings": [
+      { "in": ["src/vs"], "text": "welcomeGettingStarted/browser/gettingStarted.contribution.js'" },
+      { "in": ["src/vs"], "text": "welcomeWalkthrough/browser/walkThrough.contribution.js'" },
+      { "in": ["src/vs"], "text": "welcomeOnboarding/browser/welcomeOnboarding.contribution.js'" },
+      { "in": ["src/vs"], "text": "contrib/surveys/browser/nps.contribution.js'" },
+      { "in": ["src/vs"], "text": "contrib/surveys/browser/languageSurveys.contribution.js'" },
+      { "in": ["src/vs"], "text": "contrib/surveys/browser/survey.contribution.js'" },
+      { "in": ["src/vs"], "text": "welcomeGettingStarted/browser/gettingStartedService.js'" }
+    ],
+    "absentProcesses": [],
+    "absentHosts": ["default.exp-tas.com"]
+  },
+  "smoke": ["base", "claude-code", "absence"]
+}

@@ -1,0 +1,38 @@
+{
+  "id": "B-1-trial-surveys",
+  "stage": "B",
+  "order": 201,
+  "enabled": true,
+  "intent": "試し用（apply.mjs の確かめ）。contrib/surveys を消し、import の行・依存1件・product.json のキーを消す。残るファイルのコメントの参照を edits.patch で直す",
+  "after": ["A-1-trial-grunt-jake"],
+  "delete": [
+    "src/vs/workbench/contrib/surveys"
+  ],
+  "removeDependencies": {
+    "package.json": ["@microsoft/1ds-core-js", "no-such-dependency"]
+  },
+  "removeLines": [
+    { "file": "src/vs/workbench/workbench.common.main.ts", "line": "import './contrib/surveys/browser/nps.contribution.js';" },
+    { "file": "src/vs/workbench/workbench.common.main.ts", "line": "import './contrib/surveys/browser/languageSurveys.contribution.js';" },
+    { "file": "src/vs/workbench/workbench.desktop.main.ts", "line": "import './contrib/surveys/browser/survey.contribution.js';" },
+    { "file": "src/vs/workbench/workbench.web.main.ts", "line": "import './contrib/surveys/browser/survey.contribution.js';" },
+    { "file": "src/vs/sessions/sessions.desktop.main.ts", "line": "import '../workbench/contrib/surveys/browser/survey.contribution.js';" },
+    { "file": "src/vs/sessions/sessions.web.main.ts", "line": "import '../workbench/contrib/surveys/browser/survey.contribution.js';" }
+  ],
+  "productRemove": ["reportIssueUrl", "noSuchProductKey"],
+  "patch": "0001-unit-B-1-trial-surveys-edits.patch",
+  "kept": [
+    { "path": "src/vs/base/test/node/uri.perf.data.txt", "reason": "試し用。パスの文字列のテストデータで、参照ではない" }
+  ],
+  "checks": {
+    "absentCommands": [],
+    "absentViews": [],
+    "absentSettings": [],
+    "absentStrings": [
+      { "in": ["src/vs"], "text": "contrib/surveys/" }
+    ],
+    "absentProcesses": [],
+    "absentHosts": []
+  },
+  "smoke": ["base"]
+}

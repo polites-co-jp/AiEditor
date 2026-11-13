@@ -1,0 +1,114 @@
+{
+  "label": "1.146.0-t0",
+  "upstream": {
+    "tag": "1.146.0",
+    "commit": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+  },
+  "units": [],
+  "patches": [],
+  "lockfileDiff": "records/take-in/1.146.0-t0/lockfile.diff",
+  "toolchain": null,
+  "durations": {
+    "zip": 0.092
+  },
+  "zip": {
+    "path": "C:\\b\\trial-build\\dist\\1.146.0-t0.zip",
+    "sha256": "cc71b1b0474290681c42817a1251ce44874e50be6dbd4bcbd084c1929b463f77",
+    "bytes": 5177,
+    "topFolder": "Shuko-win32-x64-1.146.0-t0"
+  },
+  "extensionsLockSha256": "6b4c3ceae7d6cb407f62bbcbd57ca50267e998975887884cc325fd26a85cce10",
+  "result": "ok",
+  "stoppedAt": null,
+  "dryRun": false,
+  "startedAt": "2026-11-13T15:19:00.305Z",
+  "finishedAt": "2026-11-13T15:19:00.406Z",
+  "paths": {
+    "buildRoot": "C:\\b\\trial-build",
+    "worktree": "C:\\b\\wt\\1.146.0",
+    "packageDir": "C:\\b\\trial-build\\fake\\VSCode-win32-x64",
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\records\\take-in\\1.146.0-t0\\checks.json",
+    "keep": "C:\\b\\trial-build\\fixtures\\keep.json",
+    "removals": "C:\\b\\trial-build\\fixtures\\removals-ok",
+    "dist": "C:\\b\\trial-build\\dist",
+    "logs": "C:\\b\\trial-build\\logs\\1.146.0-t0"
+  },
+  "config": {
+    "path": "C:/b/trial-install/cfg/none.json",
+    "exists": false,
+    "buildRootFrom": "option"
+  },
+  "stepsSelected": [
+    "postprocess",
+    "zip"
+  ],
+  "envRemovedForChildren": [
+    "ELECTRON_RUN_AS_NODE",
+    "VSCODE_CODE_CACHE_PATH",
+    "VSCODE_CRASH_REPORTER_PROCESS_TYPE",
+    "VSCODE_CWD",
+    "VSCODE_ESM_ENTRYPOINT",
+    "VSCODE_HANDLES_UNCAUGHT_ERRORS",
+    "VSCODE_IPC_HOOK",
+    "VSCODE_NLS_CONFIG",
+    "VSCODE_PID",
+    "VSCODE_PROCESS_TITLE"
+  ],
+  "steps": [
+    {
+      "name": "postprocess",
+      "status": "ok",
+      "startedAt": "2026-11-13T15:19:00.310Z",
+      "layout": {
+        "appDir": "C:\\b\\trial-build\\fake\\VSCode-win32-x64\\resources\\app",
+        "versionedFolder": null,
+        "exe": "Shuko.exe",
+        "cli": "bin\\shuko.cmd",
+        "version": "1.146.0",
+        "commit": "69047191fc427f2f92828279aae1d90d8eeda7ab",
+        "nameShort": "Shuko"
+      },
+      "license": {
+        "LICENSE.txt": true,
+        "ThirdPartyNotices.txt": true
+      },
+      "extensions": {
+        "unitsFrom": "removals (enabled)",
+        "unitIds": [
+          "A-9-trial"
+        ],
+        "removed": [
+          "grunt"
+        ],
+        "presentCount": 4,
+        "ok": true,
+        "residual": [],
+        "missingKeep": [],
+        "notShipped": [
+          "vscode-test-resolver"
+        ],
+        "missingOwn": [],
+        "unexpected": [
+          "ms-vscode.js-debug"
+        ]
+      },
+      "seconds": 0.002
+    },
+    {
+      "name": "zip",
+      "status": "ok",
+      "startedAt": "2026-11-13T15:19:00.313Z",
+      "command": "C:\\WINDOWS\\System32\\tar.exe -a -c -H -f C:\\b\\trial-build\\dist\\1.146.0-t0.zip -C C:\\b\\trial-build\\dist\\.stage-1.146.0-t0 Shuko-win32-x64-1.146.0-t0",
+      "log": "C:\\b\\trial-build\\logs\\1.146.0-t0\\zip.log",
+      "exitCode": 0,
+      "topFolders": [
+        "Shuko-win32-x64-1.146.0-t0"
+      ],
+      "entries": 19,
+      "seconds": 0.092
+    }
+  ],
+  "warnings": [
+    "keep.json に無い拡張が出力にある（情報）: ms-vscode.js-debug"
+  ]
+}

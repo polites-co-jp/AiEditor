@@ -1,0 +1,66 @@
+{
+  "id": "B-1-telemetry",
+  "stage": "B",
+  "order": 210,
+  "enabled": false,
+  "intent": "テレメトリを消す。1DS の送り手（src/vs/platform/telemetry の common・browser・node の 1dsAppender.ts）を同じ名前と型で何もしない実装に差し替え、workbench のテレメトリの contrib（telemetry・editTelemetry・bracketPairColorizer2Telemetry・terminalContrib/telemetry）と 1DS の依存を消す。テレメトリのサービスとそれを呼ぶ側は残す（裁定: 送信を担う部品を何もしない実装に差し替える）",
+  "after": [],
+  "delete": [
+    "src/vs/workbench/contrib/telemetry",
+    "src/vs/workbench/contrib/bracketPairColorizer2Telemetry",
+    "src/vs/workbench/contrib/terminalContrib/telemetry",
+    "src/vs/workbench/contrib/editTelemetry/common",
+    "src/vs/workbench/contrib/editTelemetry/test",
+    "src/vs/workbench/contrib/editTelemetry/browser/aiContributionFeature.ts",
+    "src/vs/workbench/contrib/editTelemetry/browser/editStats",
+    "src/vs/workbench/contrib/editTelemetry/browser/editTelemetry.contribution.ts",
+    "src/vs/workbench/contrib/editTelemetry/browser/editTelemetryContribution.ts",
+    "src/vs/workbench/contrib/editTelemetry/browser/helpers",
+    "src/vs/workbench/contrib/editTelemetry/browser/randomService.ts",
+    "src/vs/workbench/contrib/editTelemetry/browser/settingIds.ts",
+    "src/vs/workbench/contrib/editTelemetry/browser/settings.ts",
+    "src/vs/workbench/contrib/editTelemetry/browser/telemetry/agentHostEditMarkerService.ts",
+    "src/vs/workbench/contrib/editTelemetry/browser/telemetry/aiEditTelemetry/aiEditTelemetryServiceImpl.ts",
+    "src/vs/workbench/contrib/editTelemetry/browser/telemetry/arcTelemetryReporter.ts",
+    "src/vs/workbench/contrib/editTelemetry/browser/telemetry/arcTelemetrySender.ts",
+    "src/vs/workbench/contrib/editTelemetry/browser/telemetry/editSourceTrackingFeature.ts",
+    "src/vs/workbench/contrib/editTelemetry/browser/telemetry/editSourceTrackingImpl.ts",
+    "src/vs/workbench/contrib/editTelemetry/browser/telemetry/editTracker.ts",
+    "src/vs/workbench/contrib/editTelemetry/browser/telemetry/scmAdapter.ts",
+    "src/vs/platform/telemetry/test/browser/1dsAppender.test.ts",
+    "src/vs/workbench/test/browser/componentFixtures/aiStats.fixture.ts"
+  ],
+  "removeDependencies": {
+    "package.json": ["@microsoft/1ds-core-js", "@microsoft/1ds-post-js"],
+    "remote/package.json": ["@microsoft/1ds-core-js", "@microsoft/1ds-post-js"],
+    "remote/web/package.json": ["@microsoft/1ds-core-js", "@microsoft/1ds-post-js"]
+  },
+  "removeLines": [
+    { "file": "src/vs/workbench/workbench.common.main.ts", "line": "import './contrib/telemetry/browser/telemetry.contribution.js';" },
+    { "file": "src/vs/workbench/workbench.common.main.ts", "line": "import './contrib/bracketPairColorizer2Telemetry/browser/bracketPairColorizer2Telemetry.contribution.js';" },
+    { "file": "src/vs/workbench/workbench.common.main.ts", "line": "import './contrib/editTelemetry/browser/editTelemetry.contribution.js';" },
+    { "file": "src/vs/sessions/sessions.common.main.ts", "line": "import '../workbench/contrib/telemetry/browser/telemetry.contribution.js';" },
+    { "file": "src/vs/sessions/sessions.common.main.ts", "line": "import '../workbench/contrib/editTelemetry/browser/editTelemetry.contribution.js';" },
+    { "file": "src/vs/workbench/contrib/terminal/terminal.all.ts", "line": "import '../terminalContrib/telemetry/browser/terminal.telemetry.contribution.js';" }
+  ],
+  "productRemove": [],
+  "patch": "edits.patch",
+  "kept": [
+    { "path": "src/vs/workbench/contrib/editTelemetry/browser/telemetry/aiEditTelemetry/aiEditTelemetryService.ts", "reason": "サービスの ID（IAiEditTelemetryService）を拡張 API の mainThreadLanguageFeatures.ts と chat（C-1 まで）が注入している。edits.patch で何もしない実装を登録する" }
+  ],
+  "checks": {
+    "absentCommands": ["workbench.action.showTelemetry"],
+    "absentViews": [],
+    "absentSettings": ["telemetry.editStats.enabled", "editor.aiStats.enabled"],
+    "absentStrings": [
+      { "in": ["src/vs"], "text": "mobile.events.data.microsoft.com" },
+      { "in": ["src/vs"], "text": "contrib/telemetry/browser/telemetry.contribution.js'" },
+      { "in": ["src/vs"], "text": "contrib/bracketPairColorizer2Telemetry/browser/bracketPairColorizer2Telemetry.contribution.js'" },
+      { "in": ["src/vs"], "text": "contrib/editTelemetry/browser/editTelemetry.contribution.js'" },
+      { "in": ["src/vs"], "text": "terminalContrib/telemetry/browser/terminal.telemetry.contribution.js'" }
+    ],
+    "absentProcesses": [],
+    "absentHosts": ["mobile.events.data.microsoft.com"]
+  },
+  "smoke": ["base", "claude-code", "languages", "absence"]
+}

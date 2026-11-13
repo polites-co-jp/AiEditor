@@ -1,0 +1,382 @@
+From 32f224e2f8e18a959cd279f85e4b475b5b62d9c6 Mon Sep 17 00:00:00 2001
+From: shuko-apply <apply@shuko.invalid>
+Date: Sat, 14 Nov 2026 00:14:43 +0900
+Subject: [PATCH] unit B-1-telemetry: edits
+
+Replace the 1DS appenders with implementations that send nothing, and keep the AI edit telemetry service id with an implementation that records nothing. Part of Shuko removal unit B-1-telemetry.
+---
+ .../platform/telemetry/browser/1dsAppender.ts |  10 +-
+ .../platform/telemetry/common/1dsAppender.ts  | 160 ++----------------
+ src/vs/platform/telemetry/node/1dsAppender.ts | 106 +-----------
+ .../aiEditTelemetry/aiEditTelemetryService.ts |  18 ++
+ 4 files changed, 38 insertions(+), 256 deletions(-)
+
+diff --git a/src/vs/platform/telemetry/browser/1dsAppender.ts b/src/vs/platform/telemetry/browser/1dsAppender.ts
+index 184da1d0a9a..b4661d9e9d6 100644
+--- a/src/vs/platform/telemetry/browser/1dsAppender.ts
++++ b/src/vs/platform/telemetry/browser/1dsAppender.ts
+@@ -5,20 +5,14 @@
+
+ import { AbstractOneDataSystemAppender, IAppInsightsCore } from '../common/1dsAppender.js';
+
+-
++// Shuko (B-1-telemetry): sends nothing. The request to the 1DS health endpoint is removed.
+ export class OneDataSystemWebAppender extends AbstractOneDataSystemAppender {
+ 	constructor(
+ 		isInternalTelemetry: boolean,
+ 		eventPrefix: string,
+ 		defaultData: { [key: string]: unknown } | null,
+-		iKeyOrClientFactory: string | (() => IAppInsightsCore), // allow factory function for testing
++		iKeyOrClientFactory: string | (() => IAppInsightsCore),
+ 	) {
+ 		super(isInternalTelemetry, eventPrefix, defaultData, iKeyOrClientFactory);
+-
+-		// If we cannot fetch the endpoint it means it is down and we should not send any telemetry.
+-		// This is most likely due to ad blockers
+-		fetch(this.endPointHealthUrl, { method: 'GET' }).catch(err => {
+-			this._aiCoreOrKey = undefined;
+-		});
+ 	}
+ }
+diff --git a/src/vs/platform/telemetry/common/1dsAppender.ts b/src/vs/platform/telemetry/common/1dsAppender.ts
+index 9298c26e970..00deeaf02e5 100644
+--- a/src/vs/platform/telemetry/common/1dsAppender.ts
++++ b/src/vs/platform/telemetry/common/1dsAppender.ts
+@@ -3,164 +3,30 @@
+  *  Licensed under the MIT License. See License.txt in the project root for license information.
+  *--------------------------------------------------------------------------------------------*/
+
+-import type { IExtendedConfiguration, IExtendedTelemetryItem, ITelemetryItem, ITelemetryUnloadState } from '@microsoft/1ds-core-js';
+-import type { IChannelConfiguration, IXHROverride, PostChannel } from '@microsoft/1ds-post-js';
+-import { importAMDNodeModule } from '../../../amdX.js';
+-import { onUnexpectedError } from '../../../base/common/errors.js';
+-import { mixin } from '../../../base/common/objects.js';
+-import { isWeb } from '../../../base/common/platform.js';
+-import { ITelemetryAppender, validateTelemetryData } from './telemetryUtils.js';
++// Shuko (B-1-telemetry): the 1DS sender is replaced with an implementation that sends nothing.
++// It has no endpoint and no key, and does not load @microsoft/1ds-core-js or @microsoft/1ds-post-js.
+
+-// Interface type which is a subset of @microsoft/1ds-core-js AppInsightsCore.
+-// Allows us to more easily build mock objects for testing as the interface is quite large and we only need a few properties.
++import { ITelemetryAppender } from './telemetryUtils.js';
++
++// Kept for the callers that pass a client factory. Nothing is ever created from it.
+ export interface IAppInsightsCore {
+ 	pluginVersionString: string;
+-	track(item: ITelemetryItem | IExtendedTelemetryItem): void;
+-	unload(isAsync: boolean, unloadComplete: (unloadState: ITelemetryUnloadState) => void): void;
+-}
+-
+-const endpointUrl = 'https://mobile.events.data.microsoft.com/OneCollector/1.0';
+-const endpointHealthUrl = 'https://mobile.events.data.microsoft.com/ping';
+-
+-/** Fills in the envelope fields every event needs, including the internal-only routing flag. */
+-export function applyEnvelopeDefaults(envelope: ITelemetryItem, isInternalMachine: boolean | undefined): void {
+-	// Opt the user out of 1DS data sharing
+-	envelope['ext'] = envelope['ext'] ?? {};
+-	envelope['ext']['web'] = envelope['ext']['web'] ?? {};
+-	envelope['ext']['web']['consentDetails'] = '{"GPC_DataSharingOptIn":false}';
+-
+-	// An internal account is only known after sign-in, so check each event and not just the machine.
+-	// `validateTelemetryData` turns the boolean common property into the measurement `1`.
+-	const baseData = envelope['baseData'] as { measurements?: Record<string, unknown> } | undefined;
+-	if (isInternalMachine || baseData?.measurements?.['common.msftInternal'] === 1) {
+-		envelope['ext']['utc'] = envelope['ext']['utc'] ?? {};
+-		// Sets it to be internal only based on Windows UTC flagging
+-		envelope['ext']['utc']['flags'] = 0x0000811ECD;
+-	}
+-}
+-
+-async function getClient(instrumentationKey: string, addInternalFlag?: boolean, xhrOverride?: IXHROverride): Promise<IAppInsightsCore> {
+-	// eslint-disable-next-line local/code-amd-node-module
+-	const oneDs = isWeb ? await importAMDNodeModule<typeof import('@microsoft/1ds-core-js')>('@microsoft/1ds-core-js', 'bundle/ms.core.min.js') : await import('@microsoft/1ds-core-js');
+-	// eslint-disable-next-line local/code-amd-node-module
+-	const postPlugin = isWeb ? await importAMDNodeModule<typeof import('@microsoft/1ds-post-js')>('@microsoft/1ds-post-js', 'bundle/ms.post.min.js') : await import('@microsoft/1ds-post-js');
+-
+-	const appInsightsCore = new oneDs.AppInsightsCore();
+-	const collectorChannelPlugin: PostChannel = new postPlugin.PostChannel();
+-	// Configure the app insights core to send to collector++ and disable logging of debug info
+-	const coreConfig: IExtendedConfiguration = {
+-		instrumentationKey,
+-		endpointUrl,
+-		loggingLevelTelemetry: 0,
+-		loggingLevelConsole: 0,
+-		disableCookiesUsage: true,
+-		disableDbgExt: true,
+-		disableInstrumentationKeyValidation: true,
+-		channels: [[
+-			collectorChannelPlugin
+-		]]
+-	};
+-
+-	if (xhrOverride) {
+-		coreConfig.extensionConfig = {};
+-		// Configure the channel to use a XHR Request override since it's not available in node
+-		const channelConfig: IChannelConfiguration = {
+-			alwaysUseXhrOverride: true,
+-			ignoreMc1Ms0CookieProcessing: true,
+-			httpXHROverride: xhrOverride
+-		};
+-		coreConfig.extensionConfig[collectorChannelPlugin.identifier] = channelConfig;
+-	}
+-
+-	appInsightsCore.initialize(coreConfig, []);
+-
+-	appInsightsCore.addTelemetryInitializer(envelope => applyEnvelopeDefaults(envelope, addInternalFlag));
+-
+-	return appInsightsCore;
++	track(item: unknown): void;
++	unload(isAsync: boolean, unloadComplete: (unloadState: unknown) => void): void;
+ }
+
+-// TODO @lramos15 maybe make more in line with src/vs/platform/telemetry/browser/appInsightsAppender.ts with caching support
+ export abstract class AbstractOneDataSystemAppender implements ITelemetryAppender {
+
+-	protected _aiCoreOrKey: IAppInsightsCore | string | undefined;
+-	private _asyncAiCore: Promise<IAppInsightsCore> | null;
+-	protected readonly endPointUrl = endpointUrl;
+-	protected readonly endPointHealthUrl = endpointHealthUrl;
+-
+ 	constructor(
+-		private readonly _isInternalTelemetry: boolean,
+-		private _eventPrefix: string,
+-		private _defaultData: { [key: string]: unknown } | null,
+-		iKeyOrClientFactory: string | (() => IAppInsightsCore), // allow factory function for testing
+-		private _xhrOverride?: IXHROverride
+-	) {
+-		if (!this._defaultData) {
+-			this._defaultData = {};
+-		}
+-
+-		if (typeof iKeyOrClientFactory === 'function') {
+-			this._aiCoreOrKey = iKeyOrClientFactory();
+-		} else {
+-			this._aiCoreOrKey = iKeyOrClientFactory;
+-		}
+-		this._asyncAiCore = null;
+-	}
+-
+-	private _withAIClient(callback: (aiCore: IAppInsightsCore) => void): void {
+-		if (!this._aiCoreOrKey) {
+-			return;
+-		}
++		_isInternalTelemetry: boolean,
++		_eventPrefix: string,
++		_defaultData: { [key: string]: unknown } | null,
++		_iKeyOrClientFactory: string | (() => IAppInsightsCore),
++	) { }
+
+-		if (typeof this._aiCoreOrKey !== 'string') {
+-			callback(this._aiCoreOrKey);
+-			return;
+-		}
+-
+-		if (!this._asyncAiCore) {
+-			this._asyncAiCore = getClient(this._aiCoreOrKey, this._isInternalTelemetry, this._xhrOverride);
+-		}
+-
+-		this._asyncAiCore.then(
+-			(aiClient) => {
+-				callback(aiClient);
+-			},
+-			(err) => {
+-				onUnexpectedError(err);
+-				console.error(err);
+-			}
+-		);
+-	}
+-
+-	log(eventName: string, data?: unknown): void {
+-		if (!this._aiCoreOrKey) {
+-			return;
+-		}
+-		data = mixin(data, this._defaultData);
+-		const validatedData = validateTelemetryData(data);
+-		const name = this._eventPrefix + '/' + eventName;
+-
+-		try {
+-			this._withAIClient((aiClient) => {
+-				aiClient.pluginVersionString = validatedData?.properties.version ?? 'Unknown';
+-				aiClient.track({
+-					name,
+-					baseData: { name, properties: validatedData?.properties, measurements: validatedData?.measurements }
+-				});
+-			});
+-		} catch { }
+-	}
++	log(_eventName: string, _data?: unknown): void { }
+
+ 	flush(): Promise<void> {
+-		if (this._aiCoreOrKey) {
+-			return new Promise(resolve => {
+-				this._withAIClient((aiClient) => {
+-					aiClient.unload(true, () => {
+-						this._aiCoreOrKey = undefined;
+-						resolve(undefined);
+-					});
+-				});
+-			});
+-		}
+ 		return Promise.resolve(undefined);
+ 	}
+ }
+diff --git a/src/vs/platform/telemetry/node/1dsAppender.ts b/src/vs/platform/telemetry/node/1dsAppender.ts
+index 0fdbbd1a732..1389aaa36e5 100644
+--- a/src/vs/platform/telemetry/node/1dsAppender.ts
++++ b/src/vs/platform/telemetry/node/1dsAppender.ts
+@@ -3,115 +3,19 @@
+  *  Licensed under the MIT License. See License.txt in the project root for license information.
+  *--------------------------------------------------------------------------------------------*/
+
+-import type { IPayloadData, IXHROverride } from '@microsoft/1ds-post-js';
+-import { streamToBuffer } from '../../../base/common/buffer.js';
+-import { CancellationToken } from '../../../base/common/cancellation.js';
+-import { IRequestOptions } from '../../../base/parts/request/common/request.js';
+-import { IRequestService, NO_FETCH_TELEMETRY } from '../../request/common/request.js';
++import { IRequestService } from '../../request/common/request.js';
+ import { AbstractOneDataSystemAppender, IAppInsightsCore } from '../common/1dsAppender.js';
+
+-type OnCompleteFunc = (status: number, headers: { [headerName: string]: string }, response?: string) => void;
+-
+-interface IResponseData {
+-	headers: { [headerName: string]: string };
+-	statusCode: number;
+-	responseData: string;
+-}
+-
+-/**
+- * Completes a request to submit telemetry to the server utilizing the request service
+- * @param options The options which will be used to make the request
+- * @param requestService The request service
+- * @returns An object containing the headers, statusCode, and responseData
+- */
+-async function makeTelemetryRequest(options: IRequestOptions, requestService: IRequestService): Promise<IResponseData> {
+-	const response = await requestService.request(options, CancellationToken.None);
+-	const responseData = (await streamToBuffer(response.stream)).toString();
+-	const statusCode = response.res.statusCode ?? 200;
+-	const headers = response.res.headers as Record<string, string>;
+-	return {
+-		headers,
+-		statusCode,
+-		responseData
+-	};
+-}
+-
+-/**
+- * Complete a request to submit telemetry to the server utilizing the https module. Only used when the request service is not available
+- * @param options The options which will be used to make the request
+- * @returns An object containing the headers, statusCode, and responseData
+- */
+-async function makeLegacyTelemetryRequest(options: IRequestOptions): Promise<IResponseData> {
+-	const https = await import('https'); // Lazy due to https://github.com/nodejs/node/issues/59686
+-	const httpsOptions = {
+-		method: options.type,
+-		headers: options.headers
+-	};
+-	const responsePromise = new Promise<IResponseData>((resolve, reject) => {
+-		const req = https.request(options.url ?? '', httpsOptions, res => {
+-			res.on('data', function (responseData) {
+-				resolve({
+-					headers: res.headers as Record<string, string>,
+-					statusCode: res.statusCode ?? 200,
+-					responseData: responseData.toString()
+-				});
+-			});
+-			// On response with error send status of 0 and a blank response to oncomplete so we can retry events
+-			res.on('error', function (err) {
+-				reject(err);
+-			});
+-		});
+-		req.write(options.data, (err) => {
+-			if (err) {
+-				reject(err);
+-			}
+-		});
+-		req.end();
+-	});
+-	return responsePromise;
+-}
+-
+-async function sendPostAsync(requestService: IRequestService | undefined, payload: IPayloadData, oncomplete: OnCompleteFunc) {
+-	const telemetryRequestData = typeof payload.data === 'string' ? payload.data : new TextDecoder().decode(payload.data);
+-	const requestOptions: IRequestOptions = {
+-		type: 'POST',
+-		headers: {
+-			...payload.headers,
+-			'Content-Type': 'application/json',
+-			'Content-Length': Buffer.byteLength(payload.data).toString()
+-		},
+-		url: payload.urlString,
+-		data: telemetryRequestData,
+-		callSite: NO_FETCH_TELEMETRY
+-	};
+-
+-	try {
+-		const responseData = requestService ? await makeTelemetryRequest(requestOptions, requestService) : await makeLegacyTelemetryRequest(requestOptions);
+-		oncomplete(responseData.statusCode, responseData.headers, responseData.responseData);
+-	} catch {
+-		// If it errors out, send status of 0 and a blank response to oncomplete so we can retry events
+-		oncomplete(0, {});
+-	}
+-}
+-
+-
++// Shuko (B-1-telemetry): sends nothing. No request is made, with or without the request service.
+ export class OneDataSystemAppender extends AbstractOneDataSystemAppender {
+
+ 	constructor(
+-		requestService: IRequestService | undefined,
++		_requestService: IRequestService | undefined,
+ 		isInternalTelemetry: boolean,
+ 		eventPrefix: string,
+ 		defaultData: { [key: string]: unknown } | null,
+-		iKeyOrClientFactory: string | (() => IAppInsightsCore), // allow factory function for testing
++		iKeyOrClientFactory: string | (() => IAppInsightsCore),
+ 	) {
+-		// Override the way events get sent since node doesn't have XHTMLRequest
+-		const customHttpXHROverride: IXHROverride = {
+-			sendPOST: (payload: IPayloadData, oncomplete: OnCompleteFunc) => {
+-				// Fire off the async request without awaiting it
+-				sendPostAsync(requestService, payload, oncomplete);
+-			}
+-		};
+-
+-		super(isInternalTelemetry, eventPrefix, defaultData, iKeyOrClientFactory, customHttpXHROverride);
++		super(isInternalTelemetry, eventPrefix, defaultData, iKeyOrClientFactory);
+ 	}
+ }
+diff --git a/src/vs/workbench/contrib/editTelemetry/browser/telemetry/aiEditTelemetry/aiEditTelemetryService.ts b/src/vs/workbench/contrib/editTelemetry/browser/telemetry/aiEditTelemetry/aiEditTelemetryService.ts
+index 72f6bedb0ff..e216f042072 100644
+--- a/src/vs/workbench/contrib/editTelemetry/browser/telemetry/aiEditTelemetry/aiEditTelemetryService.ts
++++ b/src/vs/workbench/contrib/editTelemetry/browser/telemetry/aiEditTelemetry/aiEditTelemetryService.ts
+@@ -6,6 +6,7 @@
+ import { ProviderId } from '../../../../../../editor/common/languages.js';
+ import { EditDeltaInfo, EditSuggestionId } from '../../../../../../editor/common/textModelEditSource.js';
+ import { createDecorator } from '../../../../../../platform/instantiation/common/instantiation.js';
++import { InstantiationType, registerSingleton } from '../../../../../../platform/instantiation/common/extensions.js';
+
+ export const IAiEditTelemetryService = createDecorator<IAiEditTelemetryService>('aiEditTelemetryService');
+
+@@ -103,3 +104,20 @@ export interface IEditTelemetryCodeRejectedData extends IEditTelemetryBaseData {
+ 	/** User explicitly rejected/undid the suggestion (when presentation is `highlightedEdit`) or pressed Escape (when feature is `inlineSuggestion`) */
+ 	| 'reject';
+ }
++
++// Shuko (B-1-telemetry): the rest of contrib/editTelemetry is removed. This file keeps the service id and
++// registers an implementation that records and sends nothing, for the parts that still inject the service
++// (the extension API in mainThreadLanguageFeatures, and chat until C-1).
++class NullAiEditTelemetryService implements IAiEditTelemetryService {
++	declare readonly _serviceBrand: undefined;
++
++	createSuggestionId(): EditSuggestionId {
++		return EditSuggestionId.newId();
++	}
++
++	handleCodeAccepted(): void { }
++
++	handleCodeRejected(): void { }
++}
++
++registerSingleton(IAiEditTelemetryService, NullAiEditTelemetryService, InstantiationType.Delayed);
+--
+2.54.0.windows.1

@@ -3,7 +3,24 @@
 // その置き場所の名前をコマンドラインに持つエディタの本体と、その子孫だけを止める（ほかのエディタには触れない）。
 import { existsSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
-import { DEFAULT_BUILD, SMOKE_ROOT, isRunDirPath, resolveEditor, stopByRunDir } from './smoke/lib/common.mjs';
+import { DEFAULT_BUILD, SMOKE_ROOT, isRunDirPath, markKeep, resolveEditor, stopByRunDir } from './smoke/lib/common.mjs';
+
+// 別の入口: node tests/smoke-stop.mjs --mark-keep <runs の直下の置き場所の名前>
+//   例: node tests/smoke-stop.mjs --mark-keep official-20261113T143803
+// C:\b\smoke\runs\ の直下の、名前が <label>-<時刻> の既存のフォルダにだけ、空の .keep を書く（--keep-runs が消さなくなる）。
+// 記録の根拠にする実行に、書き込み先を持たない検証役が印を置くための入口。それ以外のパス・名前は拒む。エディタは止めない。
+if (process.argv[2] === '--mark-keep') {
+  try {
+    const name = process.argv[3];
+    if (!name) throw new Error('置き場所の名前を渡す（例: official-20261113T143803）');
+    const mark = markKeep(name);
+    console.log(`印を置いた: ${mark}`);
+  } catch (e) {
+    console.error(`smoke-stop --mark-keep: ${e.message}`);
+    process.exit(2);
+  }
+  process.exit(0);
+}
 
 try {
   const runDir = process.argv[2];

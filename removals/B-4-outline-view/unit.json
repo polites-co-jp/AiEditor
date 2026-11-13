@@ -1,0 +1,37 @@
+{
+  "id": "B-4-outline-view",
+  "stage": "B",
+  "order": 240,
+  "enabled": false,
+  "intent": "アウトラインのビュー（エクスプローラーの下のアウトライン）を消す。パンくずリストが使う outline のサービスと、ノートブックが型を借りている outline.ts は残す（C-7・C-4 まで）",
+  "after": [],
+  "delete": [
+    "src/vs/workbench/contrib/outline/browser/outline.contribution.ts",
+    "src/vs/workbench/contrib/outline/browser/outlineActions.ts",
+    "src/vs/workbench/contrib/outline/browser/outlinePane.ts",
+    "src/vs/workbench/contrib/outline/browser/outlinePane.css",
+    "src/vs/workbench/contrib/outline/browser/outlineViewState.ts"
+  ],
+  "removeDependencies": {},
+  "removeLines": [
+    { "file": "src/vs/workbench/workbench.common.main.ts", "line": "import './contrib/outline/browser/outline.contribution.js';" }
+  ],
+  "productRemove": [],
+  "kept": [
+    { "path": "src/vs/workbench/contrib/outline/browser/outline.ts", "reason": "ノートブックのアウトライン（contrib/notebook/browser/contrib/outline/notebookOutline.ts の49行）が IOutlinePane（ビューの ID の定数）を import している。ノートブックは C-4 で消える" },
+    { "path": "src/vs/workbench/services/outline", "reason": "パンくずリスト（C-7 まで残す）とクイックオープンの記号の一覧が使う" },
+    { "path": "src/vs/workbench/contrib/codeEditor/browser/outline", "reason": "documentSymbolsOutline.ts はパンくずリストが使う（C-7 まで残す）" }
+  ],
+  "checks": {
+    "absentCommands": ["outline.focus", "outline.collapse", "outline.expand"],
+    "absentViews": ["outline"],
+    "absentSettings": ["outline.icons", "outline.collapseItems", "outline.showFiles"],
+    "absentStrings": [
+      { "in": ["src/vs"], "text": "contrib/outline/browser/outline.contribution.js'" },
+      { "in": ["src/vs"], "text": "outline/browser/outlinePane.js'" }
+    ],
+    "absentProcesses": [],
+    "absentHosts": []
+  },
+  "smoke": ["base", "claude-code", "absence"]
+}

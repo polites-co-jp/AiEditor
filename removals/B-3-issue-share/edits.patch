@@ -1,0 +1,82 @@
+From 77772a59fd9a374559c938713dc7d1b8ab38c091 Mon Sep 17 00:00:00 2001
+From: shuko-apply <apply@shuko.invalid>
+Date: Sat, 14 Nov 2026 00:17:45 +0900
+Subject: [PATCH] unit B-3-issue-share: edits
+
+Keep the issue and share service ids with implementations that do nothing, because the issue reporter and the share feature are removed.
+---
+ .../workbench/contrib/issue/common/issue.ts   | 11 +++++++++
+ .../workbench/contrib/share/common/share.ts   | 23 ++++++++++++++++++-
+ 2 files changed, 33 insertions(+), 1 deletion(-)
+
+diff --git a/src/vs/workbench/contrib/issue/common/issue.ts b/src/vs/workbench/contrib/issue/common/issue.ts
+index 8a6fd0312e4..7cebdbae4ec 100644
+--- a/src/vs/workbench/contrib/issue/common/issue.ts
++++ b/src/vs/workbench/contrib/issue/common/issue.ts
+@@ -5,6 +5,7 @@
+
+ import { UriComponents } from '../../../../base/common/uri.js';
+ import { createDecorator } from '../../../../platform/instantiation/common/instantiation.js';
++import { InstantiationType, registerSingleton } from '../../../../platform/instantiation/common/extensions.js';
+
+ // Since data sent through the service is serialized to JSON, functions will be lost, so Color objects
+ // should not be sent as their 'toString' method will be stripped. Instead convert to strings before sending.
+@@ -172,3 +173,13 @@ export interface IWorkbenchIssueService {
+ 	readonly _serviceBrand: undefined;
+ 	openReporter(dataOverrides?: Partial<IssueReporterData>): Promise<void>;
+ }
++
++// Shuko (B-3-issue-share): the issue reporter is removed. This file keeps the service id and registers an
++// implementation that does nothing, for the parts that still inject the service (extensions, settings sync).
++class NullWorkbenchIssueService implements IWorkbenchIssueService {
++	declare readonly _serviceBrand: undefined;
++
++	async openReporter(_dataOverrides?: Partial<IssueReporterData>): Promise<void> { }
++}
++
++registerSingleton(IWorkbenchIssueService, NullWorkbenchIssueService, InstantiationType.Delayed);
+diff --git a/src/vs/workbench/contrib/share/common/share.ts b/src/vs/workbench/contrib/share/common/share.ts
+index eb0b3becf7d..549832a3355 100644
+--- a/src/vs/workbench/contrib/share/common/share.ts
++++ b/src/vs/workbench/contrib/share/common/share.ts
+@@ -4,12 +4,13 @@
+  *--------------------------------------------------------------------------------------------*/
+
+ import { CancellationToken } from '../../../../base/common/cancellation.js';
+-import { IDisposable } from '../../../../base/common/lifecycle.js';
++import { Disposable, IDisposable } from '../../../../base/common/lifecycle.js';
+ import { URI } from '../../../../base/common/uri.js';
+ import { Selection } from '../../../../editor/common/core/selection.js';
+ import { LanguageSelector } from '../../../../editor/common/languageSelector.js';
+ import { ISubmenuItem } from '../../../../platform/actions/common/actions.js';
+ import { createDecorator } from '../../../../platform/instantiation/common/instantiation.js';
++import { InstantiationType, registerSingleton } from '../../../../platform/instantiation/common/extensions.js';
+
+ export interface IShareableItem {
+ 	resourceUri: URI;
+@@ -33,3 +34,23 @@ export interface IShareService {
+ 	getShareActions(): ISubmenuItem[];
+ 	provideShare(item: IShareableItem, token: CancellationToken): Thenable<URI | string | undefined>;
+ }
++
++// Shuko (B-3-issue-share): the share feature is removed. This file keeps the service id and registers an
++// implementation that does nothing, so that the extension API (MainThreadShare) can still be created.
++class NullShareService implements IShareService {
++	declare _serviceBrand: undefined;
++
++	registerShareProvider(_provider: IShareProvider): IDisposable {
++		return Disposable.None;
++	}
++
++	getShareActions(): ISubmenuItem[] {
++		return [];
++	}
++
++	async provideShare(_item: IShareableItem, _token: CancellationToken): Promise<undefined> {
++		return undefined;
++	}
++}
++
++registerSingleton(IShareService, NullShareService, InstantiationType.Delayed);
+--
+2.54.0.windows.1

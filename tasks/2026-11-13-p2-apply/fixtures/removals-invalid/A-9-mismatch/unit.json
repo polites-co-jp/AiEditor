@@ -1,0 +1,9 @@
+{
+  "id": "A-9-other-name",
+  "stage": "B",
+  "order": 250,
+  "enabled": "yes",
+  "intent": "試し用（形の誤りで止まることの確かめ）。id とフォルダの名前、stage、order、enabled が誤り",
+  "delete": ["../outside"],
+  "removeLines": [{ "file": "build/npm/dirs.ts" }]
+}

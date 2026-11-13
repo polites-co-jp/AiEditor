@@ -23,6 +23,7 @@
       "npm.fetchOnlinePackageInfo": false,
       "json.schemaDownload.enable": false,
       "workbench.settings.enableNaturalLanguageSearch": false,
+      "terminal.integrated.suggest.enabled": false,
       "claudeCode.environmentVariables": [
         {
           "name": "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC",

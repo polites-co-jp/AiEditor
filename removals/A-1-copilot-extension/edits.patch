@@ -1,0 +1,112 @@
+From fd3bbf8a14e1266d631bbdd777302e36aa728af7 Mon Sep 17 00:00:00 2001
+From: shuko-apply <apply@shuko.invalid>
+Date: Sat, 14 Nov 2026 00:11:50 +0900
+Subject: [PATCH] unit A-1-copilot-extension: edits
+
+---
+ build/lib/copilot.ts     |  3 +++
+ build/npm/postinstall.ts | 42 ----------------------------------------
+ package.json             |  6 +++---
+ 3 files changed, 6 insertions(+), 45 deletions(-)
+
+diff --git a/build/lib/copilot.ts b/build/lib/copilot.ts
+index 6387d4f94b3..ad32cad7edd 100644
+--- a/build/lib/copilot.ts
++++ b/build/lib/copilot.ts
+@@ -266,6 +266,9 @@ export function ensureCopilotPlatformPackage(platform: string, arch: string, nod
+  * this artifact is present.
+  */
+ export function prepareBuiltInCopilotRipgrepShim(platform: string, arch: string, builtInCopilotExtensionDir: string, appNodeModulesDir: string, options: PrepareBuiltInCopilotOptions = {}): void {
++	if (!fs.existsSync(builtInCopilotExtensionDir)) {
++		return;
++	}
+ 	const { nodePlatform, nodeArch } = toNodePlatformArch(platform, arch);
+ 	const platformArch = `${nodePlatform}-${nodeArch}`;
+ 	const copilotPackagePlatformArch = toCopilotPackagePlatformArch(platform, arch);
+diff --git a/build/npm/postinstall.ts b/build/npm/postinstall.ts
+index 52d0f701b65..3ffd7585da7 100644
+--- a/build/npm/postinstall.ts
++++ b/build/npm/postinstall.ts
+@@ -152,32 +152,6 @@ function getRemoteEnv(): NodeJS.ProcessEnv {
+ 	return env;
+ }
+
+-function ensureAgentHarnessLink(sourceRelativePath: string, linkPath: string): 'existing' | 'junction' | 'symlink' | 'hard link' {
+-	if (fs.existsSync(linkPath)) {
+-		return 'existing';
+-	}
+-
+-	const sourcePath = path.resolve(path.dirname(linkPath), sourceRelativePath);
+-	const isDirectory = fs.statSync(sourcePath).isDirectory();
+-
+-	try {
+-		if (process.platform === 'win32' && isDirectory) {
+-			fs.symlinkSync(sourcePath, linkPath, 'junction');
+-			return 'junction';
+-		}
+-
+-		fs.symlinkSync(sourceRelativePath, linkPath, isDirectory ? 'dir' : 'file');
+-		return 'symlink';
+-	} catch (error) {
+-		if (process.platform === 'win32' && !isDirectory && (error as NodeJS.ErrnoException).code === 'EPERM') {
+-			fs.linkSync(sourcePath, linkPath);
+-			return 'hard link';
+-		}
+-
+-		throw error;
+-	}
+-}
+-
+ async function runWithConcurrency(tasks: (() => Promise<void>)[], concurrency: number): Promise<void> {
+ 	const errors: Error[] = [];
+ 	let index = 0;
+@@ -278,22 +252,6 @@ async function main() {
+ 	child_process.execSync('git config blame.ignoreRevsFile .git-blame-ignore-revs');
+
+ 	finishCloudSandbox();
+-
+-	// Symlink .claude/ files to their canonical locations to test Claude agent harness
+-	const claudeDir = path.join(root, '.claude');
+-	fs.mkdirSync(claudeDir, { recursive: true });
+-
+-	const claudeMdLink = path.join(claudeDir, 'CLAUDE.md');
+-	const claudeMdLinkType = ensureAgentHarnessLink(path.join('..', '.github', 'copilot-instructions.md'), claudeMdLink);
+-	if (claudeMdLinkType !== 'existing') {
+-		log('.', `Created ${claudeMdLinkType} .claude/CLAUDE.md -> .github/copilot-instructions.md`);
+-	}
+-
+-	const claudeSkillsLink = path.join(claudeDir, 'skills');
+-	const claudeSkillsLinkType = ensureAgentHarnessLink(path.join('..', '.agents', 'skills'), claudeSkillsLink);
+-	if (claudeSkillsLinkType !== 'existing') {
+-		log('.', `Created ${claudeSkillsLinkType} .claude/skills -> .agents/skills`);
+-	}
+ }
+
+ main().catch(err => {
+diff --git a/package.json b/package.json
+index 6d8a376f844..d1a9efe24f7 100644
+--- a/package.json
++++ b/package.json
+@@ -30,7 +30,7 @@
+     "check-cyclic-dependencies": "node build/lib/checkCyclicDependencies.ts out",
+     "preinstall": "node build/npm/preinstall.ts",
+     "postinstall": "node build/npm/postinstall.ts",
+-    "compile": "npm-run-all2 -lp compile-client compile-copilot",
++    "compile": "npm-run-all2 -lp compile-client",
+     "compile-client": "pnpm run gulp compile",
+     "build-fast": "node build/next/build-fast.ts",
+     "build-fast-extensions": "pnpm run gulp copy-codicons compile-extensions compile-extension-media",
+@@ -39,8 +39,8 @@
+     "codex:check-protocol": "node build/codex/check-protocol-sync.ts",
+     "agent-host:generate-copilot-meta": "node build/agentHost/generateCopilotMetadata.ts",
+     "agent-host:check-copilot-meta": "node build/agentHost/generateCopilotMetadata.ts --check",
+-    "watch": "npm-run-all2 -lp watch-client-transpile watch-client watch-extensions watch-copilot",
+-    "watch-transpile": "npm-run-all2 -lp watch-client-transpile watch-extensions watch-copilot",
++    "watch": "npm-run-all2 -lp watch-client-transpile watch-client watch-extensions",
++    "watch-transpile": "npm-run-all2 -lp watch-client-transpile watch-extensions",
+     "watchd": "deemon pnpm run watch",
+     "watch-webd": "deemon pnpm run watch-web",
+     "kill-watchd": "deemon --kill pnpm run watch",
+--
+2.54.0.windows.1
+

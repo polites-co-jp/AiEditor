@@ -1,0 +1,37 @@
+{
+  "name": "mydist",
+  "displayName": "Shuko defaults (trial fixture)",
+  "description": "試し用。B-2 と B-7 を有効にした後の mydist の既定（workbench.startupEditor と terminal.integrated.suggest.enabled を外したもの）。キー割り当ては省いた",
+  "publisher": "shuko",
+  "version": "0.0.1",
+  "private": true,
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.146.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "contributes": {
+    "configurationDefaults": {
+      "chat.disableAIFeatures": true,
+      "workbench.colorTheme": "Light Modern",
+      "breadcrumbs.enabled": false,
+      "basedpyright.importStrategy": "useBundled",
+      "typescript.disableAutomaticTypeAcquisition": true,
+      "npm.fetchOnlinePackageInfo": false,
+      "json.schemaDownload.enable": false,
+      "workbench.settings.enableNaturalLanguageSearch": false,
+      "claudeCode.environmentVariables": [
+        {
+          "name": "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC",
+          "value": "1"
+        },
+        {
+          "name": "CLAUDE_CODE_DISABLE_OFFICIAL_MARKETPLACE_AUTOINSTALL",
+          "value": "1"
+        }
+      ]
+    }
+  }
+}

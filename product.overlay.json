@@ -1,0 +1,54 @@
+{
+  "$comment": "docs/02 の3節。set は値を入れる・置き換える。remove は消す（本家に無ければ警告）。removeIfPresent は本家が足したときだけ外して警告する。単位に結びつくキー（reportIssueUrl は B-3、onboardingKeymaps・onboardingThemes は B-2、C-1・C-3 のキー）は各単位の productRemove に置く。builtInExtensions（A-3）は set で空にする（キーを消すとビルドが止まるため。リーダーの指示 2026-11-14）。shukoConfigurationDefaults は patches/20-product-configuration-defaults.patch が既定として登録する",
+  "set": {
+    "nameShort": "Shuko",
+    "nameLong": "Shuko",
+    "applicationName": "shuko",
+    "dataFolderName": ".shuko",
+    "sharedDataFolderName": ".shuko-shared",
+    "urlProtocol": "shuko",
+    "win32MutexName": "shuko",
+    "win32DirName": "Shuko",
+    "win32NameVersion": "Shuko",
+    "win32RegValueName": "Shuko",
+    "win32AppUserModelId": "Shuko.Editor",
+    "win32ShellNameShort": "&Shuko",
+    "win32x64AppId": "{{5B8E2C47-9A1D-4F36-B0E2-7C4D91A3F658}",
+    "win32arm64AppId": "{{A3F17D92-46C8-4E0B-9D25-1B6E8F40C7A3}",
+    "win32x64UserAppId": "{{C9042E6B-7F3A-4D81-A5E9-62B0D8F1347C}",
+    "win32arm64UserAppId": "{{0E7B5A18-D2C4-49F7-8B36-F5A1C09E2D84}",
+    "builtInExtensions": [],
+    "shukoConfigurationDefaults": {
+      "extensions.allowed": {
+        "*": false,
+        "anthropic.claude-code": true,
+        "detachhead.basedpyright": true,
+        "ms-vscode.powershell": true,
+        "mads-hartmann.bash-ide-vscode": true,
+        "mechatroner.rainbow-csv": true,
+        "weixu.wx-vsce-dotenv": true,
+        "tomoki1207.pdf": true,
+        "MS-CEINTL.vscode-language-pack-ja": true
+      },
+      "telemetry.telemetryLevel": "off",
+      "update.mode": "none",
+      "workbench.enableExperiments": false,
+      "extensions.autoUpdate": "off",
+      "extensions.autoCheckUpdates": false
+    }
+  },
+  "remove": [],
+  "removeIfPresent": [
+    "enableTelemetry",
+    "aiConfig",
+    "updateUrl",
+    "tasConfig",
+    "extensionsGallery",
+    "emergencyAlertUrl",
+    "profileTemplatesUrl",
+    "appCenter",
+    "settingsSearchUrl",
+    "npsSurveyUrl",
+    "mcpGallery"
+  ]
+}

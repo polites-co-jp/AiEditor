@@ -9,7 +9,7 @@ import { join } from 'node:path';
 import vm from 'node:vm';
 import {
   assertSafeWritePath, classifyLog, cleanEditorEnv, dailyDataPaths, errorKeys, extractChromiumErrors, extractErrors, lockBelongsTo,
-  newErrors, newLocks, normalizeError, readLock, resolveEditor, snapshotLocks, treeFromProcesses, collectLogErrors, findRunRoots, parseLogTime, splitByCutoff, isRunDirPath, rootMatches, selectPrune, listProcesses, removeOwnLocks,
+  newErrors, newLocks, normalizeError, readLock, resolveEditor, snapshotLocks, treeFromProcesses, collectLogErrors, findRunRoots, parseLogTime, splitByCutoff, isRunDirPath, rootMatches, selectPrune, listProcesses, removeOwnLocks, markKeep, isRunDirName, resolveVsixRoot, vsixRootFor,
 } from './smoke/lib/common.mjs';
 import { buildUserSettings, defaultExtensionIds, findVsix, fingerprint, formatArgv, readLedger } from './smoke/lib/env.mjs';
 import { COMPLETION_POSITIONS, EXPECTED_CHANGES, createWorkspace, diffFixtures, fixtureFiles, minimalPdf } from './smoke/lib/fixtures.mjs';
@@ -743,6 +743,85 @@ test('K: 置き場所に .keep があれば pruneRuns は消さず、残す数�
     assert.ok(existsSync(join(root, 'runs', 'a-20261113T000001')));
     assert.equal(KEEP_MARK, '.keep');
   } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('markKeep: runs 直下の <label>-<時刻> の既存フォルダにだけ空の .keep を書く。それ以外は拒む', () => {
+  const root = tmp();
+  const runs = join(root, 'runs');
+  try {
+    mkdirSync(join(runs, 'official-20261113T143803'), { recursive: true });
+    mkdirSync(join(runs, 'notes'), { recursive: true });
+    writeFileSync(join(runs, 'official-20261113T000000'), 'a file, not a folder');
+    mkdirSync(join(root, 'ext', 'p-20261113T143803'), { recursive: true });
+    const mark = markKeep('official-20261113T143803', runs);
+    assert.equal(mark, join(runs, 'official-20261113T143803', KEEP_MARK));
+    assert.equal(readFileSync(mark, 'utf8'), ''); // 空
+    assert.equal(markKeep('official-20261113T143803', runs), mark); // 2回目は何もしない（投げない）
+    // 拒むもの
+    assert.throws(() => markKeep('notes', runs), /<label>-<時刻>/); // 名前の形が違う
+    assert.throws(() => markKeep('official-20261113T000000', runs), /フォルダではない/);
+    assert.throws(() => markKeep('official-20990101T000000', runs), /置き場所が無い/);
+    assert.throws(() => markKeep('..\\ext\\p-20261113T143803', runs), /<label>-<時刻>/); // 上に抜けて ext の中へ
+    assert.throws(() => markKeep('../ext/p-20261113T143803', runs), /<label>-<時刻>/);
+    assert.throws(() => markKeep(join(runs, 'official-20261113T143803'), runs), /<label>-<時刻>/); // 絶対パス
+    assert.throws(() => markKeep('', runs), /<label>-<時刻>/);
+    assert.throws(() => markKeep(undefined, runs), /<label>-<時刻>/);
+    // ほかのフォルダには何も書かれていない
+    assert.ok(!existsSync(join(runs, 'notes', KEEP_MARK)));
+    assert.ok(!existsSync(join(root, 'ext', 'p-20261113T143803', KEEP_MARK)));
+    // 印があれば pruneRuns は消さない（入口と掃除がつながっている）
+    mkdirSync(join(runs, 'official-20261113T143900'), { recursive: true });
+    assert.deepEqual(pruneRuns(root, 0, join(runs, 'official-20261113T143900')), []);
+    assert.ok(existsSync(join(runs, 'official-20261113T143803')));
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('resolveVsixRoot: <buildRoot>\\cache\\vsix。buildRoot は local.json を読み、--vsix-root で上書きできる', () => {
+  const dir = tmp();
+  try {
+    const none = join(dir, 'no-such-local.json');
+    assert.equal(resolveVsixRoot({ configPath: none }), 'C:\\b\\cache\\vsix'); // local.json が無ければ既定の buildRoot（C:\b）
+    const cfg = join(dir, 'local.json');
+    writeFileSync(cfg, JSON.stringify({ buildRoot: 'D:\\work\\b' }));
+    assert.equal(resolveVsixRoot({ configPath: cfg }), 'D:\\work\\b\\cache\\vsix');
+    assert.equal(resolveVsixRoot({ configPath: cfg, buildRoot: 'E:\\other' }), 'E:\\other\\cache\\vsix'); // buildRoot のオプションが local.json に勝つ
+    assert.equal(resolveVsixRoot({ configPath: cfg, vsixRoot: join(dir, 'my-vsix') }), join(dir, 'my-vsix')); // --vsix-root が最優先
+    writeFileSync(cfg, JSON.stringify({ buildRoot: '%SMOKE_TEST_B%\\x' }));
+    assert.equal(resolveVsixRoot({ configPath: cfg, env: { SMOKE_TEST_B: 'F:', LOCALAPPDATA: 'C:\\x' } }), 'F:\\x\\cache\\vsix'); // %NAME% を展開する
+    writeFileSync(cfg, '{ "buildRoot": 5 }');
+    assert.throws(() => resolveVsixRoot({ configPath: cfg }), /buildRoot/); // 壊れた local.json は既定に戻さず止める
+    assert.equal(vsixRootFor('C:\\b'), 'C:\\b\\cache\\vsix');
+  } finally { rmSync(dir, { recursive: true, force: true }); }
+  const run = readFileSync(new URL('./smoke/lib/run.mjs', import.meta.url), 'utf8');
+  assert.match(run, /resolveVsixRoot\(\{ vsixRoot: opts\.vsixRoot \}\)/);
+  assert.match(run, /findVsix\(id, want, vsixRoot\)/);
+  const common = readFileSync(new URL('./smoke/lib/common.mjs', import.meta.url), 'utf8');
+  assert.ok(!common.includes('VSIX_ROOT'), '固定の VSIX_ROOT は残さない');
+  assert.ok(!/p0\\\\vsix/.test(common));
+  assert.equal(parseArgs(['--vsix-root', 'D:/x']).vsixRoot, 'D:/x');
+  assert.equal(parseArgs([]).vsixRoot, null);
+});
+
+test('isRunDirName: 名前の形だけを通す', () => {
+  for (const ok of ['official-20261113T143803', 'built-20261113T000000', 'env-b-20261113T140401']) assert.equal(isRunDirName(ok), true, ok);
+  for (const bad of ['official', 'official-2026', 'a/b-20261113T143803', 'a\\b-20261113T143803', '..-20261113T143803', 'x..y-20261113T143803', '', null, 5]) assert.equal(isRunDirName(bad), false, String(bad));
+});
+
+test('smoke-stop.mjs --mark-keep は入口があり、エディタを止める経路とは別', () => {
+  const src = readFileSync(new URL('./smoke-stop.mjs', import.meta.url), 'utf8');
+  assert.match(src, /process\.argv\[2\] === '--mark-keep'/);
+  assert.match(src, /markKeep\(name\)/);
+  const md = readFileSync(new URL('../tasks/2026-11-13-p1-smoke/smoke-design.md', import.meta.url), 'utf8');
+  assert.ok(md.includes('--mark-keep'));
+});
+
+test('run.mjs: pruneRuns の説明の注は pruneRuns の直前にあり、sameProc の上に離れて残っていない', () => {
+  const src = readFileSync(new URL('./smoke/lib/run.mjs', import.meta.url), 'utf8');
+  const doc = src.indexOf('/** runs\\ の下から、最新の keep 個');
+  const fn = src.indexOf('export function pruneRuns(');
+  const same = src.indexOf('export function sameProc(');
+  assert.ok(doc > same, '注は sameProc より後');
+  assert.ok(fn > doc && !src.slice(doc, fn).includes('export function'), '注と関数の間に別の関数を挟まない');
 });
 
 test('sameProc: 名前と親が同じなら同じプロセス、PID が使い回されて別のものなら違う', () => {

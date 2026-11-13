@@ -1,0 +1,37 @@
+{
+  "id": "B-7-terminal-suggest",
+  "stage": "B",
+  "order": 270,
+  "enabled": false,
+  "intent": "ターミナルの入力候補（terminal IntelliSense）の本体の部品 src/vs/workbench/contrib/terminalContrib/suggest と設定 terminal.integrated.suggest.* を消す（裁定: terminal-suggest は消す。組み込み拡張 terminal-suggest は A-7 が消す）。拡張 API の補完の提供者の登録は受け取って何もしない",
+  "after": [],
+  "delete": [
+    "src/vs/workbench/contrib/terminalContrib/suggest",
+    "src/vs/workbench/services/suggest"
+  ],
+  "removeDependencies": {},
+  "removeLines": [
+    { "file": "src/vs/workbench/contrib/terminal/terminal.all.ts", "line": "import '../terminalContrib/suggest/browser/terminal.suggest.contribution.js';" },
+    { "file": "src/vs/workbench/contrib/modernUI/test/browser/roundedCorners.test.ts", "line": "import '../../../../services/suggest/browser/media/suggest.css';" }
+  ],
+  "productRemove": [],
+  "patch": "edits.patch",
+  "kept": [
+    { "path": "src/vs/workbench/contrib/terminal/common/terminalExtensionPoints.ts", "reason": "拡張の terminal の contributes（completionProviders を含む）の受け手。プロファイルの受け手と同じファイルなので残す" }
+  ],
+  "checks": {
+    "absentCommands": ["workbench.action.terminal.triggerSuggest", "workbench.action.terminal.configureSuggestSettings"],
+    "absentViews": [],
+    "absentSettings": ["terminal.integrated.suggest.enabled", "terminal.integrated.suggest.quickSuggestions"],
+    "absentStrings": [
+      { "in": ["src/vs"], "text": "terminalContrib/suggest/browser/terminal.suggest.contribution.js'" },
+      { "in": ["src/vs"], "text": "suggest/common/terminalSuggestConfiguration.js'" },
+      { "in": ["src/vs"], "text": "suggest/browser/terminalCompletionService.js'" },
+      { "in": ["src/vs"], "text": "services/suggest/browser/simpleSuggestWidget.js'" },
+      { "in": ["src/vs"], "text": "services/suggest/browser/media/suggest.css'" }
+    ],
+    "absentProcesses": [],
+    "absentHosts": []
+  },
+  "smoke": ["base", "claude-code", "absence"]
+}

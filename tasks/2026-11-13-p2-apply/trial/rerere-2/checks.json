@@ -1,0 +1,595 @@
+{
+  "label": "trial-rerere-2",
+  "worktree": "C:\\b\\wt\\dev-apply",
+  "tag": "1.146.0",
+  "baseCommit": "69047191fc427f2f92828279aae1d90d8eeda7ab",
+  "headCommit": "0926015db55ce92c8a163f4e3365e87ea2342754",
+  "prevTag": null,
+  "dryRun": false,
+  "options": {
+    "only": [
+      "B-2-bad-conflict"
+    ],
+    "until": null,
+    "keepConflict": false
+  },
+  "inputs": {
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-13-p2-apply\\fixtures\\removals-bad",
+    "patches": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-13-p2-apply\\fixtures\\no-patches",
+    "assets": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-13-p2-apply\\fixtures\\no-assets",
+    "overlay": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-13-p2-apply\\fixtures\\product.overlay.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-13-p2-apply\\fixtures\\keep.json",
+    "extensionsSrc": "e:\\develop\\self\\Team\\projects\\ai-editor\\extensions-src",
+    "manifests": "C:/b/p0/vsix"
+  },
+  "startedAt": "2026-11-13T15:23:06.370Z",
+  "finishedAt": "2026-11-13T15:23:30.659Z",
+  "result": "fail",
+  "stoppedAt": null,
+  "overlay": {
+    "applied": "ok",
+    "set": [
+      "nameShort",
+      "nameLong",
+      "applicationName",
+      "dataFolderName",
+      "win32ShellNameShort",
+      "builtInExtensions",
+      "shukoConfigurationDefaults"
+    ],
+    "removed": [
+      "onboardingKeymaps"
+    ],
+    "removedIfPresent": [
+      "voiceWsUrl"
+    ],
+    "commit": "2b77a0636a70a0fa7615e1f686ff10dee4f0f695"
+  },
+  "units": [
+    {
+      "id": "B-2-bad-conflict",
+      "order": 202,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "95ee873684b24391eb62419c020d0ee3557b2799",
+        "deleted": [],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [
+          {
+            "file": "src/vs/workbench/contrib/chat/common/feedbackSurvey/chatModelFeedbackSurveyConfig.ts",
+            "line": "* A survey is fully described by a versioned JSON payload delivered as an experiment treatment,",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          }
+        ],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "ok",
+        "commit": "654066186536b5f5e5dbc1b92115521efcc88fdf",
+        "subject": "unit B-2-bad-conflict: edits",
+        "conflicts": []
+      },
+      "warnings": []
+    }
+  ],
+  "unitsSkipped": [
+    {
+      "id": "A-2-bad-zero",
+      "reason": "not in --only"
+    },
+    {
+      "id": "A-3-bad-count",
+      "reason": "not in --only"
+    },
+    {
+      "id": "B-3-bad-after",
+      "reason": "not in --only"
+    }
+  ],
+  "patches": [],
+  "assets": {
+    "applied": "none",
+    "copied": [],
+    "commit": null
+  },
+  "builtinExtensions": {
+    "applied": "ok",
+    "copied": [
+      {
+        "name": "mydist",
+        "files": 3,
+        "list": [
+          "README.md",
+          "ThirdPartyNotices.txt",
+          "package.json"
+        ]
+      }
+    ],
+    "commit": "0926015db55ce92c8a163f4e3365e87ea2342754"
+  },
+  "checks": {
+    "remnants": {
+      "status": "ok",
+      "items": []
+    },
+    "absentStrings": {
+      "status": "ok",
+      "items": []
+    },
+    "unclassifiedExtensions": {
+      "status": "hold",
+      "upstreamCount": 95,
+      "items": [
+        {
+          "name": "clojure",
+          "highlight": []
+        },
+        {
+          "name": "coffeescript",
+          "highlight": []
+        },
+        {
+          "name": "copilot",
+          "highlight": [
+            "copilot"
+          ]
+        },
+        {
+          "name": "cpp",
+          "highlight": []
+        },
+        {
+          "name": "csharp",
+          "highlight": []
+        },
+        {
+          "name": "css",
+          "highlight": []
+        },
+        {
+          "name": "dart",
+          "highlight": []
+        },
+        {
+          "name": "debug-auto-launch",
+          "highlight": []
+        },
+        {
+          "name": "debug-server-ready",
+          "highlight": []
+        },
+        {
+          "name": "diff",
+          "highlight": []
+        },
+        {
+          "name": "docker",
+          "highlight": []
+        },
+        {
+          "name": "extension-editing",
+          "highlight": []
+        },
+        {
+          "name": "fsharp",
+          "highlight": []
+        },
+        {
+          "name": "github",
+          "highlight": []
+        },
+        {
+          "name": "github-authentication",
+          "highlight": []
+        },
+        {
+          "name": "go",
+          "highlight": []
+        },
+        {
+          "name": "groovy",
+          "highlight": []
+        },
+        {
+          "name": "grunt",
+          "highlight": []
+        },
+        {
+          "name": "handlebars",
+          "highlight": []
+        },
+        {
+          "name": "hlsl",
+          "highlight": []
+        },
+        {
+          "name": "html",
+          "highlight": []
+        },
+        {
+          "name": "ini",
+          "highlight": []
+        },
+        {
+          "name": "ipynb",
+          "highlight": []
+        },
+        {
+          "name": "jake",
+          "highlight": []
+        },
+        {
+          "name": "java",
+          "highlight": []
+        },
+        {
+          "name": "javascript",
+          "highlight": []
+        },
+        {
+          "name": "json",
+          "highlight": []
+        },
+        {
+          "name": "julia",
+          "highlight": []
+        },
+        {
+          "name": "latex",
+          "highlight": []
+        },
+        {
+          "name": "less",
+          "highlight": []
+        },
+        {
+          "name": "log",
+          "highlight": []
+        },
+        {
+          "name": "lua",
+          "highlight": []
+        },
+        {
+          "name": "make",
+          "highlight": []
+        },
+        {
+          "name": "mermaid-markdown-features",
+          "highlight": []
+        },
+        {
+          "name": "microsoft-authentication",
+          "highlight": []
+        },
+        {
+          "name": "notebook-renderers",
+          "highlight": []
+        },
+        {
+          "name": "objective-c",
+          "highlight": []
+        },
+        {
+          "name": "perl",
+          "highlight": []
+        },
+        {
+          "name": "php",
+          "highlight": []
+        },
+        {
+          "name": "php-language-features",
+          "highlight": []
+        },
+        {
+          "name": "prompt-basics",
+          "highlight": []
+        },
+        {
+          "name": "pug",
+          "highlight": []
+        },
+        {
+          "name": "r",
+          "highlight": []
+        },
+        {
+          "name": "razor",
+          "highlight": []
+        },
+        {
+          "name": "restructuredtext",
+          "highlight": []
+        },
+        {
+          "name": "ruby",
+          "highlight": []
+        },
+        {
+          "name": "rust",
+          "highlight": []
+        },
+        {
+          "name": "scss",
+          "highlight": []
+        },
+        {
+          "name": "shaderlab",
+          "highlight": []
+        },
+        {
+          "name": "simple-browser",
+          "highlight": []
+        },
+        {
+          "name": "sql",
+          "highlight": []
+        },
+        {
+          "name": "swift",
+          "highlight": []
+        },
+        {
+          "name": "terminal-suggest",
+          "highlight": []
+        },
+        {
+          "name": "theme-abyss",
+          "highlight": []
+        },
+        {
+          "name": "theme-kimbie-dark",
+          "highlight": []
+        },
+        {
+          "name": "theme-modern-icons",
+          "highlight": []
+        },
+        {
+          "name": "theme-monokai",
+          "highlight": []
+        },
+        {
+          "name": "theme-monokai-dimmed",
+          "highlight": []
+        },
+        {
+          "name": "theme-quietlight",
+          "highlight": []
+        },
+        {
+          "name": "theme-red",
+          "highlight": []
+        },
+        {
+          "name": "theme-solarized-dark",
+          "highlight": []
+        },
+        {
+          "name": "theme-solarized-light",
+          "highlight": []
+        },
+        {
+          "name": "theme-tomorrow-night-blue",
+          "highlight": []
+        },
+        {
+          "name": "tunnel-forwarding",
+          "highlight": []
+        },
+        {
+          "name": "typescript-basics",
+          "highlight": []
+        },
+        {
+          "name": "vb",
+          "highlight": []
+        },
+        {
+          "name": "vscode-api-tests",
+          "highlight": []
+        },
+        {
+          "name": "vscode-colorize-perf-tests",
+          "highlight": []
+        },
+        {
+          "name": "vscode-colorize-tests",
+          "highlight": []
+        },
+        {
+          "name": "vscode-test-resolver",
+          "highlight": []
+        },
+        {
+          "name": "xml",
+          "highlight": []
+        },
+        {
+          "name": "yaml",
+          "highlight": []
+        }
+      ],
+      "nonExtensionDirs": [
+        "types"
+      ]
+    },
+    "upstreamAdditions": {
+      "status": "skipped",
+      "reason": "--prev-tag が無い"
+    },
+    "dependencies": {
+      "status": "skipped",
+      "reason": "--prev-tag が無い"
+    },
+    "toolchain": {
+      "status": "info",
+      "nvmrc": {
+        "prev": null,
+        "now": "24.22.1",
+        "changed": null
+      },
+      "electron": {
+        "prev": null,
+        "now": "43.8.6",
+        "changed": null
+      },
+      "reason": "--prev-tag が無い"
+    },
+    "registeredKeys": {
+      "status": "fail",
+      "product": [
+        {
+          "key": "nameShort",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "nameLong",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "applicationName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "dataFolderName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32ShellNameShort",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "builtInExtensions",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "shukoConfigurationDefaults",
+          "status": "missing",
+          "foundIn": null
+        }
+      ],
+      "settings": [
+        {
+          "key": "chat.disableAIFeatures",
+          "from": "mydist",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/sessions/providers/remoteAgentHost/electron-browser/remotesEditor.ts"
+        },
+        {
+          "key": "workbench.colorTheme",
+          "from": "mydist",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/services/themes/common/workbenchThemeService.ts"
+        },
+        {
+          "key": "breadcrumbs.enabled",
+          "from": "mydist",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/browser/parts/editor/breadcrumbs.ts"
+        },
+        {
+          "key": "workbench.startupEditor",
+          "from": "mydist",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/welcomeGettingStarted/browser/gettingStarted.contribution.ts"
+        },
+        {
+          "key": "basedpyright.importStrategy",
+          "from": "mydist",
+          "status": "lockManifest",
+          "foundIn": "detachhead.basedpyright"
+        },
+        {
+          "key": "typescript.disableAutomaticTypeAcquisition",
+          "from": "mydist",
+          "status": "extension",
+          "foundIn": "extensions/typescript-language-features/package.json"
+        },
+        {
+          "key": "npm.fetchOnlinePackageInfo",
+          "from": "mydist",
+          "status": "extension",
+          "foundIn": "extensions/npm/package.json"
+        },
+        {
+          "key": "json.schemaDownload.enable",
+          "from": "mydist",
+          "status": "extension",
+          "foundIn": "extensions/json-language-features/package.json"
+        },
+        {
+          "key": "workbench.settings.enableNaturalLanguageSearch",
+          "from": "mydist",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/preferences/common/preferences.ts"
+        },
+        {
+          "key": "claudeCode.environmentVariables",
+          "from": "mydist",
+          "status": "lockManifest",
+          "foundIn": "anthropic.claude-code"
+        },
+        {
+          "key": "extensions.allowed",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/platform/extensionManagement/common/extensionManagement.ts"
+        },
+        {
+          "key": "telemetry.telemetryLevel",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/platform/telemetry/common/telemetry.ts"
+        },
+        {
+          "key": "update.mode",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/update/browser/updateTooltip.ts"
+        },
+        {
+          "key": "workbench.enableExperiments",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/services/telemetry/common/workbenchTelemetryUtils.ts"
+        },
+        {
+          "key": "extensions.autoUpdate",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/telemetry/browser/telemetry.contribution.ts"
+        },
+        {
+          "key": "extensions.autoCheckUpdates",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/extensions/common/extensions.ts"
+        }
+      ],
+      "manifestsMissing": []
+    },
+    "lockfile": {
+      "status": "pending",
+      "reason": "依存の導入の後に --lockfile-check（build.mjs は checkLockfiles）で埋める"
+    }
+  },
+  "warnings": [
+    "overlay.remove: noSuchKeyForWarning が本家の product.json に無い（改名の恐れ）",
+    "overlay.removeIfPresent: 本家の product.json に voiceWsUrl がある（本家が足した）。外した"
+  ],
+  "errors": []
+}

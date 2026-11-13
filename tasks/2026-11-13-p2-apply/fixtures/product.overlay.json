@@ -1,0 +1,21 @@
+{
+  "$comment": "試し用（apply.mjs の確かめ）。本物は product.overlay.json（p2-units-b）",
+  "set": {
+    "nameShort": "Shuko",
+    "nameLong": "Shuko",
+    "applicationName": "shuko",
+    "dataFolderName": ".shuko",
+    "win32ShellNameShort": "&Shuko",
+    "builtInExtensions": [],
+    "shukoConfigurationDefaults": {
+      "extensions.allowed": { "*": false, "anthropic.claude-code": true },
+      "telemetry.telemetryLevel": "off",
+      "update.mode": "none",
+      "workbench.enableExperiments": false,
+      "extensions.autoUpdate": "off",
+      "extensions.autoCheckUpdates": false
+    }
+  },
+  "remove": ["onboardingKeymaps", "noSuchKeyForWarning"],
+  "removeIfPresent": ["enableTelemetry", "aiConfig", "updateUrl", "tasConfig", "extensionsGallery", "voiceWsUrl"]
+}

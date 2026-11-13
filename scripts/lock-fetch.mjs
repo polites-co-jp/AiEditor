@@ -7,11 +7,13 @@
 //   そうでなければ基準の版を使う。基準の版が Open VSX から消えていれば（取り下げ）誤りとして記録する。
 //
 // 使い方:
-//   node scripts/lock-fetch.mjs [--seed <file>] [--lock extensions.lock.json] [--out C:/b/p0/vsix]
-//                               [--now <ISO 8601>] [--security <id>[,<id>...]] [--only <id>[,<id>...]] [--refresh]
+//   node scripts/lock-fetch.mjs [--seed <file>] [--lock extensions.lock.json] [--out <dir>] [--build-root <dir>]
+//                               [--now <ISO 8601>] [--security <id>[,<id>...]] [--only <id>[,<id>...]] [--refresh] [--pin]
 //     --seed     基準の一覧（[{ id, version, targetPlatform?, note? }]）。省くと --lock の台帳を基準にする
 //     --lock     台帳（既定 extensions.lock.json）
-//     --out      置き場所（既定 C:/b/p0/vsix）。拡張ごとに <out>/<id>-<版>[@<target>]/ を作る
+//     --out      置き場所（既定 <buildRoot>\cache\vsix。docs/02 の8節）。拡張ごとに <out>/<id>-<版>[@<target>]/ を作る
+//     --build-root  --out の既定を決める buildRoot（既定 local.json の buildRoot、無ければ C:\b）
+//     --pin      基準の版をそのまま取る（新しい版を選ばない。台帳の版で VSIX のキャッシュを作るとき）
 //     --now      寝かせる期間の判定に使う今の時刻（既定は実行した時刻）
 //     --security セキュリティ修正として寝かせる期間を問わない拡張の ID
 //     --only     この ID だけを取る（ほかの拡張の前の結果は fetch-result.json に残す）
@@ -23,6 +25,7 @@ import fs from "node:fs";
 import { fileURLToPath } from "node:url";
 import { download, getJson, writeJson } from "./lib/http.mjs";
 import { compareVersions, isSoaked } from "./lib/lock.mjs";
+import { resolveLocalConfig } from "./lib/local-config.mjs";
 
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OPEN_VSX = "https://open-vsx.org/api";
@@ -32,11 +35,13 @@ function parseArgs(argv) {
   const args = {
     seed: null,
     lock: path.join(REPO_ROOT, "extensions.lock.json"),
-    out: "C:/b/p0/vsix",
+    out: null,
+    buildRoot: null,
     now: null,
     security: [],
     only: null,
     refresh: false,
+    pin: false,
   };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
@@ -48,8 +53,12 @@ function parseArgs(argv) {
     else if (a === "--security") args.security = list();
     else if (a === "--only") args.only = list();
     else if (a === "--refresh") args.refresh = true;
+    else if (a === "--pin") args.pin = true;
+    else if (a === "--build-root") args.buildRoot = argv[++i];
     else throw new Error(`知らない引数: ${a}`);
   }
+  // 既定の置き場所は VSIX のキャッシュ <buildRoot>\cache\vsix（docs/02 の8節。Phase 0 の C:\b\p0\vsix は使わない）
+  if (!args.out) args.out = path.join(resolveLocalConfig({ overrides: { buildRoot: args.buildRoot } }).buildRoot, "cache", "vsix");
   return args;
 }
 
@@ -93,7 +102,10 @@ async function fetchOne(base, args, nowIso) {
   const newer = compareVersions(latest.version, base.version);
   let chosen;
   let reason;
-  if (newer > 0 && latestSoaked) {
+  if (args.pin) {
+    chosen = base.version;
+    reason = `--pin: 基準 ${base.version} をそのまま取る（Open VSX の最新は ${latest.version}）`;
+  } else if (newer > 0 && latestSoaked) {
     chosen = latest.version;
     reason = security
       ? `最新 ${latest.version} が基準 ${base.version} より新しい（セキュリティ修正の指定のため寝かせる期間を問わない）`

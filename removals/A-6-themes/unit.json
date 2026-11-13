@@ -1,0 +1,42 @@
+{
+  "id": "A-6-themes",
+  "stage": "A",
+  "order": 160,
+  "enabled": false,
+  "intent": "テーマの組み込み拡張のうち theme-defaults（Light Modern を含む）と theme-seti（既定のファイルのアイコン）以外の10件を消す。theme-modern-icons（アイコンのテーマ vscode-modern-icons）も含む。テーマのサービスとテーマを選ぶ画面は残す（選ぶ画面は B-5）",
+  "after": [],
+  "delete": [
+    "extensions/theme-abyss",
+    "extensions/theme-kimbie-dark",
+    "extensions/theme-modern-icons",
+    "extensions/theme-monokai",
+    "extensions/theme-monokai-dimmed",
+    "extensions/theme-quietlight",
+    "extensions/theme-red",
+    "extensions/theme-solarized-dark",
+    "extensions/theme-solarized-light",
+    "extensions/theme-tomorrow-night-blue"
+  ],
+  "removeDependencies": {},
+  "removeLines": [],
+  "productRemove": [],
+  "patch": "edits.patch",
+  "kept": [
+    { "path": "product.json", "reason": "onboardingThemes が Solarized Dark / Solarized Light を指す。歓迎画面の onboardingThemes は B-2 で消す（docs/02 の3節）" }
+  ],
+  "checks": {
+    "absentCommands": [],
+    "absentViews": [],
+    "absentSettings": [],
+    "absentStrings": [
+      { "in": ["src/vs/workbench/test/browser/componentFixtures"], "text": "extensions/theme-abyss/" },
+      { "in": ["src/vs/workbench/test/browser/componentFixtures"], "text": "extensions/theme-monokai/" },
+      { "in": ["src/vs/workbench/test/browser/componentFixtures"], "text": "extensions/theme-quietlight/" },
+      { "in": ["src/vs/workbench/test/browser/componentFixtures"], "text": "extensions/theme-solarized-dark/" },
+      { "in": ["src/vs/workbench/test/browser/componentFixtures"], "text": "extensions/theme-solarized-light/" }
+    ],
+    "absentProcesses": [],
+    "absentHosts": []
+  },
+  "smoke": ["base", "claude-code", "absence"]
+}

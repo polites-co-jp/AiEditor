@@ -1,0 +1,294 @@
+{
+  "label": "trial-smoke-check",
+  "worktree": "C:\\b\\wt\\dev-b",
+  "tag": "1.146.0",
+  "baseCommit": "913e01c9863b3122c5af2b25930e856299736f16",
+  "headCommit": "913e01c9863b3122c5af2b25930e856299736f16",
+  "prevTag": null,
+  "dryRun": true,
+  "options": {
+    "only": [
+      "B-1-telemetry",
+      "B-2-onboarding-experiments-surveys",
+      "B-3-issue-share",
+      "B-4-outline-view",
+      "B-5-theme-switching",
+      "B-6-online-feeds",
+      "B-7-terminal-suggest"
+    ],
+    "until": null,
+    "keepConflict": false
+  },
+  "inputs": {
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\removals",
+    "patches": "e:\\develop\\self\\Team\\projects\\ai-editor\\patches",
+    "assets": "e:\\develop\\self\\Team\\projects\\ai-editor\\assets",
+    "overlay": "e:\\develop\\self\\Team\\projects\\ai-editor\\product.overlay.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "extensionsSrc": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-13-p2-units-b\\trial\\extensions-src-units-enabled",
+    "manifests": "C:/b/p0/vsix"
+  },
+  "startedAt": "2026-11-13T16:26:08.714Z",
+  "finishedAt": "2026-11-13T16:26:09.238Z",
+  "result": "fail",
+  "stoppedAt": {
+    "phase": "unit",
+    "id": "B-1-telemetry",
+    "message": "B-1-telemetry: removeLines: src/vs/workbench/workbench.common.main.ts: 一致する行が無い: import './contrib/telemetry/browser/telemetry.contribution.js';"
+  },
+  "overlay": {
+    "applied": "ok",
+    "set": [
+      "nameShort",
+      "nameLong",
+      "applicationName",
+      "dataFolderName",
+      "sharedDataFolderName",
+      "urlProtocol",
+      "win32MutexName",
+      "win32DirName",
+      "win32NameVersion",
+      "win32RegValueName",
+      "win32AppUserModelId",
+      "win32ShellNameShort",
+      "win32x64AppId",
+      "win32arm64AppId",
+      "win32x64UserAppId",
+      "win32arm64UserAppId",
+      "builtInExtensions",
+      "shukoConfigurationDefaults"
+    ],
+    "removed": [],
+    "removedIfPresent": [],
+    "commit": null
+  },
+  "units": [
+    {
+      "id": "B-1-telemetry",
+      "order": 210,
+      "enabled": false,
+      "applied": "error",
+      "ops": {
+        "commit": null,
+        "deleted": [],
+        "missingDeletes": [
+          "src/vs/workbench/contrib/telemetry",
+          "src/vs/workbench/contrib/bracketPairColorizer2Telemetry",
+          "src/vs/workbench/contrib/terminalContrib/telemetry",
+          "src/vs/workbench/contrib/editTelemetry/common",
+          "src/vs/workbench/contrib/editTelemetry/test",
+          "src/vs/workbench/contrib/editTelemetry/browser/aiContributionFeature.ts",
+          "src/vs/workbench/contrib/editTelemetry/browser/editStats",
+          "src/vs/workbench/contrib/editTelemetry/browser/editTelemetry.contribution.ts",
+          "src/vs/workbench/contrib/editTelemetry/browser/editTelemetryContribution.ts",
+          "src/vs/workbench/contrib/editTelemetry/browser/helpers",
+          "src/vs/workbench/contrib/editTelemetry/browser/randomService.ts",
+          "src/vs/workbench/contrib/editTelemetry/browser/settingIds.ts",
+          "src/vs/workbench/contrib/editTelemetry/browser/settings.ts",
+          "src/vs/workbench/contrib/editTelemetry/browser/telemetry/agentHostEditMarkerService.ts",
+          "src/vs/workbench/contrib/editTelemetry/browser/telemetry/aiEditTelemetry/aiEditTelemetryServiceImpl.ts",
+          "src/vs/workbench/contrib/editTelemetry/browser/telemetry/arcTelemetryReporter.ts",
+          "src/vs/workbench/contrib/editTelemetry/browser/telemetry/arcTelemetrySender.ts",
+          "src/vs/workbench/contrib/editTelemetry/browser/telemetry/editSourceTrackingFeature.ts",
+          "src/vs/workbench/contrib/editTelemetry/browser/telemetry/editSourceTrackingImpl.ts",
+          "src/vs/workbench/contrib/editTelemetry/browser/telemetry/editTracker.ts",
+          "src/vs/workbench/contrib/editTelemetry/browser/telemetry/scmAdapter.ts",
+          "src/vs/platform/telemetry/test/browser/1dsAppender.test.ts",
+          "src/vs/workbench/test/browser/componentFixtures/aiStats.fixture.ts"
+        ],
+        "removedDependencies": [],
+        "missingDependencies": [
+          {
+            "file": "package.json",
+            "name": "@microsoft/1ds-core-js"
+          },
+          {
+            "file": "package.json",
+            "name": "@microsoft/1ds-post-js"
+          },
+          {
+            "file": "remote/package.json",
+            "name": "@microsoft/1ds-core-js"
+          },
+          {
+            "file": "remote/package.json",
+            "name": "@microsoft/1ds-post-js"
+          },
+          {
+            "file": "remote/web/package.json",
+            "name": "@microsoft/1ds-core-js"
+          },
+          {
+            "file": "remote/web/package.json",
+            "name": "@microsoft/1ds-post-js"
+          }
+        ],
+        "removeLines": [
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/telemetry/browser/telemetry.contribution.js';",
+            "count": 1,
+            "found": 0,
+            "ok": false
+          }
+        ],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "skipped",
+        "commit": null,
+        "subject": null,
+        "conflicts": []
+      },
+      "warnings": [
+        "delete: src/vs/workbench/contrib/telemetry が本家に無い（改名の恐れ）",
+        "delete: src/vs/workbench/contrib/bracketPairColorizer2Telemetry が本家に無い（改名の恐れ）",
+        "delete: src/vs/workbench/contrib/terminalContrib/telemetry が本家に無い（改名の恐れ）",
+        "delete: src/vs/workbench/contrib/editTelemetry/common が本家に無い（改名の恐れ）",
+        "delete: src/vs/workbench/contrib/editTelemetry/test が本家に無い（改名の恐れ）",
+        "delete: src/vs/workbench/contrib/editTelemetry/browser/aiContributionFeature.ts が本家に無い（改名の恐れ）",
+        "delete: src/vs/workbench/contrib/editTelemetry/browser/editStats が本家に無い（改名の恐れ）",
+        "delete: src/vs/workbench/contrib/editTelemetry/browser/editTelemetry.contribution.ts が本家に無い（改名の恐れ）",
+        "delete: src/vs/workbench/contrib/editTelemetry/browser/editTelemetryContribution.ts が本家に無い（改名の恐れ）",
+        "delete: src/vs/workbench/contrib/editTelemetry/browser/helpers が本家に無い（改名の恐れ）",
+        "delete: src/vs/workbench/contrib/editTelemetry/browser/randomService.ts が本家に無い（改名の恐れ）",
+        "delete: src/vs/workbench/contrib/editTelemetry/browser/settingIds.ts が本家に無い（改名の恐れ）",
+        "delete: src/vs/workbench/contrib/editTelemetry/browser/settings.ts が本家に無い（改名の恐れ）",
+        "delete: src/vs/workbench/contrib/editTelemetry/browser/telemetry/agentHostEditMarkerService.ts が本家に無い（改名の恐れ）",
+        "delete: src/vs/workbench/contrib/editTelemetry/browser/telemetry/aiEditTelemetry/aiEditTelemetryServiceImpl.ts が本家に無い（改名の恐れ）",
+        "delete: src/vs/workbench/contrib/editTelemetry/browser/telemetry/arcTelemetryReporter.ts が本家に無い（改名の恐れ）",
+        "delete: src/vs/workbench/contrib/editTelemetry/browser/telemetry/arcTelemetrySender.ts が本家に無い（改名の恐れ）",
+        "delete: src/vs/workbench/contrib/editTelemetry/browser/telemetry/editSourceTrackingFeature.ts が本家に無い（改名の恐れ）",
+        "delete: src/vs/workbench/contrib/editTelemetry/browser/telemetry/editSourceTrackingImpl.ts が本家に無い（改名の恐れ）",
+        "delete: src/vs/workbench/contrib/editTelemetry/browser/telemetry/editTracker.ts が本家に無い（改名の恐れ）",
+        "delete: src/vs/workbench/contrib/editTelemetry/browser/telemetry/scmAdapter.ts が本家に無い（改名の恐れ）",
+        "delete: src/vs/platform/telemetry/test/browser/1dsAppender.test.ts が本家に無い（改名の恐れ）",
+        "delete: src/vs/workbench/test/browser/componentFixtures/aiStats.fixture.ts が本家に無い（改名の恐れ）",
+        "removeDependencies: package.json に @microsoft/1ds-core-js が無い",
+        "removeDependencies: package.json に @microsoft/1ds-post-js が無い",
+        "removeDependencies: remote/package.json に @microsoft/1ds-core-js が無い",
+        "removeDependencies: remote/package.json に @microsoft/1ds-post-js が無い",
+        "removeDependencies: remote/web/package.json に @microsoft/1ds-core-js が無い",
+        "removeDependencies: remote/web/package.json に @microsoft/1ds-post-js が無い"
+      ]
+    }
+  ],
+  "unitsSkipped": [
+    {
+      "id": "A-1-copilot-extension",
+      "reason": "not in --only"
+    },
+    {
+      "id": "A-2-accounts-extensions",
+      "reason": "not in --only"
+    },
+    {
+      "id": "A-3-debug-extensions",
+      "reason": "not in --only"
+    },
+    {
+      "id": "A-4-notebook-extensions",
+      "reason": "not in --only"
+    },
+    {
+      "id": "A-5-remote-extensions",
+      "reason": "not in --only"
+    },
+    {
+      "id": "A-6-themes",
+      "reason": "not in --only"
+    },
+    {
+      "id": "A-7-unused-extensions",
+      "reason": "not in --only"
+    }
+  ],
+  "patches": [],
+  "assets": null,
+  "builtinExtensions": null,
+  "checks": {
+    "remnants": {
+      "status": "skipped",
+      "reason": "dry-run"
+    },
+    "absentStrings": {
+      "status": "skipped",
+      "reason": "dry-run"
+    },
+    "unclassifiedExtensions": {
+      "status": "ok",
+      "upstreamCount": 96,
+      "items": [],
+      "nonExtensionDirs": [
+        "types"
+      ]
+    },
+    "upstreamAdditions": {
+      "status": "skipped",
+      "reason": "--prev-tag が無い"
+    },
+    "dependencies": {
+      "status": "skipped",
+      "reason": "--prev-tag が無い"
+    },
+    "toolchain": {
+      "status": "info",
+      "nvmrc": {
+        "prev": null,
+        "now": "24.22.1",
+        "changed": null
+      },
+      "electron": {
+        "prev": null,
+        "now": "43.8.6",
+        "changed": null
+      },
+      "reason": "--prev-tag が無い"
+    },
+    "registeredKeys": {
+      "status": "skipped",
+      "reason": "途中で止めた"
+    },
+    "lockfile": {
+      "status": "pending",
+      "reason": "依存の導入の後に --lockfile-check（build.mjs は checkLockfiles）で埋める"
+    },
+    "commitIdentity": {
+      "status": "skipped",
+      "reason": "dry-run"
+    }
+  },
+  "warnings": [
+    "B-1-telemetry: delete: src/vs/workbench/contrib/telemetry が本家に無い（改名の恐れ）",
+    "B-1-telemetry: delete: src/vs/workbench/contrib/bracketPairColorizer2Telemetry が本家に無い（改名の恐れ）",
+    "B-1-telemetry: delete: src/vs/workbench/contrib/terminalContrib/telemetry が本家に無い（改名の恐れ）",
+    "B-1-telemetry: delete: src/vs/workbench/contrib/editTelemetry/common が本家に無い（改名の恐れ）",
+    "B-1-telemetry: delete: src/vs/workbench/contrib/editTelemetry/test が本家に無い（改名の恐れ）",
+    "B-1-telemetry: delete: src/vs/workbench/contrib/editTelemetry/browser/aiContributionFeature.ts が本家に無い（改名の恐れ）",
+    "B-1-telemetry: delete: src/vs/workbench/contrib/editTelemetry/browser/editStats が本家に無い（改名の恐れ）",
+    "B-1-telemetry: delete: src/vs/workbench/contrib/editTelemetry/browser/editTelemetry.contribution.ts が本家に無い（改名の恐れ）",
+    "B-1-telemetry: delete: src/vs/workbench/contrib/editTelemetry/browser/editTelemetryContribution.ts が本家に無い（改名の恐れ）",
+    "B-1-telemetry: delete: src/vs/workbench/contrib/editTelemetry/browser/helpers が本家に無い（改名の恐れ）",
+    "B-1-telemetry: delete: src/vs/workbench/contrib/editTelemetry/browser/randomService.ts が本家に無い（改名の恐れ）",
+    "B-1-telemetry: delete: src/vs/workbench/contrib/editTelemetry/browser/settingIds.ts が本家に無い（改名の恐れ）",
+    "B-1-telemetry: delete: src/vs/workbench/contrib/editTelemetry/browser/settings.ts が本家に無い（改名の恐れ）",
+    "B-1-telemetry: delete: src/vs/workbench/contrib/editTelemetry/browser/telemetry/agentHostEditMarkerService.ts が本家に無い（改名の恐れ）",
+    "B-1-telemetry: delete: src/vs/workbench/contrib/editTelemetry/browser/telemetry/aiEditTelemetry/aiEditTelemetryServiceImpl.ts が本家に無い（改名の恐れ）",
+    "B-1-telemetry: delete: src/vs/workbench/contrib/editTelemetry/browser/telemetry/arcTelemetryReporter.ts が本家に無い（改名の恐れ）",
+    "B-1-telemetry: delete: src/vs/workbench/contrib/editTelemetry/browser/telemetry/arcTelemetrySender.ts が本家に無い（改名の恐れ）",
+    "B-1-telemetry: delete: src/vs/workbench/contrib/editTelemetry/browser/telemetry/editSourceTrackingFeature.ts が本家に無い（改名の恐れ）",
+    "B-1-telemetry: delete: src/vs/workbench/contrib/editTelemetry/browser/telemetry/editSourceTrackingImpl.ts が本家に無い（改名の恐れ）",
+    "B-1-telemetry: delete: src/vs/workbench/contrib/editTelemetry/browser/telemetry/editTracker.ts が本家に無い（改名の恐れ）",
+    "B-1-telemetry: delete: src/vs/workbench/contrib/editTelemetry/browser/telemetry/scmAdapter.ts が本家に無い（改名の恐れ）",
+    "B-1-telemetry: delete: src/vs/platform/telemetry/test/browser/1dsAppender.test.ts が本家に無い（改名の恐れ）",
+    "B-1-telemetry: delete: src/vs/workbench/test/browser/componentFixtures/aiStats.fixture.ts が本家に無い（改名の恐れ）",
+    "B-1-telemetry: removeDependencies: package.json に @microsoft/1ds-core-js が無い",
+    "B-1-telemetry: removeDependencies: package.json に @microsoft/1ds-post-js が無い",
+    "B-1-telemetry: removeDependencies: remote/package.json に @microsoft/1ds-core-js が無い",
+    "B-1-telemetry: removeDependencies: remote/package.json に @microsoft/1ds-post-js が無い",
+    "B-1-telemetry: removeDependencies: remote/web/package.json に @microsoft/1ds-core-js が無い",
+    "B-1-telemetry: removeDependencies: remote/web/package.json に @microsoft/1ds-post-js が無い"
+  ],
+  "errors": []
+}

@@ -4,7 +4,7 @@
 // JS の中身は開かない（ファイルの名前とサイズ、package.json だけを見る）。
 //
 // 使い方: node scripts/lock-diff.mjs --from <前の版の置き場所> --to <新しい版の置き場所> [--json]
-//   置き場所の例: C:/b/p0/vsix/anthropic.claude-code-2.1.322@win32-x64
+//   置き場所の例: C:/b/cache/vsix/anthropic.claude-code-2.1.322@win32-x64
 // 出力: 変わった manifest の項目、増えた・消えた・サイズが変わったファイル、新しい実行ファイル（.exe・.dll・.node）。
 // 終わりの状態: manifest の見る項目が変わったか、新しい実行ファイルがあれば 2（目立たせるため）、無ければ 0。
 

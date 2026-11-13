@@ -7,7 +7,7 @@
 //
 //   --cache   取ったものと結果の置き場所（既定 C:/b/p0/sublime）
 //   --vsix    元の VSIX を指定する（既定: Open VSX から 4.1.10 を取り、.sha256 と照合する）
-//   --claude  Claude Code の manifest の出どころ。既定の順: C:/b/p0/vsix の Claude Code の VSIX
+//   --claude  Claude Code の manifest の出どころ。既定の順: <buildRoot>\cache\vsix の Claude Code の VSIX
 //             → extensions.lock.json の版を Open VSX の API で → Open VSX の最新
 //   --md      変換の結果と衝突の一覧を Markdown の表で書き出す
 //   --apply   extensions-src/mydist/package.json の contributes.keybindings を書き換え、
@@ -21,6 +21,7 @@ import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { readEntry } from './lib/zip-read.mjs';
+import { resolveLocalConfig } from './lib/local-config.mjs';
 import {
   convertKeybindingsDetailed, findConflicts, findSameKeyDifferentWhen, toWindowsKeybinding, unknownModifiersOf,
 } from './lib/sublime-keys.mjs';
@@ -90,7 +91,13 @@ async function getSublime(opts) {
 }
 
 function findLocalClaudeVsix() {
-  const dir = 'C:/b/p0/vsix';
+  // VSIX のキャッシュ <buildRoot>\cache\vsix（docs/02 の8節。Phase 0 の C:\b\p0\vsix は使わない）
+  let dir;
+  try {
+    dir = join(resolveLocalConfig().buildRoot, 'cache', 'vsix');
+  } catch {
+    return null;
+  }
   if (!existsSync(dir)) return null;
   // lock-fetch.mjs は vsix\<id>-<版>[@<target>]\ の下に置く。直下も見る
   const rx = /^anthropic\.claude-code-.*\.vsix$/i;

@@ -1,0 +1,74 @@
+{
+  "label": "1.146.0-dry",
+  "upstream": {
+    "tag": "1.146.0",
+    "commit": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+  },
+  "units": [],
+  "patches": [],
+  "lockfileDiff": "records/take-in/1.146.0-dry/lockfile.diff",
+  "toolchain": {
+    "node": "24.16.0",
+    "electron": "43.8.6",
+    "packageManager": "pnpm 11.8.0",
+    "packageManagerDeclared": "pnpm@12.16.0",
+    "nvmrc": "24.22.1",
+    "nodeOfBuildScript": "v24.16.0"
+  },
+  "durations": {},
+  "zip": null,
+  "extensionsLockSha256": "6b4c3ceae7d6cb407f62bbcbd57ca50267e998975887884cc325fd26a85cce10",
+  "result": "dry-run",
+  "stoppedAt": null,
+  "dryRun": true,
+  "startedAt": "2026-11-13T15:26:31.163Z",
+  "finishedAt": "2026-11-13T15:26:31.665Z",
+  "paths": {
+    "buildRoot": "C:\\b",
+    "worktree": "C:\\b\\wt\\1.146.0",
+    "packageDir": "C:\\b\\wt\\VSCode-win32-x64",
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\records\\take-in\\1.146.0-dry\\checks.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\removals",
+    "dist": "C:\\b\\dist",
+    "logs": "C:\\b\\logs\\1.146.0-dry"
+  },
+  "config": {
+    "path": "C:/b/trial-install/cfg/new/local.json",
+    "exists": true,
+    "buildRootFrom": "local.json"
+  },
+  "stepsSelected": [
+    "prepare"
+  ],
+  "envRemovedForChildren": [
+    "ELECTRON_RUN_AS_NODE",
+    "VSCODE_CODE_CACHE_PATH",
+    "VSCODE_CRASH_REPORTER_PROCESS_TYPE",
+    "VSCODE_CWD",
+    "VSCODE_ESM_ENTRYPOINT",
+    "VSCODE_HANDLES_UNCAUGHT_ERRORS",
+    "VSCODE_IPC_HOOK",
+    "VSCODE_NLS_CONFIG",
+    "VSCODE_PID",
+    "VSCODE_PROCESS_TITLE"
+  ],
+  "steps": [],
+  "warnings": [],
+  "plan": {
+    "prepare": {
+      "command": "C:\\Program Files\\nodejs\\node.exe e:\\develop\\self\\Team\\projects\\ai-editor\\scripts\\prepare.mjs --tag 1.146.0 --build-root C:\\b --out C:\\b\\wt\\1.146.0.prepare.json",
+      "cwd": "e:\\develop\\self\\Team\\projects\\ai-editor"
+    }
+  },
+  "checksBeforeRun": {
+    "applyMjs": true,
+    "keepJson": true,
+    "worktree": true,
+    "packageDir": false,
+    "tarExe": true,
+    "zipExists": false,
+    "unitsEnabled": [],
+    "unitsTotal": 13
+  }
+}
