@@ -19,7 +19,7 @@
 | ms-vscode.powershell | 2025.4.0 | 2025-10-09 | "SEE LICENSE IN LICENSE.txt"。GitHub と VSIX 内の LICENSE.txt はどちらも MIT License [一次] https://raw.githubusercontent.com/PowerShell/vscode-powershell/main/LICENSE.txt 。サーバー側（PSES）のライセンスは未確認 | ^1.101.0 | true | PowerShell |
 | mads-hartmann.bash-ide-vscode | 1.43.2 | 2026-09-21 | MIT | ^1.91.0 | true | sh |
 | mechatroner.rainbow-csv | 3.24.1 | 2026-03-01 | MIT | ^1.95.0 | true | CSV |
-| dotenv.dotenv-vscode または weixu.wx-vsce-dotenv | 1.5.8 / 0.2.3 | 2026-10-01 / 2026-10-15 | MIT / MIT | ^1.65.0 / ^1.96.0 | true / true | .env。裁定: Phase 0 の 0-3 で両方を試し、エラー表示を持つほうを1つ載せる |
+| weixu.wx-vsce-dotenv | 0.2.3 | 2026-10-15 | MIT | ^1.96.0 | true | .env。裁定「エラー表示を持つほうを1つ載せる」により、こちらに決めた（2026-11-13）。誤りを含む .env で診断を4件出し、`dotenv.dotenv-vscode` 1.5.8 は0件だった（`tasks/2026-11-13-p1-smoke/handoff-notes.md` の「合図後の実行の結果」6節）。`dotenv.dotenv-vscode` は台帳から外す |
 | tomoki1207.pdf | 1.2.2 | 2022-12-23 | API に表示なし。GitHub の LICENSE と VSIX 内の LICENSE.txt はどちらも MIT License（著作権者 tomoki1207。冒頭に PDF.js などの第三者の表記あり）[一次] https://raw.githubusercontent.com/tomoki1207/vscode-pdfviewer/master/LICENSE | ^1.46.0 | true | PDF プレビュー |
 | MS-CEINTL.vscode-language-pack-ja | 1.131.0 | 2026-07-28 | "SEE MIT LICENSE IN LICENSE.md" | ^1.131.0 | true | 日本語化 |
 
