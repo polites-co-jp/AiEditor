@@ -1,0 +1,1596 @@
+{
+  "label": "trial-units-c3c7-final",
+  "worktree": "C:\\b\\wt\\dev-c3",
+  "tag": "1.146.0",
+  "baseCommit": "fe72655ab0a7919877b88fdf4f4eb5189e878cdc",
+  "headCommit": "526d25d777f5a7c2abe71513cf9f6c870121cbe2",
+  "prevTag": null,
+  "dryRun": false,
+  "options": {
+    "only": [
+      "A-4-notebook-extensions",
+      "A-5-remote-extensions",
+      "B-4-outline-view",
+      "C-1-ai",
+      "C-2-debug",
+      "C-3-remote",
+      "C-4-notebook",
+      "C-5-extension-gallery",
+      "C-6-settings-sync",
+      "C-7-breadcrumbs-outline"
+    ],
+    "until": null,
+    "keepConflict": false
+  },
+  "inputs": {
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-p5-units-c-prep\\trial-c3c7\\removals-final",
+    "patches": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-p5-units-c-prep\\trial-c3c7\\patches-none",
+    "assets": "e:\\develop\\self\\Team\\projects\\ai-editor\\assets",
+    "overlay": "e:\\develop\\self\\Team\\projects\\ai-editor\\product.overlay.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "extensionsSrc": "e:\\develop\\self\\Team\\projects\\ai-editor\\extensions-src",
+    "manifests": "C:\\b\\cache\\vsix"
+  },
+  "startedAt": "2026-11-13T18:43:04.541Z",
+  "finishedAt": "2026-11-13T18:43:31.134Z",
+  "result": "fail",
+  "stoppedAt": null,
+  "overlay": {
+    "applied": "ok",
+    "set": [
+      "nameShort",
+      "nameLong",
+      "applicationName",
+      "dataFolderName",
+      "sharedDataFolderName",
+      "urlProtocol",
+      "win32MutexName",
+      "win32DirName",
+      "win32NameVersion",
+      "win32RegValueName",
+      "win32AppUserModelId",
+      "win32ShellNameShort",
+      "win32x64AppId",
+      "win32arm64AppId",
+      "win32x64UserAppId",
+      "win32arm64UserAppId",
+      "builtInExtensions",
+      "shukoConfigurationDefaults"
+    ],
+    "removed": [],
+    "removedIfPresent": [],
+    "commit": "d38dbbaef59350fad341ced632139696b1f0906a"
+  },
+  "units": [
+    {
+      "id": "A-4-notebook-extensions",
+      "order": 140,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "de86a07ee90b2ef9e33b0db1518fb8003f26ca76",
+        "deleted": [],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "none",
+        "commit": null,
+        "subject": null,
+        "conflicts": []
+      },
+      "warnings": []
+    },
+    {
+      "id": "A-5-remote-extensions",
+      "order": 150,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "fe7e2f8cbda5e617c043b534846f1bb8f4520bc1",
+        "deleted": [],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "none",
+        "commit": null,
+        "subject": null,
+        "conflicts": []
+      },
+      "warnings": []
+    },
+    {
+      "id": "B-4-outline-view",
+      "order": 240,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "87a48ce26ef3211c4ae734813c2b63134051ff97",
+        "deleted": [],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "none",
+        "commit": null,
+        "subject": null,
+        "conflicts": []
+      },
+      "warnings": []
+    },
+    {
+      "id": "C-1-ai",
+      "order": 310,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "cb9daa9b2c10b330e5a7121038f1068f463e8969",
+        "deleted": [],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "none",
+        "commit": null,
+        "subject": null,
+        "conflicts": []
+      },
+      "warnings": []
+    },
+    {
+      "id": "C-2-debug",
+      "order": 320,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "b7460dcc81532c4ea6aa0207be2f7567e8f53f02",
+        "deleted": [],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "none",
+        "commit": null,
+        "subject": null,
+        "conflicts": []
+      },
+      "warnings": []
+    },
+    {
+      "id": "C-3-remote",
+      "order": 330,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "fd8b3d2d6959461a7f6a6a4b51899e611cd79a01",
+        "deleted": [
+          "src/vs/workbench/contrib/remote",
+          "src/vs/workbench/contrib/remoteTunnel",
+          "src/vs/platform/remoteTunnel",
+          "build/gulpfile.reh.ts"
+        ],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/remote/common/remote.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/remote/browser/remote.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.desktop.main.ts",
+            "line": "import '../platform/remoteTunnel/electron-browser/remoteTunnelService.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.desktop.main.ts",
+            "line": "import './contrib/remote/electron-browser/remote.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.desktop.main.ts",
+            "line": "import './contrib/remoteTunnel/electron-browser/remoteTunnel.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.web.main.ts",
+            "line": "import './contrib/remote/browser/remoteStartEntry.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts",
+            "line": "import { IRemoteTunnelService } from '../../../platform/remoteTunnel/common/remoteTunnel.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts",
+            "line": "import { RemoteTunnelService } from '../../../platform/remoteTunnel/node/remoteTunnelService.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts",
+            "line": "import { ITunnelProcessCoordinator, TunnelProcessCoordinator } from '../../../platform/remoteTunnel/node/tunnelProcessCoordinator.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts",
+            "line": "services.set(ITunnelProcessCoordinator, new SyncDescriptor(TunnelProcessCoordinator, [undefined], true));",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts",
+            "line": "services.set(IRemoteTunnelService, new SyncDescriptor(RemoteTunnelService));",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts",
+            "line": "const remoteTunnelChannel = ProxyChannel.fromService(accessor.get(IRemoteTunnelService), this._store);",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts",
+            "line": "this.server.registerChannel('remoteTunnel', remoteTunnelChannel);",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          }
+        ],
+        "productRemoved": [
+          "serverLicenseUrl",
+          "serverGreeting",
+          "serverLicense",
+          "serverLicensePrompt",
+          "serverApplicationName",
+          "serverDataFolderName",
+          "tunnelApplicationName",
+          "win32TunnelServiceMutex",
+          "win32TunnelMutex"
+        ],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "none",
+        "commit": null,
+        "subject": null,
+        "conflicts": []
+      },
+      "warnings": []
+    },
+    {
+      "id": "C-4-notebook",
+      "order": 340,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "921c87035e9ffef500b6dfe8e7cb27a22bf99ca5",
+        "deleted": [
+          "src/vs/workbench/contrib/notebook/browser",
+          "src/vs/workbench/contrib/notebook/test",
+          "src/vs/workbench/contrib/interactive",
+          "src/vs/workbench/contrib/replNotebook",
+          "src/vs/workbench/contrib/outline",
+          "src/vs/workbench/contrib/search/browser/notebookSearch",
+          "src/vs/workbench/contrib/search/test/browser/searchNotebookHelpers.test.ts",
+          "src/vs/workbench/api/browser/mainThreadNotebook.ts",
+          "src/vs/workbench/api/browser/mainThreadNotebookDocuments.ts",
+          "src/vs/workbench/api/browser/mainThreadNotebookDocumentsAndEditors.ts",
+          "src/vs/workbench/api/browser/mainThreadNotebookEditors.ts",
+          "src/vs/workbench/api/browser/mainThreadNotebookKernels.ts",
+          "src/vs/workbench/api/browser/mainThreadNotebookRenderers.ts",
+          "src/vs/workbench/api/browser/mainThreadNotebookSaveParticipant.ts",
+          "src/vs/workbench/api/browser/mainThreadInteractive.ts",
+          "src/vs/workbench/api/common/extHostNotebook.ts",
+          "src/vs/workbench/api/common/extHostNotebookDocument.ts",
+          "src/vs/workbench/api/common/extHostNotebookDocuments.ts",
+          "src/vs/workbench/api/common/extHostNotebookDocumentSaveParticipant.ts",
+          "src/vs/workbench/api/common/extHostNotebookEditor.ts",
+          "src/vs/workbench/api/common/extHostNotebookEditors.ts",
+          "src/vs/workbench/api/common/extHostNotebookKernels.ts",
+          "src/vs/workbench/api/common/extHostNotebookRenderers.ts",
+          "src/vs/workbench/api/common/extHostInteractive.ts",
+          "src/vs/workbench/api/test/browser/TestMainThreadNotebookKernels.ts",
+          "src/vs/workbench/api/test/browser/extHostNotebook.test.ts",
+          "src/vs/workbench/api/test/browser/extHostNotebookKernel.test.ts",
+          "src/vs/workbench/api/test/browser/extHostNotebookSerializer.test.ts",
+          "src/vs/workbench/api/test/browser/extHostNotebookStatusCommands.test.ts",
+          "src/vs/workbench/api/test/browser/mainThreadNotebook.test.ts",
+          "src/vs/workbench/api/test/browser/mainThreadVariableProvider.test.ts"
+        ],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/notebook/browser/notebook.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/interactive/browser/interactive.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/replNotebook/browser/repl.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/api/browser/extensionHost.contribution.ts",
+            "line": "import './mainThreadNotebook.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/api/browser/extensionHost.contribution.ts",
+            "line": "import './mainThreadNotebookKernels.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/api/browser/extensionHost.contribution.ts",
+            "line": "import './mainThreadNotebookDocumentsAndEditors.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/api/browser/extensionHost.contribution.ts",
+            "line": "import './mainThreadNotebookRenderers.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/api/browser/extensionHost.contribution.ts",
+            "line": "import './mainThreadNotebookSaveParticipant.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/api/browser/extensionHost.contribution.ts",
+            "line": "import './mainThreadInteractive.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          }
+        ],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "none",
+        "commit": null,
+        "subject": null,
+        "conflicts": []
+      },
+      "warnings": []
+    },
+    {
+      "id": "C-5-extension-gallery",
+      "order": 350,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "65a8d83e866f1acff87819f740594815744eb56e",
+        "deleted": [
+          "src/vs/workbench/contrib/extensions/browser/configBasedRecommendations.ts",
+          "src/vs/workbench/contrib/extensions/browser/exeBasedRecommendations.ts",
+          "src/vs/workbench/contrib/extensions/browser/extensionRecommendationNotificationService.ts",
+          "src/vs/workbench/contrib/extensions/browser/extensionRecommendations.ts",
+          "src/vs/workbench/contrib/extensions/browser/extensionRecommendationsService.ts",
+          "src/vs/workbench/contrib/extensions/browser/fileBasedRecommendations.ts",
+          "src/vs/workbench/contrib/extensions/browser/keymapRecommendations.ts",
+          "src/vs/workbench/contrib/extensions/browser/languageRecommendations.ts",
+          "src/vs/workbench/contrib/extensions/browser/remoteRecommendations.ts",
+          "src/vs/workbench/contrib/extensions/browser/webRecommendations.ts",
+          "src/vs/workbench/contrib/extensions/browser/workspaceRecommendations.ts",
+          "src/vs/workbench/contrib/extensions/test/electron-browser/extensionRecommendationsService.test.ts",
+          "src/vs/workbench/services/extensionRecommendations/common/extensionIgnoredRecommendationsService.ts",
+          "src/vs/workbench/services/extensionRecommendations/common/workspaceExtensionsConfig.ts",
+          "src/vs/workbench/services/extensionManagement/common/extensionGalleryAccount.ts",
+          "src/vs/workbench/services/extensionManagement/electron-browser/extensionGalleryAccountService.ts",
+          "src/vs/workbench/services/extensionManagement/electron-browser/extensionTipsService.ts",
+          "src/vs/workbench/services/extensionManagement/test/electron-browser/extensionGalleryAccountService.test.ts",
+          "src/vs/platform/extensionManagement/node/extensionTipsService.ts"
+        ],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './services/extensionRecommendations/common/extensionIgnoredRecommendationsService.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './services/extensionRecommendations/common/workspaceExtensionsConfig.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.desktop.main.ts",
+            "line": "import './services/extensionManagement/electron-browser/extensionGalleryAccountService.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.desktop.main.ts",
+            "line": "import './services/extensionManagement/electron-browser/extensionTipsService.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts",
+            "line": "import { ExtensionTipsService } from '../../../platform/extensionManagement/node/extensionTipsService.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts",
+            "line": "services.set(IExtensionTipsService, new SyncDescriptor(ExtensionTipsService, undefined, false /* Eagerly scans and computes exe based recommendations */));",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts",
+            "line": "const extensionTipsChannel = new ExtensionTipsChannel(accessor.get(IExtensionTipsService));",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts",
+            "line": "this.server.registerChannel('extensionTipsService', extensionTipsChannel);",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          }
+        ],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "none",
+        "commit": null,
+        "subject": null,
+        "conflicts": []
+      },
+      "warnings": []
+    },
+    {
+      "id": "C-6-settings-sync",
+      "order": 360,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "20a02f9690e77ec34dab2df52b279bc3ed62bed6",
+        "deleted": [
+          "src/vs/workbench/contrib/userDataSync",
+          "src/vs/workbench/services/userDataSync/browser/userDataSyncWorkbenchService.ts"
+        ],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './services/userDataSync/browser/userDataSyncWorkbenchService.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/userDataSync/browser/userDataSync.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.desktop.main.ts",
+            "line": "import './contrib/userDataSync/electron-browser/userDataSync.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          }
+        ],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "none",
+        "commit": null,
+        "subject": null,
+        "conflicts": []
+      },
+      "warnings": []
+    },
+    {
+      "id": "C-7-breadcrumbs-outline",
+      "order": 370,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "f8f205ba5a506e0305222a9cacc6892570b823bd",
+        "deleted": [
+          "src/vs/workbench/browser/parts/editor/breadcrumbs.ts",
+          "src/vs/workbench/browser/parts/editor/breadcrumbsControl.ts",
+          "src/vs/workbench/browser/parts/editor/breadcrumbsModel.ts",
+          "src/vs/workbench/browser/parts/editor/breadcrumbsPicker.ts",
+          "src/vs/workbench/browser/parts/editor/media/breadcrumbscontrol.css",
+          "src/vs/workbench/services/outline",
+          "src/vs/workbench/contrib/codeEditor/browser/outline",
+          "src/vs/workbench/test/browser/parts/editor/breadcrumbsControl.test.ts",
+          "src/vs/workbench/test/browser/parts/editor/breadcrumbModel.test.ts",
+          "src/vs/workbench/contrib/codeEditor/test/browser/documentSymbolsOutline.test.ts"
+        ],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './services/outline/browser/outlineService.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/codeEditor/browser/outline/documentSymbolsOutline.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          }
+        ],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "none",
+        "commit": null,
+        "subject": null,
+        "conflicts": []
+      },
+      "warnings": []
+    }
+  ],
+  "unitsSkipped": [],
+  "patches": [],
+  "assets": {
+    "applied": "ok",
+    "copied": [
+      "resources/win32/code.ico",
+      "resources/win32/code_150x150.png",
+      "resources/win32/code_70x70.png",
+      "src/vs/workbench/browser/media/code-icon.svg",
+      "src/vs/workbench/browser/parts/editor/media/letterpress-dark.svg",
+      "src/vs/workbench/browser/parts/editor/media/letterpress-hcDark.svg",
+      "src/vs/workbench/browser/parts/editor/media/letterpress-hcLight.svg",
+      "src/vs/workbench/browser/parts/editor/media/letterpress-light.svg"
+    ],
+    "commit": "9eaa360097f40740746531f0b0e4de543cf46078"
+  },
+  "builtinExtensions": {
+    "applied": "ok",
+    "copied": [
+      {
+        "name": "mydist",
+        "files": 3,
+        "list": [
+          "README.md",
+          "ThirdPartyNotices.txt",
+          "package.json"
+        ],
+        "removedDefaults": [
+          {
+            "key": "breadcrumbs.enabled",
+            "unit": "C-7-breadcrumbs-outline"
+          }
+        ]
+      },
+      {
+        "name": "notion-sync",
+        "files": 4,
+        "list": [
+          "README.md",
+          "ThirdPartyNotices.txt",
+          "dist/extension.js",
+          "package.json"
+        ]
+      }
+    ],
+    "commit": "526d25d777f5a7c2abe71513cf9f6c870121cbe2",
+    "removedDefaults": [
+      {
+        "key": "breadcrumbs.enabled",
+        "unit": "C-7-breadcrumbs-outline"
+      }
+    ]
+  },
+  "checks": {
+    "remnants": {
+      "status": "ok",
+      "items": []
+    },
+    "absentStrings": {
+      "status": "fail",
+      "items": [
+        {
+          "unit": "C-3-remote",
+          "text": "contrib/remote/common/remote.contribution.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "C-3-remote",
+          "text": "contrib/remote/browser/remote.contribution.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "C-3-remote",
+          "text": "contrib/remote/electron-browser/remote.contribution.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "C-3-remote",
+          "text": "remote/browser/remoteExplorer.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 1,
+          "hits": [
+            {
+              "file": "src/vs/workbench/api/browser/viewsExtensionPoint.ts",
+              "line": 27
+            }
+          ]
+        },
+        {
+          "unit": "C-3-remote",
+          "text": "remote/browser/remoteStartEntry.contribution.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "C-3-remote",
+          "text": "remoteTunnel/electron-browser/remoteTunnel.contribution.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "C-3-remote",
+          "text": "platform/remoteTunnel/common/remoteTunnel.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "C-3-remote",
+          "text": "platform/remoteTunnel/common/tunnelServiceHeaders.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "C-3-remote",
+          "text": "remoteTunnel/electron-browser/remoteTunnelService.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "C-3-remote",
+          "text": "remoteTunnel/browser/remoteTunnelService.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "C-4-notebook",
+          "text": "notebook/browser/notebook.contribution.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "C-4-notebook",
+          "text": "notebook/browser/notebookBrowser.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 3,
+          "hits": [
+            {
+              "file": "src/vs/workbench/contrib/search/test/browser/searchModel.test.ts",
+              "line": 35
+            },
+            {
+              "file": "src/vs/workbench/contrib/search/test/browser/searchResult.test.ts",
+              "line": 31
+            },
+            {
+              "file": "src/vs/workbench/contrib/bulkEdit/browser/bulkCellEdits.ts",
+              "line": 15
+            }
+          ]
+        },
+        {
+          "unit": "C-4-notebook",
+          "text": "notebook/browser/notebookEditorWidget.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 4,
+          "hits": [
+            {
+              "file": "src/vs/workbench/contrib/search/browser/searchTreeModel/folderMatch.ts",
+              "line": 21
+            },
+            {
+              "file": "src/vs/workbench/contrib/search/browser/searchTreeModel/searchResult.ts",
+              "line": 13
+            },
+            {
+              "file": "src/vs/workbench/contrib/search/browser/searchTreeModel/searchTreeCommon.ts",
+              "line": 14
+            },
+            {
+              "file": "src/vs/workbench/contrib/search/browser/AISearch/aiSearchModel.ts",
+              "line": 17
+            }
+          ]
+        },
+        {
+          "unit": "C-4-notebook",
+          "text": "notebook/browser/services/notebookEditorService.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 6,
+          "hits": [
+            {
+              "file": "src/vs/workbench/contrib/search/test/browser/searchActions.test.ts",
+              "line": 19
+            },
+            {
+              "file": "src/vs/workbench/contrib/search/test/browser/searchModel.test.ts",
+              "line": 28
+            },
+            {
+              "file": "src/vs/workbench/contrib/search/test/browser/searchResult.test.ts",
+              "line": 27
+            },
+            {
+              "file": "src/vs/workbench/contrib/search/test/browser/searchTestCommon.ts",
+              "line": 18
+            },
+            {
+              "file": "src/vs/workbench/contrib/search/test/browser/searchViewlet.test.ts",
+              "line": 22
+            },
+            {
+              "file": "src/vs/workbench/contrib/search/browser/searchTreeModel/searchResult.ts",
+              "line": 14
+            }
+          ]
+        },
+        {
+          "unit": "C-4-notebook",
+          "text": "interactive/browser/interactiveEditorInput.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 1,
+          "hits": [
+            {
+              "file": "src/vs/workbench/api/browser/mainThreadEditorTabs.ts",
+              "line": 22
+            }
+          ]
+        },
+        {
+          "unit": "C-4-notebook",
+          "text": "interactive/browser/interactive.contribution.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "C-4-notebook",
+          "text": "replNotebook/browser/repl.contribution.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "C-4-notebook",
+          "text": "/notebookSearch/notebookSearchModelBase.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 9,
+          "hits": [
+            {
+              "file": "src/vs/workbench/contrib/searchEditor/browser/searchEditorSerialization.ts",
+              "line": 18
+            },
+            {
+              "file": "src/vs/workbench/contrib/search/test/browser/searchActions.test.ts",
+              "line": 25
+            },
+            {
+              "file": "src/vs/workbench/contrib/search/test/browser/searchResult.test.ts",
+              "line": 40
+            },
+            {
+              "file": "src/vs/workbench/contrib/search/test/browser/searchViewlet.test.ts",
+              "line": 27
+            },
+            {
+              "file": "src/vs/workbench/contrib/search/browser/replaceService.ts",
+              "line": 33
+            },
+            {
+              "file": "src/vs/workbench/contrib/search/browser/searchCompare.ts",
+              "line": 6
+            },
+            {
+              "file": "src/vs/workbench/contrib/search/browser/searchView.ts",
+              "line": 84
+            },
+            {
+              "file": "src/vs/workbench/contrib/search/browser/searchTreeModel/folderMatch.ts",
+              "line": 25
+            },
+            {
+              "file": "src/vs/workbench/contrib/search/browser/searchTreeModel/textSearchHeading.ts",
+              "line": 19
+            }
+          ]
+        },
+        {
+          "unit": "C-4-notebook",
+          "text": "/notebookSearch/notebookSearchModel.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 6,
+          "hits": [
+            {
+              "file": "src/vs/workbench/contrib/search/test/browser/searchActions.test.ts",
+              "line": 24
+            },
+            {
+              "file": "src/vs/workbench/contrib/search/test/browser/searchModel.test.ts",
+              "line": 44
+            },
+            {
+              "file": "src/vs/workbench/contrib/search/test/browser/searchResult.test.ts",
+              "line": 39
+            },
+            {
+              "file": "src/vs/workbench/contrib/search/test/browser/searchViewlet.test.ts",
+              "line": 26
+            },
+            {
+              "file": "src/vs/workbench/contrib/search/browser/searchActionsRemoveReplace.ts",
+              "line": 26
+            },
+            {
+              "file": "src/vs/workbench/contrib/search/browser/searchTreeModel/folderMatch.ts",
+              "line": 23
+            }
+          ]
+        },
+        {
+          "unit": "C-4-notebook",
+          "text": "'../../../../outline/browser/outline.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "C-4-notebook",
+          "text": "./extHostNotebook.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 1,
+          "hits": [
+            {
+              "file": "src/vs/workbench/api/common/extHost.api.impl.ts",
+              "line": 83
+            }
+          ]
+        },
+        {
+          "unit": "C-4-notebook",
+          "text": "./mainThreadNotebook.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "C-5-extension-gallery",
+          "text": "/extensionRecommendationsService.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 1,
+          "hits": [
+            {
+              "file": "src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts",
+              "line": 77
+            }
+          ]
+        },
+        {
+          "unit": "C-5-extension-gallery",
+          "text": "'./extensionRecommendationNotificationService.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 1,
+          "hits": [
+            {
+              "file": "src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts",
+              "line": 76
+            }
+          ]
+        },
+        {
+          "unit": "C-5-extension-gallery",
+          "text": "/workspaceRecommendations.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "C-5-extension-gallery",
+          "text": "/exeBasedRecommendations.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "C-5-extension-gallery",
+          "text": "/extensionIgnoredRecommendationsService.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "C-5-extension-gallery",
+          "text": "/workspaceExtensionsConfig.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 2,
+          "hits": [
+            {
+              "file": "src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts",
+              "line": 57
+            },
+            {
+              "file": "src/vs/workbench/contrib/extensions/browser/extensionsActions.ts",
+              "line": 53
+            }
+          ]
+        },
+        {
+          "unit": "C-5-extension-gallery",
+          "text": "/extensionGalleryAccount.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 2,
+          "hits": [
+            {
+              "file": "src/vs/workbench/services/extensionManagement/test/electron-browser/extensionGalleryManifestService.test.ts",
+              "line": 35
+            },
+            {
+              "file": "src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts",
+              "line": 28
+            }
+          ]
+        },
+        {
+          "unit": "C-5-extension-gallery",
+          "text": "/extensionGalleryAccountService.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 1,
+          "hits": [
+            {
+              "file": "src/vs/workbench/services/extensionManagement/test/electron-browser/extensionGalleryManifestService.test.ts",
+              "line": 34
+            }
+          ]
+        },
+        {
+          "unit": "C-5-extension-gallery",
+          "text": "electron-browser/extensionTipsService.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "C-5-extension-gallery",
+          "text": "node/extensionTipsService.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "C-6-settings-sync",
+          "text": "contrib/userDataSync/browser/userDataSync.contribution.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "C-6-settings-sync",
+          "text": "contrib/userDataSync/electron-browser/userDataSync.contribution.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "C-6-settings-sync",
+          "text": "userDataSync/electron-browser/userDataSyncUtilChannel.contribution.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "C-6-settings-sync",
+          "text": "userDataSync/browser/userDataSyncWorkbenchService.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "C-7-breadcrumbs-outline",
+          "text": "/breadcrumbsControl.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 2,
+          "hits": [
+            {
+              "file": "src/vs/workbench/browser/parts/editor/editorHeaderControl.ts",
+              "line": 12
+            },
+            {
+              "file": "src/vs/workbench/browser/parts/editor/singleEditorTabsControl.ts",
+              "line": 21
+            }
+          ]
+        },
+        {
+          "unit": "C-7-breadcrumbs-outline",
+          "text": "/breadcrumbsModel.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "C-7-breadcrumbs-outline",
+          "text": "/breadcrumbsPicker.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "C-7-breadcrumbs-outline",
+          "text": "parts/editor/breadcrumbs.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 1,
+          "hits": [
+            {
+              "file": "src/vs/workbench/test/browser/componentFixtures/editor/tabs.fixture.ts",
+              "line": 37
+            }
+          ]
+        },
+        {
+          "unit": "C-7-breadcrumbs-outline",
+          "text": "services/outline/browser/outline.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 5,
+          "hits": [
+            {
+              "file": "src/vs/workbench/test/browser/componentFixtures/editor/tabs.fixture.ts",
+              "line": 43
+            },
+            {
+              "file": "src/vs/workbench/contrib/search/test/browser/anythingQuickAccess.test.ts",
+              "line": 27
+            },
+            {
+              "file": "src/vs/workbench/contrib/codeEditor/browser/quickaccess/gotoSymbolQuickAccess.ts",
+              "line": 29
+            },
+            {
+              "file": "src/vs/workbench/api/test/browser/mainThreadCustomEditors.test.ts",
+              "line": 43
+            },
+            {
+              "file": "src/vs/workbench/api/browser/mainThreadCustomEditors.ts",
+              "line": 14
+            }
+          ]
+        },
+        {
+          "unit": "C-7-breadcrumbs-outline",
+          "text": "services/outline/browser/outlineService.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "C-7-breadcrumbs-outline",
+          "text": "codeEditor/browser/outline/documentSymbolsOutline.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        }
+      ]
+    },
+    "unclassifiedExtensions": {
+      "status": "ok",
+      "upstreamCount": 67,
+      "items": [],
+      "nonExtensionDirs": [
+        "types"
+      ]
+    },
+    "upstreamAdditions": {
+      "status": "skipped",
+      "reason": "--prev-tag が無い"
+    },
+    "dependencies": {
+      "status": "skipped",
+      "reason": "--prev-tag が無い"
+    },
+    "toolchain": {
+      "status": "info",
+      "nvmrc": {
+        "prev": null,
+        "now": "24.22.1",
+        "changed": null
+      },
+      "electron": {
+        "prev": null,
+        "now": "43.8.6",
+        "changed": null
+      },
+      "reason": "--prev-tag が無い"
+    },
+    "registeredKeys": {
+      "status": "fail",
+      "product": [
+        {
+          "key": "nameShort",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "nameLong",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "applicationName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "dataFolderName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "sharedDataFolderName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "urlProtocol",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32MutexName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32DirName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32NameVersion",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32RegValueName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32AppUserModelId",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32ShellNameShort",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32x64AppId",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32arm64AppId",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32x64UserAppId",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32arm64UserAppId",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "builtInExtensions",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "product.json"
+        }
+      ],
+      "settings": [
+        {
+          "key": "chat.disableAIFeatures",
+          "from": "mydist",
+          "status": "unregistered",
+          "foundIn": null,
+          "mentionedIn": "src/vs/platform/chat/common/chatSettings.ts"
+        },
+        {
+          "key": "workbench.colorTheme",
+          "from": "mydist",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/services/themes/common/themeConfiguration.ts"
+        },
+        {
+          "key": "workbench.startupEditor",
+          "from": "mydist",
+          "status": "unregistered",
+          "foundIn": null,
+          "mentionedIn": "src/vs/workbench/browser/layout.ts"
+        },
+        {
+          "key": "basedpyright.importStrategy",
+          "from": "mydist",
+          "status": "lockManifest",
+          "foundIn": "detachhead.basedpyright"
+        },
+        {
+          "key": "typescript.disableAutomaticTypeAcquisition",
+          "from": "mydist",
+          "status": "extension",
+          "foundIn": "extensions/typescript-language-features/package.json"
+        },
+        {
+          "key": "npm.fetchOnlinePackageInfo",
+          "from": "mydist",
+          "status": "extension",
+          "foundIn": "extensions/npm/package.json"
+        },
+        {
+          "key": "json.schemaDownload.enable",
+          "from": "mydist",
+          "status": "extension",
+          "foundIn": "extensions/json-language-features/package.json"
+        },
+        {
+          "key": "workbench.settings.enableNaturalLanguageSearch",
+          "from": "mydist",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/preferences/common/preferencesContribution.ts"
+        },
+        {
+          "key": "terminal.integrated.suggest.enabled",
+          "from": "mydist",
+          "status": "unregistered",
+          "foundIn": null,
+          "mentionedIn": "src/vs/workbench/contrib/terminal/terminalContribExports.ts"
+        },
+        {
+          "key": "claudeCode.environmentVariables",
+          "from": "mydist",
+          "status": "lockManifest",
+          "foundIn": "anthropic.claude-code"
+        },
+        {
+          "key": "extensions.allowed",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/platform/extensionManagement/common/extensionManagement.ts"
+        },
+        {
+          "key": "telemetry.telemetryLevel",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/platform/telemetry/common/telemetryService.ts"
+        },
+        {
+          "key": "update.mode",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/platform/update/common/update.config.contribution.ts"
+        },
+        {
+          "key": "workbench.enableExperiments",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/services/assignment/common/assignmentService.ts"
+        },
+        {
+          "key": "extensions.autoUpdate",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts"
+        },
+        {
+          "key": "extensions.autoCheckUpdates",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts"
+        }
+      ],
+      "manifestsMissing": []
+    },
+    "lockfile": {
+      "status": "pending",
+      "reason": "依存の導入の後に --lockfile-check（build.mjs は checkLockfiles）で埋める"
+    },
+    "commitIdentity": {
+      "status": "ok",
+      "expected": "shuko-apply <apply@shuko.invalid>",
+      "items": []
+    }
+  },
+  "warnings": [],
+  "errors": [],
+  "commits": [
+    {
+      "sha": "d38dbbaef59350fad341ced632139696b1f0906a",
+      "subject": "apply: product.json overlay",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "de86a07ee90b2ef9e33b0db1518fb8003f26ca76",
+      "subject": "unit A-4-notebook-extensions: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "fe7e2f8cbda5e617c043b534846f1bb8f4520bc1",
+      "subject": "unit A-5-remote-extensions: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "87a48ce26ef3211c4ae734813c2b63134051ff97",
+      "subject": "unit B-4-outline-view: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "cb9daa9b2c10b330e5a7121038f1068f463e8969",
+      "subject": "unit C-1-ai: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "b7460dcc81532c4ea6aa0207be2f7567e8f53f02",
+      "subject": "unit C-2-debug: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "fd8b3d2d6959461a7f6a6a4b51899e611cd79a01",
+      "subject": "unit C-3-remote: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "921c87035e9ffef500b6dfe8e7cb27a22bf99ca5",
+      "subject": "unit C-4-notebook: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "65a8d83e866f1acff87819f740594815744eb56e",
+      "subject": "unit C-5-extension-gallery: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "20a02f9690e77ec34dab2df52b279bc3ed62bed6",
+      "subject": "unit C-6-settings-sync: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "f8f205ba5a506e0305222a9cacc6892570b823bd",
+      "subject": "unit C-7-breadcrumbs-outline: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "9eaa360097f40740746531f0b0e4de543cf46078",
+      "subject": "apply: assets",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "526d25d777f5a7c2abe71513cf9f6c870121cbe2",
+      "subject": "apply: builtin extensions",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    }
+  ]
+}

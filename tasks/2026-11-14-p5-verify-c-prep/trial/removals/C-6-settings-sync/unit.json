@@ -1,0 +1,47 @@
+{
+  "id": "C-6-settings-sync",
+  "stage": "C",
+  "order": 360,
+  "enabled": false,
+  "intent": "本家の設定の同期（Settings Sync。バックアップと同期）の画面・コマンド・同期のビュー・ワークベンチ側の同期のサービスを消す。設定の同期は Notion の自前の拡張（notion-sync）が担う。プロファイル・拡張の管理・設定の画面が注入する同期の状態のサービスと platform/userDataSync、アカウントのメニュー（services/accounts）は残す",
+  "after": ["C-1-ai"],
+  "delete": [
+    "src/vs/workbench/contrib/userDataSync",
+    "src/vs/workbench/services/userDataSync/browser/userDataSyncWorkbenchService.ts"
+  ],
+  "removeDependencies": {},
+  "removeLines": [
+    { "file": "src/vs/workbench/workbench.common.main.ts", "line": "import './services/userDataSync/browser/userDataSyncWorkbenchService.js';" },
+    { "file": "src/vs/workbench/workbench.common.main.ts", "line": "import './contrib/userDataSync/browser/userDataSync.contribution.js';" },
+    { "file": "src/vs/workbench/workbench.desktop.main.ts", "line": "import './contrib/userDataSync/electron-browser/userDataSync.contribution.js';" }
+  ],
+  "productRemove": [],
+  "kept": [
+    { "path": "src/vs/workbench/services/userDataSync/common/userDataSync.ts", "reason": "IUserDataSyncWorkbenchService の ID、同期の状態の context key（CONTEXT_SYNC_ENABLEMENT など）、同期のビューの ID。設定の画面（settingsEditor2.ts）・拡張の画面（extensions.contribution.ts の61行）・再起動の部品（relauncher.contribution.ts）・更新（update.ts）が import している" },
+    { "path": "src/vs/workbench/services/userDataSync/browser/userDataSyncEnablementService.ts", "reason": "IUserDataSyncEnablementService。拡張の管理（extensionManagementService.ts・extensionEnablementService.ts）・設定の画面（settingsTree.ts・settingsEditorSettingIndicators.ts・settingsEditor2.ts）・拡張の画面が注入している。同期のストアが無い（product.json に configurationSync.store が無い）ので、同期は常に無効と答える" },
+    { "path": "src/vs/workbench/services/userDataSync/electron-browser", "reason": "IUserDataSyncService・IUserDataAutoSyncService の共有プロセスへの代理。settingsEditor2.ts・relauncher.contribution.ts・extensionsWorkbenchService.ts が注入している。通信は共有プロセス側で、ストアが無いので行わない" },
+    { "path": "src/vs/workbench/services/userDataSync/common/userDataSyncUtil.ts", "reason": "IUserDataSyncUtilService。プロファイルの設定の資源（services/userDataProfile/browser/settingsResource.ts の48行）が注入している" },
+    { "path": "src/vs/platform/userDataSync", "reason": "プロファイル（userDataProfile）、無視する拡張（ignoredExtensions.ts）、同期のログ、共有プロセスの同期のサービスの登録（sharedProcessMain.ts の396〜410行・481〜501行）が使う。同期のストアが無いので共有プロセスの同期は動かない" },
+    { "path": "src/vs/workbench/services/accounts", "reason": "docs/03 の表の『アカウントのメニュー（依存が無ければ）』。IDefaultAccountService を拡張の有効・無効（extensionEnablementService.ts）・ポリシー（services/policies）・GitHub のサービス・アクティビティバーのアカウントのメニュー（browser/parts/globalCompositeBar.ts）など約60ファイルが使う。依存があるので残す。拡張 API の vscode.authentication（残す）のサインインもこのメニューに出る" }
+  ],
+  "checks": {
+    "absentCommands": [
+      "workbench.userDataSync.actions.turnOn",
+      "workbench.userDataSync.actions.turnOff",
+      "workbench.userDataSync.actions.syncNow",
+      "workbench.userDataSync.actions.showSyncedData",
+      "workbench.userDataSync.actions.manage"
+    ],
+    "absentViews": ["workbench.view.sync"],
+    "absentSettings": [],
+    "absentStrings": [
+      { "in": ["src/vs"], "text": "contrib/userDataSync/browser/userDataSync.contribution.js'" },
+      { "in": ["src/vs"], "text": "contrib/userDataSync/electron-browser/userDataSync.contribution.js'" },
+      { "in": ["src/vs"], "text": "userDataSync/electron-browser/userDataSyncUtilChannel.contribution.js'" },
+      { "in": ["src/vs"], "text": "userDataSync/browser/userDataSyncWorkbenchService.js'" }
+    ],
+    "absentProcesses": [],
+    "absentHosts": []
+  },
+  "smoke": ["base", "claude-code", "absence"]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "B-1-telemetry",
+  "stage": "B",
+  "order": 210,
+  "enabled": false,
+  "intent": "検証の代役。C:/b/wt/verify-p2 には本物の B-1 がもう当たっているので ops を持たない。absentSettings は本物と同じ",
+  "after": [],
+  "delete": [],
+  "removeLines": [],
+  "productRemove": [],
+  "kept": [],
+  "checks": { "absentSettings": ["telemetry.editStats.enabled", "editor.aiStats.enabled"] },
+  "smoke": ["base"]
+}

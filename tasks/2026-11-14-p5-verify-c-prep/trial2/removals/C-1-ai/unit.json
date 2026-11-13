@@ -1,0 +1,67 @@
+{
+  "id": "C-1-ai",
+  "stage": "C",
+  "order": 310,
+  "enabled": false,
+  "intent": "検証の差分の単位。C:/b/wt/verify-p2 には直す前の C-1〜C-7 の ops がもう当たっているので、直した C-1（removals/C-1-ai/unit.json）で増えた delete 7件・removeLines 4件・依存1件だけを持つ。kept と checks は直した C-1 と同じ",
+  "after": [],
+  "delete": [
+    "src/vs/workbench/contrib/search/test/browser/searchChatContext.test.ts",
+    "src/vs/workbench/contrib/search/browser/AISearch",
+    "src/vs/workbench/services/authentication/test/browser/authenticationMcpService.test.ts",
+    "src/vs/workbench/services/authentication/test/browser/authenticationMcpAccessService.test.ts",
+    "src/vs/platform/artifactIntegrations",
+    "src/vs/platform/otel",
+    "src/vs/workbench/common/agentsSizes.ts"
+  ],
+  "removeDependencies": {
+    "package.json": ["@modelcontextprotocol/sdk"]
+  },
+  "removeLines": [
+    { "file": "src/vs/workbench/workbench.common.main.ts", "line": "import './common/agentsSizes.js';" },
+    { "file": "src/vs/workbench/workbench.common.main.ts", "line": "import { ArtifactIntegrationRegistry, IArtifactIntegrationRegistry } from '../platform/artifactIntegrations/common/artifactIntegrationRegistry.js';" },
+    { "file": "src/vs/workbench/workbench.common.main.ts", "line": "registerSingleton(IArtifactIntegrationRegistry, ArtifactIntegrationRegistry, InstantiationType.Delayed);" },
+    { "file": "src/vs/workbench/test/browser/componentFixtures/fixtureUtilsCss.ts", "line": "import '../../../common/agentsSizes.js';" }
+  ],
+  "productRemove": [],
+  "kept": [
+    { "path": "src/vs/workbench/services/chat", "reason": "直した C-1 と同じ" },
+    { "path": "src/vs/platform/chat", "reason": "直した C-1 と同じ" },
+    { "path": "src/vs/workbench/contrib/onboarding", "reason": "直した C-1 と同じ" },
+    { "path": "src/vs/workbench/contrib/speech", "reason": "直した C-1 と同じ" },
+    { "path": "src/vs/workbench/common/agentsColors.ts", "reason": "直した C-1 と同じ" },
+    { "path": "src/vs/workbench/contrib/imageCarousel", "reason": "直した C-1 と同じ" },
+    { "path": "src/vs/workbench/contrib/comments", "reason": "直した C-1 と同じ" }
+  ],
+  "checks": {
+    "absentCommands": ["workbench.action.chat.open", "inlineChat.start", "search.action.showAIResults"],
+    "absentViews": ["workbench.panel.chat", "workbench.views.mcp.installed"],
+    "absentSettings": ["chat.disableAIFeatures", "chat.agent.enabled", "chat.mcp.access", "inlineChat.affordance", "search.searchView.semanticSearchBehavior", "search.searchView.keywordSuggestions"],
+    "absentStrings": [
+      { "in": ["src/vs"], "text": "contrib/chat/" },
+      { "in": ["src/vs"], "text": "contrib/inlineChat/" },
+      { "in": ["src/vs"], "text": "contrib/mcp/" },
+      { "in": ["src/vs"], "text": "platform/agentHost/" },
+      { "in": ["src/vs"], "text": "services/agentHost/" },
+      { "in": ["src/vs"], "text": "platform/mcp/" },
+      { "in": ["src/vs"], "text": "services/mcp/" },
+      { "in": ["src/vs"], "text": "terminalContrib/chat/" },
+      { "in": ["src/vs"], "text": "AISearch/aiSearchModel" },
+      { "in": ["src/vs"], "text": "artifactIntegrations/common/" },
+      { "in": ["src/vs"], "text": "common/agentsSizes.js'" },
+      { "in": ["src/vs"], "text": "/chat/common/participants/chatAgents.js'" },
+      { "in": ["src/vs"], "text": "/chat/common/languageModels.js'" },
+      { "in": ["src/vs"], "text": "/chat/common/tools/languageModelToolsService.js'" },
+      { "in": ["src/vs"], "text": "/mcp/common/mcpTypes.js'" },
+      { "in": ["src/vs"], "text": "/agentHost/common/agentService.js'" },
+      { "in": ["src/vs/workbench/api"], "text": "./extHostChatAgents2.js'" },
+      { "in": ["src/vs/workbench/api"], "text": "./extHostLanguageModels.js'" },
+      { "in": ["src/vs/workbench/api"], "text": "./extHostMcp.js'" },
+      { "in": ["build/next/index.ts", "build/gulpfile.vscode.ts"], "text": "vs/sessions/" },
+      { "in": ["package.json", "remote/package.json"], "text": "\"@github/copilot-sdk\"" }
+    ],
+    "absentProcesses": ["agent-host"],
+    "absentHosts": ["release-assets.githubusercontent.com"]
+  },
+  "smoke": ["base"]
+}

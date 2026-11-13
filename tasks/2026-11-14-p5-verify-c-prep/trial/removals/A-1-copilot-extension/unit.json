@@ -1,0 +1,14 @@
+{
+  "id": "A-1-copilot-extension",
+  "stage": "A",
+  "order": 110,
+  "enabled": false,
+  "intent": "検証の代役。C:/b/wt/verify-p2 には本物の A-1 がもう当たっているので ops を持たない。absentSettings は本物と同じ（mydist の既定を外すため）",
+  "after": [],
+  "delete": [],
+  "removeLines": [],
+  "productRemove": [],
+  "kept": [],
+  "checks": { "absentSettings": ["github.copilot.chat.backgroundAgent.enabled"] },
+  "smoke": ["base"]
+}

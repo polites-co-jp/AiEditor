@@ -1,0 +1,70 @@
+{
+  "id": "C-3-remote",
+  "stage": "C",
+  "order": 330,
+  "enabled": false,
+  "intent": "試しの写し（removals/C-3-remote/unit.json と ops・kept の path・checks が同じ。intent と kept の reason だけ短くした）",
+  "after": ["A-5-remote-extensions", "C-1-ai"],
+  "delete": [
+    "src/vs/workbench/contrib/remote",
+    "src/vs/workbench/contrib/remoteTunnel",
+    "src/vs/platform/remoteTunnel",
+    "build/gulpfile.reh.ts"
+  ],
+  "removeDependencies": {},
+  "removeLines": [
+    { "file": "src/vs/workbench/workbench.common.main.ts", "line": "import './contrib/remote/common/remote.contribution.js';" },
+    { "file": "src/vs/workbench/workbench.common.main.ts", "line": "import './contrib/remote/browser/remote.contribution.js';" },
+    { "file": "src/vs/workbench/workbench.desktop.main.ts", "line": "import '../platform/remoteTunnel/electron-browser/remoteTunnelService.js';" },
+    { "file": "src/vs/workbench/workbench.desktop.main.ts", "line": "import './contrib/remote/electron-browser/remote.contribution.js';" },
+    { "file": "src/vs/workbench/workbench.desktop.main.ts", "line": "import './contrib/remoteTunnel/electron-browser/remoteTunnel.contribution.js';" },
+    { "file": "src/vs/workbench/workbench.web.main.ts", "line": "import './contrib/remote/browser/remoteStartEntry.contribution.js';" },
+    { "file": "src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts", "line": "import { IRemoteTunnelService } from '../../../platform/remoteTunnel/common/remoteTunnel.js';" },
+    { "file": "src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts", "line": "import { RemoteTunnelService } from '../../../platform/remoteTunnel/node/remoteTunnelService.js';" },
+    { "file": "src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts", "line": "import { ITunnelProcessCoordinator, TunnelProcessCoordinator } from '../../../platform/remoteTunnel/node/tunnelProcessCoordinator.js';" },
+    { "file": "src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts", "line": "services.set(ITunnelProcessCoordinator, new SyncDescriptor(TunnelProcessCoordinator, [undefined], true));" },
+    { "file": "src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts", "line": "services.set(IRemoteTunnelService, new SyncDescriptor(RemoteTunnelService));" },
+    { "file": "src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts", "line": "const remoteTunnelChannel = ProxyChannel.fromService(accessor.get(IRemoteTunnelService), this._store);" },
+    { "file": "src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts", "line": "this.server.registerChannel('remoteTunnel', remoteTunnelChannel);" }
+  ],
+  "productRemove": [
+    "serverLicenseUrl",
+    "serverGreeting",
+    "serverLicense",
+    "serverLicensePrompt",
+    "serverApplicationName",
+    "serverDataFolderName",
+    "tunnelApplicationName",
+    "win32TunnelServiceMutex",
+    "win32TunnelMutex"
+  ],
+  "kept": [
+    { "path": "src/vs/workbench/services/remote", "reason": "写し" },
+    { "path": "src/vs/workbench/services/tunnel", "reason": "写し" },
+    { "path": "src/vs/platform/remote", "reason": "写し" },
+    { "path": "src/vs/platform/tunnel", "reason": "写し" },
+    { "path": "src/vs/workbench/api/browser/mainThreadTunnelService.ts", "reason": "写し" },
+    { "path": "remote", "reason": "写し" },
+    { "path": "src/vs/server", "reason": "写し" }
+  ],
+  "checks": {
+    "absentCommands": ["workbench.action.remote.showMenu", "workbench.action.remote.close", "remote.tunnel.forwardCommandPalette", "workbench.remoteTunnel.actions.turnOn"],
+    "absentViews": ["workbench.view.remote", "~remote.forwardedPorts"],
+    "absentSettings": ["remote.autoForwardPorts", "remote.localPortHost", "remote.extensionKind", "remote.tunnels.access.preventSleep"],
+    "absentStrings": [
+      { "in": ["src/vs"], "text": "contrib/remote/common/remote.contribution.js'" },
+      { "in": ["src/vs"], "text": "contrib/remote/browser/remote.contribution.js'" },
+      { "in": ["src/vs"], "text": "contrib/remote/electron-browser/remote.contribution.js'" },
+      { "in": ["src/vs"], "text": "remote/browser/remoteExplorer.js'" },
+      { "in": ["src/vs"], "text": "remote/browser/remoteStartEntry.contribution.js'" },
+      { "in": ["src/vs"], "text": "remoteTunnel/electron-browser/remoteTunnel.contribution.js'" },
+      { "in": ["src/vs"], "text": "platform/remoteTunnel/common/remoteTunnel.js'" },
+      { "in": ["src/vs"], "text": "platform/remoteTunnel/common/tunnelServiceHeaders.js'" },
+      { "in": ["src/vs"], "text": "remoteTunnel/electron-browser/remoteTunnelService.js'" },
+      { "in": ["src/vs"], "text": "remoteTunnel/browser/remoteTunnelService.js'" }
+    ],
+    "absentProcesses": [],
+    "absentHosts": []
+  },
+  "smoke": ["base", "claude-code", "absence"]
+}

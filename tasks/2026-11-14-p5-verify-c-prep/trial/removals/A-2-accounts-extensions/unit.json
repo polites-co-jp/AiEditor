@@ -1,0 +1,14 @@
+{
+  "id": "A-2-accounts-extensions",
+  "stage": "A",
+  "order": 120,
+  "enabled": false,
+  "intent": "検証の代役。C:/b/wt/verify-p2 には本物の A-2 がもう当たっているので ops を持たない。absentSettings は本物と同じ",
+  "after": [],
+  "delete": [],
+  "removeLines": [],
+  "productRemove": [],
+  "kept": [],
+  "checks": { "absentSettings": ["github.gitAuthentication", "github-authentication.preferDeviceCodeFlow", "microsoft-authentication.implementation"] },
+  "smoke": ["base"]
+}

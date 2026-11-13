@@ -1,0 +1,14 @@
+{
+  "id": "B-2-onboarding-experiments-surveys",
+  "stage": "B",
+  "order": 220,
+  "enabled": false,
+  "intent": "検証の代役。C:/b/wt/verify-p2 には本物の B-2 がもう当たっているので ops を持たない。absentSettings は本物と同じ",
+  "after": [],
+  "delete": [],
+  "removeLines": [],
+  "productRemove": [],
+  "kept": [],
+  "checks": { "absentSettings": ["workbench.startupEditor", "workbench.welcomePage.walkthroughs.openOnInstall", "workbench.welcomePage.experimentalOnboarding"] },
+  "smoke": ["base"]
+}

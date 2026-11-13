@@ -1,0 +1,1156 @@
+{
+  "label": "verify-c-prep-rework",
+  "worktree": "C:\\b\\wt\\verify-p2",
+  "tag": "1.146.0",
+  "baseCommit": "184966f5c5f9865d79cda6e01db70ef11de78766",
+  "headCommit": "6fba38db6119ca8dbb2de9244f07b5ae8f323d0d",
+  "prevTag": null,
+  "dryRun": false,
+  "options": {
+    "only": [
+      "B-2-onboarding-experiments-surveys",
+      "B-7-terminal-suggest",
+      "C-1-ai",
+      "C-7-breadcrumbs-outline"
+    ],
+    "until": null,
+    "keepConflict": false
+  },
+  "inputs": {
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-p5-verify-c-prep\\trial2\\removals",
+    "patches": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-p5-verify-c-prep\\trial\\patches-none",
+    "assets": "e:\\develop\\self\\Team\\projects\\ai-editor\\assets",
+    "overlay": "e:\\develop\\self\\Team\\projects\\ai-editor\\product.overlay.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "extensionsSrc": "e:\\develop\\self\\Team\\projects\\ai-editor\\extensions-src",
+    "manifests": "C:\\b\\cache\\vsix"
+  },
+  "startedAt": "2026-11-13T19:25:52.743Z",
+  "finishedAt": "2026-11-13T19:26:13.674Z",
+  "result": "fail",
+  "stoppedAt": null,
+  "overlay": {
+    "applied": "ok",
+    "set": [
+      "nameShort",
+      "nameLong",
+      "applicationName",
+      "dataFolderName",
+      "sharedDataFolderName",
+      "urlProtocol",
+      "win32MutexName",
+      "win32DirName",
+      "win32NameVersion",
+      "win32RegValueName",
+      "win32AppUserModelId",
+      "win32ShellNameShort",
+      "win32x64AppId",
+      "win32arm64AppId",
+      "win32x64UserAppId",
+      "win32arm64UserAppId",
+      "builtInExtensions",
+      "shukoConfigurationDefaults"
+    ],
+    "removed": [],
+    "removedIfPresent": [],
+    "commit": "3f51a09a329a1677295197217465165eaed96ab8"
+  },
+  "units": [
+    {
+      "id": "B-2-onboarding-experiments-surveys",
+      "order": 220,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "ebe908524208bf86df5b9425bd76de3a4e47aa4c",
+        "deleted": [],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "none",
+        "commit": null,
+        "subject": null,
+        "conflicts": []
+      },
+      "warnings": []
+    },
+    {
+      "id": "B-7-terminal-suggest",
+      "order": 270,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "b10af2146ecca60bc15cb0da0de8bbf8861b9387",
+        "deleted": [],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "none",
+        "commit": null,
+        "subject": null,
+        "conflicts": []
+      },
+      "warnings": []
+    },
+    {
+      "id": "C-1-ai",
+      "order": 310,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "1e33fb6461efe6a48e42dd2caa74c4d4529e65af",
+        "deleted": [
+          "src/vs/workbench/contrib/search/test/browser/searchChatContext.test.ts",
+          "src/vs/workbench/contrib/search/browser/AISearch",
+          "src/vs/workbench/services/authentication/test/browser/authenticationMcpService.test.ts",
+          "src/vs/workbench/services/authentication/test/browser/authenticationMcpAccessService.test.ts",
+          "src/vs/platform/artifactIntegrations",
+          "src/vs/platform/otel",
+          "src/vs/workbench/common/agentsSizes.ts"
+        ],
+        "missingDeletes": [],
+        "removedDependencies": [
+          {
+            "file": "package.json",
+            "name": "@modelcontextprotocol/sdk",
+            "section": "devDependencies"
+          }
+        ],
+        "missingDependencies": [],
+        "removeLines": [
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './common/agentsSizes.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import { ArtifactIntegrationRegistry, IArtifactIntegrationRegistry } from '../platform/artifactIntegrations/common/artifactIntegrationRegistry.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "registerSingleton(IArtifactIntegrationRegistry, ArtifactIntegrationRegistry, InstantiationType.Delayed);",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/test/browser/componentFixtures/fixtureUtilsCss.ts",
+            "line": "import '../../../common/agentsSizes.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          }
+        ],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "none",
+        "commit": null,
+        "subject": null,
+        "conflicts": []
+      },
+      "warnings": []
+    },
+    {
+      "id": "C-7-breadcrumbs-outline",
+      "order": 370,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "8717142dc74f3799e3b982d823c8bfadc0367cf3",
+        "deleted": [],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "none",
+        "commit": null,
+        "subject": null,
+        "conflicts": []
+      },
+      "warnings": []
+    }
+  ],
+  "unitsSkipped": [],
+  "patches": [],
+  "assets": {
+    "applied": "ok",
+    "copied": [
+      "resources/win32/code.ico",
+      "resources/win32/code_150x150.png",
+      "resources/win32/code_70x70.png",
+      "src/vs/workbench/browser/media/code-icon.svg",
+      "src/vs/workbench/browser/parts/editor/media/letterpress-dark.svg",
+      "src/vs/workbench/browser/parts/editor/media/letterpress-hcDark.svg",
+      "src/vs/workbench/browser/parts/editor/media/letterpress-hcLight.svg",
+      "src/vs/workbench/browser/parts/editor/media/letterpress-light.svg"
+    ],
+    "commit": "373c4445cb9b187caf15c39a57840db6d44d6878"
+  },
+  "builtinExtensions": {
+    "applied": "ok",
+    "copied": [
+      {
+        "name": "mydist",
+        "files": 3,
+        "list": [
+          "README.md",
+          "ThirdPartyNotices.txt",
+          "package.json"
+        ],
+        "removedDefaults": [
+          {
+            "key": "chat.disableAIFeatures",
+            "unit": "C-1-ai"
+          },
+          {
+            "key": "breadcrumbs.enabled",
+            "unit": "C-7-breadcrumbs-outline"
+          },
+          {
+            "key": "workbench.startupEditor",
+            "unit": "B-2-onboarding-experiments-surveys"
+          },
+          {
+            "key": "terminal.integrated.suggest.enabled",
+            "unit": "B-7-terminal-suggest"
+          }
+        ]
+      },
+      {
+        "name": "notion-sync",
+        "files": 4,
+        "list": [
+          "README.md",
+          "ThirdPartyNotices.txt",
+          "dist/extension.js",
+          "package.json"
+        ]
+      }
+    ],
+    "commit": "6fba38db6119ca8dbb2de9244f07b5ae8f323d0d",
+    "removedDefaults": [
+      {
+        "key": "chat.disableAIFeatures",
+        "unit": "C-1-ai"
+      },
+      {
+        "key": "breadcrumbs.enabled",
+        "unit": "C-7-breadcrumbs-outline"
+      },
+      {
+        "key": "workbench.startupEditor",
+        "unit": "B-2-onboarding-experiments-surveys"
+      },
+      {
+        "key": "terminal.integrated.suggest.enabled",
+        "unit": "B-7-terminal-suggest"
+      }
+    ]
+  },
+  "checks": {
+    "remnants": {
+      "status": "ok",
+      "items": []
+    },
+    "absentStrings": {
+      "status": "fail",
+      "items": [
+        {
+          "unit": "C-1-ai",
+          "text": "contrib/chat/",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 56,
+          "hits": [
+            {
+              "file": "src/vs/workbench/test/browser/workbenchTestServices.ts",
+              "line": 135
+            },
+            {
+              "file": "src/vs/workbench/test/browser/workbenchTestServices.ts",
+              "line": 136
+            },
+            {
+              "file": "src/vs/workbench/test/browser/workbenchTestServices.ts",
+              "line": 137
+            },
+            {
+              "file": "src/vs/workbench/test/browser/workbenchTestServices.ts",
+              "line": 148
+            },
+            {
+              "file": "src/vs/workbench/test/browser/workbenchTestServices.ts",
+              "line": 149
+            },
+            {
+              "file": "src/vs/workbench/test/browser/workbenchTestServices.ts",
+              "line": 150
+            },
+            {
+              "file": "src/vs/workbench/test/browser/componentFixtures/fixtureUtils.ts",
+              "line": 67
+            },
+            {
+              "file": "src/vs/workbench/test/browser/componentFixtures/fixtureUtils.ts",
+              "line": 68
+            },
+            {
+              "file": "src/vs/workbench/test/browser/componentFixtures/fixtureUtils.ts",
+              "line": 70
+            },
+            {
+              "file": "src/vs/workbench/test/browser/componentFixtures/fixtureUtils.ts",
+              "line": 111
+            },
+            {
+              "file": "src/vs/workbench/test/browser/componentFixtures/fixtureUtilsCss.ts",
+              "line": 16
+            },
+            {
+              "file": "src/vs/workbench/test/browser/componentFixtures/migrationProgressNotification.fixture.ts",
+              "line": 19
+            },
+            {
+              "file": "src/vs/workbench/test/browser/componentFixtures/editor/multiDiffEditorChatChanges.json",
+              "line": 5
+            },
+            {
+              "file": "src/vs/workbench/test/browser/componentFixtures/editor/multiDiffEditorChatChanges.json",
+              "line": 38
+            },
+            {
+              "file": "src/vs/workbench/test/browser/componentFixtures/editor/multiDiffEditorChatChanges.json",
+              "line": 83
+            },
+            {
+              "file": "src/vs/workbench/test/browser/componentFixtures/editor/multiDiffEditorChatChanges.json",
+              "line": 116
+            },
+            {
+              "file": "src/vs/workbench/test/browser/componentFixtures/editor/multiDiffEditorChatChanges.json",
+              "line": 149
+            },
+            {
+              "file": "src/vs/workbench/services/policies/test/browser/accountPolicyService.test.ts",
+              "line": 25
+            },
+            {
+              "file": "src/vs/workbench/services/policies/test/browser/accountPolicyService.test.ts",
+              "line": 26
+            },
+            {
+              "file": "src/vs/workbench/services/policies/test/browser/accountPolicyService.test.ts",
+              "line": 27
+            }
+          ]
+        },
+        {
+          "unit": "C-1-ai",
+          "text": "contrib/inlineChat/",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "C-1-ai",
+          "text": "contrib/mcp/",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 4,
+          "hits": [
+            {
+              "file": "src/vs/workbench/api/common/extHost.protocol.ts",
+              "line": 75
+            },
+            {
+              "file": "src/vs/workbench/api/common/extHostTypeConverters.ts",
+              "line": 58
+            },
+            {
+              "file": "src/vs/workbench/api/browser/mainThreadAuthentication.ts",
+              "line": 34
+            },
+            {
+              "file": "src/vs/workbench/api/browser/mainThreadAuthentication.ts",
+              "line": 37
+            }
+          ]
+        },
+        {
+          "unit": "C-1-ai",
+          "text": "platform/agentHost/",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 38,
+          "hits": [
+            {
+              "file": "src/vs/workbench/test/browser/workbenchTestServices.ts",
+              "line": 203
+            },
+            {
+              "file": "src/vs/workbench/services/workspaces/test/common/workspaceTrust.test.ts",
+              "line": 31
+            },
+            {
+              "file": "src/vs/workbench/services/workspaces/common/workspaceTrust.ts",
+              "line": 18
+            },
+            {
+              "file": "src/vs/workbench/services/search/test/common/fileSystemFileSearchProvider.test.ts",
+              "line": 14
+            },
+            {
+              "file": "src/vs/workbench/services/remote/test/browser/browserRemoteResourceHandler.test.ts",
+              "line": 14
+            },
+            {
+              "file": "src/vs/workbench/services/policies/test/browser/accountPolicyService.test.ts",
+              "line": 13
+            },
+            {
+              "file": "src/vs/workbench/services/dialogs/test/browser/simpleFileDialog.test.ts",
+              "line": 16
+            },
+            {
+              "file": "src/vs/workbench/services/configuration/test/browser/configurationService.test.ts",
+              "line": 13
+            },
+            {
+              "file": "src/vs/workbench/contrib/workspace/test/browser/workspaceTrustRequestHandler.test.ts",
+              "line": 12
+            },
+            {
+              "file": "src/vs/workbench/contrib/workspace/browser/workspace.contribution.ts",
+              "line": 16
+            },
+            {
+              "file": "src/vs/workbench/contrib/policyExport/electron-browser/policyExport.contribution.ts",
+              "line": 25
+            },
+            {
+              "file": "src/vs/workbench/contrib/policyExport/electron-browser/policyExport.contribution.ts",
+              "line": 212
+            },
+            {
+              "file": "src/vs/workbench/contrib/files/test/electron-browser/fileActions.contribution.test.ts",
+              "line": 11
+            },
+            {
+              "file": "src/vs/workbench/browser/actions/developerActions.ts",
+              "line": 63
+            },
+            {
+              "file": "src/vs/workbench/browser/actions/developerActions.ts",
+              "line": 64
+            },
+            {
+              "file": "src/vs/workbench/browser/actions/developerActions.ts",
+              "line": 68
+            },
+            {
+              "file": "src/vs/workbench/browser/actions/developerActions.ts",
+              "line": 69
+            },
+            {
+              "file": "src/vs/workbench/browser/actions/policyDiagnosticsMarkdown.ts",
+              "line": 9
+            },
+            {
+              "file": "src/vs/workbench/api/node/extHostBrowserTunnelProxy.ts",
+              "line": 14
+            },
+            {
+              "file": "src/vs/workbench/api/browser/mainThreadBrowserTunnelProxy.ts",
+              "line": 8
+            }
+          ]
+        },
+        {
+          "unit": "C-1-ai",
+          "text": "services/agentHost/",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 1,
+          "hits": [
+            {
+              "file": "src/vs/workbench/browser/parts/globalCompositeBar.ts",
+              "line": 53
+            }
+          ]
+        },
+        {
+          "unit": "C-1-ai",
+          "text": "platform/mcp/",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 36,
+          "hits": [
+            {
+              "file": "src/vs/workbench/api/common/extHost.protocol.ts",
+              "line": 46
+            },
+            {
+              "file": "src/vs/server/node/serverServices.ts",
+              "line": 92
+            },
+            {
+              "file": "src/vs/server/node/serverServices.ts",
+              "line": 93
+            },
+            {
+              "file": "src/vs/server/node/serverServices.ts",
+              "line": 94
+            },
+            {
+              "file": "src/vs/server/node/serverServices.ts",
+              "line": 95
+            },
+            {
+              "file": "src/vs/server/node/serverServices.ts",
+              "line": 96
+            },
+            {
+              "file": "src/vs/server/node/serverServices.ts",
+              "line": 97
+            },
+            {
+              "file": "src/vs/server/node/serverServices.ts",
+              "line": 100
+            },
+            {
+              "file": "src/vs/server/node/serverServices.ts",
+              "line": 101
+            },
+            {
+              "file": "src/vs/server/node/serverServices.ts",
+              "line": 102
+            },
+            {
+              "file": "src/vs/server/node/serverServices.ts",
+              "line": 103
+            },
+            {
+              "file": "src/vs/server/node/serverServices.ts",
+              "line": 104
+            },
+            {
+              "file": "src/vs/server/node/serverServices.ts",
+              "line": 105
+            },
+            {
+              "file": "src/vs/server/node/serverServices.ts",
+              "line": 106
+            },
+            {
+              "file": "src/vs/server/node/serverServices.ts",
+              "line": 107
+            },
+            {
+              "file": "src/vs/code/node/cliProcessMain.ts",
+              "line": 69
+            },
+            {
+              "file": "src/vs/code/node/cliProcessMain.ts",
+              "line": 72
+            },
+            {
+              "file": "src/vs/code/node/cliProcessMain.ts",
+              "line": 73
+            },
+            {
+              "file": "src/vs/code/node/cliProcessMain.ts",
+              "line": 74
+            },
+            {
+              "file": "src/vs/code/node/cliProcessMain.ts",
+              "line": 75
+            }
+          ]
+        },
+        {
+          "unit": "C-1-ai",
+          "text": "services/mcp/",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "C-1-ai",
+          "text": "terminalContrib/chat/",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 1,
+          "hits": [
+            {
+              "file": "src/vs/workbench/contrib/terminal/terminalContribExports.ts",
+              "line": 10
+            }
+          ]
+        },
+        {
+          "unit": "C-1-ai",
+          "text": "AISearch/aiSearchModel",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 5,
+          "hits": [
+            {
+              "file": "src/vs/workbench/contrib/search/browser/searchActionsRemoveReplace.ts",
+              "line": 27
+            },
+            {
+              "file": "src/vs/workbench/contrib/search/browser/searchCompare.ts",
+              "line": 11
+            },
+            {
+              "file": "src/vs/workbench/contrib/search/browser/searchResultsView.ts",
+              "line": 37
+            },
+            {
+              "file": "src/vs/workbench/contrib/search/browser/searchView.ts",
+              "line": 86
+            },
+            {
+              "file": "src/vs/workbench/contrib/search/browser/searchTreeModel/searchResult.ts",
+              "line": 20
+            }
+          ]
+        },
+        {
+          "unit": "C-1-ai",
+          "text": "artifactIntegrations/common/",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 1,
+          "hits": [
+            {
+              "file": "src/vs/workbench/api/common/extHost.protocol.ts",
+              "line": 35
+            }
+          ]
+        },
+        {
+          "unit": "C-1-ai",
+          "text": "common/agentsSizes.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "C-1-ai",
+          "text": "/chat/common/participants/chatAgents.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 9,
+          "hits": [
+            {
+              "file": "src/vs/workbench/contrib/terminalContrib/inlineHint/test/browser/terminalInitialHint.test.ts",
+              "line": 16
+            },
+            {
+              "file": "src/vs/workbench/contrib/terminalContrib/inlineHint/browser/terminal.initialHint.contribution.ts",
+              "line": 25
+            },
+            {
+              "file": "src/vs/workbench/contrib/tasks/electron-browser/taskService.ts",
+              "line": 52
+            },
+            {
+              "file": "src/vs/workbench/contrib/tasks/browser/abstractTaskService.ts",
+              "line": 89
+            },
+            {
+              "file": "src/vs/workbench/contrib/quickaccess/browser/commandsQuickAccess.ts",
+              "line": 41
+            },
+            {
+              "file": "src/vs/workbench/contrib/codeEditor/browser/emptyTextEditorHint/emptyTextEditorHint.ts",
+              "line": 30
+            },
+            {
+              "file": "src/vs/workbench/api/test/browser/extHostTypeConverter.test.ts",
+              "line": 18
+            },
+            {
+              "file": "src/vs/workbench/api/common/extHost.protocol.ts",
+              "line": 63
+            },
+            {
+              "file": "src/vs/workbench/api/common/extHostTypeConverters.ts",
+              "line": 44
+            }
+          ]
+        },
+        {
+          "unit": "C-1-ai",
+          "text": "/chat/common/languageModels.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 3,
+          "hits": [
+            {
+              "file": "src/vs/workbench/api/common/extHost.protocol.ts",
+              "line": 71
+            },
+            {
+              "file": "src/vs/workbench/api/common/extHostTypeConverters.ts",
+              "line": 55
+            },
+            {
+              "file": "src/vs/workbench/api/common/extHostTypeConverters.ts",
+              "line": 56
+            }
+          ]
+        },
+        {
+          "unit": "C-1-ai",
+          "text": "/chat/common/tools/languageModelToolsService.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 3,
+          "hits": [
+            {
+              "file": "src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts",
+              "line": 65
+            },
+            {
+              "file": "src/vs/workbench/api/common/extHost.protocol.ts",
+              "line": 72
+            },
+            {
+              "file": "src/vs/workbench/api/common/extHostTypeConverters.ts",
+              "line": 54
+            }
+          ]
+        },
+        {
+          "unit": "C-1-ai",
+          "text": "/mcp/common/mcpTypes.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 5,
+          "hits": [
+            {
+              "file": "src/vs/workbench/contrib/authentication/browser/actions/manageAccountPreferencesForMcpServerAction.ts",
+              "line": 16
+            },
+            {
+              "file": "src/vs/workbench/contrib/authentication/browser/actions/manageTrustedMcpServersForAccountAction.ts",
+              "line": 21
+            },
+            {
+              "file": "src/vs/workbench/api/common/extHost.protocol.ts",
+              "line": 75
+            },
+            {
+              "file": "src/vs/workbench/api/common/extHostTypeConverters.ts",
+              "line": 58
+            },
+            {
+              "file": "src/vs/workbench/api/browser/mainThreadAuthentication.ts",
+              "line": 34
+            }
+          ]
+        },
+        {
+          "unit": "C-1-ai",
+          "text": "/agentHost/common/agentService.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 2,
+          "hits": [
+            {
+              "file": "src/vs/workbench/browser/actions/developerActions.ts",
+              "line": 63
+            },
+            {
+              "file": "src/vs/server/node/serverServices.ts",
+              "line": 87
+            }
+          ]
+        },
+        {
+          "unit": "C-1-ai",
+          "text": "./extHostChatAgents2.js'",
+          "in": [
+            "src/vs/workbench/api"
+          ],
+          "hitCount": 1,
+          "hits": [
+            {
+              "file": "src/vs/workbench/api/common/extHost.api.impl.ts",
+              "line": 40
+            }
+          ]
+        },
+        {
+          "unit": "C-1-ai",
+          "text": "./extHostLanguageModels.js'",
+          "in": [
+            "src/vs/workbench/api"
+          ],
+          "hitCount": 2,
+          "hits": [
+            {
+              "file": "src/vs/workbench/api/common/extHost.api.impl.ts",
+              "line": 76
+            },
+            {
+              "file": "src/vs/workbench/api/common/extHostExtensionService.ts",
+              "line": 37
+            }
+          ]
+        },
+        {
+          "unit": "C-1-ai",
+          "text": "./extHostMcp.js'",
+          "in": [
+            "src/vs/workbench/api"
+          ],
+          "hitCount": 1,
+          "hits": [
+            {
+              "file": "src/vs/workbench/api/common/extHost.api.impl.ts",
+              "line": 81
+            }
+          ]
+        },
+        {
+          "unit": "C-1-ai",
+          "text": "vs/sessions/",
+          "in": [
+            "build/next/index.ts",
+            "build/gulpfile.vscode.ts"
+          ],
+          "hitCount": 3,
+          "hits": [
+            {
+              "file": "build/next/index.ts",
+              "line": 118
+            },
+            {
+              "file": "build/next/index.ts",
+              "line": 190
+            },
+            {
+              "file": "build/next/index.ts",
+              "line": 262
+            }
+          ]
+        },
+        {
+          "unit": "C-1-ai",
+          "text": "\"@github/copilot-sdk\"",
+          "in": [
+            "package.json",
+            "remote/package.json"
+          ],
+          "hitCount": 0,
+          "hits": []
+        }
+      ]
+    },
+    "unclassifiedExtensions": {
+      "status": "ok",
+      "upstreamCount": 69,
+      "items": [],
+      "nonExtensionDirs": [
+        "types"
+      ]
+    },
+    "upstreamAdditions": {
+      "status": "skipped",
+      "reason": "--prev-tag が無い"
+    },
+    "dependencies": {
+      "status": "skipped",
+      "reason": "--prev-tag が無い"
+    },
+    "toolchain": {
+      "status": "info",
+      "nvmrc": {
+        "prev": null,
+        "now": "24.22.1",
+        "changed": null
+      },
+      "electron": {
+        "prev": null,
+        "now": "43.8.6",
+        "changed": null
+      },
+      "reason": "--prev-tag が無い"
+    },
+    "registeredKeys": {
+      "status": "ok",
+      "product": [
+        {
+          "key": "nameShort",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "nameLong",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "applicationName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "dataFolderName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "sharedDataFolderName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "urlProtocol",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32MutexName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32DirName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32NameVersion",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32RegValueName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32AppUserModelId",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32ShellNameShort",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32x64AppId",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32arm64AppId",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32x64UserAppId",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32arm64UserAppId",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "builtInExtensions",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "product.json"
+        }
+      ],
+      "settings": [
+        {
+          "key": "workbench.colorTheme",
+          "from": "mydist",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/services/themes/common/themeConfiguration.ts"
+        },
+        {
+          "key": "basedpyright.importStrategy",
+          "from": "mydist",
+          "status": "lockManifest",
+          "foundIn": "detachhead.basedpyright"
+        },
+        {
+          "key": "typescript.disableAutomaticTypeAcquisition",
+          "from": "mydist",
+          "status": "extension",
+          "foundIn": "extensions/typescript-language-features/package.json"
+        },
+        {
+          "key": "npm.fetchOnlinePackageInfo",
+          "from": "mydist",
+          "status": "extension",
+          "foundIn": "extensions/npm/package.json"
+        },
+        {
+          "key": "json.schemaDownload.enable",
+          "from": "mydist",
+          "status": "extension",
+          "foundIn": "extensions/json-language-features/package.json"
+        },
+        {
+          "key": "workbench.settings.enableNaturalLanguageSearch",
+          "from": "mydist",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/preferences/common/preferencesContribution.ts"
+        },
+        {
+          "key": "claudeCode.environmentVariables",
+          "from": "mydist",
+          "status": "lockManifest",
+          "foundIn": "anthropic.claude-code"
+        },
+        {
+          "key": "extensions.allowed",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/platform/extensionManagement/common/extensionManagement.ts"
+        },
+        {
+          "key": "telemetry.telemetryLevel",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/platform/telemetry/common/telemetryService.ts"
+        },
+        {
+          "key": "update.mode",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/platform/update/common/update.config.contribution.ts"
+        },
+        {
+          "key": "workbench.enableExperiments",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/services/assignment/common/assignmentService.ts"
+        },
+        {
+          "key": "extensions.autoUpdate",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts"
+        },
+        {
+          "key": "extensions.autoCheckUpdates",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts"
+        }
+      ],
+      "manifestsMissing": []
+    },
+    "lockfile": {
+      "status": "pending",
+      "reason": "依存の導入の後に --lockfile-check（build.mjs は checkLockfiles）で埋める"
+    },
+    "commitIdentity": {
+      "status": "ok",
+      "expected": "shuko-apply <apply@shuko.invalid>",
+      "items": []
+    }
+  },
+  "warnings": [],
+  "errors": [],
+  "commits": [
+    {
+      "sha": "3f51a09a329a1677295197217465165eaed96ab8",
+      "subject": "apply: product.json overlay",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "ebe908524208bf86df5b9425bd76de3a4e47aa4c",
+      "subject": "unit B-2-onboarding-experiments-surveys: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "b10af2146ecca60bc15cb0da0de8bbf8861b9387",
+      "subject": "unit B-7-terminal-suggest: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "1e33fb6461efe6a48e42dd2caa74c4d4529e65af",
+      "subject": "unit C-1-ai: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "8717142dc74f3799e3b982d823c8bfadc0367cf3",
+      "subject": "unit C-7-breadcrumbs-outline: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "373c4445cb9b187caf15c39a57840db6d44d6878",
+      "subject": "apply: assets",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "6fba38db6119ca8dbb2de9244f07b5ae8f323d0d",
+      "subject": "apply: builtin extensions",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    }
+  ]
+}

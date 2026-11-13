@@ -1,0 +1,41 @@
+{
+  "id": "C-6-settings-sync",
+  "stage": "C",
+  "order": 360,
+  "enabled": false,
+  "intent": "試しの写し（removals/C-6-settings-sync/unit.json と ops・kept の path・checks が同じ）",
+  "after": ["C-1-ai"],
+  "delete": [
+    "src/vs/workbench/contrib/userDataSync",
+    "src/vs/workbench/services/userDataSync/browser/userDataSyncWorkbenchService.ts"
+  ],
+  "removeDependencies": {},
+  "removeLines": [
+    { "file": "src/vs/workbench/workbench.common.main.ts", "line": "import './services/userDataSync/browser/userDataSyncWorkbenchService.js';" },
+    { "file": "src/vs/workbench/workbench.common.main.ts", "line": "import './contrib/userDataSync/browser/userDataSync.contribution.js';" },
+    { "file": "src/vs/workbench/workbench.desktop.main.ts", "line": "import './contrib/userDataSync/electron-browser/userDataSync.contribution.js';" }
+  ],
+  "productRemove": [],
+  "kept": [
+    { "path": "src/vs/workbench/services/userDataSync/common/userDataSync.ts", "reason": "写し" },
+    { "path": "src/vs/workbench/services/userDataSync/browser/userDataSyncEnablementService.ts", "reason": "写し" },
+    { "path": "src/vs/workbench/services/userDataSync/electron-browser", "reason": "写し" },
+    { "path": "src/vs/workbench/services/userDataSync/common/userDataSyncUtil.ts", "reason": "写し" },
+    { "path": "src/vs/platform/userDataSync", "reason": "写し" },
+    { "path": "src/vs/workbench/services/accounts", "reason": "写し" }
+  ],
+  "checks": {
+    "absentCommands": ["workbench.userDataSync.actions.turnOn", "workbench.userDataSync.actions.turnOff", "workbench.userDataSync.actions.syncNow", "workbench.userDataSync.actions.showSyncedData", "workbench.userDataSync.actions.manage"],
+    "absentViews": ["workbench.view.sync"],
+    "absentSettings": [],
+    "absentStrings": [
+      { "in": ["src/vs"], "text": "contrib/userDataSync/browser/userDataSync.contribution.js'" },
+      { "in": ["src/vs"], "text": "contrib/userDataSync/electron-browser/userDataSync.contribution.js'" },
+      { "in": ["src/vs"], "text": "userDataSync/electron-browser/userDataSyncUtilChannel.contribution.js'" },
+      { "in": ["src/vs"], "text": "userDataSync/browser/userDataSyncWorkbenchService.js'" }
+    ],
+    "absentProcesses": [],
+    "absentHosts": []
+  },
+  "smoke": ["base", "claude-code", "absence"]
+}

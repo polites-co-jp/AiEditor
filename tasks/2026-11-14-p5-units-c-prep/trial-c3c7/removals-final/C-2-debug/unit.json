@@ -1,0 +1,1 @@
+{ "id": "C-2-debug", "stage": "C", "order": 320, "enabled": false, "intent": "試しの代役（after を満たすためだけ。ops なし。本物の C-2 は edits.patch が未作成で当てられない）" }

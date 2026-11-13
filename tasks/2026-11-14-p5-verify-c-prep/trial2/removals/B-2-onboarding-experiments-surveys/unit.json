@@ -1,0 +1,14 @@
+{
+  "id": "B-2-onboarding-experiments-surveys",
+  "stage": "B",
+  "order": 220,
+  "enabled": false,
+  "intent": "検証の代役（ops なし）。mydist の既定を本物と同じに外すため、absentSettings だけを本物と同じにした",
+  "after": [],
+  "delete": [],
+  "removeLines": [],
+  "productRemove": [],
+  "kept": [],
+  "checks": { "absentSettings": ["workbench.startupEditor", "workbench.welcomePage.walkthroughs.openOnInstall", "workbench.welcomePage.experimentalOnboarding"] },
+  "smoke": ["base"]
+}

@@ -1,0 +1,80 @@
+{
+  "id": "C-3-remote",
+  "stage": "C",
+  "order": 330,
+  "enabled": false,
+  "intent": "リモート開発の画面と機能（リモートエクスプローラー、ポートのビュー、リモートの状態表示、リモートトンネルのアクセス）と、サーバー（reh）のビルドタスクを消す。product.json の server・tunnel のキーを消す。ローカルの拡張ホストと Webview が使うリモートの基盤（services/remote・services/tunnel・platform/remote・platform/tunnel）は残す",
+  "after": ["A-5-remote-extensions", "C-1-ai"],
+  "delete": [
+    "src/vs/workbench/contrib/remote",
+    "src/vs/workbench/contrib/remoteTunnel",
+    "src/vs/platform/remoteTunnel",
+    "build/gulpfile.reh.ts"
+  ],
+  "removeDependencies": {},
+  "removeLines": [
+    { "file": "src/vs/workbench/workbench.common.main.ts", "line": "import './contrib/remote/common/remote.contribution.js';" },
+    { "file": "src/vs/workbench/workbench.common.main.ts", "line": "import './contrib/remote/browser/remote.contribution.js';" },
+    { "file": "src/vs/workbench/workbench.desktop.main.ts", "line": "import '../platform/remoteTunnel/electron-browser/remoteTunnelService.js';" },
+    { "file": "src/vs/workbench/workbench.desktop.main.ts", "line": "import './contrib/remote/electron-browser/remote.contribution.js';" },
+    { "file": "src/vs/workbench/workbench.desktop.main.ts", "line": "import './contrib/remoteTunnel/electron-browser/remoteTunnel.contribution.js';" },
+    { "file": "src/vs/workbench/workbench.web.main.ts", "line": "import './contrib/remote/browser/remoteStartEntry.contribution.js';" },
+    { "file": "src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts", "line": "import { IRemoteTunnelService } from '../../../platform/remoteTunnel/common/remoteTunnel.js';" },
+    { "file": "src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts", "line": "import { RemoteTunnelService } from '../../../platform/remoteTunnel/node/remoteTunnelService.js';" },
+    { "file": "src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts", "line": "import { ITunnelProcessCoordinator, TunnelProcessCoordinator } from '../../../platform/remoteTunnel/node/tunnelProcessCoordinator.js';" },
+    { "file": "src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts", "line": "services.set(ITunnelProcessCoordinator, new SyncDescriptor(TunnelProcessCoordinator, [undefined], true));" },
+    { "file": "src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts", "line": "services.set(IRemoteTunnelService, new SyncDescriptor(RemoteTunnelService));" },
+    { "file": "src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts", "line": "const remoteTunnelChannel = ProxyChannel.fromService(accessor.get(IRemoteTunnelService), this._store);" },
+    { "file": "src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts", "line": "this.server.registerChannel('remoteTunnel', remoteTunnelChannel);" }
+  ],
+  "productRemove": [
+    "serverLicenseUrl",
+    "serverGreeting",
+    "serverLicense",
+    "serverLicensePrompt",
+    "serverApplicationName",
+    "serverDataFolderName",
+    "tunnelApplicationName",
+    "win32TunnelServiceMutex",
+    "win32TunnelMutex"
+  ],
+  "kept": [
+    { "path": "src/vs/workbench/services/remote", "reason": "ローカルの拡張ホストの部品（services/extensions の extensionService.ts・nativeExtensionService.ts）が IRemoteAgentService と IRemoteExplorerService を注入している。拡張 API の main thread（mainThreadTunnelService.ts など）も使う。remoteExplorerService.ts・tunnelModel.ts は docs/03 の表では消す側だが、消すと拡張の起動の部品と拡張 API の入口を直すことになるので残した（README の「残すもの」と別案）" },
+    { "path": "src/vs/workbench/services/tunnel", "reason": "ITunnelService の登録。Webview（contrib/webview の webviewElement.ts。Claude Code のパネルは Webview）、ウィンドウの外部 URI の解決（electron-browser/window.ts）、ターミナルのリンクが注入している。ローカルでは canTunnel が偽になり何もしない" },
+    { "path": "src/vs/platform/remote", "reason": "IRemoteAgentService・IRemoteAuthorityResolverService など、ローカルのウィンドウでも作られる基盤。共有プロセスの ISharedProcessTunnelService（services/tunnel が注入）も含む" },
+    { "path": "src/vs/platform/tunnel", "reason": "ITunnelService の型と共有プロセス・本体プロセスの実装。Webview のポートの対応づけ（platform/webview/common/webviewPortMapping.ts）が使う" },
+    { "path": "src/vs/workbench/api/browser/mainThreadTunnelService.ts", "reason": "拡張 API の workspace.openTunnel・registerPortAttributesProvider の main thread 側。消すと拡張ホスト側の呼び出しが『知らない actor』で失敗し、拡張ホストのログに誤りが出る。remoteExplorerService を残すので残す" },
+    { "path": "remote", "reason": "サーバー（reh）とウェブの依存のワークスペース。build/npm/dirs.ts・preinstall.ts・postinstall.ts・build/lib/node.ts が読む。デスクトップの zip には入らない。消すにはビルドの道具への変更が要るので、この単位では残した（README の別案）" },
+    { "path": "src/vs/server", "reason": "サーバーの本体。デスクトップの zip には入らない。build/lib/esbuild.ts・i18n.ts の対象の一覧に名前があり、消すとビルドの道具への変更が要るので残した（README の別案）" }
+  ],
+  "checks": {
+    "absentCommands": [
+      "workbench.action.remote.showMenu",
+      "workbench.action.remote.close",
+      "remote.tunnel.forwardCommandPalette",
+      "workbench.remoteTunnel.actions.turnOn"
+    ],
+    "absentViews": ["workbench.view.remote", "~remote.forwardedPorts"],
+    "absentSettings": [
+      "remote.autoForwardPorts",
+      "remote.localPortHost",
+      "remote.extensionKind",
+      "remote.tunnels.access.preventSleep"
+    ],
+    "absentStrings": [
+      { "in": ["src/vs"], "text": "contrib/remote/common/remote.contribution.js'" },
+      { "in": ["src/vs"], "text": "contrib/remote/browser/remote.contribution.js'" },
+      { "in": ["src/vs"], "text": "contrib/remote/electron-browser/remote.contribution.js'" },
+      { "in": ["src/vs"], "text": "remote/browser/remoteExplorer.js'" },
+      { "in": ["src/vs"], "text": "remote/browser/remoteStartEntry.contribution.js'" },
+      { "in": ["src/vs"], "text": "remoteTunnel/electron-browser/remoteTunnel.contribution.js'" },
+      { "in": ["src/vs"], "text": "platform/remoteTunnel/common/remoteTunnel.js'" },
+      { "in": ["src/vs"], "text": "platform/remoteTunnel/common/tunnelServiceHeaders.js'" },
+      { "in": ["src/vs"], "text": "remoteTunnel/electron-browser/remoteTunnelService.js'" },
+      { "in": ["src/vs"], "text": "remoteTunnel/browser/remoteTunnelService.js'" }
+    ],
+    "absentProcesses": [],
+    "absentHosts": []
+  },
+  "smoke": ["base", "claude-code", "absence"]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "A-6-themes",
+  "stage": "A",
+  "order": 160,
+  "enabled": false,
+  "intent": "検証の代役。C:/b/wt/verify-p2 には本物の A-6 がもう当たっているので ops を持たない",
+  "after": [],
+  "delete": [],
+  "removeLines": [],
+  "productRemove": [],
+  "kept": [],
+  "checks": { "absentSettings": [] },
+  "smoke": ["base"]
+}

@@ -1,0 +1,671 @@
+{
+  "label": "verify-c-prep-dry-c2",
+  "worktree": "C:\\b\\wt\\verify-p2",
+  "tag": "1.146.0",
+  "baseCommit": "ef5b647f852e1f0977a02c8b758abaa8c340382d",
+  "headCommit": "ef5b647f852e1f0977a02c8b758abaa8c340382d",
+  "prevTag": null,
+  "dryRun": true,
+  "options": {
+    "only": [
+      "A-3-debug-extensions",
+      "C-2-debug"
+    ],
+    "until": null,
+    "keepConflict": false
+  },
+  "inputs": {
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-p5-verify-c-prep\\trial\\removals",
+    "patches": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-p5-verify-c-prep\\trial\\patches-none",
+    "assets": "e:\\develop\\self\\Team\\projects\\ai-editor\\assets",
+    "overlay": "e:\\develop\\self\\Team\\projects\\ai-editor\\product.overlay.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "extensionsSrc": "e:\\develop\\self\\Team\\projects\\ai-editor\\extensions-src",
+    "manifests": "C:\\b\\cache\\vsix"
+  },
+  "startedAt": "2026-11-13T19:05:18.274Z",
+  "finishedAt": "2026-11-13T19:05:27.339Z",
+  "result": "ok",
+  "stoppedAt": null,
+  "overlay": {
+    "applied": "ok",
+    "set": [
+      "nameShort",
+      "nameLong",
+      "applicationName",
+      "dataFolderName",
+      "sharedDataFolderName",
+      "urlProtocol",
+      "win32MutexName",
+      "win32DirName",
+      "win32NameVersion",
+      "win32RegValueName",
+      "win32AppUserModelId",
+      "win32ShellNameShort",
+      "win32x64AppId",
+      "win32arm64AppId",
+      "win32x64UserAppId",
+      "win32arm64UserAppId",
+      "builtInExtensions",
+      "shukoConfigurationDefaults"
+    ],
+    "removed": [],
+    "removedIfPresent": [],
+    "commit": null
+  },
+  "units": [
+    {
+      "id": "A-3-debug-extensions",
+      "order": 130,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": null,
+        "deleted": [],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "none",
+        "commit": null,
+        "subject": null,
+        "conflicts": []
+      },
+      "warnings": []
+    },
+    {
+      "id": "C-2-debug",
+      "order": 320,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": null,
+        "deleted": [
+          "src/vs/workbench/contrib/debug/browser/baseDebugView.ts",
+          "src/vs/workbench/contrib/debug/browser/breakpointEditorContribution.ts",
+          "src/vs/workbench/contrib/debug/browser/breakpointsView.ts",
+          "src/vs/workbench/contrib/debug/browser/breakpointWidget.ts",
+          "src/vs/workbench/contrib/debug/browser/callStackView.ts",
+          "src/vs/workbench/contrib/debug/browser/debug.contribution.ts",
+          "src/vs/workbench/contrib/debug/browser/debugActionViewItems.ts",
+          "src/vs/workbench/contrib/debug/browser/debugANSIHandling.ts",
+          "src/vs/workbench/contrib/debug/browser/debugAdapterManager.ts",
+          "src/vs/workbench/contrib/debug/browser/debugChatIntegration.ts",
+          "src/vs/workbench/contrib/debug/browser/debugCommands.ts",
+          "src/vs/workbench/contrib/debug/browser/debugConfigurationManager.ts",
+          "src/vs/workbench/contrib/debug/browser/debugConsoleQuickAccess.ts",
+          "src/vs/workbench/contrib/debug/browser/debugEditorActions.ts",
+          "src/vs/workbench/contrib/debug/browser/debugEditorContribution.ts",
+          "src/vs/workbench/contrib/debug/browser/debugExpressionRenderer.ts",
+          "src/vs/workbench/contrib/debug/browser/debugHover.ts",
+          "src/vs/workbench/contrib/debug/browser/debugMemory.ts",
+          "src/vs/workbench/contrib/debug/browser/debugProgress.ts",
+          "src/vs/workbench/contrib/debug/browser/debugQuickAccess.ts",
+          "src/vs/workbench/contrib/debug/browser/debugService.ts",
+          "src/vs/workbench/contrib/debug/browser/debugSession.ts",
+          "src/vs/workbench/contrib/debug/browser/debugSessionPicker.ts",
+          "src/vs/workbench/contrib/debug/browser/debugSettingMigration.ts",
+          "src/vs/workbench/contrib/debug/browser/debugStatus.ts",
+          "src/vs/workbench/contrib/debug/browser/debugTaskRunner.ts",
+          "src/vs/workbench/contrib/debug/browser/debugTitle.ts",
+          "src/vs/workbench/contrib/debug/browser/debugToolBar.ts",
+          "src/vs/workbench/contrib/debug/browser/debugViewlet.ts",
+          "src/vs/workbench/contrib/debug/browser/disassemblyView.ts",
+          "src/vs/workbench/contrib/debug/browser/exceptionWidget.ts",
+          "src/vs/workbench/contrib/debug/browser/linkDetector.ts",
+          "src/vs/workbench/contrib/debug/browser/loadedScriptsView.ts",
+          "src/vs/workbench/contrib/debug/browser/rawDebugSession.ts",
+          "src/vs/workbench/contrib/debug/browser/repl.ts",
+          "src/vs/workbench/contrib/debug/browser/replAccessibilityHelp.ts",
+          "src/vs/workbench/contrib/debug/browser/replAccessibleView.ts",
+          "src/vs/workbench/contrib/debug/browser/replFilter.ts",
+          "src/vs/workbench/contrib/debug/browser/replViewer.ts",
+          "src/vs/workbench/contrib/debug/browser/runAndDebugAccessibilityHelp.ts",
+          "src/vs/workbench/contrib/debug/browser/statusbarColorProvider.ts",
+          "src/vs/workbench/contrib/debug/browser/variablesView.ts",
+          "src/vs/workbench/contrib/debug/browser/watchExpressionsView.ts",
+          "src/vs/workbench/contrib/debug/browser/welcomeView.ts",
+          "src/vs/workbench/contrib/debug/browser/media/breakpointWidget.css",
+          "src/vs/workbench/contrib/debug/browser/media/continue-tb.png",
+          "src/vs/workbench/contrib/debug/browser/media/debug.contribution.css",
+          "src/vs/workbench/contrib/debug/browser/media/debugHover.css",
+          "src/vs/workbench/contrib/debug/browser/media/debugToolBar.css",
+          "src/vs/workbench/contrib/debug/browser/media/debugViewlet.css",
+          "src/vs/workbench/contrib/debug/browser/media/exceptionWidget.css",
+          "src/vs/workbench/contrib/debug/browser/media/pause-tb.png",
+          "src/vs/workbench/contrib/debug/browser/media/repl.css",
+          "src/vs/workbench/contrib/debug/browser/media/restart-tb.png",
+          "src/vs/workbench/contrib/debug/browser/media/run-with-debugging-tb.png",
+          "src/vs/workbench/contrib/debug/browser/media/stepinto-tb.png",
+          "src/vs/workbench/contrib/debug/browser/media/stepout-tb.png",
+          "src/vs/workbench/contrib/debug/browser/media/stepover-tb.png",
+          "src/vs/workbench/contrib/debug/browser/media/stop-tb.png",
+          "src/vs/workbench/contrib/debug/node",
+          "src/vs/workbench/contrib/debug/test",
+          "src/vs/workbench/contrib/notebook/browser/contrib/debug",
+          "src/vs/workbench/contrib/notebook/browser/contrib/notebookVariables",
+          "src/vs/workbench/contrib/notebook/test/browser/notebookVariablesDataSource.test.ts",
+          "src/vs/workbench/api/browser/mainThreadDebugService.ts",
+          "src/vs/workbench/api/common/extHostDebugService.ts",
+          "src/vs/workbench/api/node/extHostDebugService.ts",
+          "src/vs/workbench/api/test/browser/extHostDebugAdapters.test.ts",
+          "src/vs/workbench/api/test/browser/extHostDebugTreeSessions.test.ts",
+          "src/vs/workbench/api/test/browser/extHostDebugVisualization.test.ts",
+          "src/vs/workbench/api/test/browser/mainThreadDebugService.test.ts"
+        ],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/debug/browser/debug.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/debug/browser/debugEditorContribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/debug/browser/breakpointEditorContribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/debug/browser/callStackEditorContribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/debug/browser/repl.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/debug/browser/debugViewlet.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/api/browser/extensionHost.contribution.ts",
+            "line": "import './mainThreadDebugService.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/api/common/extHost.common.services.ts",
+            "line": "import { IExtHostDebugService, WorkerExtHostDebugService } from './extHostDebugService.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/api/common/extHost.common.services.ts",
+            "line": "registerSingleton(IExtHostDebugService, WorkerExtHostDebugService, InstantiationType.Eager);",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/api/node/extHost.node.services.ts",
+            "line": "import { ExtHostDebugService } from './extHostDebugService.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/api/node/extHost.node.services.ts",
+            "line": "import { IExtHostDebugService } from '../common/extHostDebugService.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/api/node/extHost.node.services.ts",
+            "line": "registerSingleton(IExtHostDebugService, ExtHostDebugService, InstantiationType.Eager);",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/contrib/notebook/browser/notebook.contribution.ts",
+            "line": "import './contrib/debug/notebookBreakpoints.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/contrib/notebook/browser/notebook.contribution.ts",
+            "line": "import './contrib/debug/notebookCellPausing.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/contrib/notebook/browser/notebook.contribution.ts",
+            "line": "import './contrib/debug/notebookDebugDecorations.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/contrib/notebook/browser/notebook.contribution.ts",
+            "line": "import './contrib/notebookVariables/notebookInlineVariables.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/next/index.ts",
+            "line": "'vs/workbench/contrib/debug/node/telemetryApp',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          }
+        ],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "none",
+        "commit": null,
+        "subject": null,
+        "conflicts": []
+      },
+      "warnings": []
+    }
+  ],
+  "unitsSkipped": [
+    {
+      "id": "A-1-copilot-extension",
+      "reason": "not in --only"
+    },
+    {
+      "id": "A-2-accounts-extensions",
+      "reason": "not in --only"
+    },
+    {
+      "id": "A-4-notebook-extensions",
+      "reason": "not in --only"
+    },
+    {
+      "id": "A-5-remote-extensions",
+      "reason": "not in --only"
+    },
+    {
+      "id": "A-6-themes",
+      "reason": "not in --only"
+    },
+    {
+      "id": "A-7-unused-extensions",
+      "reason": "not in --only"
+    },
+    {
+      "id": "B-1-telemetry",
+      "reason": "not in --only"
+    },
+    {
+      "id": "B-2-onboarding-experiments-surveys",
+      "reason": "not in --only"
+    },
+    {
+      "id": "B-3-issue-share",
+      "reason": "not in --only"
+    },
+    {
+      "id": "B-4-outline-view",
+      "reason": "not in --only"
+    },
+    {
+      "id": "B-5-theme-switching",
+      "reason": "not in --only"
+    },
+    {
+      "id": "B-6-online-feeds",
+      "reason": "not in --only"
+    },
+    {
+      "id": "B-7-terminal-suggest",
+      "reason": "not in --only"
+    },
+    {
+      "id": "C-1-ai",
+      "reason": "not in --only"
+    },
+    {
+      "id": "C-3-remote",
+      "reason": "not in --only"
+    },
+    {
+      "id": "C-4-notebook",
+      "reason": "not in --only"
+    },
+    {
+      "id": "C-5-extension-gallery",
+      "reason": "not in --only"
+    },
+    {
+      "id": "C-6-settings-sync",
+      "reason": "not in --only"
+    },
+    {
+      "id": "C-7-breadcrumbs-outline",
+      "reason": "not in --only"
+    }
+  ],
+  "patches": [],
+  "assets": {
+    "applied": "ok",
+    "copied": [
+      "resources/win32/code.ico",
+      "resources/win32/code_150x150.png",
+      "resources/win32/code_70x70.png",
+      "src/vs/workbench/browser/media/code-icon.svg",
+      "src/vs/workbench/browser/parts/editor/media/letterpress-dark.svg",
+      "src/vs/workbench/browser/parts/editor/media/letterpress-hcDark.svg",
+      "src/vs/workbench/browser/parts/editor/media/letterpress-hcLight.svg",
+      "src/vs/workbench/browser/parts/editor/media/letterpress-light.svg"
+    ],
+    "commit": null
+  },
+  "builtinExtensions": {
+    "applied": "ok",
+    "copied": [
+      {
+        "name": "mydist",
+        "files": 3,
+        "list": [
+          "README.md",
+          "ThirdPartyNotices.txt",
+          "package.json"
+        ],
+        "removedDefaults": []
+      },
+      {
+        "name": "notion-sync",
+        "files": 4,
+        "list": [
+          "README.md",
+          "ThirdPartyNotices.txt",
+          "dist/extension.js",
+          "package.json"
+        ]
+      }
+    ],
+    "commit": null,
+    "removedDefaults": []
+  },
+  "checks": {
+    "remnants": {
+      "status": "skipped",
+      "reason": "dry-run"
+    },
+    "absentStrings": {
+      "status": "skipped",
+      "reason": "dry-run"
+    },
+    "unclassifiedExtensions": {
+      "status": "ok",
+      "upstreamCount": 69,
+      "items": [],
+      "nonExtensionDirs": [
+        "types"
+      ]
+    },
+    "upstreamAdditions": {
+      "status": "skipped",
+      "reason": "--prev-tag が無い"
+    },
+    "dependencies": {
+      "status": "skipped",
+      "reason": "--prev-tag が無い"
+    },
+    "toolchain": {
+      "status": "info",
+      "nvmrc": {
+        "prev": null,
+        "now": "24.22.1",
+        "changed": null
+      },
+      "electron": {
+        "prev": null,
+        "now": "43.8.6",
+        "changed": null
+      },
+      "reason": "--prev-tag が無い"
+    },
+    "registeredKeys": {
+      "status": "warn",
+      "product": [
+        {
+          "key": "nameShort",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "nameLong",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "applicationName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "dataFolderName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "sharedDataFolderName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "urlProtocol",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32MutexName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32DirName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32NameVersion",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32RegValueName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32AppUserModelId",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32ShellNameShort",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32x64AppId",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32arm64AppId",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32x64UserAppId",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32arm64UserAppId",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "builtInExtensions",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "product.json"
+        }
+      ],
+      "settings": [
+        {
+          "key": "chat.disableAIFeatures",
+          "from": "mydist",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/chat/browser/chat.shared.contribution.ts"
+        },
+        {
+          "key": "workbench.colorTheme",
+          "from": "mydist",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/services/themes/common/themeConfiguration.ts"
+        },
+        {
+          "key": "breadcrumbs.enabled",
+          "from": "mydist",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/browser/parts/editor/breadcrumbs.ts"
+        },
+        {
+          "key": "workbench.startupEditor",
+          "from": "mydist",
+          "status": "unregistered",
+          "foundIn": null,
+          "mentionedIn": "src/vs/workbench/contrib/remote/electron-browser/remote.contribution.ts"
+        },
+        {
+          "key": "basedpyright.importStrategy",
+          "from": "mydist",
+          "status": "lockManifest",
+          "foundIn": "detachhead.basedpyright"
+        },
+        {
+          "key": "typescript.disableAutomaticTypeAcquisition",
+          "from": "mydist",
+          "status": "extension",
+          "foundIn": "extensions/typescript-language-features/package.json"
+        },
+        {
+          "key": "npm.fetchOnlinePackageInfo",
+          "from": "mydist",
+          "status": "extension",
+          "foundIn": "extensions/npm/package.json"
+        },
+        {
+          "key": "json.schemaDownload.enable",
+          "from": "mydist",
+          "status": "extension",
+          "foundIn": "extensions/json-language-features/package.json"
+        },
+        {
+          "key": "workbench.settings.enableNaturalLanguageSearch",
+          "from": "mydist",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/preferences/common/preferencesContribution.ts"
+        },
+        {
+          "key": "terminal.integrated.suggest.enabled",
+          "from": "mydist",
+          "status": "unregistered",
+          "foundIn": null,
+          "mentionedIn": "src/vs/workbench/contrib/terminal/terminalContribExports.ts"
+        },
+        {
+          "key": "claudeCode.environmentVariables",
+          "from": "mydist",
+          "status": "lockManifest",
+          "foundIn": "anthropic.claude-code"
+        },
+        {
+          "key": "extensions.allowed",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/platform/extensionManagement/common/extensionManagement.ts"
+        },
+        {
+          "key": "telemetry.telemetryLevel",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/platform/telemetry/common/telemetryService.ts"
+        },
+        {
+          "key": "update.mode",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/platform/update/common/update.config.contribution.ts"
+        },
+        {
+          "key": "workbench.enableExperiments",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/services/assignment/common/assignmentService.ts"
+        },
+        {
+          "key": "extensions.autoUpdate",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts"
+        },
+        {
+          "key": "extensions.autoCheckUpdates",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts"
+        }
+      ],
+      "manifestsMissing": [],
+      "reason": "dry-run ではパッチを当てないので、パッチが足すキーは missing になる。本番の実行で確かめる"
+    },
+    "lockfile": {
+      "status": "pending",
+      "reason": "依存の導入の後に --lockfile-check（build.mjs は checkLockfiles）で埋める"
+    },
+    "commitIdentity": {
+      "status": "skipped",
+      "reason": "dry-run"
+    }
+  },
+  "warnings": [
+    "registeredKeys: dry-run ではパッチを当てないので、パッチが足すキーは missing になる。本番の実行で確かめる"
+  ],
+  "errors": []
+}

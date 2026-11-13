@@ -1,0 +1,58 @@
+{
+  "id": "C-7-breadcrumbs-outline",
+  "stage": "C",
+  "order": 370,
+  "enabled": false,
+  "intent": "パンくずリスト（エディタの上の経路と記号の表示）と、それが使うアウトラインのサービス・テキストエディタの記号のアウトラインを消す。パンくずリストはエディタの枠（共有部品）が作っているので、枠のファイルへのパッチは作る部分だけに絞る。記号へ移動（Ctrl+Shift+O）は従来の記号の取得で残す。差分エディタの『変更の無い部分』のパンくず（editor/contrib/diffEditorBreadcrumbs）は残す",
+  "after": ["B-4-outline-view", "C-1-ai", "C-4-notebook"],
+  "delete": [
+    "src/vs/workbench/browser/parts/editor/breadcrumbs.ts",
+    "src/vs/workbench/browser/parts/editor/breadcrumbsControl.ts",
+    "src/vs/workbench/browser/parts/editor/breadcrumbsModel.ts",
+    "src/vs/workbench/browser/parts/editor/breadcrumbsPicker.ts",
+    "src/vs/workbench/browser/parts/editor/media/breadcrumbscontrol.css",
+    "src/vs/workbench/services/outline",
+    "src/vs/workbench/contrib/codeEditor/browser/outline",
+    "src/vs/workbench/test/browser/parts/editor/breadcrumbsControl.test.ts",
+    "src/vs/workbench/test/browser/parts/editor/breadcrumbModel.test.ts",
+    "src/vs/workbench/contrib/codeEditor/test/browser/documentSymbolsOutline.test.ts"
+  ],
+  "removeDependencies": {},
+  "removeLines": [
+    { "file": "src/vs/workbench/workbench.common.main.ts", "line": "import './services/outline/browser/outlineService.js';" },
+    { "file": "src/vs/workbench/workbench.common.main.ts", "line": "import './contrib/codeEditor/browser/outline/documentSymbolsOutline.js';" }
+  ],
+  "productRemove": [],
+  "kept": [
+    { "path": "src/vs/base/browser/ui/breadcrumbs", "reason": "パンくずの部品（BreadcrumbsWidget）。差分エディタの変更の無い部分の表示（editor/contrib/diffEditorBreadcrumbs。Claude Code の差分エディタの受け手）とチャットのデバッグのビュー（C-1）が使う" },
+    { "path": "src/vs/platform/theme/browser/defaultStyles.ts", "reason": "defaultBreadcrumbsWidgetStyles を含む既定の見た目の一覧。多くの部品が使う共有のファイルなので触らない" },
+    { "path": "src/vs/editor/contrib/documentSymbols", "reason": "IOutlineModelService（エディタの記号の木）。記号へ移動（gotoSymbolQuickAccess.ts）とスティッキースクロールが使う。services/outline とは別の部品" },
+    { "path": "src/vs/workbench/browser/parts/editor/media/singleeditortabscontrol.css", "reason": "パンくずの見た目の規則を含むが、タブの枠の共有の CSS。残っても効かないだけなので触らない（editortabscontrol.css・multieditortabscontrol.css・editortitlecontrol.css も同じ）" }
+  ],
+  "checks": {
+    "absentCommands": [
+      "breadcrumbs.toggle",
+      "breadcrumbs.focusAndSelect",
+      "breadcrumbs.focus",
+      "breadcrumbs.copyPath"
+    ],
+    "absentViews": [],
+    "absentSettings": [
+      "breadcrumbs.enabled",
+      "breadcrumbs.filePath",
+      "breadcrumbs.symbolPath"
+    ],
+    "absentStrings": [
+      { "in": ["src/vs"], "text": "/breadcrumbsControl.js'" },
+      { "in": ["src/vs"], "text": "/breadcrumbsModel.js'" },
+      { "in": ["src/vs"], "text": "/breadcrumbsPicker.js'" },
+      { "in": ["src/vs"], "text": "parts/editor/breadcrumbs.js'" },
+      { "in": ["src/vs"], "text": "services/outline/browser/outline.js'" },
+      { "in": ["src/vs"], "text": "services/outline/browser/outlineService.js'" },
+      { "in": ["src/vs"], "text": "codeEditor/browser/outline/documentSymbolsOutline.js'" }
+    ],
+    "absentProcesses": [],
+    "absentHosts": []
+  },
+  "smoke": ["base", "claude-code", "absence"]
+}

@@ -1,0 +1,68 @@
+{
+  "id": "C-5-extension-gallery",
+  "stage": "C",
+  "order": 350,
+  "enabled": false,
+  "intent": "試しの写し（removals/C-5-extension-gallery/unit.json と ops・kept の path・checks が同じ）",
+  "after": ["C-1-ai"],
+  "delete": [
+    "src/vs/workbench/contrib/extensions/browser/configBasedRecommendations.ts",
+    "src/vs/workbench/contrib/extensions/browser/exeBasedRecommendations.ts",
+    "src/vs/workbench/contrib/extensions/browser/extensionRecommendationNotificationService.ts",
+    "src/vs/workbench/contrib/extensions/browser/extensionRecommendations.ts",
+    "src/vs/workbench/contrib/extensions/browser/extensionRecommendationsService.ts",
+    "src/vs/workbench/contrib/extensions/browser/fileBasedRecommendations.ts",
+    "src/vs/workbench/contrib/extensions/browser/keymapRecommendations.ts",
+    "src/vs/workbench/contrib/extensions/browser/languageRecommendations.ts",
+    "src/vs/workbench/contrib/extensions/browser/remoteRecommendations.ts",
+    "src/vs/workbench/contrib/extensions/browser/webRecommendations.ts",
+    "src/vs/workbench/contrib/extensions/browser/workspaceRecommendations.ts",
+    "src/vs/workbench/contrib/extensions/test/electron-browser/extensionRecommendationsService.test.ts",
+    "src/vs/workbench/services/extensionRecommendations/common/extensionIgnoredRecommendationsService.ts",
+    "src/vs/workbench/services/extensionRecommendations/common/workspaceExtensionsConfig.ts",
+    "src/vs/workbench/services/extensionManagement/common/extensionGalleryAccount.ts",
+    "src/vs/workbench/services/extensionManagement/electron-browser/extensionGalleryAccountService.ts",
+    "src/vs/workbench/services/extensionManagement/electron-browser/extensionTipsService.ts",
+    "src/vs/workbench/services/extensionManagement/test/electron-browser/extensionGalleryAccountService.test.ts",
+    "src/vs/platform/extensionManagement/node/extensionTipsService.ts"
+  ],
+  "removeDependencies": {},
+  "removeLines": [
+    { "file": "src/vs/workbench/workbench.common.main.ts", "line": "import './services/extensionRecommendations/common/extensionIgnoredRecommendationsService.js';" },
+    { "file": "src/vs/workbench/workbench.common.main.ts", "line": "import './services/extensionRecommendations/common/workspaceExtensionsConfig.js';" },
+    { "file": "src/vs/workbench/workbench.desktop.main.ts", "line": "import './services/extensionManagement/electron-browser/extensionGalleryAccountService.js';" },
+    { "file": "src/vs/workbench/workbench.desktop.main.ts", "line": "import './services/extensionManagement/electron-browser/extensionTipsService.js';" },
+    { "file": "src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts", "line": "import { ExtensionTipsService } from '../../../platform/extensionManagement/node/extensionTipsService.js';" },
+    { "file": "src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts", "line": "services.set(IExtensionTipsService, new SyncDescriptor(ExtensionTipsService, undefined, false /* Eagerly scans and computes exe based recommendations */));" },
+    { "file": "src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts", "line": "const extensionTipsChannel = new ExtensionTipsChannel(accessor.get(IExtensionTipsService));" },
+    { "file": "src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts", "line": "this.server.registerChannel('extensionTipsService', extensionTipsChannel);" }
+  ],
+  "productRemove": [],
+  "kept": [
+    { "path": "src/vs/workbench/services/extensionRecommendations/common/extensionRecommendations.ts", "reason": "写し" },
+    { "path": "src/vs/workbench/services/extensionManagement/electron-browser/extensionGalleryManifestService.ts", "reason": "写し" },
+    { "path": "src/vs/platform/extensionManagement/common/extensionGalleryService.ts", "reason": "写し" },
+    { "path": "src/vs/platform/extensionManagement/common/extensionTipsService.ts", "reason": "写し" },
+    { "path": "src/vs/platform/extensionRecommendations", "reason": "写し" }
+  ],
+  "checks": {
+    "absentCommands": ["workbench.extensions.action.installVSIX", "workbench.extensions.action.showRecommendedExtensions", "workbench.extensions.action.showPopularExtensions", "workbench.extensions.action.showRecommendedKeymapExtensions", "workbench.extensions.action.showLanguageExtensions", "workbench.extensions.action.configureWorkspaceRecommendedExtensions"],
+    "absentViews": ["workbench.views.extensions.marketplace", "workbench.views.extensions.popular", "extensions.recommendedList", "workbench.views.extensions.otherRecommendations", "workbench.views.extensions.marketplaceAccess"],
+    "absentSettings": ["extensions.ignoreRecommendations", "extensions.showRecommendationsOnlyOnDemand"],
+    "absentStrings": [
+      { "in": ["src/vs"], "text": "/extensionRecommendationsService.js'" },
+      { "in": ["src/vs"], "text": "'./extensionRecommendationNotificationService.js'" },
+      { "in": ["src/vs"], "text": "/workspaceRecommendations.js'" },
+      { "in": ["src/vs"], "text": "/exeBasedRecommendations.js'" },
+      { "in": ["src/vs"], "text": "/extensionIgnoredRecommendationsService.js'" },
+      { "in": ["src/vs"], "text": "/workspaceExtensionsConfig.js'" },
+      { "in": ["src/vs"], "text": "/extensionGalleryAccount.js'" },
+      { "in": ["src/vs"], "text": "/extensionGalleryAccountService.js'" },
+      { "in": ["src/vs"], "text": "electron-browser/extensionTipsService.js'" },
+      { "in": ["src/vs"], "text": "node/extensionTipsService.js'" }
+    ],
+    "absentProcesses": [],
+    "absentHosts": []
+  },
+  "smoke": ["base", "claude-code", "absence"]
+}

@@ -1,0 +1,1 @@
+{ "id": "C-1-ai", "stage": "C", "order": 310, "enabled": false, "intent": "試しの代役（after を満たすためだけ。ops なし。本物の C-1 は edits.patch が未作成で当てられない）" }

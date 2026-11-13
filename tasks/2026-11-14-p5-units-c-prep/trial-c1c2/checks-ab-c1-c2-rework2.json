@@ -1,0 +1,3995 @@
+{
+  "label": "trial-c1c2-rework2",
+  "worktree": "C:\\b\\wt\\dev-c1",
+  "tag": "1.146.0",
+  "baseCommit": "69047191fc427f2f92828279aae1d90d8eeda7ab",
+  "headCommit": "8d5cdfd0b1767e434a4205d9ead55a3030d03a9e",
+  "prevTag": null,
+  "dryRun": false,
+  "options": {
+    "only": [
+      "A-1-copilot-extension",
+      "A-2-accounts-extensions",
+      "A-3-debug-extensions",
+      "A-4-notebook-extensions",
+      "A-5-remote-extensions",
+      "A-6-themes",
+      "A-7-unused-extensions",
+      "B-1-telemetry",
+      "B-2-onboarding-experiments-surveys",
+      "B-3-issue-share",
+      "B-4-outline-view",
+      "B-5-theme-switching",
+      "B-6-online-feeds",
+      "B-7-terminal-suggest",
+      "C-1-ai",
+      "C-2-debug"
+    ],
+    "until": null,
+    "keepConflict": false
+  },
+  "inputs": {
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\removals",
+    "patches": "e:\\develop\\self\\Team\\projects\\ai-editor\\patches",
+    "assets": "e:\\develop\\self\\Team\\projects\\ai-editor\\assets",
+    "overlay": "e:\\develop\\self\\Team\\projects\\ai-editor\\product.overlay.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "extensionsSrc": "e:\\develop\\self\\Team\\projects\\ai-editor\\extensions-src",
+    "manifests": "C:\\b\\cache\\vsix"
+  },
+  "startedAt": "2026-11-13T19:21:22.365Z",
+  "finishedAt": "2026-11-13T19:22:14.711Z",
+  "result": "fail",
+  "stoppedAt": null,
+  "overlay": {
+    "applied": "ok",
+    "set": [
+      "nameShort",
+      "nameLong",
+      "applicationName",
+      "dataFolderName",
+      "sharedDataFolderName",
+      "urlProtocol",
+      "win32MutexName",
+      "win32DirName",
+      "win32NameVersion",
+      "win32RegValueName",
+      "win32AppUserModelId",
+      "win32ShellNameShort",
+      "win32x64AppId",
+      "win32arm64AppId",
+      "win32x64UserAppId",
+      "win32arm64UserAppId",
+      "builtInExtensions",
+      "shukoConfigurationDefaults"
+    ],
+    "removed": [],
+    "removedIfPresent": [],
+    "commit": "3ede09679e5e65f79c94470de464756d55e224ba"
+  },
+  "units": [
+    {
+      "id": "A-1-copilot-extension",
+      "order": 110,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "2c853d1b2ec4efc84df7cedb25ef6753387abdfb",
+        "deleted": [
+          "extensions/copilot",
+          "extensions/prompt-basics"
+        ],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/copilot',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/copilot': ['extensions/copilot/chat-lib'],",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "package.json",
+            "line": "\"compile-copilot\": \"pnpm -C extensions/copilot run compile\",",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "package.json",
+            "line": "\"watch-copilot\": \"pnpm -C extensions/copilot run watch\",",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "package.json",
+            "line": "\"watch-copilotd\": \"deemon pnpm run watch-copilot\",",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "package.json",
+            "line": "\"kill-watch-copilotd\": \"deemon --kill pnpm run watch-copilot\",",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "package.json",
+            "line": "\"copilot:setup\": \"pnpm -C extensions/copilot run setup\",",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "package.json",
+            "line": "\"copilot:get_token\": \"pnpm -C extensions/copilot run get_token\",",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          }
+        ],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "ok",
+        "commit": "67b0e0b24aba9fb52aff70161b1240467ec0ef87",
+        "subject": "unit A-1-copilot-extension: edits",
+        "conflicts": []
+      },
+      "warnings": []
+    },
+    {
+      "id": "A-2-accounts-extensions",
+      "order": 120,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "34126b73a0c3991af52f202d09100e787223db1d",
+        "deleted": [
+          "extensions/github",
+          "extensions/github-authentication",
+          "extensions/microsoft-authentication"
+        ],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/github',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/github-authentication',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/microsoft-authentication',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- github",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- github-authentication",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- microsoft-authentication",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/github/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/github-authentication/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/microsoft-authentication/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/lib/extensions.ts",
+            "line": "'microsoft-authentication',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          }
+        ],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "none",
+        "commit": null,
+        "subject": null,
+        "conflicts": []
+      },
+      "warnings": []
+    },
+    {
+      "id": "A-3-debug-extensions",
+      "order": 130,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "87059fed0096e9a6666a9d19afb8583871cc09ce",
+        "deleted": [
+          "extensions/debug-auto-launch",
+          "extensions/debug-server-ready"
+        ],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/debug-auto-launch',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/debug-server-ready',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- debug-auto-launch",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- debug-server-ready",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/debug-auto-launch/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/debug-server-ready/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          }
+        ],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "none",
+        "commit": null,
+        "subject": null,
+        "conflicts": []
+      },
+      "warnings": []
+    },
+    {
+      "id": "A-4-notebook-extensions",
+      "order": 140,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "541c7d0328506e75d90850b124ea6d867e762a1c",
+        "deleted": [
+          "extensions/ipynb",
+          "extensions/notebook-renderers"
+        ],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/ipynb',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/notebook-renderers',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- ipynb",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- notebook-renderers",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/ipynb/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/notebook-renderers/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/lib/extensions.ts",
+            "line": "{ script: 'ipynb/esbuild.notebook.mts', tsconfig: 'ipynb/notebook-src/tsconfig.json' },",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/lib/extensions.ts",
+            "line": "{ script: 'notebook-renderers/esbuild.notebook.mts', tsconfig: 'notebook-renderers/tsconfig.json' },",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          }
+        ],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "none",
+        "commit": null,
+        "subject": null,
+        "conflicts": []
+      },
+      "warnings": []
+    },
+    {
+      "id": "A-5-remote-extensions",
+      "order": 150,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "b3efc8889b6b1a8ce60540f31eae402a48200b05",
+        "deleted": [
+          "extensions/tunnel-forwarding"
+        ],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/tunnel-forwarding',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- tunnel-forwarding",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/tunnel-forwarding/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          }
+        ],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "none",
+        "commit": null,
+        "subject": null,
+        "conflicts": []
+      },
+      "warnings": []
+    },
+    {
+      "id": "A-6-themes",
+      "order": 160,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "5865379e286196bec8ce9a29f01ac72a7010d40b",
+        "deleted": [
+          "extensions/theme-abyss",
+          "extensions/theme-kimbie-dark",
+          "extensions/theme-modern-icons",
+          "extensions/theme-monokai",
+          "extensions/theme-monokai-dimmed",
+          "extensions/theme-quietlight",
+          "extensions/theme-red",
+          "extensions/theme-solarized-dark",
+          "extensions/theme-solarized-light",
+          "extensions/theme-tomorrow-night-blue"
+        ],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "ok",
+        "commit": "1ef2ff7de2c9c2793756a21ffcba7b549c957b5a",
+        "subject": "unit A-6-themes: edits",
+        "conflicts": []
+      },
+      "warnings": []
+    },
+    {
+      "id": "A-7-unused-extensions",
+      "order": 170,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "ba3f7d4de60520e1d12896717e19c2a11de09e3b",
+        "deleted": [
+          "extensions/grunt",
+          "extensions/gulp",
+          "extensions/jake",
+          "extensions/simple-browser",
+          "extensions/mermaid-markdown-features",
+          "extensions/extension-editing",
+          "extensions/terminal-suggest",
+          "extensions/php-language-features"
+        ],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/extension-editing',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/grunt',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/gulp',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/jake',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/mermaid-markdown-features',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/php-language-features',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/simple-browser',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/terminal-suggest',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- extension-editing",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- grunt",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- gulp",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- jake",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- mermaid-markdown-features",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- php-language-features",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- simple-browser",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- terminal-suggest",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/extension-editing/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/grunt/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/gulp/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/jake/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/mermaid-markdown-features/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/terminal-suggest/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/php-language-features/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/simple-browser/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/lib/extensions.ts",
+            "line": "{ script: 'mermaid-markdown-features/esbuild.webview.mts', tsconfig: 'mermaid-markdown-features/preview-src/tsconfig.json' },",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/lib/extensions.ts",
+            "line": "{ script: 'simple-browser/esbuild.webview.mts', tsconfig: 'simple-browser/preview-src/tsconfig.json' },",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          }
+        ],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "none",
+        "commit": null,
+        "subject": null,
+        "conflicts": []
+      },
+      "warnings": []
+    },
+    {
+      "id": "B-1-telemetry",
+      "order": 210,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "894c00d52aec1d854fd5ae320a9d715bd4c107ab",
+        "deleted": [
+          "src/vs/workbench/contrib/telemetry",
+          "src/vs/workbench/contrib/bracketPairColorizer2Telemetry",
+          "src/vs/workbench/contrib/terminalContrib/telemetry",
+          "src/vs/workbench/contrib/editTelemetry/common",
+          "src/vs/workbench/contrib/editTelemetry/test",
+          "src/vs/workbench/contrib/editTelemetry/browser/aiContributionFeature.ts",
+          "src/vs/workbench/contrib/editTelemetry/browser/editStats",
+          "src/vs/workbench/contrib/editTelemetry/browser/editTelemetry.contribution.ts",
+          "src/vs/workbench/contrib/editTelemetry/browser/editTelemetryContribution.ts",
+          "src/vs/workbench/contrib/editTelemetry/browser/helpers",
+          "src/vs/workbench/contrib/editTelemetry/browser/randomService.ts",
+          "src/vs/workbench/contrib/editTelemetry/browser/settingIds.ts",
+          "src/vs/workbench/contrib/editTelemetry/browser/settings.ts",
+          "src/vs/workbench/contrib/editTelemetry/browser/telemetry/agentHostEditMarkerService.ts",
+          "src/vs/workbench/contrib/editTelemetry/browser/telemetry/aiEditTelemetry/aiEditTelemetryServiceImpl.ts",
+          "src/vs/workbench/contrib/editTelemetry/browser/telemetry/arcTelemetryReporter.ts",
+          "src/vs/workbench/contrib/editTelemetry/browser/telemetry/arcTelemetrySender.ts",
+          "src/vs/workbench/contrib/editTelemetry/browser/telemetry/editSourceTrackingFeature.ts",
+          "src/vs/workbench/contrib/editTelemetry/browser/telemetry/editSourceTrackingImpl.ts",
+          "src/vs/workbench/contrib/editTelemetry/browser/telemetry/editTracker.ts",
+          "src/vs/workbench/contrib/editTelemetry/browser/telemetry/scmAdapter.ts",
+          "src/vs/platform/telemetry/test/browser/1dsAppender.test.ts",
+          "src/vs/workbench/test/browser/componentFixtures/aiStats.fixture.ts"
+        ],
+        "missingDeletes": [],
+        "removedDependencies": [
+          {
+            "file": "package.json",
+            "name": "@microsoft/1ds-core-js",
+            "section": "dependencies"
+          },
+          {
+            "file": "package.json",
+            "name": "@microsoft/1ds-post-js",
+            "section": "dependencies"
+          },
+          {
+            "file": "remote/package.json",
+            "name": "@microsoft/1ds-core-js",
+            "section": "dependencies"
+          },
+          {
+            "file": "remote/package.json",
+            "name": "@microsoft/1ds-post-js",
+            "section": "dependencies"
+          },
+          {
+            "file": "remote/web/package.json",
+            "name": "@microsoft/1ds-core-js",
+            "section": "dependencies"
+          },
+          {
+            "file": "remote/web/package.json",
+            "name": "@microsoft/1ds-post-js",
+            "section": "dependencies"
+          }
+        ],
+        "missingDependencies": [],
+        "removeLines": [
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/telemetry/browser/telemetry.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/bracketPairColorizer2Telemetry/browser/bracketPairColorizer2Telemetry.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/editTelemetry/browser/editTelemetry.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/sessions/sessions.common.main.ts",
+            "line": "import '../workbench/contrib/telemetry/browser/telemetry.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/sessions/sessions.common.main.ts",
+            "line": "import '../workbench/contrib/editTelemetry/browser/editTelemetry.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/contrib/terminal/terminal.all.ts",
+            "line": "import '../terminalContrib/telemetry/browser/terminal.telemetry.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          }
+        ],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "ok",
+        "commit": "d7fd0f411ebfb8dae2d01eb30fc0aeba345de9ce",
+        "subject": "unit B-1-telemetry: edits",
+        "conflicts": []
+      },
+      "warnings": []
+    },
+    {
+      "id": "B-2-onboarding-experiments-surveys",
+      "order": 220,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "af5d29658bb26c40ea4b3fb2dd7ced97bddf5a2d",
+        "deleted": [
+          "src/vs/workbench/contrib/welcomeGettingStarted",
+          "src/vs/workbench/contrib/welcomeWalkthrough",
+          "src/vs/workbench/contrib/welcomeOnboarding",
+          "src/vs/workbench/contrib/surveys"
+        ],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/surveys/browser/nps.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/surveys/browser/languageSurveys.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/welcomeGettingStarted/browser/gettingStarted.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/welcomeWalkthrough/browser/walkThrough.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/welcomeOnboarding/browser/welcomeOnboarding.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.desktop.main.ts",
+            "line": "import './contrib/surveys/browser/survey.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.web.main.ts",
+            "line": "import './contrib/surveys/browser/survey.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/sessions/sessions.desktop.main.ts",
+            "line": "import '../workbench/contrib/surveys/browser/survey.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/sessions/sessions.web.main.ts",
+            "line": "import '../workbench/contrib/surveys/browser/survey.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/test/browser/componentFixtures/fixtureUtilsCss.ts",
+            "line": "import '../../../contrib/welcomeGettingStarted/browser/gettingStartedColors.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/test/browser/componentFixtures/editor/tabs.fixture.ts",
+            "line": "import '../../../../contrib/welcomeGettingStarted/browser/media/gettingStarted.css';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/test/browser/componentFixtures/welcome/welcomePageAgentsWindowGraphic.fixture.ts",
+            "line": "import '../../../../contrib/welcomeGettingStarted/browser/media/gettingStarted.css';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          }
+        ],
+        "productRemoved": [
+          "onboardingKeymaps",
+          "onboardingThemes"
+        ],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "ok",
+        "commit": "714a523d1f2cd56039cc0f243ec3fd22c93f6d9b",
+        "subject": "unit B-2-onboarding-experiments-surveys: edits",
+        "conflicts": []
+      },
+      "warnings": []
+    },
+    {
+      "id": "B-3-issue-share",
+      "order": 230,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "979dc46b3ce391e811f4b0ce9727577a84e7d3b1",
+        "deleted": [
+          "src/vs/workbench/contrib/issue/browser",
+          "src/vs/workbench/contrib/issue/electron-browser",
+          "src/vs/workbench/contrib/issue/test",
+          "src/vs/workbench/contrib/issue/common/issue.contribution.ts",
+          "src/vs/workbench/contrib/issue/common/issueReporterTarget.ts",
+          "src/vs/workbench/contrib/issue/common/issueReporterUtil.ts",
+          "src/vs/workbench/contrib/share/browser"
+        ],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [
+          {
+            "file": "src/vs/workbench/workbench.desktop.main.ts",
+            "line": "import './contrib/issue/electron-browser/issue.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.web.main.ts",
+            "line": "import './contrib/issue/browser/issue.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/share/browser/share.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/sessions/sessions.desktop.main.ts",
+            "line": "import '../workbench/contrib/issue/electron-browser/issue.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/sessions/sessions.web.main.ts",
+            "line": "import '../workbench/contrib/issue/browser/issue.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/sessions/sessions.common.main.ts",
+            "line": "import '../workbench/contrib/share/browser/share.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          }
+        ],
+        "productRemoved": [
+          "reportIssueUrl"
+        ],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "ok",
+        "commit": "a091746fd6f7fb044b23beb7060bf99649dbf0db",
+        "subject": "unit B-3-issue-share: edits",
+        "conflicts": []
+      },
+      "warnings": []
+    },
+    {
+      "id": "B-4-outline-view",
+      "order": 240,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "1cc036309f0c1959ad839a4daadf07615cb9f524",
+        "deleted": [
+          "src/vs/workbench/contrib/outline/browser/outline.contribution.ts",
+          "src/vs/workbench/contrib/outline/browser/outlineActions.ts",
+          "src/vs/workbench/contrib/outline/browser/outlinePane.ts",
+          "src/vs/workbench/contrib/outline/browser/outlinePane.css",
+          "src/vs/workbench/contrib/outline/browser/outlineViewState.ts"
+        ],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/outline/browser/outline.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          }
+        ],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "none",
+        "commit": null,
+        "subject": null,
+        "conflicts": []
+      },
+      "warnings": []
+    },
+    {
+      "id": "B-5-theme-switching",
+      "order": 250,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "2c07fc5b3cba3b1e6e3569a4bfae1d42305525fc",
+        "deleted": [
+          "src/vs/workbench/contrib/themes/browser"
+        ],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/themes/browser/themes.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.desktop.main.ts",
+            "line": "import './contrib/themes/browser/themes.test.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/sessions/sessions.common.main.ts",
+            "line": "import '../workbench/contrib/themes/browser/themes.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/sessions/sessions.desktop.main.ts",
+            "line": "import '../workbench/contrib/themes/browser/themes.test.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          }
+        ],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "none",
+        "commit": null,
+        "subject": null,
+        "conflicts": []
+      },
+      "warnings": []
+    },
+    {
+      "id": "B-6-online-feeds",
+      "order": 260,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "6222699dab10e380e725c0d0747e4624e78364a5",
+        "deleted": [
+          "src/vs/workbench/contrib/emergencyAlert"
+        ],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [
+          {
+            "file": "src/vs/workbench/workbench.desktop.main.ts",
+            "line": "import './contrib/emergencyAlert/electron-browser/emergencyAlert.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/sessions/sessions.desktop.main.ts",
+            "line": "import '../workbench/contrib/emergencyAlert/electron-browser/emergencyAlert.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          }
+        ],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "none",
+        "commit": null,
+        "subject": null,
+        "conflicts": []
+      },
+      "warnings": []
+    },
+    {
+      "id": "B-7-terminal-suggest",
+      "order": 270,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "6287f3eff429e5b45deb3f6fdce7c478aeb7b949",
+        "deleted": [
+          "src/vs/workbench/contrib/terminalContrib/suggest",
+          "src/vs/workbench/services/suggest"
+        ],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [
+          {
+            "file": "src/vs/workbench/contrib/terminal/terminal.all.ts",
+            "line": "import '../terminalContrib/suggest/browser/terminal.suggest.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/contrib/modernUI/test/browser/roundedCorners.test.ts",
+            "line": "import '../../../../services/suggest/browser/media/suggest.css';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          }
+        ],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "ok",
+        "commit": "1a11ebd3d65f863b3cfdb498b4d39b0bae1cab5f",
+        "subject": "unit B-7-terminal-suggest: edits",
+        "conflicts": []
+      },
+      "warnings": []
+    },
+    {
+      "id": "C-1-ai",
+      "order": 310,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "033dea585c77fa62e48ef0761f82abf9c53c10dd",
+        "deleted": [
+          "src/vs/sessions",
+          "src/vs/workbench/contrib/chat",
+          "src/vs/workbench/contrib/inlineChat",
+          "src/vs/workbench/contrib/mcp",
+          "src/vs/workbench/contrib/agentsVoice",
+          "src/vs/workbench/contrib/chatWindow",
+          "src/vs/workbench/contrib/remoteCodingAgents",
+          "src/vs/workbench/contrib/sessions",
+          "src/vs/workbench/contrib/sessionChanges",
+          "src/vs/workbench/contrib/canvases",
+          "src/vs/workbench/contrib/terminalContrib/chat",
+          "src/vs/workbench/contrib/terminalContrib/chatAgentTools",
+          "src/vs/workbench/contrib/terminal/terminalContribChatExports.ts",
+          "src/vs/workbench/contrib/terminal/browser/agentHostTerminalService.ts",
+          "src/vs/workbench/contrib/terminal/browser/agentHostPty.ts",
+          "src/vs/workbench/contrib/terminal/browser/agentHostOutputChannel.ts",
+          "src/vs/workbench/contrib/terminal/browser/chatTerminalCommandMirror.ts",
+          "src/vs/workbench/contrib/search/browser/searchChatContext.ts",
+          "src/vs/workbench/contrib/search/test/browser/searchChatContext.test.ts",
+          "src/vs/workbench/contrib/search/browser/AISearch",
+          "src/vs/workbench/contrib/scm/browser/scmHistoryChatContext.ts",
+          "src/vs/workbench/contrib/markers/browser/markersChatContext.ts",
+          "src/vs/workbench/contrib/debug/browser/debugChatIntegration.ts",
+          "src/vs/workbench/contrib/extensions/common/searchExtensionsTool.ts",
+          "src/vs/workbench/contrib/extensions/common/installExtensionsTool.ts",
+          "src/vs/workbench/contrib/browserView/electron-browser/tools",
+          "src/vs/workbench/contrib/browserView/electron-browser/features/browserEditorChatFeatures.ts",
+          "src/vs/workbench/contrib/browserView/test/electron-browser/tools",
+          "src/vs/workbench/contrib/codeEditor/browser/dictation",
+          "src/vs/workbench/contrib/terminalContrib/voice",
+          "src/vs/workbench/contrib/terminal/browser/ahpTerminalCommandSource.ts",
+          "src/vs/workbench/contrib/terminal/test/browser/agentHostPty.test.ts",
+          "src/vs/workbench/contrib/terminal/test/browser/agentHostTerminalService.test.ts",
+          "src/vs/workbench/contrib/terminal/test/browser/ahpTerminalCommandSource.test.ts",
+          "src/vs/workbench/contrib/terminal/test/browser/chatTerminalCommandMirror.test.ts",
+          "src/vs/workbench/contrib/testing/common/testingChatAgentTool.ts",
+          "src/vs/workbench/contrib/testing/test/common/testingChatAgentTool.test.ts",
+          "src/vs/workbench/contrib/extensions/test/common/searchExtensionsTool.test.ts",
+          "src/vs/workbench/contrib/debug/test/browser/debugChatIntegration.test.ts",
+          "src/vs/workbench/contrib/notebook/browser/controller/chat",
+          "src/vs/workbench/contrib/notebook/browser/contrib/chat",
+          "src/vs/workbench/contrib/notebook/browser/view/cellParts/chat",
+          "src/vs/workbench/services/agentHost",
+          "src/vs/workbench/services/mcp",
+          "src/vs/workbench/services/sessions",
+          "src/vs/workbench/services/localTranscription",
+          "src/vs/workbench/services/authentication/browser/authenticationMcpUsageService.ts",
+          "src/vs/workbench/services/authentication/browser/authenticationMcpAccessService.ts",
+          "src/vs/workbench/services/authentication/browser/authenticationMcpService.ts",
+          "src/vs/workbench/services/authentication/test/browser/authenticationMcpService.test.ts",
+          "src/vs/workbench/services/authentication/test/browser/authenticationMcpAccessService.test.ts",
+          "src/vs/workbench/browser/parts/sessions",
+          "src/vs/platform/agentHost",
+          "src/vs/platform/mcp",
+          "src/vs/platform/localTranscription",
+          "src/vs/platform/agentPlugins",
+          "src/vs/platform/customizationMarketplace",
+          "src/vs/platform/artifactIntegrations",
+          "src/vs/platform/otel",
+          "src/vs/workbench/common/agentsSizes.ts",
+          "src/vs/workbench/api/browser/mainThreadAgentEditorComments.ts",
+          "src/vs/workbench/api/browser/mainThreadChatAgents2.ts",
+          "src/vs/workbench/api/browser/mainThreadChatArtifactIntegrations.ts",
+          "src/vs/workbench/api/browser/mainThreadChatCodeMapper.ts",
+          "src/vs/workbench/api/browser/mainThreadChatContext.ts",
+          "src/vs/workbench/api/browser/mainThreadChatDebug.ts",
+          "src/vs/workbench/api/browser/mainThreadChatInputNotification.ts",
+          "src/vs/workbench/api/browser/mainThreadChatOutputRenderer.ts",
+          "src/vs/workbench/api/browser/mainThreadChatQuota.ts",
+          "src/vs/workbench/api/browser/mainThreadChatSessions.ts",
+          "src/vs/workbench/api/browser/mainThreadChatStatus.ts",
+          "src/vs/workbench/api/browser/mainThreadLanguageModels.ts",
+          "src/vs/workbench/api/browser/mainThreadLanguageModelTools.ts",
+          "src/vs/workbench/api/browser/mainThreadMcp.ts",
+          "src/vs/workbench/api/common/extHostAgentEditorComments.ts",
+          "src/vs/workbench/api/common/extHostChatAgents2.ts",
+          "src/vs/workbench/api/common/extHostChatArtifactIntegrations.ts",
+          "src/vs/workbench/api/common/extHostChatContext.ts",
+          "src/vs/workbench/api/common/extHostChatDebug.ts",
+          "src/vs/workbench/api/common/extHostChatInputNotification.ts",
+          "src/vs/workbench/api/common/extHostChatOutputRenderer.ts",
+          "src/vs/workbench/api/common/extHostChatQuota.ts",
+          "src/vs/workbench/api/common/extHostChatSessions.ts",
+          "src/vs/workbench/api/common/extHostChatStatus.ts",
+          "src/vs/workbench/api/common/extHostCodeMapper.ts",
+          "src/vs/workbench/api/common/extHostLanguageModels.ts",
+          "src/vs/workbench/api/common/extHostLanguageModelTools.ts",
+          "src/vs/workbench/api/common/extHostMcp.ts",
+          "src/vs/workbench/api/node/extHostMcpNode.ts",
+          "src/vs/workbench/api/test/browser/extHostCodeMapper.test.ts",
+          "src/vs/workbench/api/test/browser/mainThreadChatAgents2.test.ts",
+          "src/vs/workbench/api/test/browser/mainThreadChatArtifactIntegrations.test.ts",
+          "src/vs/workbench/api/test/browser/mainThreadChatInputNotification.test.ts",
+          "src/vs/workbench/api/test/browser/mainThreadChatSessions.test.ts",
+          "src/vs/workbench/api/test/browser/mainThreadLanguageModels.test.ts",
+          "src/vs/workbench/api/test/browser/mainThreadMcp.test.ts",
+          "src/vs/workbench/api/test/common/extHostChatAgents2.test.ts",
+          "src/vs/workbench/api/test/common/extHostLanguageModelTools.test.ts",
+          "src/vs/workbench/api/test/common/extHostLanguageModels.test.ts",
+          "src/vs/workbench/api/test/common/extHostMcp.test.ts",
+          "src/vs/workbench/api/test/node/extHostMcpNode.test.ts",
+          "src/vs/workbench/test/browser/componentFixtures/chat",
+          "src/vs/workbench/test/browser/componentFixtures/sessions",
+          "src/vs/workbench/test/browser/componentFixtures/welcome/welcomePageAgentsWindowGraphic.fixture.ts",
+          "src/vs/workbench/test/browser/componentFixtures/agentsVoice",
+          "src/vs/workbench/test/browser/componentFixtures/editor/inlineChatAffordance.fixture.ts",
+          "src/vs/workbench/test/browser/componentFixtures/editor/inlineChatZoneWidget.fixture.ts",
+          "src/vs/workbench/test/browser/parts/sessions",
+          "src/vs/workbench/test/browser/aiCustomizationManagementSectionRegistry.test.ts",
+          "src/vs/server/node/agentHostChannel.ts",
+          "src/vs/server/node/serverAgentHostManager.ts",
+          "src/vs/server/test/node/agentHostChannel.test.ts",
+          "src/vs/server/test/node/serverAgentHostManager.test.ts",
+          "src/typings/copilot-api.d.ts"
+        ],
+        "missingDeletes": [],
+        "removedDependencies": [
+          {
+            "file": "package.json",
+            "name": "@anthropic-ai/sdk",
+            "section": "dependencies"
+          },
+          {
+            "file": "package.json",
+            "name": "@github/copilot-sdk",
+            "section": "dependencies"
+          },
+          {
+            "file": "package.json",
+            "name": "@vscode/copilot-api",
+            "section": "dependencies"
+          },
+          {
+            "file": "package.json",
+            "name": "foundry-local-sdk",
+            "section": "dependencies"
+          },
+          {
+            "file": "package.json",
+            "name": "@anthropic-ai/claude-agent-sdk",
+            "section": "devDependencies"
+          },
+          {
+            "file": "package.json",
+            "name": "@openai/codex",
+            "section": "devDependencies"
+          },
+          {
+            "file": "package.json",
+            "name": "@modelcontextprotocol/sdk",
+            "section": "devDependencies"
+          },
+          {
+            "file": "remote/package.json",
+            "name": "@github/copilot-sdk",
+            "section": "dependencies"
+          },
+          {
+            "file": "remote/package.json",
+            "name": "@vscode/copilot-api",
+            "section": "dependencies"
+          }
+        ],
+        "missingDependencies": [],
+        "removeLines": [
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './common/agentsSizes.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import { ArtifactIntegrationRegistry, IArtifactIntegrationRegistry } from '../platform/artifactIntegrations/common/artifactIntegrationRegistry.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "registerSingleton(IArtifactIntegrationRegistry, ArtifactIntegrationRegistry, InstantiationType.Delayed);",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/test/browser/componentFixtures/fixtureUtilsCss.ts",
+            "line": "import '../../../common/agentsSizes.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import '../platform/mcp/common/mcpResourceScannerService.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './services/authentication/browser/authenticationMcpUsageService.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './services/authentication/browser/authenticationMcpAccessService.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './services/authentication/browser/authenticationMcpService.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './services/agentHost/common/agentHostResourceService.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import '../platform/agentHost/browser/agentHostConnectionsService.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import { IAllowedMcpServersService, IMcpGalleryService } from '../platform/mcp/common/mcpManagement.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import { McpGalleryService } from '../platform/mcp/common/mcpGalleryService.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import { AllowedMcpServersService } from '../platform/mcp/common/allowedMcpServersService.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import { AgentHostMcpOAuthMetadataService, IAgentHostMcpOAuthMetadataService } from '../platform/agentHost/common/agentHostMcpOAuthMetadataService.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "registerSingleton(IMcpGalleryService, McpGalleryService, InstantiationType.Delayed);",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "registerSingleton(IAllowedMcpServersService, AllowedMcpServersService, InstantiationType.Delayed);",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "registerSingleton(IAgentHostMcpOAuthMetadataService, AgentHostMcpOAuthMetadataService, InstantiationType.Delayed);",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/chat/browser/chat.shared.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/chat/browser/chat.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/chat/browser/agentSessions/agentHost/agentHost.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/chat/browser/remoteAgentHost/remoteAgentHost.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/chat/browser/chat.view.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/inlineChat/browser/inlineChat.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/agentsVoice/browser/agentsVoice.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/mcp/browser/mcp.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/mcp/browser/mcp.view.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/chat/browser/chatSessions/chatSessions.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/chat/browser/contextContrib/chatContext.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/chat/browser/onboarding/modelPickerTryout.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/chat/browser/onboarding/chatInputSpotlightTour.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/remoteCodingAgents/browser/remoteCodingAgents.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.desktop.main.ts",
+            "line": "import '../platform/customizationMarketplace/electron-browser/customizationMarketplaceService.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.desktop.main.ts",
+            "line": "import './services/mcp/electron-browser/mcpGalleryManifestService.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.desktop.main.ts",
+            "line": "import './services/mcp/electron-browser/mcpWorkbenchManagementService.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.desktop.main.ts",
+            "line": "import './services/localTranscription/electron-browser/localTranscriptionService.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.desktop.main.ts",
+            "line": "import './services/agentHost/electron-browser/agentHostService.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.desktop.main.ts",
+            "line": "import '../platform/agentHost/electron-browser/remoteAgentHostService.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.desktop.main.ts",
+            "line": "import '../platform/agentHost/electron-browser/agentHostMcpOAuthMetadataService.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.desktop.main.ts",
+            "line": "import '../platform/agentHost/browser/agentHostEnablementService.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.desktop.main.ts",
+            "line": "import './contrib/canvases/electron-browser/editorCanvases.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.desktop.main.ts",
+            "line": "import './contrib/chat/electron-browser/chat.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.desktop.main.ts",
+            "line": "import './contrib/chat/electron-browser/tunnelHost.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.desktop.main.ts",
+            "line": "import './contrib/agentsVoice/electron-browser/agentsVoiceNativeCommands.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.desktop.main.ts",
+            "line": "import './contrib/mcp/electron-browser/mcp.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.web.main.ts",
+            "line": "import './services/mcp/browser/mcpWorkbenchManagementService.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.web.main.ts",
+            "line": "import './services/localTranscription/browser/localTranscriptionService.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.web.main.ts",
+            "line": "import { IMcpGalleryManifestService } from '../platform/mcp/common/mcpGalleryManifest.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.web.main.ts",
+            "line": "import { WorkbenchMcpGalleryManifestService } from './services/mcp/browser/mcpGalleryManifestService.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.web.main.ts",
+            "line": "import { IAgentHostService } from '../platform/agentHost/common/agentService.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.web.main.ts",
+            "line": "import { EditorRemoteAgentHostServiceClient } from './services/agentHost/browser/editorRemoteAgentHostServiceClient.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.web.main.ts",
+            "line": "import { IRemoteAgentHostService } from '../platform/agentHost/common/remoteAgentHostService.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.web.main.ts",
+            "line": "import { EditorWindowRemoteAgentHostService } from '../platform/agentHost/browser/remoteAgentHostServiceImpl.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.web.main.ts",
+            "line": "import { BrowserAgentHostDebugLogsExportService, IAgentHostDebugLogsExportService } from './contrib/chat/browser/actions/exportAgentHostDebugLogsAction.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.web.main.ts",
+            "line": "import './services/agentHost/browser/webAgentHostEnablementService.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.web.main.ts",
+            "line": "registerSingleton(IMcpGalleryManifestService, WorkbenchMcpGalleryManifestService, InstantiationType.Delayed);",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.web.main.ts",
+            "line": "registerSingleton(IAgentHostService, EditorRemoteAgentHostServiceClient, InstantiationType.Delayed);",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.web.main.ts",
+            "line": "registerSingleton(IRemoteAgentHostService, EditorWindowRemoteAgentHostService, InstantiationType.Delayed);",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.web.main.ts",
+            "line": "registerSingleton(IAgentHostDebugLogsExportService, BrowserAgentHostDebugLogsExportService, InstantiationType.Delayed);",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/contrib/terminal/terminal.all.ts",
+            "line": "import '../terminalContrib/chatAgentTools/browser/terminal.chatAgentTools.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/contrib/terminal/terminal.all.ts",
+            "line": "import '../terminalContrib/chat/browser/terminal.chat.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/contrib/terminal/terminal.all.ts",
+            "line": "import '../terminalContrib/voice/browser/terminal.voice.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/contrib/codeEditor/browser/codeEditor.contribution.ts",
+            "line": "import './dictation/editorDictation.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/contrib/notebook/browser/notebook.contribution.ts",
+            "line": "import './controller/chat/notebook.chat.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/contrib/browserView/electron-browser/browserView.contribution.ts",
+            "line": "import './features/browserEditorChatFeatures.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/api/browser/extensionHost.contribution.ts",
+            "line": "import './mainThreadAgentEditorComments.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/api/browser/extensionHost.contribution.ts",
+            "line": "import './mainThreadLanguageModels.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/api/browser/extensionHost.contribution.ts",
+            "line": "import './mainThreadChatAgents2.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/api/browser/extensionHost.contribution.ts",
+            "line": "import './mainThreadChatArtifactIntegrations.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/api/browser/extensionHost.contribution.ts",
+            "line": "import './mainThreadChatCodeMapper.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/api/browser/extensionHost.contribution.ts",
+            "line": "import './mainThreadLanguageModelTools.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/api/browser/extensionHost.contribution.ts",
+            "line": "import './mainThreadMcp.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/api/browser/extensionHost.contribution.ts",
+            "line": "import './mainThreadChatContext.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/api/browser/extensionHost.contribution.ts",
+            "line": "import './mainThreadChatDebug.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/api/browser/extensionHost.contribution.ts",
+            "line": "import './mainThreadChatStatus.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/api/browser/extensionHost.contribution.ts",
+            "line": "import './mainThreadChatQuota.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/api/browser/extensionHost.contribution.ts",
+            "line": "import './mainThreadChatInputNotification.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/api/browser/extensionHost.contribution.ts",
+            "line": "import './mainThreadChatOutputRenderer.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/api/browser/extensionHost.contribution.ts",
+            "line": "import './mainThreadChatSessions.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/api/common/extHost.common.services.ts",
+            "line": "import { ExtHostLanguageModels, IExtHostLanguageModels } from './extHostLanguageModels.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/api/common/extHost.common.services.ts",
+            "line": "import { ExtHostMcpService, IExtHostMpcService } from './extHostMcp.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/api/common/extHost.common.services.ts",
+            "line": "registerSingleton(IExtHostLanguageModels, ExtHostLanguageModels, InstantiationType.Eager);",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/api/common/extHost.common.services.ts",
+            "line": "registerSingleton(IExtHostMpcService, ExtHostMcpService, InstantiationType.Eager);",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/api/node/extHost.node.services.ts",
+            "line": "import { IExtHostMpcService } from '../common/extHostMcp.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/api/node/extHost.node.services.ts",
+            "line": "import { NodeExtHostMpcService } from './extHostMcpNode.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/api/node/extHost.node.services.ts",
+            "line": "registerSingleton(IExtHostMpcService, NodeExtHostMpcService, InstantiationType.Eager);",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/next/index.ts",
+            "line": "'vs/sessions/sessions.desktop.main',",
+            "count": 2,
+            "found": 2,
+            "ok": true
+          },
+          {
+            "file": "build/next/index.ts",
+            "line": "'vs/sessions/electron-browser/sessions',",
+            "count": 2,
+            "found": 2,
+            "ok": true
+          },
+          {
+            "file": "build/next/index.ts",
+            "line": "'vs/platform/localTranscription/node/localTranscriptionMain',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/next/index.ts",
+            "line": "'vs/platform/agentHost/node/agentHostMain',",
+            "count": 2,
+            "found": 2,
+            "ok": true
+          },
+          {
+            "file": "build/next/index.ts",
+            "line": "'vs/platform/agentHost/node/diffWorkerMain',",
+            "count": 2,
+            "found": 2,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.vscode.ts",
+            "line": "'vs/sessions/sessions.desktop.main.js',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.vscode.ts",
+            "line": "'vs/sessions/sessions.desktop.main.css',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.vscode.ts",
+            "line": "'vs/sessions/electron-browser/sessions.html',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.vscode.ts",
+            "line": "'vs/sessions/electron-browser/sessions.js'",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'src/vs/sessions/test/e2e',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "pnpm-workspace.yaml",
+            "line": "- src/vs/sessions/test/e2e",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          }
+        ],
+        "productRemoved": [
+          "defaultChatAgent",
+          "trustedExtensionAuthAccess",
+          "builtInExtensionsEnabledWithAutoUpdates",
+          "sessionsWindowAllowedExtensions",
+          "voiceWsUrl",
+          "agentsTelemetryAppName"
+        ],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "none",
+        "commit": null,
+        "subject": null,
+        "conflicts": []
+      },
+      "warnings": []
+    },
+    {
+      "id": "C-2-debug",
+      "order": 320,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "f13d3ed6daedec7065b468958586e93ed0926ffe",
+        "deleted": [
+          "src/vs/workbench/contrib/debug/browser/baseDebugView.ts",
+          "src/vs/workbench/contrib/debug/browser/breakpointEditorContribution.ts",
+          "src/vs/workbench/contrib/debug/browser/breakpointsView.ts",
+          "src/vs/workbench/contrib/debug/browser/breakpointWidget.ts",
+          "src/vs/workbench/contrib/debug/browser/callStackView.ts",
+          "src/vs/workbench/contrib/debug/browser/debug.contribution.ts",
+          "src/vs/workbench/contrib/debug/browser/debugActionViewItems.ts",
+          "src/vs/workbench/contrib/debug/browser/debugANSIHandling.ts",
+          "src/vs/workbench/contrib/debug/browser/debugAdapterManager.ts",
+          "src/vs/workbench/contrib/debug/browser/debugCommands.ts",
+          "src/vs/workbench/contrib/debug/browser/debugConfigurationManager.ts",
+          "src/vs/workbench/contrib/debug/browser/debugConsoleQuickAccess.ts",
+          "src/vs/workbench/contrib/debug/browser/debugEditorActions.ts",
+          "src/vs/workbench/contrib/debug/browser/debugEditorContribution.ts",
+          "src/vs/workbench/contrib/debug/browser/debugExpressionRenderer.ts",
+          "src/vs/workbench/contrib/debug/browser/debugHover.ts",
+          "src/vs/workbench/contrib/debug/browser/debugMemory.ts",
+          "src/vs/workbench/contrib/debug/browser/debugProgress.ts",
+          "src/vs/workbench/contrib/debug/browser/debugQuickAccess.ts",
+          "src/vs/workbench/contrib/debug/browser/debugService.ts",
+          "src/vs/workbench/contrib/debug/browser/debugSession.ts",
+          "src/vs/workbench/contrib/debug/browser/debugSessionPicker.ts",
+          "src/vs/workbench/contrib/debug/browser/debugSettingMigration.ts",
+          "src/vs/workbench/contrib/debug/browser/debugStatus.ts",
+          "src/vs/workbench/contrib/debug/browser/debugTaskRunner.ts",
+          "src/vs/workbench/contrib/debug/browser/debugTitle.ts",
+          "src/vs/workbench/contrib/debug/browser/debugToolBar.ts",
+          "src/vs/workbench/contrib/debug/browser/debugViewlet.ts",
+          "src/vs/workbench/contrib/debug/browser/disassemblyView.ts",
+          "src/vs/workbench/contrib/debug/browser/exceptionWidget.ts",
+          "src/vs/workbench/contrib/debug/browser/linkDetector.ts",
+          "src/vs/workbench/contrib/debug/browser/loadedScriptsView.ts",
+          "src/vs/workbench/contrib/debug/browser/rawDebugSession.ts",
+          "src/vs/workbench/contrib/debug/browser/repl.ts",
+          "src/vs/workbench/contrib/debug/browser/replAccessibilityHelp.ts",
+          "src/vs/workbench/contrib/debug/browser/replAccessibleView.ts",
+          "src/vs/workbench/contrib/debug/browser/replFilter.ts",
+          "src/vs/workbench/contrib/debug/browser/replViewer.ts",
+          "src/vs/workbench/contrib/debug/browser/runAndDebugAccessibilityHelp.ts",
+          "src/vs/workbench/contrib/debug/browser/statusbarColorProvider.ts",
+          "src/vs/workbench/contrib/debug/browser/variablesView.ts",
+          "src/vs/workbench/contrib/debug/browser/watchExpressionsView.ts",
+          "src/vs/workbench/contrib/debug/browser/welcomeView.ts",
+          "src/vs/workbench/contrib/debug/browser/media/breakpointWidget.css",
+          "src/vs/workbench/contrib/debug/browser/media/continue-tb.png",
+          "src/vs/workbench/contrib/debug/browser/media/debug.contribution.css",
+          "src/vs/workbench/contrib/debug/browser/media/debugHover.css",
+          "src/vs/workbench/contrib/debug/browser/media/debugToolBar.css",
+          "src/vs/workbench/contrib/debug/browser/media/debugViewlet.css",
+          "src/vs/workbench/contrib/debug/browser/media/exceptionWidget.css",
+          "src/vs/workbench/contrib/debug/browser/media/pause-tb.png",
+          "src/vs/workbench/contrib/debug/browser/media/repl.css",
+          "src/vs/workbench/contrib/debug/browser/media/restart-tb.png",
+          "src/vs/workbench/contrib/debug/browser/media/run-with-debugging-tb.png",
+          "src/vs/workbench/contrib/debug/browser/media/stepinto-tb.png",
+          "src/vs/workbench/contrib/debug/browser/media/stepout-tb.png",
+          "src/vs/workbench/contrib/debug/browser/media/stepover-tb.png",
+          "src/vs/workbench/contrib/debug/browser/media/stop-tb.png",
+          "src/vs/workbench/contrib/debug/node",
+          "src/vs/workbench/contrib/debug/test",
+          "src/vs/workbench/contrib/notebook/browser/contrib/debug",
+          "src/vs/workbench/contrib/notebook/browser/contrib/notebookVariables",
+          "src/vs/workbench/contrib/notebook/test/browser/notebookVariablesDataSource.test.ts",
+          "src/vs/workbench/api/browser/mainThreadDebugService.ts",
+          "src/vs/workbench/api/common/extHostDebugService.ts",
+          "src/vs/workbench/api/node/extHostDebugService.ts",
+          "src/vs/workbench/api/test/browser/extHostDebugAdapters.test.ts",
+          "src/vs/workbench/api/test/browser/extHostDebugTreeSessions.test.ts",
+          "src/vs/workbench/api/test/browser/extHostDebugVisualization.test.ts",
+          "src/vs/workbench/api/test/browser/mainThreadDebugService.test.ts"
+        ],
+        "missingDeletes": [
+          "src/vs/workbench/contrib/debug/browser/debugChatIntegration.ts"
+        ],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/debug/browser/debug.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/debug/browser/debugEditorContribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/debug/browser/breakpointEditorContribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/debug/browser/callStackEditorContribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/debug/browser/repl.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/debug/browser/debugViewlet.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/api/browser/extensionHost.contribution.ts",
+            "line": "import './mainThreadDebugService.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/api/common/extHost.common.services.ts",
+            "line": "import { IExtHostDebugService, WorkerExtHostDebugService } from './extHostDebugService.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/api/common/extHost.common.services.ts",
+            "line": "registerSingleton(IExtHostDebugService, WorkerExtHostDebugService, InstantiationType.Eager);",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/api/node/extHost.node.services.ts",
+            "line": "import { ExtHostDebugService } from './extHostDebugService.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/api/node/extHost.node.services.ts",
+            "line": "import { IExtHostDebugService } from '../common/extHostDebugService.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/api/node/extHost.node.services.ts",
+            "line": "registerSingleton(IExtHostDebugService, ExtHostDebugService, InstantiationType.Eager);",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/contrib/notebook/browser/notebook.contribution.ts",
+            "line": "import './contrib/debug/notebookBreakpoints.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/contrib/notebook/browser/notebook.contribution.ts",
+            "line": "import './contrib/debug/notebookCellPausing.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/contrib/notebook/browser/notebook.contribution.ts",
+            "line": "import './contrib/debug/notebookDebugDecorations.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/contrib/notebook/browser/notebook.contribution.ts",
+            "line": "import './contrib/notebookVariables/notebookInlineVariables.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/next/index.ts",
+            "line": "'vs/workbench/contrib/debug/node/telemetryApp',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          }
+        ],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "none",
+        "commit": null,
+        "subject": null,
+        "conflicts": []
+      },
+      "warnings": [
+        "delete: src/vs/workbench/contrib/debug/browser/debugChatIntegration.ts が本家に無い（改名の恐れ）"
+      ]
+    }
+  ],
+  "unitsSkipped": [
+    {
+      "id": "C-3-remote",
+      "reason": "not in --only"
+    },
+    {
+      "id": "C-4-notebook",
+      "reason": "not in --only"
+    },
+    {
+      "id": "C-5-extension-gallery",
+      "reason": "not in --only"
+    },
+    {
+      "id": "C-6-settings-sync",
+      "reason": "not in --only"
+    },
+    {
+      "id": "C-7-breadcrumbs-outline",
+      "reason": "not in --only"
+    }
+  ],
+  "patches": [
+    {
+      "file": "patches/20-product-configuration-defaults.patch",
+      "applied": "ok",
+      "commit": "c3f741fe830ed196c6a6aabb8c99f981fb968288",
+      "subject": "shuko: register product.json shukoConfigurationDefaults as configuration defaults",
+      "conflicts": []
+    },
+    {
+      "file": "patches/30-proxy-direct-without-settings.patch",
+      "applied": "ok",
+      "commit": "9b6d0306c50e86f78795dfb2db8068d7a71eb1c1",
+      "subject": "shuko: connect directly when no proxy is configured",
+      "conflicts": []
+    }
+  ],
+  "assets": {
+    "applied": "ok",
+    "copied": [
+      "resources/win32/code.ico",
+      "resources/win32/code_150x150.png",
+      "resources/win32/code_70x70.png",
+      "src/vs/workbench/browser/media/code-icon.svg",
+      "src/vs/workbench/browser/parts/editor/media/letterpress-dark.svg",
+      "src/vs/workbench/browser/parts/editor/media/letterpress-hcDark.svg",
+      "src/vs/workbench/browser/parts/editor/media/letterpress-hcLight.svg",
+      "src/vs/workbench/browser/parts/editor/media/letterpress-light.svg"
+    ],
+    "commit": "6f0d65b16792b20f05cc542f563a6381bd3a0857"
+  },
+  "builtinExtensions": {
+    "applied": "ok",
+    "copied": [
+      {
+        "name": "mydist",
+        "files": 3,
+        "list": [
+          "README.md",
+          "ThirdPartyNotices.txt",
+          "package.json"
+        ],
+        "removedDefaults": [
+          {
+            "key": "chat.disableAIFeatures",
+            "unit": "C-1-ai"
+          },
+          {
+            "key": "workbench.startupEditor",
+            "unit": "B-2-onboarding-experiments-surveys"
+          },
+          {
+            "key": "terminal.integrated.suggest.enabled",
+            "unit": "B-7-terminal-suggest"
+          }
+        ]
+      },
+      {
+        "name": "notion-sync",
+        "files": 4,
+        "list": [
+          "README.md",
+          "ThirdPartyNotices.txt",
+          "dist/extension.js",
+          "package.json"
+        ]
+      }
+    ],
+    "commit": "8d5cdfd0b1767e434a4205d9ead55a3030d03a9e",
+    "removedDefaults": [
+      {
+        "key": "chat.disableAIFeatures",
+        "unit": "C-1-ai"
+      },
+      {
+        "key": "workbench.startupEditor",
+        "unit": "B-2-onboarding-experiments-surveys"
+      },
+      {
+        "key": "terminal.integrated.suggest.enabled",
+        "unit": "B-7-terminal-suggest"
+      }
+    ]
+  },
+  "checks": {
+    "remnants": {
+      "status": "ok",
+      "items": []
+    },
+    "absentStrings": {
+      "status": "fail",
+      "items": [
+        {
+          "unit": "A-1-copilot-extension",
+          "text": "'extensions/copilot'",
+          "in": [
+            "build/npm/dirs.ts"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-1-copilot-extension",
+          "text": "-C extensions/copilot",
+          "in": [
+            "package.json"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-1-copilot-extension",
+          "text": "watch-copilot",
+          "in": [
+            "package.json"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-1-copilot-extension",
+          "text": "ensureAgentHarnessLink",
+          "in": [
+            "build/npm/postinstall.ts"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-1-copilot-extension",
+          "text": "copilot-instructions.md",
+          "in": [
+            "build/npm/postinstall.ts"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-2-accounts-extensions",
+          "text": "github-authentication",
+          "in": [
+            "build/npm/dirs.ts",
+            "build/gulpfile.extensions.ts",
+            "build/lib/extensions.ts",
+            "extensions/pnpm-workspace.yaml"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-2-accounts-extensions",
+          "text": "microsoft-authentication",
+          "in": [
+            "build/npm/dirs.ts",
+            "build/gulpfile.extensions.ts",
+            "build/lib/extensions.ts"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-2-accounts-extensions",
+          "text": "'extensions/github",
+          "in": [
+            "build/npm/dirs.ts",
+            "build/gulpfile.extensions.ts"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-3-debug-extensions",
+          "text": "debug-auto-launch",
+          "in": [
+            "build/npm/dirs.ts",
+            "build/gulpfile.extensions.ts",
+            "extensions/pnpm-workspace.yaml"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-3-debug-extensions",
+          "text": "debug-server-ready",
+          "in": [
+            "build/npm/dirs.ts",
+            "build/gulpfile.extensions.ts",
+            "extensions/pnpm-workspace.yaml"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-3-debug-extensions",
+          "text": "ms-vscode.js-debug",
+          "in": [
+            "product.json"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-4-notebook-extensions",
+          "text": "ipynb",
+          "in": [
+            "build/npm/dirs.ts",
+            "build/gulpfile.extensions.ts",
+            "build/lib/extensions.ts",
+            "extensions/pnpm-workspace.yaml"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-4-notebook-extensions",
+          "text": "notebook-renderers",
+          "in": [
+            "build/npm/dirs.ts",
+            "build/gulpfile.extensions.ts",
+            "build/lib/extensions.ts",
+            "extensions/pnpm-workspace.yaml"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-5-remote-extensions",
+          "text": "tunnel-forwarding",
+          "in": [
+            "build/npm/dirs.ts",
+            "build/gulpfile.extensions.ts",
+            "extensions/pnpm-workspace.yaml"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-6-themes",
+          "text": "extensions/theme-abyss/",
+          "in": [
+            "src/vs/workbench/test/browser/componentFixtures"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-6-themes",
+          "text": "extensions/theme-monokai/",
+          "in": [
+            "src/vs/workbench/test/browser/componentFixtures"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-6-themes",
+          "text": "extensions/theme-quietlight/",
+          "in": [
+            "src/vs/workbench/test/browser/componentFixtures"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-6-themes",
+          "text": "extensions/theme-solarized-dark/",
+          "in": [
+            "src/vs/workbench/test/browser/componentFixtures"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-6-themes",
+          "text": "extensions/theme-solarized-light/",
+          "in": [
+            "src/vs/workbench/test/browser/componentFixtures"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-7-unused-extensions",
+          "text": "simple-browser",
+          "in": [
+            "build/npm/dirs.ts",
+            "build/gulpfile.extensions.ts",
+            "build/lib/extensions.ts",
+            "extensions/pnpm-workspace.yaml"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-7-unused-extensions",
+          "text": "mermaid-markdown-features",
+          "in": [
+            "build/npm/dirs.ts",
+            "build/gulpfile.extensions.ts",
+            "build/lib/extensions.ts",
+            "extensions/pnpm-workspace.yaml"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-7-unused-extensions",
+          "text": "terminal-suggest",
+          "in": [
+            "build/npm/dirs.ts",
+            "build/gulpfile.extensions.ts",
+            "extensions/pnpm-workspace.yaml"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-7-unused-extensions",
+          "text": "php-language-features",
+          "in": [
+            "build/npm/dirs.ts",
+            "build/gulpfile.extensions.ts",
+            "extensions/pnpm-workspace.yaml"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-7-unused-extensions",
+          "text": "extension-editing",
+          "in": [
+            "build/npm/dirs.ts",
+            "build/gulpfile.extensions.ts",
+            "extensions/pnpm-workspace.yaml"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "B-1-telemetry",
+          "text": "mobile.events.data.microsoft.com",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "B-1-telemetry",
+          "text": "contrib/telemetry/browser/telemetry.contribution.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "B-1-telemetry",
+          "text": "contrib/bracketPairColorizer2Telemetry/browser/bracketPairColorizer2Telemetry.contribution.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "B-1-telemetry",
+          "text": "contrib/editTelemetry/browser/editTelemetry.contribution.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "B-1-telemetry",
+          "text": "terminalContrib/telemetry/browser/terminal.telemetry.contribution.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "B-2-onboarding-experiments-surveys",
+          "text": "welcomeGettingStarted/browser/gettingStarted.contribution.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "B-2-onboarding-experiments-surveys",
+          "text": "welcomeWalkthrough/browser/walkThrough.contribution.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "B-2-onboarding-experiments-surveys",
+          "text": "welcomeOnboarding/browser/welcomeOnboarding.contribution.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "B-2-onboarding-experiments-surveys",
+          "text": "contrib/surveys/browser/nps.contribution.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "B-2-onboarding-experiments-surveys",
+          "text": "contrib/surveys/browser/languageSurveys.contribution.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "B-2-onboarding-experiments-surveys",
+          "text": "contrib/surveys/browser/survey.contribution.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "B-2-onboarding-experiments-surveys",
+          "text": "welcomeGettingStarted/browser/gettingStartedService.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "B-3-issue-share",
+          "text": "contrib/issue/browser/issue.contribution.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "B-3-issue-share",
+          "text": "contrib/issue/electron-browser/issue.contribution.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "B-3-issue-share",
+          "text": "contrib/share/browser/share.contribution.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "B-4-outline-view",
+          "text": "contrib/outline/browser/outline.contribution.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "B-4-outline-view",
+          "text": "outline/browser/outlinePane.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "B-5-theme-switching",
+          "text": "contrib/themes/browser/themes.contribution.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "B-5-theme-switching",
+          "text": "contrib/themes/browser/themes.test.contribution.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "B-6-online-feeds",
+          "text": "contrib/emergencyAlert/electron-browser/emergencyAlert.contribution.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "B-6-online-feeds",
+          "text": "productService.emergencyAlertUrl",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "B-7-terminal-suggest",
+          "text": "terminalContrib/suggest/browser/terminal.suggest.contribution.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "B-7-terminal-suggest",
+          "text": "suggest/common/terminalSuggestConfiguration.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "B-7-terminal-suggest",
+          "text": "suggest/browser/terminalCompletionService.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "B-7-terminal-suggest",
+          "text": "services/suggest/browser/simpleSuggestWidget.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "B-7-terminal-suggest",
+          "text": "services/suggest/browser/media/suggest.css'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "C-1-ai",
+          "text": "contrib/chat/",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 57,
+          "hits": [
+            {
+              "file": "src/vs/workbench/test/browser/workbenchTestServices.ts",
+              "line": 135
+            },
+            {
+              "file": "src/vs/workbench/test/browser/workbenchTestServices.ts",
+              "line": 136
+            },
+            {
+              "file": "src/vs/workbench/test/browser/workbenchTestServices.ts",
+              "line": 137
+            },
+            {
+              "file": "src/vs/workbench/test/browser/workbenchTestServices.ts",
+              "line": 148
+            },
+            {
+              "file": "src/vs/workbench/test/browser/workbenchTestServices.ts",
+              "line": 149
+            },
+            {
+              "file": "src/vs/workbench/test/browser/workbenchTestServices.ts",
+              "line": 150
+            },
+            {
+              "file": "src/vs/workbench/test/browser/componentFixtures/fixtureUtils.ts",
+              "line": 67
+            },
+            {
+              "file": "src/vs/workbench/test/browser/componentFixtures/fixtureUtils.ts",
+              "line": 68
+            },
+            {
+              "file": "src/vs/workbench/test/browser/componentFixtures/fixtureUtils.ts",
+              "line": 70
+            },
+            {
+              "file": "src/vs/workbench/test/browser/componentFixtures/fixtureUtils.ts",
+              "line": 111
+            },
+            {
+              "file": "src/vs/workbench/test/browser/componentFixtures/fixtureUtilsCss.ts",
+              "line": 16
+            },
+            {
+              "file": "src/vs/workbench/test/browser/componentFixtures/migrationProgressNotification.fixture.ts",
+              "line": 19
+            },
+            {
+              "file": "src/vs/workbench/test/browser/componentFixtures/editor/multiDiffEditorChatChanges.json",
+              "line": 5
+            },
+            {
+              "file": "src/vs/workbench/test/browser/componentFixtures/editor/multiDiffEditorChatChanges.json",
+              "line": 38
+            },
+            {
+              "file": "src/vs/workbench/test/browser/componentFixtures/editor/multiDiffEditorChatChanges.json",
+              "line": 83
+            },
+            {
+              "file": "src/vs/workbench/test/browser/componentFixtures/editor/multiDiffEditorChatChanges.json",
+              "line": 116
+            },
+            {
+              "file": "src/vs/workbench/test/browser/componentFixtures/editor/multiDiffEditorChatChanges.json",
+              "line": 149
+            },
+            {
+              "file": "src/vs/workbench/services/policies/test/browser/accountPolicyService.test.ts",
+              "line": 25
+            },
+            {
+              "file": "src/vs/workbench/services/policies/test/browser/accountPolicyService.test.ts",
+              "line": 26
+            },
+            {
+              "file": "src/vs/workbench/services/policies/test/browser/accountPolicyService.test.ts",
+              "line": 27
+            }
+          ]
+        },
+        {
+          "unit": "C-1-ai",
+          "text": "contrib/inlineChat/",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 1,
+          "hits": [
+            {
+              "file": "src/vs/workbench/contrib/notebook/browser/diff/inlineDiff/notebookCellDiffDecorator.ts",
+              "line": 251
+            }
+          ]
+        },
+        {
+          "unit": "C-1-ai",
+          "text": "contrib/mcp/",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 4,
+          "hits": [
+            {
+              "file": "src/vs/workbench/api/common/extHost.protocol.ts",
+              "line": 75
+            },
+            {
+              "file": "src/vs/workbench/api/common/extHostTypeConverters.ts",
+              "line": 58
+            },
+            {
+              "file": "src/vs/workbench/api/browser/mainThreadAuthentication.ts",
+              "line": 34
+            },
+            {
+              "file": "src/vs/workbench/api/browser/mainThreadAuthentication.ts",
+              "line": 37
+            }
+          ]
+        },
+        {
+          "unit": "C-1-ai",
+          "text": "platform/agentHost/",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 38,
+          "hits": [
+            {
+              "file": "src/vs/workbench/test/browser/workbenchTestServices.ts",
+              "line": 203
+            },
+            {
+              "file": "src/vs/workbench/services/workspaces/test/common/workspaceTrust.test.ts",
+              "line": 31
+            },
+            {
+              "file": "src/vs/workbench/services/workspaces/common/workspaceTrust.ts",
+              "line": 18
+            },
+            {
+              "file": "src/vs/workbench/services/search/test/common/fileSystemFileSearchProvider.test.ts",
+              "line": 14
+            },
+            {
+              "file": "src/vs/workbench/services/remote/test/browser/browserRemoteResourceHandler.test.ts",
+              "line": 14
+            },
+            {
+              "file": "src/vs/workbench/services/policies/test/browser/accountPolicyService.test.ts",
+              "line": 13
+            },
+            {
+              "file": "src/vs/workbench/services/dialogs/test/browser/simpleFileDialog.test.ts",
+              "line": 16
+            },
+            {
+              "file": "src/vs/workbench/services/configuration/test/browser/configurationService.test.ts",
+              "line": 13
+            },
+            {
+              "file": "src/vs/workbench/contrib/workspace/test/browser/workspaceTrustRequestHandler.test.ts",
+              "line": 12
+            },
+            {
+              "file": "src/vs/workbench/contrib/workspace/browser/workspace.contribution.ts",
+              "line": 16
+            },
+            {
+              "file": "src/vs/workbench/contrib/policyExport/electron-browser/policyExport.contribution.ts",
+              "line": 25
+            },
+            {
+              "file": "src/vs/workbench/contrib/policyExport/electron-browser/policyExport.contribution.ts",
+              "line": 212
+            },
+            {
+              "file": "src/vs/workbench/contrib/files/test/electron-browser/fileActions.contribution.test.ts",
+              "line": 11
+            },
+            {
+              "file": "src/vs/workbench/browser/actions/developerActions.ts",
+              "line": 63
+            },
+            {
+              "file": "src/vs/workbench/browser/actions/developerActions.ts",
+              "line": 64
+            },
+            {
+              "file": "src/vs/workbench/browser/actions/developerActions.ts",
+              "line": 68
+            },
+            {
+              "file": "src/vs/workbench/browser/actions/developerActions.ts",
+              "line": 69
+            },
+            {
+              "file": "src/vs/workbench/browser/actions/policyDiagnosticsMarkdown.ts",
+              "line": 9
+            },
+            {
+              "file": "src/vs/workbench/api/node/extHostBrowserTunnelProxy.ts",
+              "line": 14
+            },
+            {
+              "file": "src/vs/workbench/api/browser/mainThreadBrowserTunnelProxy.ts",
+              "line": 8
+            }
+          ]
+        },
+        {
+          "unit": "C-1-ai",
+          "text": "services/agentHost/",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 1,
+          "hits": [
+            {
+              "file": "src/vs/workbench/browser/parts/globalCompositeBar.ts",
+              "line": 53
+            }
+          ]
+        },
+        {
+          "unit": "C-1-ai",
+          "text": "platform/mcp/",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 36,
+          "hits": [
+            {
+              "file": "src/vs/workbench/api/common/extHost.protocol.ts",
+              "line": 46
+            },
+            {
+              "file": "src/vs/server/node/serverServices.ts",
+              "line": 92
+            },
+            {
+              "file": "src/vs/server/node/serverServices.ts",
+              "line": 93
+            },
+            {
+              "file": "src/vs/server/node/serverServices.ts",
+              "line": 94
+            },
+            {
+              "file": "src/vs/server/node/serverServices.ts",
+              "line": 95
+            },
+            {
+              "file": "src/vs/server/node/serverServices.ts",
+              "line": 96
+            },
+            {
+              "file": "src/vs/server/node/serverServices.ts",
+              "line": 97
+            },
+            {
+              "file": "src/vs/server/node/serverServices.ts",
+              "line": 100
+            },
+            {
+              "file": "src/vs/server/node/serverServices.ts",
+              "line": 101
+            },
+            {
+              "file": "src/vs/server/node/serverServices.ts",
+              "line": 102
+            },
+            {
+              "file": "src/vs/server/node/serverServices.ts",
+              "line": 103
+            },
+            {
+              "file": "src/vs/server/node/serverServices.ts",
+              "line": 104
+            },
+            {
+              "file": "src/vs/server/node/serverServices.ts",
+              "line": 105
+            },
+            {
+              "file": "src/vs/server/node/serverServices.ts",
+              "line": 106
+            },
+            {
+              "file": "src/vs/server/node/serverServices.ts",
+              "line": 107
+            },
+            {
+              "file": "src/vs/code/node/cliProcessMain.ts",
+              "line": 69
+            },
+            {
+              "file": "src/vs/code/node/cliProcessMain.ts",
+              "line": 72
+            },
+            {
+              "file": "src/vs/code/node/cliProcessMain.ts",
+              "line": 73
+            },
+            {
+              "file": "src/vs/code/node/cliProcessMain.ts",
+              "line": 74
+            },
+            {
+              "file": "src/vs/code/node/cliProcessMain.ts",
+              "line": 75
+            }
+          ]
+        },
+        {
+          "unit": "C-1-ai",
+          "text": "services/mcp/",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "C-1-ai",
+          "text": "terminalContrib/chat/",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 1,
+          "hits": [
+            {
+              "file": "src/vs/workbench/contrib/terminal/terminalContribExports.ts",
+              "line": 10
+            }
+          ]
+        },
+        {
+          "unit": "C-1-ai",
+          "text": "AISearch/aiSearchModel",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 5,
+          "hits": [
+            {
+              "file": "src/vs/workbench/contrib/search/browser/searchActionsRemoveReplace.ts",
+              "line": 27
+            },
+            {
+              "file": "src/vs/workbench/contrib/search/browser/searchCompare.ts",
+              "line": 11
+            },
+            {
+              "file": "src/vs/workbench/contrib/search/browser/searchResultsView.ts",
+              "line": 37
+            },
+            {
+              "file": "src/vs/workbench/contrib/search/browser/searchView.ts",
+              "line": 86
+            },
+            {
+              "file": "src/vs/workbench/contrib/search/browser/searchTreeModel/searchResult.ts",
+              "line": 20
+            }
+          ]
+        },
+        {
+          "unit": "C-1-ai",
+          "text": "artifactIntegrations/common/",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 1,
+          "hits": [
+            {
+              "file": "src/vs/workbench/api/common/extHost.protocol.ts",
+              "line": 35
+            }
+          ]
+        },
+        {
+          "unit": "C-1-ai",
+          "text": "common/agentsSizes.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "C-1-ai",
+          "text": "/chat/common/participants/chatAgents.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 13,
+          "hits": [
+            {
+              "file": "src/vs/workbench/contrib/terminalContrib/inlineHint/test/browser/terminalInitialHint.test.ts",
+              "line": 16
+            },
+            {
+              "file": "src/vs/workbench/contrib/terminalContrib/inlineHint/browser/terminal.initialHint.contribution.ts",
+              "line": 25
+            },
+            {
+              "file": "src/vs/workbench/contrib/tasks/electron-browser/taskService.ts",
+              "line": 52
+            },
+            {
+              "file": "src/vs/workbench/contrib/tasks/browser/abstractTaskService.ts",
+              "line": 89
+            },
+            {
+              "file": "src/vs/workbench/contrib/quickaccess/browser/commandsQuickAccess.ts",
+              "line": 41
+            },
+            {
+              "file": "src/vs/workbench/contrib/notebook/test/browser/contrib/notebookCellDiagnostics.test.ts",
+              "line": 17
+            },
+            {
+              "file": "src/vs/workbench/contrib/notebook/browser/contrib/editorHint/emptyCellEditorHint.ts",
+              "line": 10
+            },
+            {
+              "file": "src/vs/workbench/contrib/notebook/browser/contrib/cellDiagnostics/cellDiagnosticEditorContrib.ts",
+              "line": 16
+            },
+            {
+              "file": "src/vs/workbench/contrib/notebook/browser/contrib/cellDiagnostics/diagnosticCellStatusBarContrib.ts",
+              "line": 18
+            },
+            {
+              "file": "src/vs/workbench/contrib/codeEditor/browser/emptyTextEditorHint/emptyTextEditorHint.ts",
+              "line": 30
+            },
+            {
+              "file": "src/vs/workbench/api/test/browser/extHostTypeConverter.test.ts",
+              "line": 18
+            },
+            {
+              "file": "src/vs/workbench/api/common/extHost.protocol.ts",
+              "line": 63
+            },
+            {
+              "file": "src/vs/workbench/api/common/extHostTypeConverters.ts",
+              "line": 44
+            }
+          ]
+        },
+        {
+          "unit": "C-1-ai",
+          "text": "/chat/common/languageModels.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 3,
+          "hits": [
+            {
+              "file": "src/vs/workbench/api/common/extHost.protocol.ts",
+              "line": 71
+            },
+            {
+              "file": "src/vs/workbench/api/common/extHostTypeConverters.ts",
+              "line": 55
+            },
+            {
+              "file": "src/vs/workbench/api/common/extHostTypeConverters.ts",
+              "line": 56
+            }
+          ]
+        },
+        {
+          "unit": "C-1-ai",
+          "text": "/chat/common/tools/languageModelToolsService.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 3,
+          "hits": [
+            {
+              "file": "src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts",
+              "line": 65
+            },
+            {
+              "file": "src/vs/workbench/api/common/extHost.protocol.ts",
+              "line": 72
+            },
+            {
+              "file": "src/vs/workbench/api/common/extHostTypeConverters.ts",
+              "line": 54
+            }
+          ]
+        },
+        {
+          "unit": "C-1-ai",
+          "text": "/mcp/common/mcpTypes.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 5,
+          "hits": [
+            {
+              "file": "src/vs/workbench/contrib/authentication/browser/actions/manageAccountPreferencesForMcpServerAction.ts",
+              "line": 16
+            },
+            {
+              "file": "src/vs/workbench/contrib/authentication/browser/actions/manageTrustedMcpServersForAccountAction.ts",
+              "line": 21
+            },
+            {
+              "file": "src/vs/workbench/api/common/extHost.protocol.ts",
+              "line": 75
+            },
+            {
+              "file": "src/vs/workbench/api/common/extHostTypeConverters.ts",
+              "line": 58
+            },
+            {
+              "file": "src/vs/workbench/api/browser/mainThreadAuthentication.ts",
+              "line": 34
+            }
+          ]
+        },
+        {
+          "unit": "C-1-ai",
+          "text": "/agentHost/common/agentService.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 2,
+          "hits": [
+            {
+              "file": "src/vs/workbench/browser/actions/developerActions.ts",
+              "line": 63
+            },
+            {
+              "file": "src/vs/server/node/serverServices.ts",
+              "line": 87
+            }
+          ]
+        },
+        {
+          "unit": "C-1-ai",
+          "text": "./extHostChatAgents2.js'",
+          "in": [
+            "src/vs/workbench/api"
+          ],
+          "hitCount": 1,
+          "hits": [
+            {
+              "file": "src/vs/workbench/api/common/extHost.api.impl.ts",
+              "line": 40
+            }
+          ]
+        },
+        {
+          "unit": "C-1-ai",
+          "text": "./extHostLanguageModels.js'",
+          "in": [
+            "src/vs/workbench/api"
+          ],
+          "hitCount": 2,
+          "hits": [
+            {
+              "file": "src/vs/workbench/api/common/extHost.api.impl.ts",
+              "line": 76
+            },
+            {
+              "file": "src/vs/workbench/api/common/extHostExtensionService.ts",
+              "line": 37
+            }
+          ]
+        },
+        {
+          "unit": "C-1-ai",
+          "text": "./extHostMcp.js'",
+          "in": [
+            "src/vs/workbench/api"
+          ],
+          "hitCount": 1,
+          "hits": [
+            {
+              "file": "src/vs/workbench/api/common/extHost.api.impl.ts",
+              "line": 81
+            }
+          ]
+        },
+        {
+          "unit": "C-1-ai",
+          "text": "vs/sessions/",
+          "in": [
+            "build/next/index.ts",
+            "build/gulpfile.vscode.ts"
+          ],
+          "hitCount": 3,
+          "hits": [
+            {
+              "file": "build/next/index.ts",
+              "line": 118
+            },
+            {
+              "file": "build/next/index.ts",
+              "line": 190
+            },
+            {
+              "file": "build/next/index.ts",
+              "line": 262
+            }
+          ]
+        },
+        {
+          "unit": "C-1-ai",
+          "text": "\"@github/copilot-sdk\"",
+          "in": [
+            "package.json",
+            "remote/package.json"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "C-2-debug",
+          "text": "debug/browser/debug.contribution.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "C-2-debug",
+          "text": "debug/browser/debugService.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "C-2-debug",
+          "text": "debug/browser/repl.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 1,
+          "hits": [
+            {
+              "file": "src/vs/workbench/contrib/replNotebook/browser/repl.contribution.ts",
+              "line": 38
+            }
+          ]
+        },
+        {
+          "unit": "C-2-debug",
+          "text": "debug/browser/debugEditorContribution.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "C-2-debug",
+          "text": "debug/browser/breakpointEditorContribution.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "C-2-debug",
+          "text": "debug/browser/debugExpressionRenderer.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "C-2-debug",
+          "text": "debug/browser/linkDetector.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "C-2-debug",
+          "text": "debug/node/debugAdapter.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "C-2-debug",
+          "text": "/extHostDebugService.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 1,
+          "hits": [
+            {
+              "file": "src/vs/workbench/api/common/extHost.api.impl.ts",
+              "line": 55
+            }
+          ]
+        },
+        {
+          "unit": "C-2-debug",
+          "text": "mainThreadDebugService.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "C-2-debug",
+          "text": "debug/node/telemetryApp",
+          "in": [
+            "build/next/index.ts"
+          ],
+          "hitCount": 0,
+          "hits": []
+        }
+      ]
+    },
+    "unclassifiedExtensions": {
+      "status": "ok",
+      "upstreamCount": 95,
+      "items": [],
+      "nonExtensionDirs": [
+        "types"
+      ]
+    },
+    "upstreamAdditions": {
+      "status": "skipped",
+      "reason": "--prev-tag が無い"
+    },
+    "dependencies": {
+      "status": "skipped",
+      "reason": "--prev-tag が無い"
+    },
+    "toolchain": {
+      "status": "info",
+      "nvmrc": {
+        "prev": null,
+        "now": "24.22.1",
+        "changed": null
+      },
+      "electron": {
+        "prev": null,
+        "now": "43.8.6",
+        "changed": null
+      },
+      "reason": "--prev-tag が無い"
+    },
+    "registeredKeys": {
+      "status": "ok",
+      "product": [
+        {
+          "key": "nameShort",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "nameLong",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "applicationName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "dataFolderName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "sharedDataFolderName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "urlProtocol",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32MutexName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32DirName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32NameVersion",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32RegValueName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32AppUserModelId",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32ShellNameShort",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32x64AppId",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32arm64AppId",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32x64UserAppId",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32arm64UserAppId",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "builtInExtensions",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "shukoConfigurationDefaults",
+          "status": "referenced",
+          "foundIn": "src/vs/platform/configuration/common/configurationRegistry.ts"
+        }
+      ],
+      "settings": [
+        {
+          "key": "workbench.colorTheme",
+          "from": "mydist",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/services/themes/common/themeConfiguration.ts"
+        },
+        {
+          "key": "breadcrumbs.enabled",
+          "from": "mydist",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/browser/parts/editor/breadcrumbs.ts"
+        },
+        {
+          "key": "basedpyright.importStrategy",
+          "from": "mydist",
+          "status": "lockManifest",
+          "foundIn": "detachhead.basedpyright"
+        },
+        {
+          "key": "typescript.disableAutomaticTypeAcquisition",
+          "from": "mydist",
+          "status": "extension",
+          "foundIn": "extensions/typescript-language-features/package.json"
+        },
+        {
+          "key": "npm.fetchOnlinePackageInfo",
+          "from": "mydist",
+          "status": "extension",
+          "foundIn": "extensions/npm/package.json"
+        },
+        {
+          "key": "json.schemaDownload.enable",
+          "from": "mydist",
+          "status": "extension",
+          "foundIn": "extensions/json-language-features/package.json"
+        },
+        {
+          "key": "workbench.settings.enableNaturalLanguageSearch",
+          "from": "mydist",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/preferences/common/preferencesContribution.ts"
+        },
+        {
+          "key": "claudeCode.environmentVariables",
+          "from": "mydist",
+          "status": "lockManifest",
+          "foundIn": "anthropic.claude-code"
+        },
+        {
+          "key": "extensions.allowed",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/platform/extensionManagement/common/extensionManagement.ts"
+        },
+        {
+          "key": "telemetry.telemetryLevel",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/platform/telemetry/common/telemetryService.ts"
+        },
+        {
+          "key": "update.mode",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/platform/update/common/update.config.contribution.ts"
+        },
+        {
+          "key": "workbench.enableExperiments",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/services/assignment/common/assignmentService.ts"
+        },
+        {
+          "key": "extensions.autoUpdate",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts"
+        },
+        {
+          "key": "extensions.autoCheckUpdates",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts"
+        }
+      ],
+      "manifestsMissing": []
+    },
+    "lockfile": {
+      "status": "pending",
+      "reason": "依存の導入の後に --lockfile-check（build.mjs は checkLockfiles）で埋める"
+    },
+    "commitIdentity": {
+      "status": "ok",
+      "expected": "shuko-apply <apply@shuko.invalid>",
+      "items": []
+    }
+  },
+  "warnings": [
+    "C-2-debug: delete: src/vs/workbench/contrib/debug/browser/debugChatIntegration.ts が本家に無い（改名の恐れ）"
+  ],
+  "errors": [],
+  "commits": [
+    {
+      "sha": "3ede09679e5e65f79c94470de464756d55e224ba",
+      "subject": "apply: product.json overlay",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "2c853d1b2ec4efc84df7cedb25ef6753387abdfb",
+      "subject": "unit A-1-copilot-extension: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "67b0e0b24aba9fb52aff70161b1240467ec0ef87",
+      "subject": "unit A-1-copilot-extension: edits",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "34126b73a0c3991af52f202d09100e787223db1d",
+      "subject": "unit A-2-accounts-extensions: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "87059fed0096e9a6666a9d19afb8583871cc09ce",
+      "subject": "unit A-3-debug-extensions: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "541c7d0328506e75d90850b124ea6d867e762a1c",
+      "subject": "unit A-4-notebook-extensions: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "b3efc8889b6b1a8ce60540f31eae402a48200b05",
+      "subject": "unit A-5-remote-extensions: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "5865379e286196bec8ce9a29f01ac72a7010d40b",
+      "subject": "unit A-6-themes: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "1ef2ff7de2c9c2793756a21ffcba7b549c957b5a",
+      "subject": "unit A-6-themes: edits",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "ba3f7d4de60520e1d12896717e19c2a11de09e3b",
+      "subject": "unit A-7-unused-extensions: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "894c00d52aec1d854fd5ae320a9d715bd4c107ab",
+      "subject": "unit B-1-telemetry: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "d7fd0f411ebfb8dae2d01eb30fc0aeba345de9ce",
+      "subject": "unit B-1-telemetry: edits",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "af5d29658bb26c40ea4b3fb2dd7ced97bddf5a2d",
+      "subject": "unit B-2-onboarding-experiments-surveys: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "714a523d1f2cd56039cc0f243ec3fd22c93f6d9b",
+      "subject": "unit B-2-onboarding-experiments-surveys: edits",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "979dc46b3ce391e811f4b0ce9727577a84e7d3b1",
+      "subject": "unit B-3-issue-share: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "a091746fd6f7fb044b23beb7060bf99649dbf0db",
+      "subject": "unit B-3-issue-share: edits",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "1cc036309f0c1959ad839a4daadf07615cb9f524",
+      "subject": "unit B-4-outline-view: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "2c07fc5b3cba3b1e6e3569a4bfae1d42305525fc",
+      "subject": "unit B-5-theme-switching: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "6222699dab10e380e725c0d0747e4624e78364a5",
+      "subject": "unit B-6-online-feeds: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "6287f3eff429e5b45deb3f6fdce7c478aeb7b949",
+      "subject": "unit B-7-terminal-suggest: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "1a11ebd3d65f863b3cfdb498b4d39b0bae1cab5f",
+      "subject": "unit B-7-terminal-suggest: edits",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "033dea585c77fa62e48ef0761f82abf9c53c10dd",
+      "subject": "unit C-1-ai: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "f13d3ed6daedec7065b468958586e93ed0926ffe",
+      "subject": "unit C-2-debug: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "c3f741fe830ed196c6a6aabb8c99f981fb968288",
+      "subject": "shuko: register product.json shukoConfigurationDefaults as configuration defaults",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "9b6d0306c50e86f78795dfb2db8068d7a71eb1c1",
+      "subject": "shuko: connect directly when no proxy is configured",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "6f0d65b16792b20f05cc542f563a6381bd3a0857",
+      "subject": "apply: assets",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "8d5cdfd0b1767e434a4205d9ead55a3030d03a9e",
+      "subject": "apply: builtin extensions",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    }
+  ]
+}

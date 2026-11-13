@@ -1,0 +1,14 @@
+{
+  "id": "A-3-debug-extensions",
+  "stage": "A",
+  "order": 130,
+  "enabled": false,
+  "intent": "検証の代役。C:/b/wt/verify-p2 には本物の A-3 がもう当たっているので ops を持たない",
+  "after": [],
+  "delete": [],
+  "removeLines": [],
+  "productRemove": [],
+  "kept": [],
+  "checks": { "absentSettings": [] },
+  "smoke": ["base"]
+}

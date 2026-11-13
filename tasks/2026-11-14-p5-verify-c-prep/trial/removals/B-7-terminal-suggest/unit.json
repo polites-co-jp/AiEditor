@@ -1,0 +1,14 @@
+{
+  "id": "B-7-terminal-suggest",
+  "stage": "B",
+  "order": 270,
+  "enabled": false,
+  "intent": "検証の代役。C:/b/wt/verify-p2 には本物の B-7 がもう当たっているので ops を持たない。absentSettings は本物と同じ",
+  "after": [],
+  "delete": [],
+  "removeLines": [],
+  "productRemove": [],
+  "kept": [],
+  "checks": { "absentSettings": ["terminal.integrated.suggest.enabled", "terminal.integrated.suggest.quickSuggestions"] },
+  "smoke": ["base"]
+}

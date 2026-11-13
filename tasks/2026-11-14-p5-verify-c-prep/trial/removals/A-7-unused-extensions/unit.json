@@ -1,0 +1,14 @@
+{
+  "id": "A-7-unused-extensions",
+  "stage": "A",
+  "order": 170,
+  "enabled": false,
+  "intent": "検証の代役。C:/b/wt/verify-p2 には本物の A-7 がもう当たっているので ops を持たない。absentSettings は本物と同じ",
+  "after": [],
+  "delete": [],
+  "removeLines": [],
+  "productRemove": [],
+  "kept": [],
+  "checks": { "absentSettings": ["grunt.autoDetect", "gulp.autoDetect", "jake.autoDetect", "simpleBrowser.focusLockIndicator.enabled", "markdown-mermaid.languages", "php.validate.enable"] },
+  "smoke": ["base"]
+}
