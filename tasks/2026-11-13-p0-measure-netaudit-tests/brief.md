@@ -2,7 +2,7 @@
 
 - 担当: cao-shen（曹参）
 - 依頼日: 2026-11-13
-- 状態: 差し戻し（2026-11-13: VSCODE_PORTABLE への対応、実装に対するテストの走らせ直し）
+- 状態: 完了
 
 ## 目的
 
@@ -51,11 +51,12 @@ docs/07 の3節の計測と通信の監査を台本 `scripts/measure.ps1`・`scr
 
 ## 結果
 
-<完了後にリーダーが記入する。成果の要点と採否>
+採用。measure.ps1・netaudit.ps1 と単体テスト（measure 134件、netaudit 67件など）を作った。差し戻し（VSCODE_PORTABLE、ファイルを1つずつ開く B-5、推定の役割の印 C-1、`-CleanStale` の範囲 D-1）をすべて直し、大岡越前守の検証で合格（`tasks/2026-11-13-p0-verify-measure-rework/`・`p0-verify-bundled-roles/`）。
 
 ## 未解決
 
-<残った課題・持ち越し。無ければ「なし」>
+- DNS のキャッシュが空のため、netaudit にホスト名が出ない。0-5 で扱いを決める。
+- shared-process の役割の推定は、まだ当てはまる例を見ていない。
 
 ## 次の担当
 

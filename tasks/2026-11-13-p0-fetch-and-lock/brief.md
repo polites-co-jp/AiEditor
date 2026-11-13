@@ -2,7 +2,7 @@
 
 - 担当: meng-tian（蒙恬）
 - 依頼日: 2026-11-13
-- 状態: 依頼中
+- 状態: 完了
 
 ## 目的
 
@@ -60,11 +60,12 @@ Phase 0（docs/07 の2節）の材料をそろえ、Claude Code 拡張の manife
 
 ## 結果
 
-<完了後にリーダーが記入する。成果の要点と採否>
+採用。本家 1.146.0 と VSCodium を `C:\p0\` に展開し、台帳の9件の VSIX と検証の材料を取った。`lock-fetch.mjs`・`lock-verify.mjs`・`lib/lock.mjs` と `extensions.lock.json`（9件）を作った。大岡越前守の検証で、Claude Code の寝かせる期間を除いて合格（records/phase0/claude-code-manifest.md・lock-verification.md）。ソースのタグは参考の項目、ovsx は 1.4.0 に固定と裁定。
 
 ## 未解決
 
-<残った課題・持ち越し。無ければ「なし」>
+- Claude Code の寝かせる期間の確定と、固定した ovsx での確認（A-4）は `tasks/2026-11-13-p0-lock-final/` に引き継いだ。
+- `audio-capture.node` の署名、Defender の走査が管理者の権限を要るか（急がない）。
 
 ## 次の担当
 

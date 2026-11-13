@@ -2,7 +2,7 @@
 
 - 担当: meng-tian（蒙恬）
 - 依頼日: 2026-11-13
-- 状態: 依頼中
+- 状態: 完了
 
 ## 目的
 
@@ -33,11 +33,12 @@
 
 ## 結果
 
-<完了後にリーダーが記入する。成果の要点と採否>
+採用。basedpyright 1.40.2 は ms-python.python を依存に持たず、既定の `importStrategy: fromEnvironment` が Python 拡張を探すために失敗すると分かった（公式の文書と issue #1188、実機の bp-probe-a〜d）。ユーザーの裁定で、mydist の既定に `basedpyright.importStrategy: "useBundled"` を入れ、台帳は9件のまま、計測は本家と自作の両方に同じ値を入れる（docs/user-decisions.md）。大岡越前守の検証（4）で反映を確かめた。
 
 ## 未解決
 
-<残った課題・持ち越し。無ければ「なし」>
+- 画面の問題パネルに診断が出るかは、ユーザーの手の確かめ（0-3）で見る。
+- lsp-probe の軽微な2点（`initialize` に応えないサーバーで待ち続ける、途中で子が終わると結果が出ない）。急がない。
 
 ## 次の担当
 
