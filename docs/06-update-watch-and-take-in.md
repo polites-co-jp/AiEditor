@@ -112,17 +112,18 @@ records/take-in/1.147.0-1/verdict.md（合格・条件付き・不合格）
 
 ## 5. スモークの組
 
-「自」は自動で確かめるもの、「手」はユーザーが入れ替えの前後に手で確かめるもの。自動の部分は、本家の `test/smoke` を自作のビルドに向けて使えるかを Phase 1 で確かめる（`pnpm run smoketest --build <path>`。Windows の例は README に無い）[一次] https://raw.githubusercontent.com/microsoft/vscode/main/test/smoke/README.md 。使えなければ、起動・ログの検査だけを自動にし、残りは手で行う。
+「自」は自動で確かめるもの、「手」はユーザーが入れ替えの前後に手で確かめるもの。自動の部分は、自前の台本 `tests/smoke-run.mjs` が行う（Phase 1 で作った。外からプロセス・ログ・`.lock` を見て、中から試験専用の拡張が API で確かめる）。本家の `test/smoke` は `--build` で Windows の zip に向けられるが使わない。ソースのコンパイルと Playwright が要り、固定のワークスペースを前提にし、消す機能の試験を含み、`VSCODE_PORTABLE` を使わないため（`tasks/2026-11-13-p1-smoke/smoke-design.md` の1節。リーダーの判断 2026-11-13）。手の項目の手順は `tasks/2026-11-13-p1-smoke/manual-checks.md`。前の版との比べは誤りの一覧の差で見る。揺れる誤りがあるので、基準は複数回（3回）の和にする。
 
 | 組 | 項目 | 自/手 |
 |---|---|---|
 | base | 起動する。開発者ツールのコンソールと拡張ホストのログに、前の版に無かったエラーが無い | 自 |
-| base | フォルダを開く（制限モード → 信頼する）、ファイルを編集して保存、コマンドパレット、エディタの分割、2つめのウィンドウ、ミニマップ | 自 |
+| base | フォルダを開く（制限モード → 信頼する）。信頼のダイアログは API で操作できず、出ると無人の実行が止まるので、台本は信頼を切って走らせる | 手 |
+| base | ファイルを編集して保存、コマンドパレット、エディタの分割、2つめのウィンドウ、ミニマップ | 自 |
 | base | ターミナル（PowerShell）を開いてコマンドを実行 | 自 |
 | base | 全文検索と置換、差分ビュー、git の変更の表示・ステージ・コミット、問題パネル、タスクの実行 | 自 |
 | base | Markdown・画像・PDF のプレビュー、タイムライン・ローカル履歴、スニペット、整形 | 自 |
 | base | 日本語で表示される、テーマが Light Modern、Sublime のキー（例: 複数カーソルの追加）が効く | 手 |
-| claude-code | 拡張が動作中の拡張の一覧に出る。`~/.claude/ide/<port>.lock` ができる | 自 |
+| claude-code | 拡張が動作中の拡張の一覧に出る。`~/.claude/ide/<port>.lock` が1個以上できる（ウィンドウごとに1個） | 自 |
 | claude-code | パネル（サイドバーとセカンダリサイドバー）が開き、送信して応答が返る | 手 |
 | claude-code | 統合ターミナルの `claude` が IDE に接続する。選択範囲が共有される。差分が差分ビューで開き、採否できる。診断（`mcp__ide__getDiagnostics`）が問題パネルの内容を返す | 手 |
 | languages | TS の補完とエラー、Python（basedpyright）の診断、HTML/CSS/JSON の補完、CSV の検査、.env の補完、sh の ShellCheck の警告、PowerShell 7 のセッション | 自（診断が問題パネルに出ることで見る） |
