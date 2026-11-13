@@ -4,7 +4,7 @@
 // 純粋な関数は tests/smoke.test.mjs が試す。
 
 import { spawnSync } from 'node:child_process';
-import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, statSync, unlinkSync } from 'node:fs';
 import { dirname, join, resolve, sep } from 'node:path';
 import { homedir } from 'node:os';
 
@@ -137,7 +137,13 @@ export function treeFromProcesses(rows, rootId) {
     if (seen.has(id)) continue;
     seen.add(id);
     out.push(p);
-    for (const c of byParent.get(id) ?? []) queue.push(c);
+    for (const c of byParent.get(id) ?? []) {
+      // PID の使い回し: 親より前に作られた「子」は、親が終わった後に親の PID を別のプロセスが使っているだけ（別のブラウザの
+      // 孤児が木に混ざった実例がある）。作成時刻が両方分かるときは、親より古い子を外す
+      if (Number.isFinite(Number(c.CreatedMs)) && Number.isFinite(Number(p.CreatedMs)) && c.CreatedMs !== null && p.CreatedMs !== null
+        && Number(c.CreatedMs) < Number(p.CreatedMs)) continue;
+      queue.push(c);
+    }
   }
   return out;
 }
@@ -157,7 +163,7 @@ function listProcessesOnce() {
     ['-NoProfile', '-NonInteractive', '-Command',
       // 出力を UTF-8 にする。既定の OEM コードページ（日本語環境では cp932）だと、日本語のコマンドラインを持つ
       // 別のプロセスがあるだけで JSON が壊れ、台本が終了コード 2 で落ちた（2026-11-13）
-      '[Console]::OutputEncoding = [System.Text.Encoding]::UTF8; Get-CimInstance Win32_Process | Select-Object ProcessId,ParentProcessId,Name,ExecutablePath,CommandLine | ConvertTo-Json -Compress -Depth 3'],
+      '[Console]::OutputEncoding = [System.Text.Encoding]::UTF8; Get-CimInstance Win32_Process | Select-Object ProcessId,ParentProcessId,Name,ExecutablePath,CommandLine,@{n=\'CreatedMs\';e={ if ($_.CreationDate) { ([DateTimeOffset]$_.CreationDate).ToUnixTimeMilliseconds() } else { $null } }} | ConvertTo-Json -Compress -Depth 3'],
     { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024, windowsHide: true },
   );
   if (r.status !== 0 || !r.stdout.trim()) throw new Error(`powershell の終了コード ${r.status}`);
@@ -301,6 +307,7 @@ export function normalizeError(message) {
     .replace(/file:\/\/\/[^\s"'`)\]]+/g, '<uri>')
     .replace(/\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b/gi, '<uuid>')
     .replace(/\b[0-9a-f]{32,}\b/gi, '<hex>')
+    .replace(/\(node:\d+\)/g, '(node:<n>)') // 4桁の PID（(node:6604)）は下の5桁以上の規則に当たらない
     .replace(/\b(pid|port|id)[ =:]\d+/gi, '$1 <n>')
     .replace(/\b\d{4}[-/]\d{2}[-/]\d{2}[T ]\d{2}:\d{2}:\d{2}(?:\.\d+)?Z?/g, '<time>')
     .replace(/\b\d{5,}\b/g, '<n>')
@@ -407,6 +414,20 @@ export function lockBelongsTo(lock, pids, workspaces) {
   if (lock.pid != null && set.has(Number(lock.pid))) return true;
   const ws = workspaces.map(norm);
   return lock.workspaceFolders.some((w) => ws.includes(norm(String(w))));
+}
+
+/**
+ * 起動の前の一覧（before）より後に増えた .lock のうち、自分のもの（pid が pids にある、または開いたフォルダが workspaces に一致）だけを消す。
+ * 普段使いの Claude Code の .lock（前からあるもの、pid もフォルダも違うもの）には触れない。消したファイルの一覧を返す。
+ */
+export function removeOwnLocks(before, pids, workspaces, dir = claudeIdeDir()) {
+  const removed = [];
+  for (const n of newLocks(before, snapshotLocks(dir))) {
+    const l = readLock(join(dir, n));
+    if (!lockBelongsTo(l, pids, workspaces)) continue;
+    try { unlinkSync(l.file); removed.push(l.file); } catch { /* 消えていた */ }
+  }
+  return removed;
 }
 
 // ---------------------------------------------------------------------------

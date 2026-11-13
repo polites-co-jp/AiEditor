@@ -168,10 +168,13 @@ if (Test-Path -LiteralPath $vswhere) {
         }
     }
 }
+# preinstall.ts passes on vs<year>_install only when the path exists (fs.existsSync). The folder
+# entries above are added only when they exist; the env entries carry exists = true/false.
+$vsPassing = @($vsFolders | Where-Object { (-not $_.Contains('exists')) -or $_['exists'] })
 $result.visualStudio = [ordered]@{
     vswhere = (Test-Path -LiteralPath $vswhere)
     preinstallFolders = $vsFolders
-    preinstallCheckPasses = ($vsFolders.Count -gt 0)
+    preinstallCheckPasses = ($vsPassing.Count -gt 0)
     instances = $instances
 }
 $sdkRoot = 'C:\Program Files (x86)\Windows Kits\10\Include'

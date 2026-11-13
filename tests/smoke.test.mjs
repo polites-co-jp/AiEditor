@@ -9,12 +9,12 @@ import { join } from 'node:path';
 import vm from 'node:vm';
 import {
   assertSafeWritePath, classifyLog, cleanEditorEnv, dailyDataPaths, errorKeys, extractChromiumErrors, extractErrors, lockBelongsTo,
-  newErrors, newLocks, normalizeError, readLock, resolveEditor, snapshotLocks, treeFromProcesses, collectLogErrors, findRunRoots, parseLogTime, splitByCutoff, isRunDirPath, rootMatches, selectPrune, listProcesses,
+  newErrors, newLocks, normalizeError, readLock, resolveEditor, snapshotLocks, treeFromProcesses, collectLogErrors, findRunRoots, parseLogTime, splitByCutoff, isRunDirPath, rootMatches, selectPrune, listProcesses, removeOwnLocks,
 } from './smoke/lib/common.mjs';
-import { buildUserSettings, defaultExtensionIds, findVsix, fingerprint, formatArgv } from './smoke/lib/env.mjs';
-import { COMPLETION_POSITIONS, createWorkspace, fixtureFiles, minimalPdf } from './smoke/lib/fixtures.mjs';
+import { buildUserSettings, defaultExtensionIds, findVsix, fingerprint, formatArgv, readLedger } from './smoke/lib/env.mjs';
+import { COMPLETION_POSITIONS, EXPECTED_CHANGES, createWorkspace, diffFixtures, fixtureFiles, minimalPdf } from './smoke/lib/fixtures.mjs';
 import {
-  countStatuses, dailyArgvChanged, exitCodeFor, findRg, formatMarkdown, groupErrors, historyHas, mergeBaseline, parseArgs, pruneRuns, uniqueErrors,
+  KEEP_MARK, sameProc, countStatuses, dailyArgvChanged, exitCodeFor, findRg, formatMarkdown, groupErrors, historyHas, mergeBaseline, parseArgs, pruneRuns, uniqueErrors,
 } from './smoke/lib/run.mjs';
 
 const tmp = () => mkdtempSync(join(tmpdir(), 'smoke-test-'));
@@ -145,6 +145,21 @@ test('treeFromProcesses: 指定した PID とその子孫だけを返す（兄�
   ];
   const ids = treeFromProcesses(rows, 10).map((p) => p.ProcessId).sort((a, b) => a - b);
   assert.deepEqual(ids, [10, 11, 12]);
+});
+
+test('treeFromProcesses: 親より古い「子」（PID の使い回しで混ざった別のプロセスの孤児）は木に入れない', () => {
+  const rows = [
+    { ProcessId: 10, ParentProcessId: 1, Name: 'Code.exe', CreatedMs: 5000 },
+    { ProcessId: 11, ParentProcessId: 10, Name: 'Code.exe', CreatedMs: 5100 }, // 本物の子
+    { ProcessId: 12, ParentProcessId: 10, Name: 'BraveCrashHandler.exe', CreatedMs: 1000 }, // 親の PID を後から使い回された孤児
+    { ProcessId: 13, ParentProcessId: 12, Name: 'BraveCrashHandler64.exe', CreatedMs: 1100 },
+    { ProcessId: 14, ParentProcessId: 11, Name: 'node.exe', CreatedMs: null }, // 作成時刻が無ければ外さない
+  ];
+  assert.deepEqual(treeFromProcesses(rows, 10).map((p) => p.ProcessId).sort((a, b) => a - b), [10, 11, 14]);
+});
+
+test('normalizeError: 4桁の PID の (node:6604) も揃える', () => {
+  assert.equal(normalizeError('(node:6604) [DEP0169] x'), normalizeError('(node:35852) [DEP0169] x'));
 });
 
 test('treeFromProcesses: ルートが無ければ空。循環があっても止まる', () => {
@@ -331,9 +346,14 @@ test('buildUserSettings: 本家は useBundled をユーザー設定に入れ、�
   assert.equal(buildUserSettings('built', { 'a.b': 1 })['a.b'], 1);
 });
 
-test('defaultExtensionIds: 台帳から dotenv の片方（weixu）を除く', () => {
-  const ids = defaultExtensionIds([{ id: 'a.b' }, { id: 'dotenv.dotenv-vscode' }, { id: 'weixu.wx-vsce-dotenv' }]);
-  assert.deepEqual(ids, ['a.b', 'dotenv.dotenv-vscode']);
+test('defaultExtensionIds: 台帳のとおり全部（特例で除くものは無い）。台帳の実物は 8 件で weixu.wx-vsce-dotenv を含む', () => {
+  assert.deepEqual(defaultExtensionIds([{ id: 'a.b' }, { id: 'weixu.wx-vsce-dotenv' }, { id: 'c.d' }]), ['a.b', 'weixu.wx-vsce-dotenv', 'c.d']);
+  assert.deepEqual(defaultExtensionIds([]), []);
+  const real = readLedger(new URL('../extensions.lock.json', import.meta.url).pathname.replace(/^\/(\w:)/, '$1'));
+  const ids = defaultExtensionIds(real);
+  assert.equal(ids.length, real.length);
+  assert.ok(ids.includes('weixu.wx-vsce-dotenv'));
+  assert.ok(!ids.includes('dotenv.dotenv-vscode'));
 });
 
 test('findVsix: 台帳の版を優先し、プラットフォーム違いは避ける。無ければ投げる', () => {
@@ -558,13 +578,16 @@ test('base.problems は languages の組を走らせたときだけ（診断は�
   assert.match(src.slice(i - 200, i), /if \(want\('base'\) && want\('languages'\)\)/);
 });
 
-test('F: dotenv の拡張の選び方（a = dotenv.dotenv-vscode、b = weixu.wx-vsce-dotenv）', () => {
-  const ledger = [{ id: 'x.y' }, { id: 'dotenv.dotenv-vscode' }, { id: 'weixu.wx-vsce-dotenv' }];
-  assert.deepEqual(defaultExtensionIds(ledger, 'a'), ['x.y', 'dotenv.dotenv-vscode']);
-  assert.deepEqual(defaultExtensionIds(ledger, 'b'), ['x.y', 'weixu.wx-vsce-dotenv']);
-  assert.deepEqual(defaultExtensionIds(ledger), ['x.y', 'dotenv.dotenv-vscode']);
-  assert.equal(parseArgs(['--dotenv', 'b']).dotenv, 'b');
-  assert.throws(() => parseArgs(['--dotenv', 'c']), /--dotenv/);
+test('F: dotenv の拡張は台帳のとおり。--dotenv は無く、台帳に無い拡張は --ext で明示する。probe は台本が渡す dotenvIds を見る', () => {
+  assert.throws(() => parseArgs(['--dotenv', 'b']), /知らない引数/);
+  assert.deepEqual(parseArgs(['--ext', 'dotenv.dotenv-vscode,x.y']).ext, ['dotenv.dotenv-vscode', 'x.y']);
+  const probe = readFileSync(new URL('./smoke/probe/extension.js', import.meta.url), 'utf8');
+  assert.ok(!probe.includes("'dotenv.dotenv-vscode'") && !probe.includes("'weixu.wx-vsce-dotenv'"), 'probe に拡張 id を決め打ちしない');
+  assert.match(probe, /cfg\.dotenvIds/);
+  const run = readFileSync(new URL('./smoke/lib/run.mjs', import.meta.url), 'utf8');
+  assert.match(run, /dotenvIds: ids\.filter\(\(i\) => \/dotenv\/i\.test\(i\)\)/);
+  const env = readFileSync(new URL('./smoke/lib/env.mjs', import.meta.url), 'utf8');
+  assert.ok(!env.includes('DOTENV_A') && !env.includes('DOTENV_B'));
 });
 
 test('D: mergeBaseline は鍵の和を取り、実行回数と鍵ごとの回数を数える', () => {
@@ -642,9 +665,108 @@ test('軽微: stopTree は根の実行ファイルが違えば止めない（PID
 test('listProcesses: 自分のプロセスを含む配列を返す。出力は UTF-8 に固定している（日本語のコマンドラインで JSON が壊れた）', () => {
   const rows = listProcesses();
   assert.ok(Array.isArray(rows) && rows.length > 10);
-  assert.ok(rows.some((p) => Number(p.ProcessId) === process.pid));
+  const me = rows.find((p) => Number(p.ProcessId) === process.pid);
+  assert.ok(me);
+  assert.ok(Number.isFinite(Number(me.CreatedMs)) && Number(me.CreatedMs) > 1.7e12, `作成時刻（ミリ秒）が要る: ${me.CreatedMs}`);
   const src = readFileSync(new URL('./smoke/lib/common.mjs', import.meta.url), 'utf8');
   assert.match(src, /OutputEncoding = \[System\.Text\.Encoding\]::UTF8/);
+});
+
+// ---- 検証 2 の指摘 G〜L ------------------------------------------------------------
+test('G: probe の最後の一覧は API に無い packageUri を使わず、3つを独立に取り、失敗を snapshotError に残す。台本はそれを FAIL にする', () => {
+  const src = readFileSync(new URL('./smoke/probe/extension.js', import.meta.url), 'utf8');
+  assert.ok(!/\.packageUri/.test(src), 'Extension に packageUri は無い');
+  assert.match(src, /e\.extensionPath \|\| e\.extensionUri\.fsPath/);
+  for (const k of ['extensions:', 'commands:', 'diagnostics:']) assert.ok(src.includes(`snapshotErrors.push(\`${k}`), k);
+  const run = readFileSync(new URL('./smoke/lib/run.mjs', import.meta.url), 'utf8');
+  assert.match(run, /add\('probe\.snapshot'/);
+  assert.match(run, /commands\.json ができていない/);
+  assert.match(run, /problems\.length \? 'fail' : 'pass'/);
+});
+
+test('H: diffFixtures は意図した3ファイル以外の変更・消失を見つける', () => {
+  const root = tmp();
+  try {
+    createWorkspace(root, { git: false });
+    assert.deepEqual(diffFixtures(root), { unexpected: [], missing: [], changedAsExpected: [] });
+    writeFileSync(join(root, 'edit/replace.txt'), 'replaced_ok\n');
+    writeFileSync(join(root, 'tracked.txt'), 'tracked\nchanged\n');
+    writeFileSync(join(root, 'edit/target.txt'), 'smoke-edit-before\n');
+    let d = diffFixtures(root);
+    assert.deepEqual(d.unexpected, []);
+    assert.deepEqual(d.changedAsExpected.sort(), [...EXPECTED_CHANGES].sort());
+    // 過去の事故: 置換が docs/readme.md の smoke_needle の行を空にした
+    writeFileSync(join(root, 'docs/readme.md'), '# smoke\n\n\n');
+    rmSync(join(root, 'img/pixel.png'));
+    writeFileSync(join(root, 'doc/sample.pdf'), 'broken');
+    d = diffFixtures(root);
+    assert.deepEqual(d.unexpected.sort(), ['doc/sample.pdf', 'docs/readme.md']);
+    assert.deepEqual(d.missing, ['img/pixel.png']);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+  const run = readFileSync(new URL('./smoke/lib/run.mjs', import.meta.url), 'utf8');
+  assert.match(run, /add\('base\.fixtures-intact'/);
+  const probe = readFileSync(new URL('./smoke/probe/extension.js', import.meta.url), 'utf8');
+  assert.ok(!probe.includes('「すべて置換」を実行し、ファイルが書き換わる'), '古いコメントを残さない');
+});
+
+test('I: removeOwnLocks は起動の後に増えた自分の .lock だけを消す（前からあるもの・他人のものは消さない）', () => {
+  const dir = tmp();
+  try {
+    const mk = (port, obj) => writeFileSync(join(dir, `${port}.lock`), JSON.stringify(obj));
+    mk(1000, { pid: 1, workspaceFolders: ['C:\\users\\me\\real-project'] }); // 前からある普段使い
+    const before = snapshotLocks(dir);
+    mk(2000, { pid: 500, workspaceFolders: [] }); // prime の木の pid
+    mk(2001, { pid: 999, workspaceFolders: ['C:\\b\\smoke\\runs\\manual-1\\ws'] }); // 開いたフォルダが一致
+    mk(2002, { pid: 777, workspaceFolders: ['C:\\users\\me\\other'] }); // 他人
+    const removed = removeOwnLocks(before, [500, 501], ['C:\\b\\smoke\\runs\\manual-1\\ws'], dir).map((p) => p.split(/[\\/]/).pop()).sort();
+    assert.deepEqual(removed, ['2000.lock', '2001.lock']);
+    assert.deepEqual(snapshotLocks(dir), ['1000.lock', '2002.lock']);
+    assert.deepEqual(removeOwnLocks(snapshotLocks(dir), [500], [], dir), []);
+  } finally { rmSync(dir, { recursive: true, force: true }); }
+  const src = readFileSync(new URL('./smoke-launch.mjs', import.meta.url), 'utf8');
+  assert.match(src, /removeOwnLocks\(locksBefore, primePids, \[ws\]\)/);
+  assert.match(src, /treeFromProcesses\(listProcesses\(\), prime\.pid\)/);
+});
+
+test('K: 置き場所に .keep があれば pruneRuns は消さず、残す数にも数えない', () => {
+  const root = tmp();
+  try {
+    for (const n of ['a-20261113T000001', 'a-20261113T000002', 'a-20261113T000003', 'a-20261113T000004']) mkdirSync(join(root, 'runs', n), { recursive: true });
+    writeFileSync(join(root, 'runs', 'a-20261113T000001', KEEP_MARK), '');
+    writeFileSync(join(root, 'runs', 'a-20261113T000002', KEEP_MARK), '');
+    // 印なしは 3 と 4。最新 1 個を残すと 3 が消える。印つきの 1・2 は古くても消えない
+    const removed = pruneRuns(root, 1, join(root, 'runs', 'a-20261113T000004'));
+    assert.deepEqual(removed, ['a-20261113T000003']);
+    for (const n of ['a-20261113T000001', 'a-20261113T000002', 'a-20261113T000004']) assert.ok(existsSync(join(root, 'runs', n)), n);
+    // --keep-runs 0 でも印つきは残る
+    assert.deepEqual(pruneRuns(root, 0, join(root, 'runs', 'a-20261113T000004')), []);
+    assert.ok(existsSync(join(root, 'runs', 'a-20261113T000001')));
+    assert.equal(KEEP_MARK, '.keep');
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('sameProc: 名前と親が同じなら同じプロセス、PID が使い回されて別のものなら違う', () => {
+  assert.equal(sameProc({ Name: 'Code.exe', ParentProcessId: 5 }, { Name: 'code.exe', ParentProcessId: 5 }), true);
+  assert.equal(sameProc({ Name: 'Code.exe', ParentProcessId: 5 }, { Name: 'svchost.exe', ParentProcessId: 5 }), false);
+  assert.equal(sameProc({ Name: 'Code.exe', ParentProcessId: 5 }, { Name: 'Code.exe', ParentProcessId: 9 }), false);
+});
+
+test('--reuse-ext は旗で、既定は off。env.mjs は印が変わっていても使い回す', () => {
+  assert.equal(parseArgs([]).reuseExt, false);
+  assert.equal(parseArgs(['--reuse-ext']).reuseExt, true);
+  const src = readFileSync(new URL('./smoke/lib/env.mjs', import.meta.url), 'utf8');
+  assert.match(src, /m\.fingerprint === fp \|\| reuse/);
+});
+
+test('J: smoke-design.md に --prime・--merge-baseline・--keep-runs・.keep・--reuse-ext の使い方がある', () => {
+  const md = readFileSync(new URL('../tasks/2026-11-13-p1-smoke/smoke-design.md', import.meta.url), 'utf8');
+  for (const w of ['--prime', '--merge-baseline', '--keep-runs', '.keep', '--reuse-ext', 'commands.json']) assert.ok(md.includes(w), w);
+});
+
+test('L: netaudit の Limits の claude.exe の行は、ネットのログの名前もヒントだと書く', () => {
+  const ps = readFileSync(new URL('../scripts/netaudit.ps1', import.meta.url), 'utf8');
+  assert.match(ps, /A net-log name is a hint too \(its rows have the claude-cli role/);
+  assert.ok(!ps.includes('or when the same address is in the net log'));
 });
 
 test('E: smoke-run の --prime は旗で、既定は off', () => {

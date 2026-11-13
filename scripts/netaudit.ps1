@@ -871,7 +871,7 @@ function New-AuditMarkdown {
         '- Loopback destinations are left out. They stay in samples.csv only if they were seen (they are not collected).',
         '- Column "name from": netlog = the Chromium net log of the editor (names the host a Chromium socket was opened for; used only for rows whose processes are all the network service or main, otherwise it is shown as a hint), dns-cache = Get-DnsClientCache, none = unresolved. A "hint only" name (reverse or forward lookup) never makes a destination allowed.',
         '- The net log covers only the Chromium network service of the editor (requests from the windows and the main process). Node code (extension host, agent host) looks names up through Windows; its host names come from NODE_DEBUG=net ("node") - the host list is exact, the pairing of a host with an address is a hint (order of appearance within one pid).',
-        '- claude.exe is not Node-instrumented here: its addresses are named only by a forward lookup of the allowlist hosts (hint) or when the same address is in the net log.',
+        '- claude.exe is not Node-instrumented here: its addresses are named only by a forward lookup of the allowlist hosts (a hint). A net-log name is a hint too (its rows have the claude-cli role, not the network service or main) and never makes a destination allowed.',
         '- Not covered without administrator rights: lookups by processes that print nothing (DNS client event log, pktmon, TLS SNI). See hostname-design.md.'
     return $md
 }

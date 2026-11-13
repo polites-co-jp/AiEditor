@@ -2,7 +2,7 @@
 // git のリポジトリにする（git の確認用）。ユーザーの git の設定は使わず、このリポジトリのローカル設定だけで済ませる。
 
 import { spawnSync } from 'node:child_process';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 
 // 1x1 の PNG
@@ -73,6 +73,36 @@ export const COMPLETION_POSITIONS = {
     { label: 'inside ${F', file: '.env', line: 1, character: 'BAZ=${F'.length },
   ],
 };
+
+/** 台本が意図して書き換えるファイル（保存・置換・git の確認）。ほかのファイルが変わったら事故（置換が別のファイルに効いた、など）。 */
+export const EXPECTED_CHANGES = ['edit/replace.txt', 'edit/target.txt', 'tracked.txt'];
+
+/** ws の全ファイル（.git を除く）の期待する中身。 */
+export function expectedContents() {
+  const out = new Map();
+  for (const [rel, text] of Object.entries(fixtureFiles())) out.set(rel, Buffer.from(text, 'utf8'));
+  out.set('img/pixel.png', Buffer.from(PNG_1x1, 'base64'));
+  out.set('doc/sample.pdf', Buffer.from(minimalPdf(), 'latin1'));
+  return out;
+}
+
+/**
+ * 実行の後に ws を fixtures と照らす。
+ * 返す: { unexpected: 意図しない変更のあったファイル, missing: 無くなったファイル, changedAsExpected: 意図した変更のあったファイル }
+ */
+export function diffFixtures(root, allowed = EXPECTED_CHANGES) {
+  const unexpected = [];
+  const missing = [];
+  const changedAsExpected = [];
+  for (const [rel, want] of expectedContents()) {
+    let got = null;
+    try { got = readFileSync(join(root, rel)); } catch { /* 無い */ }
+    if (got === null) { missing.push(rel); continue; }
+    if (got.equals(want)) continue;
+    (allowed.includes(rel) ? changedAsExpected : unexpected).push(rel);
+  }
+  return { unexpected, missing, changedAsExpected };
+}
 
 /** ws を作り、git のリポジトリにする。返す: { root, files, git: { ok, reason? } } */
 export function createWorkspace(root, { git = true } = {}) {

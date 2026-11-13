@@ -15,22 +15,24 @@
   "contributes": {
     "configurationDefaults": {
       "chat.disableAIFeatures": true,
-      "telemetry.telemetryLevel": "off",
       "workbench.colorTheme": "Light Modern",
-      "extensions.allowed": {
-        "*": false,
-        "anthropic.claude-code": true,
-        "detachhead.basedpyright": true,
-        "ms-vscode.powershell": true,
-        "mads-hartmann.bash-ide-vscode": true,
-        "mechatroner.rainbow-csv": true,
-        "dotenv.dotenv-vscode": true,
-        "weixu.wx-vsce-dotenv": true,
-        "tomoki1207.pdf": true,
-        "ms-ceintl.vscode-language-pack-ja": true
-      },
       "breadcrumbs.enabled": false,
-      "basedpyright.importStrategy": "useBundled"
+      "workbench.startupEditor": "none",
+      "basedpyright.importStrategy": "useBundled",
+      "typescript.disableAutomaticTypeAcquisition": true,
+      "npm.fetchOnlinePackageInfo": false,
+      "json.schemaDownload.enable": false,
+      "workbench.settings.enableNaturalLanguageSearch": false,
+      "claudeCode.environmentVariables": [
+        {
+          "name": "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC",
+          "value": "1"
+        },
+        {
+          "name": "CLAUDE_CODE_DISABLE_OFFICIAL_MARKETPLACE_AUTOINSTALL",
+          "value": "1"
+        }
+      ]
     },
     "keybindings": [
       {

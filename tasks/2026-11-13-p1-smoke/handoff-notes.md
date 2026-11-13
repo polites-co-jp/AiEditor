@@ -172,3 +172,45 @@ node tests/smoke-run.mjs --build <出力フォルダ> --label built --mode built
 
 - 蒙恬のビルドが出たら、`node tests/smoke-run.mjs --build <出力フォルダ> --label built --mode built --prime --baseline C:/b/smoke/baseline-official-1.146.0.json --timeout 300`（`--prime` の有無は基準にそろえる）。
 - docs/06 の5節に、`--prime` を使うこと、基準を `--prime --save-baseline` / `--merge-baseline` で作ることを足すかはリーダーが決める。
+
+---
+
+# 検証（2）の指摘 G〜L と、dotenv の台帳の決定への対応（2026-11-13）
+
+単体テスト: **70 件すべて PASS**（`node --test tests/smoke.test.mjs`）。`tests/netaudit.tests.ps1` 102/102、`tests/measure.tests.ps1` 138/138（netaudit.ps1 の構文と ASCII の検査を含む）。`tests/probe-*.ps1` は触っていない。
+
+公式の zip の確定した実行: `C:\b\smoke\runs\official-20261113T143503\`（`--prime --baseline`）。**PASS 49 / FAIL 0 / SKIP 0 / INFO 9**。`probe.snapshot` PASS（拡張 13 件・動作中 8・コマンド 3403 件・診断 22 件）、`commands.json` ができた。
+
+## 直した内容
+
+| 指摘 | 直し | 実機 |
+|---|---|---|
+| **G** | probe の最後の一覧: `e.packageUri`（API に無い）をやめ、`e.extensionPath \|\| e.extensionUri.fsPath` にした。拡張・コマンド・診断を独立に取り、失敗を `snapshotError` に積む。台本に `probe.snapshot` を足し、`snapshotError`・拡張一覧が空・コマンド 0 件・`commands.json` が無い、のどれかで FAIL にする | `commands.json` ができ、`probe.snapshot` PASS |
+| **H** | 台本が実行の後に ws の全ファイルを fixtures と照らす `base.fixtures-intact` を足した（意図した `edit/replace.txt`・`edit/target.txt`・`tracked.txt` 以外が変わる・消えたら FAIL）。置換の古いコメントも直した | PASS（変わったのは意図した 3 個だけ） |
+| **I** | `smoke-launch.mjs` の prime が作る `~/.claude/ide/*.lock` を、smoke-run と同じ規則（起動の後に増え、pid が prime の木にあるか、開いたフォルダが一致するもの）で消す `removeOwnLocks` を足した。前からある `.lock`・他人の `.lock` は消さない | 単体テスト（実際のフォルダでの手での実行はしていない。smoke-run 側の同じ規則は実機で毎回働いている） |
+| **J** | `smoke-design.md` に 2.6 を足した（`--prime`・`--merge-baseline`・`--keep-runs`・`.keep`・`--reuse-ext`・最後の一覧・`base.fixtures-intact`）。基準の作り方の手順つき | 単体テストで語の有無を検査 |
+| **L** | `scripts/netaudit.ps1` の Limits の claude.exe の行を、「ネットのログの名前もヒント（claude-cli の行はネットのサービスでも main でもないため）で、許可にはならない」に直した（ASCII のまま） | netaudit 102/102、measure 138/138 |
+| **K** | 置き場所の直下に `.keep`（空のファイル）があれば、`--keep-runs` は消さず、残す数 N にも数えない。検証の根拠にする実行には、大岡越前守が `.keep` を置く運用（例: `C:\b\smoke\runs\<名前>\.keep`） | 単体テスト（`--keep-runs 0` でも印つきは残る） |
+
+追加で、実機の実行で見つけて直したこと:
+- **PID の使い回しで別のプロセスの孤児が木に混ざる**: 止めた後の確認で、ブラウザ（Brave）のクラッシュハンドラ 2 個が「木に残っている」と数えられた。親の PID を後から別のプロセスが使い回すと、親より古い孤児が子に見える。`listProcesses` にプロセスの作成時刻（`CreatedMs`）を足し、`treeFromProcesses` で親より古い子を外した。止めた後の「残り」の判定も、名前と親が同じものだけを数える（`sameProc`）。`taskkill /T` はこの孤児を止めなかった（プロセスは残った）。
+- **`(node:6604)` のような 4 桁の PID** が誤りの正規化で揃わず、`errors.new` が誤って FAIL した（これまで 5 桁だけだった）。`(node:<n>)` に揃える規則を足した。
+- `--reuse-ext`（新しい旗）: 台帳を別の担当が直している最中に走らせるとき、拡張フォルダの印が変わっていても入れ直さない。最後の確定の実行では台帳の変更が済んでいたので、使わずに入れ直した。
+
+## dotenv の台帳の決定（weixu.wx-vsce-dotenv。台帳は 8 件）への対応
+
+- `defaultExtensionIds(ledger)` は、**台帳のとおり全部**を入れる形にした（特例で片方を除くのをやめた）。`DOTENV_A`/`DOTENV_B` と run.mjs の `dotenv` の既定、`--dotenv` の旗は**外した**。
+  - 理由: 台帳が決まったので、既定の経路は 1 本でよい。`--dotenv a|b` は「台帳に無い拡張も入れて比べる」ための仕組みだったが、台帳に無い拡張を試すだけなら、既にある `--ext <id,id>` で足りる（拡張フォルダも `-custom` を付けて別に作る）。専用の旗を残すと、隠れた 2 つめの既定の経路になり、台帳と台本がずれる元になる。
+- probe の `lang.env.dotenv` と `lang.env.compare` は、拡張 id を決め打ちせず、台本が渡す `cfg.dotenvIds`（入れた拡張のうち `dotenv` を含む id。台帳なら `weixu.wx-vsce-dotenv`）を見る。
+- 単体テストは、台帳の実物（8 件、`weixu.wx-vsce-dotenv` を含み `dotenv.dotenv-vscode` を含まない）で `defaultExtensionIds` を確かめる。
+- 拡張の入れ直し: 台帳が変わったので、公式の zip での最初の実行で `C:\b\smoke\ext\1.146.0-official\` が自動で作り直された（8 件を入れた。`dotenv.dotenv-vscode` は外れた）。
+- weixu を入れた状態の診断: 誤りを含む `.env.bad`・`bad.env` に 4 件ずつ（`ENV002`・`ENV007`・`ENV004`・`ENV005`）。診断の合計は 14 件から 22 件に増えた。
+
+## 基準について
+
+`C:\b\smoke\baseline-official-1.146.0.json`（3 回の和・鍵 4 個）は、**dotenv が `dotenv.dotenv-vscode` だった台帳**で作ったもの。weixu の台帳で比べても `errors.new` は PASS だった（新しい誤りなし）ので、いまは作り直していない。気になるなら、`--prime --save-baseline <json>` の後に `--merge-baseline` を 2 回で作り直せる（所要約 5 分）。
+
+## 注意（引き継ぎ）
+
+- 検証の根拠にする実行の置き場所には `.keep` を置くこと（`--keep-runs` の既定 10 で消えるため）。
+- 台本を終了コード 2 で落とした原因（日本語のコマンドラインによる JSON の破損）は先に直してある。それとは別に、今回見つけた PID 使い回しは「止めた後の確認」だけを誤らせていた（実際に止めたのは起動した木だけ）。普段使いのブラウザのプロセスには触れていない。

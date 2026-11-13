@@ -16,7 +16,7 @@ import {
   findOnPath, listProcesses, lockBelongsTo, newErrors, newLocks, normalizeError, readLock, resolveEditor, selectPrune, snapshotLocks, splitByCutoff, stopByRunDir, stopTree, treeFromProcesses,
 } from './common.mjs';
 import { buildUserSettings, defaultExtensionIds, findVsix, prepareExtensions, prepareRunDir, readLedger } from './env.mjs';
-import { COMPLETION_POSITIONS, createWorkspace } from './fixtures.mjs';
+import { COMPLETION_POSITIONS, createWorkspace, diffFixtures } from './fixtures.mjs';
 
 const HERE = fileURLToPath(new URL('.', import.meta.url));
 export const PROBE_DIR = resolve(HERE, '..', 'probe');
@@ -32,9 +32,9 @@ export function parseArgs(argv) {
     build: DEFAULT_BUILD, label: 'official', mode: 'upstream', groups: [...ALL_GROUPS], ext: null,
     lock: join(REPO_ROOT, 'extensions.lock.json'), root: SMOKE_ROOT, timeout: 600, baseline: null, saveBaseline: null,
     rebuildExt: false, secondWindow: true, keepLocks: false, locale: 'ja', help: false,
-    mergeBaseline: false, keepRuns: 10, dotenv: 'a', prime: false,
+    mergeBaseline: false, keepRuns: 10, prime: false, reuseExt: false,
   };
-  const takes = new Set(['build', 'label', 'mode', 'groups', 'ext', 'lock', 'root', 'timeout', 'baseline', 'save-baseline', 'locale', 'keep-runs', 'dotenv']);
+  const takes = new Set(['build', 'label', 'mode', 'groups', 'ext', 'lock', 'root', 'timeout', 'baseline', 'save-baseline', 'locale', 'keep-runs']);
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (!a.startsWith('--')) throw new Error(`知らない引数: ${a}`);
@@ -45,6 +45,7 @@ export function parseArgs(argv) {
     if (k === 'keep-locks') { o.keepLocks = true; continue; }
     if (k === 'merge-baseline') { o.mergeBaseline = true; continue; }
     if (k === 'prime') { o.prime = true; continue; }
+    if (k === 'reuse-ext') { o.reuseExt = true; continue; }
     if (!takes.has(k)) throw new Error(`知らない引数: ${a}`);
     const v = argv[++i];
     if (v === undefined) throw new Error(`${a} に値が要る`);
@@ -59,7 +60,6 @@ export function parseArgs(argv) {
   if (!['upstream', 'built'].includes(o.mode)) throw new Error(`--mode は upstream か built: ${o.mode}`);
   if (!Number.isFinite(o.timeout) || o.timeout <= 0) throw new Error(`--timeout が数でない: ${o.timeout}`);
   if (!Number.isInteger(o.keepRuns) || o.keepRuns < 0) throw new Error(`--keep-runs が0以上の整数でない: ${o.keepRuns}`);
-  if (!['a', 'b'].includes(o.dotenv)) throw new Error(`--dotenv は a か b: ${o.dotenv}`);
   if (o.mergeBaseline && !o.saveBaseline) throw new Error('--merge-baseline は --save-baseline と一緒に使う');
   return o;
 }
@@ -70,15 +70,16 @@ export const USAGE = `使い方: node tests/smoke-run.mjs [オプション]
   --mode upstream|built  upstream: 本家の zip（basedpyright.importStrategy をユーザー設定に入れる）
                          built: 自作のビルド（mydist の既定が効くことを確かめる。入れない）
   --groups a,b           base,claude-code,languages のうち走らせる組（既定は全部）
-  --ext id,id            入れる拡張（既定: 台帳から weixu.wx-vsce-dotenv を除いたもの）
+  --ext id,id            入れる拡張（既定: 台帳のとおり全部。台帳に無い拡張を試すときだけ明示する。拡張フォルダは別に作られる）
   --lock <path>          台帳（既定 extensions.lock.json）
   --timeout <秒>         probe の完了を待つ上限（既定 600）
   --baseline <json>      前の版の誤りの鍵。これに無い誤りを「新しい誤り」として落とす
   --save-baseline <json> 今回の誤りの鍵を書き出す（既存のファイルは上書き）
   --merge-baseline       --save-baseline と一緒に使う。既存の鍵との和を取る（揺れる誤りがあるので、基準は3回の和にする）
-  --keep-runs <N>        実行の置き場所を、最新の N 個だけ残して古いものを消す（既定 10。0 で全部消す。消すのは runs\\ の下だけ）
+  --keep-runs <N>        実行の置き場所を、最新の N 個だけ残して古いものを消す（既定 10。0 で今回以外を全部消す。消すのは runs\\ の下だけ）。
+                         置き場所に印のファイル .keep があれば、消さず、N にも数えない（記録の根拠にする実行に置く）
+  --reuse-ext            拡張フォルダが既にあれば、台帳や VSIX の印が変わっていても入れ直さず使う（台帳を直している最中に走らせるとき）
   --prime                一度起動して言語パックを登録してから起動し直す（表示が日本語になることを base.ui-language で確かめる）
-  --dotenv a|b          入れる dotenv の拡張。a = dotenv.dotenv-vscode（既定）、b = weixu.wx-vsce-dotenv（事実の比べ用）
   --rebuild-ext          拡張のフォルダを作り直す
   --no-second-window     2つめのウィンドウを試さない
   --keep-locks           増えた ~/.claude/ide/*.lock を消さない
@@ -112,10 +113,20 @@ export function mergeBaseline(existing, newKeys, meta = {}) {
 }
 
 /** runs\ の下から、最新の keep 個（と current）を残して古い置き場所を消す。消した名前を返す。 */
+/** 同じプロセスか（PID が使い回されていないか）。名前と親が同じなら同じとみなす。 */
+export function sameProc(a, b) {
+  return String(a.Name).toLowerCase() === String(b.Name).toLowerCase() && Number(a.ParentProcessId) === Number(b.ParentProcessId);
+}
+
+export const KEEP_MARK = '.keep';
+
 export function pruneRuns(root, keep, current = null) {
   const runsDir = join(root, 'runs');
   if (!existsSync(runsDir)) return [];
-  const names = readdirSync(runsDir, { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name);
+  // 印のファイル（.keep）がある置き場所は、消さず、残す数にも数えない。検証の根拠にする実行に置く（大岡越前守の運用）
+  const names = readdirSync(runsDir, { withFileTypes: true })
+    .filter((d) => d.isDirectory() && !existsSync(join(runsDir, d.name, KEEP_MARK)))
+    .map((d) => d.name);
   const victims = selectPrune(names, keep).filter((n) => join(runsDir, n).toLowerCase() !== String(current).toLowerCase());
   const removed = [];
   for (const n of victims) {
@@ -263,14 +274,14 @@ export async function runSmoke(opts, log = console.log) {
 
   // ---- 拡張 ----
   const ledger = readLedger(opts.lock);
-  const ids = opts.ext ?? defaultExtensionIds(ledger, opts.dotenv);
+  const ids = opts.ext ?? defaultExtensionIds(ledger);
   const vsix = ids.map((id) => {
     const want = ledger.find((e) => e.id.toLowerCase() === id.toLowerCase())?.version;
     const f = findVsix(id, want);
     return { id, version: f.version, path: f.path };
   });
-  const profile = `${editor.version}-${opts.label.replace(/[^A-Za-z0-9._-]/g, '_')}${opts.dotenv === 'b' && !opts.ext ? '-dotenvb' : ''}`;
-  const ext = prepareExtensions({ editor, vsix, profile, rebuild: opts.rebuildExt, root: opts.root, log });
+  const profile = `${editor.version}-${opts.label.replace(/[^A-Za-z0-9._-]/g, '_')}${opts.ext ? '-custom' : ''}`;
+  const ext = prepareExtensions({ editor, vsix, profile, rebuild: opts.rebuildExt, reuse: opts.reuseExt, root: opts.root, log });
   const notInstalled = ext.installed.filter((i) => !i.ok);
 
   // ---- 実行の置き場所 ----
@@ -286,6 +297,7 @@ export async function runSmoke(opts, log = console.log) {
     out: resultFile, commandsOut: commandsFile, ws: wsRoot, mode: opts.mode, groups: opts.groups,
     gitOk: gitStep.git.ok, gitReason: gitStep.git.reason ?? '',
     hasShellcheck: Boolean(findOnPath(['shellcheck'])), hasPwsh: Boolean(findOnPath(['pwsh'])),
+    dotenvIds: ids.filter((i) => /dotenv/i.test(i)), // 入れた dotenv の拡張（台帳は weixu.wx-vsce-dotenv）
     openSecondWindow: opts.secondWindow, completion: COMPLETION_POSITIONS, listBuiltins: false,
   };
   const configPath = join(run.runDir, 'probe-config.json');
@@ -384,10 +396,12 @@ export async function runSmoke(opts, log = console.log) {
   // 木が消えるのを最大15秒待つ（言語サーバーなどが遅れて終わることがある）
   let after = [];
   let leftover = [];
+  const treeById = new Map(tree.map((p) => [Number(p.ProcessId), p]));
   for (let i = 0; i < 15; i++) {
     await sleep(1000);
     after = listProcesses();
-    leftover = after.filter((p) => treePids.includes(Number(p.ProcessId)) && !/^(System Idle|System)$/.test(p.Name));
+    // 木にいた PID が、同じ名前・同じ親のままで残っているものだけを「残り」とする（PID の使い回しで別のプロセスを数えない）
+    leftover = after.filter((p) => treeById.has(Number(p.ProcessId)) && sameProc(treeById.get(Number(p.ProcessId)), p));
     if (i >= 2 && leftover.length === 0) break;
   }
   const orphans = after.filter((p) => p.ExecutablePath && resolve(p.ExecutablePath).toLowerCase() === resolve(editor.exe).toLowerCase()
@@ -415,6 +429,18 @@ export async function runSmoke(opts, log = console.log) {
 
   for (const k of probe?.checks ?? []) checks.push(k);
 
+  // probe の最後の一覧（動作中の拡張・登録済みコマンド）。Phase 2 の absentCommands がこの commands.json に頼る。
+  // 以前は packageUri の誤りで毎回失敗し、snapshotError に残るだけで何も落ちなかった（検証 2 の G）
+  if (waited === 'done' && probe) {
+    const problems = [];
+    if (probe.snapshotError) problems.push(`snapshotError: ${probe.snapshotError}`);
+    if (!Array.isArray(probe.extensions) || probe.extensions.length === 0) problems.push('動作中の拡張の一覧が空');
+    if (!(probe.commandCount > 0)) problems.push('登録済みコマンドが 0 件');
+    if (!existsSync(commandsFile)) problems.push('commands.json ができていない');
+    add('probe.snapshot', 'base', 'probe の最後の一覧（拡張・コマンド・診断）が取れ、commands.json ができる', problems.length ? 'fail' : 'pass',
+      problems.length ? problems.join('; ') : `拡張 ${probe.extensions.length} 件（動作中 ${probe.extensions.filter((e) => e.isActive).length}）、コマンド ${probe.commandCount} 件（commands.json）、診断 ${probe.diagnosticsTotal} 件`);
+  }
+
   // 外から見るもの
   if (opts.prime) {
     const lang = probe?.uiLanguage;
@@ -424,6 +450,12 @@ export async function runSmoke(opts, log = console.log) {
     add('base.ui-language', 'base', '表示の言語（--prime なしの初回は英語になる）', 'info', `vscode.env.language = ${probe.uiLanguage}`);
   }
   if (opts.groups.includes('base')) {
+    // 置換などが別のファイルに効いていないこと（過去に readme.md を書き換えた事故がある）。意図した3つ以外が変わったら FAIL
+    const fx = diffFixtures(wsRoot);
+    add('base.fixtures-intact', 'base', '試験用ワークスペースの、意図した3ファイル以外が変わっていない', fx.unexpected.length || fx.missing.length ? 'fail' : 'pass',
+      fx.unexpected.length || fx.missing.length
+        ? `意図しない変更: ${fx.unexpected.join(', ') || 'なし'}、無くなった: ${fx.missing.join(', ') || 'なし'}`
+        : `変わったのは意図した ${fx.changedAsExpected.length} 個（${fx.changedAsExpected.join(', ')}）だけ`);
     add('base.window1', 'base', 'ウィンドウのログができる', existsSync(join(run.logs, 'window1')) ? 'pass' : 'fail', existsSync(join(run.logs, 'window1')) ? 'logs/window1 がある' : 'logs/window1 が無い');
     if (opts.secondWindow) add('base.window2', 'base', '2つめのウィンドウが開く', window2 ? 'pass' : 'fail', window2 ? 'logs/window2 ができた' : 'newWindow から 40 秒待っても logs/window2 ができない');
     const rg = findRg(editor);
@@ -436,7 +468,7 @@ export async function runSmoke(opts, log = console.log) {
     add('base.localhistory', 'base', 'ローカル履歴に保存した版が残る', histOk ? 'pass' : 'fail', histOk ? 'User/History に保存した版の本文がある' : 'User/History に保存した版が無い');
     const dc = dailyArgvChanged(argvBefore, argvAfter);
     add('safety.daily-argv', 'base', '普段使いの argv.json が作られていない・変わっていない', dc.length ? 'fail' : 'pass', dc.length ? `変わったもの: ${dc.join(', ')}（普段使いのエディタが同時に動いていないかも見る）` : '~/.vscode と ~/.vscode-oss の argv.json は前後で同じ');
-    add('safety.process-tree', 'base', '止めた後にプロセスが残らない', leftover.length || orphans.length ? 'fail' : 'pass', `木 ${tree.length} 個を止めた（PID ${child.pid} と子孫のみ）。残り ${leftover.length}、置き場所の名前を持つ孤児 ${orphans.length}`);
+    add('safety.process-tree', 'base', '止めた後にプロセスが残らない', leftover.length || orphans.length ? 'fail' : 'pass', `木 ${tree.length} 個を止めた（PID ${child.pid} と子孫のみ）。残り ${leftover.length}${leftover.length ? `（${leftover.map((p) => `${p.Name} pid ${p.ProcessId}`).join(', ')}）` : ''}、置き場所の名前を持つ孤児 ${orphans.length}`);
   }
 
   if (opts.groups.includes('claude-code')) {

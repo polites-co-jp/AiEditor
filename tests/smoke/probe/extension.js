@@ -110,9 +110,15 @@ async function activate() {
   }
 
   // 動作中の拡張の一覧は、まず最初の状態を取る（その後の確認で増えるものがあるので、終わりにも取り直す）
+  // Extension の API に packageUri は無い（extensionUri・extensionPath がある）。以前は packageUri で毎回落ち、一覧と commands.json が一度もできなかった。
   const snapshotExtensions = () => vscode.extensions.all
     .filter((e) => !e.id.startsWith('vscode.') || cfg.listBuiltins)
-    .map((e) => ({ id: e.id, version: e.packageJSON.version, isActive: e.isActive, builtin: e.packageUri.fsPath.toLowerCase().includes('resources\\app\\extensions') }));
+    .map((e) => ({
+      id: e.id,
+      version: e.packageJSON.version,
+      isActive: e.isActive,
+      builtin: String(e.extensionPath || e.extensionUri.fsPath).toLowerCase().replace(/\//g, '\\').includes('resources\\app\\extensions'),
+    }));
 
   try {
     // 言語のファイルを開く（onLanguage を起こす）
@@ -376,17 +382,17 @@ async function activate() {
       });
 
       await check('lang.env.dotenv', 'languages', '.env: dotenv の拡張が動作中', async () => {
-        const ids = ['dotenv.dotenv-vscode', 'weixu.wx-vsce-dotenv'];
-        const present = ids.map((i) => vscode.extensions.getExtension(i)).filter(Boolean);
+        // 台帳の dotenv の拡張（weixu.wx-vsce-dotenv）。入れた拡張の id は台本（run.mjs）が cfg.dotenvIds で渡す
+        const present = (cfg.dotenvIds || []).map((i) => vscode.extensions.getExtension(i)).filter(Boolean);
         if (!present.length) return skip('dotenv の拡張が入っていない');
         const doc = await open('.env');
         const ok = await waitFor(() => present.some((x) => x.isActive), 30000, 500);
         return ok ? `${present.filter((x) => x.isActive).map((x) => x.id).join(',')} が動作中。.env の言語 id は ${doc.languageId}（補完の中身は手の確認）` : fail('動作中にならない');
       });
 
-      // 事実の記録だけ（合否に使わない）。どちらの dotenv の拡張を台帳に残すかはユーザーの裁定（docs/07 の2.4 の4）
+      // 事実の記録だけ（合否に使わない）。入れた dotenv の拡張（台帳は weixu.wx-vsce-dotenv）が、誤りを含む .env に診断・補完を出すか
       await check('lang.env.compare', 'languages', '.env: 拡張が診断・補完を出すか（事実の記録。合否に使わない）', async () => {
-        const present = ['dotenv.dotenv-vscode', 'weixu.wx-vsce-dotenv'].map((i) => vscode.extensions.getExtension(i)).filter(Boolean);
+        const present = (cfg.dotenvIds || []).map((i) => vscode.extensions.getExtension(i)).filter(Boolean);
         if (!present.length) return skip('dotenv の拡張が入っていない');
         await waitFor(() => present.some((x) => x.isActive), 30000, 500);
         await sleep(8000); // 診断が出るのを待つ
@@ -428,7 +434,8 @@ async function activate() {
       }, 180000);
     }
 
-    // 全文検索の置換（docs/06 の5節「全文検索と置換」）。検索ビューで「すべて置換」を実行し、ファイルが書き換わることを見る。
+    // 全文検索の置換（docs/06 の5節「全文検索と置換」）。検索ビューで一致を1件置換し、ファイルが書き換わることを見る。
+    // ほかのファイルが変わっていないことは、台本（run.mjs の base.fixtures-intact）が実行の後に確かめる。
     // base.search の前に呼ぶ（先に検索すると、検索ビューに前の検索語と空の置換語が残り、別のファイルを置換してしまった。実機で確認）。
     async function replaceCheck() {
       // 「すべて置換」は確認のダイアログ（Electron の本物のダイアログ）が出て、API では押せない。
@@ -479,15 +486,17 @@ async function activate() {
     result.fatal = String((e && e.stack) || e);
   }
 
+  // 最後の一覧（動作中の拡張・登録済みコマンド・診断の合計）。失敗は snapshotErrors に残し、台本（run.mjs）が FAIL にする。
+  // 3つは互いに独立にする（1つの誤りで残りを失わない）
+  const snapshotErrors = [];
+  try { result.extensions = snapshotExtensions(); } catch (e) { snapshotErrors.push(`extensions: ${(e && e.message) || e}`); }
   try {
-    result.extensions = snapshotExtensions();
     const cmds = await vscode.commands.getCommands(true);
     result.commandCount = cmds.length;
     if (cfg.commandsOut) fs.writeFileSync(cfg.commandsOut, JSON.stringify(cmds.sort(), null, 1), 'utf8');
-    result.diagnosticsTotal = vscode.languages.getDiagnostics().reduce((n, [, d]) => n + d.length, 0);
-  } catch (e) {
-    result.snapshotError = String((e && e.message) || e);
-  }
+  } catch (e) { snapshotErrors.push(`commands: ${(e && e.message) || e}`); }
+  try { result.diagnosticsTotal = vscode.languages.getDiagnostics().reduce((n, [, d]) => n + d.length, 0); } catch (e) { snapshotErrors.push(`diagnostics: ${(e && e.message) || e}`); }
+  if (snapshotErrors.length) result.snapshotError = snapshotErrors.join(' | ');
   result.finishedAt = new Date().toISOString();
   result.done = true;
   // 最後の書き出しは、読まれていても確実に残す

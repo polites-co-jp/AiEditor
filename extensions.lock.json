@@ -228,49 +228,6 @@
     }
   },
   {
-    "id": "dotenv.dotenv-vscode",
-    "version": "1.5.8",
-    "source": "open-vsx",
-    "download": "https://open-vsx.org/api/dotenv/dotenv-vscode/1.5.8/file/dotenv.dotenv-vscode-1.5.8.vsix",
-    "sha256": "c8905977784ddebcc2fd45ecafd7ce66d7675f7c3435c2a2d41c7023161f2537",
-    "sha256Source": "https://open-vsx.org/api/dotenv/dotenv-vscode/1.5.8/file/dotenv.dotenv-vscode-1.5.8.sha256",
-    "signature": "https://open-vsx.org/api/dotenv/dotenv-vscode/1.5.8/file/dotenv.dotenv-vscode-1.5.8.sigzip",
-    "publicKey": "https://open-vsx.org/api/-/public-key/14ccb407-4e79-41ed-be5a-6d608325c45a",
-    "publishedAt": "2026-10-01T16:02:32.595343Z",
-    "publishedBy": "motdotla",
-    "verified": true,
-    "license": "MIT",
-    "licenseSha256": "3e52872c802245dfe69494710634b674ae45d06eed4a513462f33eabf0141faf",
-    "engines": "^1.65.0",
-    "crossCheck": {
-      "sourceTag": "v1.5.8",
-      "sourceRepository": "dotenvx/dotenv-vscode"
-    },
-    "manifestDigest": {
-      "activationEvents": [
-        "*",
-        "onCustomEditor:dotenv.sourceEditor"
-      ],
-      "enabledApiProposals": [],
-      "extensionDependencies": []
-    },
-    "verifiedAt": "2026-11-13T03:25:56.943Z",
-    "verdict": "records/phase0/lock-verification.md",
-    "checks": {
-      "publisher": "pass",
-      "sha256": "pass",
-      "signature": "pass",
-      "ovsx": "pass",
-      "soak": "pass",
-      "engines": "pass",
-      "defender": "pass"
-    },
-    "references": {
-      "sourceTag": "found"
-    },
-    "note": ".env の候補A。0-3 の後に dotenv.dotenv-vscode と weixu.wx-vsce-dotenv のどちらを残すかを決める（裁定: エラー表示を持つほう）"
-  },
-  {
     "id": "weixu.wx-vsce-dotenv",
     "version": "0.2.3",
     "source": "open-vsx",
@@ -310,7 +267,7 @@
     "references": {
       "sourceTag": "not-found"
     },
-    "note": ".env の候補B。0-3 の後に dotenv.dotenv-vscode と weixu.wx-vsce-dotenv のどちらを残すかを決める（裁定: エラー表示を持つほう）"
+    "note": ".env の拡張。裁定「エラー表示を持つほうを1つ載せる」により 2026-11-13 にこちらに決めた（誤りを含む .env で診断4件。dotenv.dotenv-vscode 1.5.8 は0件で、台帳から外した）。docs/user-decisions.md の「.env の拡張を決めた」、tasks/2026-11-13-p1-smoke/handoff-notes.md の「合図後の実行の結果」6節"
   },
   {
     "id": "tomoki1207.pdf",

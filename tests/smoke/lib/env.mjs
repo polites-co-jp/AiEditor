@@ -20,16 +20,12 @@ export function readLedger(lockPath) {
   return list.map((e) => ({ id: e.id, version: e.version, targetPlatform: e.targetPlatform ?? null }));
 }
 
-export const DOTENV_A = 'dotenv.dotenv-vscode';
-export const DOTENV_B = 'weixu.wx-vsce-dotenv';
-
 /**
- * 既定で入れる拡張: 台帳のうち、dotenv の候補の片方だけ。--ext で全部を指定もできる。
- * dotenv: 'a' = dotenv.dotenv-vscode（既定）、'b' = weixu.wx-vsce-dotenv。どちらを台帳に残すかは未決（docs/07 の2.4 の4）。
+ * 既定で入れる拡張: 台帳のとおり全部。台帳に無い拡張を試すときは、run.mjs の --ext で明示する
+ * （dotenv の候補は weixu.wx-vsce-dotenv に決まり、台帳は 8 件になった。以前の「片方を除く」特例は無い）。
  */
-export function defaultExtensionIds(ledger, dotenv = 'a') {
-  const drop = (dotenv === 'b' ? DOTENV_A : DOTENV_B).toLowerCase();
-  return ledger.map((e) => e.id).filter((id) => id.toLowerCase() !== drop);
+export function defaultExtensionIds(ledger) {
+  return ledger.map((e) => e.id);
 }
 
 /**
@@ -116,7 +112,7 @@ function cliEnv(portable) {
  * 拡張のフォルダを用意する。同じ内容（エディタの版・VSIX のハッシュ）なら使い回す。
  * 返す: { extDir, installed: [{id, version, vsix, ok, output}] }
  */
-export function prepareExtensions({ editor, vsix, profile, rebuild = false, root = SMOKE_ROOT, log = () => {} }) {
+export function prepareExtensions({ editor, vsix, profile, rebuild = false, reuse = false, root = SMOKE_ROOT, log = () => {} }) {
   const extDir = assertSafeWritePath(join(root, 'ext', profile), root);
   const markerPath = join(extDir, '..', `${profile}.marker.json`);
   const want = {
@@ -126,7 +122,9 @@ export function prepareExtensions({ editor, vsix, profile, rebuild = false, root
   const fp = fingerprint(want);
   if (!rebuild && existsSync(markerPath)) {
     const m = readJson(markerPath);
-    if (m.fingerprint === fp && existsSync(extDir)) {
+    // reuse: 印が変わっていても入れ直さない（台帳を別の担当が直している最中に走らせる）。拡張フォルダが無ければ作る
+    if ((m.fingerprint === fp || reuse) && existsSync(extDir)) {
+      if (m.fingerprint !== fp) log('台帳・VSIX の印が変わっているが、--reuse-ext なので入れ直さない');
       log(`拡張のフォルダを使い回す: ${extDir}`);
       return { extDir, installed: m.installed, reused: true };
     }

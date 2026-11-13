@@ -9,7 +9,8 @@
 //     --build-root      既定は %LOCALAPPDATA%\Shuko\local.json の buildRoot、無ければ C:\b（docs/02 の6.1）
 //     --out             記録の JSON の書き出し先（既定 <build-root>/wt/<tag>.prepare.json）
 //     --no-size         ディスクの大きさを数えない
-// 終了コード: 0 = 一致、1 = 誤り（git の失敗、SHA の不一致など）
+// 終了コード: 0 = 一致、1 = 誤り（git の失敗、SHA の不一致、照合する SHA が無いなど）
+// upstream.json に commit が無く --commit も無いときは、clone・fetch・worktree に進まずに止める（照合しないまま ok にしない）。
 // 作業ツリーが既にあるときは作り直さず、HEAD の SHA だけを確かめる。
 
 import path from "node:path";
@@ -136,6 +137,9 @@ function main() {
     process.exit(result === "ok" ? 0 : 1);
   };
 
+  // 照合の相手が無ければ、何もせずに止める（照合しないまま ok にしない）
+  if (!expected) finish("error", "upstream.json に commit が無く、--commit も無い。タグの commit を照合できない");
+
   fs.mkdirSync(path.join(buildRoot, "wt"), { recursive: true });
 
   // 1. 常設の clone
@@ -154,7 +158,7 @@ function main() {
   step("rev-parse tag", tagCommit, { value: tagCommit.stdout });
   if (tagCommit.status !== 0) finish("error", `タグ ${tag} が無い`);
   rec.tagCommit = tagCommit.stdout.toLowerCase();
-  if (expected && rec.tagCommit !== expected) finish("error", `タグの commit ${rec.tagCommit} が upstream.json の ${expected} と違う`);
+  if (rec.tagCommit !== expected) finish("error", `タグの commit ${rec.tagCommit} が upstream.json の ${expected} と違う`);
 
   // 4. 作業ツリー
   if (!fs.existsSync(wt)) {
