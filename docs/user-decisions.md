@@ -266,3 +266,9 @@
 | B-1 の `absentCommands` を空にすること（`workbench.action.showTelemetry` は `--disable-telemetry` のもとで公式でも登録されず、替えも無い） | 認める。網は absentSettings・absentStrings・absentHosts で足りる |
 | 消した部品が持っていた ID を「何もしない実装」で残したことを確かめる形（checks に「在る」の項目）を足すか | 今は足さない。スモークの errors.new（呼ばれても誤りが出ない）と、出力の束の登録の文字列で確かめる。`_` で始まる内部のコマンドは probe の一覧に出ないので、項目を足しても網にならない |
 | 版の関門で、スモークの基準を1回で作って揺れる誤り（Claude Code の `Remote Control auto-enable failed`）を新しい誤りと見た件 | docs/06 の5節のとおり、基準は3回の和で作る。前の版の基準もこの形にそろえる |
+
+## 裁定（2026-11-15、古い版の片づけ）
+
+| 論点 | 裁定 |
+|---|---|
+| 関門が済んだ古い版（`C:\b\p2\`・`C:\b\dist\`・`C:\b\smoke\ext\`）の片づけ。C: の空きが約 21 GB | 蒙恬に消す許可を足して任せる（ユーザーの答え「許可を足して任せる」）。権限の変更は Team の開発部が行う。依頼は `tasks/2026-11-15-permission-requests/requests.md`。許可が入るまで段階 C は始めない |

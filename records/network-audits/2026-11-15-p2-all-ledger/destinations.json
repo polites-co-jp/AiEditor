@@ -1,0 +1,28 @@
+﻿{
+    "Meta":  {
+                 "Label":  "p2-all-ledger",
+                 "Exe":  "C:/b/p2/1.146.0-p2-all/Shuko-win32-x64-1.146.0-p2-all/Shuko.exe",
+                 "ExeVersion":  "1.146.0",
+                 "EnvDir":  "C:/b/p0/data/upstream-default",
+                 "DurationSeconds":  600,
+                 "IntervalSeconds":  2,
+                 "Samples":  300,
+                 "StartedAt":  "2026-11-15T00:57:45.4891959+09:00",
+                 "DnsEntries":  0,
+                 "DailyArgvTouched":  [
+
+                                      ],
+                 "RunDataLeftOver":  [
+
+                                     ],
+                 "Allowlist":  "E:\\develop\\self\\Team\\projects\\ai-editor\\records\\network-allowlist.json",
+                 "AllowlistMissing":  false,
+                 "Previous":  "records/network-audits/2026-11-13-p05-upstream-default",
+                 "NetLogPath":  "C:\\b\\p0\\netlog\\p2-all-ledger-20261115-005730.netlog.json",
+                 "NetLogEvents":  76,
+                 "NetLogComplete":  true
+             },
+    "Destinations":  [
+
+                     ]
+}
