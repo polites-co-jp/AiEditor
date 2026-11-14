@@ -264,3 +264,5 @@
 | notion-sync が日本語の表示で `No bundle location found` を出す | 直す（組み込みの拡張の翻訳の扱い） |
 | A-1 の関門の3を manifest の網（出力の組み込み拡張の `package.json` の `contributes`）だけで判定すること | 認める。直した検査の台本の網そのもので、「代わりの証拠」（拡張の一覧・出力の文字列を人が照らす）とは別とする。copilot の拡張は公式でも実行時の網に出ない |
 | B-1 の `absentCommands` を空にすること（`workbench.action.showTelemetry` は `--disable-telemetry` のもとで公式でも登録されず、替えも無い） | 認める。網は absentSettings・absentStrings・absentHosts で足りる |
+| 消した部品が持っていた ID を「何もしない実装」で残したことを確かめる形（checks に「在る」の項目）を足すか | 今は足さない。スモークの errors.new（呼ばれても誤りが出ない）と、出力の束の登録の文字列で確かめる。`_` で始まる内部のコマンドは probe の一覧に出ないので、項目を足しても網にならない |
+| 版の関門で、スモークの基準を1回で作って揺れる誤り（Claude Code の `Remote Control auto-enable failed`）を新しい誤りと見た件 | docs/06 の5節のとおり、基準は3回の和で作る。前の版の基準もこの形にそろえる |

@@ -1,0 +1,281 @@
+{
+  "label": "1.146.0-p2-B-3-r2",
+  "upstream": {
+    "tag": "1.146.0",
+    "commit": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+  },
+  "units": [
+    {
+      "id": "A-1-copilot-extension",
+      "enabled": false,
+      "applied": "ok"
+    },
+    {
+      "id": "A-2-accounts-extensions",
+      "enabled": false,
+      "applied": "ok"
+    },
+    {
+      "id": "A-3-debug-extensions",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "A-4-notebook-extensions",
+      "enabled": false,
+      "applied": "ok"
+    },
+    {
+      "id": "A-5-remote-extensions",
+      "enabled": false,
+      "applied": "ok"
+    },
+    {
+      "id": "A-6-themes",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "A-7-unused-extensions",
+      "enabled": false,
+      "applied": "ok"
+    },
+    {
+      "id": "B-1-telemetry",
+      "enabled": false,
+      "applied": "ok"
+    },
+    {
+      "id": "B-2-onboarding-experiments-surveys",
+      "enabled": false,
+      "applied": "ok"
+    },
+    {
+      "id": "B-3-issue-share",
+      "enabled": false,
+      "applied": "ok"
+    }
+  ],
+  "patches": [
+    {
+      "file": "patches/20-product-configuration-defaults.patch",
+      "applied": "ok"
+    },
+    {
+      "file": "patches/30-proxy-direct-without-settings.patch",
+      "applied": "ok"
+    }
+  ],
+  "lockfileDiff": "tasks/2026-11-14-p2-builds/1.146.0-p2-B-3-r2/lockfile.diff",
+  "toolchain": null,
+  "durations": {
+    "package": 165.654,
+    "zip": 35.202
+  },
+  "zip": {
+    "path": "C:\\b\\dist\\1.146.0-p2-B-3-r2.zip",
+    "sha256": "cb392698b0bf0f1e53138bcd6b3c44da59087ec3431acc0d85035599b99f3d64",
+    "bytes": 373532000,
+    "topFolder": "Shuko-win32-x64-1.146.0-p2-B-3-r2"
+  },
+  "extensionsLockSha256": "6b4c3ceae7d6cb407f62bbcbd57ca50267e998975887884cc325fd26a85cce10",
+  "result": "ok",
+  "stoppedAt": null,
+  "dryRun": false,
+  "startedAt": "2026-11-14T14:28:04.378Z",
+  "finishedAt": "2026-11-14T14:31:34.247Z",
+  "paths": {
+    "buildRoot": "C:\\b",
+    "worktree": "C:\\b\\wt\\p2",
+    "packageDir": "C:\\b\\wt\\VSCode-win32-x64",
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-p2-builds\\1.146.0-p2-B-3-r2\\checks.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\removals",
+    "dist": "C:\\b\\dist",
+    "logs": "C:\\b\\logs\\1.146.0-p2-B-3-r2"
+  },
+  "config": {
+    "path": "C:\\Users\\kou_z\\AppData\\Local\\Shuko\\local.json",
+    "exists": false,
+    "buildRootFrom": "default"
+  },
+  "stepsSelected": [
+    "package",
+    "postprocess",
+    "zip"
+  ],
+  "envRemovedForChildren": [
+    "ELECTRON_RUN_AS_NODE",
+    "VSCODE_CODE_CACHE_PATH",
+    "VSCODE_CRASH_REPORTER_PROCESS_TYPE",
+    "VSCODE_CWD",
+    "VSCODE_ESM_ENTRYPOINT",
+    "VSCODE_HANDLES_UNCAUGHT_ERRORS",
+    "VSCODE_IPC_HOOK",
+    "VSCODE_NLS_CONFIG",
+    "VSCODE_PID",
+    "VSCODE_PROCESS_TITLE"
+  ],
+  "sourceVersion": {
+    "name": "BUILD_SOURCEVERSION",
+    "value": "cd09c2010487b3c5e740ad7ffbb58f4d61b04afb",
+    "source": "worktree HEAD",
+    "worktree": "C:\\b\\wt\\p2",
+    "readAt": "package",
+    "steps": [
+      "typecheck",
+      "package"
+    ],
+    "error": null,
+    "uncommittedEntries": 3,
+    "checksHeadCommit": "cd09c2010487b3c5e740ad7ffbb58f4d61b04afb",
+    "matchesChecksHead": true
+  },
+  "branch": {
+    "name": "builds/1.146.0-p2-B-3-r2",
+    "commit": "cd09c2010487b3c5e740ad7ffbb58f4d61b04afb",
+    "previous": "cd09c2010487b3c5e740ad7ffbb58f4d61b04afb",
+    "action": "unchanged",
+    "ok": true,
+    "error": null,
+    "at": "package"
+  },
+  "steps": [
+    {
+      "name": "package",
+      "status": "ok",
+      "startedAt": "2026-11-14T14:28:04.390Z",
+      "signtool": {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\x64\\signtool.exe",
+        "source": "WindowsKits",
+        "pathPrepended": "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\x64"
+      },
+      "env": {
+        "BUILD_SOURCEVERSION": "cd09c2010487b3c5e740ad7ffbb58f4d61b04afb"
+      },
+      "command": "pnpm run gulp vscode-win32-x64-min",
+      "cwd": "C:\\b\\wt\\p2",
+      "log": "C:\\b\\logs\\1.146.0-p2-B-3-r2\\package.log",
+      "seconds": 165.654,
+      "exitCode": 0
+    },
+    {
+      "name": "postprocess",
+      "status": "ok",
+      "startedAt": "2026-11-14T14:30:50.349Z",
+      "layout": {
+        "appDir": "C:\\b\\wt\\VSCode-win32-x64\\resources\\app",
+        "versionedFolder": null,
+        "exe": "Shuko.exe",
+        "cli": "bin\\shuko.cmd",
+        "version": "1.146.0",
+        "commit": "cd09c2010487b3c5e740ad7ffbb58f4d61b04afb",
+        "nameShort": "Shuko"
+      },
+      "productCommit": {
+        "ok": true,
+        "commit": "cd09c2010487b3c5e740ad7ffbb58f4d61b04afb",
+        "expected": "cd09c2010487b3c5e740ad7ffbb58f4d61b04afb",
+        "problems": []
+      },
+      "license": {
+        "LICENSE.txt": true,
+        "ThirdPartyNotices.txt": true
+      },
+      "extensions": {
+        "unitsFrom": "checks.json",
+        "unitIds": [
+          "A-1-copilot-extension",
+          "A-2-accounts-extensions",
+          "A-3-debug-extensions",
+          "A-4-notebook-extensions",
+          "A-5-remote-extensions",
+          "A-6-themes",
+          "A-7-unused-extensions",
+          "B-1-telemetry",
+          "B-2-onboarding-experiments-surveys",
+          "B-3-issue-share"
+        ],
+        "removed": [
+          "copilot",
+          "debug-auto-launch",
+          "debug-server-ready",
+          "extension-editing",
+          "github",
+          "github-authentication",
+          "grunt",
+          "gulp",
+          "ipynb",
+          "jake",
+          "mermaid-markdown-features",
+          "microsoft-authentication",
+          "notebook-renderers",
+          "php-language-features",
+          "prompt-basics",
+          "simple-browser",
+          "terminal-suggest",
+          "theme-abyss",
+          "theme-kimbie-dark",
+          "theme-modern-icons",
+          "theme-monokai",
+          "theme-monokai-dimmed",
+          "theme-quietlight",
+          "theme-red",
+          "theme-solarized-dark",
+          "theme-solarized-light",
+          "theme-tomorrow-night-blue",
+          "tunnel-forwarding"
+        ],
+        "presentCount": 65,
+        "nonExtensionDirs": [
+          "node_modules"
+        ],
+        "ok": true,
+        "residual": [],
+        "missingKeep": [],
+        "notShipped": [
+          "vscode-api-tests",
+          "vscode-colorize-perf-tests",
+          "vscode-colorize-tests",
+          "vscode-test-resolver"
+        ],
+        "missingOwn": [],
+        "unexpected": []
+      },
+      "seconds": 0.01
+    },
+    {
+      "name": "zip",
+      "status": "ok",
+      "startedAt": "2026-11-14T14:30:50.361Z",
+      "command": "C:\\WINDOWS\\System32\\tar.exe -a -c -H -f C:\\b\\dist\\1.146.0-p2-B-3-r2.zip -C C:\\b\\dist\\.stage-1.146.0-p2-B-3-r2 Shuko-win32-x64-1.146.0-p2-B-3-r2",
+      "log": "C:\\b\\logs\\1.146.0-p2-B-3-r2\\zip.log",
+      "exitCode": 0,
+      "topFolders": [
+        "Shuko-win32-x64-1.146.0-p2-B-3-r2"
+      ],
+      "entries": 2369,
+      "seconds": 35.202
+    }
+  ],
+  "warnings": [],
+  "applyResult": "ok",
+  "unitsFrom": {
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-p2-builds\\1.146.0-p2-B-3-r2\\checks.json",
+    "applyRan": false
+  },
+  "disk": {
+    "worktree": {
+      "bytes": 4228296790,
+      "gb": 3.94,
+      "files": 103327
+    },
+    "package": {
+      "bytes": 1139135679,
+      "gb": 1.06,
+      "files": 1888
+    },
+    "zipBytes": 373532000,
+    "countedSeconds": 8.683
+  }
+}

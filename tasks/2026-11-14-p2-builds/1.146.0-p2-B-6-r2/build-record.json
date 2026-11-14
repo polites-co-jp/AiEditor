@@ -1,0 +1,299 @@
+{
+  "label": "1.146.0-p2-B-6-r2",
+  "upstream": {
+    "tag": "1.146.0",
+    "commit": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+  },
+  "units": [
+    {
+      "id": "A-1-copilot-extension",
+      "enabled": false,
+      "applied": "ok"
+    },
+    {
+      "id": "A-2-accounts-extensions",
+      "enabled": false,
+      "applied": "ok"
+    },
+    {
+      "id": "A-3-debug-extensions",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "A-4-notebook-extensions",
+      "enabled": false,
+      "applied": "ok"
+    },
+    {
+      "id": "A-5-remote-extensions",
+      "enabled": false,
+      "applied": "ok"
+    },
+    {
+      "id": "A-6-themes",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "A-7-unused-extensions",
+      "enabled": false,
+      "applied": "ok"
+    },
+    {
+      "id": "B-1-telemetry",
+      "enabled": false,
+      "applied": "ok"
+    },
+    {
+      "id": "B-2-onboarding-experiments-surveys",
+      "enabled": false,
+      "applied": "ok"
+    },
+    {
+      "id": "B-3-issue-share",
+      "enabled": false,
+      "applied": "ok"
+    },
+    {
+      "id": "B-4-outline-view",
+      "enabled": false,
+      "applied": "ok"
+    },
+    {
+      "id": "B-5-theme-switching",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "B-6-online-feeds",
+      "enabled": true,
+      "applied": "ok"
+    }
+  ],
+  "patches": [
+    {
+      "file": "patches/20-product-configuration-defaults.patch",
+      "applied": "ok"
+    },
+    {
+      "file": "patches/30-proxy-direct-without-settings.patch",
+      "applied": "ok"
+    }
+  ],
+  "lockfileDiff": "tasks/2026-11-14-p2-builds/1.146.0-p2-B-6-r2/lockfile.diff",
+  "toolchain": null,
+  "durations": {
+    "package": 236.739,
+    "zip": 37.997
+  },
+  "zip": {
+    "path": "C:\\b\\dist\\1.146.0-p2-B-6-r2.zip",
+    "sha256": "f793414df65c3e18d603485942a3bc9915e6125e6d0679474a512c2f055360ba",
+    "bytes": 373463351,
+    "topFolder": "Shuko-win32-x64-1.146.0-p2-B-6-r2"
+  },
+  "extensionsLockSha256": "6b4c3ceae7d6cb407f62bbcbd57ca50267e998975887884cc325fd26a85cce10",
+  "result": "ok",
+  "stoppedAt": null,
+  "dryRun": false,
+  "startedAt": "2026-11-14T14:43:55.313Z",
+  "finishedAt": "2026-11-14T14:48:46.449Z",
+  "paths": {
+    "buildRoot": "C:\\b",
+    "worktree": "C:\\b\\wt\\p2",
+    "packageDir": "C:\\b\\wt\\VSCode-win32-x64",
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-p2-builds\\1.146.0-p2-B-6-r2\\checks.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\removals",
+    "dist": "C:\\b\\dist",
+    "logs": "C:\\b\\logs\\1.146.0-p2-B-6-r2"
+  },
+  "config": {
+    "path": "C:\\Users\\kou_z\\AppData\\Local\\Shuko\\local.json",
+    "exists": false,
+    "buildRootFrom": "default"
+  },
+  "stepsSelected": [
+    "package",
+    "postprocess",
+    "zip"
+  ],
+  "envRemovedForChildren": [
+    "ELECTRON_RUN_AS_NODE",
+    "VSCODE_CODE_CACHE_PATH",
+    "VSCODE_CRASH_REPORTER_PROCESS_TYPE",
+    "VSCODE_CWD",
+    "VSCODE_ESM_ENTRYPOINT",
+    "VSCODE_HANDLES_UNCAUGHT_ERRORS",
+    "VSCODE_IPC_HOOK",
+    "VSCODE_NLS_CONFIG",
+    "VSCODE_PID",
+    "VSCODE_PROCESS_TITLE"
+  ],
+  "sourceVersion": {
+    "name": "BUILD_SOURCEVERSION",
+    "value": "1f4abbee7a679a3bdad05200fc7289dbd0543e6d",
+    "source": "worktree HEAD",
+    "worktree": "C:\\b\\wt\\p2",
+    "readAt": "package",
+    "steps": [
+      "typecheck",
+      "package"
+    ],
+    "error": null,
+    "uncommittedEntries": 3,
+    "checksHeadCommit": "1f4abbee7a679a3bdad05200fc7289dbd0543e6d",
+    "matchesChecksHead": true
+  },
+  "branch": {
+    "name": "builds/1.146.0-p2-B-6-r2",
+    "commit": "1f4abbee7a679a3bdad05200fc7289dbd0543e6d",
+    "previous": "1f4abbee7a679a3bdad05200fc7289dbd0543e6d",
+    "action": "unchanged",
+    "ok": true,
+    "error": null,
+    "at": "package"
+  },
+  "steps": [
+    {
+      "name": "package",
+      "status": "ok",
+      "startedAt": "2026-11-14T14:43:55.327Z",
+      "signtool": {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\x64\\signtool.exe",
+        "source": "WindowsKits",
+        "pathPrepended": "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\x64"
+      },
+      "env": {
+        "BUILD_SOURCEVERSION": "1f4abbee7a679a3bdad05200fc7289dbd0543e6d"
+      },
+      "command": "pnpm run gulp vscode-win32-x64-min",
+      "cwd": "C:\\b\\wt\\p2",
+      "log": "C:\\b\\logs\\1.146.0-p2-B-6-r2\\package.log",
+      "seconds": 236.739,
+      "exitCode": 0
+    },
+    {
+      "name": "postprocess",
+      "status": "ok",
+      "startedAt": "2026-11-14T14:47:52.420Z",
+      "layout": {
+        "appDir": "C:\\b\\wt\\VSCode-win32-x64\\resources\\app",
+        "versionedFolder": null,
+        "exe": "Shuko.exe",
+        "cli": "bin\\shuko.cmd",
+        "version": "1.146.0",
+        "commit": "1f4abbee7a679a3bdad05200fc7289dbd0543e6d",
+        "nameShort": "Shuko"
+      },
+      "productCommit": {
+        "ok": true,
+        "commit": "1f4abbee7a679a3bdad05200fc7289dbd0543e6d",
+        "expected": "1f4abbee7a679a3bdad05200fc7289dbd0543e6d",
+        "problems": []
+      },
+      "license": {
+        "LICENSE.txt": true,
+        "ThirdPartyNotices.txt": true
+      },
+      "extensions": {
+        "unitsFrom": "checks.json",
+        "unitIds": [
+          "A-1-copilot-extension",
+          "A-2-accounts-extensions",
+          "A-3-debug-extensions",
+          "A-4-notebook-extensions",
+          "A-5-remote-extensions",
+          "A-6-themes",
+          "A-7-unused-extensions",
+          "B-1-telemetry",
+          "B-2-onboarding-experiments-surveys",
+          "B-3-issue-share",
+          "B-4-outline-view",
+          "B-5-theme-switching",
+          "B-6-online-feeds"
+        ],
+        "removed": [
+          "copilot",
+          "debug-auto-launch",
+          "debug-server-ready",
+          "extension-editing",
+          "github",
+          "github-authentication",
+          "grunt",
+          "gulp",
+          "ipynb",
+          "jake",
+          "mermaid-markdown-features",
+          "microsoft-authentication",
+          "notebook-renderers",
+          "php-language-features",
+          "prompt-basics",
+          "simple-browser",
+          "terminal-suggest",
+          "theme-abyss",
+          "theme-kimbie-dark",
+          "theme-modern-icons",
+          "theme-monokai",
+          "theme-monokai-dimmed",
+          "theme-quietlight",
+          "theme-red",
+          "theme-solarized-dark",
+          "theme-solarized-light",
+          "theme-tomorrow-night-blue",
+          "tunnel-forwarding"
+        ],
+        "presentCount": 65,
+        "nonExtensionDirs": [
+          "node_modules"
+        ],
+        "ok": true,
+        "residual": [],
+        "missingKeep": [],
+        "notShipped": [
+          "vscode-api-tests",
+          "vscode-colorize-perf-tests",
+          "vscode-colorize-tests",
+          "vscode-test-resolver"
+        ],
+        "missingOwn": [],
+        "unexpected": []
+      },
+      "seconds": 0.013
+    },
+    {
+      "name": "zip",
+      "status": "ok",
+      "startedAt": "2026-11-14T14:47:52.435Z",
+      "command": "C:\\WINDOWS\\System32\\tar.exe -a -c -H -f C:\\b\\dist\\1.146.0-p2-B-6-r2.zip -C C:\\b\\dist\\.stage-1.146.0-p2-B-6-r2 Shuko-win32-x64-1.146.0-p2-B-6-r2",
+      "log": "C:\\b\\logs\\1.146.0-p2-B-6-r2\\zip.log",
+      "exitCode": 0,
+      "topFolders": [
+        "Shuko-win32-x64-1.146.0-p2-B-6-r2"
+      ],
+      "entries": 2371,
+      "seconds": 37.997
+    }
+  ],
+  "warnings": [],
+  "applyResult": "ok",
+  "unitsFrom": {
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-p2-builds\\1.146.0-p2-B-6-r2\\checks.json",
+    "applyRan": false
+  },
+  "disk": {
+    "worktree": {
+      "bytes": 4227869615,
+      "gb": 3.94,
+      "files": 103321
+    },
+    "package": {
+      "bytes": 1138817266,
+      "gb": 1.06,
+      "files": 1889
+    },
+    "zipBytes": 373463351,
+    "countedSeconds": 16.013
+  }
+}

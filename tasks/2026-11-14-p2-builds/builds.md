@@ -28,3 +28,25 @@
 | `1.146.0-p2-B-7`（**段階 A・B の全部**） | A-1〜A-7, B-1〜B-7 | ok | `C:\b\dist\1.146.0-p2-B-7.zip`（373,218,259 B） | `4bd9fac9322a6d42c9cf3cabfa210e8a6e44f3217dc5d3a098de71c697db0ea5` | `cc5d4fd87ccc016a6fad041aa4b5db2a4ce4e77e` | `C:\b\p2\1.146.0-p2-B-7\Shuko-win32-x64-1.146.0-p2-B-7\` | ok |
 
 全部の版（A-1〜B-7 の14版）が zip までできた。落ちた単位は無く、単位の中身は直していない。
+
+## 作り直した版（`-r2`。2026-11-14 23:15〜23:57、蒙恬。`tasks/2026-11-14-fix-b1-and-build/`）
+
+B-1 の関門の4（壊れていない）が不合格だった（`_aiEdits.clearAiContributions` not found。`records/take-in/1.146.0-p2-B-1/gate-B-1-telemetry.md`）。`removals/B-1-telemetry/edits.patch` に `_aiEdits.*` の3つのコマンドの何もしない登録を足し、B-1 を含む B-1〜B-7 の版を作り直した。**上の表の B-1〜B-7 の行（`-r2` の付かない版）は、B-1 の直しを含まない。** 展開した場所と zip は消さずに残してある（検証が使っている）。A-1〜A-7 の版はそのまま使う。
+
+- 作り方は上と同じ（`apply.mjs --only`、`build.mjs` を2回、`p1-launch-check.ps1`）。`build.mjs` は直したもの（外の `BUILD_SOURCEVERSION` を子に渡さない、版の commit に枝を付ける）。手順は `tasks/2026-11-14-fix-b1-and-build/build-log.md`。
+- 「枝」の列: 常設の clone（`C:\b\vscode`）の枝 `builds/<label>`。product.json の commit を指す（作業ツリーを戻しても gc で消えない）。
+- 7版とも、当てる・検査・依存の導入・ロックファイル・型検査（誤り 0）・パッケージ化・後処理（commit の一致）・zip が ok。起動 ok（`bin\shuko.cmd --version` の2行目が commit の列と同じ。普段使いのデータの6か所は変わらない）。
+
+| 版（label） | 当てた単位 | 結果 | zip | SHA-256 | product.json の commit | 枝 | 展開した場所（エディタ） | 起動 |
+|---|---|---|---|---|---|---|---|---|
+| `1.146.0-p2-B-1-r2` | A-1〜A-7, B-1 | ok | `C:\b\dist\1.146.0-p2-B-1-r2.zip`（375,088,150 B） | `44a717529ec9e093af48e2003b953220c4032e219c7d8f1e67b1663ad25c399b` | `f47742d90bcc30886f716c9d5d1365f7c29b450c` | `builds/1.146.0-p2-B-1-r2` | `C:\b\p2\1.146.0-p2-B-1-r2\Shuko-win32-x64-1.146.0-p2-B-1-r2\` | ok |
+| `1.146.0-p2-B-2-r2` | A-1〜A-7, B-1, B-2 | ok | `C:\b\dist\1.146.0-p2-B-2-r2.zip`（374,062,449 B） | `9bf4869b0f09c5ac47655cb95d208d5dfa6605798cf86b58308f88ab119b3577` | `b9c0a9c1adc39b212af85c00115f5bd4a32780e0` | `builds/1.146.0-p2-B-2-r2` | `C:\b\p2\1.146.0-p2-B-2-r2\Shuko-win32-x64-1.146.0-p2-B-2-r2\` | ok |
+| `1.146.0-p2-B-3-r2` | A-1〜A-7, B-1〜B-3 | ok | `C:\b\dist\1.146.0-p2-B-3-r2.zip`（373,532,000 B） | `cb392698b0bf0f1e53138bcd6b3c44da59087ec3431acc0d85035599b99f3d64` | `cd09c2010487b3c5e740ad7ffbb58f4d61b04afb` | `builds/1.146.0-p2-B-3-r2` | `C:\b\p2\1.146.0-p2-B-3-r2\Shuko-win32-x64-1.146.0-p2-B-3-r2\` | ok |
+| `1.146.0-p2-B-4-r2` | A-1〜A-7, B-1〜B-4 | ok | `C:\b\dist\1.146.0-p2-B-4-r2.zip`（373,526,904 B） | `dcf3a5d8547b1fcd7873a17a63e83f4a3195339ac14d2d9e894bf05a14dc42a8` | `b4417153ede5a54479f066e8ddbce6a22839c35d` | `builds/1.146.0-p2-B-4-r2` | `C:\b\p2\1.146.0-p2-B-4-r2\Shuko-win32-x64-1.146.0-p2-B-4-r2\` | ok |
+| `1.146.0-p2-B-5-r2` | A-1〜A-7, B-1〜B-5 | ok | `C:\b\dist\1.146.0-p2-B-5-r2.zip`（373,474,007 B） | `bda0d33e115bb0b090e13720a571f5026b1e45868a4c737322814d7d5d20e97a` | `4dd38929c46e0026691afece4a2c3f476bb0b6b0` | `builds/1.146.0-p2-B-5-r2` | `C:\b\p2\1.146.0-p2-B-5-r2\Shuko-win32-x64-1.146.0-p2-B-5-r2\` | ok |
+| `1.146.0-p2-B-6-r2` | A-1〜A-7, B-1〜B-6 | ok | `C:\b\dist\1.146.0-p2-B-6-r2.zip`（373,463,351 B） | `f793414df65c3e18d603485942a3bc9915e6125e6d0679474a512c2f055360ba` | `1f4abbee7a679a3bdad05200fc7289dbd0543e6d` | `builds/1.146.0-p2-B-6-r2` | `C:\b\p2\1.146.0-p2-B-6-r2\Shuko-win32-x64-1.146.0-p2-B-6-r2\` | ok |
+| `1.146.0-p2-B-7-r2`（**段階 A・B の全部**） | A-1〜A-7, B-1〜B-7 | ok | `C:\b\dist\1.146.0-p2-B-7-r2.zip`（373,231,673 B） | `e50d69b54a0239bd41c566243c9370d42577c1c1da6102f9434b73583d8e53cf` | `680e99e95c9988295b29a2a5ee7a8ecc107c4e39` | `builds/1.146.0-p2-B-7-r2` | `C:\b\p2\1.146.0-p2-B-7-r2\Shuko-win32-x64-1.146.0-p2-B-7-r2\` | ok |
+
+- 版ごとの記録は `<label>/`（`checks.json`・`lockfile.diff`・`build-record-install.json`・`build-record.json`・`launch-check.json`）、ログは `C:\b\logs\<label>\`。
+- その隣の `C:\b\p2\<label>\portable\` には、私の1回の起動のデータが残っている（上と同じ）。
+- 注: B-1-r2 の `checks.json` は、`unit.json` の `kept` の理由の文と `checks.absentCommands` を直す前に作った（当て方には効かない項目）。B-2-r2 以降は、理由の文を直した後。`absentCommands` を空にしたのは B-4-r2・B-5-r2 を作っている間（どちらも当て方・適用後の検査の結果は変わらない）。

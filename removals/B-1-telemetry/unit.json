@@ -46,10 +46,10 @@
   "productRemove": [],
   "patch": "edits.patch",
   "kept": [
-    { "path": "src/vs/workbench/contrib/editTelemetry/browser/telemetry/aiEditTelemetry/aiEditTelemetryService.ts", "reason": "サービスの ID（IAiEditTelemetryService）を拡張 API の mainThreadLanguageFeatures.ts と chat（C-1 まで）が注入している。edits.patch で何もしない実装を登録する" }
+    { "path": "src/vs/workbench/contrib/editTelemetry/browser/telemetry/aiEditTelemetry/aiEditTelemetryService.ts", "reason": "サービスの ID（IAiEditTelemetryService）を拡張 API の mainThreadLanguageFeatures.ts と chat（C-1 まで）が注入している。edits.patch で何もしない実装を登録する。git の拡張が呼ぶコマンド _aiEdits.hasAiContributions・_aiEdits.clearAiContributions・_aiEdits.clearAllAiContributions も、このファイルで何もしない実装として登録する（消した editTelemetryContribution.ts・aiContributionFeature.ts が登録していた）" }
   ],
   "checks": {
-    "absentCommands": ["workbench.action.showTelemetry"],
+    "absentCommands": [],
     "absentViews": [],
     "absentSettings": ["telemetry.editStats.enabled", "editor.aiStats.enabled"],
     "absentStrings": [

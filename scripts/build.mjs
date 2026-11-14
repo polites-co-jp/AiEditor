@@ -19,7 +19,7 @@
 //                          [--worktree <dir>] [--package-dir <dir>] [--keep <file>] [--removals <dir>] [--take-in-dir <dir>]
 //                          [--prev-tag <tag>] [--keep-conflict] [--patches <dir>] [--assets <dir>] [--overlay <file>]
 //                          [--lock <file>] [--extensions-src <dir>]
-//                          [--typecheck-script <name>] [--gulp-task <name>] [--force-zip] [--no-size]
+//                          [--typecheck-script <name>] [--gulp-task <name>] [--force-zip] [--no-size] [--no-branch]
 //     <tag>              本家のタグ（upstream.json の tag と違えば --commit が要る。prepare.mjs の規則）
 //     --label            版のラベル。既定 <tag>-<n>（n は records/builds/<tag>-*.json の最大＋1）
 //     --build-root       既定 local.json の buildRoot（scripts/lib/local-config.mjs の規則）
@@ -36,6 +36,7 @@
 //                        apply の手順で apply.mjs にそのまま渡す（取り込みのブランチの中身を当てるため。docs/06 の9節）。
 //                        --removals は apply・lockfile・postprocess のすべてで同じ場所を使う
 //     --force-zip        <label>.zip があれば上書きする（既定は止める）
+//     --no-branch        版の commit に枝 builds/<label> を付けない（既定は付ける。下の「版の commit の枝」）
 // 終了コード: 0 = result が ok か dry-run、1 = error、2 = 引数の誤り
 //
 // 出力の product.json の commit（2026-11-14、tasks/2026-11-14-build-commit-fix/）:
@@ -45,12 +46,18 @@
 //   当てた後の HEAD。本家の commit は upstream.commit に残る）。渡した値は記録の sourceVersion に書き、postprocess で
 //   出力の resources\app\product.json の commit が40桁でその値と一致することを確かめる（一致しなければ失敗）。
 //
+// 版の commit の枝（2026-11-14、tasks/2026-11-14-fix-b1-and-build/）:
+//   型検査・パッケージ化・後処理のうち最初に走る手順で、sourceVersion の値（作業ツリーの HEAD）に枝 builds/<label> を
+//   付ける（git -C <作業ツリー> branch --force --no-track。refs は常設の clone と共有なので、作業ツリーをタグに戻しても
+//   版のソースが gc で消えない）。後処理から始めたときは、出力の product.json の commit が一致したときだけ付ける。
+//   結果は記録の branch。付けられなくても止めずに warnings に書く。同じラベルで作り直すと付け替える（warnings に書く）。
+//
 // 書き出している関数（テストの入口。tasks/2026-11-13-p2-build-switch/build-switch-design.md の3節）:
 //   STEPS, parseArgs, selectSteps, nextLabel, findAppDir, resolveEditorLayout, childEnv, appliedUnitsFrom,
 //   checkBuiltinExtensions, parseExcludedExtensions, zipFolderName, quoteCmdArg, toolchainWarnings, applyPassThrough,
 //   findSignTool, prependPath,
 //   SOURCE_VERSION_STEPS, isFullSha, stepEnv, headCommitOf, checkProductCommit, unitsRecordFrom, patchesRecordFrom
-//   （tasks/2026-11-14-build-commit-fix/）
+//   （tasks/2026-11-14-build-commit-fix/）、BUILD_BRANCH_PREFIX, buildBranchName, markBuildCommit（tasks/2026-11-14-fix-b1-and-build/）
 
 import fs from "node:fs";
 import path from "node:path";
@@ -60,8 +67,8 @@ import { resolveLocalConfig } from "./lib/local-config.mjs";
 import { sha256File } from "./lib/http.mjs";
 import { keepNamesOf, extensionsCoveredByUnits } from "./lib/apply/classify.mjs";
 import { dirSize } from "./prepare.mjs";
-import { head as gitHead, statusPorcelain } from "./lib/apply/git.mjs";
-// gitHead は git -C <dir> rev-parse HEAD（失敗すると例外）
+import { git, head as gitHead, statusPorcelain } from "./lib/apply/git.mjs";
+// gitHead は git -C <dir> rev-parse HEAD（失敗すると例外）。git は git -C <dir> <args>（失敗しても例外にしない）
 
 const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(SCRIPT_DIR, "..");
@@ -81,7 +88,7 @@ export function parseArgs(argv) {
     from: null, to: null, fresh: false, worktree: null, packageDir: null, keep: null, removals: null, takeInDir: null,
     // apply.mjs へそのまま渡すもの（取り込みのブランチの中身を当てるため。docs/06 の9節）
     prevTag: null, keepConflict: false, patches: null, assets: null, overlay: null, lock: null, extensionsSrc: null,
-    typecheckScript: "typecheck-client", gulpTask: "vscode-win32-x64-min", forceZip: false, size: true,
+    typecheckScript: "typecheck-client", gulpTask: "vscode-win32-x64-min", forceZip: false, size: true, branch: true,
   };
   const need = (i, name) => {
     if (i >= argv.length || String(argv[i]).startsWith("--")) throw new ArgError(`${name} に値が無い`);
@@ -115,6 +122,7 @@ export function parseArgs(argv) {
       case "--gulp-task": a.gulpTask = need(++i, x); break;
       case "--force-zip": a.forceZip = true; break;
       case "--no-size": a.size = false; break;
+      case "--no-branch": a.branch = false; break;
       default:
         if (x.startsWith("--")) throw new ArgError(`知らない引数: ${x}`);
         if (a.tag) throw new ArgError(`タグが2つある: ${a.tag} と ${x}`);
@@ -164,12 +172,14 @@ export function nextLabel(tag, existing) {
 }
 
 // 子のプロセスに渡す環境変数。ELECTRON_RUN_AS_NODE・ELECTRON_NO_ATTACH_CONSOLE・VSCODE_* を外し（docs/07 の3.2 の1）、
-// extra を足す。返り値 { env, removed }（removed は外した名前。値は持たない）。
+// 外から来た BUILD_SOURCEVERSION（名前の大文字小文字を問わない）も外す（prepare・apply・install・lockfile・zip に漏らさない。
+// 型検査・パッケージ化には stepEnv が作業ツリーの HEAD を足す。2026-11-14 検証の軽微な点、tasks/2026-11-14-fix-b1-and-build/）。
+// extra を足す（extra の BUILD_SOURCEVERSION は残る）。返り値 { env, removed }（removed は外した名前。値は持たない）。
 export function childEnv(base = process.env, extra = {}) {
   const env = {};
   const removed = [];
   for (const [k, v] of Object.entries(base)) {
-    if (/^(ELECTRON_RUN_AS_NODE|ELECTRON_NO_ATTACH_CONSOLE)$/i.test(k) || /^VSCODE_/i.test(k)) removed.push(k);
+    if (/^(ELECTRON_RUN_AS_NODE|ELECTRON_NO_ATTACH_CONSOLE|BUILD_SOURCEVERSION)$/i.test(k) || /^VSCODE_/i.test(k)) removed.push(k);
     else env[k] = v;
   }
   for (const [k, v] of Object.entries(extra)) if (v !== undefined && v !== null) env[k] = v;
@@ -246,6 +256,65 @@ export function checkProductCommit(product, expected) {
   if (!isFullSha(exp)) problems.push(`比べる値（BUILD_SOURCEVERSION に渡した値）が40桁でない: ${exp}`);
   if (!problems.length && commit.trim().toLowerCase() !== exp.trim().toLowerCase()) problems.push(`出力の product.json の commit ${commit} が渡した値 ${exp} と違う`);
   return { ok: problems.length === 0, commit, expected: exp, problems };
+}
+
+// 版の commit に付ける枝（常設の clone の refs/heads。作業ツリーと共有）。版ごとに作業ツリーをタグに戻して当て直すと、
+// 前の版の commit はどの枝からもたどれず、git の gc で消える（tasks/2026-11-14-p2-builds/handoff-notes.md の未解決の2）。
+// その印。名前は builds/<label>。label が版のラベルの形（parseArgs と同じ規則）でなければ例外。
+export const BUILD_BRANCH_PREFIX = "builds/";
+export function buildBranchName(label) {
+  if (typeof label !== "string" || !/^[0-9A-Za-z][0-9A-Za-z._-]*$/.test(label)) throw new Error(`ラベルの形が違う: ${label}`);
+  // git の ref の名前の規則のうち、ラベルの形で起こりうるもの（.. を含む・.lock か . で終わる）
+  if (label.includes("..") || /\.lock$/i.test(label) || label.endsWith(".")) throw new Error(`枝の名前に使えないラベル: ${label}`);
+  return `${BUILD_BRANCH_PREFIX}${label}`;
+}
+
+// 版の commit（作業ツリーの HEAD。product.json の commit に入る値）に枝 builds/<label> を付ける（あれば付け替える）。
+//   runGit(args) は git -C <worktree> <args> を走らせ { status, stdout, stderr } を返す（試しのために差し替えられる）。
+//   返り値 { name, commit, previous, action: "created" | "moved" | "unchanged" | null, ok, error }
+//   - previous: 付ける前の枝の commit（無ければ null）
+//   - 付けた後に refs/heads/<name> を読み直し、commit と同じでなければ ok: false
+//   失敗しても例外にしない（呼ぶ側が警告にする）。commit が40桁でなければ何もせず ok: false
+export function markBuildCommit({ worktree, label, commit, runGit = (args) => git(worktree, args) }) {
+  const out = { name: null, commit: isFullSha(commit) ? commit.trim().toLowerCase() : commit ?? null, previous: null, action: null, ok: false, error: null };
+  try {
+    out.name = buildBranchName(label);
+  } catch (err) {
+    out.error = err.message;
+    return out;
+  }
+  if (!isFullSha(commit)) {
+    out.error = `枝を付ける commit が40桁の16進でない: ${commit}`;
+    return out;
+  }
+  const ref = `refs/heads/${out.name}`;
+  const readRef = () => {
+    const r = runGit(["rev-parse", "--verify", "--quiet", ref]);
+    return r && r.status === 0 && isFullSha(String(r.stdout)) ? String(r.stdout).trim().toLowerCase() : null;
+  };
+  try {
+    out.previous = readRef();
+    if (out.previous === out.commit) {
+      out.action = "unchanged";
+      out.ok = true;
+      return out;
+    }
+    const r = runGit(["branch", "--force", "--no-track", out.name, out.commit]);
+    if (!r || r.status !== 0) {
+      out.error = `git branch が ${r ? r.status : "?"} で終わった: ${String((r && (r.stderr || r.stdout)) || "").trim().slice(-500)}`;
+      return out;
+    }
+    const after = readRef();
+    if (after !== out.commit) {
+      out.error = `付けた後の ${ref} が ${after} で、${out.commit} でない`;
+      return out;
+    }
+    out.action = out.previous ? "moved" : "created";
+    out.ok = true;
+  } catch (err) {
+    out.error = err.message;
+  }
+  return out;
 }
 
 // build/lib/extensions.ts の excludedExtensions の名前（同梱されない拡張）。見つからなければ null。
@@ -543,6 +612,8 @@ async function main() {
     envRemovedForChildren: envRemoved,
     // 型検査・パッケージ化の子に渡す BUILD_SOURCEVERSION（作業ツリーの HEAD）。読んだときに埋める
     sourceVersion: null,
+    // 版の commit（sourceVersion の値）に付けた枝 builds/<label>（markBuildCommit の結果。--no-branch なら null）
+    branch: null,
     steps: [],
     warnings: [],
   };
@@ -656,6 +727,19 @@ async function main() {
     return sv.value;
   };
 
+  // 版の commit（sourceVersion の値）に常設の clone の枝 builds/<label> を付ける（1回だけ。dry-run と --no-branch では付けない）。
+  // 付けられなくてもビルドは止めない（警告に書く）。型検査・パッケージ化・後処理のうち最初に走る手順で付ける
+  const markBranch = (when) => {
+    if (!args.branch || args.dryRun || rec.branch) return;
+    const v = rec.sourceVersion && rec.sourceVersion.value;
+    if (!v) return;
+    const b = markBuildCommit({ worktree, label, commit: v });
+    rec.branch = { ...b, at: when };
+    if (!b.ok) rec.warnings.push(`版の commit に枝 ${b.name || `builds/${label}`} を付けられない: ${b.error}`);
+    else if (b.action === "moved") rec.warnings.push(`枝 ${b.name} を ${b.previous} から ${b.commit} へ付け替えた（同じラベルで作り直した）`);
+    save();
+  };
+
   if (args.dryRun) {
     rec.plan = {};
     for (const name of steps) {
@@ -669,6 +753,16 @@ async function main() {
         if (rec.plan[name]) rec.plan[name].env = { BUILD_SOURCEVERSION: v || "<作業ツリーの HEAD（実行の時に読む）>" };
       }
       if (steps.includes("apply") && v) rec.warnings.push("dry-run の sourceVersion は apply の前の HEAD。実際に渡すのは apply の後の HEAD");
+      if (args.branch) {
+        let name;
+        try {
+          name = buildBranchName(label);
+        } catch (err) {
+          name = null;
+          rec.warnings.push(`枝の名前を作れない: ${err.message}`);
+        }
+        if (name) rec.plan.branch = { name, command: `git -C ${worktree} branch --force --no-track ${name} ${v || "<作業ツリーの HEAD（実行の時に読む）>"}` };
+      }
     }
     if (!steps.includes("apply")) {
       readChecks();
@@ -721,6 +815,7 @@ async function main() {
   const envForStep = (name, s, base = env) => {
     const v = readSourceVersion(name);
     if (!v) fail(s, `作業ツリーの HEAD を読めない（BUILD_SOURCEVERSION に渡す値が無い）: ${rec.sourceVersion && rec.sourceVersion.error}`);
+    markBranch(name);
     s.env = { BUILD_SOURCEVERSION: v };
     return stepEnv(name, base, v);
   };
@@ -797,6 +892,8 @@ async function main() {
       const problems = [];
       // product.json の commit が40桁で、型検査・パッケージ化に渡した値（作業ツリーの HEAD）と一致すること
       const pc = checkProductCommit(layout.product, readSourceVersion(name));
+      // --from postprocess のときは、出力の commit が作業ツリーの HEAD と一致したときだけ枝を付ける（違う版に付けない）
+      if (pc.ok) markBranch(name);
       s.productCommit = pc;
       problems.push(...pc.problems);
       if (!fs.existsSync(layout.exe)) problems.push(`exe が無い: ${layout.exe}`);

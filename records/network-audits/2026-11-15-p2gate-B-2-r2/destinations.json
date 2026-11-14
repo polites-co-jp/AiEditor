@@ -1,0 +1,28 @@
+﻿{
+    "Meta":  {
+                 "Label":  "p2gate-B-2-r2",
+                 "Exe":  "C:/b/p2/1.146.0-p2-B-2-r2/Shuko-win32-x64-1.146.0-p2-B-2-r2/Shuko.exe",
+                 "ExeVersion":  "1.146.0",
+                 "EnvDir":  "tasks/2026-11-14-p2-gates/netaudit-env",
+                 "DurationSeconds":  600,
+                 "IntervalSeconds":  2,
+                 "Samples":  300,
+                 "StartedAt":  "2026-11-15T00:19:52.3813596+09:00",
+                 "DnsEntries":  0,
+                 "DailyArgvTouched":  [
+
+                                      ],
+                 "RunDataLeftOver":  [
+
+                                     ],
+                 "Allowlist":  "E:\\develop\\self\\Team\\projects\\ai-editor\\records\\network-allowlist.json",
+                 "AllowlistMissing":  false,
+                 "Previous":  "records/network-audits/2026-11-15-p2gate-B-1-r2",
+                 "NetLogPath":  "C:\\b\\p0\\netlog\\p2gate-B-2-r2-20261115-001952.netlog.json",
+                 "NetLogEvents":  76,
+                 "NetLogComplete":  true
+             },
+    "Destinations":  [
+
+                     ]
+}

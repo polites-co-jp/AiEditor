@@ -1,0 +1,1987 @@
+{
+  "label": "1.146.0-p2-B-1-r2",
+  "worktree": "C:\\b\\wt\\p2",
+  "tag": "1.146.0",
+  "baseCommit": "69047191fc427f2f92828279aae1d90d8eeda7ab",
+  "headCommit": "f47742d90bcc30886f716c9d5d1365f7c29b450c",
+  "prevTag": null,
+  "dryRun": false,
+  "options": {
+    "only": [
+      "A-1-copilot-extension",
+      "A-2-accounts-extensions",
+      "A-3-debug-extensions",
+      "A-4-notebook-extensions",
+      "A-5-remote-extensions",
+      "A-6-themes",
+      "A-7-unused-extensions",
+      "B-1-telemetry"
+    ],
+    "until": null,
+    "keepConflict": false
+  },
+  "inputs": {
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\removals",
+    "patches": "e:\\develop\\self\\Team\\projects\\ai-editor\\patches",
+    "assets": "e:\\develop\\self\\Team\\projects\\ai-editor\\assets",
+    "overlay": "e:\\develop\\self\\Team\\projects\\ai-editor\\product.overlay.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "extensionsSrc": "e:\\develop\\self\\Team\\projects\\ai-editor\\extensions-src",
+    "manifests": "C:\\b\\cache\\vsix"
+  },
+  "startedAt": "2026-11-14T14:14:25.690Z",
+  "finishedAt": "2026-11-14T14:14:49.175Z",
+  "result": "ok",
+  "stoppedAt": null,
+  "overlay": {
+    "applied": "ok",
+    "set": [
+      "nameShort",
+      "nameLong",
+      "applicationName",
+      "dataFolderName",
+      "sharedDataFolderName",
+      "urlProtocol",
+      "win32MutexName",
+      "win32DirName",
+      "win32NameVersion",
+      "win32RegValueName",
+      "win32AppUserModelId",
+      "win32ShellNameShort",
+      "win32x64AppId",
+      "win32arm64AppId",
+      "win32x64UserAppId",
+      "win32arm64UserAppId",
+      "builtInExtensions",
+      "shukoConfigurationDefaults"
+    ],
+    "removed": [],
+    "removedIfPresent": [],
+    "commit": "de5ba972faa3b9b1e3098624a7fd92c37e688af5"
+  },
+  "units": [
+    {
+      "id": "A-1-copilot-extension",
+      "order": 110,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "af2ee30ad6c2422e77e3b4ccbb29386ef4d9a9b8",
+        "deleted": [
+          "extensions/copilot",
+          "extensions/prompt-basics"
+        ],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/copilot',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/copilot': ['extensions/copilot/chat-lib'],",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "package.json",
+            "line": "\"compile-copilot\": \"pnpm -C extensions/copilot run compile\",",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "package.json",
+            "line": "\"watch-copilot\": \"pnpm -C extensions/copilot run watch\",",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "package.json",
+            "line": "\"watch-copilotd\": \"deemon pnpm run watch-copilot\",",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "package.json",
+            "line": "\"kill-watch-copilotd\": \"deemon --kill pnpm run watch-copilot\",",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "package.json",
+            "line": "\"copilot:setup\": \"pnpm -C extensions/copilot run setup\",",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "package.json",
+            "line": "\"copilot:get_token\": \"pnpm -C extensions/copilot run get_token\",",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          }
+        ],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "ok",
+        "commit": "cb0924b6d2fac0e215b9cda51cdca04328f2ae5d",
+        "subject": "unit A-1-copilot-extension: edits",
+        "conflicts": []
+      },
+      "warnings": []
+    },
+    {
+      "id": "A-2-accounts-extensions",
+      "order": 120,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "f38d357c2a038cd4111e2d9d18d001ea7bb126ad",
+        "deleted": [
+          "extensions/github",
+          "extensions/github-authentication",
+          "extensions/microsoft-authentication"
+        ],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/github',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/github-authentication',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/microsoft-authentication',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- github",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- github-authentication",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- microsoft-authentication",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/github/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/github-authentication/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/microsoft-authentication/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/lib/extensions.ts",
+            "line": "'microsoft-authentication',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          }
+        ],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "none",
+        "commit": null,
+        "subject": null,
+        "conflicts": []
+      },
+      "warnings": []
+    },
+    {
+      "id": "A-3-debug-extensions",
+      "order": 130,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "a95ad8de7aa741c65df63607f53a7ae3688ebc81",
+        "deleted": [
+          "extensions/debug-auto-launch",
+          "extensions/debug-server-ready"
+        ],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/debug-auto-launch',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/debug-server-ready',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- debug-auto-launch",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- debug-server-ready",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/debug-auto-launch/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/debug-server-ready/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          }
+        ],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "none",
+        "commit": null,
+        "subject": null,
+        "conflicts": []
+      },
+      "warnings": []
+    },
+    {
+      "id": "A-4-notebook-extensions",
+      "order": 140,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "d0950f8c1922e5fba94eeb4675702ec0d1c3b845",
+        "deleted": [
+          "extensions/ipynb",
+          "extensions/notebook-renderers"
+        ],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/ipynb',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/notebook-renderers',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- ipynb",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- notebook-renderers",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/ipynb/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/notebook-renderers/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/lib/extensions.ts",
+            "line": "{ script: 'ipynb/esbuild.notebook.mts', tsconfig: 'ipynb/notebook-src/tsconfig.json' },",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/lib/extensions.ts",
+            "line": "{ script: 'notebook-renderers/esbuild.notebook.mts', tsconfig: 'notebook-renderers/tsconfig.json' },",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          }
+        ],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "none",
+        "commit": null,
+        "subject": null,
+        "conflicts": []
+      },
+      "warnings": []
+    },
+    {
+      "id": "A-5-remote-extensions",
+      "order": 150,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "a40aabeb2bec5ffe71c14c67d0ddda2244d314f3",
+        "deleted": [
+          "extensions/tunnel-forwarding"
+        ],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/tunnel-forwarding',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- tunnel-forwarding",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/tunnel-forwarding/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          }
+        ],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "none",
+        "commit": null,
+        "subject": null,
+        "conflicts": []
+      },
+      "warnings": []
+    },
+    {
+      "id": "A-6-themes",
+      "order": 160,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "359d528dcfa76db253a3e3ab7a0431bc7ccfee95",
+        "deleted": [
+          "extensions/theme-abyss",
+          "extensions/theme-kimbie-dark",
+          "extensions/theme-modern-icons",
+          "extensions/theme-monokai",
+          "extensions/theme-monokai-dimmed",
+          "extensions/theme-quietlight",
+          "extensions/theme-red",
+          "extensions/theme-solarized-dark",
+          "extensions/theme-solarized-light",
+          "extensions/theme-tomorrow-night-blue"
+        ],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "ok",
+        "commit": "b0d81b61e3be813bd54244d876e88d11a919617d",
+        "subject": "unit A-6-themes: edits",
+        "conflicts": []
+      },
+      "warnings": []
+    },
+    {
+      "id": "A-7-unused-extensions",
+      "order": 170,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "62d8e9433902bff36c4e95d2111720e342a77bf7",
+        "deleted": [
+          "extensions/grunt",
+          "extensions/gulp",
+          "extensions/jake",
+          "extensions/simple-browser",
+          "extensions/mermaid-markdown-features",
+          "extensions/extension-editing",
+          "extensions/terminal-suggest",
+          "extensions/php-language-features"
+        ],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/extension-editing',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/grunt',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/gulp',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/jake',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/mermaid-markdown-features',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/php-language-features',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/simple-browser',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/terminal-suggest',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- extension-editing",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- grunt",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- gulp",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- jake",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- mermaid-markdown-features",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- php-language-features",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- simple-browser",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "extensions/pnpm-workspace.yaml",
+            "line": "- terminal-suggest",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/extension-editing/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/grunt/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/gulp/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/jake/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/mermaid-markdown-features/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/terminal-suggest/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/php-language-features/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/gulpfile.extensions.ts",
+            "line": "'extensions/simple-browser/tsconfig.json',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/lib/extensions.ts",
+            "line": "{ script: 'mermaid-markdown-features/esbuild.webview.mts', tsconfig: 'mermaid-markdown-features/preview-src/tsconfig.json' },",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/lib/extensions.ts",
+            "line": "{ script: 'simple-browser/esbuild.webview.mts', tsconfig: 'simple-browser/preview-src/tsconfig.json' },",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          }
+        ],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "none",
+        "commit": null,
+        "subject": null,
+        "conflicts": []
+      },
+      "warnings": []
+    },
+    {
+      "id": "B-1-telemetry",
+      "order": 210,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": "7110dc777f8dfef9295ed525bd0d23a219900896",
+        "deleted": [
+          "src/vs/workbench/contrib/telemetry",
+          "src/vs/workbench/contrib/bracketPairColorizer2Telemetry",
+          "src/vs/workbench/contrib/terminalContrib/telemetry",
+          "src/vs/workbench/contrib/editTelemetry/common",
+          "src/vs/workbench/contrib/editTelemetry/test",
+          "src/vs/workbench/contrib/editTelemetry/browser/aiContributionFeature.ts",
+          "src/vs/workbench/contrib/editTelemetry/browser/editStats",
+          "src/vs/workbench/contrib/editTelemetry/browser/editTelemetry.contribution.ts",
+          "src/vs/workbench/contrib/editTelemetry/browser/editTelemetryContribution.ts",
+          "src/vs/workbench/contrib/editTelemetry/browser/helpers",
+          "src/vs/workbench/contrib/editTelemetry/browser/randomService.ts",
+          "src/vs/workbench/contrib/editTelemetry/browser/settingIds.ts",
+          "src/vs/workbench/contrib/editTelemetry/browser/settings.ts",
+          "src/vs/workbench/contrib/editTelemetry/browser/telemetry/agentHostEditMarkerService.ts",
+          "src/vs/workbench/contrib/editTelemetry/browser/telemetry/aiEditTelemetry/aiEditTelemetryServiceImpl.ts",
+          "src/vs/workbench/contrib/editTelemetry/browser/telemetry/arcTelemetryReporter.ts",
+          "src/vs/workbench/contrib/editTelemetry/browser/telemetry/arcTelemetrySender.ts",
+          "src/vs/workbench/contrib/editTelemetry/browser/telemetry/editSourceTrackingFeature.ts",
+          "src/vs/workbench/contrib/editTelemetry/browser/telemetry/editSourceTrackingImpl.ts",
+          "src/vs/workbench/contrib/editTelemetry/browser/telemetry/editTracker.ts",
+          "src/vs/workbench/contrib/editTelemetry/browser/telemetry/scmAdapter.ts",
+          "src/vs/platform/telemetry/test/browser/1dsAppender.test.ts",
+          "src/vs/workbench/test/browser/componentFixtures/aiStats.fixture.ts"
+        ],
+        "missingDeletes": [],
+        "removedDependencies": [
+          {
+            "file": "package.json",
+            "name": "@microsoft/1ds-core-js",
+            "section": "dependencies"
+          },
+          {
+            "file": "package.json",
+            "name": "@microsoft/1ds-post-js",
+            "section": "dependencies"
+          },
+          {
+            "file": "remote/package.json",
+            "name": "@microsoft/1ds-core-js",
+            "section": "dependencies"
+          },
+          {
+            "file": "remote/package.json",
+            "name": "@microsoft/1ds-post-js",
+            "section": "dependencies"
+          },
+          {
+            "file": "remote/web/package.json",
+            "name": "@microsoft/1ds-core-js",
+            "section": "dependencies"
+          },
+          {
+            "file": "remote/web/package.json",
+            "name": "@microsoft/1ds-post-js",
+            "section": "dependencies"
+          }
+        ],
+        "missingDependencies": [],
+        "removeLines": [
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/telemetry/browser/telemetry.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/bracketPairColorizer2Telemetry/browser/bracketPairColorizer2Telemetry.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/workbench.common.main.ts",
+            "line": "import './contrib/editTelemetry/browser/editTelemetry.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/sessions/sessions.common.main.ts",
+            "line": "import '../workbench/contrib/telemetry/browser/telemetry.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/sessions/sessions.common.main.ts",
+            "line": "import '../workbench/contrib/editTelemetry/browser/editTelemetry.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "src/vs/workbench/contrib/terminal/terminal.all.ts",
+            "line": "import '../terminalContrib/telemetry/browser/terminal.telemetry.contribution.js';",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          }
+        ],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "ok",
+        "commit": "508f32a1dab1e5da310798ee4f5cd56e9c452016",
+        "subject": "unit B-1-telemetry: edits",
+        "conflicts": []
+      },
+      "warnings": []
+    }
+  ],
+  "unitsSkipped": [
+    {
+      "id": "B-2-onboarding-experiments-surveys",
+      "reason": "not in --only"
+    },
+    {
+      "id": "B-3-issue-share",
+      "reason": "not in --only"
+    },
+    {
+      "id": "B-4-outline-view",
+      "reason": "not in --only"
+    },
+    {
+      "id": "B-5-theme-switching",
+      "reason": "not in --only"
+    },
+    {
+      "id": "B-6-online-feeds",
+      "reason": "not in --only"
+    },
+    {
+      "id": "B-7-terminal-suggest",
+      "reason": "not in --only"
+    },
+    {
+      "id": "C-1-ai",
+      "reason": "not in --only"
+    },
+    {
+      "id": "C-2-debug",
+      "reason": "not in --only"
+    },
+    {
+      "id": "C-3-remote",
+      "reason": "not in --only"
+    },
+    {
+      "id": "C-4-notebook",
+      "reason": "not in --only"
+    },
+    {
+      "id": "C-5-extension-gallery",
+      "reason": "not in --only"
+    },
+    {
+      "id": "C-6-settings-sync",
+      "reason": "not in --only"
+    },
+    {
+      "id": "C-7-breadcrumbs-outline",
+      "reason": "not in --only"
+    }
+  ],
+  "patches": [
+    {
+      "file": "patches/20-product-configuration-defaults.patch",
+      "applied": "ok",
+      "commit": "1d8b559855af6102d30710822c455ce9e2d313ad",
+      "subject": "shuko: register product.json shukoConfigurationDefaults as configuration defaults",
+      "conflicts": []
+    },
+    {
+      "file": "patches/30-proxy-direct-without-settings.patch",
+      "applied": "ok",
+      "commit": "ad405f30e0b3687d778808c81ea028fe6c0f8047",
+      "subject": "shuko: connect directly when no proxy is configured",
+      "conflicts": []
+    }
+  ],
+  "assets": {
+    "applied": "ok",
+    "copied": [
+      "resources/win32/code.ico",
+      "resources/win32/code_150x150.png",
+      "resources/win32/code_70x70.png",
+      "src/vs/workbench/browser/media/code-icon.svg",
+      "src/vs/workbench/browser/parts/editor/media/letterpress-dark.svg",
+      "src/vs/workbench/browser/parts/editor/media/letterpress-hcDark.svg",
+      "src/vs/workbench/browser/parts/editor/media/letterpress-hcLight.svg",
+      "src/vs/workbench/browser/parts/editor/media/letterpress-light.svg"
+    ],
+    "commit": "398fd0484efcc82c1562ae2363691cd66c12c592"
+  },
+  "builtinExtensions": {
+    "applied": "ok",
+    "copied": [
+      {
+        "name": "mydist",
+        "files": 3,
+        "list": [
+          "README.md",
+          "ThirdPartyNotices.txt",
+          "package.json"
+        ],
+        "removedDefaults": []
+      },
+      {
+        "name": "notion-sync",
+        "files": 4,
+        "list": [
+          "README.md",
+          "ThirdPartyNotices.txt",
+          "dist/extension.js",
+          "package.json"
+        ]
+      }
+    ],
+    "commit": "f47742d90bcc30886f716c9d5d1365f7c29b450c",
+    "removedDefaults": []
+  },
+  "checks": {
+    "remnants": {
+      "status": "ok",
+      "items": []
+    },
+    "absentStrings": {
+      "status": "ok",
+      "items": [
+        {
+          "unit": "A-1-copilot-extension",
+          "text": "'extensions/copilot'",
+          "in": [
+            "build/npm/dirs.ts"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-1-copilot-extension",
+          "text": "-C extensions/copilot",
+          "in": [
+            "package.json"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-1-copilot-extension",
+          "text": "watch-copilot",
+          "in": [
+            "package.json"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-1-copilot-extension",
+          "text": "ensureAgentHarnessLink",
+          "in": [
+            "build/npm/postinstall.ts"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-1-copilot-extension",
+          "text": "copilot-instructions.md",
+          "in": [
+            "build/npm/postinstall.ts"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-2-accounts-extensions",
+          "text": "github-authentication",
+          "in": [
+            "build/npm/dirs.ts",
+            "build/gulpfile.extensions.ts",
+            "build/lib/extensions.ts",
+            "extensions/pnpm-workspace.yaml"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-2-accounts-extensions",
+          "text": "microsoft-authentication",
+          "in": [
+            "build/npm/dirs.ts",
+            "build/gulpfile.extensions.ts",
+            "build/lib/extensions.ts"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-2-accounts-extensions",
+          "text": "'extensions/github",
+          "in": [
+            "build/npm/dirs.ts",
+            "build/gulpfile.extensions.ts"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-3-debug-extensions",
+          "text": "debug-auto-launch",
+          "in": [
+            "build/npm/dirs.ts",
+            "build/gulpfile.extensions.ts",
+            "extensions/pnpm-workspace.yaml"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-3-debug-extensions",
+          "text": "debug-server-ready",
+          "in": [
+            "build/npm/dirs.ts",
+            "build/gulpfile.extensions.ts",
+            "extensions/pnpm-workspace.yaml"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-3-debug-extensions",
+          "text": "ms-vscode.js-debug",
+          "in": [
+            "product.json"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-4-notebook-extensions",
+          "text": "ipynb",
+          "in": [
+            "build/npm/dirs.ts",
+            "build/gulpfile.extensions.ts",
+            "build/lib/extensions.ts",
+            "extensions/pnpm-workspace.yaml"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-4-notebook-extensions",
+          "text": "notebook-renderers",
+          "in": [
+            "build/npm/dirs.ts",
+            "build/gulpfile.extensions.ts",
+            "build/lib/extensions.ts",
+            "extensions/pnpm-workspace.yaml"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-5-remote-extensions",
+          "text": "tunnel-forwarding",
+          "in": [
+            "build/npm/dirs.ts",
+            "build/gulpfile.extensions.ts",
+            "extensions/pnpm-workspace.yaml"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-6-themes",
+          "text": "extensions/theme-abyss/",
+          "in": [
+            "src/vs/workbench/test/browser/componentFixtures"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-6-themes",
+          "text": "extensions/theme-monokai/",
+          "in": [
+            "src/vs/workbench/test/browser/componentFixtures"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-6-themes",
+          "text": "extensions/theme-quietlight/",
+          "in": [
+            "src/vs/workbench/test/browser/componentFixtures"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-6-themes",
+          "text": "extensions/theme-solarized-dark/",
+          "in": [
+            "src/vs/workbench/test/browser/componentFixtures"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-6-themes",
+          "text": "extensions/theme-solarized-light/",
+          "in": [
+            "src/vs/workbench/test/browser/componentFixtures"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-7-unused-extensions",
+          "text": "simple-browser",
+          "in": [
+            "build/npm/dirs.ts",
+            "build/gulpfile.extensions.ts",
+            "build/lib/extensions.ts",
+            "extensions/pnpm-workspace.yaml"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-7-unused-extensions",
+          "text": "mermaid-markdown-features",
+          "in": [
+            "build/npm/dirs.ts",
+            "build/gulpfile.extensions.ts",
+            "build/lib/extensions.ts",
+            "extensions/pnpm-workspace.yaml"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-7-unused-extensions",
+          "text": "terminal-suggest",
+          "in": [
+            "build/npm/dirs.ts",
+            "build/gulpfile.extensions.ts",
+            "extensions/pnpm-workspace.yaml"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-7-unused-extensions",
+          "text": "php-language-features",
+          "in": [
+            "build/npm/dirs.ts",
+            "build/gulpfile.extensions.ts",
+            "extensions/pnpm-workspace.yaml"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "A-7-unused-extensions",
+          "text": "extension-editing",
+          "in": [
+            "build/npm/dirs.ts",
+            "build/gulpfile.extensions.ts",
+            "extensions/pnpm-workspace.yaml"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "B-1-telemetry",
+          "text": "mobile.events.data.microsoft.com",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "B-1-telemetry",
+          "text": "contrib/telemetry/browser/telemetry.contribution.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "B-1-telemetry",
+          "text": "contrib/bracketPairColorizer2Telemetry/browser/bracketPairColorizer2Telemetry.contribution.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "B-1-telemetry",
+          "text": "contrib/editTelemetry/browser/editTelemetry.contribution.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        },
+        {
+          "unit": "B-1-telemetry",
+          "text": "terminalContrib/telemetry/browser/terminal.telemetry.contribution.js'",
+          "in": [
+            "src/vs"
+          ],
+          "hitCount": 0,
+          "hits": []
+        }
+      ]
+    },
+    "unclassifiedExtensions": {
+      "status": "ok",
+      "upstreamCount": 95,
+      "items": [],
+      "nonExtensionDirs": [
+        "types"
+      ]
+    },
+    "upstreamAdditions": {
+      "status": "skipped",
+      "reason": "--prev-tag が無い"
+    },
+    "dependencies": {
+      "status": "skipped",
+      "reason": "--prev-tag が無い"
+    },
+    "toolchain": {
+      "status": "info",
+      "nvmrc": {
+        "prev": null,
+        "now": "24.22.1",
+        "changed": null
+      },
+      "electron": {
+        "prev": null,
+        "now": "43.8.6",
+        "changed": null
+      },
+      "reason": "--prev-tag が無い"
+    },
+    "registeredKeys": {
+      "status": "ok",
+      "product": [
+        {
+          "key": "nameShort",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "nameLong",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "applicationName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "dataFolderName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "sharedDataFolderName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "urlProtocol",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32MutexName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32DirName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32NameVersion",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32RegValueName",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32AppUserModelId",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32ShellNameShort",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32x64AppId",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32arm64AppId",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32x64UserAppId",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "win32arm64UserAppId",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "builtInExtensions",
+          "status": "upstream",
+          "foundIn": "product.json"
+        },
+        {
+          "key": "shukoConfigurationDefaults",
+          "status": "referenced",
+          "foundIn": "src/vs/platform/configuration/common/configurationRegistry.ts"
+        }
+      ],
+      "settings": [
+        {
+          "key": "chat.disableAIFeatures",
+          "from": "mydist",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/chat/browser/chat.shared.contribution.ts"
+        },
+        {
+          "key": "workbench.colorTheme",
+          "from": "mydist",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/services/themes/common/themeConfiguration.ts"
+        },
+        {
+          "key": "breadcrumbs.enabled",
+          "from": "mydist",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/browser/parts/editor/breadcrumbs.ts"
+        },
+        {
+          "key": "workbench.startupEditor",
+          "from": "mydist",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/welcomeGettingStarted/browser/gettingStarted.contribution.ts"
+        },
+        {
+          "key": "basedpyright.importStrategy",
+          "from": "mydist",
+          "status": "lockManifest",
+          "foundIn": "detachhead.basedpyright"
+        },
+        {
+          "key": "typescript.disableAutomaticTypeAcquisition",
+          "from": "mydist",
+          "status": "extension",
+          "foundIn": "extensions/typescript-language-features/package.json"
+        },
+        {
+          "key": "npm.fetchOnlinePackageInfo",
+          "from": "mydist",
+          "status": "extension",
+          "foundIn": "extensions/npm/package.json"
+        },
+        {
+          "key": "json.schemaDownload.enable",
+          "from": "mydist",
+          "status": "extension",
+          "foundIn": "extensions/json-language-features/package.json"
+        },
+        {
+          "key": "workbench.settings.enableNaturalLanguageSearch",
+          "from": "mydist",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/preferences/common/preferencesContribution.ts"
+        },
+        {
+          "key": "terminal.integrated.suggest.enabled",
+          "from": "mydist",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/terminalContrib/suggest/common/terminalSuggestConfiguration.ts"
+        },
+        {
+          "key": "claudeCode.environmentVariables",
+          "from": "mydist",
+          "status": "lockManifest",
+          "foundIn": "anthropic.claude-code"
+        },
+        {
+          "key": "extensions.allowed",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/platform/extensionManagement/common/extensionManagement.ts"
+        },
+        {
+          "key": "telemetry.telemetryLevel",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/platform/telemetry/common/telemetryService.ts"
+        },
+        {
+          "key": "update.mode",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/platform/update/common/update.config.contribution.ts"
+        },
+        {
+          "key": "workbench.enableExperiments",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/services/assignment/common/assignmentService.ts"
+        },
+        {
+          "key": "extensions.autoUpdate",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts"
+        },
+        {
+          "key": "extensions.autoCheckUpdates",
+          "from": "shukoConfigurationDefaults",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts"
+        }
+      ],
+      "manifestsMissing": []
+    },
+    "lockfile": {
+      "status": "ok",
+      "files": [
+        {
+          "path": "build/pnpm-lock.yaml",
+          "status": "ok",
+          "unchanged": true
+        },
+        {
+          "path": "extensions/copilot/pnpm-lock.yaml",
+          "status": "removed",
+          "reason": "単位が消したフォルダの中"
+        },
+        {
+          "path": "extensions/pnpm-lock.yaml",
+          "status": "ok",
+          "unchanged": false,
+          "expected": {
+            "removedImporters": [
+              "debug-auto-launch",
+              "debug-server-ready",
+              "extension-editing",
+              "github",
+              "github-authentication",
+              "grunt",
+              "gulp",
+              "ipynb",
+              "jake",
+              "mermaid-markdown-features",
+              "microsoft-authentication",
+              "notebook-renderers",
+              "php-language-features",
+              "simple-browser",
+              "terminal-suggest",
+              "tunnel-forwarding"
+            ],
+            "removedDeps": {}
+          },
+          "changedSections": [],
+          "addedImporters": [],
+          "removedImporters": [
+            "debug-auto-launch",
+            "debug-server-ready",
+            "extension-editing",
+            "github",
+            "github-authentication",
+            "grunt",
+            "gulp",
+            "ipynb",
+            "jake",
+            "mermaid-markdown-features",
+            "microsoft-authentication",
+            "notebook-renderers",
+            "php-language-features",
+            "simple-browser",
+            "terminal-suggest",
+            "tunnel-forwarding"
+          ],
+          "unexpectedRemovedImporters": [],
+          "addedDeps": [],
+          "unexpectedRemovedDeps": [],
+          "changedDeps": [],
+          "addedPackages": [],
+          "addedSnapshots": [],
+          "removedDeps": {
+            "count": 0,
+            "items": []
+          },
+          "removedPackages": {
+            "count": 280,
+            "first": [
+              "@acemir/cssom@0.9.31",
+              "@antfu/install-pkg@1.1.0",
+              "@asamuzakjp/css-color@5.0.1",
+              "@asamuzakjp/dom-selector@6.8.1",
+              "@asamuzakjp/nwsapi@2.3.9",
+              "@azure/ms-rest-azure-env@2.0.0",
+              "@azure/msal-common@16.11.1",
+              "@azure/msal-node-extensions@5.3.2",
+              "@azure/msal-node-runtime@0.20.1",
+              "@azure/msal-node@5.4.0",
+              "@braintree/sanitize-url@7.1.2",
+              "@bramus/specificity@2.4.2",
+              "@chevrotain/cst-dts-gen@13.2.0",
+              "@chevrotain/gast@13.2.0",
+              "@chevrotain/regexp-to-ast@13.2.0",
+              "@chevrotain/types@13.2.0",
+              "@chevrotain/utils@13.2.0",
+              "@csstools/color-helpers@6.0.2",
+              "@csstools/css-calc@3.1.1",
+              "@csstools/css-color-parser@4.0.2",
+              "@csstools/css-parser-algorithms@4.0.0",
+              "@csstools/css-syntax-patches-for-csstree@1.0.29",
+              "@csstools/css-tokenizer@4.0.0",
+              "@enonic/fnv-plus@1.3.0",
+              "@exodus/bytes@1.15.0",
+              "@floating-ui/core@1.7.5",
+              "@floating-ui/dom@1.7.6",
+              "@floating-ui/react-dom@2.1.8",
+              "@floating-ui/react@0.26.28",
+              "@floating-ui/react@0.27.19",
+              "@floating-ui/utils@0.2.11",
+              "@headlessui/react@2.2.10",
+              "@headlessui/tailwindcss@0.2.2",
+              "@iconify-json/logos@1.2.11",
+              "@iconify-json/mdi@1.2.3",
+              "@iconify/types@2.0.0",
+              "@iconify/utils@3.1.0",
+              "@internationalized/date@3.12.1",
+              "@internationalized/number@3.6.6",
+              "@internationalized/string@3.2.8",
+              "@jupyterlab/nbformat@3.4.3",
+              "@lumino/coreutils@1.12.0",
+              "@mermaid-js/layout-tidy-tree@1.0.1",
+              "@mermaid-js/mermaid-zenuml@1.0.1",
+              "@mermaid-js/parser@2.0.1",
+              "@napi-rs/canvas-android-arm64@0.1.100",
+              "@napi-rs/canvas-darwin-arm64@0.1.100",
+              "@napi-rs/canvas-darwin-x64@0.1.100",
+              "@napi-rs/canvas-linux-arm-gnueabihf@0.1.100",
+              "@napi-rs/canvas-linux-arm64-gnu@0.1.100",
+              "@napi-rs/canvas-linux-arm64-musl@0.1.100",
+              "@napi-rs/canvas-linux-riscv64-gnu@0.1.100",
+              "@napi-rs/canvas-linux-x64-gnu@0.1.100",
+              "@napi-rs/canvas-linux-x64-musl@0.1.100",
+              "@napi-rs/canvas-win32-arm64-msvc@0.1.100",
+              "@napi-rs/canvas-win32-x64-msvc@0.1.100",
+              "@napi-rs/canvas@0.1.100",
+              "@octokit/auth-token@5.1.2",
+              "@octokit/core@6.1.5",
+              "@octokit/endpoint@10.1.4",
+              "@octokit/graphql-schema@14.4.0",
+              "@octokit/graphql@8.2.0",
+              "@octokit/graphql@8.2.2",
+              "@octokit/openapi-types@24.2.0",
+              "@octokit/openapi-types@25.0.0",
+              "@octokit/plugin-paginate-rest@11.6.0",
+              "@octokit/plugin-request-log@5.3.1",
+              "@octokit/plugin-rest-endpoint-methods@13.5.0",
+              "@octokit/request-error@6.1.8",
+              "@octokit/request@9.2.3",
+              "@octokit/rest@21.1.0",
+              "@octokit/types@13.10.0",
+              "@octokit/types@14.0.0",
+              "@react-aria/focus@3.22.0",
+              "@react-aria/interactions@3.28.0",
+              "@react-types/shared@3.34.0",
+              "@swc/helpers@0.5.21",
+              "@tanstack/react-virtual@3.13.24",
+              "@tanstack/virtual-core@3.14.0",
+              "@types/d3-array@3.2.1",
+              "@types/d3-axis@3.0.6",
+              "@types/d3-brush@3.0.6",
+              "@types/d3-chord@3.0.6",
+              "@types/d3-color@3.1.3",
+              "@types/d3-contour@3.0.6",
+              "@types/d3-delaunay@6.0.4",
+              "@types/d3-dispatch@3.0.7",
+              "@types/d3-drag@3.0.7",
+              "@types/d3-dsv@3.0.7",
+              "@types/d3-ease@3.0.2",
+              "@types/d3-fetch@3.0.7",
+              "@types/d3-force@3.0.10",
+              "@types/d3-format@3.0.4",
+              "@types/d3-geo@3.1.0",
+              "@types/d3-hierarchy@3.1.7",
+              "@types/d3-interpolate@3.0.4",
+              "@types/d3-path@3.1.1",
+              "@types/d3-polygon@3.0.2",
+              "@types/d3-quadtree@3.0.6",
+              "@types/d3-random@3.0.3"
+            ]
+          },
+          "removedSnapshots": {
+            "count": 280,
+            "first": [
+              "@acemir/cssom@0.9.31",
+              "@antfu/install-pkg@1.1.0",
+              "@asamuzakjp/css-color@5.0.1",
+              "@asamuzakjp/dom-selector@6.8.1",
+              "@asamuzakjp/nwsapi@2.3.9",
+              "@azure/ms-rest-azure-env@2.0.0",
+              "@azure/msal-common@16.11.1",
+              "@azure/msal-node-extensions@5.3.2",
+              "@azure/msal-node-runtime@0.20.1",
+              "@azure/msal-node@5.4.0",
+              "@braintree/sanitize-url@7.1.2",
+              "@bramus/specificity@2.4.2",
+              "@chevrotain/cst-dts-gen@13.2.0",
+              "@chevrotain/gast@13.2.0",
+              "@chevrotain/regexp-to-ast@13.2.0",
+              "@chevrotain/types@13.2.0",
+              "@chevrotain/utils@13.2.0",
+              "@csstools/color-helpers@6.0.2",
+              "@csstools/css-calc@3.1.1(@csstools/css-parser-algorithms@4.0.0(@csstools/css-tokenizer@4.0.0))(@csstools/css-tokenizer@4.0.0)",
+              "@csstools/css-color-parser@4.0.2(@csstools/css-parser-algorithms@4.0.0(@csstools/css-tokenizer@4.0.0))(@csstools/css-tokenizer@4.0.0)",
+              "@csstools/css-parser-algorithms@4.0.0(@csstools/css-tokenizer@4.0.0)",
+              "@csstools/css-syntax-patches-for-csstree@1.0.29",
+              "@csstools/css-tokenizer@4.0.0",
+              "@enonic/fnv-plus@1.3.0",
+              "@exodus/bytes@1.15.0",
+              "@floating-ui/core@1.7.5",
+              "@floating-ui/dom@1.7.6",
+              "@floating-ui/react-dom@2.1.8(react-dom@19.2.6(react@19.2.6))(react@19.2.6)",
+              "@floating-ui/react@0.26.28(react-dom@19.2.6(react@19.2.6))(react@19.2.6)",
+              "@floating-ui/react@0.27.19(react-dom@19.2.6(react@19.2.6))(react@19.2.6)",
+              "@floating-ui/utils@0.2.11",
+              "@headlessui/react@2.2.10(react-dom@19.2.6(react@19.2.6))(react@19.2.6)",
+              "@headlessui/tailwindcss@0.2.2",
+              "@iconify-json/logos@1.2.11",
+              "@iconify-json/mdi@1.2.3",
+              "@iconify/types@2.0.0",
+              "@iconify/utils@3.1.0",
+              "@internationalized/date@3.12.1",
+              "@internationalized/number@3.6.6",
+              "@internationalized/string@3.2.8",
+              "@jupyterlab/nbformat@3.4.3",
+              "@lumino/coreutils@1.12.0",
+              "@mermaid-js/layout-tidy-tree@1.0.1(mermaid@12.2.0)",
+              "@mermaid-js/mermaid-zenuml@1.0.1(mermaid@12.2.0)",
+              "@mermaid-js/parser@2.0.1",
+              "@napi-rs/canvas-android-arm64@0.1.100",
+              "@napi-rs/canvas-darwin-arm64@0.1.100",
+              "@napi-rs/canvas-darwin-x64@0.1.100",
+              "@napi-rs/canvas-linux-arm-gnueabihf@0.1.100",
+              "@napi-rs/canvas-linux-arm64-gnu@0.1.100",
+              "@napi-rs/canvas-linux-arm64-musl@0.1.100",
+              "@napi-rs/canvas-linux-riscv64-gnu@0.1.100",
+              "@napi-rs/canvas-linux-x64-gnu@0.1.100",
+              "@napi-rs/canvas-linux-x64-musl@0.1.100",
+              "@napi-rs/canvas-win32-arm64-msvc@0.1.100",
+              "@napi-rs/canvas-win32-x64-msvc@0.1.100",
+              "@napi-rs/canvas@0.1.100",
+              "@octokit/auth-token@5.1.2",
+              "@octokit/core@6.1.5",
+              "@octokit/endpoint@10.1.4",
+              "@octokit/graphql-schema@14.4.0",
+              "@octokit/graphql@8.2.0",
+              "@octokit/graphql@8.2.2",
+              "@octokit/openapi-types@24.2.0",
+              "@octokit/openapi-types@25.0.0",
+              "@octokit/plugin-paginate-rest@11.6.0(@octokit/core@6.1.5)",
+              "@octokit/plugin-request-log@5.3.1(@octokit/core@6.1.5)",
+              "@octokit/plugin-rest-endpoint-methods@13.5.0(@octokit/core@6.1.5)",
+              "@octokit/request-error@6.1.8",
+              "@octokit/request@9.2.3",
+              "@octokit/rest@21.1.0",
+              "@octokit/types@13.10.0",
+              "@octokit/types@14.0.0",
+              "@react-aria/focus@3.22.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)",
+              "@react-aria/interactions@3.28.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)",
+              "@react-types/shared@3.34.0(react@19.2.6)",
+              "@swc/helpers@0.5.21",
+              "@tanstack/react-virtual@3.13.24(react-dom@19.2.6(react@19.2.6))(react@19.2.6)",
+              "@tanstack/virtual-core@3.14.0",
+              "@types/d3-array@3.2.1",
+              "@types/d3-axis@3.0.6",
+              "@types/d3-brush@3.0.6",
+              "@types/d3-chord@3.0.6",
+              "@types/d3-color@3.1.3",
+              "@types/d3-contour@3.0.6",
+              "@types/d3-delaunay@6.0.4",
+              "@types/d3-dispatch@3.0.7",
+              "@types/d3-drag@3.0.7",
+              "@types/d3-dsv@3.0.7",
+              "@types/d3-ease@3.0.2",
+              "@types/d3-fetch@3.0.7",
+              "@types/d3-force@3.0.10",
+              "@types/d3-format@3.0.4",
+              "@types/d3-geo@3.1.0",
+              "@types/d3-hierarchy@3.1.7",
+              "@types/d3-interpolate@3.0.4",
+              "@types/d3-path@3.1.1",
+              "@types/d3-polygon@3.0.2",
+              "@types/d3-quadtree@3.0.6",
+              "@types/d3-random@3.0.3"
+            ]
+          }
+        },
+        {
+          "path": "pnpm-lock.yaml",
+          "status": "ok",
+          "unchanged": false,
+          "expected": {
+            "removedImporters": [],
+            "removedDeps": {
+              ".": [
+                "@microsoft/1ds-core-js",
+                "@microsoft/1ds-post-js"
+              ]
+            }
+          },
+          "changedSections": [],
+          "addedImporters": [],
+          "removedImporters": [],
+          "unexpectedRemovedImporters": [],
+          "addedDeps": [],
+          "unexpectedRemovedDeps": [],
+          "changedDeps": [],
+          "addedPackages": [],
+          "addedSnapshots": [],
+          "removedDeps": {
+            "count": 2,
+            "items": [
+              {
+                "importer": ".",
+                "group": "dependencies",
+                "name": "@microsoft/1ds-core-js",
+                "version": "3.2.13(tslib@2.8.1)"
+              },
+              {
+                "importer": ".",
+                "group": "dependencies",
+                "name": "@microsoft/1ds-post-js",
+                "version": "3.2.13(tslib@2.8.1)"
+              }
+            ]
+          },
+          "removedPackages": {
+            "count": 5,
+            "items": [
+              "@microsoft/1ds-core-js@3.2.13",
+              "@microsoft/1ds-post-js@3.2.13",
+              "@microsoft/applicationinsights-core-js@2.8.15",
+              "@microsoft/applicationinsights-shims@2.0.2",
+              "@microsoft/dynamicproto-js@1.1.9"
+            ]
+          },
+          "removedSnapshots": {
+            "count": 5,
+            "items": [
+              "@microsoft/1ds-core-js@3.2.13(tslib@2.8.1)",
+              "@microsoft/1ds-post-js@3.2.13(tslib@2.8.1)",
+              "@microsoft/applicationinsights-core-js@2.8.15(tslib@2.8.1)",
+              "@microsoft/applicationinsights-shims@2.0.2",
+              "@microsoft/dynamicproto-js@1.1.9"
+            ]
+          }
+        },
+        {
+          "path": "remote/pnpm-lock.yaml",
+          "status": "ok",
+          "unchanged": false,
+          "expected": {
+            "removedImporters": [],
+            "removedDeps": {
+              ".": [
+                "@microsoft/1ds-core-js",
+                "@microsoft/1ds-post-js"
+              ],
+              "web": [
+                "@microsoft/1ds-core-js",
+                "@microsoft/1ds-post-js"
+              ]
+            }
+          },
+          "changedSections": [],
+          "addedImporters": [],
+          "removedImporters": [],
+          "unexpectedRemovedImporters": [],
+          "addedDeps": [],
+          "unexpectedRemovedDeps": [],
+          "changedDeps": [],
+          "addedPackages": [],
+          "addedSnapshots": [],
+          "removedDeps": {
+            "count": 4,
+            "items": [
+              {
+                "importer": ".",
+                "group": "dependencies",
+                "name": "@microsoft/1ds-core-js",
+                "version": "3.2.13"
+              },
+              {
+                "importer": ".",
+                "group": "dependencies",
+                "name": "@microsoft/1ds-post-js",
+                "version": "3.2.13"
+              },
+              {
+                "importer": "web",
+                "group": "dependencies",
+                "name": "@microsoft/1ds-core-js",
+                "version": "3.2.13"
+              },
+              {
+                "importer": "web",
+                "group": "dependencies",
+                "name": "@microsoft/1ds-post-js",
+                "version": "3.2.13"
+              }
+            ]
+          },
+          "removedPackages": {
+            "count": 5,
+            "items": [
+              "@microsoft/1ds-core-js@3.2.13",
+              "@microsoft/1ds-post-js@3.2.13",
+              "@microsoft/applicationinsights-core-js@2.8.15",
+              "@microsoft/applicationinsights-shims@2.0.2",
+              "@microsoft/dynamicproto-js@1.1.9"
+            ]
+          },
+          "removedSnapshots": {
+            "count": 5,
+            "items": [
+              "@microsoft/1ds-core-js@3.2.13",
+              "@microsoft/1ds-post-js@3.2.13",
+              "@microsoft/applicationinsights-core-js@2.8.15",
+              "@microsoft/applicationinsights-shims@2.0.2",
+              "@microsoft/dynamicproto-js@1.1.9"
+            ]
+          }
+        },
+        {
+          "path": "test/sanity/pnpm-lock.yaml",
+          "status": "ok",
+          "unchanged": true
+        }
+      ],
+      "diff": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-p2-builds\\1.146.0-p2-B-1-r2\\lockfile.diff",
+      "checkedAt": "2026-11-14T14:15:54.506Z",
+      "baseRef": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+    },
+    "commitIdentity": {
+      "status": "ok",
+      "expected": "shuko-apply <apply@shuko.invalid>",
+      "items": []
+    }
+  },
+  "warnings": [],
+  "errors": [],
+  "commits": [
+    {
+      "sha": "de5ba972faa3b9b1e3098624a7fd92c37e688af5",
+      "subject": "apply: product.json overlay",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "af2ee30ad6c2422e77e3b4ccbb29386ef4d9a9b8",
+      "subject": "unit A-1-copilot-extension: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "cb0924b6d2fac0e215b9cda51cdca04328f2ae5d",
+      "subject": "unit A-1-copilot-extension: edits",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "f38d357c2a038cd4111e2d9d18d001ea7bb126ad",
+      "subject": "unit A-2-accounts-extensions: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "a95ad8de7aa741c65df63607f53a7ae3688ebc81",
+      "subject": "unit A-3-debug-extensions: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "d0950f8c1922e5fba94eeb4675702ec0d1c3b845",
+      "subject": "unit A-4-notebook-extensions: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "a40aabeb2bec5ffe71c14c67d0ddda2244d314f3",
+      "subject": "unit A-5-remote-extensions: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "359d528dcfa76db253a3e3ab7a0431bc7ccfee95",
+      "subject": "unit A-6-themes: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "b0d81b61e3be813bd54244d876e88d11a919617d",
+      "subject": "unit A-6-themes: edits",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "62d8e9433902bff36c4e95d2111720e342a77bf7",
+      "subject": "unit A-7-unused-extensions: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "7110dc777f8dfef9295ed525bd0d23a219900896",
+      "subject": "unit B-1-telemetry: ops",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "508f32a1dab1e5da310798ee4f5cd56e9c452016",
+      "subject": "unit B-1-telemetry: edits",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "1d8b559855af6102d30710822c455ce9e2d313ad",
+      "subject": "shuko: register product.json shukoConfigurationDefaults as configuration defaults",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "ad405f30e0b3687d778808c81ea028fe6c0f8047",
+      "subject": "shuko: connect directly when no proxy is configured",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "398fd0484efcc82c1562ae2363691cd66c12c592",
+      "subject": "apply: assets",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    },
+    {
+      "sha": "f47742d90bcc30886f716c9d5d1365f7c29b450c",
+      "subject": "apply: builtin extensions",
+      "author": "shuko-apply <apply@shuko.invalid>",
+      "committer": "shuko-apply <apply@shuko.invalid>"
+    }
+  ]
+}
