@@ -14,18 +14,26 @@
 //        [--user-data-dir <dir>] [--argv <file>] [--locale ja] [--no-download] [--dry-run] [--out <json>]
 //     --cache          VSIX の置き場所（既定 <buildRoot>\cache\vsix。lock-fetch.mjs と同じ <id>-<版>[@<target>]\<ファイル> の形）
 //     --rev            ビルドリポジトリの git のその commit の台帳を使う（戻し方。docs/04 の5節）
-//     --portable       CLI に VSCODE_PORTABLE を渡す（試し。argv.json は <portable>\argv.json、拡張の既定は <portable>\extensions）
+//     --portable       CLI に VSCODE_PORTABLE を渡す（試し。argv.json は <portable>\argv.json、拡張の既定は <portable>\extensions、
+//                      ユーザーのデータとログは <portable>\user-data）。場所が無ければ CLI の前に作る（下の「--portable の守り」）
 //     --extensions-dir / --user-data-dir  CLI にそのまま渡す
 //     --argv           argv.json の場所（既定: --portable があれば <portable>\argv.json、無ければ %USERPROFILE%\<dataFolderName>\argv.json）
-//     --dry-run        VSIX の用意と照合だけを行い、CLI は走らせず argv.json も書かない
+//     --dry-run        VSIX の用意と照合だけを行い、CLI は走らせず argv.json も書かない（キャッシュに無い VSIX は取る。
+//                      --portable の場所も作らない）
 // 普段使いのデータを守るため、CLI の版の dataFolderName が本家のもの（.vscode・.vscode-oss・.vscode-insiders）のときは、
 // --portable か --extensions-dir が無ければ止める（公式の zip で試すときの事故を防ぐ）。
+// --portable の守り（tasks/2026-11-15-install-doc-fix）: エディタは VSCODE_PORTABLE の指す場所が在り、product.json に
+// target が無いときだけポータブルとして扱う。そうでなければ黙って VSCODE_PORTABLE を消し、普段の場所に入れる
+// （1.146.0 の src/bootstrap-node.ts の configurePortable 239〜247行。CLI も src/cli.ts の17行で通る）。そこで:
+//   - --portable があり、CLI の版の product.json を読めないか target があれば、何も取らず・入れずに止める（dry-run でも）。
+//   - CLI を走らせる直前に <portable> を作り（mkdir -p）、フォルダとして在ることを確かめてから走らせる（dry-run では作らない）。
+//   - --extensions-dir が無ければ、入れたあとに <portable>\extensions が在ることを確かめ、無ければ誤りで止める。
 // 出力: 標準出力に JSON 1つ（--out にも書く）。
 // 終了コード: 0 = ok（dry-run も）、1 = 誤り、2 = SHA-256 の不一致、3 = 台帳に無い拡張が入っている
 //
 // 書き出している関数（テストの入口。build-switch-design.md の4節）:
 //   isLanguagePack, orderForInstall, vsixCachePath, parseListedExtensions, compareInstalled,
-//   scanJsonc, setArgvLocale, argvPathFor, DAILY_DATA_FOLDERS
+//   scanJsonc, setArgvLocale, argvPathFor, DAILY_DATA_FOLDERS, portableProblem, ensurePortableDir
 
 import fs from "node:fs";
 import path from "node:path";
@@ -184,6 +192,38 @@ export function argvPathFor({ argv, portable, dataFolderName, env = process.env 
   return path.join(env.USERPROFILE, dataFolderName, "argv.json");
 }
 
+// --portable が効くか（1.146.0 の src/bootstrap-node.ts の configurePortable 239行: `!('target' in product) && fs.existsSync(...)`）。
+// 場所の有無のほかの条件を見る。効かない見込みなら理由の文、効くなら null。
+//   product が null・オブジェクトでない → 読めないので確かめられない（止める）
+//   product に target がある（インストーラーの版。build/gulpfile.vscode.win32.ts の82行が "user"・"system" を入れる）→ 効かない
+export function portableProblem(product) {
+  if (!product || typeof product !== "object" || Array.isArray(product)) {
+    return "CLI の版の product.json を読めない。--portable が効くか（エディタがポータブルとして扱うか）を確かめられない";
+  }
+  if (Object.prototype.hasOwnProperty.call(product, "target")) {
+    return `CLI の版の product.json に target（${JSON.stringify(product.target)}。インストーラーの版）がある。エディタは --portable を無視して普段の場所に入れる`;
+  }
+  return null;
+}
+
+// <portable> を作り（mkdir -p）、エディタがポータブルとして扱う条件（場所がフォルダとして在る・product.json に target が無い）を
+// 満たすことを確かめる。満たさなければ例外。返り値 { path, existedBefore, created, extensionsDir }。
+// fsImpl はテストで差し替えられる（existsSync・mkdirSync・statSync を使う）。
+export function ensurePortableDir(dir, { product, fsImpl = fs } = {}) {
+  if (typeof dir !== "string" || dir.trim() === "") throw new Error("--portable の場所が空");
+  const problem = portableProblem(product);
+  if (problem) throw new Error(problem);
+  const p = path.resolve(dir);
+  const existedBefore = fsImpl.existsSync(p);
+  if (!existedBefore) fsImpl.mkdirSync(p, { recursive: true });
+  let isDir = false;
+  try {
+    isDir = fsImpl.statSync(p).isDirectory();
+  } catch {}
+  if (!isDir) throw new Error(`--portable の場所がフォルダとして無い（作れなかったか、同じ名前のファイルがある）: ${p}`);
+  return { path: p, existedBefore, created: !existedBefore, extensionsDir: path.join(p, "extensions") };
+}
+
 // ---------------------------------------------------------------------------
 // 入出力
 // ---------------------------------------------------------------------------
@@ -296,6 +336,13 @@ async function main() {
     if ((!dataFolderName || DAILY_DATA_FOLDERS.includes(dataFolderName)) && !a.portable && !a.extensionsDir) {
       throw new Error(`CLI の版の dataFolderName が ${dataFolderName}（本家・不明）。普段使いのデータに入れないよう、--portable か --extensions-dir を付ける`);
     }
+    // --portable が効かない版なら、何も取らないうちに止める（効かないと黙って普段の場所に入るため）
+    if (a.portable) {
+      const p = path.resolve(a.portable);
+      res.portable = { path: p, existedBefore: fs.existsSync(p), created: false, extensionsDir: a.extensionsDir ? null : path.join(p, "extensions") };
+      const problem = portableProblem(layout ? layout.product : null);
+      if (problem) throw new Error(`${problem}（--portable ${p}）`);
+    }
 
     // 1・2. VSIX の用意と照合（全部を確かめてから入れる）
     const ordered = orderForInstall(ledger.entries);
@@ -328,7 +375,11 @@ async function main() {
     res.argv = { path: argvFile, locale: a.locale };
     if (a.dryRun) finish("dry-run", 0);
 
-    // 3. 入れる
+    // 3. 入れる。--portable なら、走らせる前に場所を作り、ポータブルとして扱われる形であることを確かめる
+    if (a.portable) {
+      const made = ensurePortableDir(a.portable, { product: layout ? layout.product : null });
+      res.portable = { ...res.portable, ...made, extensionsDir: a.extensionsDir ? null : made.extensionsDir };
+    }
     const { env, removed } = childEnv(process.env, { VSCODE_PORTABLE: a.portable ? path.resolve(a.portable) : undefined });
     res.envRemovedForChildren = removed;
     const dirArgs = [];
@@ -338,6 +389,13 @@ async function main() {
       const r = runCli(cli, [...dirArgs, "--install-extension", it.file, "--force"], env);
       res.steps.push({ step: "install", id: it.id, exitCode: r.exitCode, seconds: r.seconds, output: `${r.stdout}\n${r.stderr}`.trim().split(/\r?\n/).slice(-5) });
       if (r.exitCode !== 0) throw new Error(`${it.id} を入れられない（終了コード ${r.exitCode}${r.error ? `、${r.error}` : ""}）`);
+    }
+    // --portable（--extensions-dir なし）で入れたなら、拡張は <portable>\extensions にあるはず（environmentService.ts の extensionsPath）
+    if (a.portable && !a.extensionsDir && items.length > 0) {
+      res.portable.extensionsDirExists = fs.existsSync(res.portable.extensionsDir);
+      if (!res.portable.extensionsDirExists) {
+        throw new Error(`--portable の場所に拡張が入っていない（${res.portable.extensionsDir} が無い）。エディタが普段の場所に入れた恐れがある`);
+      }
     }
 
     // 4. 台帳に無い拡張

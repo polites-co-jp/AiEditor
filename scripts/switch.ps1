@@ -31,6 +31,16 @@
   (src/vs/platform/environment/node/userDataPath.ts of 1.146.0). -UserDataDir overrides it (trials:
   never point the trial at the daily editor data).
 
+  Update watch (docs/06 2.3): in every mode, before anything else, it reads lastSuccessAt of the update
+  watch state (-WatchState; default %LOCALAPPDATA%\Shuko\watch\state.json), the same way as readWatchStatus
+  in scripts/lib/take-in/writeback.mjs. It prints one line to stderr and puts "watch" in the JSON:
+    [switch] update watch last succeeded: <lastSuccessAt>                       (age <= 3 days)
+    [switch] WARNING: update watch has not succeeded for <n> day(s) (last <lastSuccessAt>)   (age > 3 days)
+    [switch] WARNING: no update watch record (<path>); the update watch may not be running   (file missing)
+    [switch] WARNING: cannot read the update watch record (<path>)                       (not JSON)
+    [switch] WARNING: the update watch record has no lastSuccessAt (<path>)                (no/bad date)
+  It only warns: it never stops the switch and never changes the exit code. It never writes the state.
+
   Prints one JSON object to stdout.
   Exit codes: 0 ok, 1 error, 3 the editor is running, 4 the engines check failed.
 
@@ -41,6 +51,7 @@
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts/switch.ps1 -List
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts/switch.ps1 1.147.0-1 -Zip C:\b\dist\1.147.0-1.zip -Sha256 <hex> -ExpandOnly
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts/switch.ps1 1.146.0-t1 -ConfigPath C:\b\trial-install\local.json -UserDataDir C:\b\trial-install\userdata
+  powershell -NoProfile -ExecutionPolicy Bypass -File scripts/switch.ps1 -List -ConfigPath C:\b\trial-install\local.json -WatchState C:\b\trial-install\watch\state.json
 
   NOTE: this file is ASCII only on purpose (Windows PowerShell 5.1 reads BOM-less scripts as ANSI).
 #>
@@ -55,7 +66,8 @@ param(
     [string]$InstallRoot,
     [string]$ConfigPath,
     [string]$UserDataDir,
-    [string]$LedgerPath
+    [string]$LedgerPath,
+    [string]$WatchState
 )
 
 $ErrorActionPreference = 'Stop'
@@ -128,6 +140,61 @@ function Get-RemovableVersions {
     if ($room -lt 0) { $room = 0 }
     $drop = @($others | Select-Object -Skip $room)
     return , @($drop | Sort-Object -Property @{ Expression = { Get-LabelSortKey $_ } })
+}
+
+$WatchStaleDays = 3
+
+function Get-WatchStatus {
+    <# Reads lastSuccessAt of the update watch state.json (docs/06 2.3). Same rules as readWatchStatus in
+       scripts/lib/take-in/writeback.mjs: missing file -> found=false, warn; not JSON -> warn; no or unparsable
+       lastSuccessAt -> warn; age > 3 days -> warn. Returns an ordered hashtable
+       { statePath, found, lastSuccessAt, ageDays, warn, message }. Never throws, never writes. #>
+    param([string]$StatePath, [datetime]$Now = (Get-Date))
+    $r = [ordered]@{ statePath = $StatePath; found = $false; lastSuccessAt = $null; ageDays = $null; warn = $true; message = $null }
+    if (-not $StatePath -or -not (Test-Path -LiteralPath $StatePath -PathType Leaf)) {
+        $r.message = "no update watch record ($StatePath); the update watch may not be running"
+        return $r
+    }
+    $r.found = $true
+    $s = $null
+    try {
+        $raw = [IO.File]::ReadAllText($StatePath)
+        if ($raw.Length -gt 0 -and $raw[0] -eq [char]0xFEFF) { $raw = $raw.Substring(1) }
+        $s = ConvertFrom-Json -InputObject $raw
+    } catch {
+        $r.message = "cannot read the update watch record ($StatePath)"
+        return $r
+    }
+    $at = $null
+    if ($s -and $s.PSObject.Properties['lastSuccessAt']) { $at = $s.lastSuccessAt }
+    $t = $null
+    if ($at -is [datetime]) {
+        # pwsh 7 turns ISO strings into DateTime; keep the text in the round-trip form
+        $t = [DateTimeOffset]$at.ToUniversalTime()
+        $at = $at.ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ss.fffZ')
+    } elseif ($at -is [string] -and $at) {
+        $p = [DateTimeOffset]::MinValue
+        if ([DateTimeOffset]::TryParse($at, [Globalization.CultureInfo]::InvariantCulture, [Globalization.DateTimeStyles]::AssumeUniversal, [ref]$p)) { $t = $p }
+    } else {
+        $at = $null
+    }
+    $r.lastSuccessAt = $at
+    if ($null -eq $t) {
+        $r.message = "the update watch record has no lastSuccessAt ($StatePath)"
+        return $r
+    }
+    $age = ([DateTimeOffset]$Now - $t).TotalDays
+    $r.ageDays = [math]::Round($age, 1)
+    $r.warn = ($age -gt $WatchStaleDays)
+    if ($r.warn) { $r.message = "update watch has not succeeded for {0} day(s) (last {1})" -f [math]::Floor($age), $at }
+    else { $r.message = "update watch last succeeded: $at" }
+    return $r
+}
+
+function Write-WatchStatus {
+    param($Status)
+    if ($Status.warn) { [Console]::Error.WriteLine('[switch] WARNING: ' + $Status.message) }
+    else { [Console]::Error.WriteLine('[switch] ' + $Status.message) }
 }
 
 # ---------------------------------------------------------------------------
@@ -251,6 +318,18 @@ function Read-History {
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
+
+# Update watch freshness (docs/06 2.3): shown first, in every mode; a warning only, never a stop.
+if (-not $WatchState) {
+    if ($env:LOCALAPPDATA) { $WatchState = Join-Path $env:LOCALAPPDATA 'Shuko\watch\state.json' }
+}
+try {
+    $watchStatus = Get-WatchStatus -StatePath $WatchState
+} catch {
+    $watchStatus = [ordered]@{ statePath = $WatchState; found = $false; lastSuccessAt = $null; ageDays = $null; warn = $true; message = "cannot read the update watch record ($WatchState): $($_.Exception.Message)" }
+}
+$summary.watch = $watchStatus
+Write-WatchStatus $watchStatus
 
 try {
     $cfg = Resolve-ShukoLocalConfig -ConfigPath $ConfigPath -Overrides @{ installRoot = $InstallRoot }

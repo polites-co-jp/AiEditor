@@ -151,6 +151,7 @@ C:\b\dist\                        zip の置き場
 
 - スタートメニューのショートカットと PATH は `current` を指す。CLI は `current\bin\<applicationName>.cmd`、実行ファイルは `<nameShort>.exe`（1.146.0 の `build/gulpfile.vscode.ts`）。ユーザーのデータは `%APPDATA%\<nameShort>`（`VSCODE_APPDATA` があればその下。`src/vs/platform/environment/node/userDataPath.ts`）。
 - `switch.ps1 <label>` は次の順に動く。
+  0. 切り替え先の版が、台帳の拡張の `engines.vscode` を満たすかを確かめる。満たさなければ止まる（終了コード4）。最後に更新の検知が成功した日時を表示し、3日より古ければ警告する（止めない。[06](06-update-watch-and-take-in.md) の2.3）。
   1. `current` の版のプロセスが動いていたら止まる（閉じてから実行するよう促す）。
   2. ユーザーのデータ（`settings.json`、`keybindings.json`、`snippets`、`tasks.json`、`globalStorage\state.vscdb`）を `backups\<日時>\` に写す。
   3. `current` のジャンクションを付け替え、`history.txt` に書く。

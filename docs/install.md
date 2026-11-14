@@ -3,7 +3,7 @@
 ビルドした zip から Shuko を日常の利用に入れるまでの手順です（[07](07-phases.md) の7節の3）。普段使いの本家の VS Code は消さず、そのまま残します。Shuko が合わなかったときに戻る先にするためです（同じ節の4）。
 
 - 対象: Windows 11、x64。利用者はこの PC のユーザー1人
-- 入れる版: `C:\b\dist\1.146.0-p2-all.zip`（段階 A・B の14単位を当てた版。SHA-256 `15aa0ce75ead4e7455cfe4f40557f62c2b56b4822151319271e30916e3081f6f`、本体の commit `d5fd4c3a7558f7216fe5e9ba86970d11aceb40aa`。`records/phase2/phase2-close.md`）
+- 入れる版: `C:\b\dist\1.146.0-p2-all.zip`（段階 A・B の14単位を当てた版。SHA-256 `15aa0ce75ead4e7455cfe4f40557f62c2b56b4822151319271e30916e3081f6f`、本体の commit `d5fd4c3a7558f7216fe5e9ba86970d11aceb40aa`。全桁は `tasks/2026-11-15-p2-all-build/1.146.0-p2-all/build-record.json` の `zip.sha256`。締めの検証は `records/phase2/phase2-close.md`）
 - 所要時間: 手順1〜4は10分ほど（zip の展開と拡張の導入はそれぞれ1分弱）。外部ツールと Notion の用意を含めると1時間ほど
 - 管理者の権限: Shuko の手順はどれも要りません（全部ユーザーごとの場所に書きます）。外部ツール（手順5）の導入で UAC の確認が出ることがあります
 - 前提: [build-env-setup](build-env-setup.md) の道具が入っていて、Smart App Control がオフ。自分でビルドした署名の無いネイティブの部品は、オンだと読み込めません（[02](02-repository-and-build.md) の5節。裁定 2026-11-14）
@@ -16,17 +16,18 @@ cd E:\develop\self\Team\projects\ai-editor
 
 ## 普段の VS Code とは分かれている
 
-Shuko は product.json の名前を変えてあるので（`nameShort: Shuko`、`dataFolderName: .shuko`。`product.overlay.json`）、データの置き場所が本家と重なりません。Shuko の手順は、本家の場所には何も書きません。
+Shuko は product.json の名前を変えてあるので（`nameShort: Shuko`、`dataFolderName: .shuko`、`sharedDataFolderName: .shuko-shared`。`product.overlay.json`）、データの置き場所が本家と重なりません。Shuko の手順は、本家の場所には何も書きません。
 
 | もの | 本家の VS Code | Shuko |
 |---|---|---|
 | ユーザーのデータ（`settings.json`・`keybindings.json`・`snippets\`・状態） | `%APPDATA%\Code` | `%APPDATA%\Shuko` |
 | 拡張と `argv.json` | `%USERPROFILE%\.vscode\` | `%USERPROFILE%\.shuko\` |
+| アプリケーションの共有の保存場所（`sharedStorage`） | `%USERPROFILE%\<本家の sharedDataFolderName>\`（公式の版の値は確かめていない。OSS のソースの値は `.vscode-oss-shared`） | `%USERPROFILE%\.shuko-shared\` |
 | 本体 | 本家のインストール先 | `<installRoot>\versions\<ラベル>\`（既定 `%LOCALAPPDATA%\Programs\Shuko`） |
 | コマンドラインの入口 | `code` | `shuko` |
 | 道具の設定・更新の検知の状態とトークン | — | `%LOCALAPPDATA%\Shuko\`（`local.json`・`watch\`） |
 
-- 置き場所は、1.146.0 のソース（`src/vs/platform/environment/node/userDataPath.ts`、`src/mainImpl.ts` の `getArgvConfigPath`）と `scripts/switch.ps1`・`scripts/install-extensions.mjs` の読みから決めたものです。手順4のあとの初めての起動で確かめます。
+- 置き場所は、1.146.0 のソース（`src/vs/platform/environment/node/userDataPath.ts`、`src/mainImpl.ts` の `getArgvConfigPath`、`src/vs/platform/environment/common/environmentService.ts` の `appSharedDataHome`、`src/vs/platform/storage/electron-main/storageMainService.ts` の `sharedStorage`）と `scripts/switch.ps1`・`scripts/install-extensions.mjs` の読みから決めたものです。手順4のあとの初めての起動で確かめます（`.shuko-shared` が実際に作られるかも、そこで見ます）。
 - 本家と Shuko は同時に起動できる見込みです（データの置き場所も、多重起動の印 `win32MutexName` も別の名前のため）。
 - 分かれていないもの: Claude Code の CLI の設定・ログイン・会話の記録（`%USERPROFILE%\.claude\`）は、どちらのエディタの Claude Code 拡張からも同じものが使われます（見込み）。
 - 本家の設定は自動では写りません。持ってくるときは、Shuko を閉じてから、要る項目だけを `%APPDATA%\Shuko\User\settings.json` に手で写してください。
@@ -82,7 +83,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/configure.ps1 -Insta
 
 3. 新しい PowerShell の窓を開き、`where.exe shuko` が新しい場所の `current\bin\shuko.cmd` を指すことを確かめます。
 
-- `-NoMove` を付けると、何も移さず、新しい場所で空から始めます（前の場所はそのまま残ります）。そのときは手順2からやり直します。
+- `-NoMove` を付けると、何も移さず、新しい場所で空から始めます（前の場所はそのまま残ります）。そのときは手順2の `switch.ps1 … -Zip …` だけをやり直します。`-NoMove` でも、スタートメニューのショートカットとユーザーの PATH は新しい `current` に向け直されるので（上の5。`-NoShellIntegration` を付けたときだけ向け直しません）、手順3はやり直しません。やり直すと、PATH に同じ項目が2つ入ります。
 - 更新の検知のタスク（手順7）は、実行のたびに `local.json` を読むので、登録し直さなくて構いません。
 - ほかの値を変えるとき: `-KeepVersions <数>`（残す版の数。1以上）、`-BuildRoot <場所>`（ビルドの作業場所。前の場所の中身は移しません）、`-BuilderRepo <場所>`（ビルドリポジトリを動かしたとき。`extensions.lock.json` がある場所でないと止まります）。`-BuilderRepo` を変えたら、手順7の `register-task.ps1` を実行し直します（タスクに `watch.mjs` のパスが書かれているため）。
 
@@ -96,6 +97,10 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/switch.ps1 1.146.0-1
 - 版のフォルダの名前（ラベル）は「本家のタグ-ビルドの番号」にします（[02](02-repository-and-build.md) の6節）。zip の名前はビルドのときの `1.146.0-p2-all` ですが、ラベルは `1.146.0-1` にしてください。更新の検知は、`current` の指すフォルダの名前から今の版を読みます。読めるのは `1.146.0` か `1.146.0-1` の形だけです。
 - 出力の見どころ: `"result": "ok"`、`target.exe` が `...\versions\1.146.0-1\Shuko.exe`、`engines.unsatisfied` が空、`history` が `<日時>\t-\t1.146.0-1`（`\t` はタブ。`-` は「前の版なし」）。
 - 初めてのときは `backup.missing` に5つ全部が並びますが、写すユーザーのデータがまだ無いだけで、誤りではありません。
+- `switch.ps1` は、どの使い方でも初めに、更新の検知（手順7）が最後に成功した日時を1行出します（[06](06-update-watch-and-take-in.md) の2.3。JSON では `watch`）。警告だけで、切り替えは止めず、終了コードも変えません。
+  - `[switch] update watch last succeeded: <日時>`: 3日以内に成功している。
+  - `[switch] WARNING: update watch has not succeeded for <日数> day(s) (last <日時>)`: 3日より前から成功していない。Notion のトークンの失効などで、ToDo にも失敗を出せていない恐れがあります。`%LOCALAPPDATA%\Shuko\watch\watch.log` の末尾を見ます。
+  - `[switch] WARNING: no update watch record (...)`: 検知の記録が無い。手順7の前（今のこの手順2）はこれが出ますが、誤りではありません。手順7のあとも出るなら、検知が一度も成功していません。
 - 確かめ:
 
   ```powershell
@@ -151,7 +156,7 @@ $ws.CreateShortcut($lnk).TargetPath
 
 台帳 `extensions.lock.json` の8つの拡張（Claude Code、basedpyright、PowerShell、bash-ide、Rainbow CSV、.env、PDF、日本語の言語パック）を入れ、`argv.json` に `"locale": "ja"` を書きます（[04](04-bundled-extensions.md) の5節）。Shuko を起動する前に行います。
 
-まず、取得と照合だけを試します（何も入れません）。
+まず、取得と照合だけを試します（何も入れません。ただし、キャッシュに無い VSIX はこのときに Open VSX から取ります。オフラインだと、キャッシュに無いものがあれば誤りになります）。
 
 ```powershell
 node scripts/install-extensions.mjs --dry-run
@@ -173,7 +178,7 @@ node scripts/install-extensions.mjs
   | コード | 意味 | すること |
   |---|---|---|
   | 0 | 済んだ | — |
-  | 1 | 誤り（CLI が無い、VSIX が取れない、入れた結果が台帳と合わない、など） | `message` を見る。`CLI が無い` なら手順2をやり直す |
+  | 1 | 誤り（版のフォルダか CLI が無い、VSIX が取れない、入れた結果が台帳と合わない、など） | `message` を見る。`フォルダが無い: <installRoot>\current`（手順2がまだ済んでいない）か `CLI が無い: <場所>`（版のフォルダはあるが CLI が無い）なら、手順2をやり直す |
   | 2 | SHA-256 が台帳と違う。何も入れていない | 入れずに知らせてください（取得したファイルが壊れたか、すり替わった恐れ） |
   | 3 | 台帳に無い拡張が入っている。`argv.json` は書いていない | 一覧（`compare.extra`）を見て、消すなら `shuko --uninstall-extension <ID>` で消してからやり直す |
 
@@ -185,6 +190,7 @@ node scripts/install-extensions.mjs
 - 拡張の画面に、手順4の8つが出ている。
 - Claude Code のパネルが開き、送信して応答が返る（ログインを求められたら、画面の案内に従う）。
 - エクスプローラーで、`%APPDATA%\Shuko\User` ができていて、`%APPDATA%\Code` の更新日時が変わっていない。
+- `%USERPROFILE%\.shuko-shared\` ができているか（できていれば、8節の「すっかり消すとき」の対象。できていなくても誤りではありません）。
 
 ほかに手で見る項目は `records/phase2/manual-checks-p2-all.md` にあります（ここでは全部をやり直さなくて構いません）。
 
@@ -359,7 +365,7 @@ Shuko をしばらく使わないなら、次も行います（どれも、や�
 2. スタートメニューのショートカットを消す: `Remove-Item (Join-Path ([Environment]::GetFolderPath('Programs')) 'Shuko.lnk')`
 3. 環境変数の画面（手順3.2）で、ユーザーの `Path` から `...\Shuko\current\bin` を消す。
 
-すっかり消すときは、さらに次を消します: `<installRoot>`（既定 `%LOCALAPPDATA%\Programs\Shuko`）、`%APPDATA%\Shuko`、`%USERPROFILE%\.shuko`、`%LOCALAPPDATA%\Shuko`（`local.json` と更新の検知のトークン）。Notion の2つのインテグレーションは、手順6の2の画面で消せます。Shuko は起動のときに URL の `shuko://` をユーザーのレジストリ（`HKCU\Software\Classes\shuko`）に登録します（本家と同じ動き。1.146.0 の `src/vs/platform/url/electron-main/electronUrlListener.ts`）。気になるなら、それも消します。
+すっかり消すときは、さらに次を消します: `<installRoot>`（既定 `%LOCALAPPDATA%\Programs\Shuko`）、`%APPDATA%\Shuko`、`%USERPROFILE%\.shuko`、`%USERPROFILE%\.shuko-shared`（あれば）、`%LOCALAPPDATA%\Shuko`（`local.json` と更新の検知のトークン）。Notion の2つのインテグレーションは、手順6の2の画面で消せます。Shuko は起動のときに URL の `shuko://` をユーザーのレジストリ（`HKCU\Software\Classes\shuko`）に登録します（本家と同じ動き。1.146.0 の `src/vs/platform/url/electron-main/electronUrlListener.ts`）。気になるなら、それも消します。
 
 ## うまくいかないとき
 

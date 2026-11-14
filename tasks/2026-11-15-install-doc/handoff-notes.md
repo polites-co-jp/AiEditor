@@ -7,14 +7,14 @@
 
 - 結果: 完了（下書き。リーダーが `docs/install.md` に置く）
 - 成果物:
-  - `tasks/2026-11-15-install-doc/install-draft.md`（手順書の下書き）
+  - `tasks/2026-11-15-install-doc/install-draft.md`（手順書の下書き。2026-11-15 の再検証で合格し、リーダーが `docs/install.md` に移した）
   - `tasks/2026-11-15-install-doc/handoff-notes.md`（この文書）
   - 試しの場所 `C:\b\trial-install-doc\`（下の「試した範囲」。版のフォルダ2つで約 2.4 GB。消す道が私の許可に無いので残してある）
 - 要点:
   1. brief の8項目（local.json、zip と `current`、スタートメニューと PATH、台帳の拡張、外部ツール、Notion、更新の検知、戻し方）を、台本の実際の引数に合わせて書いた。本家の VS Code のデータと分かれていることは冒頭の表に書いた。
   2. スタートメニューと PATH を初めて登録する台本は無い。手順書には手で行う手順を書いた。`configure.ps1 -InstallRoot` があとで向け直せる形（「プログラム」フォルダの直下の .lnk、ユーザーの PATH の `<installRoot>\current\bin`）にそろえてある。
   3. 版のラベルは `1.146.0-1` にした（zip の名前は `1.146.0-p2-all`）。更新の検知は、ラベルが `x.y.z` か `x.y.z-N` の形のときだけ、今の版をラベルから読むため。
-  4. 実際の local.json・スタートメニュー・PATH・タスクスケジューラ・Notion には触れていない。試しは `C:\b\trial-install-doc\` と、各台本が持つ試しの形（`-ConfigPath`・`-NoMove`・`-NoShellIntegration`・`-UserDataDir`・`-ExpandOnly`・`--dry-run`・`--portable`・`-DryRun`・`--state-dir`・`--token-file`）だけで行った。
+  4. 実際の local.json・スタートメニュー・PATH・タスクスケジューラ・Notion には触れていない。ただし、試しの5（`install-extensions.mjs --portable`）は台本の欠陥で普段の場所（`%USERPROFILE%\.shuko`・`%APPDATA%\Shuko`）に書いていた（下の「試しが普段の場所に漏れた」。2026-11-15 に追記）。試しは `C:\b\trial-install-doc\` と、各台本が持つ試しの形（`-ConfigPath`・`-NoMove`・`-NoShellIntegration`・`-UserDataDir`・`-ExpandOnly`・`--dry-run`・`--portable`・`-DryRun`・`--state-dir`・`--token-file`）だけで行った。
   5. 確かめていない点が3つある（未解決の1〜3）。ショートカットがジャンクションを通したパスのまま保存されるか、タスクの登録に管理者の権限が要らないか、データの置き場所の実機での確認。
 
 ## 試した範囲（2026-11-15、この PC、普通の権限）
@@ -27,7 +27,7 @@
 | 2 | `configure.ps1 -ConfigPath … -InstallRoot C:/b/trial-install-doc/A -NoMove -NoShellIntegration` | ok。試しの installRoot に向けた。`-NoMove` は、普段の場所 `%LOCALAPPDATA%\Programs\Shuko` に何かがあっても動かさないため（私の許可ではその場所を読めず、有無を確かめられない） |
 | 3 | `switch.ps1 1.146.0-1 -Zip C:/b/dist/1.146.0-p2-all.zip -Sha256 15aa0ce7…6f6f -ConfigPath … -UserDataDir C:/b/trial-install-doc/userdata` | ok（約20秒）。SHA-256 一致、zip の最上位のフォルダ `Shuko-win32-x64-1.146.0-p2-all` を `versions\1.146.0-1` にした。`exe` は `Shuko.exe`、`cli` は `bin\shuko.cmd`、`versionedFolder` は null。engines 8件すべて満たす。初めてなので `backup.missing` に5つ。history は `<日時>\t-\t1.146.0-1` |
 | 4 | `node scripts/install-extensions.mjs --config … --dry-run` | `dry-run`。8件とも `sha256Ok: true`（キャッシュ `C:\b\cache\vsix` から）。`editor.dataFolderName` は `.shuko`、`argv.path` は `C:\Users\<ユーザー>\.shuko\argv.json`（書いていない） |
-| 5 | `node scripts/install-extensions.mjs --config … --portable C:/b/trial-install-doc/portable` | ok（約18秒）。言語パックが先、残りは台帳の順。`compare.ok: true`、`argv.json` は `portable\argv.json` に作られ、`endsWithNewlineBrace: true` |
+| 5 | `node scripts/install-extensions.mjs --config … --portable C:/b/trial-install-doc/portable` | ok（約18秒）と出たが、**試しの場所に入っていなかった**（2026-11-15 の検証で分かった。下の「試しが普段の場所に漏れた」）。`portable\` が無いまま CLI を走らせたので、エディタは `--portable` を捨て、8つの拡張を普段の `%USERPROFILE%\.shuko\extensions` に入れ、CLI のログを `%APPDATA%\Shuko` に書いた（01:33 ごろ）。`compare.ok: true` は普段の場所の一覧を読んだ結果。`argv.json` だけが `portable\argv.json` に作られた。台本は `tasks/2026-11-15-install-doc-fix/` で直し、`C:/b/trial-install-doc/portable-fix` でやり直した（8つとも `portable-fix\extensions` に入った） |
 | 6 | `switch.ps1 1.146.0-2 -Zip <同じ zip> -ExpandOnly -ConfigPath …` | ok。展開だけ。`current` は `1.146.0-1` のまま |
 | 7 | `switch.ps1 1.146.0-2 -ConfigPath … -UserDataDir C:/b/trial-install-doc/portable/user-data` | ok。`1.146.0-1 → 1.146.0-2` |
 | 8 | `switch.ps1 -Previous -ConfigPath … -UserDataDir …` | ok。`1.146.0-2 → 1.146.0-1` に戻った |
@@ -39,7 +39,15 @@
 | 14 | `node tools/watch/watch.mjs --dry-run --quiet --config … --state-dir … --token-file …` | `exitCode: 0`。`current` は `{ version: 1.146.0, label: 1.146.0-1, source: current }`。計画は2件（`anthropic.claude-code 2.1.322 → 2.1.325`、`weixu.wx-vsce-dotenv 0.2.3 → 0.2.4`）。Notion に書かず、state も log も書いていない |
 | 15 | `scripts/check-env.ps1`、`pwsh --version` | missing なし、Smart App Control は off、C: の空き 20.5 GB。PowerShell 7.7.0、Git 2.54.0、Python 3.14.7、Node.js 24.22.1 |
 
-試していないもの（brief と裁定で、ユーザーが行うもの）: 本物の `local.json` の作成、スタートメニューと PATH の登録、`install-extensions.mjs` を普段の場所（`%USERPROFILE%\.shuko`）に向けた導入、Shuko の起動、`set-token.ps1`（秘密の場所に書くため）、`watch.mjs --check`（Notion に接続するため）、`register-task.ps1` の登録、`configure.ps1` の手順5（ショートカットと PATH の向け直し）、違うドライブへの移動。
+試していないもの（brief と裁定で、ユーザーが行うもの）: 本物の `local.json` の作成、スタートメニューと PATH の登録、Shuko の起動、`set-token.ps1`（秘密の場所に書くため）、`watch.mjs --check`（Notion に接続するため）、`register-task.ps1` の登録、`configure.ps1` の手順5（ショートカットと PATH の向け直し）、違うドライブへの移動。
+
+### 試しが普段の場所に漏れた（2026-11-15 の検証で分かり、事実に合わせて直した）
+
+- 前の版のこの節は「試していないもの」に「`install-extensions.mjs` を普段の場所（`%USERPROFILE%\.shuko`）に向けた導入」を挙げていた。事実と違った。上の表の5で、8つの拡張は `%USERPROFILE%\.shuko\extensions` に入っていた。
+- 普段の場所にできたと見られるもの（2026-11-15 01:33 ごろ）: `%USERPROFILE%\.shuko\extensions\`（8つの拡張と `extensions.json`）、`%APPDATA%\Shuko\`（CLI のログ `logs\<日時>\cli.log`。やり直しの試しでは、ポータブルの `user-data\` に `logs\` と `CachedProfilesData\` ができたので、同じものが `%APPDATA%\Shuko\` にできたと見られる）。リーダーが有無と日時を確かめた（`tasks/2026-11-15-install-doc-fix/brief.md`）。私の許可ではその場所を読めない。
+- 漏れていないもの: `argv.json`（`portable\argv.json` に書いた）、本家の VS Code のデータ（`.shuko` の版の CLI なので、本家の場所は使わない）、local.json・スタートメニュー・PATH・タスクスケジューラ・Notion。
+- 原因: 1.146.0 の `src/bootstrap-node.ts` の `configurePortable`（239〜247行）は、`VSCODE_PORTABLE` の場所が在るときだけポータブルとして扱い、無ければ黙って消す。台本は場所を作らずに CLI を走らせていた。
+- 直し: `scripts/install-extensions.mjs` は、CLI を走らせる前に `--portable` の場所を作り、ポータブルとして扱われる形（場所がフォルダとして在る、product.json に `target` が無い）を確かめてから走らせる。入れたあとに `<portable>\extensions` があることも確かめる（`tasks/2026-11-15-install-doc-fix/handoff-notes-meng-tian.md`）。
 
 ## 手順書のコマンドと台本の引数の照らし合わせ（大岡越前守の検証の入口）
 

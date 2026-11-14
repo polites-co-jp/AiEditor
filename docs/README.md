@@ -19,6 +19,7 @@ Claude Code でのコーディングに特化した、省メモリの VS Code �
 | 8 | [06-update-watch-and-take-in.md](06-update-watch-and-take-in.md) | 本体と拡張の新版の検知、Notion の ToDo への書き込み、毎週の取り込みと検証、入れ替えと戻し方 | Phase 3 の前 |
 | 9 | [08-risks-and-open-items.md](08-risks-and-open-items.md) | リスク、実機で確かめること、調べること、決定済みの論点と未決の論点、別案 | 各 Phase の終わりに見直す |
 | 10 | [build-env-setup.md](build-env-setup.md) | この Windows にビルドの道具（Build Tools・Node.js・pnpm・setuptools）を入れる手順 | Phase 1 の前（ユーザーが行う） |
+| 11 | [install.md](install.md) | ビルドした zip から Shuko を日常の利用に入れる手順（local.json・切り替え・スタートメニューと PATH・拡張・外部ツール・Notion・更新の検知・戻し方） | Phase 4（ユーザーが行う） |
 
 `sources/` には設計の根拠にした調査メモがある（2026-11-12 取得）。
 - `sources/research-vscode-source.md`: 本家 1.146.0 のソース、ビルド、VSCodium
