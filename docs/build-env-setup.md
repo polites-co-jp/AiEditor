@@ -88,6 +88,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check-env.ps1
 | 手順1で Installer の画面が出ない、途中で止まる | スタートメニューの「Visual Studio Installer」を開き、Build Tools 2026 の「変更」から、C++ によるデスクトップ開発と Windows 11 SDK（10.0.26100）に印を付けて入れる |
 | 手順2で「適用できる更新が見つかりません」 | `node --version` が `v24.22.1` なら済んでいる |
 | `node --version` が `v26.x` など 24.22.1 でない（`upgrade` では版を下げられない） | 一度消して版を指定して入れ直し、自動で上がらないよう止める。`winget uninstall --id OpenJS.NodeJS.LTS -e --source winget` → `winget install --id OpenJS.NodeJS.LTS -e --source winget --version 24.22.1` → `winget pin add --id OpenJS.NodeJS.LTS -e`。その後に手順3（pnpm）をやり直す。npm で入れた道具（Claude Code など）は消えない |
+| 手順3で `EEXIST: file already exists ... AppData\Roaming\npm\pnpm` | 前に corepack が置いた pnpm の入口が残っている。`npm install -g pnpm@12.16.0 --force` で上書きする |
 | `pnpm --version` が Node.js の版だけ出して止まる | 今の pnpm は Node.js 24 に付いていた corepack 経由で入っていて、Node.js 26 には corepack が無い。Node.js を 24.22.1 に戻してから手順3を実行する |
 | 手順3で `pnpm --version` が 11.8.0 のまま | 新しい窓を開いて確かめる。それでも古ければ `where.exe pnpm` の出力を知らせてください |
 | 手順5で `signtool` だけが missing | 手順1の Windows 11 SDK が入っていない。上の Installer の「変更」で入れる |
