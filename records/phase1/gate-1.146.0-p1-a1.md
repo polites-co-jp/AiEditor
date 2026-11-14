@@ -64,3 +64,42 @@ Phase 1 の関門は、上の2つの条件について合格。関門の全体�
 - `node tests/run-all.mjs`: TOTAL 1500、pass 1479、fail 0、skip 21（`tasks/2026-11-14-p1-verify-a1/run-all-output.txt`）。走らせた時点の `extensions-src/notion-sync/` は、蒙恬の直しの途中の状態（`jsonc-parser` を `devDependencies` へ移した変更）で、その状態で通った。
 
 詳細と根拠のコマンドは `tasks/2026-11-14-p1-verify-a1/verification-log.md`。
+
+---
+
+## 追記（2026-11-14 22:00 頃、大岡越前守）: Claude Code の組と、関門の結び
+
+- タスク: `tasks/2026-11-14-p1-smoke-built/`（r2 のスモーク。不合格）、`tasks/2026-11-14-build-commit-fix/`（蒙恬の build.mjs の直しと r3 の作り直し、曹参のテスト）、`tasks/2026-11-14-verify-commit-fix/`（この検証）
+- スモークの記録: `records/phase1/smoke-built-1.146.0-p1-a1.md`（r2）、`records/phase1/smoke-built-1.146.0-p1-a1-r3.md`（r3）
+
+### 経緯
+
+r2 の zip のスモークは不合格だった。作業ツリーの `.git` がファイルで、本家の `build/lib/git.ts` が HEAD を読めない。そのため出力の product.json に `commit` が無く、ターミナル・タスク・PowerShell のセッション・言語パックが落ちた。蒙恬が `scripts/build.mjs` を直した。型検査とパッケージ化の子のプロセスに `BUILD_SOURCEVERSION=<作業ツリーの HEAD>` を渡し（リーダーの判断）、後処理で出力の `commit` を確かめる。直した build.mjs で r3 を作り直した。
+
+### 作り直した版（r3）
+
+| 項目 | 値 |
+|---|---|
+| zip | `C:\b\dist\1.146.0-p1-a1-r3.zip`、406,723,259 バイト、SHA-256 `e9215f2c2df15a3b4fdd910df1e63437d35b28bf844119c9517d57860daa996c`（検証役が `sha256sum` で計算し直して一致） |
+| 当て方 | r2 と同じ（`--only A-1-copilot-extension`、上書き・patches・assets は空、mydist だけ） |
+| 作業ツリーの HEAD | `cff68091803f933ffbd34c93d1a7dc14633f7a72`（`C:\b\vscode\.git\worktrees\p1-a1\HEAD` を検証役が読んで確かめた。`take-in-r3/checks.json` の `headCommit` と同じ） |
+| 出力の product.json の `commit` | 同じ値（展開したものの215行。後処理の `productCommit.ok: true`） |
+| 所要時間（依存の導入から zip まで。導入済みの作業ツリー） | install 3.7・lockfile 0.5・typecheck 19.7・package 166.2・postprocess 0.01・zip 38.7 秒。4分2秒（`tasks/2026-11-14-build-commit-fix/build-record-r3.json`） |
+| ディスク | 作業ツリー 4.5 GB・131,105 ファイル、出力 1.18 GB・2,612 ファイル、zip 0.38 GB（同上の `disk`） |
+| zip からの起動 | `p1-launch-check.ps1 -Zip` が `ok`。`code-oss.cmd --version` の2行目が `cff68091…7a72`（`launch-check-r3.json`） |
+
+### 判定（関門の結び）
+
+| 条件（docs/07 の4節の完了の条件） | 判定 |
+|---|---|
+| zip から起動する | **満たす**（r2 で確かめ、r3 でも `launch-check-r3.json` と、zip を展開したものでのスモークで確かめた） |
+| Claude Code の組が通る | **満たす**（自動の3項目 claude.running・claude.exthost-log・claude.lock が PASS。r3 のスモーク） |
+| 所要時間とディスクの記録がある | **満たす**（上の r2 の表と、r3 の `build-record-r3.json`） |
+
+**Phase 1 の関門は合格。** r3 のスモークは PASS 48 / FAIL 1。残った FAIL の errors.new の3件（トンネルの設定が無い ×2、Claude Code の Remote Control）は、Code - OSS の product.json と A-1 の範囲で説明できる（Remote Control の方は推定を含む。スモークの記録の4節）。
+
+対象外: docs/06 の5節の claude-code の組の手の項目（パネルからの送信、統合ターミナルの `claude` の接続、選択範囲、差分、診断）は、Phase 2 の最後にユーザーが行う（依頼書の5）。この関門では見ていない。
+
+あわせて見たもの（docs/07 の4節の4）: 言語パックは効いた（表示が ja）。mydist の既定（`basedpyright.importStrategy` = `useBundled`、`CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1`）は効いた。`extensions.allowed` は上書きを当てていないので Phase 2 で見る。
+
+詳細と根拠のコマンドは `tasks/2026-11-14-verify-commit-fix/verification-log.md`。

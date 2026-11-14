@@ -1,0 +1,170 @@
+{
+  "label": "verify-pp-r3-mismatch",
+  "upstream": {
+    "tag": "1.146.0",
+    "commit": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+  },
+  "units": [
+    {
+      "id": "A-1-copilot-extension",
+      "enabled": false,
+      "applied": "ok"
+    }
+  ],
+  "patches": [],
+  "lockfileDiff": "tasks/2026-11-14-build-commit-fix/take-in-r3/lockfile.diff",
+  "toolchain": null,
+  "durations": {},
+  "zip": null,
+  "extensionsLockSha256": "6b4c3ceae7d6cb407f62bbcbd57ca50267e998975887884cc325fd26a85cce10",
+  "result": "error",
+  "stoppedAt": "postprocess",
+  "dryRun": false,
+  "startedAt": "2026-11-14T12:49:37.829Z",
+  "finishedAt": "2026-11-14T12:49:37.950Z",
+  "paths": {
+    "buildRoot": "C:\\b",
+    "worktree": "e:\\develop\\self\\Team\\projects\\ai-editor",
+    "packageDir": "C:\\b\\p1\\1.146.0-p1-a1-r3\\Code-OSS-win32-x64-1.146.0-p1-a1-r3",
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-build-commit-fix\\take-in-r3\\checks.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\removals",
+    "dist": "C:\\b\\dist",
+    "logs": "C:\\b\\logs\\verify-pp-r3-mismatch"
+  },
+  "config": {
+    "path": "C:\\Users\\kou_z\\AppData\\Local\\Shuko\\local.json",
+    "exists": false,
+    "buildRootFrom": "default"
+  },
+  "stepsSelected": [
+    "postprocess"
+  ],
+  "envRemovedForChildren": [
+    "ELECTRON_RUN_AS_NODE",
+    "VSCODE_CODE_CACHE_PATH",
+    "VSCODE_CRASH_REPORTER_PROCESS_TYPE",
+    "VSCODE_CWD",
+    "VSCODE_ESM_ENTRYPOINT",
+    "VSCODE_HANDLES_UNCAUGHT_ERRORS",
+    "VSCODE_IPC_HOOK",
+    "VSCODE_NLS_CONFIG",
+    "VSCODE_PID",
+    "VSCODE_PROCESS_TITLE"
+  ],
+  "sourceVersion": {
+    "name": "BUILD_SOURCEVERSION",
+    "value": "800d2666d5aa3a42710fe5478e776d3d4ac619b7",
+    "source": "worktree HEAD",
+    "worktree": "e:\\develop\\self\\Team\\projects\\ai-editor",
+    "readAt": "postprocess",
+    "steps": [
+      "typecheck",
+      "package"
+    ],
+    "error": null,
+    "uncommittedEntries": 30,
+    "checksHeadCommit": "cff68091803f933ffbd34c93d1a7dc14633f7a72",
+    "matchesChecksHead": false
+  },
+  "steps": [
+    {
+      "name": "postprocess",
+      "status": "error",
+      "startedAt": "2026-11-14T12:49:37.837Z",
+      "layout": {
+        "appDir": "C:\\b\\p1\\1.146.0-p1-a1-r3\\Code-OSS-win32-x64-1.146.0-p1-a1-r3\\resources\\app",
+        "versionedFolder": null,
+        "exe": "Code - OSS.exe",
+        "cli": "bin\\code-oss.cmd",
+        "version": "1.146.0",
+        "commit": "cff68091803f933ffbd34c93d1a7dc14633f7a72",
+        "nameShort": "Code - OSS"
+      },
+      "productCommit": {
+        "ok": false,
+        "commit": "cff68091803f933ffbd34c93d1a7dc14633f7a72",
+        "expected": "800d2666d5aa3a42710fe5478e776d3d4ac619b7",
+        "problems": [
+          "出力の product.json の commit cff68091803f933ffbd34c93d1a7dc14633f7a72 が渡した値 800d2666d5aa3a42710fe5478e776d3d4ac619b7 と違う"
+        ]
+      },
+      "license": {
+        "LICENSE.txt": true,
+        "ThirdPartyNotices.txt": true
+      },
+      "extensions": {
+        "unitsFrom": "checks.json",
+        "unitIds": [
+          "A-1-copilot-extension"
+        ],
+        "removed": [
+          "copilot",
+          "prompt-basics"
+        ],
+        "presentCount": 93,
+        "nonExtensionDirs": [
+          "node_modules"
+        ],
+        "ok": false,
+        "residual": [],
+        "missingKeep": [
+          "vscode-api-tests",
+          "vscode-colorize-perf-tests",
+          "vscode-colorize-tests",
+          "vscode-test-resolver"
+        ],
+        "notShipped": [],
+        "missingOwn": [],
+        "unexpected": [
+          "debug-auto-launch",
+          "debug-server-ready",
+          "extension-editing",
+          "github",
+          "github-authentication",
+          "grunt",
+          "gulp",
+          "ipynb",
+          "jake",
+          "mermaid-markdown-features",
+          "microsoft-authentication",
+          "ms-vscode.js-debug",
+          "ms-vscode.js-debug-companion",
+          "ms-vscode.vscode-js-profile-table",
+          "notebook-renderers",
+          "php-language-features",
+          "simple-browser",
+          "terminal-suggest",
+          "theme-abyss",
+          "theme-kimbie-dark",
+          "theme-modern-icons",
+          "theme-monokai",
+          "theme-monokai-dimmed",
+          "theme-quietlight",
+          "theme-red",
+          "theme-solarized-dark",
+          "theme-solarized-light",
+          "theme-tomorrow-night-blue",
+          "tunnel-forwarding"
+        ]
+      },
+      "seconds": 0.112,
+      "problems": [
+        "出力の product.json の commit cff68091803f933ffbd34c93d1a7dc14633f7a72 が渡した値 800d2666d5aa3a42710fe5478e776d3d4ac619b7 と違う",
+        "keep.json の拡張が無い: vscode-api-tests, vscode-colorize-perf-tests, vscode-colorize-tests, vscode-test-resolver"
+      ],
+      "message": "出力の product.json の commit cff68091803f933ffbd34c93d1a7dc14633f7a72 が渡した値 800d2666d5aa3a42710fe5478e776d3d4ac619b7 と違う / keep.json の拡張が無い: vscode-api-tests, vscode-colorize-perf-tests, vscode-colorize-tests, vscode-test-resolver"
+    }
+  ],
+  "warnings": [
+    "作業ツリーの HEAD 800d2666d5aa3a42710fe5478e776d3d4ac619b7 が checks.json の headCommit cff68091803f933ffbd34c93d1a7dc14633f7a72 と違う（apply の後に作業ツリーが動いた恐れ）",
+    "e:\\develop\\self\\Team\\projects\\ai-editor\\build\\lib\\extensions.ts が無い。同梱されない拡張（excludedExtensions）を数えない",
+    "keep.json に無い拡張が出力にある（情報）: debug-auto-launch, debug-server-ready, extension-editing, github, github-authentication, grunt, gulp, ipynb, jake, mermaid-markdown-features, microsoft-authentication, ms-vscode.js-debug, ms-vscode.js-debug-companion, ms-vscode.vscode-js-profile-table, notebook-renderers, php-language-features, simple-browser, terminal-suggest, theme-abyss, theme-kimbie-dark, theme-modern-icons, theme-monokai, theme-monokai-dimmed, theme-quietlight, theme-red, theme-solarized-dark, theme-solarized-light, theme-tomorrow-night-blue, tunnel-forwarding"
+  ],
+  "applyResult": "ok",
+  "unitsFrom": {
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-build-commit-fix\\take-in-r3\\checks.json",
+    "applyRan": false
+  },
+  "message": "postprocess で止まった: 出力の product.json の commit cff68091803f933ffbd34c93d1a7dc14633f7a72 が渡した値 800d2666d5aa3a42710fe5478e776d3d4ac619b7 と違う / keep.json の拡張が無い: vscode-api-tests, vscode-colorize-perf-tests, vscode-colorize-tests, vscode-test-resolver"
+}

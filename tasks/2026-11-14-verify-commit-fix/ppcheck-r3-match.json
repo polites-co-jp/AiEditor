@@ -1,0 +1,160 @@
+{
+  "label": "verify-pp-r3-match",
+  "upstream": {
+    "tag": "1.146.0",
+    "commit": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+  },
+  "units": [
+    {
+      "id": "A-1-copilot-extension",
+      "enabled": false,
+      "applied": "ok"
+    }
+  ],
+  "patches": [],
+  "lockfileDiff": "tasks/2026-11-14-build-commit-fix/take-in-r3/lockfile.diff",
+  "toolchain": null,
+  "durations": {},
+  "zip": null,
+  "extensionsLockSha256": "6b4c3ceae7d6cb407f62bbcbd57ca50267e998975887884cc325fd26a85cce10",
+  "result": "ok",
+  "stoppedAt": null,
+  "dryRun": false,
+  "startedAt": "2026-11-14T12:49:31.595Z",
+  "finishedAt": "2026-11-14T12:49:31.791Z",
+  "paths": {
+    "buildRoot": "C:\\b",
+    "worktree": "C:\\b\\wt\\p1-a1",
+    "packageDir": "C:\\b\\p1\\1.146.0-p1-a1-r3\\Code-OSS-win32-x64-1.146.0-p1-a1-r3",
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-build-commit-fix\\take-in-r3\\checks.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\removals",
+    "dist": "C:\\b\\dist",
+    "logs": "C:\\b\\logs\\verify-pp-r3-match"
+  },
+  "config": {
+    "path": "C:\\Users\\kou_z\\AppData\\Local\\Shuko\\local.json",
+    "exists": false,
+    "buildRootFrom": "default"
+  },
+  "stepsSelected": [
+    "postprocess"
+  ],
+  "envRemovedForChildren": [
+    "ELECTRON_RUN_AS_NODE",
+    "VSCODE_CODE_CACHE_PATH",
+    "VSCODE_CRASH_REPORTER_PROCESS_TYPE",
+    "VSCODE_CWD",
+    "VSCODE_ESM_ENTRYPOINT",
+    "VSCODE_HANDLES_UNCAUGHT_ERRORS",
+    "VSCODE_IPC_HOOK",
+    "VSCODE_NLS_CONFIG",
+    "VSCODE_PID",
+    "VSCODE_PROCESS_TITLE"
+  ],
+  "sourceVersion": {
+    "name": "BUILD_SOURCEVERSION",
+    "value": "cff68091803f933ffbd34c93d1a7dc14633f7a72",
+    "source": "worktree HEAD",
+    "worktree": "C:\\b\\wt\\p1-a1",
+    "readAt": "postprocess",
+    "steps": [
+      "typecheck",
+      "package"
+    ],
+    "error": null,
+    "uncommittedEntries": 0,
+    "checksHeadCommit": "cff68091803f933ffbd34c93d1a7dc14633f7a72",
+    "matchesChecksHead": true
+  },
+  "steps": [
+    {
+      "name": "postprocess",
+      "status": "ok",
+      "startedAt": "2026-11-14T12:49:31.603Z",
+      "layout": {
+        "appDir": "C:\\b\\p1\\1.146.0-p1-a1-r3\\Code-OSS-win32-x64-1.146.0-p1-a1-r3\\resources\\app",
+        "versionedFolder": null,
+        "exe": "Code - OSS.exe",
+        "cli": "bin\\code-oss.cmd",
+        "version": "1.146.0",
+        "commit": "cff68091803f933ffbd34c93d1a7dc14633f7a72",
+        "nameShort": "Code - OSS"
+      },
+      "productCommit": {
+        "ok": true,
+        "commit": "cff68091803f933ffbd34c93d1a7dc14633f7a72",
+        "expected": "cff68091803f933ffbd34c93d1a7dc14633f7a72",
+        "problems": []
+      },
+      "license": {
+        "LICENSE.txt": true,
+        "ThirdPartyNotices.txt": true
+      },
+      "extensions": {
+        "unitsFrom": "checks.json",
+        "unitIds": [
+          "A-1-copilot-extension"
+        ],
+        "removed": [
+          "copilot",
+          "prompt-basics"
+        ],
+        "presentCount": 93,
+        "nonExtensionDirs": [
+          "node_modules"
+        ],
+        "ok": true,
+        "residual": [],
+        "missingKeep": [],
+        "notShipped": [
+          "vscode-api-tests",
+          "vscode-colorize-perf-tests",
+          "vscode-colorize-tests",
+          "vscode-test-resolver"
+        ],
+        "missingOwn": [],
+        "unexpected": [
+          "debug-auto-launch",
+          "debug-server-ready",
+          "extension-editing",
+          "github",
+          "github-authentication",
+          "grunt",
+          "gulp",
+          "ipynb",
+          "jake",
+          "mermaid-markdown-features",
+          "microsoft-authentication",
+          "ms-vscode.js-debug",
+          "ms-vscode.js-debug-companion",
+          "ms-vscode.vscode-js-profile-table",
+          "notebook-renderers",
+          "php-language-features",
+          "simple-browser",
+          "terminal-suggest",
+          "theme-abyss",
+          "theme-kimbie-dark",
+          "theme-modern-icons",
+          "theme-monokai",
+          "theme-monokai-dimmed",
+          "theme-quietlight",
+          "theme-red",
+          "theme-solarized-dark",
+          "theme-solarized-light",
+          "theme-tomorrow-night-blue",
+          "tunnel-forwarding"
+        ]
+      },
+      "seconds": 0.187
+    }
+  ],
+  "warnings": [
+    "keep.json に無い拡張が出力にある（情報）: debug-auto-launch, debug-server-ready, extension-editing, github, github-authentication, grunt, gulp, ipynb, jake, mermaid-markdown-features, microsoft-authentication, ms-vscode.js-debug, ms-vscode.js-debug-companion, ms-vscode.vscode-js-profile-table, notebook-renderers, php-language-features, simple-browser, terminal-suggest, theme-abyss, theme-kimbie-dark, theme-modern-icons, theme-monokai, theme-monokai-dimmed, theme-quietlight, theme-red, theme-solarized-dark, theme-solarized-light, theme-tomorrow-night-blue, tunnel-forwarding"
+  ],
+  "applyResult": "ok",
+  "unitsFrom": {
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-build-commit-fix\\take-in-r3\\checks.json",
+    "applyRan": false
+  }
+}

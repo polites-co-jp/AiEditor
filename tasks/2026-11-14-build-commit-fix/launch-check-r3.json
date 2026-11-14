@@ -1,0 +1,105 @@
+{
+    "checkedAt":  "2026-11-14T21:33:13.5436922+09:00",
+    "zip":  "C:\\b\\dist\\1.146.0-p1-a1-r3.zip",
+    "root":  "",
+    "dest":  "C:\\b\\p1\\1.146.0-p1-a1-r3",
+    "unpack":  {
+                   "done":  true,
+                   "seconds":  5.4
+               },
+    "editor":  {
+                   "root":  "C:\\b\\p1\\1.146.0-p1-a1-r3\\Code-OSS-win32-x64-1.146.0-p1-a1-r3",
+                   "exe":  "C:\\b\\p1\\1.146.0-p1-a1-r3\\Code-OSS-win32-x64-1.146.0-p1-a1-r3\\Code - OSS.exe",
+                   "cli":  "C:\\b\\p1\\1.146.0-p1-a1-r3\\Code-OSS-win32-x64-1.146.0-p1-a1-r3\\bin\\code-oss.cmd",
+                   "productJson":  "C:\\b\\p1\\1.146.0-p1-a1-r3\\Code-OSS-win32-x64-1.146.0-p1-a1-r3\\resources\\app\\product.json",
+                   "appDirRelative":  "resources\\app",
+                   "nameShort":  "Code - OSS",
+                   "nameLong":  "Code - OSS",
+                   "applicationName":  "code-oss",
+                   "dataFolderName":  ".vscode-oss",
+                   "version":  "1.146.0",
+                   "commit":  "cff68091803f933ffbd34c93d1a7dc14633f7a72",
+                   "portableOk":  true
+               },
+    "cliVersion":  {
+                       "exitCode":  0,
+                       "output":  [
+                                      "1.146.0",
+                                      "cff68091803f933ffbd34c93d1a7dc14633f7a72",
+                                      "x64"
+                                  ]
+                   },
+    "portable":  {
+                     "path":  "C:\\b\\p1\\1.146.0-p1-a1-r3\\portable",
+                     "entries":  [
+                                     "extensions\\",
+                                     "shared-data\\",
+                                     "user-data\\",
+                                     "argv.json"
+                                 ],
+                     "userData":  "C:\\b\\p1\\1.146.0-p1-a1-r3\\portable\\user-data",
+                     "userSettingsDir":  "C:\\b\\p1\\1.146.0-p1-a1-r3\\portable\\user-data\\User",
+                     "extensions":  "C:\\b\\p1\\1.146.0-p1-a1-r3\\portable\\extensions",
+                     "argvJson":  "C:\\b\\p1\\1.146.0-p1-a1-r3\\portable\\argv.json"
+                 },
+    "started":  {
+                    "pid":  36600,
+                    "aliveAfterCheck":  true,
+                    "exitCode":  null,
+                    "checkSeconds":  10,
+                    "smokeSeconds":  15,
+                    "tree":  "Code - OSS.exe x8, copilot-runtime.exe x1, conhost.exe x1",
+                    "stoppedProcesses":  10
+                },
+    "dailyData":  {
+                      "before":  [
+                                     {
+                                         "path":  "C:\\Users\\kou_z\\AppData\\Roaming\\Code",
+                                         "exists":  false,
+                                         "lastWriteTime":  null
+                                     },
+                                     {
+                                         "path":  "C:\\Users\\kou_z\\AppData\\Roaming\\Code - OSS",
+                                         "exists":  false,
+                                         "lastWriteTime":  null
+                                     },
+                                     {
+                                         "path":  "C:\\Users\\kou_z\\.vscode",
+                                         "exists":  false,
+                                         "lastWriteTime":  null
+                                     },
+                                     {
+                                         "path":  "C:\\Users\\kou_z\\.vscode-oss",
+                                         "exists":  false,
+                                         "lastWriteTime":  null
+                                     }
+                                 ],
+                      "after":  [
+                                    {
+                                        "path":  "C:\\Users\\kou_z\\AppData\\Roaming\\Code",
+                                        "exists":  false,
+                                        "lastWriteTime":  null
+                                    },
+                                    {
+                                        "path":  "C:\\Users\\kou_z\\AppData\\Roaming\\Code - OSS",
+                                        "exists":  false,
+                                        "lastWriteTime":  null
+                                    },
+                                    {
+                                        "path":  "C:\\Users\\kou_z\\.vscode",
+                                        "exists":  false,
+                                        "lastWriteTime":  null
+                                    },
+                                    {
+                                        "path":  "C:\\Users\\kou_z\\.vscode-oss",
+                                        "exists":  false,
+                                        "lastWriteTime":  null
+                                    }
+                                ],
+                      "changed":  [
+
+                                  ]
+                  },
+    "result":  "ok",
+    "message":  "started, stayed alive, stopped; daily editor data folders unchanged"
+}

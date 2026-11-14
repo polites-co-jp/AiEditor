@@ -38,10 +38,19 @@
 //     --force-zip        <label>.zip があれば上書きする（既定は止める）
 // 終了コード: 0 = result が ok か dry-run、1 = error、2 = 引数の誤り
 //
+// 出力の product.json の commit（2026-11-14、tasks/2026-11-14-build-commit-fix/）:
+//   本家の build/lib/getVersion.ts は環境変数 BUILD_SOURCEVERSION（40桁）を先に見て、無ければ build/lib/git.ts で
+//   <root>\.git\HEAD を読む。作業ツリー（git worktree）の .git はファイル（gitdir: ...）なので読めず、commit が入らない。
+//   そこで typecheck・package の子のプロセスに BUILD_SOURCEVERSION=<作業ツリーの HEAD> を渡す（リーダーの判断: 単位を
+//   当てた後の HEAD。本家の commit は upstream.commit に残る）。渡した値は記録の sourceVersion に書き、postprocess で
+//   出力の resources\app\product.json の commit が40桁でその値と一致することを確かめる（一致しなければ失敗）。
+//
 // 書き出している関数（テストの入口。tasks/2026-11-13-p2-build-switch/build-switch-design.md の3節）:
 //   STEPS, parseArgs, selectSteps, nextLabel, findAppDir, resolveEditorLayout, childEnv, appliedUnitsFrom,
 //   checkBuiltinExtensions, parseExcludedExtensions, zipFolderName, quoteCmdArg, toolchainWarnings, applyPassThrough,
-//   findSignTool, prependPath
+//   findSignTool, prependPath,
+//   SOURCE_VERSION_STEPS, isFullSha, stepEnv, headCommitOf, checkProductCommit, unitsRecordFrom, patchesRecordFrom
+//   （tasks/2026-11-14-build-commit-fix/）
 
 import fs from "node:fs";
 import path from "node:path";
@@ -51,6 +60,8 @@ import { resolveLocalConfig } from "./lib/local-config.mjs";
 import { sha256File } from "./lib/http.mjs";
 import { keepNamesOf, extensionsCoveredByUnits } from "./lib/apply/classify.mjs";
 import { dirSize } from "./prepare.mjs";
+import { head as gitHead, statusPorcelain } from "./lib/apply/git.mjs";
+// gitHead は git -C <dir> rev-parse HEAD（失敗すると例外）
 
 const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(SCRIPT_DIR, "..");
@@ -176,6 +187,65 @@ export function appliedUnitsFrom(checks, removalsUnits) {
   }
   const en = units.filter((u) => u && u.enabled === true);
   return { source: "removals (enabled)", units: en, ids: en.map((u) => u.id).sort() };
+}
+
+// checks.json（apply.mjs の出力）から、記録の units（[{ id, enabled, applied }]）を作る。apply の手順を走らせたときも、
+// --from install などで走らせないときも同じ形にする（検証の気づいた点の1。tasks/2026-11-14-p1-verify-a1/handoff-notes.md）。
+// checks が null・オブジェクトでない・units が配列でないときは []（例外にしない）。
+export function unitsRecordFrom(checks) {
+  if (!checks || typeof checks !== "object" || !Array.isArray(checks.units)) return [];
+  return checks.units.filter((u) => u && typeof u === "object").map((u) => ({ id: u.id, enabled: u.enabled, applied: u.applied }));
+}
+
+// 記録の patches（[{ file, applied }]）。unitsRecordFrom と同じ規則。
+export function patchesRecordFrom(checks) {
+  if (!checks || typeof checks !== "object" || !Array.isArray(checks.patches)) return [];
+  return checks.patches.filter((p) => p && typeof p === "object").map((p) => ({ file: p.file, applied: p.applied }));
+}
+
+// 作業ツリーの HEAD の40桁（小文字）。.git がファイル（git worktree）でも読める（git rev-parse HEAD に任せる）。
+// リポジトリでない・40桁でないときは例外（空の値を黙って渡さない）。
+export function headCommitOf(worktree) {
+  const v = gitHead(worktree);
+  if (!isFullSha(v)) throw new Error(`作業ツリーの HEAD が40桁の16進でない: ${v}`);
+  return v.trim().toLowerCase();
+}
+
+// BUILD_SOURCEVERSION を渡す手順（本家が getVersion で commit を読むもの。型検査とパッケージ化）。
+export const SOURCE_VERSION_STEPS = Object.freeze(["typecheck", "package"]);
+
+// 40桁の16進か（本家の build/lib/getVersion.ts と同じ規則: /^[0-9a-f]{40}$/i を trim した値に当てる）。
+export function isFullSha(v) {
+  return typeof v === "string" && /^[0-9a-f]{40}$/i.test(v.trim());
+}
+
+// 手順 name の子のプロセスの環境。env の写しに、name が SOURCE_VERSION_STEPS のときだけ BUILD_SOURCEVERSION を足す。
+// sourceVersion が40桁でなければ例外（渡しても本家が捨て、.git\HEAD を読みに行くため）。元の env は変えない。
+// 外の BUILD_SOURCEVERSION（env にあるもの）は、どの手順でも上書きか削除する（取り違えを防ぐ）。
+export function stepEnv(name, env, sourceVersion) {
+  const out = {};
+  for (const [k, v] of Object.entries(env || {})) if (k.toUpperCase() !== "BUILD_SOURCEVERSION") out[k] = v;
+  if (!SOURCE_VERSION_STEPS.includes(name)) return out;
+  if (!isFullSha(sourceVersion)) throw new Error(`BUILD_SOURCEVERSION に渡す値が40桁の16進でない: ${sourceVersion}`);
+  out.BUILD_SOURCEVERSION = sourceVersion.trim().toLowerCase();
+  return out;
+}
+
+// 出力の product.json の commit の確かめ（docs/02 の4節の7）。product は出力の product.json の中身、expected は渡した値。
+//   返り値 { ok, commit, expected, problems }（problems は文の配列。ok のとき []）。product は変えない
+//   - commit が無い（キーごと・undefined・null・空）・文字列でない・40桁の16進でない → ok: false
+//   - expected が40桁でない（渡した値が分からない）→ ok: false
+//   - 大文字小文字を問わずに比べ、違えば ok: false（文に両方の値を入れる）
+export function checkProductCommit(product, expected) {
+  const raw = product && typeof product === "object" ? product.commit : undefined;
+  const commit = raw === undefined || raw === null || raw === "" ? null : raw;
+  const exp = typeof expected === "string" ? expected : expected == null ? null : expected;
+  const problems = [];
+  if (commit === null) problems.push("出力の product.json に commit が無い");
+  else if (!isFullSha(commit)) problems.push(`出力の product.json の commit が40桁の16進でない: ${commit}`);
+  if (!isFullSha(exp)) problems.push(`比べる値（BUILD_SOURCEVERSION に渡した値）が40桁でない: ${exp}`);
+  if (!problems.length && commit.trim().toLowerCase() !== exp.trim().toLowerCase()) problems.push(`出力の product.json の commit ${commit} が渡した値 ${exp} と違う`);
+  return { ok: problems.length === 0, commit, expected: exp, problems };
 }
 
 // build/lib/extensions.ts の excludedExtensions の名前（同梱されない拡張）。見つからなければ null。
@@ -471,6 +541,8 @@ async function main() {
     config: { path: cfg.configPath, exists: cfg.configExists, buildRootFrom: cfg.sources.buildRoot },
     stepsSelected: steps,
     envRemovedForChildren: envRemoved,
+    // 型検査・パッケージ化の子に渡す BUILD_SOURCEVERSION（作業ツリーの HEAD）。読んだときに埋める
+    sourceVersion: null,
     steps: [],
     warnings: [],
   };
@@ -534,10 +606,73 @@ async function main() {
     package: pnpmCmd(["run", "gulp", args.gulpTask]),
   };
 
+  let checks = null;
+  const readChecks = () => {
+    try {
+      checks = readJson(checksPath);
+    } catch {
+      checks = null;
+    }
+    return checks;
+  };
+  // 記録の units・patches・applyResult を checks.json から埋める（apply を走らせないときも。検証の気づいた点の1）
+  const fillUnits = (applyRan) => {
+    if (!checks || !Array.isArray(checks.units)) return false;
+    rec.units = unitsRecordFrom(checks);
+    rec.patches = patchesRecordFrom(checks);
+    rec.applyResult = checks.result || null;
+    rec.unitsFrom = { checks: checksPath, applyRan };
+    return true;
+  };
+
+  // 作業ツリーの HEAD を読み、記録の sourceVersion に書く（1回だけ読む。型検査・パッケージ化・後処理で同じ値を使う）。
+  // 読めなければ value: null と error。checks.json の headCommit（apply の直後の HEAD）と違えば警告する。
+  const readSourceVersion = (when) => {
+    if (rec.sourceVersion && rec.sourceVersion.value) return rec.sourceVersion.value;
+    let value = null;
+    let error = null;
+    if (!fs.existsSync(worktree)) error = `作業ツリーが無い: ${worktree}`;
+    else {
+      try {
+        value = headCommitOf(worktree);
+      } catch (err) {
+        error = err.message;
+      }
+    }
+    const sv = { name: "BUILD_SOURCEVERSION", value, source: "worktree HEAD", worktree, readAt: when, steps: [...SOURCE_VERSION_STEPS], error };
+    if (sv.value) {
+      try {
+        sv.uncommittedEntries = statusPorcelain(worktree).split(/\r?\n/).filter(Boolean).length;
+      } catch (err) {
+        sv.uncommittedEntries = null;
+      }
+      const c = readChecks();
+      sv.checksHeadCommit = c && typeof c.headCommit === "string" ? c.headCommit : null;
+      sv.matchesChecksHead = sv.checksHeadCommit ? sv.checksHeadCommit.toLowerCase() === sv.value : null;
+      if (sv.matchesChecksHead === false) rec.warnings.push(`作業ツリーの HEAD ${sv.value} が checks.json の headCommit ${sv.checksHeadCommit} と違う（apply の後に作業ツリーが動いた恐れ）`);
+    }
+    rec.sourceVersion = sv;
+    save();
+    return sv.value;
+  };
+
   if (args.dryRun) {
     rec.plan = {};
     for (const name of steps) {
       if (plan[name]) rec.plan[name] = { command: [plan[name].cmd, ...plan[name].args].join(" "), cwd: plan[name].cwd };
+    }
+    // 型検査・パッケージ化に渡す BUILD_SOURCEVERSION（作業ツリーがあれば今の HEAD。apply の前なら当てた後に変わる）
+    const svSteps = steps.filter((n) => SOURCE_VERSION_STEPS.includes(n) || n === "postprocess");
+    if (svSteps.length) {
+      const v = readSourceVersion("dry-run");
+      for (const name of SOURCE_VERSION_STEPS) {
+        if (rec.plan[name]) rec.plan[name].env = { BUILD_SOURCEVERSION: v || "<作業ツリーの HEAD（実行の時に読む）>" };
+      }
+      if (steps.includes("apply") && v) rec.warnings.push("dry-run の sourceVersion は apply の前の HEAD。実際に渡すのは apply の後の HEAD");
+    }
+    if (!steps.includes("apply")) {
+      readChecks();
+      fillUnits(false);
     }
     if (steps.includes("prepare") && args.fresh) rec.plan.fresh = `git -C ${path.join(buildRoot, "vscode")} worktree remove --force ${worktree}`;
     if (steps.includes("postprocess")) rec.plan.postprocess = { packageDir, keep: keepPath, removals: removalsDir };
@@ -576,14 +711,18 @@ async function main() {
     return r;
   };
 
-  let checks = null;
-  const readChecks = () => {
-    try {
-      checks = readJson(checksPath);
-    } catch {
-      checks = null;
-    }
-    return checks;
+  // apply を走らせないとき（--from install など）も、記録の units を checks.json から埋める
+  if (!steps.includes("apply")) {
+    readChecks();
+    if (!fillUnits(false) && steps.includes("postprocess")) rec.warnings.push(`checks.json を読めない（${checksPath}）。記録の units は空`);
+  }
+
+  // 型検査・パッケージ化の子の環境（BUILD_SOURCEVERSION を足す）。HEAD を読めなければその手順で止める
+  const envForStep = (name, s, base = env) => {
+    const v = readSourceVersion(name);
+    if (!v) fail(s, `作業ツリーの HEAD を読めない（BUILD_SOURCEVERSION に渡す値が無い）: ${rec.sourceVersion && rec.sourceVersion.error}`);
+    s.env = { BUILD_SOURCEVERSION: v };
+    return stepEnv(name, base, v);
   };
 
   for (const name of steps) {
@@ -608,9 +747,7 @@ async function main() {
       readChecks();
       if (checks) {
         s.checksResult = checks.result || null;
-        rec.applyResult = checks.result || null;
-        rec.units = (checks.units || []).map((u) => ({ id: u.id, enabled: u.enabled, applied: u.applied }));
-        rec.patches = (checks.patches || []).map((p) => ({ file: p.file, applied: p.applied }));
+        fillUnits(true);
         if (checks.result === "hold") rec.warnings.push("適用後の検査が hold（未分類の組み込み拡張など）。checks.json を見る");
       }
       if (r.exitCode !== 0) fail(s, `apply.mjs が ${r.exitCode} で終わった（checks.json の result: ${checks ? checks.result : "読めない"}）`);
@@ -634,7 +771,7 @@ async function main() {
         scripts = readJson(path.join(worktree, "package.json")).scripts || {};
       } catch {}
       if (!scripts[args.typecheckScript]) fail(s, `作業ツリーの package.json に script ${args.typecheckScript} が無い（本家が名前を変えた恐れ）`);
-      const r = await runPlanned(name, s);
+      const r = await runPlanned(name, s, envForStep(name, s));
       rec.durations.typecheck = r.seconds;
       if (r.exitCode !== 0) fail(s, `型検査が ${r.exitCode} で終わった`);
       done(s);
@@ -643,7 +780,7 @@ async function main() {
       // この子のプロセスの PATH にだけ足す（ユーザーの PATH は書き換えない）
       s.signtool = { path: signtool.path, source: signtool.source, pathPrepended: signtool.source === "WindowsKits" ? signtool.dir : null };
       if (!signtool.found) fail(s, "signtool.exe が見つからない（PATH にも Windows Kits\\10\\bin\\<版>\\x64 にも無い）。Windows SDK を入れ、scripts/check-env.ps1 で確かめる");
-      const r = await runPlanned(name, s, signtool.source === "WindowsKits" ? prependPath(env, signtool.dir) : env);
+      const r = await runPlanned(name, s, envForStep(name, s, signtool.source === "WindowsKits" ? prependPath(env, signtool.dir) : env));
       rec.durations.package = r.seconds;
       if (r.exitCode !== 0) fail(s, `パッケージ化が ${r.exitCode} で終わった`);
       if (!fs.existsSync(packageDir)) fail(s, `出力 ${packageDir} が無い`);
@@ -658,6 +795,10 @@ async function main() {
       }
       s.layout = { appDir: layout.appDir, versionedFolder: layout.versionedFolder, exe: path.basename(layout.exe), cli: path.relative(packageDir, layout.cli), version: layout.version, commit: layout.commit, nameShort: layout.nameShort };
       const problems = [];
+      // product.json の commit が40桁で、型検査・パッケージ化に渡した値（作業ツリーの HEAD）と一致すること
+      const pc = checkProductCommit(layout.product, readSourceVersion(name));
+      s.productCommit = pc;
+      problems.push(...pc.problems);
       if (!fs.existsSync(layout.exe)) problems.push(`exe が無い: ${layout.exe}`);
       if (!fs.existsSync(layout.cli)) problems.push(`CLI が無い: ${layout.cli}`);
       const lic = layout.product.licenseFileName || "LICENSE.txt";

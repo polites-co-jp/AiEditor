@@ -1,0 +1,299 @@
+{
+  "label": "1.146.0-p1-a1-r3",
+  "upstream": {
+    "tag": "1.146.0",
+    "commit": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+  },
+  "units": [
+    {
+      "id": "A-1-copilot-extension",
+      "enabled": false,
+      "applied": "ok"
+    }
+  ],
+  "patches": [],
+  "lockfileDiff": "tasks/2026-11-14-build-commit-fix/take-in-r3/lockfile.diff",
+  "toolchain": {
+    "node": "24.22.1",
+    "electron": "43.8.6",
+    "packageManager": "pnpm 12.16.0",
+    "packageManagerDeclared": "pnpm@12.16.0",
+    "nvmrc": "24.22.1",
+    "nodeOfBuildScript": "v24.22.1"
+  },
+  "durations": {
+    "install": 3.66,
+    "typecheck": 19.662,
+    "package": 166.21,
+    "zip": 38.667
+  },
+  "zip": {
+    "path": "C:\\b\\dist\\1.146.0-p1-a1-r3.zip",
+    "sha256": "e9215f2c2df15a3b4fdd910df1e63437d35b28bf844119c9517d57860daa996c",
+    "bytes": 406723259,
+    "topFolder": "Code-OSS-win32-x64-1.146.0-p1-a1-r3"
+  },
+  "extensionsLockSha256": "6b4c3ceae7d6cb407f62bbcbd57ca50267e998975887884cc325fd26a85cce10",
+  "result": "ok",
+  "stoppedAt": null,
+  "dryRun": false,
+  "startedAt": "2026-11-14T12:28:39.855Z",
+  "finishedAt": "2026-11-14T12:32:41.325Z",
+  "paths": {
+    "buildRoot": "C:\\b",
+    "worktree": "C:\\b\\wt\\p1-a1",
+    "packageDir": "C:\\b\\wt\\VSCode-win32-x64",
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-build-commit-fix\\take-in-r3\\checks.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\removals",
+    "dist": "C:\\b\\dist",
+    "logs": "C:\\b\\logs\\1.146.0-p1-a1-r3"
+  },
+  "config": {
+    "path": "C:\\Users\\kou_z\\AppData\\Local\\Shuko\\local.json",
+    "exists": false,
+    "buildRootFrom": "default"
+  },
+  "stepsSelected": [
+    "install",
+    "lockfile",
+    "typecheck",
+    "package",
+    "postprocess",
+    "zip"
+  ],
+  "envRemovedForChildren": [
+    "ELECTRON_RUN_AS_NODE",
+    "VSCODE_CODE_CACHE_PATH",
+    "VSCODE_CRASH_REPORTER_PROCESS_TYPE",
+    "VSCODE_CWD",
+    "VSCODE_ESM_ENTRYPOINT",
+    "VSCODE_HANDLES_UNCAUGHT_ERRORS",
+    "VSCODE_IPC_HOOK",
+    "VSCODE_NLS_CONFIG",
+    "VSCODE_PID",
+    "VSCODE_PROCESS_TITLE"
+  ],
+  "sourceVersion": {
+    "name": "BUILD_SOURCEVERSION",
+    "value": "cff68091803f933ffbd34c93d1a7dc14633f7a72",
+    "source": "worktree HEAD",
+    "worktree": "C:\\b\\wt\\p1-a1",
+    "readAt": "typecheck",
+    "steps": [
+      "typecheck",
+      "package"
+    ],
+    "error": null,
+    "uncommittedEntries": 0,
+    "checksHeadCommit": "cff68091803f933ffbd34c93d1a7dc14633f7a72",
+    "matchesChecksHead": true
+  },
+  "steps": [
+    {
+      "name": "install",
+      "status": "ok",
+      "startedAt": "2026-11-14T12:28:39.863Z",
+      "command": "pnpm install --no-frozen-lockfile",
+      "cwd": "C:\\b\\wt\\p1-a1",
+      "log": "C:\\b\\logs\\1.146.0-p1-a1-r3\\install.log",
+      "seconds": 3.66,
+      "exitCode": 0
+    },
+    {
+      "name": "lockfile",
+      "status": "ok",
+      "startedAt": "2026-11-14T12:28:43.976Z",
+      "command": "C:\\Program Files\\nodejs\\node.exe e:\\develop\\self\\Team\\projects\\ai-editor\\scripts\\apply.mjs C:\\b\\wt\\p1-a1 --label 1.146.0-p1-a1-r3 --lockfile-check --checks-out e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-build-commit-fix\\take-in-r3\\checks.json --diff-out e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-build-commit-fix\\take-in-r3\\lockfile.diff --removals e:\\develop\\self\\Team\\projects\\ai-editor\\removals --build-root C:\\b --config C:\\Users\\kou_z\\AppData\\Local\\Shuko\\local.json",
+      "cwd": "e:\\develop\\self\\Team\\projects\\ai-editor",
+      "log": "C:\\b\\logs\\1.146.0-p1-a1-r3\\lockfile.log",
+      "seconds": 0.498,
+      "exitCode": 0,
+      "lockfile": {
+        "status": "ok",
+        "files": [
+          {
+            "path": "build/pnpm-lock.yaml",
+            "status": "ok",
+            "unchanged": true
+          },
+          {
+            "path": "extensions/copilot/pnpm-lock.yaml",
+            "status": "removed",
+            "reason": "単位が消したフォルダの中"
+          },
+          {
+            "path": "extensions/pnpm-lock.yaml",
+            "status": "ok",
+            "unchanged": true
+          },
+          {
+            "path": "pnpm-lock.yaml",
+            "status": "ok",
+            "unchanged": true
+          },
+          {
+            "path": "remote/pnpm-lock.yaml",
+            "status": "ok",
+            "unchanged": true
+          },
+          {
+            "path": "test/sanity/pnpm-lock.yaml",
+            "status": "ok",
+            "unchanged": true
+          }
+        ],
+        "diff": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-build-commit-fix\\take-in-r3\\lockfile.diff",
+        "checkedAt": "2026-11-14T12:28:44.466Z",
+        "baseRef": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+      },
+      "diff": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-build-commit-fix\\take-in-r3\\lockfile.diff"
+    },
+    {
+      "name": "typecheck",
+      "status": "ok",
+      "startedAt": "2026-11-14T12:28:44.476Z",
+      "env": {
+        "BUILD_SOURCEVERSION": "cff68091803f933ffbd34c93d1a7dc14633f7a72"
+      },
+      "command": "pnpm run typecheck-client",
+      "cwd": "C:\\b\\wt\\p1-a1",
+      "log": "C:\\b\\logs\\1.146.0-p1-a1-r3\\typecheck.log",
+      "seconds": 19.662,
+      "exitCode": 0
+    },
+    {
+      "name": "package",
+      "status": "ok",
+      "startedAt": "2026-11-14T12:29:05.130Z",
+      "signtool": {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\x64\\signtool.exe",
+        "source": "WindowsKits",
+        "pathPrepended": "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\x64"
+      },
+      "env": {
+        "BUILD_SOURCEVERSION": "cff68091803f933ffbd34c93d1a7dc14633f7a72"
+      },
+      "command": "pnpm run gulp vscode-win32-x64-min",
+      "cwd": "C:\\b\\wt\\p1-a1",
+      "log": "C:\\b\\logs\\1.146.0-p1-a1-r3\\package.log",
+      "seconds": 166.21,
+      "exitCode": 0
+    },
+    {
+      "name": "postprocess",
+      "status": "ok",
+      "startedAt": "2026-11-14T12:31:51.342Z",
+      "layout": {
+        "appDir": "C:\\b\\wt\\VSCode-win32-x64\\resources\\app",
+        "versionedFolder": null,
+        "exe": "Code - OSS.exe",
+        "cli": "bin\\code-oss.cmd",
+        "version": "1.146.0",
+        "commit": "cff68091803f933ffbd34c93d1a7dc14633f7a72",
+        "nameShort": "Code - OSS"
+      },
+      "productCommit": {
+        "ok": true,
+        "commit": "cff68091803f933ffbd34c93d1a7dc14633f7a72",
+        "expected": "cff68091803f933ffbd34c93d1a7dc14633f7a72",
+        "problems": []
+      },
+      "license": {
+        "LICENSE.txt": true,
+        "ThirdPartyNotices.txt": true
+      },
+      "extensions": {
+        "unitsFrom": "checks.json",
+        "unitIds": [
+          "A-1-copilot-extension"
+        ],
+        "removed": [
+          "copilot",
+          "prompt-basics"
+        ],
+        "presentCount": 93,
+        "nonExtensionDirs": [
+          "node_modules"
+        ],
+        "ok": true,
+        "residual": [],
+        "missingKeep": [],
+        "notShipped": [
+          "vscode-api-tests",
+          "vscode-colorize-perf-tests",
+          "vscode-colorize-tests",
+          "vscode-test-resolver"
+        ],
+        "missingOwn": [],
+        "unexpected": [
+          "debug-auto-launch",
+          "debug-server-ready",
+          "extension-editing",
+          "github",
+          "github-authentication",
+          "grunt",
+          "gulp",
+          "ipynb",
+          "jake",
+          "mermaid-markdown-features",
+          "microsoft-authentication",
+          "ms-vscode.js-debug",
+          "ms-vscode.js-debug-companion",
+          "ms-vscode.vscode-js-profile-table",
+          "notebook-renderers",
+          "php-language-features",
+          "simple-browser",
+          "terminal-suggest",
+          "theme-abyss",
+          "theme-kimbie-dark",
+          "theme-modern-icons",
+          "theme-monokai",
+          "theme-monokai-dimmed",
+          "theme-quietlight",
+          "theme-red",
+          "theme-solarized-dark",
+          "theme-solarized-light",
+          "theme-tomorrow-night-blue",
+          "tunnel-forwarding"
+        ]
+      },
+      "seconds": 0.011
+    },
+    {
+      "name": "zip",
+      "status": "ok",
+      "startedAt": "2026-11-14T12:31:51.354Z",
+      "command": "C:\\WINDOWS\\System32\\tar.exe -a -c -H -f C:\\b\\dist\\1.146.0-p1-a1-r3.zip -C C:\\b\\dist\\.stage-1.146.0-p1-a1-r3 Code-OSS-win32-x64-1.146.0-p1-a1-r3",
+      "log": "C:\\b\\logs\\1.146.0-p1-a1-r3\\zip.log",
+      "exitCode": 0,
+      "topFolders": [
+        "Code-OSS-win32-x64-1.146.0-p1-a1-r3"
+      ],
+      "entries": 3190,
+      "seconds": 38.667
+    }
+  ],
+  "warnings": [
+    "keep.json に無い拡張が出力にある（情報）: debug-auto-launch, debug-server-ready, extension-editing, github, github-authentication, grunt, gulp, ipynb, jake, mermaid-markdown-features, microsoft-authentication, ms-vscode.js-debug, ms-vscode.js-debug-companion, ms-vscode.vscode-js-profile-table, notebook-renderers, php-language-features, simple-browser, terminal-suggest, theme-abyss, theme-kimbie-dark, theme-modern-icons, theme-monokai, theme-monokai-dimmed, theme-quietlight, theme-red, theme-solarized-dark, theme-solarized-light, theme-tomorrow-night-blue, tunnel-forwarding"
+  ],
+  "applyResult": "ok",
+  "unitsFrom": {
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-build-commit-fix\\take-in-r3\\checks.json",
+    "applyRan": false
+  },
+  "disk": {
+    "worktree": {
+      "bytes": 4832783118,
+      "gb": 4.5,
+      "files": 131105
+    },
+    "package": {
+      "bytes": 1262819185,
+      "gb": 1.18,
+      "files": 2612
+    },
+    "zipBytes": 406723259,
+    "countedSeconds": 11.302
+  }
+}
