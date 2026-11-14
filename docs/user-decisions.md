@@ -219,3 +219,9 @@
 | `extHost.protocol.ts` | 消した API の Shape と ID を消す |
 | 段階 C の単位の順 | C-3〜C-7 は C-1 を前提にする。C-2 は C-1 を前提にしない |
 | 段階 C で表から変えて残す部品 | C-2 の `contrib/debug/common` と `extensionHostDebugService`、C-3 の `services/tunnel` など、C-4 の `contrib/notebook/common` と `services/notebook`、C-5 のギャラリーの manifest のワークベンチ側（docs/03 の4節の末尾） |
+
+## 記録（2026-11-14、ビルドの環境。未決）
+
+| 論点 | 扱い |
+|---|---|
+| ビルドの道具の入れ方 | ユーザーの指示: 「コンテナ環境作って、そこにフルセット用意して、そこでビルドしてほしい」。PC に直接入れる docs/02 の5節の形から変える方向。コンテナの種類（Windows コンテナか、Linux で Windows 版を作れるか）、定義の置き場所、作業場所は未決（ユーザーが Linux でのビルドを確かめ中。蒙恬が事実を調べる: `tasks/2026-11-14-build-env-research/`） |
