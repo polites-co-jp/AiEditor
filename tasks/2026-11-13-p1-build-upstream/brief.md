@@ -2,7 +2,14 @@
 
 - 担当: meng-tian（蒙恬）
 - 依頼日: 2026-11-13
-- 状態: 依頼中（環境の導入待ち）
+- 状態: 依頼中（2026-11-14 再開。ユーザーが道具を入れ、`check-env.ps1` の `missing` が空になった）
+
+## 再開の追記（2026-11-14）
+
+- 環境: Node.js 24.22.1（winget の pin あり）、pnpm 12.16.0、Build Tools 2026（MSVC 14.51）、Windows SDK 10.0.26100（signtool あり）、setuptools 84.2.1、C: の空き 90.7 GB。`longPathsEnabled` は 0。
+- 再開の地点: clone と作業ツリー（`C:\b\wt\1.146.0`）は済み。依存の導入（`scripts/build.mjs` 経由）から始める。
+- 注意: リーダーの環境では `ELECTRON_RUN_AS_NODE=1` が立っている（VS Code の中の Claude Code から起動しているため）。ビルドの子のプロセスとビルドしたものの起動から外す。
+- このリポジトリの pnpm も 12.16.0 に変わった。ルートで `pnpm install --frozen-lockfile` が通るか、`pnpm-lock.yaml` に差分が出ないかも確かめる（差分が出たら止めて報告）。
 
 ## 目的
 
