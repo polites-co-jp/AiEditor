@@ -242,3 +242,11 @@
 |---|---|
 | 本家 1.146.0 の手元のビルドの不具合（`build/.moduleignore` が `@github/copilot` を外すのに、`build/lib/copilot.ts` がその下の `sdk` を求めて `prepareCopilotRipgrepShimTask` で止まる。本家は PR #347312 で直し、1.147.0 に入る） | Phase 1 の関門を A-1 の単位（copilot の拡張を消し、`copilot.ts` に「拡張のフォルダが無ければ戻る」行を足す）と合わせて満たす。厳密な「無改造」のビルドの確かめは、1.146.0 では行わない |
 | Smart App Control（オン）が、自分でビルドした署名の無いネイティブのモジュール（`winregistry.node`）の読み込みを止め、エディタが起動しない | ユーザーの答え: 「止められても継続して、リスクを確認して実行ができるはず」。成り立つかを蒙恬が出典で調べる（`tasks/2026-11-14-sac-override-research/`）。結果を添えて改めて諮る（未決） |
+
+## 裁定（2026-11-14、Smart App Control。上の「未決」を閉じる）
+
+調べ: `tasks/2026-11-14-sac-override-research/sac-override.md`（Smart App Control には、止めたものを確認して実行する道も、アプリごとの例外も無い。今の Windows 11 はオフの後にまたオンにできる）
+
+| 論点 | 裁定 |
+|---|---|
+| Smart App Control（オン）が自分でビルドした `.node` を止める | オフにする。ユーザーが Windows セキュリティの画面で操作する。ウイルス対策（ESET）は残る。後でオンに戻すときは、先に `winver` で 26300.9818 以上かを確かめる（KB5127648 の不具合） |

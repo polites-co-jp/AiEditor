@@ -1,0 +1,40 @@
+{
+    "readable":  true,
+    "error":  null,
+    "since":  "2026-10-31T19:58:09.3382791+09:00",
+    "count":  4,
+    "events":  [
+                   {
+                       "time":  "2026-11-14T19:32:34.4578869+09:00",
+                       "id":  3077,
+                       "file":  "\\Device\\HarddiskVolume2\\b\\wt\\VSCode-win32-x64\\resources\\app\\node_modules.asar.unpacked\\@vscode\\windows-registry\\build\\Release\\winregistry.node",
+                       "process":  "\\Device\\HarddiskVolume2\\b\\wt\\VSCode-win32-x64\\Code - OSS.exe",
+                       "policy":  "VerifiedAndReputableDesktop",
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\b\\wt\\VSCode-win32-x64\\Code - OSS.exe) attempted to load \\Device\\HarddiskVolume2\\b\\wt\\VSCode-win32-x64\\resources\\app\\node_modules.asar.unpacked\\@vscode\\windows-registry\\build\\Release\\winregistry.node that did not meet the Enterprise signing level requirements or violated code integrity policy (Policy ID:{0283ac0f-fff1-49ae-ada1-8a933"
+                   },
+                   {
+                       "time":  "2026-11-14T19:25:10.8909223+09:00",
+                       "id":  3077,
+                       "file":  "\\Device\\HarddiskVolume2\\b\\wt\\1.146.0\\node_modules\\bufferutil\\build\\Release\\bufferutil.node",
+                       "process":  "\\Device\\HarddiskVolume2\\Program Files\\nodejs\\node.exe",
+                       "policy":  "VerifiedAndReputableDesktop",
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\nodejs\\node.exe) attempted to load \\Device\\HarddiskVolume2\\b\\wt\\1.146.0\\node_modules\\bufferutil\\build\\Release\\bufferutil.node that did not meet the Enterprise signing level requirements or violated code integrity policy (Policy ID:{0283ac0f-fff1-49ae-ada1-8a933130cad6})."
+                   },
+                   {
+                       "time":  "2026-11-14T19:13:07.5350294+09:00",
+                       "id":  3077,
+                       "file":  "\\Device\\HarddiskVolume2\\b\\wt\\1.146.0\\node_modules\\bufferutil\\build\\Release\\bufferutil.node",
+                       "process":  "\\Device\\HarddiskVolume2\\Program Files\\nodejs\\node.exe",
+                       "policy":  "VerifiedAndReputableDesktop",
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\nodejs\\node.exe) attempted to load \\Device\\HarddiskVolume2\\b\\wt\\1.146.0\\node_modules\\bufferutil\\build\\Release\\bufferutil.node that did not meet the Enterprise signing level requirements or violated code integrity policy (Policy ID:{0283ac0f-fff1-49ae-ada1-8a933130cad6})."
+                   },
+                   {
+                       "time":  "2026-11-14T19:10:53.8203744+09:00",
+                       "id":  3077,
+                       "file":  "\\Device\\HarddiskVolume2\\b\\wt\\1.146.0\\node_modules\\bufferutil\\build\\Release\\bufferutil.node",
+                       "process":  "\\Device\\HarddiskVolume2\\Program Files\\nodejs\\node.exe",
+                       "policy":  "VerifiedAndReputableDesktop",
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\nodejs\\node.exe) attempted to load \\Device\\HarddiskVolume2\\b\\wt\\1.146.0\\node_modules\\bufferutil\\build\\Release\\bufferutil.node that did not meet the Enterprise signing level requirements or violated code integrity policy (Policy ID:{0283ac0f-fff1-49ae-ada1-8a933130cad6})."
+                   }
+               ]
+}

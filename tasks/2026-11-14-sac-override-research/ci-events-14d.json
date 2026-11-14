@@ -1,0 +1,1608 @@
+{
+    "readable":  true,
+    "error":  null,
+    "since":  "2026-10-31T19:55:38.5055236+09:00",
+    "count":  200,
+    "events":  [
+                   {
+                       "time":  "2026-11-14T19:32:34.4578869+09:00",
+                       "id":  3077,
+                       "file":  "\\Device\\HarddiskVolume2\\b\\wt\\VSCode-win32-x64\\resources\\app\\node_modules.asar.unpacked\\@vscode\\windows-registry\\build\\Release\\winregistry.node",
+                       "process":  "\\Device\\HarddiskVolume2\\b\\wt\\VSCode-win32-x64\\Code - OSS.exe",
+                       "policy":  "VerifiedAndReputableDesktop",
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\b\\wt\\VSCode-win32-x64\\Code - OSS.exe) attempted to load \\Device\\HarddiskVolume2\\b\\wt\\VSCode-win32-x64\\resources\\app\\node_modules.asar.unpacked\\@vscode\\windows-registry\\build\\Release\\winregistry.node that did not meet the Enterprise signing level requirements or violated code integrity policy (Policy ID:{0283ac0f-fff1-49ae-ada1-8a933"
+                   },
+                   {
+                       "time":  "2026-11-14T19:32:34.4575077+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\b\\wt\\VSCode-win32-x64\\Code - OSS.exe) attempted to load \\Device\\HarddiskVolume2\\b\\wt\\VSCode-win32-x64\\resources\\app\\node_modules.asar.unpacked\\@vscode\\windows-registry\\build\\Release\\winregistry.node that did not meet the Enterprise signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T19:25:10.8909223+09:00",
+                       "id":  3077,
+                       "file":  "\\Device\\HarddiskVolume2\\b\\wt\\1.146.0\\node_modules\\bufferutil\\build\\Release\\bufferutil.node",
+                       "process":  "\\Device\\HarddiskVolume2\\Program Files\\nodejs\\node.exe",
+                       "policy":  "VerifiedAndReputableDesktop",
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\nodejs\\node.exe) attempted to load \\Device\\HarddiskVolume2\\b\\wt\\1.146.0\\node_modules\\bufferutil\\build\\Release\\bufferutil.node that did not meet the Enterprise signing level requirements or violated code integrity policy (Policy ID:{0283ac0f-fff1-49ae-ada1-8a933130cad6})."
+                   },
+                   {
+                       "time":  "2026-11-14T19:25:10.8904557+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\nodejs\\node.exe) attempted to load \\Device\\HarddiskVolume2\\b\\wt\\1.146.0\\node_modules\\bufferutil\\build\\Release\\bufferutil.node that did not meet the Enterprise signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T19:13:07.5350294+09:00",
+                       "id":  3077,
+                       "file":  "\\Device\\HarddiskVolume2\\b\\wt\\1.146.0\\node_modules\\bufferutil\\build\\Release\\bufferutil.node",
+                       "process":  "\\Device\\HarddiskVolume2\\Program Files\\nodejs\\node.exe",
+                       "policy":  "VerifiedAndReputableDesktop",
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\nodejs\\node.exe) attempted to load \\Device\\HarddiskVolume2\\b\\wt\\1.146.0\\node_modules\\bufferutil\\build\\Release\\bufferutil.node that did not meet the Enterprise signing level requirements or violated code integrity policy (Policy ID:{0283ac0f-fff1-49ae-ada1-8a933130cad6})."
+                   },
+                   {
+                       "time":  "2026-11-14T19:13:07.5345363+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\nodejs\\node.exe) attempted to load \\Device\\HarddiskVolume2\\b\\wt\\1.146.0\\node_modules\\bufferutil\\build\\Release\\bufferutil.node that did not meet the Enterprise signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T19:10:53.8203744+09:00",
+                       "id":  3077,
+                       "file":  "\\Device\\HarddiskVolume2\\b\\wt\\1.146.0\\node_modules\\bufferutil\\build\\Release\\bufferutil.node",
+                       "process":  "\\Device\\HarddiskVolume2\\Program Files\\nodejs\\node.exe",
+                       "policy":  "VerifiedAndReputableDesktop",
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\nodejs\\node.exe) attempted to load \\Device\\HarddiskVolume2\\b\\wt\\1.146.0\\node_modules\\bufferutil\\build\\Release\\bufferutil.node that did not meet the Enterprise signing level requirements or violated code integrity policy (Policy ID:{0283ac0f-fff1-49ae-ada1-8a933130cad6})."
+                   },
+                   {
+                       "time":  "2026-11-14T19:10:53.8198903+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\nodejs\\node.exe) attempted to load \\Device\\HarddiskVolume2\\b\\wt\\1.146.0\\node_modules\\bufferutil\\build\\Release\\bufferutil.node that did not meet the Enterprise signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T19:00:03.5248653+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T19:00:03.5147646+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T19:00:03.5060437+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T19:00:03.4975964+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T19:00:03.4890734+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T19:00:03.4809633+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T19:00:03.4726687+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T19:00:03.4613592+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T19:00:03.4529478+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T19:00:03.4444011+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T19:00:03.4354298+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T19:00:03.4270464+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T19:00:03.4172707+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T19:00:03.4064989+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T19:00:03.3950362+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T19:00:03.3839437+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T19:00:03.3750921+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T19:00:03.3258652+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T19:00:03.3136585+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T19:00:03.3010463+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:59:36.6851514+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:59:36.6694609+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:59:36.6494929+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:40:24.2339704+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:40:24.2256487+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:40:24.2176586+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:40:24.1880638+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:40:24.1808504+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:40:24.1534106+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:40:24.1454684+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:40:24.1377899+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:40:24.1109111+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:40:24.1038628+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:40:24.0795775+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:40:24.0723825+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:40:24.0575327+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:40:24.0502213+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:40:24.0428870+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:40:24.0352241+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:40:24.0280141+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:40:24.0208908+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:40:23.9870811+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:40:22.2429619+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:40:22.2355014+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:40:22.2283762+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:40:22.2024554+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:40:22.1952873+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:40:22.1693144+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:40:22.1562522+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:40:22.1480129+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:40:22.1079856+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:40:22.1006952+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:40:22.0666707+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:40:22.0591628+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:40:22.0442038+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:40:22.0368514+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:40:22.0298427+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:40:22.0229654+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:40:22.0156164+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:40:22.0086969+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:40:21.9149861+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\ekrn.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:56.0600656+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:54.0275797+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:51.9831508+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:49.9535779+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:47.9203531+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:45.8766394+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:43.8466848+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:41.8180899+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:41.4042499+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\SecurityHealthService.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:41.3996545+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\SecurityHealthService.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:41.3933607+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\SecurityHealthService.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:41.3862972+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\SecurityHealthService.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:41.3816506+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\SecurityHealthService.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:41.3740624+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\SecurityHealthService.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:39.7834028+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:37.7484679+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:35.7164680+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:33.6741615+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:31.6424870+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:29.6066416+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:27.5678387+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:25.5332689+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:23.5105198+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:21.4738194+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:19.4416412+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:17.4140423+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:15.3658018+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:13.3366200+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:11.3004267+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:09.2607116+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:07.2273913+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:05.1894565+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:04.6207512+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\SecurityHealthService.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:04.6162676+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\SecurityHealthService.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:04.6103422+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\SecurityHealthService.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:04.6037668+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\SecurityHealthService.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:04.5992850+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\SecurityHealthService.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:04.5924920+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\SecurityHealthService.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:03.4070184+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\SecurityHealthService.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:03.4022015+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\SecurityHealthService.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:03.3955909+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\SecurityHealthService.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:03.3888962+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\SecurityHealthService.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:03.3841349+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\SecurityHealthService.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:03.3497741+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\SecurityHealthService.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:03.1476151+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:24:01.1190621+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:23:59.0815532+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:23:57.0380106+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:23:55.0003895+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:23:52.9639088+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:23:50.9195508+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:23:48.8941828+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:23:46.8634589+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:23:44.8197867+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:23:42.7895545+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:23:40.7573899+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:23:38.7121364+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:23:36.6801334+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:23:34.6525699+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:23:33.6001412+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:23:32.5568994+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:23:31.5181188+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:23:30.4918888+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:23:29.4645373+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:23:28.4343845+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:23:27.3953030+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:23:27.3889446+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:23:27.3840333+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:23:27.2383466+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:23:24.5830565+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.26100.4-0\\MsMpEng.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:23:24.5754449+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.26100.4-0\\MsMpEng.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:23:24.5656238+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.26100.4-0\\MsMpEng.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:23:22.2291899+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.26100.4-0\\MsMpEng.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:23:22.2218982+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.26100.4-0\\MsMpEng.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:23:22.2144506+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.26100.4-0\\MsMpEng.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:23:22.2060457+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.26100.4-0\\MsMpEng.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:23:22.1971679+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.26100.4-0\\MsMpEng.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:23:22.1877874+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.26100.4-0\\MsMpEng.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:23:22.1799588+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.26100.4-0\\MsMpEng.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:23:22.1730581+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.26100.4-0\\MsMpEng.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T18:23:22.1637144+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.26100.4-0\\MsMpEng.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Custom 3 / Antimalware signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:59:20.2064933+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:59:20.1911755+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:59:20.1752403+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:06:05.7813874+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:06:03.7224086+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:06:00.9282018+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:05:58.8693710+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:05:56.8398025+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:05:54.8071819+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:05:52.7570973+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:05:50.7188283+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:05:48.6928232+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:05:46.6506323+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:05:44.6154198+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:05:42.4631956+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:05:40.4187573+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:05:38.3812288+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:05:36.0782905+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:05:34.0329267+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:05:31.8254932+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:05:29.7937332+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:05:27.2094055+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:05:25.1782743+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:05:23.1330463+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:05:20.4718095+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:05:18.4341645+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:05:16.3980222+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:05:14.3460271+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:05:12.3167970+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:05:10.2810747+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:05:08.1797925+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:05:06.1502798+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:05:04.1152068+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:05:02.0727221+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:05:00.0416687+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:04:58.0076079+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:04:55.9586176+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:04:53.9276579+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:04:51.9015328+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:04:49.8297051+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:04:47.8007442+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:04:45.7752859+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:04:44.7480214+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:04:42.9383336+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:04:41.9035050+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:04:40.8680659+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:04:39.8313722+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:04:38.7896246+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:04:37.7503395+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T17:04:37.7437777+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\Windows\\System32\\svchost.exe) attempted to load \\Device\\HarddiskVolume2\\Program Files\\ESET\\ESET Security\\eamsi.dll that did not meet the Windows signing level requirements."
+                   }
+               ]
+}
