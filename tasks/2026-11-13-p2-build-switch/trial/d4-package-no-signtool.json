@@ -1,0 +1,64 @@
+{
+  "label": "1.146.0-d4",
+  "upstream": {
+    "tag": "1.146.0",
+    "commit": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+  },
+  "units": [],
+  "patches": [],
+  "lockfileDiff": "records/take-in/1.146.0-d4/lockfile.diff",
+  "toolchain": null,
+  "durations": {},
+  "zip": null,
+  "extensionsLockSha256": "6b4c3ceae7d6cb407f62bbcbd57ca50267e998975887884cc325fd26a85cce10",
+  "result": "error",
+  "stoppedAt": "package",
+  "dryRun": false,
+  "startedAt": "2026-11-14T00:39:02.313Z",
+  "finishedAt": "2026-11-14T00:39:02.910Z",
+  "paths": {
+    "buildRoot": "C:\\b",
+    "worktree": "C:\\b\\trial-build\\no-such-wt",
+    "packageDir": "C:\\b\\trial-build\\VSCode-win32-x64",
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\records\\take-in\\1.146.0-d4\\checks.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\removals",
+    "dist": "C:\\b\\dist",
+    "logs": "C:\\b\\logs\\1.146.0-d4"
+  },
+  "config": {
+    "path": "C:/b/trial-install/cfg/none.json",
+    "exists": false,
+    "buildRootFrom": "default"
+  },
+  "stepsSelected": [
+    "package"
+  ],
+  "envRemovedForChildren": [
+    "ELECTRON_RUN_AS_NODE",
+    "VSCODE_CODE_CACHE_PATH",
+    "VSCODE_CRASH_REPORTER_PROCESS_TYPE",
+    "VSCODE_CWD",
+    "VSCODE_ESM_ENTRYPOINT",
+    "VSCODE_HANDLES_UNCAUGHT_ERRORS",
+    "VSCODE_IPC_HOOK",
+    "VSCODE_NLS_CONFIG",
+    "VSCODE_PID",
+    "VSCODE_PROCESS_TITLE"
+  ],
+  "steps": [
+    {
+      "name": "package",
+      "status": "error",
+      "startedAt": "2026-11-14T00:39:02.322Z",
+      "signtool": {
+        "path": null,
+        "source": null,
+        "pathPrepended": null
+      },
+      "message": "signtool.exe が見つからない（PATH にも Windows Kits\\10\\bin\\<版>\\x64 にも無い）。Windows SDK を入れ、scripts/check-env.ps1 で確かめる"
+    }
+  ],
+  "warnings": [],
+  "message": "package で止まった: signtool.exe が見つからない（PATH にも Windows Kits\\10\\bin\\<版>\\x64 にも無い）。Windows SDK を入れ、scripts/check-env.ps1 で確かめる"
+}

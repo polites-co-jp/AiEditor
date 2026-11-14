@@ -7,7 +7,8 @@
   Checks: Git, Node.js (version and arch against the tag's .nvmrc), pnpm (against the tag's
   packageManager), corepack, Python and setuptools, Visual Studio (the folders that the tag's
   build/npm/preinstall.ts looks at, and the components the How-to-Contribute wiki lists, via vswhere),
-  tar.exe, free disk space of the build root, LongPathsEnabled, git core.longpaths.
+  tar.exe, signtool.exe (PATH, else the newest Windows Kits\10\bin\<version>\x64), free disk space of the
+  build root, LongPathsEnabled, git core.longpaths.
 
   The required versions come from -WorkTree (a checked-out tag) when given; otherwise from
   -NodeRequired / -PnpmRequired (defaults: the values of 1.146.0, read from the tag on GitHub
@@ -193,6 +194,37 @@ $result.tar = [ordered]@{
     found = ($null -ne $st32 -and $st32.ok)
 }
 
+# signtool.exe (Windows SDK)
+# 1.146.0 patchWin32DependenciesTask (build/gulpfile.vscode.ts) spawns 'signtool.exe verify /pa' from PATH and
+# fails the packaging when it cannot start. The upstream CI prepends
+# 'C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64' to PATH for that step
+# (build/azure-pipelines/win32/steps/product-build-win32-compile.yml). Here: PATH first, else the newest
+# Windows Kits\10\bin\<version>\x64\signtool.exe (scripts/build.mjs adds that folder to its children's PATH).
+$stPath = $null
+$stCmd = Get-Command 'signtool.exe' -ErrorAction SilentlyContinue | Select-Object -First 1
+if ($stCmd) { $stPath = $stCmd.Source }
+$pf86 = [Environment]::GetEnvironmentVariable('ProgramFiles(x86)')
+if (-not $pf86) { $pf86 = 'C:\Program Files (x86)' }
+$kitsBin = Join-Path $pf86 'Windows Kits\10\bin'
+$kitsCands = @()
+if (Test-Path -LiteralPath $kitsBin) {
+    $kitsCands = @(Get-ChildItem -LiteralPath $kitsBin -Directory | Where-Object { $_.Name -match '^\d+\.\d+\.\d+\.\d+$' } |
+            Where-Object { Test-Path -LiteralPath (Join-Path $_.FullName 'x64\signtool.exe') } |
+            Sort-Object -Property @{ Expression = { [version]$_.Name } } -Descending |
+            ForEach-Object { Join-Path $_.FullName 'x64\signtool.exe' })
+}
+$stChosen = $null; $stSource = $null
+if ($stPath) { $stChosen = $stPath; $stSource = 'PATH' }
+elseif ($kitsCands.Count -gt 0) { $stChosen = $kitsCands[0]; $stSource = 'WindowsKits' }
+$result.signtool = [ordered]@{
+    onPath = $stPath
+    kitsBin = $kitsBin
+    kitsCandidates = $kitsCands
+    chosen = $stChosen
+    source = $stSource
+    found = ($null -ne $stChosen)
+}
+
 # Disk and long paths
 $drive = (Split-Path -Qualifier $BuildRoot).TrimEnd(':')
 $d = Get-PSDrive -Name $drive -ErrorAction SilentlyContinue
@@ -219,6 +251,7 @@ if (-not $result.visualStudio.preinstallCheckPasses) { $missing += 'Visual Studi
 $okInst = @($instances | Where-Object { $c2 = $_.components; ($wanted[0..4] | Where-Object { -not $c2[$_] }).Count -eq 0 })
 if ($okInst.Count -eq 0) { $missing += 'Visual Studio components listed by the wiki (VCTools, Windows11SDK.26100, Spectre x86.x64, ATL.Spectre, ATLMFC.Spectre)' }
 if (-not $result.tar.found) { $missing += 'tar.exe (System32, bsdtar)' }
+if (-not $result.signtool.found) { $missing += 'signtool.exe (Windows SDK: PATH or Windows Kits\10\bin\<version>\x64)' }
 $result.missing = $missing
 
 $json = $result | ConvertTo-Json -Depth 8

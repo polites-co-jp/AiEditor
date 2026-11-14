@@ -6,7 +6,8 @@
 //   4 install     依存の導入（pnpm install --no-frozen-lockfile）
 //     lockfile    ロックファイルの検査（docs/03 の5.4。scripts/apply.mjs --lockfile-check を呼ぶ）
 //   5 typecheck   型検査（pnpm run typecheck-client）
-//   6 package     パッケージ化（pnpm run gulp vscode-win32-x64-min。出力は作業ツリーの親の直下の VSCode-win32-x64）
+//   6 package     パッケージ化（pnpm run gulp vscode-win32-x64-min。出力は作業ツリーの親の直下の VSCode-win32-x64）。
+//                 signtool.exe が PATH に無ければ、最も新しい Windows Kits\10\bin\<版>\x64 をこの子の PATH の先に足す（無ければ止める）
 //   7 postprocess 後処理の確かめ（resources\app の場所を決めつけない。消した拡張が残っていない、keep.json の拡張がそろう、
 //                 LICENSE と ThirdPartyNotices がある、exe と CLI がある）
 //   8 zip         %SystemRoot%\System32\tar.exe で <buildRoot>\dist\<label>.zip。中の最上位のフォルダは <nameShort>-win32-x64-<label>。
@@ -39,7 +40,8 @@
 //
 // 書き出している関数（テストの入口。tasks/2026-11-13-p2-build-switch/build-switch-design.md の3節）:
 //   STEPS, parseArgs, selectSteps, nextLabel, findAppDir, resolveEditorLayout, childEnv, appliedUnitsFrom,
-//   checkBuiltinExtensions, parseExcludedExtensions, zipFolderName, quoteCmdArg, toolchainWarnings, applyPassThrough
+//   checkBuiltinExtensions, parseExcludedExtensions, zipFolderName, quoteCmdArg, toolchainWarnings, applyPassThrough,
+//   findSignTool, prependPath
 
 import fs from "node:fs";
 import path from "node:path";
@@ -240,6 +242,47 @@ export function toolchainWarnings(toolchain) {
   return out;
 }
 
+// signtool.exe を探す（1.146.0 の patchWin32DependenciesTask が PATH から 'signtool.exe verify /pa' を呼び、
+// 起動できないとパッケージ化が落ちる。build/gulpfile.vscode.ts の483行）。check-env.ps1 と同じ規則:
+// PATH の上にあればそれ、無ければ <ProgramFiles(x86)>\Windows Kits\10\bin\<x.y.z.w>\x64\signtool.exe の最も新しい版。
+// 本家の CI は bin\10.0.26100.0\x64 を固定で PATH の先に足す（build/azure-pipelines/win32/steps/product-build-win32-compile.yml）。
+// exists・listDirs は試しのために差し替えられる。返り値 { found, path, dir, source: "PATH" | "WindowsKits" | null, candidates }
+export function findSignTool({ env = process.env, exists = fs.existsSync, listDirs } = {}) {
+  const get = (name) => {
+    const k = Object.keys(env).find((x) => x.toLowerCase() === name.toLowerCase());
+    return k ? env[k] : undefined;
+  };
+  for (const d of String(get("PATH") || "").split(";").map((s) => s.trim().replace(/^"|"$/g, "")).filter(Boolean)) {
+    const p = path.win32.join(d, "signtool.exe");
+    if (exists(p)) return { found: true, path: p, dir: d, source: "PATH", candidates: [] };
+  }
+  const pf86 = get("ProgramFiles(x86)") || "C:\\Program Files (x86)";
+  const bin = path.win32.join(pf86, "Windows Kits", "10", "bin");
+  const list = listDirs || ((dir) => (fs.existsSync(dir) ? fs.readdirSync(dir, { withFileTypes: true }).filter((e) => e.isDirectory()).map((e) => e.name) : []));
+  const ver = (s) => s.split(".").map(Number);
+  const cmp = (a, b) => {
+    const x = ver(a);
+    const y = ver(b);
+    for (let i = 0; i < 4; i++) if (x[i] !== y[i]) return x[i] - y[i];
+    return 0;
+  };
+  const candidates = list(bin)
+    .filter((n) => /^\d+\.\d+\.\d+\.\d+$/.test(n))
+    .sort((a, b) => cmp(b, a))
+    .map((n) => path.win32.join(bin, n, "x64", "signtool.exe"))
+    .filter((p) => exists(p));
+  if (candidates.length) return { found: true, path: candidates[0], dir: path.win32.dirname(candidates[0]), source: "WindowsKits", candidates };
+  return { found: false, path: null, dir: null, source: null, candidates: [] };
+}
+
+// env の PATH の先頭に dir を足した写しを返す（元の env は変えない。PATH のキーの大文字小文字は元のまま）。
+export function prependPath(env, dir) {
+  const out = { ...env };
+  const k = Object.keys(out).find((x) => x.toLowerCase() === "path") || "Path";
+  out[k] = out[k] ? `${dir};${out[k]}` : dir;
+  return out;
+}
+
 // cmd.exe に渡す1つの引数を " で囲む（中の " は許さない）。
 export function quoteCmdArg(s) {
   const v = String(s);
@@ -403,6 +446,7 @@ async function main() {
   const tar = path.join(process.env.SystemRoot || "C:\\Windows", "System32", "tar.exe");
   const steps = selectSteps(args.from, args.to);
   const { env, removed: envRemoved } = childEnv(process.env);
+  const signtool = findSignTool({ env });
   let upstream = {};
   try {
     upstream = readJson(path.join(REPO, "upstream.json"));
@@ -498,7 +542,10 @@ async function main() {
     if (steps.includes("prepare") && args.fresh) rec.plan.fresh = `git -C ${path.join(buildRoot, "vscode")} worktree remove --force ${worktree}`;
     if (steps.includes("postprocess")) rec.plan.postprocess = { packageDir, keep: keepPath, removals: removalsDir };
     if (steps.includes("zip")) rec.plan.zip = { tar, zip: zipPath };
+    if (rec.plan.package) rec.plan.package.pathPrepended = signtool.source === "WindowsKits" ? signtool.dir : null;
+    if (steps.includes("package") && !signtool.found) rec.warnings.push("signtool.exe が見つからない（PATH にも Windows Kits\\10\\bin\\<版>\\x64 にも無い）。package の手順で止まる");
     rec.checksBeforeRun = {
+      signtool: { found: signtool.found, path: signtool.path, source: signtool.source },
       applyMjs: fs.existsSync(path.join(SCRIPT_DIR, "apply.mjs")),
       keepJson: fs.existsSync(keepPath),
       worktree: fs.existsSync(worktree),
@@ -516,13 +563,13 @@ async function main() {
     finish("dry-run");
   }
 
-  const runPlanned = async (name, s) => {
+  const runPlanned = async (name, s, stepEnv = env) => {
     const p = plan[name];
     s.command = [p.cmd, ...p.args].join(" ");
     s.cwd = p.cwd;
     s.log = path.join(logDir, `${name}.log`);
     save();
-    const r = await runLogged({ ...p, env, logFile: s.log });
+    const r = await runLogged({ ...p, env: stepEnv, logFile: s.log });
     s.seconds = r.seconds;
     s.exitCode = r.exitCode;
     if (r.exitCode !== 0) s.tail = r.tail.slice(-4000);
@@ -592,7 +639,11 @@ async function main() {
       if (r.exitCode !== 0) fail(s, `型検査が ${r.exitCode} で終わった`);
       done(s);
     } else if (name === "package") {
-      const r = await runPlanned(name, s);
+      // signtool.exe（patchWin32DependenciesTask が PATH から呼ぶ）。PATH に無ければ Windows Kits のフォルダを
+      // この子のプロセスの PATH にだけ足す（ユーザーの PATH は書き換えない）
+      s.signtool = { path: signtool.path, source: signtool.source, pathPrepended: signtool.source === "WindowsKits" ? signtool.dir : null };
+      if (!signtool.found) fail(s, "signtool.exe が見つからない（PATH にも Windows Kits\\10\\bin\\<版>\\x64 にも無い）。Windows SDK を入れ、scripts/check-env.ps1 で確かめる");
+      const r = await runPlanned(name, s, signtool.source === "WindowsKits" ? prependPath(env, signtool.dir) : env);
       rec.durations.package = r.seconds;
       if (r.exitCode !== 0) fail(s, `パッケージ化が ${r.exitCode} で終わった`);
       if (!fs.existsSync(packageDir)) fail(s, `出力 ${packageDir} が無い`);

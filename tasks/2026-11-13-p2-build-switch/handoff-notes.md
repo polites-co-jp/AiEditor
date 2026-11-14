@@ -3,6 +3,30 @@
 - 作成: 蒙恬（2026-11-14）
 - 宛先: ヴラド・ツェペシュ
 
+## 追記5（2026-11-14）: signtool.exe の確かめ（check-env.ps1）と、build.mjs の子の PATH
+
+リーダーの依頼（ビルドの道具はこの Windows に直接入れる裁定。`tasks/2026-11-14-build-env-research/handoff-notes.md` の「docs/ との食い違い」1、docs/02 の5節）。
+
+- 結果: 完了（signtool が入った状態の確かめは、この PC にまだ Windows SDK が無いので未。下の「未解決」）
+- 本家の CI の決め方（参考にした事実）: `build/azure-pipelines/win32/steps/product-build-win32-compile.yml` の105〜107・135〜137・153〜155行が、`pnpm run gulp vscode-win32-*-min-ci` などの各手順の中で `$sdk = "C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64"; $env:PATH = "$sdk;$env:PATH"` とする（版は固定、その手順のプロセスの PATH にだけ足す）。arm64 の sanity テスト（`common/sanity-tests.yml` の131〜136行）は NuGet の `microsoft.windows.sdk.buildtools` 10.0.26100.1 を取って `bin\10.0.26100.0\arm64\signtool.exe` を使う。どちらも本家 1.146.0 のタグのソース（`C:\b\wt\1.146.0`、読むだけ）。signtool を呼ぶのは `build/gulpfile.vscode.ts` の483行（`verify /pa`）と497行（`remove /s`）。
+- 直したもの:
+  1. `scripts/check-env.ps1`: `signtool` の項（`onPath`・`kitsBin`・`kitsCandidates`・`chosen`・`source`・`found`）を足した。PATH の `signtool.exe` が先、無ければ `<ProgramFiles(x86)>\Windows Kits\10\bin\<x.y.z.w>\x64\signtool.exe` のうち最も新しい版（版を固定しない。CI と違い、入れた SDK の版に合わせるため）。見つからなければ `missing` に `signtool.exe (Windows SDK: PATH or Windows Kits\10\bin\<version>\x64)`。
+  2. `scripts/build.mjs`: `findSignTool`（同じ規則）と `prependPath` を足した。package の手順の前に探し、PATH に無く Windows Kits で見つけたときは、そのフォルダを package の子のプロセスの PATH の先頭にだけ足す（ユーザーの PATH も build.mjs 自身の環境も変えない）。見つからなければ gulp を走らせる前に止める。`--dry-run` では `checksBeforeRun.signtool` と `plan.package.pathPrepended` を出し、見つからなければ `warnings` に書く。
+  3. `build-switch-design.md` の3節・3.3 に書いた。
+- 確かめたこと:
+  - `node --check scripts/build.mjs`: 誤りなし。`scripts/p0-check-ps.ps1`: 16 本で構文の誤り 0、ASCII 以外 0 バイト。
+  - `check-env.ps1 -WorkTree C:/b/wt/1.146.0`: `signtool.found: false`（PATH に無く、`C:\Program Files (x86)\Windows Kits\10\bin` も無い）で、`missing` に signtool が入った（ほかの不足 5 件は前と同じ: node・pnpm・setuptools・Visual Studio の2件）。終了コード 2。出力は `C:\b\trial-build\env-check-signtool.json`。
+  - `build.mjs --dry-run --from package --to package`: `warnings` に「signtool.exe が見つからない…package の手順で止まる」、`checksBeforeRun.signtool: { found: false }`、`plan.package.pathPrepended: null`（`trial/d4-dry-run-signtool.json`）。
+  - `build.mjs --from package --to package --worktree <無い場所>`: gulp を走らせずに `stoppedAt: package` で止まった（`trial/d4-package-no-signtool.json`）。
+- テストの入口（曹参へ）:
+  - `findSignTool({ env: { Path: "C:\\a;\"C:\\b\"" }, exists: (p) => p === "C:\\b\\signtool.exe", listDirs: () => [] })` → `{ found: true, path: "C:\\b\\signtool.exe", dir: "C:\\b", source: "PATH" }`。
+  - `findSignTool({ env: { PATH: "" , "ProgramFiles(x86)": "D:\\PF86" }, listDirs: () => ["10.0.22621.0","10.0.26100.0","wdf","10.0.9.0"], exists: (p) => /10\.0\.(22621|26100)\.0\\x64\\signtool\.exe$/.test(p) })` → `source: "WindowsKits"`、`path` は `D:\PF86\Windows Kits\10\bin\10.0.26100.0\x64\signtool.exe`、`candidates` は 26100 → 22621 の順。
+  - どちらにも無ければ `{ found: false, path: null, dir: null, source: null, candidates: [] }`。
+  - `prependPath({ Path: "C:\\x" }, "C:\\sdk")` → `{ Path: "C:\\sdk;C:\\x" }`、元のオブジェクトは変わらない。`prependPath({}, "C:\\sdk")` → `{ Path: "C:\\sdk" }`。
+  - `check-env.ps1` の出力に `signtool`（`found`・`source`・`chosen`）、見つからなければ `missing` に1行。
+- docs/ との食い違い: 無し（docs/02 の5節はリーダーが直した）。check-env.ps1 は版を固定しない（CI は 10.0.26100.0 に固定）点は、docs/02 の5節の書き方と合うかリーダーが見てほしい。
+- 未解決: signtool が見つかったときの動き（PATH に足して gulp が通るか）は、Windows SDK が入った後の最初のビルドで確かめる。`@vscode/gulp-electron` の `getSignTool`（`Windows Kits\10\bin\` を自分で探す。調べの5節の3）を 1.146.0 のビルドが通るかも、そのとき分かる。SubagentHandback の件は前のまま。
+
 ## 追記4（2026-11-14）: 取り込みのための switch.ps1 -ExpandOnly と、build.mjs から apply.mjs への受け渡し
 
 リーダーの依頼（docs/06 の9節。`tasks/2026-11-14-p3-take-in/doc-corrections.md` の1・6）。

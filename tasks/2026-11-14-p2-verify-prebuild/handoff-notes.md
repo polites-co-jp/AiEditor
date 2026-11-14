@@ -3,6 +3,71 @@
 - 担当: 大岡越前守 → ヴラド・ツェペシュ（2026-11-14）
 - 詳しい記録: `verification-log.md`（2回目は6節）
 
+## 追記3（3回目。signtool.exe の確かめ）
+
+### 判定
+
+**合格。** 対象は、蒙恬の `scripts/check-env.ps1`・`scripts/build.mjs`（`findSignTool`・`prependPath`）と、曹参の `tests/signtool.test.mjs`（17件）。仕様は `tasks/2026-11-13-p2-build-switch/handoff-notes.md` の追記5と、裁定（ビルドの道具はこの Windows にユーザーが入れる）。
+
+| 観点 | 結果 |
+|---|---|
+| ユーザーの PATH を書き換えない | 合格 |
+| 子のプロセスだけに足す | 合格 |
+| 版の選び方 | 合格 |
+| テストの期待が仕様どおりか | 合格 |
+| `node tests/run-all.mjs` | 合格（1473件。pass 1452、fail 0、skip 21） |
+
+### 確かめた版（SHA-256）
+
+| ファイル | SHA-256 |
+|---|---|
+| scripts/build.mjs | 77eaffcf5c7d8b1e6e990ebff36bda5e890f22866d2df77a06f7965b181e26da |
+| scripts/check-env.ps1 | c8d4ad7dbaa51a38774504887c8d3e9bf6f22efe024ab3f04b0c370ea391faf0 |
+| tests/signtool.test.mjs | 41f7f3f5ea61d6231e9701ffa31eb59a534d5b30ffdcac45263473fc5d53e8c4 |
+| tests/build/helpers.mjs | bbaa88969519c785e3306b6ae3dc206af1e01392660ba3596bdb7d08df5699b4 |
+| tests/run-all.mjs | 24612a676fa1325e4024559e875249e89e0e05e19143258d111f4e5e32494a38 |
+
+コミットの前に変わっていれば、検証をやり直す。
+
+### 根拠（読んだ差分: `git diff scripts/build.mjs scripts/check-env.ps1`）
+
+- **ユーザーの PATH を書き換えない**:
+  - `check-env.ps1` は、`Get-Command`、`[Environment]::GetEnvironmentVariable('ProgramFiles(x86)')`、`Test-Path`、`Get-ChildItem` で読むだけ。PATH にも環境変数にもレジストリにも書かない。
+  - `build.mjs` の `prependPath` は `{ ...env }` の写しを返す。元の `env` も `process.env` も変えない。build.mjs の中に、PATH を書く処理（`SetEnvironmentVariable`・レジストリ・`setx`）は無い。
+- **子のプロセスだけに足す**:
+  - `runPlanned(name, s, stepEnv = env)` に、package の手順だけが `prependPath(env, signtool.dir)` を渡す。
+  - 足すのは、signtool が PATH に無く Windows Kits で見つかったときだけ。PATH にあるときは足さない（`pathPrepended: null`）。
+  - ほかの手順（install・typecheck など）の環境は前のまま。
+  - 見つからなければ、gulp を走らせる前に `fail` で止める。dry-run では止めずに `warnings` に書く。
+- **版の選び方**:
+  - PATH の上の `signtool.exe` を先に見る（PATH の順。引用符を外す。PATH の名前の大文字小文字は問わない）。
+  - 無ければ `<ProgramFiles(x86)>\Windows Kits\10\bin\<x.y.z.w>\x64\signtool.exe` を見る。4つの数の名前だけを数として新しい順に並べ、exe のある最も新しい版を選ぶ。
+  - `check-env.ps1` も同じ規則（`[version]` で並べる）。版を固定しないのは追記5に書いた方針どおりで、docs/02 の5節との合わせ方はリーダーが見る。
+  - arm64 や x86 のフォルダは見ない（この PC は x64）。
+- **テスト**: `tests/signtool.test.mjs` を読んだ。期待は、追記5の「テストの入口」の例と同じ値。
+  - `findSignTool` の3つの例と、`prependPath` の2つの例。
+  - 追加の期待: PATH の先が勝つ、PATH が Windows Kits より先、版は数で比べる（`10.0.9.0` より `10.0.22621.0`）、`wdf` と exe の無い版を除く。
+  - `prependPath` に `process.env` を渡しても変わらないこと。
+  - dry-run の `pathPrepended` と警告、check-env.ps1 の `chosen`・`source`・`missing`。
+  - 実物の SDK を使わず、偽の `signtool.exe` と、試しの場所へ向けた `ProgramFiles(x86)`・`LOCALAPPDATA`・`--config` で走らせる。そのため実際の local.json や PATH には触れない（子の環境だけを変える。`tests/build/helpers.mjs` の `cleanEnv`）。
+  - 試しの場所 `C:\b\tests-st-*` は、終わった後に残っていない（Glob）。
+  - 軽い注: check-env.ps1 の「無いとき終了コード 2」は、この PC ではほかの不足（node など）でも 2 になる。signtool だけで 2 になることは、終了コードでは区別できない。`missing` の signtool の行が1つであることは別に確かめているので、仕様の確かめとしては足りる。
+- **run-all**: 結果は `run-all-result-3.txt`。1473件、pass 1452、fail 0、skip 21。曹参の申告と同じ。
+  - signtool 17/17。
+  - skip 21 はすべて `removals.test.mjs` の「有効な単位の after」の検査（全単位が `enabled:false` のため）。
+  - take-in・watch・notion-sync などのほかの担当のファイルも fail 0 だった。中身は見ていない（範囲の外）。
+
+### 未確認（実物が無いため）
+
+- 本物の Windows SDK が入った状態で、PATH に足して gulp の `signtool.exe verify /pa` が通るか。蒙恬の未解決のとおり、最初のビルドで確かめる。
+
+### 守ったこと
+
+- コード・テスト・docs は直していない。書いたのは、この追記と `run-all-result-3.txt`。
+- PATH、local.json、スタートメニュー、普段使いのデータには触れていない。
+
+---
+
 ## 追記（2回目。リーダーの続きの依頼への報告）
 
 ### 判定
@@ -43,8 +108,8 @@
 
 ### 申し送り（合否に関わらない）
 
-1. 曹参: 直しのテストが無い。対象は `toolchainWarnings`（build.mjs）、`resolveWorktree`・`resolveBuildRoot`（prepare.mjs）、`Update-PathEntries`（configure.ps1）。蒙恬の追記2に入口がある。
-2. 蒙恬: build.mjs は apply.mjs に `--build-root`・`--config` を渡さない（453行）。既定と違う場所でビルドすると、manifest を別の場所から読む。結果は `registeredKeys` の `warn` で止まりはしないが、そろえるのがよい。
+1. 曹参: 直しのテストが無い。対象は `toolchainWarnings`（build.mjs）、`resolveWorktree`・`resolveBuildRoot`（prepare.mjs）、`Update-PathEntries`（configure.ps1）。蒙恬の追記2に入口がある。→ その後、曹参が `tests/build-fixes.test.mjs`（17件）を足した。3回目の run-all で通っている。
+2. 蒙恬: build.mjs は apply.mjs に `--build-root`・`--config` を渡さない（453行）。既定と違う場所でビルドすると、manifest を別の場所から読む。結果は `registeredKeys` の `warn` で止まりはしないが、そろえるのがよい。→ その後、蒙恬が直した（build-switch の追記3。曹参の追記2で確かめられている）。私は今回の範囲外として読んでいない。
 3. リーダー: 1回目の軽微の4（docs/02 の3節の表に、overlay の `removeIfPresent` の4キーが無い）と5（`.gitattributes` の `*.patch -text`）は、まだ残っている。
 4. `C:\b\wt\verify-p2` は当てた状態（HEAD `ef5b647f…`）で残した。要らなければ消してよい。
 

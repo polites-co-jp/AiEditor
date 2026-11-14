@@ -1,0 +1,84 @@
+{
+  "label": "1.146.0-d4",
+  "upstream": {
+    "tag": "1.146.0",
+    "commit": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+  },
+  "units": [],
+  "patches": [],
+  "lockfileDiff": "records/take-in/1.146.0-d4/lockfile.diff",
+  "toolchain": {
+    "node": "24.16.0",
+    "electron": "43.8.6",
+    "packageManager": "pnpm 11.8.0",
+    "packageManagerDeclared": "pnpm@12.16.0",
+    "nvmrc": "24.22.1",
+    "nodeOfBuildScript": "v24.16.0"
+  },
+  "durations": {},
+  "zip": null,
+  "extensionsLockSha256": "6b4c3ceae7d6cb407f62bbcbd57ca50267e998975887884cc325fd26a85cce10",
+  "result": "dry-run",
+  "stoppedAt": null,
+  "dryRun": true,
+  "startedAt": "2026-11-14T00:38:54.106Z",
+  "finishedAt": "2026-11-14T00:38:54.579Z",
+  "paths": {
+    "buildRoot": "C:\\b",
+    "worktree": "C:\\b\\wt\\1.146.0",
+    "packageDir": "C:\\b\\wt\\VSCode-win32-x64",
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\records\\take-in\\1.146.0-d4\\checks.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\removals",
+    "dist": "C:\\b\\dist",
+    "logs": "C:\\b\\logs\\1.146.0-d4"
+  },
+  "config": {
+    "path": "C:/b/trial-install/cfg/none.json",
+    "exists": false,
+    "buildRootFrom": "default"
+  },
+  "stepsSelected": [
+    "package"
+  ],
+  "envRemovedForChildren": [
+    "ELECTRON_RUN_AS_NODE",
+    "VSCODE_CODE_CACHE_PATH",
+    "VSCODE_CRASH_REPORTER_PROCESS_TYPE",
+    "VSCODE_CWD",
+    "VSCODE_ESM_ENTRYPOINT",
+    "VSCODE_HANDLES_UNCAUGHT_ERRORS",
+    "VSCODE_IPC_HOOK",
+    "VSCODE_NLS_CONFIG",
+    "VSCODE_PID",
+    "VSCODE_PROCESS_TITLE"
+  ],
+  "steps": [],
+  "warnings": [
+    "signtool.exe が見つからない（PATH にも Windows Kits\\10\\bin\\<版>\\x64 にも無い）。package の手順で止まる",
+    "道具の版: node: 入っている 24.16.0 が .nvmrc の 24.22.1 に合わない（メジャーが同じで、それ以上が要る）",
+    "道具の版: pnpm: 入っている 11.8.0 が package.json の packageManager の 12.16.0 に合わない（メジャーが同じで、それ以上が要る）"
+  ],
+  "plan": {
+    "package": {
+      "command": "pnpm run gulp vscode-win32-x64-min",
+      "cwd": "C:\\b\\wt\\1.146.0",
+      "pathPrepended": null
+    }
+  },
+  "checksBeforeRun": {
+    "signtool": {
+      "found": false,
+      "path": null,
+      "source": null
+    },
+    "applyMjs": true,
+    "keepJson": true,
+    "worktree": true,
+    "packageDir": false,
+    "tarExe": true,
+    "zipExists": false,
+    "unitsEnabled": [],
+    "unitsTotal": 21
+  }
+}

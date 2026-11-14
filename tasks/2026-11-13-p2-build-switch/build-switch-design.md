@@ -78,7 +78,7 @@ node scripts/build.mjs <tag> [--label <label>] [--commit <sha>] [--build-root <d
 | `install` | 作業ツリーで `pnpm install --no-frozen-lockfile`（cmd.exe 経由） | 終了コードが 0 でない |
 | `lockfile` | `node scripts/apply.mjs <作業ツリー> --label <label> --lockfile-check --checks-out <同じ> --diff-out records/take-in/<label>/lockfile.diff --removals <dir> --build-root <br> --config <local.json>`（docs/03 の5.4。`--removals` は apply・postprocess と同じ場所。取り込みのブランチの `removals/` を読ませるため。docs/06 の9節。2026-11-14） | 終了コードが 0 でない |
 | `typecheck` | `pnpm run typecheck-client`（`--typecheck-script` で変えられる） | 作業ツリーの package.json にその script が無い、終了コードが 0 でない |
-| `package` | `pnpm run gulp vscode-win32-x64-min` | 終了コードが 0 でない、出力のフォルダが無い |
+| `package` | `pnpm run gulp vscode-win32-x64-min`。先に `findSignTool` で signtool.exe を探し、PATH に無く Windows Kits で見つけたときは、そのフォルダ（`...\Windows Kits\10\bin\<最も新しい版>\x64`）をこの子のプロセスの PATH の先頭に足す（`prependPath`。ユーザーの PATH は書き換えない。本家の CI の `product-build-win32-compile.yml` の105〜107行と同じ考え。2026-11-14） | signtool.exe が見つからない（gulp を走らせる前に止める）、終了コードが 0 でない、出力のフォルダが無い |
 | `postprocess` | 出力（既定 `<作業ツリーの親>\VSCode-win32-x64`）を読むだけで確かめる。下の 3.2 | 問題が1つでもある |
 | `zip` | `%SystemRoot%\System32\tar.exe -a -c -H -f <br>\dist\<label>.zip -C <br>\dist\.stage-<label> <最上位の名前>`。最上位の名前は `<nameShort>-win32-x64-<label>`（`Shuko-win32-x64-1.146.0-1`）。`<br>\dist\.stage-<label>\<最上位の名前>` に出力を指すジャンクションを置いて包み、終わったらジャンクションだけを消す（出力は動かさない） | `tar.exe` が無い、zip が既にある（`--force-zip` で上書き）、終了コードが 0 でない、zip の中の最上位が1つでない |
 
@@ -153,6 +153,8 @@ docs/02 の7節の項目に、止まった場所と手順ごとの結果を足�
 | `findAppDir(root)` | フォルダ | `{ appDir, versionedFolder }`。無い・2つ以上は例外 |
 | `resolveEditorLayout(root)` | フォルダ | `{ root, appDir, versionedFolder, product, version, commit, nameShort, applicationName, dataFolderName, exe, cli }`（`version` は `resources\app\package.json`、無ければ product.json） |
 | `zipFolderName(nameShort, label)` | 名前、ラベル | `<nameShort の英数字と . 以外を - にしたもの>-win32-x64-<label>`（`Code - OSS` → `Code-OSS`） |
+| `findSignTool({ env, exists, listDirs })` | 環境変数（`PATH`・`ProgramFiles(x86)` を大文字小文字を問わず読む）、ファイルの有無の関数、フォルダの名前の一覧の関数（どちらも試しのために差し替えられる。既定は `fs`） | `{ found, path, dir, source, candidates }`。PATH の各フォルダ（前後の `"` を外す）に `signtool.exe` があれば `source: "PATH"`。無ければ `<ProgramFiles(x86)、無ければ C:\Program Files (x86)>\Windows Kits\10\bin` の `x.y.z.w` の形のフォルダを版の新しい順に見て、`x64\signtool.exe` がある最初のものを `source: "WindowsKits"`（`candidates` は見つかった全部、新しい順）。どちらも無ければ `found: false`、ほかは `null`・`[]`。check-env.ps1 と同じ規則。2026-11-14 追加 |
+| `prependPath(env, dir)` | 環境変数、フォルダ | 写しの `PATH`（元のキーの名前のまま。無ければ `Path`）の先頭に `dir;` を足したもの。元の env は変えない |
 | `applyPassThrough(args)` | `parseArgs` の結果 | apply.mjs に渡す引数の配列。順は `--prev-tag <tag>`、`--keep-conflict`、`--patches`、`--assets`、`--overlay`、`--lock`、`--extensions-src`（パスは `path.resolve` した絶対パス）。指定の無いものは入れない（何も無ければ `[]`）。2026-11-14 追加 |
 | `toolchainWarnings(toolchain)` | `toolchainOf` の結果（`node`・`nvmrc`・`packageManager`・`packageManagerDeclared`） | 警告の文字列の配列。node は `.nvmrc`、pnpm は `packageManager`（`pnpm@x.y.z`）に照らし、メジャーが同じで求める版以上でなければ警告（check-env.ps1 と本家の preinstall.ts と同じ規則）。読めない値も警告。`--dry-run` と `install` の手順で `warnings` に足す（止めない）。2026-11-14 追加 |
 | `quoteCmdArg(s)` | 文字列 | cmd.exe に渡す引数（英数字と `_-.:\/=@` だけならそのまま、ほかは `"` で囲む。`"` を含めば例外） |
@@ -201,7 +203,9 @@ docs/02 の7節の項目に、止まった場所と手順ごとの結果を足�
 | `postprocess` | `{ "packageDir": "...", "keep": "...", "removals": "..." }` |
 | `zip` | `{ "tar": "<tar.exe のパス>", "zip": "<zip のパス>" }` |
 
-あわせて `checksBeforeRun` に `{ applyMjs, keepJson, worktree, packageDir, tarExe, zipExists }`（真偽）と `unitsEnabled`（ID の配列）、`unitsTotal`（数）を出す。作業ツリーがあれば `toolchain` も埋める。
+`plan.package` には `pathPrepended`（Windows Kits の signtool のフォルダを足すときその場所、ほかは `null`）も付く。package を選び signtool.exe が見つからないときは `warnings` に書く（2026-11-14）。
+
+あわせて `checksBeforeRun` に `signtool`（`{ found, path, source }`）、`{ applyMjs, keepJson, worktree, packageDir, tarExe, zipExists }`（真偽）と `unitsEnabled`（ID の配列）、`unitsTotal`（数）を出す。作業ツリーがあれば `toolchain` も埋める。
 
 終了コード: `0` = `ok` か `dry-run`、`1` = `error`、`2` = 引数の誤り。
 

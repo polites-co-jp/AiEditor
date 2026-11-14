@@ -1,5 +1,22 @@
 # 曹参 p2-tests-build 完了報告
 
+## 追記3（2026-11-14、signtool.exe の確かめ。蒙恬の追記5）
+
+### 足したテスト `tests/signtool.test.mjs`（17 件、すべて pass）
+この PC に Windows SDK が無いので、実物は使わず差し替えで確かめた（関数の `exists`・`listDirs`・`env`、試しの場所に置いた偽の `signtool.exe`、`ProgramFiles(x86)` を試しの場所へ向ける、PATH から signtool のあるフォルダを外す）。SDK が後から入っても結果は変わらない。
+- `findSignTool`（7 件）: PATH の上にあればそれ（引用符つきも）、PATH の先が勝つ、PATH は Windows Kits より優先、PATH の名前の大文字小文字を問わない、PATH に無ければ Windows Kits の最も新しい版（候補は新しい順。版でない名前 `wdf` と exe の無い版は除く）、版は数で比べる（`10.0.9.0` より `10.0.22621.0`）、`ProgramFiles(x86)` が無ければ `C:\Program Files (x86)`、どちらにも無ければ `{ found:false, path:null, dir:null, source:null, candidates:[] }`。
+- `prependPath`（3 件）: 先頭に足した写しを返し元は変えない、PATH が無ければ作る、キーの大文字小文字は元のまま（PATH が2つにならない）、`process.env` を渡しても変わらない。
+- `build.mjs --dry-run`（4 件、`--from package --to package`）: signtool がどこにも無い → 終了コード 0、`warnings` に signtool、`checksBeforeRun.signtool.found:false`、`plan.package.pathPrepended:null`。Windows Kits にある → `pathPrepended` が最も新しい版の `x64` フォルダで、signtool の警告なし。PATH の上にある → `pathPrepended:null`、警告なし（Windows Kits もあっても PATH が先）。package を選ばない範囲では `plan.package` も警告も出ない。
+- `check-env.ps1`（3 件、`-OutFile` の JSON）: 無い → `signtool.found:false`、`missing` に signtool.exe の行が1つ、終了コード 2。Windows Kits に複数の版 → 最も新しい版を `chosen`、`kitsCandidates` は新しい順、`missing` に入らない。PATH の上にある → それを選ぶ（source は PATH）。
+
+### 全体の走らせ直し（`node tests/run-all.mjs`、`run-all-result.txt`）
+合計 1473 件、pass 1452、fail 0、skip 21。
+- 前回 fail だった `take-in.test.mjs` は 95/95 で通る。ほかの担当の新しいファイル（cli-run、switch-expand、take-in-more、notion-sync 101、watch 104）もすべて pass。
+- skip 21 はすべて `removals.test.mjs`（「有効な単位の after」。全単位が `enabled:false` のため）。件数が 14 から 21 に増えたのは、removals.test.mjs が他の担当の単位で増えたため（私は触っていない）。
+- 私のファイルはすべて fail 0。
+
+---
+
 ## 追記2（2026-11-14、直しの分のテスト。リーダーの申し送り）
 
 ### 足したテスト `tests/build-fixes.test.mjs`（17 件、すべて pass）と補助 `tests/build/path-entries-probe.ps1`
