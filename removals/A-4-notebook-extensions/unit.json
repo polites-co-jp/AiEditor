@@ -2,7 +2,7 @@
   "id": "A-4-notebook-extensions",
   "stage": "A",
   "order": 140,
-  "enabled": false,
+  "enabled": true,
   "intent": "Jupyter ノートブックの組み込み拡張（extensions/ipynb・notebook-renderers）を消す。本体のノートブック（contrib/notebook など）と vscode.notebooks は C-4 まで残す",
   "after": [],
   "delete": [

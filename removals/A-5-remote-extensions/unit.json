@@ -2,7 +2,7 @@
   "id": "A-5-remote-extensions",
   "stage": "A",
   "order": 150,
-  "enabled": false,
+  "enabled": true,
   "intent": "ポートの転送（dev tunnels）の組み込み拡張（extensions/tunnel-forwarding）を消す。onTunnel で起動する拡張が無くなるので、ローカルのウィンドウではポートのビュー（~remote.forwardedPorts）も登録されなくなる（受け入れる。リモートは C-3 で消す）。本体のリモート（contrib/remote）のコードは C-3 まで残す。テスト用の vscode-test-resolver は同梱されないので残す（builtin/keep.json）",
   "after": [],
   "delete": [

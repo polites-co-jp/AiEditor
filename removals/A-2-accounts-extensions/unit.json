@@ -2,7 +2,7 @@
   "id": "A-2-accounts-extensions",
   "stage": "A",
   "order": 120,
-  "enabled": false,
+  "enabled": true,
   "intent": "GitHub と Microsoft のアカウントの組み込み拡張（extensions/github・github-authentication・microsoft-authentication）を消す。認証の仕組み（services/authentication）と拡張 API の vscode.authentication は残す",
   "after": [],
   "delete": [

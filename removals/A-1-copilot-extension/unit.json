@@ -2,7 +2,7 @@
   "id": "A-1-copilot-extension",
   "stage": "A",
   "order": 110,
-  "enabled": false,
+  "enabled": true,
   "intent": "組み込みの GitHub Copilot 拡張（extensions/copilot。GitHub.copilot-chat 0.74.0）と、AI のプロンプト・指示・エージェント・スキルのファイルの言語（extensions/prompt-basics）を消す。ビルドの一覧と、拡張の分のビルドの手順・postinstall の .claude/ の symlink も外す。本体の AI（contrib/chat など）と @github/copilot-sdk は C-1 で消す",
   "after": [],
   "delete": [

@@ -2,7 +2,7 @@
   "id": "A-7-unused-extensions",
   "stage": "A",
   "order": 170,
-  "enabled": false,
+  "enabled": true,
   "intent": "使わない組み込み拡張を消す: タスクの自動検出（grunt・gulp・jake）、簡易ブラウザ（simple-browser）、Markdown の Mermaid（mermaid-markdown-features）、拡張の開発の補助（extension-editing）、ターミナルの入力候補（terminal-suggest。裁定で消す）、対象外の言語の言語機能（php-language-features）。文法だけの拡張（色付け）は残す（builtin/keep.json）",
   "after": [],
   "delete": [
