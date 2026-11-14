@@ -1,0 +1,86 @@
+{
+  "countedAt": "2026-11-14T11:02:13.506Z",
+  "seconds": 10.18,
+  "drive": {
+    "root": "C:\\",
+    "freeBytes": 87136555008,
+    "freeGB": 81.15
+  },
+  "entries": [
+    {
+      "name": "pnpmStore",
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm",
+      "exists": true,
+      "bytes": 3713457387,
+      "gb": 3.46,
+      "files": 108171,
+      "hardlinkedFiles": 97362,
+      "uniqueBytes": 3712007699,
+      "uniqueGB": 3.46
+    },
+    {
+      "name": "pnpmCache",
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm-cache",
+      "exists": true,
+      "bytes": 1788525901,
+      "gb": 1.67,
+      "files": 3505,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 1788525901,
+      "uniqueGB": 1.67
+    },
+    {
+      "name": "electron",
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\electron",
+      "exists": true,
+      "bytes": 978047803,
+      "gb": 0.91,
+      "files": 7,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 978047803,
+      "uniqueGB": 0.91
+    },
+    {
+      "name": "nodeGyp",
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\node-gyp",
+      "exists": true,
+      "bytes": 128831857,
+      "gb": 0.12,
+      "files": 5666,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 128831857,
+      "uniqueGB": 0.12
+    },
+    {
+      "name": "clone",
+      "path": "C:\\b\\vscode\\.git",
+      "exists": true,
+      "bytes": 1858946927,
+      "gb": 1.73,
+      "files": 370,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 1858946927,
+      "uniqueGB": 1.73
+    },
+    {
+      "name": "package",
+      "path": "C:\\b\\wt\\VSCode-win32-x64",
+      "exists": true,
+      "bytes": 1501694431,
+      "gb": 1.4,
+      "files": 20325,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 1501694431,
+      "uniqueGB": 1.4
+    },
+    {
+      "name": "dist",
+      "path": "C:\\b\\dist",
+      "exists": false
+    }
+  ],
+  "uniqueTotal": {
+    "bytes": 9968054618,
+    "gb": 9.28
+  }
+}

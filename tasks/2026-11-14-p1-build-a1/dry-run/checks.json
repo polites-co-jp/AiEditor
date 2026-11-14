@@ -1,0 +1,359 @@
+{
+  "label": "1.146.0-p1-a1",
+  "worktree": "C:\\b\\wt\\p1-a1",
+  "tag": "1.146.0",
+  "baseCommit": "69047191fc427f2f92828279aae1d90d8eeda7ab",
+  "headCommit": "69047191fc427f2f92828279aae1d90d8eeda7ab",
+  "prevTag": null,
+  "dryRun": true,
+  "options": {
+    "only": [
+      "A-1-copilot-extension"
+    ],
+    "until": null,
+    "keepConflict": false
+  },
+  "inputs": {
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\removals",
+    "patches": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-p1-build-a1\\a1-inputs\\patches-none",
+    "assets": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-p1-build-a1\\a1-inputs\\assets-none",
+    "overlay": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-p1-build-a1\\a1-inputs\\overlay-empty.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "extensionsSrc": "e:\\develop\\self\\Team\\projects\\ai-editor\\extensions-src",
+    "manifests": "C:\\b\\cache\\vsix"
+  },
+  "startedAt": "2026-11-14T11:02:57.588Z",
+  "finishedAt": "2026-11-14T11:02:59.906Z",
+  "result": "ok",
+  "stoppedAt": null,
+  "overlay": {
+    "applied": "ok",
+    "set": [],
+    "removed": [],
+    "removedIfPresent": [],
+    "commit": null
+  },
+  "units": [
+    {
+      "id": "A-1-copilot-extension",
+      "order": 110,
+      "enabled": false,
+      "applied": "ok",
+      "ops": {
+        "commit": null,
+        "deleted": [
+          "extensions/copilot",
+          "extensions/prompt-basics"
+        ],
+        "missingDeletes": [],
+        "removedDependencies": [],
+        "missingDependencies": [],
+        "removeLines": [
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/copilot',",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "build/npm/dirs.ts",
+            "line": "'extensions/copilot': ['extensions/copilot/chat-lib'],",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "package.json",
+            "line": "\"compile-copilot\": \"pnpm -C extensions/copilot run compile\",",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "package.json",
+            "line": "\"watch-copilot\": \"pnpm -C extensions/copilot run watch\",",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "package.json",
+            "line": "\"watch-copilotd\": \"deemon pnpm run watch-copilot\",",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "package.json",
+            "line": "\"kill-watch-copilotd\": \"deemon --kill pnpm run watch-copilot\",",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "package.json",
+            "line": "\"copilot:setup\": \"pnpm -C extensions/copilot run setup\",",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          },
+          {
+            "file": "package.json",
+            "line": "\"copilot:get_token\": \"pnpm -C extensions/copilot run get_token\",",
+            "count": 1,
+            "found": 1,
+            "ok": true
+          }
+        ],
+        "productRemoved": [],
+        "productMissing": []
+      },
+      "edits": {
+        "applied": "skipped",
+        "commit": null,
+        "subject": null,
+        "conflicts": []
+      },
+      "warnings": []
+    }
+  ],
+  "unitsSkipped": [
+    {
+      "id": "A-2-accounts-extensions",
+      "reason": "not in --only"
+    },
+    {
+      "id": "A-3-debug-extensions",
+      "reason": "not in --only"
+    },
+    {
+      "id": "A-4-notebook-extensions",
+      "reason": "not in --only"
+    },
+    {
+      "id": "A-5-remote-extensions",
+      "reason": "not in --only"
+    },
+    {
+      "id": "A-6-themes",
+      "reason": "not in --only"
+    },
+    {
+      "id": "A-7-unused-extensions",
+      "reason": "not in --only"
+    },
+    {
+      "id": "B-1-telemetry",
+      "reason": "not in --only"
+    },
+    {
+      "id": "B-2-onboarding-experiments-surveys",
+      "reason": "not in --only"
+    },
+    {
+      "id": "B-3-issue-share",
+      "reason": "not in --only"
+    },
+    {
+      "id": "B-4-outline-view",
+      "reason": "not in --only"
+    },
+    {
+      "id": "B-5-theme-switching",
+      "reason": "not in --only"
+    },
+    {
+      "id": "B-6-online-feeds",
+      "reason": "not in --only"
+    },
+    {
+      "id": "B-7-terminal-suggest",
+      "reason": "not in --only"
+    },
+    {
+      "id": "C-1-ai",
+      "reason": "not in --only"
+    },
+    {
+      "id": "C-2-debug",
+      "reason": "not in --only"
+    },
+    {
+      "id": "C-3-remote",
+      "reason": "not in --only"
+    },
+    {
+      "id": "C-4-notebook",
+      "reason": "not in --only"
+    },
+    {
+      "id": "C-5-extension-gallery",
+      "reason": "not in --only"
+    },
+    {
+      "id": "C-6-settings-sync",
+      "reason": "not in --only"
+    },
+    {
+      "id": "C-7-breadcrumbs-outline",
+      "reason": "not in --only"
+    }
+  ],
+  "patches": [],
+  "assets": {
+    "applied": "none",
+    "copied": [],
+    "commit": null
+  },
+  "builtinExtensions": {
+    "applied": "ok",
+    "copied": [
+      {
+        "name": "mydist",
+        "files": 3,
+        "list": [
+          "README.md",
+          "ThirdPartyNotices.txt",
+          "package.json"
+        ],
+        "removedDefaults": []
+      },
+      {
+        "name": "notion-sync",
+        "files": 4,
+        "list": [
+          "README.md",
+          "ThirdPartyNotices.txt",
+          "dist/extension.js",
+          "package.json"
+        ]
+      }
+    ],
+    "commit": null,
+    "removedDefaults": []
+  },
+  "checks": {
+    "remnants": {
+      "status": "skipped",
+      "reason": "dry-run"
+    },
+    "absentStrings": {
+      "status": "skipped",
+      "reason": "dry-run"
+    },
+    "unclassifiedExtensions": {
+      "status": "ok",
+      "upstreamCount": 95,
+      "items": [],
+      "nonExtensionDirs": [
+        "types"
+      ]
+    },
+    "upstreamAdditions": {
+      "status": "skipped",
+      "reason": "--prev-tag が無い"
+    },
+    "dependencies": {
+      "status": "skipped",
+      "reason": "--prev-tag が無い"
+    },
+    "toolchain": {
+      "status": "info",
+      "nvmrc": {
+        "prev": null,
+        "now": "24.22.1",
+        "changed": null
+      },
+      "electron": {
+        "prev": null,
+        "now": "43.8.6",
+        "changed": null
+      },
+      "reason": "--prev-tag が無い"
+    },
+    "registeredKeys": {
+      "status": "ok",
+      "product": [],
+      "settings": [
+        {
+          "key": "chat.disableAIFeatures",
+          "from": "mydist",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/chat/browser/chat.shared.contribution.ts"
+        },
+        {
+          "key": "workbench.colorTheme",
+          "from": "mydist",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/services/themes/common/themeConfiguration.ts"
+        },
+        {
+          "key": "breadcrumbs.enabled",
+          "from": "mydist",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/browser/parts/editor/breadcrumbs.ts"
+        },
+        {
+          "key": "workbench.startupEditor",
+          "from": "mydist",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/welcomeGettingStarted/browser/gettingStarted.contribution.ts"
+        },
+        {
+          "key": "basedpyright.importStrategy",
+          "from": "mydist",
+          "status": "lockManifest",
+          "foundIn": "detachhead.basedpyright"
+        },
+        {
+          "key": "typescript.disableAutomaticTypeAcquisition",
+          "from": "mydist",
+          "status": "extension",
+          "foundIn": "extensions/typescript-language-features/package.json"
+        },
+        {
+          "key": "npm.fetchOnlinePackageInfo",
+          "from": "mydist",
+          "status": "extension",
+          "foundIn": "extensions/npm/package.json"
+        },
+        {
+          "key": "json.schemaDownload.enable",
+          "from": "mydist",
+          "status": "extension",
+          "foundIn": "extensions/json-language-features/package.json"
+        },
+        {
+          "key": "workbench.settings.enableNaturalLanguageSearch",
+          "from": "mydist",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/preferences/common/preferencesContribution.ts"
+        },
+        {
+          "key": "terminal.integrated.suggest.enabled",
+          "from": "mydist",
+          "status": "upstream",
+          "foundIn": "src/vs/workbench/contrib/terminalContrib/suggest/common/terminalSuggestConfiguration.ts"
+        },
+        {
+          "key": "claudeCode.environmentVariables",
+          "from": "mydist",
+          "status": "lockManifest",
+          "foundIn": "anthropic.claude-code"
+        }
+      ],
+      "manifestsMissing": []
+    },
+    "lockfile": {
+      "status": "pending",
+      "reason": "依存の導入の後に --lockfile-check（build.mjs は checkLockfiles）で埋める"
+    },
+    "commitIdentity": {
+      "status": "skipped",
+      "reason": "dry-run"
+    }
+  },
+  "warnings": [],
+  "errors": []
+}

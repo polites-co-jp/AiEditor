@@ -1,0 +1,79 @@
+{
+  "label": "1.146.0-upstream",
+  "upstream": {
+    "tag": "1.146.0",
+    "commit": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+  },
+  "units": [],
+  "patches": [],
+  "lockfileDiff": "tasks/2026-11-13-p1-build-upstream/take-in/lockfile.diff",
+  "toolchain": {
+    "node": "24.22.1",
+    "electron": "43.8.6",
+    "packageManager": "pnpm 12.16.0",
+    "packageManagerDeclared": "pnpm@12.16.0",
+    "nvmrc": "24.22.1",
+    "nodeOfBuildScript": "v24.22.1"
+  },
+  "durations": {
+    "install": 278.06
+  },
+  "zip": null,
+  "extensionsLockSha256": "6b4c3ceae7d6cb407f62bbcbd57ca50267e998975887884cc325fd26a85cce10",
+  "result": "ok",
+  "stoppedAt": null,
+  "dryRun": false,
+  "startedAt": "2026-11-14T10:09:26.836Z",
+  "finishedAt": "2026-11-14T10:14:25.535Z",
+  "paths": {
+    "buildRoot": "C:\\b",
+    "worktree": "C:\\b\\wt\\1.146.0",
+    "packageDir": "C:\\b\\wt\\VSCode-win32-x64",
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-13-p1-build-upstream\\take-in\\checks.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\removals",
+    "dist": "C:\\b\\dist",
+    "logs": "C:\\b\\logs\\1.146.0-upstream"
+  },
+  "config": {
+    "path": "C:\\Users\\kou_z\\AppData\\Local\\Shuko\\local.json",
+    "exists": false,
+    "buildRootFrom": "default"
+  },
+  "stepsSelected": [
+    "install"
+  ],
+  "envRemovedForChildren": [
+    "ELECTRON_RUN_AS_NODE",
+    "VSCODE_CODE_CACHE_PATH",
+    "VSCODE_CRASH_REPORTER_PROCESS_TYPE",
+    "VSCODE_CWD",
+    "VSCODE_ESM_ENTRYPOINT",
+    "VSCODE_HANDLES_UNCAUGHT_ERRORS",
+    "VSCODE_IPC_HOOK",
+    "VSCODE_NLS_CONFIG",
+    "VSCODE_PID",
+    "VSCODE_PROCESS_TITLE"
+  ],
+  "steps": [
+    {
+      "name": "install",
+      "status": "ok",
+      "startedAt": "2026-11-14T10:09:26.844Z",
+      "command": "pnpm install --no-frozen-lockfile",
+      "cwd": "C:\\b\\wt\\1.146.0",
+      "log": "C:\\b\\logs\\1.146.0-upstream\\install.log",
+      "seconds": 278.06,
+      "exitCode": 0
+    }
+  ],
+  "warnings": [],
+  "disk": {
+    "worktree": {
+      "bytes": 5616244406,
+      "gb": 5.23,
+      "files": 196086
+    },
+    "countedSeconds": 20.455
+  }
+}

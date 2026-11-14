@@ -1,0 +1,74 @@
+{
+  "label": "1.146.0-p1-a1",
+  "upstream": {
+    "tag": "1.146.0",
+    "commit": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+  },
+  "units": [],
+  "patches": [],
+  "lockfileDiff": "tasks/2026-11-14-p1-build-a1/take-in/lockfile.diff",
+  "toolchain": null,
+  "durations": {
+    "package": 4.475
+  },
+  "zip": null,
+  "extensionsLockSha256": "6b4c3ceae7d6cb407f62bbcbd57ca50267e998975887884cc325fd26a85cce10",
+  "result": "error",
+  "stoppedAt": "package",
+  "dryRun": false,
+  "startedAt": "2026-11-14T11:07:53.103Z",
+  "finishedAt": "2026-11-14T11:07:57.588Z",
+  "paths": {
+    "buildRoot": "C:\\b",
+    "worktree": "C:\\b\\wt\\p1-a1",
+    "packageDir": "C:\\b\\wt\\VSCode-win32-x64",
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-p1-build-a1\\take-in\\checks.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\removals",
+    "dist": "C:\\b\\dist",
+    "logs": "C:\\b\\logs\\1.146.0-p1-a1"
+  },
+  "config": {
+    "path": "C:\\Users\\kou_z\\AppData\\Local\\Shuko\\local.json",
+    "exists": false,
+    "buildRootFrom": "default"
+  },
+  "stepsSelected": [
+    "package",
+    "postprocess",
+    "zip"
+  ],
+  "envRemovedForChildren": [
+    "ELECTRON_RUN_AS_NODE",
+    "VSCODE_CODE_CACHE_PATH",
+    "VSCODE_CRASH_REPORTER_PROCESS_TYPE",
+    "VSCODE_CWD",
+    "VSCODE_ESM_ENTRYPOINT",
+    "VSCODE_HANDLES_UNCAUGHT_ERRORS",
+    "VSCODE_IPC_HOOK",
+    "VSCODE_NLS_CONFIG",
+    "VSCODE_PID",
+    "VSCODE_PROCESS_TITLE"
+  ],
+  "steps": [
+    {
+      "name": "package",
+      "status": "error",
+      "startedAt": "2026-11-14T11:07:53.110Z",
+      "signtool": {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\x64\\signtool.exe",
+        "source": "WindowsKits",
+        "pathPrepended": "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\x64"
+      },
+      "command": "pnpm run gulp vscode-win32-x64-min",
+      "cwd": "C:\\b\\wt\\p1-a1",
+      "log": "C:\\b\\logs\\1.146.0-p1-a1\\package.log",
+      "seconds": 4.475,
+      "exitCode": 1,
+      "tail": "$ node --experimental-strip-types --max-old-space-size=8192 ./node_modules/gulp/bin/gulp.js vscode-win32-x64-min\n[\u001b[90m20:07:55\u001b[39m] Using gulpfile C:\\b\\wt\\p1-a1\\gulpfile.mjs\n[\u001b[90m20:07:55\u001b[39m] Starting 'vscode-win32-x64-min'...\n[\u001b[90m20:07:55\u001b[39m] Starting \u001b[36mcopy-codicons\u001b[39m ...\n[\u001b[90m20:07:55\u001b[39m] Finished \u001b[36mcopy-codicons\u001b[39m after \u001b[35m2 ms\u001b[39m\n[\u001b[90m20:07:55\u001b[39m] Starting \u001b[36mclean-extensions-build\u001b[39m ...\n[\u001b[90m20:07:55\u001b[39m] Finished \u001b[36mclean-extensions-build\u001b[39m after \u001b[35m1 ms\u001b[39m\n[\u001b[90m20:07:55\u001b[39m] Starting \u001b[36mbundle-marketplace-extensions-build\u001b[39m ...\n[\u001b[90m20:07:55\u001b[39m] Downloading extension from GH: \u001b[33mms-vscode.js-debug-companion@1.1.3\u001b[39m  ...\n[\u001b[90m20:07:55\u001b[39m] Downloading extension from GH: \u001b[33mms-vscode.js-debug@1.140.1\u001b[39m  ...\n[\u001b[90m20:07:55\u001b[39m] Downloading extension from GH: \u001b[33mms-vscode.vscode-js-profile-table@1.0.11\u001b[39m  ...\n(node:77636) [DEP0180] DeprecationWarning: fs.Stats constructor is deprecated.\n(Use `node --trace-deprecation ...` to show where the warning was created)\n[\u001b[90m20:07:56\u001b[39m] Finished \u001b[36mbundle-marketplace-extensions-build\u001b[39m after \u001b[35m840 ms\u001b[39m\n[\u001b[90m20:07:56\u001b[39m] Starting \u001b[36mbundle-non-native-extensions-build\u001b[39m ...\n[\u001b[90m20:07:57\u001b[39m] 'vscode-win32-x64-min' errored after 2.25 s\n[\u001b[90m20:07:57\u001b[39m] Error: Extension notion-sync has production dependencies (jsonc-parser) but is packaged without bundling, so they would be missing. Bundle it with esbuild.mts (and esbuild.browser.mts for the web), or package its dependencies explicitly (packagedDependenciesByExtension in build/lib/extensions.ts).\n    at fromLocalNormal (file:///C:/b/wt/p1-a1/build/lib/extensions.ts:171:9)\n    at fromLocal (file:///C:/b/wt/p1-a1/build/lib/extensions.ts:97:11)\n    at file:///C:/b/wt/p1-a1/build/lib/extensions.ts:453:12\n    at Array.map (<anonymous>)\n    at doPackageLocalExtensionsStream (file:///C:/b/wt/p1-a1/build/lib/extensions.ts:452:35)\n    at Module.packageNonNativeLocalExtensionsStream (file:///C:/b/wt/p1-a1/build/lib/extensions.ts:403:9)\n    at file:///C:/b/wt/p1-a1/build/gulpfile.extensions.ts:266:62\n    at file:///C:/b/wt/p1-a1/build/lib/gulp/task.ts:121:22\n    at new Promise (<anonymous>)\n    at _doExecute (file:///C:/b/wt/p1-a1/build/lib/gulp/task.ts:109:9)\n[ELIFECYCLE] Command failed with exit code 1.\n",
+      "message": "パッケージ化が 1 で終わった"
+    }
+  ],
+  "warnings": [],
+  "message": "package で止まった: パッケージ化が 1 で終わった"
+}

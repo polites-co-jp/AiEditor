@@ -1,0 +1,104 @@
+{
+    "checkedAt":  "2026-11-14T19:32:25.7051107+09:00",
+    "zip":  "",
+    "root":  "C:\\b\\wt\\VSCode-win32-x64",
+    "dest":  "C:\\b\\p1\\1.146.0-upstream-partial",
+    "unpack":  {
+                   "done":  false,
+                   "reason":  "started in place (-Root)"
+               },
+    "editor":  {
+                   "root":  "C:\\b\\wt\\VSCode-win32-x64",
+                   "exe":  "C:\\b\\wt\\VSCode-win32-x64\\Code - OSS.exe",
+                   "cli":  "C:\\b\\wt\\VSCode-win32-x64\\bin\\code-oss.cmd",
+                   "productJson":  "C:\\b\\wt\\VSCode-win32-x64\\resources\\app\\product.json",
+                   "appDirRelative":  "resources\\app",
+                   "nameShort":  "Code - OSS",
+                   "nameLong":  "Code - OSS",
+                   "applicationName":  "code-oss",
+                   "dataFolderName":  ".vscode-oss",
+                   "version":  "1.146.0",
+                   "commit":  null,
+                   "portableOk":  true
+               },
+    "cliVersion":  {
+                       "exitCode":  0,
+                       "output":  [
+                                      "1.146.0",
+                                      "Unknown commit",
+                                      "x64"
+                                  ]
+                   },
+    "portable":  {
+                     "path":  "C:\\b\\p1\\1.146.0-upstream-partial\\portable",
+                     "entries":  [
+                                     "extensions\\",
+                                     "user-data\\",
+                                     "argv.json"
+                                 ],
+                     "userData":  "C:\\b\\p1\\1.146.0-upstream-partial\\portable\\user-data",
+                     "userSettingsDir":  "C:\\b\\p1\\1.146.0-upstream-partial\\portable\\user-data\\User",
+                     "extensions":  "C:\\b\\p1\\1.146.0-upstream-partial\\portable\\extensions",
+                     "argvJson":  "C:\\b\\p1\\1.146.0-upstream-partial\\portable\\argv.json"
+                 },
+    "started":  {
+                    "pid":  21624,
+                    "aliveAfterCheck":  false,
+                    "exitCode":  1,
+                    "checkSeconds":  10,
+                    "smokeSeconds":  15,
+                    "tree":  null,
+                    "stoppedProcesses":  0
+                },
+    "dailyData":  {
+                      "before":  [
+                                     {
+                                         "path":  "C:\\Users\\kou_z\\AppData\\Roaming\\Code",
+                                         "exists":  false,
+                                         "lastWriteTime":  null
+                                     },
+                                     {
+                                         "path":  "C:\\Users\\kou_z\\AppData\\Roaming\\Code - OSS",
+                                         "exists":  false,
+                                         "lastWriteTime":  null
+                                     },
+                                     {
+                                         "path":  "C:\\Users\\kou_z\\.vscode",
+                                         "exists":  false,
+                                         "lastWriteTime":  null
+                                     },
+                                     {
+                                         "path":  "C:\\Users\\kou_z\\.vscode-oss",
+                                         "exists":  false,
+                                         "lastWriteTime":  null
+                                     }
+                                 ],
+                      "after":  [
+                                    {
+                                        "path":  "C:\\Users\\kou_z\\AppData\\Roaming\\Code",
+                                        "exists":  false,
+                                        "lastWriteTime":  null
+                                    },
+                                    {
+                                        "path":  "C:\\Users\\kou_z\\AppData\\Roaming\\Code - OSS",
+                                        "exists":  false,
+                                        "lastWriteTime":  null
+                                    },
+                                    {
+                                        "path":  "C:\\Users\\kou_z\\.vscode",
+                                        "exists":  false,
+                                        "lastWriteTime":  null
+                                    },
+                                    {
+                                        "path":  "C:\\Users\\kou_z\\.vscode-oss",
+                                        "exists":  false,
+                                        "lastWriteTime":  null
+                                    }
+                                ],
+                      "changed":  [
+
+                                  ]
+                  },
+    "result":  "error",
+    "message":  "the editor ended within the check (exit code 1)"
+}

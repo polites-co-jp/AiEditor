@@ -1,0 +1,103 @@
+{
+  "countedAt": "2026-11-14T10:23:22.458Z",
+  "seconds": 25.866,
+  "drive": {
+    "root": "C:\\",
+    "freeBytes": 88395124736,
+    "freeGB": 82.32
+  },
+  "entries": [
+    {
+      "name": "worktree",
+      "path": "C:\\b\\wt\\1.146.0",
+      "exists": true,
+      "bytes": 6587800530,
+      "gb": 6.14,
+      "files": 215646,
+      "hardlinkedFiles": 172786,
+      "uniqueBytes": 5610112649,
+      "uniqueGB": 5.22
+    },
+    {
+      "name": "worktreeBuild",
+      "path": "C:\\b\\wt\\1.146.0\\.build",
+      "exists": true,
+      "bytes": 413333221,
+      "gb": 0.38,
+      "files": 19083,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 413333221,
+      "uniqueGB": 0.38
+    },
+    {
+      "name": "worktreeOutMin",
+      "path": "C:\\b\\wt\\1.146.0\\out-vscode-min",
+      "exists": true,
+      "bytes": 404311836,
+      "gb": 0.38,
+      "files": 337,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 404311836,
+      "uniqueGB": 0.38
+    },
+    {
+      "name": "packageOut",
+      "path": "C:\\b\\wt\\VSCode-win32-x64",
+      "exists": true,
+      "bytes": 1501694435,
+      "gb": 1.4,
+      "files": 20325,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 1501694435,
+      "uniqueGB": 1.4
+    },
+    {
+      "name": "pnpmLocal",
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm",
+      "exists": true,
+      "bytes": 3713457387,
+      "gb": 3.46,
+      "files": 108171,
+      "hardlinkedFiles": 97362,
+      "uniqueBytes": 3712007699,
+      "uniqueGB": 3.46
+    },
+    {
+      "name": "pnpmCache",
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm-cache",
+      "exists": true,
+      "bytes": 1759573348,
+      "gb": 1.64,
+      "files": 3474,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 1759573348,
+      "uniqueGB": 1.64
+    },
+    {
+      "name": "nodeGyp",
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\node-gyp",
+      "exists": true,
+      "bytes": 128831857,
+      "gb": 0.12,
+      "files": 5666,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 128831857,
+      "uniqueGB": 0.12
+    },
+    {
+      "name": "electronCache",
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\electron",
+      "exists": true,
+      "bytes": 978047803,
+      "gb": 0.91,
+      "files": 7,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 978047803,
+      "uniqueGB": 0.91
+    }
+  ],
+  "uniqueTotal": {
+    "bytes": 10459275534,
+    "gb": 9.74
+  }
+}

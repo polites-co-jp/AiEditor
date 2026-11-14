@@ -1,0 +1,48 @@
+{
+  "countedAt": "2026-11-14T11:07:47.666Z",
+  "seconds": 16.087,
+  "drive": {
+    "root": "C:\\",
+    "freeBytes": 85476782080,
+    "freeGB": 79.61
+  },
+  "entries": [
+    {
+      "name": "worktree",
+      "path": "C:\\b\\wt\\p1-a1",
+      "exists": true,
+      "bytes": 4169978295,
+      "gb": 3.88,
+      "files": 129278,
+      "hardlinkedFiles": 109681,
+      "uniqueBytes": 3484073310,
+      "uniqueGB": 3.24
+    },
+    {
+      "name": "pnpmStore",
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm",
+      "exists": true,
+      "bytes": 3713457387,
+      "gb": 3.46,
+      "files": 108171,
+      "hardlinkedFiles": 97362,
+      "uniqueBytes": 3712007699,
+      "uniqueGB": 3.46
+    },
+    {
+      "name": "pnpmCache",
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm-cache",
+      "exists": true,
+      "bytes": 1788529056,
+      "gb": 1.67,
+      "files": 3505,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 1788529056,
+      "uniqueGB": 1.67
+    }
+  ],
+  "uniqueTotal": {
+    "bytes": 6568086054,
+    "gb": 6.12
+  }
+}

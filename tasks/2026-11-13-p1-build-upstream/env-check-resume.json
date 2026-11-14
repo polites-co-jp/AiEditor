@@ -1,0 +1,130 @@
+{
+    "checkedAt":  "2026-11-14T19:07:33.6301433+09:00",
+    "os":  {
+               "caption":  "Microsoft Windows 11 Pro",
+               "version":  "10.0.26300.0",
+               "is64":  true,
+               "processorArch":  "AMD64"
+           },
+    "required":  {
+                     "node":  "24.22.1",
+                     "pnpm":  "12.16.0",
+                     "source":  "C:/b/wt/1.146.0"
+                 },
+    "git":  {
+                "found":  true,
+                "version":  "git version 2.54.0.windows.1",
+                "path":  "E:\\ProgramFiles\\Git\\mingw64\\bin\\git.exe",
+                "coreLongpathsGlobal":  ""
+            },
+    "node":  {
+                 "found":  true,
+                 "version":  "v24.22.1",
+                 "arch":  "x64",
+                 "path":  "C:\\Program Files\\nodejs\\node.exe",
+                 "allOnPath":  "C:\\Program Files\\nodejs\\node.exe",
+                 "satisfies":  true
+             },
+    "nodeVersionManagers":  {
+                                "nvm":  null,
+                                "fnm":  null,
+                                "volta":  null
+                            },
+    "pnpm":  {
+                 "found":  true,
+                 "version":  "12.16.0",
+                 "path":  "C:\\Users\\kou_z\\AppData\\Roaming\\npm\\pnpm.ps1",
+                 "allOnPath":  [
+                                   "C:\\Users\\kou_z\\AppData\\Roaming\\npm\\pnpm.ps1",
+                                   "C:\\Users\\kou_z\\AppData\\Roaming\\npm\\pnpm.cmd",
+                                   "C:\\Users\\kou_z\\AppData\\Roaming\\npm\\pnpm"
+                               ],
+                 "satisfies":  true
+             },
+    "corepack":  {
+                     "found":  true,
+                     "version":  "0.36.0",
+                     "path":  "C:\\Program Files\\nodejs\\corepack.cmd"
+                 },
+    "npm":  {
+                "found":  true,
+                "version":  "11.19.1",
+                "path":  "C:\\Program Files\\nodejs\\npm.ps1"
+            },
+    "python":  {
+                   "found":  true,
+                   "version":  "Python 3.14.7",
+                   "executable":  "C:\\Python314\\python.exe",
+                   "commandPath":  "C:\\Python314\\python.exe",
+                   "allOnPath":  [
+                                     "C:\\Python314\\python.exe",
+                                     "C:\\Users\\kou_z\\AppData\\Local\\Microsoft\\WindowsApps\\python.exe"
+                                 ],
+                   "setuptools":  "84.2.1",
+                   "setuptoolsError":  null,
+                   "pyLauncher":  "-V:3.14 *        C:\\Python314\\python.exe"
+               },
+    "visualStudio":  {
+                         "vswhere":  true,
+                         "preinstallFolders":  [
+                                                   {
+                                                       "year":  "2026",
+                                                       "path":  "C:\\Program Files (x86)\\Microsoft Visual Studio\\18\\BuildTools"
+                                                   }
+                                               ],
+                         "preinstallCheckPasses":  true,
+                         "instances":  [
+                                           {
+                                               "displayName":  "Visual Studio Build Tools 2026",
+                                               "productId":  "Microsoft.VisualStudio.Product.BuildTools",
+                                               "version":  "18.11.12328.437",
+                                               "path":  "C:\\Program Files (x86)\\Microsoft Visual Studio\\18\\BuildTools",
+                                               "isComplete":  true,
+                                               "components":  {
+                                                                  "Microsoft.VisualStudio.Workload.VCTools":  true,
+                                                                  "Microsoft.VisualStudio.Component.Windows11SDK.26100":  true,
+                                                                  "Microsoft.VisualStudio.Component.VC.Runtimes.x86.x64.Spectre":  true,
+                                                                  "Microsoft.VisualStudio.Component.VC.ATL.Spectre":  true,
+                                                                  "Microsoft.VisualStudio.Component.VC.ATLMFC.Spectre":  true,
+                                                                  "Microsoft.VisualStudio.Component.VC.Tools.x86.x64":  true
+                                                              },
+                                               "windowsSdkComponents":  [
+                                                                            "Microsoft.VisualStudio.Component.Windows11SDK.26100"
+                                                                        ]
+                                           }
+                                       ]
+                     },
+    "windowsKits":  "10.0.26100.0",
+    "tar":  {
+                "onPath":  "E:\\ProgramFiles\\Git\\usr\\bin\\tar.exe",
+                "onPathVersion":  "tar (GNU tar) 1.35",
+                "system32":  "C:\\WINDOWS\\System32\\tar.exe",
+                "system32Version":  "bsdtar 3.8.9 - libarchive 3.8.9 zlib/1.2.13.1-motley liblzma/5.8.3 bz2lib/1.0.8 libzstd/1.5.7 cng/2.0 libb2/bundled",
+                "found":  true
+            },
+    "signtool":  {
+                     "onPath":  null,
+                     "kitsBin":  "C:\\Program Files (x86)\\Windows Kits\\10\\bin",
+                     "kitsCandidates":  [
+                                            "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\x64\\signtool.exe"
+                                        ],
+                     "chosen":  "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\x64\\signtool.exe",
+                     "source":  "WindowsKits",
+                     "found":  true
+                 },
+    "disk":  {
+                 "buildRoot":  "C:\\b",
+                 "drive":  "C",
+                 "freeGB":  90.6,
+                 "buildRootExists":  true
+             },
+    "longPathsEnabled":  0,
+    "envVars":  {
+                    "ELECTRON_RUN_AS_NODE":  "1",
+                    "VSCODE_SKIP_NODE_VERSION_CHECK":  null,
+                    "npm_config_node_gyp":  null
+                },
+    "missing":  [
+
+                ]
+}

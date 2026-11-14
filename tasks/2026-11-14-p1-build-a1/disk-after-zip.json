@@ -1,0 +1,70 @@
+{
+  "countedAt": "2026-11-14T11:15:07.022Z",
+  "seconds": 16.277,
+  "drive": {
+    "root": "C:\\",
+    "freeBytes": 84629241856,
+    "freeGB": 78.82
+  },
+  "entries": [
+    {
+      "name": "worktree",
+      "path": "C:\\b\\wt\\p1-a1",
+      "exists": true,
+      "bytes": 4832781861,
+      "gb": 4.5,
+      "files": 131106,
+      "hardlinkedFiles": 109681,
+      "uniqueBytes": 4146876876,
+      "uniqueGB": 3.86
+    },
+    {
+      "name": "package",
+      "path": "C:\\b\\wt\\VSCode-win32-x64",
+      "exists": true,
+      "bytes": 1262796345,
+      "gb": 1.18,
+      "files": 2612,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 1262796345,
+      "uniqueGB": 1.18
+    },
+    {
+      "name": "dist",
+      "path": "C:\\b\\dist",
+      "exists": true,
+      "bytes": 406720616,
+      "gb": 0.38,
+      "files": 1,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 406720616,
+      "uniqueGB": 0.38
+    },
+    {
+      "name": "pnpmStore",
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm",
+      "exists": true,
+      "bytes": 3713457387,
+      "gb": 3.46,
+      "files": 108171,
+      "hardlinkedFiles": 97362,
+      "uniqueBytes": 3712007699,
+      "uniqueGB": 3.46
+    },
+    {
+      "name": "electron",
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\electron",
+      "exists": true,
+      "bytes": 978047803,
+      "gb": 0.91,
+      "files": 7,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 978047803,
+      "uniqueGB": 0.91
+    }
+  ],
+  "uniqueTotal": {
+    "bytes": 8089925328,
+    "gb": 7.53
+  }
+}

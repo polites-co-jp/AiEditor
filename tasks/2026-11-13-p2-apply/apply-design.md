@@ -109,6 +109,8 @@ p2-units-a の `builtin/keep.json`（`{ "$comment", "upstreamTag", "keep": [{ na
 
 `extensions-src/<名前>/` から、次だけを `<作業ツリー>/extensions/<名前>/` に写す: `package.json`、`package.nls*.json`、`README.md`、`ThirdPartyNotices.txt`、`LICENSE*`、`dist/`、`media/`。`mydist` は必須（無ければ止める）。`mydist` を写すときは、当てた単位の `checks.absentSettings` に載ったキーを、写した `package.json` の `contributes.configurationDefaults` から外す（単位が消した設定に既定だけが残ると、`registeredKeys` が `fail` になるため。2026-11-14 リーダーの判断）。リポジトリの `extensions-src/mydist` は書き換えない。外したキーは `builtinExtensions.removedDefaults`（`[{ key, unit }]`）に記録し、`registeredKeys` は外した後の manifest で見る。言語の上書き（`"[python]": {...}`）の中は見ない。overlay の `shukoConfigurationDefaults` は対象外（単位が application スコープの設定を消すときは、overlay を直す）。`notion-sync` はフォルダが無ければ何もしない。フォルダがあって `dist/extension.js` が無ければ警告して写さない（docs/02 の4.1: 先にビルドしてできたものを写す）。
 
+自前の拡張の `package.json` の書き方: 本家のパッケージ化は、`esbuild.mts` を持たない拡張に `dependencies` か `optionalDependencies` が1つでもあると止める（1.146.0 の `build/lib/extensions.ts` の162〜172行、`fromLocalNormal`。「has production dependencies … but is packaged without bundling」）。自前の拡張は自分のビルド（`build.mjs` の esbuild）で `dist/` にまとめてから写すので、`esbuild.mts` を持たず、この検査に掛かる。そのため、バンドルに入れる実行時の依存も `devDependencies` に書き、`dependencies`・`optionalDependencies` は書かない（`devDependencies` は検査の外。`vsce.listFiles` も `PackageManager.None` で依存を数えない）。`apply.mjs` は写すときに依存の区分を書き換えない。2026-11-14 リーダーの判断（`tasks/2026-11-14-notion-sync-deps/`）。
+
 ## 3. 部品（`scripts/lib/apply/`）と、テストの入口
 
 純粋な関数（ファイルも git も触らない）。入力を書き換えない。
@@ -322,3 +324,4 @@ p2-units-a の `builtin/keep.json`（`{ "$comment", "upstreamTag", "keep": [{ na
 - 2026-11-14 リーダーの判断（p2-units-b の追記の未解決1）: mydist を写すとき、当てた単位の `checks.absentSettings` のキーを configurationDefaults から外し、`builtinExtensions.removedDefaults` に記録する（2.6）。`pruneConfigurationDefaults` を足した
 - 2026-11-14 大岡越前守の検証の軽微1: `--manifests` の既定を `C:/b/p0/vsix` から `<buildRoot>\cache\vsix` に改め、`--build-root` を足した
 - 2026-11-14 リーダーの申し送り（p2-verify-prebuild の追記の2）: `--config <local.json>` を足した（`--build-root` が無いとき buildRoot を読む local.json。既定 `%LOCALAPPDATA%\Shuko\local.json`）。build.mjs は apply と `--lockfile-check` の両方に、自分が決めた `--build-root` と `--config` を渡す（p2-build-switch）
+- 2026-11-14 リーダーの判断（p1-build-a1 の判断を仰ぎたい点1、案1）: 2.6 に、自前の拡張は実行時の依存も `devDependencies` に書くこと（本家の `fromLocalNormal` が `dependencies` を止めるため）を足した。`apply.mjs` は変えていない

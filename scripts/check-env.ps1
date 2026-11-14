@@ -232,6 +232,16 @@ $result.disk = [ordered]@{ buildRoot = $BuildRoot; drive = $drive; freeGB = $(if
 $lp = $null
 try { $lp = (Get-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem' -Name LongPathsEnabled -ErrorAction Stop).LongPathsEnabled } catch { }
 $result.longPathsEnabled = $lp
+# Smart App Control (Windows 11). When enforced, unsigned native files built on this PC (for example
+# node-gyp's *.node) are blocked from loading: "An Application Control policy has blocked this file"
+# (seen 2026-11-14 with the self-built 1.146.0). 0 = off, 1 = on (enforce), 2 = evaluation, null = not readable.
+# Information only: not added to "missing".
+$sac = $null
+try { $sac = (Get-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\CI\Policy' -Name VerifiedAndReputablePolicyState -ErrorAction Stop).VerifiedAndReputablePolicyState } catch { }
+$result.smartAppControl = [ordered]@{
+    verifiedAndReputablePolicyState = $sac
+    meaning = $(switch ($sac) { 0 { 'off' } 1 { 'on' } 2 { 'evaluation' } default { 'unknown' } })
+}
 
 # Environment variables that change how Electron/VS Code start in children
 $result.envVars = [ordered]@{

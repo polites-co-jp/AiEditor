@@ -213,13 +213,15 @@
 
 | 名前 | 版 | 種類 | 許諾 | install スクリプト | 理由 |
 |---|---|---|---|---|---|
-| jsonc-parser | 3.3.1 | 実行時（dist に入る） | MIT | なし | settings.json（JSONC）のキーを、コメントと並びを保って足し引きする（docs/05 の5節が名指ししている） |
+| jsonc-parser | 3.3.1 | 実行時（dist に入る。`package.json` では `devDependencies`） | MIT | なし | settings.json（JSONC）のキーを、コメントと並びを保って足し引きする（docs/05 の5節が名指ししている） |
 | esbuild | 0.28.2 | ビルド | MIT | postinstall（`node install.js`）あり → `allowBuilds: esbuild: false` で止めた。止めても `@esbuild/win32-x64` のバイナリで動いた | 1ファイルにまとめる（docs/05 の9節） |
 | typescript | 7.0.2 | ビルド | Apache-2.0 | なし（ネイティブのバイナリは `@typescript/typescript-win32-x64` の optionalDependencies） | 型検査だけ |
 | @types/vscode | 1.146.0 | ビルド | MIT | なし | 拡張 API の型（`engines.vscode` と同じ版） |
 | @types/node | 24.19.2 | ビルド | MIT | なし | Node.js の型（拡張ホストは Node.js 24 系） |
 
 版は 2026-11-14 に npm のレジストリで確かめた最新（@types/node は 24 系の最新。`latest` は 26.6.6）。ビルドの道具は dist に入らない。dist に入る第三者のコードは jsonc-parser だけ（esbuild の入力の一覧で確かめた）。
+
+jsonc-parser も `devDependencies` に書く（2026-11-14 リーダーの判断。`tasks/2026-11-14-notion-sync-deps/`）。本家のパッケージ化（1.146.0 の `build/lib/extensions.ts` の `fromLocalNormal`）は、`esbuild.mts` を持たない拡張に `dependencies` があると止めるため。実行には dist に入ったもので足りる（`apply-design.md` の2.6）。
 
 ## 7. 確かめた外部の事実と出典
 

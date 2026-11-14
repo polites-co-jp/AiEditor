@@ -1,0 +1,72 @@
+{
+  "label": "1.146.0-upstream",
+  "upstream": {
+    "tag": "1.146.0",
+    "commit": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+  },
+  "units": [],
+  "patches": [],
+  "lockfileDiff": "tasks/2026-11-13-p1-build-upstream/take-in/lockfile.diff",
+  "toolchain": null,
+  "durations": {
+    "package": 238.865
+  },
+  "zip": null,
+  "extensionsLockSha256": "6b4c3ceae7d6cb407f62bbcbd57ca50267e998975887884cc325fd26a85cce10",
+  "result": "error",
+  "stoppedAt": "package",
+  "dryRun": false,
+  "startedAt": "2026-11-14T10:16:04.846Z",
+  "finishedAt": "2026-11-14T10:20:03.721Z",
+  "paths": {
+    "buildRoot": "C:\\b",
+    "worktree": "C:\\b\\wt\\1.146.0",
+    "packageDir": "C:\\b\\wt\\VSCode-win32-x64",
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-13-p1-build-upstream\\take-in\\checks.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\removals",
+    "dist": "C:\\b\\dist",
+    "logs": "C:\\b\\logs\\1.146.0-upstream"
+  },
+  "config": {
+    "path": "C:\\Users\\kou_z\\AppData\\Local\\Shuko\\local.json",
+    "exists": false,
+    "buildRootFrom": "default"
+  },
+  "stepsSelected": [
+    "package"
+  ],
+  "envRemovedForChildren": [
+    "ELECTRON_RUN_AS_NODE",
+    "VSCODE_CODE_CACHE_PATH",
+    "VSCODE_CRASH_REPORTER_PROCESS_TYPE",
+    "VSCODE_CWD",
+    "VSCODE_ESM_ENTRYPOINT",
+    "VSCODE_HANDLES_UNCAUGHT_ERRORS",
+    "VSCODE_IPC_HOOK",
+    "VSCODE_NLS_CONFIG",
+    "VSCODE_PID",
+    "VSCODE_PROCESS_TITLE"
+  ],
+  "steps": [
+    {
+      "name": "package",
+      "status": "error",
+      "startedAt": "2026-11-14T10:16:04.854Z",
+      "signtool": {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\x64\\signtool.exe",
+        "source": "WindowsKits",
+        "pathPrepended": "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\x64"
+      },
+      "command": "pnpm run gulp vscode-win32-x64-min",
+      "cwd": "C:\\b\\wt\\1.146.0",
+      "log": "C:\\b\\logs\\1.146.0-upstream\\package.log",
+      "seconds": 238.865,
+      "exitCode": 1,
+      "tail": "rkdown-language-features\\markdown-editor-src\\tsconfig.json with 0 errors.\n[\u001b[90m19:17:18\u001b[39m] Finished \u001b[32mtypechecking extension media (tsgo)\u001b[39m C:\\b\\wt\\1.146.0\\extensions\\simple-browser\\preview-src\\tsconfig.json with 0 errors.\n[\u001b[90m19:17:18\u001b[39m] Finished \u001b[32mtypechecking extension media (tsgo)\u001b[39m C:\\b\\wt\\1.146.0\\extensions\\notebook-renderers\\tsconfig.json with 0 errors.\n[\u001b[90m19:17:19\u001b[39m] Finished \u001b[32mesbuilding extension media\u001b[39m C:\\b\\wt\\1.146.0\\extensions\\mermaid-markdown-features\\esbuild.webview.mts with 0 errors.\n[\u001b[90m19:17:19\u001b[39m] Finished \u001b[32mtypechecking extension media (tsgo)\u001b[39m C:\\b\\wt\\1.146.0\\extensions\\mermaid-markdown-features\\preview-src\\tsconfig.json with 0 errors.\n[\u001b[90m19:17:21\u001b[39m] Finished \u001b[32mesbuilding extension media\u001b[39m C:\\b\\wt\\1.146.0\\extensions\\markdown-language-features\\esbuild.markdownEditor.mts with 0 errors.\n[\u001b[90m19:17:21\u001b[39m] Finished \u001b[36mcompile-extension-media-build\u001b[39m after \u001b[35m3636 ms\u001b[39m\n[\u001b[90m19:17:21\u001b[39m] Starting \u001b[36mbuild-date-file\u001b[39m ...\n[\u001b[90m19:17:21\u001b[39m] Finished \u001b[36mbuild-date-file\u001b[39m after \u001b[35m60 ms\u001b[39m\n[\u001b[90m19:17:21\u001b[39m] Starting \u001b[36mesbuild-bundle-win32-x64-min\u001b[39m ...\n[clean] out-vscode-min\n[bundle] src → out-vscode-min (target: desktop) (minify) (nls) (mangle-privates)\n[nls] Extracted 32108 messages from 2440 modules\n[bundle] Syntax check passed for 17 post-processed JS files\n[mangle-privates] vs\\workbench\\workbench.desktop.main.js: 15 classes, 98 fields, 517 edits, 3037ms\n[mangle-privates] vs\\sessions\\sessions.desktop.main.js: 11 classes, 83 fields, 451 edits, 3128ms\n[mangle-privates] Total: 26 classes, 181 fields, 968 edits, 6165ms\n[resources] Copying to C:\\b\\wt\\1.146.0\\out-vscode-min for target 'desktop'...\n[resources] Copied 247 files\n[standalone] Compiling 3 standalone files...\n[standalone] Done\n[svg] 52 files: 1758536 -> 1371462 bytes\n[bundle] Done in 103891ms (26 bundles)\n\n✓ Total: 103894ms\n[\u001b[90m19:19:06\u001b[39m] Finished \u001b[36mesbuild-bundle-win32-x64-min\u001b[39m after \u001b[35m105344 ms\u001b[39m\n[\u001b[90m19:19:06\u001b[39m] Starting \u001b[36mcompile-native-extensions-build\u001b[39m ...\n[\u001b[90m19:19:07\u001b[39m] Finished \u001b[32mtypechecking extension (tsgo)\u001b[39m C:\\b\\wt\\1.146.0\\extensions\\microsoft-authentication\\tsconfig.json with 0 errors.\n[\u001b[90m19:19:07\u001b[39m] Bundled extension: \u001b[33mgit\\esbuild.mts\u001b[39m with 0 errors.\n[\u001b[90m19:19:07\u001b[39m] Finished \u001b[32mtypechecking extension (tsgo)\u001b[39m C:\\b\\wt\\1.146.0\\extensions\\git\\tsconfig.json with 0 errors.\n[\u001b[90m19:19:07\u001b[39m] Bundled extension: \u001b[33mmicrosoft-authentication\\esbuild.mts\u001b[39m with 0 errors.\n[\u001b[90m19:19:07\u001b[39m] Finished \u001b[36mcompile-native-extensions-build\u001b[39m after \u001b[35m717 ms\u001b[39m\n[\u001b[90m19:19:07\u001b[39m] Starting \u001b[36mclean-vscode-win32-x64\u001b[39m ...\n[\u001b[90m19:19:07\u001b[39m] Finished \u001b[36mclean-vscode-win32-x64\u001b[39m after \u001b[35m1 ms\u001b[39m\n[\u001b[90m19:19:07\u001b[39m] Starting \u001b[36mpackage-win32-x64\u001b[39m ...\n[\u001b[90m19:20:03\u001b[39m] Finished \u001b[36mpackage-win32-x64\u001b[39m after \u001b[35m56340 ms\u001b[39m\n[\u001b[90m19:20:03\u001b[39m] Starting \u001b[36m<anonymous>\u001b[39m ...\n[\u001b[90m19:20:03\u001b[39m] 'vscode-win32-x64-min' errored after 3.93 min\n[\u001b[90m19:20:03\u001b[39m] Error: [prepareBuiltInCopilotRipgrepShim] Copilot SDK directory not found at C:\\b\\wt\\VSCode-win32-x64\\resources\\app\\extensions\\copilot\\node_modules\\@github\\copilot\\sdk\n    at prepareBuiltInCopilotRipgrepShim (file:///C:/b/wt/1.146.0/build/lib/copilot.ts:278:9)\n    at file:///C:/b/wt/1.146.0/build/gulpfile.vscode.ts:567:3\n    at file:///C:/b/wt/1.146.0/build/lib/gulp/task.ts:121:22\n    at new Promise (<anonymous>)\n    at _doExecute (file:///C:/b/wt/1.146.0/build/lib/gulp/task.ts:109:9)\n    at _execute (file:///C:/b/wt/1.146.0/build/lib/gulp/task.ts:99:8)\n    at result (file:///C:/b/wt/1.146.0/build/lib/gulp/task.ts:55:10)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async _execute (file:///C:/b/wt/1.146.0/build/lib/gulp/task.ts:99:2)\n    at async result (file:///C:/b/wt/1.146.0/build/lib/gulp/task.ts:55:4)\n[ELIFECYCLE] Command failed with exit code 1.\n",
+      "message": "パッケージ化が 1 で終わった"
+    }
+  ],
+  "warnings": [],
+  "message": "package で止まった: パッケージ化が 1 で終わった"
+}

@@ -1,0 +1,6 @@
+{
+  "$comment": "Phase 1 の A-1 だけを当てたビルド（tasks/2026-11-14-p1-build-a1/brief.md）で apply.mjs の --overlay に渡す空の上書き。product.json を本家のまま（Code - OSS）にするため。本番の上書きはリポジトリ直下の product.overlay.json",
+  "set": {},
+  "remove": [],
+  "removeIfPresent": []
+}

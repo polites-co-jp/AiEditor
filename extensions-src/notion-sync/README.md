@@ -38,7 +38,7 @@ pnpm --dir extensions-src/notion-sync run build --trial    # 加えて、差し�
 
 | 名前 | 版 | 種類 | 許諾 | 理由 |
 |---|---|---|---|---|
-| jsonc-parser | 3.3.1 | 実行時（dist に入る） | MIT | settings.json（JSONC）のキーを、コメントと並びを保って足し引きする（docs/05 の5節） |
+| jsonc-parser | 3.3.1 | 実行時（dist に入る。`package.json` では `devDependencies`） | MIT | settings.json（JSONC）のキーを、コメントと並びを保って足し引きする（docs/05 の5節） |
 | esbuild | 0.28.2 | ビルド | MIT | src を dist/extension.js の1ファイルにまとめる（docs/05 の9節） |
 | typescript | 7.0.2 | ビルド | Apache-2.0 | 型検査（出力はしない） |
 | @types/vscode | 1.146.0 | ビルド | MIT | 拡張 API の型（engines.vscode と同じ版） |

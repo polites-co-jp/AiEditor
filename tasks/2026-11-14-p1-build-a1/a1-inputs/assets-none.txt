@@ -1,0 +1,1 @@
+apply.mjs の --assets には tasks/2026-11-14-p1-build-a1/a1-inputs/assets-none（無いフォルダ）を渡した。無いと assets は "none" になり、何も写さない（assets/ のブランドの資産を当てないため）。このファイルは説明だけで、台本は読まない。

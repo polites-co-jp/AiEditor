@@ -1,0 +1,30 @@
+absent.test.mjs                    tests   14  pass   14  fail   0  skip   0
+apply-cli.test.mjs                 tests    7  pass    7  fail   0  skip   0
+apply-commits.test.mjs             tests   18  pass   18  fail   0  skip   0
+apply-parts.test.mjs               tests   57  pass   57  fail   0  skip   0
+apply-prune.test.mjs               tests    7  pass    7  fail   0  skip   0
+apply-selfcheck.test.mjs           tests   33  pass   33  fail   0  skip   0
+apply.test.mjs                     tests   33  pass   33  fail   0  skip   0
+build-fixes.test.mjs               tests   17  pass   17  fail   0  skip   0
+build-parts.test.mjs               tests   38  pass   38  fail   0  skip   0
+cli-run.test.mjs                   tests   14  pass   14  fail   0  skip   0
+configure.test.mjs                 tests   17  pass   17  fail   0  skip   0
+install-ext.test.mjs               tests   46  pass   46  fail   0  skip   0
+local-config.test.mjs              tests   46  pass   46  fail   0  skip   0
+lock.test.mjs                      tests  115  pass  115  fail   0  skip   0
+make-icons.test.mjs                tests   17  pass   17  fail   0  skip   0
+notion-sync.test.mjs               tests  101  pass  101  fail   0  skip   0
+p1-scripts.test.mjs                tests   27  pass   27  fail   0  skip   0
+p34-selfcheck.test.mjs             tests    1  pass    1  fail   0  skip   0
+removals.test.mjs                  tests  229  pass  208  fail   0  skip  21
+signtool.test.mjs                  tests   17  pass   17  fail   0  skip   0
+smoke.test.mjs                     tests   75  pass   75  fail   0  skip   0
+sublime-keys.test.mjs              tests   50  pass   50  fail   0  skip   0
+switch-expand.test.mjs             tests   17  pass   17  fail   0  skip   0
+switch.test.mjs                    tests   22  pass   22  fail   0  skip   0
+take-in-more.test.mjs              tests   43  pass   43  fail   0  skip   0
+take-in.test.mjs                   tests   95  pass   95  fail   0  skip   0
+watch.test.mjs                     tests  104  pass  104  fail   0  skip   0
+measure.tests.ps1                  tests  138  pass  138  fail   0  skip   0  exit 0
+netaudit.tests.ps1                 tests  102  pass  102  fail   0  skip   0  exit 0
+TOTAL                              tests 1500  pass 1479  fail   0  skip  21

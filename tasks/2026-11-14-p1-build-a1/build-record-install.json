@@ -1,0 +1,146 @@
+{
+  "label": "1.146.0-p1-a1",
+  "upstream": {
+    "tag": "1.146.0",
+    "commit": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+  },
+  "units": [],
+  "patches": [],
+  "lockfileDiff": "tasks/2026-11-14-p1-build-a1/take-in/lockfile.diff",
+  "toolchain": {
+    "node": "24.22.1",
+    "electron": "43.8.6",
+    "packageManager": "pnpm 12.16.0",
+    "packageManagerDeclared": "pnpm@12.16.0",
+    "nvmrc": "24.22.1",
+    "nodeOfBuildScript": "v24.22.1"
+  },
+  "durations": {
+    "install": 163.961,
+    "typecheck": 18.986
+  },
+  "zip": null,
+  "extensionsLockSha256": "6b4c3ceae7d6cb407f62bbcbd57ca50267e998975887884cc325fd26a85cce10",
+  "result": "ok",
+  "stoppedAt": null,
+  "dryRun": false,
+  "startedAt": "2026-11-14T11:03:57.863Z",
+  "finishedAt": "2026-11-14T11:07:14.884Z",
+  "paths": {
+    "buildRoot": "C:\\b",
+    "worktree": "C:\\b\\wt\\p1-a1",
+    "packageDir": "C:\\b\\wt\\VSCode-win32-x64",
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-p1-build-a1\\take-in\\checks.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\removals",
+    "dist": "C:\\b\\dist",
+    "logs": "C:\\b\\logs\\1.146.0-p1-a1"
+  },
+  "config": {
+    "path": "C:\\Users\\kou_z\\AppData\\Local\\Shuko\\local.json",
+    "exists": false,
+    "buildRootFrom": "default"
+  },
+  "stepsSelected": [
+    "install",
+    "lockfile",
+    "typecheck"
+  ],
+  "envRemovedForChildren": [
+    "ELECTRON_RUN_AS_NODE",
+    "VSCODE_CODE_CACHE_PATH",
+    "VSCODE_CRASH_REPORTER_PROCESS_TYPE",
+    "VSCODE_CWD",
+    "VSCODE_ESM_ENTRYPOINT",
+    "VSCODE_HANDLES_UNCAUGHT_ERRORS",
+    "VSCODE_IPC_HOOK",
+    "VSCODE_NLS_CONFIG",
+    "VSCODE_PID",
+    "VSCODE_PROCESS_TITLE"
+  ],
+  "steps": [
+    {
+      "name": "install",
+      "status": "ok",
+      "startedAt": "2026-11-14T11:03:57.870Z",
+      "command": "pnpm install --no-frozen-lockfile",
+      "cwd": "C:\\b\\wt\\p1-a1",
+      "log": "C:\\b\\logs\\1.146.0-p1-a1\\install.log",
+      "seconds": 163.961,
+      "exitCode": 0
+    },
+    {
+      "name": "lockfile",
+      "status": "ok",
+      "startedAt": "2026-11-14T11:06:42.003Z",
+      "command": "C:\\Program Files\\nodejs\\node.exe e:\\develop\\self\\Team\\projects\\ai-editor\\scripts\\apply.mjs C:\\b\\wt\\p1-a1 --label 1.146.0-p1-a1 --lockfile-check --checks-out e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-p1-build-a1\\take-in\\checks.json --diff-out e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-p1-build-a1\\take-in\\lockfile.diff --removals e:\\develop\\self\\Team\\projects\\ai-editor\\removals --build-root C:\\b --config C:\\Users\\kou_z\\AppData\\Local\\Shuko\\local.json",
+      "cwd": "e:\\develop\\self\\Team\\projects\\ai-editor",
+      "log": "C:\\b\\logs\\1.146.0-p1-a1\\lockfile.log",
+      "seconds": 0.641,
+      "exitCode": 0,
+      "lockfile": {
+        "status": "ok",
+        "files": [
+          {
+            "path": "build/pnpm-lock.yaml",
+            "status": "ok",
+            "unchanged": true
+          },
+          {
+            "path": "extensions/copilot/pnpm-lock.yaml",
+            "status": "removed",
+            "reason": "単位が消したフォルダの中"
+          },
+          {
+            "path": "extensions/pnpm-lock.yaml",
+            "status": "ok",
+            "unchanged": true
+          },
+          {
+            "path": "pnpm-lock.yaml",
+            "status": "ok",
+            "unchanged": true
+          },
+          {
+            "path": "remote/pnpm-lock.yaml",
+            "status": "ok",
+            "unchanged": true
+          },
+          {
+            "path": "test/sanity/pnpm-lock.yaml",
+            "status": "ok",
+            "unchanged": true
+          }
+        ],
+        "diff": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-p1-build-a1\\take-in\\lockfile.diff",
+        "checkedAt": "2026-11-14T11:06:42.628Z",
+        "baseRef": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+      },
+      "diff": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-p1-build-a1\\take-in\\lockfile.diff"
+    },
+    {
+      "name": "typecheck",
+      "status": "ok",
+      "startedAt": "2026-11-14T11:06:42.647Z",
+      "command": "pnpm run typecheck-client",
+      "cwd": "C:\\b\\wt\\p1-a1",
+      "log": "C:\\b\\logs\\1.146.0-p1-a1\\typecheck.log",
+      "seconds": 18.986,
+      "exitCode": 0
+    }
+  ],
+  "warnings": [],
+  "disk": {
+    "worktree": {
+      "bytes": 4169978254,
+      "gb": 3.88,
+      "files": 129277
+    },
+    "package": {
+      "bytes": 1501694431,
+      "gb": 1.4,
+      "files": 20325
+    },
+    "countedSeconds": 11.272
+  }
+}

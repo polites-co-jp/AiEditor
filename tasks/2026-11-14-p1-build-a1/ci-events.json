@@ -1,0 +1,56 @@
+{
+    "readable":  true,
+    "error":  null,
+    "since":  "2026-11-14T20:01:06.3196328+09:00",
+    "count":  6,
+    "events":  [
+                   {
+                       "time":  "2026-11-14T20:15:39.4987668+09:00",
+                       "id":  3077,
+                       "file":  "\\Device\\HarddiskVolume2\\b\\p1\\1.146.0-p1-a1-r2\\Code-OSS-win32-x64-1.146.0-p1-a1-r2\\resources\\app\\node_modules.asar.unpacked\\native-is-elevated\\build\\Release\\iselevated.node",
+                       "process":  "\\Device\\HarddiskVolume2\\b\\p1\\1.146.0-p1-a1-r2\\Code-OSS-win32-x64-1.146.0-p1-a1-r2\\Code - OSS.exe",
+                       "policy":  "VerifiedAndReputableDesktop",
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\b\\p1\\1.146.0-p1-a1-r2\\Code-OSS-win32-x64-1.146.0-p1-a1-r2\\Code - OSS.exe) attempted to load \\Device\\HarddiskVolume2\\b\\p1\\1.146.0-p1-a1-r2\\Code-OSS-win32-x64-1.146.0-p1-a1-r2\\resources\\app\\node_modules.asar.unpacked\\native-is-elevated\\build\\Release\\iselevated.node that did not meet the Enterprise signing level requirements or violate"
+                   },
+                   {
+                       "time":  "2026-11-14T20:15:39.4984240+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\b\\p1\\1.146.0-p1-a1-r2\\Code-OSS-win32-x64-1.146.0-p1-a1-r2\\Code - OSS.exe) attempted to load \\Device\\HarddiskVolume2\\b\\p1\\1.146.0-p1-a1-r2\\Code-OSS-win32-x64-1.146.0-p1-a1-r2\\resources\\app\\node_modules.asar.unpacked\\native-is-elevated\\build\\Release\\iselevated.node that did not meet the Enterprise signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T20:15:37.0470805+09:00",
+                       "id":  3077,
+                       "file":  "\\Device\\HarddiskVolume2\\b\\p1\\1.146.0-p1-a1-r2\\Code-OSS-win32-x64-1.146.0-p1-a1-r2\\resources\\app\\node_modules.asar.unpacked\\native-keymap\\build\\Release\\keymapping.node",
+                       "process":  "\\Device\\HarddiskVolume2\\b\\p1\\1.146.0-p1-a1-r2\\Code-OSS-win32-x64-1.146.0-p1-a1-r2\\Code - OSS.exe",
+                       "policy":  "VerifiedAndReputableDesktop",
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\b\\p1\\1.146.0-p1-a1-r2\\Code-OSS-win32-x64-1.146.0-p1-a1-r2\\Code - OSS.exe) attempted to load \\Device\\HarddiskVolume2\\b\\p1\\1.146.0-p1-a1-r2\\Code-OSS-win32-x64-1.146.0-p1-a1-r2\\resources\\app\\node_modules.asar.unpacked\\native-keymap\\build\\Release\\keymapping.node that did not meet the Enterprise signing level requirements or violated cod"
+                   },
+                   {
+                       "time":  "2026-11-14T20:15:37.0465870+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\b\\p1\\1.146.0-p1-a1-r2\\Code-OSS-win32-x64-1.146.0-p1-a1-r2\\Code - OSS.exe) attempted to load \\Device\\HarddiskVolume2\\b\\p1\\1.146.0-p1-a1-r2\\Code-OSS-win32-x64-1.146.0-p1-a1-r2\\resources\\app\\node_modules.asar.unpacked\\native-keymap\\build\\Release\\keymapping.node that did not meet the Enterprise signing level requirements."
+                   },
+                   {
+                       "time":  "2026-11-14T20:15:34.7927566+09:00",
+                       "id":  3077,
+                       "file":  "\\Device\\HarddiskVolume2\\b\\p1\\1.146.0-p1-a1-r2\\Code-OSS-win32-x64-1.146.0-p1-a1-r2\\resources\\app\\node_modules.asar.unpacked\\@vscode\\deviceid\\build\\Release\\windows.node",
+                       "process":  "\\Device\\HarddiskVolume2\\b\\p1\\1.146.0-p1-a1-r2\\Code-OSS-win32-x64-1.146.0-p1-a1-r2\\Code - OSS.exe",
+                       "policy":  "VerifiedAndReputableDesktop",
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\b\\p1\\1.146.0-p1-a1-r2\\Code-OSS-win32-x64-1.146.0-p1-a1-r2\\Code - OSS.exe) attempted to load \\Device\\HarddiskVolume2\\b\\p1\\1.146.0-p1-a1-r2\\Code-OSS-win32-x64-1.146.0-p1-a1-r2\\resources\\app\\node_modules.asar.unpacked\\@vscode\\deviceid\\build\\Release\\windows.node that did not meet the Enterprise signing level requirements or violated cod"
+                   },
+                   {
+                       "time":  "2026-11-14T20:15:34.7923839+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\b\\p1\\1.146.0-p1-a1-r2\\Code-OSS-win32-x64-1.146.0-p1-a1-r2\\Code - OSS.exe) attempted to load \\Device\\HarddiskVolume2\\b\\p1\\1.146.0-p1-a1-r2\\Code-OSS-win32-x64-1.146.0-p1-a1-r2\\resources\\app\\node_modules.asar.unpacked\\@vscode\\deviceid\\build\\Release\\windows.node that did not meet the Enterprise signing level requirements."
+                   }
+               ]
+}

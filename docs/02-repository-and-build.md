@@ -111,7 +111,7 @@ C:\b\dist\                        zip の置き場
 ### 4.1 自前の組み込み拡張の入れ方
 
 - `mydist` はコードを持たない（`main` なし）。`extensions/mydist/package.json` を置くだけで、`build/lib/extensions.ts` が `extensions/*/package.json` を走査して同梱する見込み [一次] `sources/research-vscode-source.md` の3節（同梱されるかは Phase 2 で確かめる）。
-- `notion-sync` はコードを持つ。本家のコンパイルの一覧（`build/gulpfile.extensions.ts` の `compilations`）に足すと本家のファイルへのパッチが増えるので、**ビルドリポジトリ側で先にビルドして `dist/extension.js` にまとめ、できあがったものを写す**。依存は MIT などの許諾の緩いものに限り、表示を残す。
+- `notion-sync` はコードを持つ。本家のコンパイルの一覧（`build/gulpfile.extensions.ts` の `compilations`）に足すと本家のファイルへのパッチが増えるので、**ビルドリポジトリ側で先にビルドして `dist/extension.js` にまとめ、できあがったものを写す**。依存は MIT などの許諾の緩いものに限り、表示を残す。バンドルに入れる依存も `package.json` では `devDependencies` に書く。`dependencies` に書くと、本家の gulp（`build/lib/extensions.ts` の `fromLocalNormal`）が「本番の依存がある」として止める（1.146.0 で確かめた。2026-11-14）。
 
 ## 5. Windows のビルド環境
 
@@ -120,15 +120,16 @@ C:\b\dist\                        zip の置き場
 | 要るもの | 中身 |
 |---|---|
 | Git | 本家の clone と worktree |
-| Node.js | タグの `.nvmrc` の版（main で 24.22.1 [一次・要照合] https://github.com/microsoft/vscode/blob/main/.nvmrc）。x64 |
+| Node.js | タグの `.nvmrc` の版（1.146.0 は 24.22.1。2026-11-14 に入れて確かめた）。x64。winget で入れるときは `--version` を付け、`winget pin add --id OpenJS.NodeJS.LTS -e` で 26 系に上がらないよう止める（26 系には corepack が無く、本家の準備の台本も止まる）。手順は [build-env-setup](build-env-setup.md) |
 | Python | node-gyp 用。setuptools を入れる |
 | C/C++ | Visual Studio 2026 Build Tools。wiki の例: `winget install --id Microsoft.VisualStudio.BuildTools -e --source winget --override "--add Microsoft.VisualStudio.Component.Windows11SDK.26100 --add Microsoft.VisualStudio.Workload.VCTools --add Microsoft.VisualStudio.Component.VC.Runtimes.x86.x64.Spectre --add Microsoft.VisualStudio.Component.VC.ATL.Spectre --add Microsoft.VisualStudio.Component.VC.ATLMFC.Spectre"`。"Do not pick the option to install Windows Build Tools" |
 | 署名の道具 `signtool.exe` | 1.146.0 のパッケージ化（`build/gulpfile.vscode.ts` の `patchWin32DependenciesTask`）が PATH から呼ぶ。無いとタスクが落ちる。上の Build Tools の Windows 11 SDK に入る（`C:\Program Files (x86)\Windows Kits\10\bin\<版>\x64\`）。`build.mjs` が子のプロセスの PATH に足す（2026-11-14、`tasks/2026-11-14-build-env-research/`） |
-| パッケージマネージャー | タグの手順に従う（1.146.0 は pnpm の見込み。4節） |
+| パッケージマネージャー | タグの `package.json` の `packageManager`（1.146.0 は pnpm 12.16.0）。`npm install -g pnpm@<版>` で入れる |
+| Smart App Control | **オフにする**（裁定 2026-11-14）。オンだと、自分でビルドした署名の無い `.node`（`winregistry.node`・`keymapping.node` など）の読み込みが止められ、止めたものを通す道は無い。ビルドの途中でも `bufferutil.node` が止められた。`check-env.ps1` が状態を `smartAppControl` に出す（`missing` には入れない）。調べ: `tasks/2026-11-14-sac-override-research/sac-override.md` |
 | Claude Code の CLI | 取り込みの判定（`claude -p`） |
 
 - Electron の版はルートの package.json の `nativeBuild.target` で決まる（1.146.0 は 43.8.6）。Electron は本家のタグに付いてくるので、別に上げない。取得物は `build/checksums/electron.txt` で照合される [一次] `sources/research-vscode-source.md` の2節。 1.145 系までは `.npmrc` の `target` にある（`tasks/2026-11-13-p2-apply/doc-corrections.md` の5）。`apply.mjs` はどちらからでも読む。
-- 所要時間・ディスク・ピークのメモリの公式の値は見つからなかった。Phase 1 で所要時間とディスクを記録する。
+- 所要時間・ディスク・ピークのメモリの公式の値は見つからなかった。Phase 1 の実測（1.146.0 に A-1 を当てた版、キャッシュが温まった状態）: 作業ツリーの用意から zip まで約 6.8 分（導入 164 秒、型検査 19 秒、パッケージ化 157 秒、zip 36 秒など）、C: の空きの減り 2.3 GB、作業ツリー 4.5 GB、出力 1.18 GB、zip 0.38 GB。キャッシュが冷えた状態の導入は 278 秒、pnpm の store は 3.5 GB（`tasks/2026-11-14-p1-build-a1/build-log.md`、`tasks/2026-11-13-p1-build-upstream/build-log.md`）。
 - 失敗したときは、本家の案内どおり `git clean -xfd` してから入れ直す。node-gyp のキャッシュ（`%USERPROFILE%\AppData\Local\node-gyp`）を消すことも案内されている。
 
 ## 6. 配布の形（版ごとのフォルダと切り替え）
@@ -154,7 +155,7 @@ C:\b\dist\                        zip の置き場
 - **戻し方**: `switch.ps1 <前のラベル>`。`switch.ps1 -Previous` で、`history.txt` を後ろから見て、今の版へ切り替えた最初の行の「前」へ戻す（2回続けると2つの版を行き来する）。新しい版がユーザーのデータを書き換えていて前の版で不具合が出たときは、`backups\` から戻す。
 - 版のフォルダは `keepVersions`（既定3。6.1）の数だけ残す。それより古いものは、`switch.ps1` が一覧を出し、ユーザーが消す。
 - ユーザーのデータの置き場所は、product.json の `nameShort`・`dataFolderName` から決まる（推定: `%APPDATA%\Shuko\User`、拡張は `%USERPROFILE%\.shuko\extensions`）。版のフォルダとは別なので、切り替えても設定と拡張はそのまま。Phase 1 で実際の場所を確かめて、この節を直す。
-- 署名はしない。手元でビルドしたものにはダウンロードの印が付かないので、SmartScreen は出にくい（推定）。
+- 署名はしない。手元でビルドしたものにはダウンロードの印が付かないので、SmartScreen は出にくい（推定）。SmartScreen とは別に、Smart App Control がオンだと署名の無いネイティブのファイルの読み込みが止められる。そのため Smart App Control はオフにする（5節の表。裁定 2026-11-14）。
 - 別案: ポータブルモード（実行ファイルの隣の `data` フォルダ）。OSS のビルドでも Windows で効く見込み（1.146.0 の `src/bootstrap-node.ts` の読み。実機は未確認）。ただし版ごとにデータが分かれ、切り替えのたびに写す必要が出るので採らない。
 
 ### 6.1 場所の設定（PC ごとの設定ファイル `local.json`）

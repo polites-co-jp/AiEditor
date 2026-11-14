@@ -1,0 +1,136 @@
+{
+  "countedAt": "2026-11-14T10:34:57.250Z",
+  "seconds": 27.796,
+  "drive": {
+    "root": "C:\\",
+    "freeBytes": 88223645696,
+    "freeGB": 82.16
+  },
+  "entries": [
+    {
+      "name": "worktree",
+      "path": "C:\\b\\wt\\1.146.0",
+      "exists": true,
+      "bytes": 6587800530,
+      "gb": 6.14,
+      "files": 215646,
+      "hardlinkedFiles": 172786,
+      "uniqueBytes": 5610112649,
+      "uniqueGB": 5.22
+    },
+    {
+      "name": "worktreeNodeModules",
+      "path": "C:\\b\\wt\\1.146.0\\node_modules",
+      "exists": true,
+      "bytes": 2003488205,
+      "gb": 1.87,
+      "files": 42740,
+      "hardlinkedFiles": 41800,
+      "uniqueBytes": 1942852303,
+      "uniqueGB": 1.81
+    },
+    {
+      "name": "worktreeBuild",
+      "path": "C:\\b\\wt\\1.146.0\\.build",
+      "exists": true,
+      "bytes": 413333221,
+      "gb": 0.38,
+      "files": 19083,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 413333221,
+      "uniqueGB": 0.38
+    },
+    {
+      "name": "worktreeOutMin",
+      "path": "C:\\b\\wt\\1.146.0\\out-vscode-min",
+      "exists": true,
+      "bytes": 404311836,
+      "gb": 0.38,
+      "files": 337,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 404311836,
+      "uniqueGB": 0.38
+    },
+    {
+      "name": "packageOut",
+      "path": "C:\\b\\wt\\VSCode-win32-x64",
+      "exists": true,
+      "bytes": 1501694431,
+      "gb": 1.4,
+      "files": 20325,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 1501694431,
+      "uniqueGB": 1.4
+    },
+    {
+      "name": "pnpmLocal",
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm",
+      "exists": true,
+      "bytes": 3713457387,
+      "gb": 3.46,
+      "files": 108171,
+      "hardlinkedFiles": 97362,
+      "uniqueBytes": 3712007699,
+      "uniqueGB": 3.46
+    },
+    {
+      "name": "pnpmCache",
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm-cache",
+      "exists": true,
+      "bytes": 1759573348,
+      "gb": 1.64,
+      "files": 3474,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 1759573348,
+      "uniqueGB": 1.64
+    },
+    {
+      "name": "nodeGyp",
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\node-gyp",
+      "exists": true,
+      "bytes": 128831857,
+      "gb": 0.12,
+      "files": 5666,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 128831857,
+      "uniqueGB": 0.12
+    },
+    {
+      "name": "electronCache",
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\electron",
+      "exists": true,
+      "bytes": 978047803,
+      "gb": 0.91,
+      "files": 7,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 978047803,
+      "uniqueGB": 0.91
+    },
+    {
+      "name": "cloneGit",
+      "path": "C:\\b\\vscode\\.git",
+      "exists": true,
+      "bytes": 1858932830,
+      "gb": 1.73,
+      "files": 301,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 1858932830,
+      "uniqueGB": 1.73
+    },
+    {
+      "name": "logs",
+      "path": "C:\\b\\logs",
+      "exists": true,
+      "bytes": 664283,
+      "gb": 0,
+      "files": 15,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 664283,
+      "uniqueGB": 0
+    }
+  ],
+  "uniqueTotal": {
+    "bytes": 12318872643,
+    "gb": 11.47
+  }
+}

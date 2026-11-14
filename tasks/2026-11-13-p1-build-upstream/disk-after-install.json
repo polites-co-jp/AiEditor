@@ -1,0 +1,92 @@
+{
+  "countedAt": "2026-11-14T10:15:09.849Z",
+  "seconds": 28.714,
+  "drive": {
+    "root": "C:\\",
+    "freeBytes": 91564752896,
+    "freeGB": 85.28
+  },
+  "entries": [
+    {
+      "name": "worktree",
+      "path": "C:\\b\\wt\\1.146.0",
+      "exists": true,
+      "bytes": 5616244449,
+      "gb": 5.23,
+      "files": 196087,
+      "hardlinkedFiles": 172786,
+      "uniqueBytes": 4638556568,
+      "uniqueGB": 4.32
+    },
+    {
+      "name": "pnpmLocal",
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm",
+      "exists": true,
+      "bytes": 3713457387,
+      "gb": 3.46,
+      "files": 108171,
+      "hardlinkedFiles": 97362,
+      "uniqueBytes": 3712007699,
+      "uniqueGB": 3.46
+    },
+    {
+      "name": "pnpmCache",
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm-cache",
+      "exists": true,
+      "bytes": 1759573348,
+      "gb": 1.64,
+      "files": 3474,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 1759573348,
+      "uniqueGB": 1.64
+    },
+    {
+      "name": "nodeGyp",
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\node-gyp",
+      "exists": true,
+      "bytes": 128831857,
+      "gb": 0.12,
+      "files": 5666,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 128831857,
+      "uniqueGB": 0.12
+    },
+    {
+      "name": "electronCache",
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\electron",
+      "exists": true,
+      "bytes": 826795563,
+      "gb": 0.77,
+      "files": 6,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 826795563,
+      "uniqueGB": 0.77
+    },
+    {
+      "name": "electronGyp",
+      "path": "C:\\Users\\kou_z\\.electron-gyp",
+      "exists": true,
+      "bytes": 2912823,
+      "gb": 0,
+      "files": 126,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 2912823,
+      "uniqueGB": 0
+    },
+    {
+      "name": "npmCache",
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\npm-cache",
+      "exists": true,
+      "bytes": 11802812278,
+      "gb": 10.99,
+      "files": 60560,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 11802812278,
+      "uniqueGB": 10.99
+    }
+  ],
+  "uniqueTotal": {
+    "bytes": 19640497879,
+    "gb": 18.29
+  }
+}

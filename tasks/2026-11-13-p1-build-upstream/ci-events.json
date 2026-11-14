@@ -1,0 +1,24 @@
+{
+    "readable":  true,
+    "error":  null,
+    "since":  "2026-11-14T19:03:57.2594245+09:00",
+    "count":  2,
+    "events":  [
+                   {
+                       "time":  "2026-11-14T19:32:34.4578869+09:00",
+                       "id":  3077,
+                       "file":  "\\Device\\HarddiskVolume2\\b\\wt\\VSCode-win32-x64\\resources\\app\\node_modules.asar.unpacked\\@vscode\\windows-registry\\build\\Release\\winregistry.node",
+                       "process":  "\\Device\\HarddiskVolume2\\b\\wt\\VSCode-win32-x64\\Code - OSS.exe",
+                       "policy":  "VerifiedAndReputableDesktop",
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\b\\wt\\VSCode-win32-x64\\Code - OSS.exe) attempted to load \\Device\\HarddiskVolume2\\b\\wt\\VSCode-win32-x64\\resources\\app\\node_modules.asar.unpacked\\@vscode\\windows-registry\\build\\Release\\winregistry.node that did not meet the Enterprise signing level requirements or violated code integrity policy (Policy ID:{0283ac0f-fff1-49ae-ada1-8a933"
+                   },
+                   {
+                       "time":  "2026-11-14T19:32:34.4575077+09:00",
+                       "id":  3033,
+                       "file":  null,
+                       "process":  null,
+                       "policy":  null,
+                       "message":  "Code Integrity determined that a process (\\Device\\HarddiskVolume2\\b\\wt\\VSCode-win32-x64\\Code - OSS.exe) attempted to load \\Device\\HarddiskVolume2\\b\\wt\\VSCode-win32-x64\\resources\\app\\node_modules.asar.unpacked\\@vscode\\windows-registry\\build\\Release\\winregistry.node that did not meet the Enterprise signing level requirements."
+                   }
+               ]
+}
