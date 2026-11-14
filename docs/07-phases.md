@@ -194,7 +194,7 @@ UDP や、2秒より短い接続は取りこぼす。必要になったら、Win
 ## 5. Phase 2: 試作（段階 A・B）
 
 1. ビルドリポジトリの骨組み（[02](02-repository-and-build.md) の2節）、`product.overlay.json`、ブランドの資産、`mydist`、台帳と `install-extensions.mjs`、`switch.ps1`、PC ごとの設定ファイル `local.json` とそれを読む共通の部品・`configure.ps1`（[02](02-repository-and-build.md) の6.1）を作る。`configure.ps1 -InstallRoot` で場所を変え、切り替えと戻しが新しい場所で動くことを確かめる。
-2. 単位を1つも有効にしない状態でビルドし、動作の確認を通す（上書きと `mydist` だけの状態）。
+2. 単位を1つも有効にしない状態でビルドし、動作の確認を通す（上書きと `mydist` だけの状態）。1.146.0 では A-1 が無いとパッケージ化で落ちる（4節の「1.146.0 での扱い」。`BUILD_SOURCEVERSION` を渡すと copilot の `.esbuild.mts` が `VSCODE_QUALITY` も求める）ので、A-1 を当てた版を土台とする（2026-11-14）。関門の前の版は `apply.mjs --only <それまでの単位>` で単位を選ぶ（`--until` は `enabled: true` の単位の中でしか効かない）。
 3. A-1 から B-7 まで、1単位ずつ: 単位を作る → 関門（[03](03-removal-design.md) の7節）→ `enabled: true`。各単位の関門の記録を残す。
 4. 全部を有効にした版で、スモークの全部の組（[06](06-update-watch-and-take-in.md) の5節）と通信の監査（3.3）を通す。監査の1回は、ユーザーが手の項目で Claude Code のパネルから送信する回に重ね、Claude の宛先を観測して `records/network-allowlist.json` の Claude の行を確定させる（裁定 2026-11-13）。ユーザーに渡して使ってもらう。
 

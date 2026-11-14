@@ -1,0 +1,59 @@
+{
+  "countedAt": "2026-11-14T14:05:58.326Z",
+  "seconds": 12.024,
+  "drive": {
+    "root": "C:\\",
+    "freeBytes": 41970237440,
+    "freeGB": 39.09
+  },
+  "entries": [
+    {
+      "name": "dist",
+      "path": "C:\\b\\dist",
+      "exists": true,
+      "bytes": 6223532443,
+      "gb": 5.8,
+      "files": 16,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 6223532443,
+      "uniqueGB": 5.8
+    },
+    {
+      "name": "p2",
+      "path": "C:\\b\\p2",
+      "exists": true,
+      "bytes": 16888370329,
+      "gb": 15.73,
+      "files": 31144,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 16888370329,
+      "uniqueGB": 15.73
+    },
+    {
+      "name": "worktree",
+      "path": "C:\\b\\wt\\p2",
+      "exists": true,
+      "bytes": 4226393693,
+      "gb": 3.94,
+      "files": 103293,
+      "hardlinkedFiles": 82992,
+      "uniqueBytes": 3597075573,
+      "uniqueGB": 3.35
+    },
+    {
+      "name": "package",
+      "path": "C:\\b\\wt\\VSCode-win32-x64",
+      "exists": true,
+      "bytes": 1137735544,
+      "gb": 1.06,
+      "files": 1888,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 1137735544,
+      "uniqueGB": 1.06
+    }
+  ],
+  "uniqueTotal": {
+    "bytes": 27846713889,
+    "gb": 25.93
+  }
+}

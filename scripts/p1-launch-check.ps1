@@ -5,7 +5,7 @@
 
 .DESCRIPTION
   1. Unpacks -Zip with %SystemRoot%\System32\tar.exe into -Dest (default C:\b\p1\<zip name>), unless
-     -Dest already has the unpacked folder. -Dest must be under C:\b\p1.
+     -Dest already has the unpacked folder. -Dest must be under C:\b\p1 or C:\b\p2.
   2. Finds exe / CLI / product.json (flat <top>\resources\app or versioned <top>\<commit10>\resources\app).
   3. Runs "<cli> --version" and starts "<exe> --new-window" with ELECTRON_RUN_AS_NODE,
      ELECTRON_NO_ATTACH_CONSOLE and every VSCODE_* removed and only VSCODE_PORTABLE=<Dest>\portable
@@ -46,13 +46,18 @@ $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'lib\p0-common.ps1')
 
 $p1Root = 'C:\b\p1'
+# -Dest may be under C:\b\p1 (Phase 1) or C:\b\p2 (Phase 2 builds, unpacked for the gate checks;
+# tasks/2026-11-14-p2-builds). The default stays C:\b\p1.
+$destRoots = @('C:\b\p1', 'C:\b\p2')
 $tar = Join-Path $env:SystemRoot 'System32\tar.exe'
 
 function Assert-P1Path {
     param([Parameter(Mandatory)][string]$Path)
     $full = [IO.Path]::GetFullPath($Path).TrimEnd('\')
-    if (-not $full.StartsWith($p1Root + '\', [StringComparison]::OrdinalIgnoreCase)) { throw "refusing a path outside $p1Root : $full" }
-    return $full
+    foreach ($r in $destRoots) {
+        if ($full.StartsWith($r + '\', [StringComparison]::OrdinalIgnoreCase)) { return $full }
+    }
+    throw "refusing a path outside $($destRoots -join ' and ') : $full"
 }
 
 function Get-FolderStamp {

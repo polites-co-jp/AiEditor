@@ -1,0 +1,432 @@
+{
+  "label": "1.146.0-p2-A-2",
+  "upstream": {
+    "tag": "1.146.0",
+    "commit": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+  },
+  "units": [
+    {
+      "id": "A-1-copilot-extension",
+      "enabled": false,
+      "applied": "ok"
+    },
+    {
+      "id": "A-2-accounts-extensions",
+      "enabled": false,
+      "applied": "ok"
+    }
+  ],
+  "patches": [
+    {
+      "file": "patches/20-product-configuration-defaults.patch",
+      "applied": "ok"
+    },
+    {
+      "file": "patches/30-proxy-direct-without-settings.patch",
+      "applied": "ok"
+    }
+  ],
+  "lockfileDiff": "tasks/2026-11-14-p2-builds/1.146.0-p2-A-2/lockfile.diff",
+  "toolchain": {
+    "node": "24.22.1",
+    "electron": "43.8.6",
+    "packageManager": "pnpm 12.16.0",
+    "packageManagerDeclared": "pnpm@12.16.0",
+    "nvmrc": "24.22.1",
+    "nodeOfBuildScript": "v24.22.1"
+  },
+  "durations": {
+    "install": 4.253,
+    "typecheck": 20.811,
+    "package": 175.056,
+    "zip": 39.558
+  },
+  "zip": {
+    "path": "C:\\b\\dist\\1.146.0-p2-A-2.zip",
+    "sha256": "8c7fc0a7f7ce14147b2d58202b2e54d487021088da5e40cefbee6cc4519cef8e",
+    "bytes": 402107091,
+    "topFolder": "Shuko-win32-x64-1.146.0-p2-A-2"
+  },
+  "extensionsLockSha256": "6b4c3ceae7d6cb407f62bbcbd57ca50267e998975887884cc325fd26a85cce10",
+  "result": "ok",
+  "stoppedAt": null,
+  "dryRun": false,
+  "startedAt": "2026-11-14T12:46:43.394Z",
+  "finishedAt": "2026-11-14T12:50:55.605Z",
+  "paths": {
+    "buildRoot": "C:\\b",
+    "worktree": "C:\\b\\wt\\p2",
+    "packageDir": "C:\\b\\wt\\VSCode-win32-x64",
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-p2-builds\\1.146.0-p2-A-2\\checks.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\removals",
+    "dist": "C:\\b\\dist",
+    "logs": "C:\\b\\logs\\1.146.0-p2-A-2"
+  },
+  "config": {
+    "path": "C:\\Users\\kou_z\\AppData\\Local\\Shuko\\local.json",
+    "exists": false,
+    "buildRootFrom": "default"
+  },
+  "stepsSelected": [
+    "install",
+    "lockfile",
+    "typecheck",
+    "package",
+    "postprocess",
+    "zip"
+  ],
+  "envRemovedForChildren": [
+    "ELECTRON_RUN_AS_NODE",
+    "VSCODE_CODE_CACHE_PATH",
+    "VSCODE_CRASH_REPORTER_PROCESS_TYPE",
+    "VSCODE_CWD",
+    "VSCODE_ESM_ENTRYPOINT",
+    "VSCODE_HANDLES_UNCAUGHT_ERRORS",
+    "VSCODE_IPC_HOOK",
+    "VSCODE_NLS_CONFIG",
+    "VSCODE_PID",
+    "VSCODE_PROCESS_TITLE"
+  ],
+  "sourceVersion": {
+    "name": "BUILD_SOURCEVERSION",
+    "value": "47a15a84c233a3cc719c3ab42c4669fca86a9546",
+    "source": "worktree HEAD",
+    "worktree": "C:\\b\\wt\\p2",
+    "readAt": "typecheck",
+    "steps": [
+      "typecheck",
+      "package"
+    ],
+    "error": null,
+    "uncommittedEntries": 1,
+    "checksHeadCommit": "47a15a84c233a3cc719c3ab42c4669fca86a9546",
+    "matchesChecksHead": true
+  },
+  "steps": [
+    {
+      "name": "install",
+      "status": "ok",
+      "startedAt": "2026-11-14T12:46:43.402Z",
+      "command": "pnpm install --no-frozen-lockfile",
+      "cwd": "C:\\b\\wt\\p2",
+      "log": "C:\\b\\logs\\1.146.0-p2-A-2\\install.log",
+      "seconds": 4.253,
+      "exitCode": 0
+    },
+    {
+      "name": "lockfile",
+      "status": "ok",
+      "startedAt": "2026-11-14T12:46:47.885Z",
+      "command": "C:\\Program Files\\nodejs\\node.exe e:\\develop\\self\\Team\\projects\\ai-editor\\scripts\\apply.mjs C:\\b\\wt\\p2 --label 1.146.0-p2-A-2 --lockfile-check --checks-out e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-p2-builds\\1.146.0-p2-A-2\\checks.json --diff-out e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-p2-builds\\1.146.0-p2-A-2\\lockfile.diff --removals e:\\develop\\self\\Team\\projects\\ai-editor\\removals --build-root C:\\b --config C:\\Users\\kou_z\\AppData\\Local\\Shuko\\local.json",
+      "cwd": "e:\\develop\\self\\Team\\projects\\ai-editor",
+      "log": "C:\\b\\logs\\1.146.0-p2-A-2\\lockfile.log",
+      "seconds": 0.551,
+      "exitCode": 0,
+      "lockfile": {
+        "status": "ok",
+        "files": [
+          {
+            "path": "build/pnpm-lock.yaml",
+            "status": "ok",
+            "unchanged": true
+          },
+          {
+            "path": "extensions/copilot/pnpm-lock.yaml",
+            "status": "removed",
+            "reason": "単位が消したフォルダの中"
+          },
+          {
+            "path": "extensions/pnpm-lock.yaml",
+            "status": "ok",
+            "unchanged": false,
+            "expected": {
+              "removedImporters": [
+                "github",
+                "github-authentication",
+                "microsoft-authentication"
+              ],
+              "removedDeps": {}
+            },
+            "changedSections": [],
+            "addedImporters": [],
+            "removedImporters": [
+              "github",
+              "github-authentication",
+              "microsoft-authentication"
+            ],
+            "unexpectedRemovedImporters": [],
+            "addedDeps": [],
+            "unexpectedRemovedDeps": [],
+            "changedDeps": [],
+            "addedPackages": [],
+            "addedSnapshots": [],
+            "removedDeps": {
+              "count": 0,
+              "items": []
+            },
+            "removedPackages": {
+              "count": 43,
+              "items": [
+                "@azure/ms-rest-azure-env@2.0.0",
+                "@azure/msal-common@16.11.1",
+                "@azure/msal-node-extensions@5.3.2",
+                "@azure/msal-node-runtime@0.20.1",
+                "@azure/msal-node@5.4.0",
+                "@octokit/auth-token@5.1.2",
+                "@octokit/core@6.1.5",
+                "@octokit/endpoint@10.1.4",
+                "@octokit/graphql-schema@14.4.0",
+                "@octokit/graphql@8.2.0",
+                "@octokit/graphql@8.2.2",
+                "@octokit/openapi-types@24.2.0",
+                "@octokit/openapi-types@25.0.0",
+                "@octokit/plugin-paginate-rest@11.6.0",
+                "@octokit/plugin-request-log@5.3.1",
+                "@octokit/plugin-rest-endpoint-methods@13.5.0",
+                "@octokit/request-error@6.1.8",
+                "@octokit/request@9.2.3",
+                "@octokit/rest@21.1.0",
+                "@octokit/types@13.10.0",
+                "@octokit/types@14.0.0",
+                "@vscode/extension-telemetry@1.0.0",
+                "before-after-hook@3.0.2",
+                "buffer-equal-constant-time@1.0.1",
+                "ecdsa-sig-formatter@1.0.11",
+                "fast-content-type-parse@2.0.1",
+                "graphql-tag@2.12.6",
+                "graphql@16.8.1",
+                "jsonwebtoken@9.0.2",
+                "jwa@1.4.2",
+                "jws@3.2.3",
+                "keytar@file:microsoft-authentication/packageMocks/keytar",
+                "lodash.includes@4.3.0",
+                "lodash.isboolean@3.0.3",
+                "lodash.isinteger@4.0.4",
+                "lodash.isnumber@3.0.3",
+                "lodash.isplainobject@4.0.6",
+                "lodash.isstring@4.0.1",
+                "lodash.once@4.1.1",
+                "safe-buffer@5.2.1",
+                "semver@7.6.2",
+                "tunnel@0.0.6",
+                "universal-user-agent@7.0.2"
+              ]
+            },
+            "removedSnapshots": {
+              "count": 43,
+              "items": [
+                "@azure/ms-rest-azure-env@2.0.0",
+                "@azure/msal-common@16.11.1",
+                "@azure/msal-node-extensions@5.3.2",
+                "@azure/msal-node-runtime@0.20.1",
+                "@azure/msal-node@5.4.0",
+                "@octokit/auth-token@5.1.2",
+                "@octokit/core@6.1.5",
+                "@octokit/endpoint@10.1.4",
+                "@octokit/graphql-schema@14.4.0",
+                "@octokit/graphql@8.2.0",
+                "@octokit/graphql@8.2.2",
+                "@octokit/openapi-types@24.2.0",
+                "@octokit/openapi-types@25.0.0",
+                "@octokit/plugin-paginate-rest@11.6.0(@octokit/core@6.1.5)",
+                "@octokit/plugin-request-log@5.3.1(@octokit/core@6.1.5)",
+                "@octokit/plugin-rest-endpoint-methods@13.5.0(@octokit/core@6.1.5)",
+                "@octokit/request-error@6.1.8",
+                "@octokit/request@9.2.3",
+                "@octokit/rest@21.1.0",
+                "@octokit/types@13.10.0",
+                "@octokit/types@14.0.0",
+                "@vscode/extension-telemetry@1.0.0(tslib@2.8.1)",
+                "before-after-hook@3.0.2",
+                "buffer-equal-constant-time@1.0.1",
+                "ecdsa-sig-formatter@1.0.11",
+                "fast-content-type-parse@2.0.1",
+                "graphql-tag@2.12.6(graphql@16.8.1)",
+                "graphql@16.8.1",
+                "jsonwebtoken@9.0.2",
+                "jwa@1.4.2",
+                "jws@3.2.3",
+                "keytar@file:microsoft-authentication/packageMocks/keytar",
+                "lodash.includes@4.3.0",
+                "lodash.isboolean@3.0.3",
+                "lodash.isinteger@4.0.4",
+                "lodash.isnumber@3.0.3",
+                "lodash.isplainobject@4.0.6",
+                "lodash.isstring@4.0.1",
+                "lodash.once@4.1.1",
+                "safe-buffer@5.2.1",
+                "semver@7.6.2",
+                "tunnel@0.0.6",
+                "universal-user-agent@7.0.2"
+              ]
+            }
+          },
+          {
+            "path": "pnpm-lock.yaml",
+            "status": "ok",
+            "unchanged": true
+          },
+          {
+            "path": "remote/pnpm-lock.yaml",
+            "status": "ok",
+            "unchanged": true
+          },
+          {
+            "path": "test/sanity/pnpm-lock.yaml",
+            "status": "ok",
+            "unchanged": true
+          }
+        ],
+        "diff": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-p2-builds\\1.146.0-p2-A-2\\lockfile.diff",
+        "checkedAt": "2026-11-14T12:46:48.425Z",
+        "baseRef": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+      },
+      "diff": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-p2-builds\\1.146.0-p2-A-2\\lockfile.diff"
+    },
+    {
+      "name": "typecheck",
+      "status": "ok",
+      "startedAt": "2026-11-14T12:46:48.437Z",
+      "env": {
+        "BUILD_SOURCEVERSION": "47a15a84c233a3cc719c3ab42c4669fca86a9546"
+      },
+      "command": "pnpm run typecheck-client",
+      "cwd": "C:\\b\\wt\\p2",
+      "log": "C:\\b\\logs\\1.146.0-p2-A-2\\typecheck.log",
+      "seconds": 20.811,
+      "exitCode": 0
+    },
+    {
+      "name": "package",
+      "status": "ok",
+      "startedAt": "2026-11-14T12:47:09.424Z",
+      "signtool": {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\x64\\signtool.exe",
+        "source": "WindowsKits",
+        "pathPrepended": "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\x64"
+      },
+      "env": {
+        "BUILD_SOURCEVERSION": "47a15a84c233a3cc719c3ab42c4669fca86a9546"
+      },
+      "command": "pnpm run gulp vscode-win32-x64-min",
+      "cwd": "C:\\b\\wt\\p2",
+      "log": "C:\\b\\logs\\1.146.0-p2-A-2\\package.log",
+      "seconds": 175.056,
+      "exitCode": 0
+    },
+    {
+      "name": "postprocess",
+      "status": "ok",
+      "startedAt": "2026-11-14T12:50:04.484Z",
+      "layout": {
+        "appDir": "C:\\b\\wt\\VSCode-win32-x64\\resources\\app",
+        "versionedFolder": null,
+        "exe": "Shuko.exe",
+        "cli": "bin\\shuko.cmd",
+        "version": "1.146.0",
+        "commit": "47a15a84c233a3cc719c3ab42c4669fca86a9546",
+        "nameShort": "Shuko"
+      },
+      "productCommit": {
+        "ok": true,
+        "commit": "47a15a84c233a3cc719c3ab42c4669fca86a9546",
+        "expected": "47a15a84c233a3cc719c3ab42c4669fca86a9546",
+        "problems": []
+      },
+      "license": {
+        "LICENSE.txt": true,
+        "ThirdPartyNotices.txt": true
+      },
+      "extensions": {
+        "unitsFrom": "checks.json",
+        "unitIds": [
+          "A-1-copilot-extension",
+          "A-2-accounts-extensions"
+        ],
+        "removed": [
+          "copilot",
+          "github",
+          "github-authentication",
+          "microsoft-authentication",
+          "prompt-basics"
+        ],
+        "presentCount": 88,
+        "nonExtensionDirs": [
+          "node_modules"
+        ],
+        "ok": true,
+        "residual": [],
+        "missingKeep": [],
+        "notShipped": [
+          "vscode-api-tests",
+          "vscode-colorize-perf-tests",
+          "vscode-colorize-tests",
+          "vscode-test-resolver"
+        ],
+        "missingOwn": [],
+        "unexpected": [
+          "debug-auto-launch",
+          "debug-server-ready",
+          "extension-editing",
+          "grunt",
+          "gulp",
+          "ipynb",
+          "jake",
+          "mermaid-markdown-features",
+          "notebook-renderers",
+          "php-language-features",
+          "simple-browser",
+          "terminal-suggest",
+          "theme-abyss",
+          "theme-kimbie-dark",
+          "theme-modern-icons",
+          "theme-monokai",
+          "theme-monokai-dimmed",
+          "theme-quietlight",
+          "theme-red",
+          "theme-solarized-dark",
+          "theme-solarized-light",
+          "theme-tomorrow-night-blue",
+          "tunnel-forwarding"
+        ]
+      },
+      "seconds": 0.011
+    },
+    {
+      "name": "zip",
+      "status": "ok",
+      "startedAt": "2026-11-14T12:50:04.496Z",
+      "command": "C:\\WINDOWS\\System32\\tar.exe -a -c -H -f C:\\b\\dist\\1.146.0-p2-A-2.zip -C C:\\b\\dist\\.stage-1.146.0-p2-A-2 Shuko-win32-x64-1.146.0-p2-A-2",
+      "log": "C:\\b\\logs\\1.146.0-p2-A-2\\zip.log",
+      "exitCode": 0,
+      "topFolders": [
+        "Shuko-win32-x64-1.146.0-p2-A-2"
+      ],
+      "entries": 3054,
+      "seconds": 39.558
+    }
+  ],
+  "warnings": [
+    "keep.json に無い拡張が出力にある（情報）: debug-auto-launch, debug-server-ready, extension-editing, grunt, gulp, ipynb, jake, mermaid-markdown-features, notebook-renderers, php-language-features, simple-browser, terminal-suggest, theme-abyss, theme-kimbie-dark, theme-modern-icons, theme-monokai, theme-monokai-dimmed, theme-quietlight, theme-red, theme-solarized-dark, theme-solarized-light, theme-tomorrow-night-blue, tunnel-forwarding"
+  ],
+  "applyResult": "ok",
+  "unitsFrom": {
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-p2-builds\\1.146.0-p2-A-2\\checks.json",
+    "applyRan": false
+  },
+  "disk": {
+    "worktree": {
+      "bytes": 4737051631,
+      "gb": 4.41,
+      "files": 128775
+    },
+    "package": {
+      "bytes": 1247061879,
+      "gb": 1.16,
+      "files": 2500
+    },
+    "zipBytes": 402107091,
+    "countedSeconds": 11.549
+  }
+}

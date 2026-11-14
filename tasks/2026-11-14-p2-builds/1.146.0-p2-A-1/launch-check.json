@@ -1,0 +1,125 @@
+{
+    "checkedAt":  "2026-11-14T22:02:01.3311083+09:00",
+    "zip":  "C:\\b\\dist\\1.146.0-p2-A-1.zip",
+    "root":  "",
+    "dest":  "C:\\b\\p2\\1.146.0-p2-A-1",
+    "unpack":  {
+                   "done":  true,
+                   "seconds":  3.9
+               },
+    "editor":  {
+                   "root":  "C:\\b\\p2\\1.146.0-p2-A-1\\Shuko-win32-x64-1.146.0-p2-A-1",
+                   "exe":  "C:\\b\\p2\\1.146.0-p2-A-1\\Shuko-win32-x64-1.146.0-p2-A-1\\Shuko.exe",
+                   "cli":  "C:\\b\\p2\\1.146.0-p2-A-1\\Shuko-win32-x64-1.146.0-p2-A-1\\bin\\shuko.cmd",
+                   "productJson":  "C:\\b\\p2\\1.146.0-p2-A-1\\Shuko-win32-x64-1.146.0-p2-A-1\\resources\\app\\product.json",
+                   "appDirRelative":  "resources\\app",
+                   "nameShort":  "Shuko",
+                   "nameLong":  "Shuko",
+                   "applicationName":  "shuko",
+                   "dataFolderName":  ".shuko",
+                   "version":  "1.146.0",
+                   "commit":  "3f478e8bc9f809386ce756111684206a1664c684",
+                   "portableOk":  true
+               },
+    "cliVersion":  {
+                       "exitCode":  0,
+                       "output":  [
+                                      "1.146.0",
+                                      "3f478e8bc9f809386ce756111684206a1664c684",
+                                      "x64"
+                                  ]
+                   },
+    "portable":  {
+                     "path":  "C:\\b\\p2\\1.146.0-p2-A-1\\portable",
+                     "entries":  [
+                                     "extensions\\",
+                                     "shared-data\\",
+                                     "user-data\\",
+                                     "argv.json"
+                                 ],
+                     "userData":  "C:\\b\\p2\\1.146.0-p2-A-1\\portable\\user-data",
+                     "userSettingsDir":  "C:\\b\\p2\\1.146.0-p2-A-1\\portable\\user-data\\User",
+                     "extensions":  "C:\\b\\p2\\1.146.0-p2-A-1\\portable\\extensions",
+                     "argvJson":  "C:\\b\\p2\\1.146.0-p2-A-1\\portable\\argv.json"
+                 },
+    "started":  {
+                    "pid":  17988,
+                    "aliveAfterCheck":  true,
+                    "exitCode":  null,
+                    "checkSeconds":  10,
+                    "smokeSeconds":  15,
+                    "tree":  "Shuko.exe x8, copilot-runtime.exe x1, conhost.exe x1",
+                    "stoppedProcesses":  10
+                },
+    "dailyData":  {
+                      "before":  [
+                                     {
+                                         "path":  "C:\\Users\\kou_z\\AppData\\Roaming\\Code",
+                                         "exists":  false,
+                                         "lastWriteTime":  null
+                                     },
+                                     {
+                                         "path":  "C:\\Users\\kou_z\\AppData\\Roaming\\Code - OSS",
+                                         "exists":  false,
+                                         "lastWriteTime":  null
+                                     },
+                                     {
+                                         "path":  "C:\\Users\\kou_z\\.vscode",
+                                         "exists":  false,
+                                         "lastWriteTime":  null
+                                     },
+                                     {
+                                         "path":  "C:\\Users\\kou_z\\.vscode-oss",
+                                         "exists":  false,
+                                         "lastWriteTime":  null
+                                     },
+                                     {
+                                         "path":  "C:\\Users\\kou_z\\AppData\\Roaming\\Shuko",
+                                         "exists":  false,
+                                         "lastWriteTime":  null
+                                     },
+                                     {
+                                         "path":  "C:\\Users\\kou_z\\.shuko",
+                                         "exists":  false,
+                                         "lastWriteTime":  null
+                                     }
+                                 ],
+                      "after":  [
+                                    {
+                                        "path":  "C:\\Users\\kou_z\\AppData\\Roaming\\Code",
+                                        "exists":  false,
+                                        "lastWriteTime":  null
+                                    },
+                                    {
+                                        "path":  "C:\\Users\\kou_z\\AppData\\Roaming\\Code - OSS",
+                                        "exists":  false,
+                                        "lastWriteTime":  null
+                                    },
+                                    {
+                                        "path":  "C:\\Users\\kou_z\\.vscode",
+                                        "exists":  false,
+                                        "lastWriteTime":  null
+                                    },
+                                    {
+                                        "path":  "C:\\Users\\kou_z\\.vscode-oss",
+                                        "exists":  false,
+                                        "lastWriteTime":  null
+                                    },
+                                    {
+                                        "path":  "C:\\Users\\kou_z\\AppData\\Roaming\\Shuko",
+                                        "exists":  false,
+                                        "lastWriteTime":  null
+                                    },
+                                    {
+                                        "path":  "C:\\Users\\kou_z\\.shuko",
+                                        "exists":  false,
+                                        "lastWriteTime":  null
+                                    }
+                                ],
+                      "changed":  [
+
+                                  ]
+                  },
+    "result":  "ok",
+    "message":  "started, stayed alive, stopped; daily editor data folders unchanged"
+}

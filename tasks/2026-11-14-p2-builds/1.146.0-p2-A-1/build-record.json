@@ -1,0 +1,221 @@
+{
+  "label": "1.146.0-p2-A-1",
+  "upstream": {
+    "tag": "1.146.0",
+    "commit": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+  },
+  "units": [
+    {
+      "id": "A-1-copilot-extension",
+      "enabled": false,
+      "applied": "ok"
+    }
+  ],
+  "patches": [
+    {
+      "file": "patches/20-product-configuration-defaults.patch",
+      "applied": "ok"
+    },
+    {
+      "file": "patches/30-proxy-direct-without-settings.patch",
+      "applied": "ok"
+    }
+  ],
+  "lockfileDiff": "tasks/2026-11-14-p2-builds/1.146.0-p2-A-1/lockfile.diff",
+  "toolchain": null,
+  "durations": {
+    "package": 166.982,
+    "zip": 36.659
+  },
+  "zip": {
+    "path": "C:\\b\\dist\\1.146.0-p2-A-1.zip",
+    "sha256": "fa6d0036b25c14c7be191b4640b016f500c84e606c71a608443e9e885506d427",
+    "bytes": 404985774,
+    "topFolder": "Shuko-win32-x64-1.146.0-p2-A-1"
+  },
+  "extensionsLockSha256": "6b4c3ceae7d6cb407f62bbcbd57ca50267e998975887884cc325fd26a85cce10",
+  "result": "ok",
+  "stoppedAt": null,
+  "dryRun": false,
+  "startedAt": "2026-11-14T12:41:11.815Z",
+  "finishedAt": "2026-11-14T12:44:53.886Z",
+  "paths": {
+    "buildRoot": "C:\\b",
+    "worktree": "C:\\b\\wt\\p2",
+    "packageDir": "C:\\b\\wt\\VSCode-win32-x64",
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-p2-builds\\1.146.0-p2-A-1\\checks.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\removals",
+    "dist": "C:\\b\\dist",
+    "logs": "C:\\b\\logs\\1.146.0-p2-A-1"
+  },
+  "config": {
+    "path": "C:\\Users\\kou_z\\AppData\\Local\\Shuko\\local.json",
+    "exists": false,
+    "buildRootFrom": "default"
+  },
+  "stepsSelected": [
+    "package",
+    "postprocess",
+    "zip"
+  ],
+  "envRemovedForChildren": [
+    "ELECTRON_RUN_AS_NODE",
+    "VSCODE_CODE_CACHE_PATH",
+    "VSCODE_CRASH_REPORTER_PROCESS_TYPE",
+    "VSCODE_CWD",
+    "VSCODE_ESM_ENTRYPOINT",
+    "VSCODE_HANDLES_UNCAUGHT_ERRORS",
+    "VSCODE_IPC_HOOK",
+    "VSCODE_NLS_CONFIG",
+    "VSCODE_PID",
+    "VSCODE_PROCESS_TITLE"
+  ],
+  "sourceVersion": {
+    "name": "BUILD_SOURCEVERSION",
+    "value": "3f478e8bc9f809386ce756111684206a1664c684",
+    "source": "worktree HEAD",
+    "worktree": "C:\\b\\wt\\p2",
+    "readAt": "package",
+    "steps": [
+      "typecheck",
+      "package"
+    ],
+    "error": null,
+    "uncommittedEntries": 0,
+    "checksHeadCommit": "3f478e8bc9f809386ce756111684206a1664c684",
+    "matchesChecksHead": true
+  },
+  "steps": [
+    {
+      "name": "package",
+      "status": "ok",
+      "startedAt": "2026-11-14T12:41:11.823Z",
+      "signtool": {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\x64\\signtool.exe",
+        "source": "WindowsKits",
+        "pathPrepended": "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\x64"
+      },
+      "env": {
+        "BUILD_SOURCEVERSION": "3f478e8bc9f809386ce756111684206a1664c684"
+      },
+      "command": "pnpm run gulp vscode-win32-x64-min",
+      "cwd": "C:\\b\\wt\\p2",
+      "log": "C:\\b\\logs\\1.146.0-p2-A-1\\package.log",
+      "seconds": 166.982,
+      "exitCode": 0
+    },
+    {
+      "name": "postprocess",
+      "status": "ok",
+      "startedAt": "2026-11-14T12:44:05.447Z",
+      "layout": {
+        "appDir": "C:\\b\\wt\\VSCode-win32-x64\\resources\\app",
+        "versionedFolder": null,
+        "exe": "Shuko.exe",
+        "cli": "bin\\shuko.cmd",
+        "version": "1.146.0",
+        "commit": "3f478e8bc9f809386ce756111684206a1664c684",
+        "nameShort": "Shuko"
+      },
+      "productCommit": {
+        "ok": true,
+        "commit": "3f478e8bc9f809386ce756111684206a1664c684",
+        "expected": "3f478e8bc9f809386ce756111684206a1664c684",
+        "problems": []
+      },
+      "license": {
+        "LICENSE.txt": true,
+        "ThirdPartyNotices.txt": true
+      },
+      "extensions": {
+        "unitsFrom": "checks.json",
+        "unitIds": [
+          "A-1-copilot-extension"
+        ],
+        "removed": [
+          "copilot",
+          "prompt-basics"
+        ],
+        "presentCount": 91,
+        "nonExtensionDirs": [
+          "node_modules"
+        ],
+        "ok": true,
+        "residual": [],
+        "missingKeep": [],
+        "notShipped": [
+          "vscode-api-tests",
+          "vscode-colorize-perf-tests",
+          "vscode-colorize-tests",
+          "vscode-test-resolver"
+        ],
+        "missingOwn": [],
+        "unexpected": [
+          "debug-auto-launch",
+          "debug-server-ready",
+          "extension-editing",
+          "github",
+          "github-authentication",
+          "grunt",
+          "gulp",
+          "ipynb",
+          "jake",
+          "mermaid-markdown-features",
+          "microsoft-authentication",
+          "notebook-renderers",
+          "php-language-features",
+          "simple-browser",
+          "terminal-suggest",
+          "theme-abyss",
+          "theme-kimbie-dark",
+          "theme-modern-icons",
+          "theme-monokai",
+          "theme-monokai-dimmed",
+          "theme-quietlight",
+          "theme-red",
+          "theme-solarized-dark",
+          "theme-solarized-light",
+          "theme-tomorrow-night-blue",
+          "tunnel-forwarding"
+        ]
+      },
+      "seconds": 0.012
+    },
+    {
+      "name": "zip",
+      "status": "ok",
+      "startedAt": "2026-11-14T12:44:05.460Z",
+      "command": "C:\\WINDOWS\\System32\\tar.exe -a -c -H -f C:\\b\\dist\\1.146.0-p2-A-1.zip -C C:\\b\\dist\\.stage-1.146.0-p2-A-1 Shuko-win32-x64-1.146.0-p2-A-1",
+      "log": "C:\\b\\logs\\1.146.0-p2-A-1\\zip.log",
+      "exitCode": 0,
+      "topFolders": [
+        "Shuko-win32-x64-1.146.0-p2-A-1"
+      ],
+      "entries": 3092,
+      "seconds": 36.659
+    }
+  ],
+  "warnings": [
+    "keep.json に無い拡張が出力にある（情報）: debug-auto-launch, debug-server-ready, extension-editing, github, github-authentication, grunt, gulp, ipynb, jake, mermaid-markdown-features, microsoft-authentication, notebook-renderers, php-language-features, simple-browser, terminal-suggest, theme-abyss, theme-kimbie-dark, theme-modern-icons, theme-monokai, theme-monokai-dimmed, theme-quietlight, theme-red, theme-solarized-dark, theme-solarized-light, theme-tomorrow-night-blue, tunnel-forwarding"
+  ],
+  "applyResult": "ok",
+  "unitsFrom": {
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-p2-builds\\1.146.0-p2-A-1\\checks.json",
+    "applyRan": false
+  },
+  "disk": {
+    "worktree": {
+      "bytes": 4826818403,
+      "gb": 4.5,
+      "files": 131024
+    },
+    "package": {
+      "bytes": 1256789115,
+      "gb": 1.17,
+      "files": 2528
+    },
+    "zipBytes": 404985774,
+    "countedSeconds": 11.766
+  }
+}

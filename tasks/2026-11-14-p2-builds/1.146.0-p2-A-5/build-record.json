@@ -1,0 +1,566 @@
+{
+  "label": "1.146.0-p2-A-5",
+  "upstream": {
+    "tag": "1.146.0",
+    "commit": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+  },
+  "units": [
+    {
+      "id": "A-1-copilot-extension",
+      "enabled": false,
+      "applied": "ok"
+    },
+    {
+      "id": "A-2-accounts-extensions",
+      "enabled": false,
+      "applied": "ok"
+    },
+    {
+      "id": "A-3-debug-extensions",
+      "enabled": false,
+      "applied": "ok"
+    },
+    {
+      "id": "A-4-notebook-extensions",
+      "enabled": false,
+      "applied": "ok"
+    },
+    {
+      "id": "A-5-remote-extensions",
+      "enabled": false,
+      "applied": "ok"
+    }
+  ],
+  "patches": [
+    {
+      "file": "patches/20-product-configuration-defaults.patch",
+      "applied": "ok"
+    },
+    {
+      "file": "patches/30-proxy-direct-without-settings.patch",
+      "applied": "ok"
+    }
+  ],
+  "lockfileDiff": "tasks/2026-11-14-p2-builds/1.146.0-p2-A-5/lockfile.diff",
+  "toolchain": {
+    "node": "24.22.1",
+    "electron": "43.8.6",
+    "packageManager": "pnpm 12.16.0",
+    "packageManagerDeclared": "pnpm@12.16.0",
+    "nvmrc": "24.22.1",
+    "nodeOfBuildScript": "v24.22.1"
+  },
+  "durations": {
+    "install": 5.477,
+    "typecheck": 21.05,
+    "package": 182.685,
+    "zip": 38.601
+  },
+  "zip": {
+    "path": "C:\\b\\dist\\1.146.0-p2-A-5.zip",
+    "sha256": "d237a98e641e11b150a0c6df5de7597b0278becdea96073734a64cd722c28253",
+    "bytes": 401906673,
+    "topFolder": "Shuko-win32-x64-1.146.0-p2-A-5"
+  },
+  "extensionsLockSha256": "6b4c3ceae7d6cb407f62bbcbd57ca50267e998975887884cc325fd26a85cce10",
+  "result": "ok",
+  "stoppedAt": null,
+  "dryRun": false,
+  "startedAt": "2026-11-14T13:06:37.042Z",
+  "finishedAt": "2026-11-14T13:10:58.775Z",
+  "paths": {
+    "buildRoot": "C:\\b",
+    "worktree": "C:\\b\\wt\\p2",
+    "packageDir": "C:\\b\\wt\\VSCode-win32-x64",
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-p2-builds\\1.146.0-p2-A-5\\checks.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\removals",
+    "dist": "C:\\b\\dist",
+    "logs": "C:\\b\\logs\\1.146.0-p2-A-5"
+  },
+  "config": {
+    "path": "C:\\Users\\kou_z\\AppData\\Local\\Shuko\\local.json",
+    "exists": false,
+    "buildRootFrom": "default"
+  },
+  "stepsSelected": [
+    "install",
+    "lockfile",
+    "typecheck",
+    "package",
+    "postprocess",
+    "zip"
+  ],
+  "envRemovedForChildren": [
+    "ELECTRON_RUN_AS_NODE",
+    "VSCODE_CODE_CACHE_PATH",
+    "VSCODE_CRASH_REPORTER_PROCESS_TYPE",
+    "VSCODE_CWD",
+    "VSCODE_ESM_ENTRYPOINT",
+    "VSCODE_HANDLES_UNCAUGHT_ERRORS",
+    "VSCODE_IPC_HOOK",
+    "VSCODE_NLS_CONFIG",
+    "VSCODE_PID",
+    "VSCODE_PROCESS_TITLE"
+  ],
+  "sourceVersion": {
+    "name": "BUILD_SOURCEVERSION",
+    "value": "ffa170044c12d1c2b3ea6e189fc88ae85a68f748",
+    "source": "worktree HEAD",
+    "worktree": "C:\\b\\wt\\p2",
+    "readAt": "typecheck",
+    "steps": [
+      "typecheck",
+      "package"
+    ],
+    "error": null,
+    "uncommittedEntries": 1,
+    "checksHeadCommit": "ffa170044c12d1c2b3ea6e189fc88ae85a68f748",
+    "matchesChecksHead": true
+  },
+  "steps": [
+    {
+      "name": "install",
+      "status": "ok",
+      "startedAt": "2026-11-14T13:06:37.050Z",
+      "command": "pnpm install --no-frozen-lockfile",
+      "cwd": "C:\\b\\wt\\p2",
+      "log": "C:\\b\\logs\\1.146.0-p2-A-5\\install.log",
+      "seconds": 5.477,
+      "exitCode": 0
+    },
+    {
+      "name": "lockfile",
+      "status": "ok",
+      "startedAt": "2026-11-14T13:06:42.758Z",
+      "command": "C:\\Program Files\\nodejs\\node.exe e:\\develop\\self\\Team\\projects\\ai-editor\\scripts\\apply.mjs C:\\b\\wt\\p2 --label 1.146.0-p2-A-5 --lockfile-check --checks-out e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-p2-builds\\1.146.0-p2-A-5\\checks.json --diff-out e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-p2-builds\\1.146.0-p2-A-5\\lockfile.diff --removals e:\\develop\\self\\Team\\projects\\ai-editor\\removals --build-root C:\\b --config C:\\Users\\kou_z\\AppData\\Local\\Shuko\\local.json",
+      "cwd": "e:\\develop\\self\\Team\\projects\\ai-editor",
+      "log": "C:\\b\\logs\\1.146.0-p2-A-5\\lockfile.log",
+      "seconds": 0.551,
+      "exitCode": 0,
+      "lockfile": {
+        "status": "ok",
+        "files": [
+          {
+            "path": "build/pnpm-lock.yaml",
+            "status": "ok",
+            "unchanged": true
+          },
+          {
+            "path": "extensions/copilot/pnpm-lock.yaml",
+            "status": "removed",
+            "reason": "単位が消したフォルダの中"
+          },
+          {
+            "path": "extensions/pnpm-lock.yaml",
+            "status": "ok",
+            "unchanged": false,
+            "expected": {
+              "removedImporters": [
+                "debug-auto-launch",
+                "debug-server-ready",
+                "github",
+                "github-authentication",
+                "ipynb",
+                "microsoft-authentication",
+                "notebook-renderers",
+                "tunnel-forwarding"
+              ],
+              "removedDeps": {}
+            },
+            "changedSections": [],
+            "addedImporters": [],
+            "removedImporters": [
+              "debug-auto-launch",
+              "debug-server-ready",
+              "github",
+              "github-authentication",
+              "ipynb",
+              "microsoft-authentication",
+              "notebook-renderers",
+              "tunnel-forwarding"
+            ],
+            "unexpectedRemovedImporters": [],
+            "addedDeps": [],
+            "unexpectedRemovedDeps": [],
+            "changedDeps": [],
+            "addedPackages": [],
+            "addedSnapshots": [],
+            "removedDeps": {
+              "count": 0,
+              "items": []
+            },
+            "removedPackages": {
+              "count": 96,
+              "items": [
+                "@acemir/cssom@0.9.31",
+                "@asamuzakjp/css-color@5.0.1",
+                "@asamuzakjp/dom-selector@6.8.1",
+                "@asamuzakjp/nwsapi@2.3.9",
+                "@azure/ms-rest-azure-env@2.0.0",
+                "@azure/msal-common@16.11.1",
+                "@azure/msal-node-extensions@5.3.2",
+                "@azure/msal-node-runtime@0.20.1",
+                "@azure/msal-node@5.4.0",
+                "@bramus/specificity@2.4.2",
+                "@csstools/color-helpers@6.0.2",
+                "@csstools/css-calc@3.1.1",
+                "@csstools/css-color-parser@4.0.2",
+                "@csstools/css-parser-algorithms@4.0.0",
+                "@csstools/css-syntax-patches-for-csstree@1.0.29",
+                "@csstools/css-tokenizer@4.0.0",
+                "@enonic/fnv-plus@1.3.0",
+                "@exodus/bytes@1.15.0",
+                "@jupyterlab/nbformat@3.4.3",
+                "@lumino/coreutils@1.12.0",
+                "@octokit/auth-token@5.1.2",
+                "@octokit/core@6.1.5",
+                "@octokit/endpoint@10.1.4",
+                "@octokit/graphql-schema@14.4.0",
+                "@octokit/graphql@8.2.0",
+                "@octokit/graphql@8.2.2",
+                "@octokit/openapi-types@24.2.0",
+                "@octokit/openapi-types@25.0.0",
+                "@octokit/plugin-paginate-rest@11.6.0",
+                "@octokit/plugin-request-log@5.3.1",
+                "@octokit/plugin-rest-endpoint-methods@13.5.0",
+                "@octokit/request-error@6.1.8",
+                "@octokit/request@9.2.3",
+                "@octokit/rest@21.1.0",
+                "@octokit/types@13.10.0",
+                "@octokit/types@14.0.0",
+                "@types/jsdom@21.1.0",
+                "@types/linkify-it@3.0.2",
+                "@types/markdown-it@12.2.3",
+                "@types/mdurl@1.0.2",
+                "@types/tough-cookie@4.0.2",
+                "@vscode/extension-telemetry@1.0.0",
+                "agent-base@7.1.4",
+                "before-after-hook@3.0.2",
+                "bidi-js@1.0.3",
+                "buffer-equal-constant-time@1.0.1",
+                "css-tree@3.1.0",
+                "cssstyle@6.2.0",
+                "data-urls@7.0.0",
+                "decimal.js@10.6.0",
+                "detect-indent@6.1.0",
+                "ecdsa-sig-formatter@1.0.11",
+                "entities@4.4.0",
+                "fast-content-type-parse@2.0.1",
+                "graphql-tag@2.12.6",
+                "graphql@16.8.1",
+                "html-encoding-sniffer@6.0.0",
+                "http-proxy-agent@7.0.2",
+                "https-proxy-agent@7.0.6",
+                "is-potential-custom-element-name@1.0.1",
+                "jsdom@28.1.0",
+                "jsonwebtoken@9.0.2",
+                "jwa@1.4.2",
+                "jws@3.2.3",
+                "keytar@file:microsoft-authentication/packageMocks/keytar",
+                "lodash.includes@4.3.0",
+                "lodash.isboolean@3.0.3",
+                "lodash.isinteger@4.0.4",
+                "lodash.isnumber@3.0.3",
+                "lodash.isplainobject@4.0.6",
+                "lodash.isstring@4.0.1",
+                "lodash.once@4.1.1",
+                "lru-cache@11.2.6",
+                "mdn-data@2.12.2",
+                "parse5@7.1.2",
+                "parse5@8.0.0",
+                "punycode@2.3.1",
+                "require-from-string@2.0.2",
+                "safe-buffer@5.2.1",
+                "saxes@6.0.0",
+                "semver@7.6.2",
+                "source-map-js@1.2.2",
+                "symbol-tree@3.2.4",
+                "tldts-core@7.0.24",
+                "tldts@7.0.24",
+                "tough-cookie@6.0.0",
+                "tr46@6.0.0",
+                "tunnel@0.0.6",
+                "undici@7.29.1",
+                "universal-user-agent@7.0.2",
+                "w3c-xmlserializer@5.0.0",
+                "webidl-conversions@8.0.1",
+                "whatwg-mimetype@5.0.0",
+                "whatwg-url@16.0.1",
+                "xml-name-validator@5.0.0",
+                "xmlchars@2.2.0"
+              ]
+            },
+            "removedSnapshots": {
+              "count": 96,
+              "items": [
+                "@acemir/cssom@0.9.31",
+                "@asamuzakjp/css-color@5.0.1",
+                "@asamuzakjp/dom-selector@6.8.1",
+                "@asamuzakjp/nwsapi@2.3.9",
+                "@azure/ms-rest-azure-env@2.0.0",
+                "@azure/msal-common@16.11.1",
+                "@azure/msal-node-extensions@5.3.2",
+                "@azure/msal-node-runtime@0.20.1",
+                "@azure/msal-node@5.4.0",
+                "@bramus/specificity@2.4.2",
+                "@csstools/color-helpers@6.0.2",
+                "@csstools/css-calc@3.1.1(@csstools/css-parser-algorithms@4.0.0(@csstools/css-tokenizer@4.0.0))(@csstools/css-tokenizer@4.0.0)",
+                "@csstools/css-color-parser@4.0.2(@csstools/css-parser-algorithms@4.0.0(@csstools/css-tokenizer@4.0.0))(@csstools/css-tokenizer@4.0.0)",
+                "@csstools/css-parser-algorithms@4.0.0(@csstools/css-tokenizer@4.0.0)",
+                "@csstools/css-syntax-patches-for-csstree@1.0.29",
+                "@csstools/css-tokenizer@4.0.0",
+                "@enonic/fnv-plus@1.3.0",
+                "@exodus/bytes@1.15.0",
+                "@jupyterlab/nbformat@3.4.3",
+                "@lumino/coreutils@1.12.0",
+                "@octokit/auth-token@5.1.2",
+                "@octokit/core@6.1.5",
+                "@octokit/endpoint@10.1.4",
+                "@octokit/graphql-schema@14.4.0",
+                "@octokit/graphql@8.2.0",
+                "@octokit/graphql@8.2.2",
+                "@octokit/openapi-types@24.2.0",
+                "@octokit/openapi-types@25.0.0",
+                "@octokit/plugin-paginate-rest@11.6.0(@octokit/core@6.1.5)",
+                "@octokit/plugin-request-log@5.3.1(@octokit/core@6.1.5)",
+                "@octokit/plugin-rest-endpoint-methods@13.5.0(@octokit/core@6.1.5)",
+                "@octokit/request-error@6.1.8",
+                "@octokit/request@9.2.3",
+                "@octokit/rest@21.1.0",
+                "@octokit/types@13.10.0",
+                "@octokit/types@14.0.0",
+                "@types/jsdom@21.1.0",
+                "@types/linkify-it@3.0.2",
+                "@types/markdown-it@12.2.3",
+                "@types/mdurl@1.0.2",
+                "@types/tough-cookie@4.0.2",
+                "@vscode/extension-telemetry@1.0.0(tslib@2.8.1)",
+                "agent-base@7.1.4",
+                "before-after-hook@3.0.2",
+                "bidi-js@1.0.3",
+                "buffer-equal-constant-time@1.0.1",
+                "css-tree@3.1.0",
+                "cssstyle@6.2.0",
+                "data-urls@7.0.0",
+                "decimal.js@10.6.0",
+                "detect-indent@6.1.0",
+                "ecdsa-sig-formatter@1.0.11",
+                "entities@4.4.0",
+                "fast-content-type-parse@2.0.1",
+                "graphql-tag@2.12.6(graphql@16.8.1)",
+                "graphql@16.8.1",
+                "html-encoding-sniffer@6.0.0",
+                "http-proxy-agent@7.0.2",
+                "https-proxy-agent@7.0.6",
+                "is-potential-custom-element-name@1.0.1",
+                "jsdom@28.1.0",
+                "jsonwebtoken@9.0.2",
+                "jwa@1.4.2",
+                "jws@3.2.3",
+                "keytar@file:microsoft-authentication/packageMocks/keytar",
+                "lodash.includes@4.3.0",
+                "lodash.isboolean@3.0.3",
+                "lodash.isinteger@4.0.4",
+                "lodash.isnumber@3.0.3",
+                "lodash.isplainobject@4.0.6",
+                "lodash.isstring@4.0.1",
+                "lodash.once@4.1.1",
+                "lru-cache@11.2.6",
+                "mdn-data@2.12.2",
+                "parse5@7.1.2",
+                "parse5@8.0.0",
+                "punycode@2.3.1",
+                "require-from-string@2.0.2",
+                "safe-buffer@5.2.1",
+                "saxes@6.0.0",
+                "semver@7.6.2",
+                "source-map-js@1.2.2",
+                "symbol-tree@3.2.4",
+                "tldts-core@7.0.24",
+                "tldts@7.0.24",
+                "tough-cookie@6.0.0",
+                "tr46@6.0.0",
+                "tunnel@0.0.6",
+                "undici@7.29.1",
+                "universal-user-agent@7.0.2",
+                "w3c-xmlserializer@5.0.0",
+                "webidl-conversions@8.0.1",
+                "whatwg-mimetype@5.0.0",
+                "whatwg-url@16.0.1",
+                "xml-name-validator@5.0.0",
+                "xmlchars@2.2.0"
+              ]
+            }
+          },
+          {
+            "path": "pnpm-lock.yaml",
+            "status": "ok",
+            "unchanged": true
+          },
+          {
+            "path": "remote/pnpm-lock.yaml",
+            "status": "ok",
+            "unchanged": true
+          },
+          {
+            "path": "test/sanity/pnpm-lock.yaml",
+            "status": "ok",
+            "unchanged": true
+          }
+        ],
+        "diff": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-p2-builds\\1.146.0-p2-A-5\\lockfile.diff",
+        "checkedAt": "2026-11-14T13:06:43.300Z",
+        "baseRef": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+      },
+      "diff": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-p2-builds\\1.146.0-p2-A-5\\lockfile.diff"
+    },
+    {
+      "name": "typecheck",
+      "status": "ok",
+      "startedAt": "2026-11-14T13:06:43.312Z",
+      "env": {
+        "BUILD_SOURCEVERSION": "ffa170044c12d1c2b3ea6e189fc88ae85a68f748"
+      },
+      "command": "pnpm run typecheck-client",
+      "cwd": "C:\\b\\wt\\p2",
+      "log": "C:\\b\\logs\\1.146.0-p2-A-5\\typecheck.log",
+      "seconds": 21.05,
+      "exitCode": 0
+    },
+    {
+      "name": "package",
+      "status": "ok",
+      "startedAt": "2026-11-14T13:07:04.544Z",
+      "signtool": {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\x64\\signtool.exe",
+        "source": "WindowsKits",
+        "pathPrepended": "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\x64"
+      },
+      "env": {
+        "BUILD_SOURCEVERSION": "ffa170044c12d1c2b3ea6e189fc88ae85a68f748"
+      },
+      "command": "pnpm run gulp vscode-win32-x64-min",
+      "cwd": "C:\\b\\wt\\p2",
+      "log": "C:\\b\\logs\\1.146.0-p2-A-5\\package.log",
+      "seconds": 182.685,
+      "exitCode": 0
+    },
+    {
+      "name": "postprocess",
+      "status": "ok",
+      "startedAt": "2026-11-14T13:10:07.233Z",
+      "layout": {
+        "appDir": "C:\\b\\wt\\VSCode-win32-x64\\resources\\app",
+        "versionedFolder": null,
+        "exe": "Shuko.exe",
+        "cli": "bin\\shuko.cmd",
+        "version": "1.146.0",
+        "commit": "ffa170044c12d1c2b3ea6e189fc88ae85a68f748",
+        "nameShort": "Shuko"
+      },
+      "productCommit": {
+        "ok": true,
+        "commit": "ffa170044c12d1c2b3ea6e189fc88ae85a68f748",
+        "expected": "ffa170044c12d1c2b3ea6e189fc88ae85a68f748",
+        "problems": []
+      },
+      "license": {
+        "LICENSE.txt": true,
+        "ThirdPartyNotices.txt": true
+      },
+      "extensions": {
+        "unitsFrom": "checks.json",
+        "unitIds": [
+          "A-1-copilot-extension",
+          "A-2-accounts-extensions",
+          "A-3-debug-extensions",
+          "A-4-notebook-extensions",
+          "A-5-remote-extensions"
+        ],
+        "removed": [
+          "copilot",
+          "debug-auto-launch",
+          "debug-server-ready",
+          "github",
+          "github-authentication",
+          "ipynb",
+          "microsoft-authentication",
+          "notebook-renderers",
+          "prompt-basics",
+          "tunnel-forwarding"
+        ],
+        "presentCount": 83,
+        "nonExtensionDirs": [
+          "node_modules"
+        ],
+        "ok": true,
+        "residual": [],
+        "missingKeep": [],
+        "notShipped": [
+          "vscode-api-tests",
+          "vscode-colorize-perf-tests",
+          "vscode-colorize-tests",
+          "vscode-test-resolver"
+        ],
+        "missingOwn": [],
+        "unexpected": [
+          "extension-editing",
+          "grunt",
+          "gulp",
+          "jake",
+          "mermaid-markdown-features",
+          "php-language-features",
+          "simple-browser",
+          "terminal-suggest",
+          "theme-abyss",
+          "theme-kimbie-dark",
+          "theme-modern-icons",
+          "theme-monokai",
+          "theme-monokai-dimmed",
+          "theme-quietlight",
+          "theme-red",
+          "theme-solarized-dark",
+          "theme-solarized-light",
+          "theme-tomorrow-night-blue"
+        ]
+      },
+      "seconds": 0.008
+    },
+    {
+      "name": "zip",
+      "status": "ok",
+      "startedAt": "2026-11-14T13:10:07.244Z",
+      "command": "C:\\WINDOWS\\System32\\tar.exe -a -c -H -f C:\\b\\dist\\1.146.0-p2-A-5.zip -C C:\\b\\dist\\.stage-1.146.0-p2-A-5 Shuko-win32-x64-1.146.0-p2-A-5",
+      "log": "C:\\b\\logs\\1.146.0-p2-A-5\\zip.log",
+      "exitCode": 0,
+      "topFolders": [
+        "Shuko-win32-x64-1.146.0-p2-A-5"
+      ],
+      "entries": 3005,
+      "seconds": 38.601
+    }
+  ],
+  "warnings": [
+    "keep.json に無い拡張が出力にある（情報）: extension-editing, grunt, gulp, jake, mermaid-markdown-features, php-language-features, simple-browser, terminal-suggest, theme-abyss, theme-kimbie-dark, theme-modern-icons, theme-monokai, theme-monokai-dimmed, theme-quietlight, theme-red, theme-solarized-dark, theme-solarized-light, theme-tomorrow-night-blue"
+  ],
+  "applyResult": "ok",
+  "unitsFrom": {
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-p2-builds\\1.146.0-p2-A-5\\checks.json",
+    "applyRan": false
+  },
+  "disk": {
+    "worktree": {
+      "bytes": 4714192647,
+      "gb": 4.39,
+      "files": 126590
+    },
+    "package": {
+      "bytes": 1246061522,
+      "gb": 1.16,
+      "files": 2469
+    },
+    "zipBytes": 401906673,
+    "countedSeconds": 12.928
+  }
+}

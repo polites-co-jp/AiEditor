@@ -1,0 +1,106 @@
+{
+  "label": "1.146.0-p2-base",
+  "upstream": {
+    "tag": "1.146.0",
+    "commit": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+  },
+  "units": [],
+  "patches": [
+    {
+      "file": "patches/20-product-configuration-defaults.patch",
+      "applied": "ok"
+    },
+    {
+      "file": "patches/30-proxy-direct-without-settings.patch",
+      "applied": "ok"
+    }
+  ],
+  "lockfileDiff": "tasks/2026-11-14-p2-builds/1.146.0-p2-base/lockfile.diff",
+  "toolchain": null,
+  "durations": {
+    "package": 8.692
+  },
+  "zip": null,
+  "extensionsLockSha256": "6b4c3ceae7d6cb407f62bbcbd57ca50267e998975887884cc325fd26a85cce10",
+  "result": "error",
+  "stoppedAt": "package",
+  "dryRun": false,
+  "startedAt": "2026-11-14T12:38:46.683Z",
+  "finishedAt": "2026-11-14T12:38:55.730Z",
+  "paths": {
+    "buildRoot": "C:\\b",
+    "worktree": "C:\\b\\wt\\p2",
+    "packageDir": "C:\\b\\wt\\VSCode-win32-x64",
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-p2-builds\\1.146.0-p2-base\\checks.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\removals",
+    "dist": "C:\\b\\dist",
+    "logs": "C:\\b\\logs\\1.146.0-p2-base"
+  },
+  "config": {
+    "path": "C:\\Users\\kou_z\\AppData\\Local\\Shuko\\local.json",
+    "exists": false,
+    "buildRootFrom": "default"
+  },
+  "stepsSelected": [
+    "package",
+    "postprocess",
+    "zip"
+  ],
+  "envRemovedForChildren": [
+    "ELECTRON_RUN_AS_NODE",
+    "VSCODE_CODE_CACHE_PATH",
+    "VSCODE_CRASH_REPORTER_PROCESS_TYPE",
+    "VSCODE_CWD",
+    "VSCODE_ESM_ENTRYPOINT",
+    "VSCODE_HANDLES_UNCAUGHT_ERRORS",
+    "VSCODE_IPC_HOOK",
+    "VSCODE_NLS_CONFIG",
+    "VSCODE_PID",
+    "VSCODE_PROCESS_TITLE"
+  ],
+  "sourceVersion": {
+    "name": "BUILD_SOURCEVERSION",
+    "value": "4a8f3f31b604d64a4dca5eced94eabd117db9072",
+    "source": "worktree HEAD",
+    "worktree": "C:\\b\\wt\\p2",
+    "readAt": "package",
+    "steps": [
+      "typecheck",
+      "package"
+    ],
+    "error": null,
+    "uncommittedEntries": 0,
+    "checksHeadCommit": "4a8f3f31b604d64a4dca5eced94eabd117db9072",
+    "matchesChecksHead": true
+  },
+  "steps": [
+    {
+      "name": "package",
+      "status": "error",
+      "startedAt": "2026-11-14T12:38:46.690Z",
+      "signtool": {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\x64\\signtool.exe",
+        "source": "WindowsKits",
+        "pathPrepended": "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\x64"
+      },
+      "env": {
+        "BUILD_SOURCEVERSION": "4a8f3f31b604d64a4dca5eced94eabd117db9072"
+      },
+      "command": "pnpm run gulp vscode-win32-x64-min",
+      "cwd": "C:\\b\\wt\\p2",
+      "log": "C:\\b\\logs\\1.146.0-p2-base\\package.log",
+      "seconds": 8.692,
+      "exitCode": 1,
+      "tail": "ady\\esbuild.mts\u001b[39m with 0 errors.\n[\u001b[90m21:38:52\u001b[39m] Bundled extension: \u001b[33mhtml-language-features\\esbuild.mts\u001b[39m with 0 errors.\n[\u001b[90m21:38:52\u001b[39m] Finished \u001b[32mtypechecking extension (tsgo)\u001b[39m C:\\b\\wt\\p2\\extensions\\npm\\tsconfig.json with 0 errors.\n[\u001b[90m21:38:52\u001b[39m] Finished \u001b[32mtypechecking extension (tsgo)\u001b[39m C:\\b\\wt\\p2\\extensions\\php-language-features\\tsconfig.json with 0 errors.\n[\u001b[90m21:38:52\u001b[39m] Bundled extension: \u001b[33mnpm\\esbuild.mts\u001b[39m with 0 errors.\n[\u001b[90m21:38:52\u001b[39m] Finished \u001b[32mtypechecking extension (tsgo)\u001b[39m C:\\b\\wt\\p2\\extensions\\references-view\\tsconfig.json with 0 errors.\n[\u001b[90m21:38:52\u001b[39m] Finished \u001b[32mtypechecking extension (tsgo)\u001b[39m C:\\b\\wt\\p2\\extensions\\search-result\\tsconfig.json with 0 errors.\n[\u001b[90m21:38:52\u001b[39m] Bundled extension: \u001b[33mterminal-suggest\\esbuild.mts\u001b[39m with 0 errors.\n[\u001b[90m21:38:52\u001b[39m] Finished \u001b[32mtypechecking extension (tsgo)\u001b[39m C:\\b\\wt\\p2\\extensions\\markdown-language-features\\tsconfig.json with 0 errors.\n[\u001b[90m21:38:52\u001b[39m] Bundled extension: \u001b[33mjson-language-features\\esbuild.mts\u001b[39m with 0 errors.\n[\u001b[90m21:38:52\u001b[39m] Finished \u001b[32mtypechecking extension (tsgo)\u001b[39m C:\\b\\wt\\p2\\extensions\\simple-browser\\tsconfig.json with 0 errors.\n[\u001b[90m21:38:52\u001b[39m] Finished \u001b[32mtypechecking extension (tsgo)\u001b[39m C:\\b\\wt\\p2\\extensions\\tunnel-forwarding\\tsconfig.json with 0 errors.\n[\u001b[90m21:38:52\u001b[39m] Bundled extension: \u001b[33mtypescript-language-features\\esbuild.mts\u001b[39m with 0 errors.\n[\u001b[90m21:38:52\u001b[39m] Finished \u001b[32mtypechecking extension (tsgo)\u001b[39m C:\\b\\wt\\p2\\extensions\\typescript-language-features\\tsconfig.json with 0 errors.\n[\u001b[90m21:38:52\u001b[39m] Finished \u001b[32mtypechecking extension (tsgo)\u001b[39m C:\\b\\wt\\p2\\extensions\\terminal-suggest\\tsconfig.json with 0 errors.\n[\u001b[90m21:38:53\u001b[39m] Bundled extension: \u001b[33mmarkdown-language-features\\esbuild.mts\u001b[39m with 0 errors.\n[\u001b[90m21:38:53\u001b[39m] Finished \u001b[36mbundle-non-native-extensions-build\u001b[39m after \u001b[35m4512 ms\u001b[39m\n[\u001b[90m21:38:53\u001b[39m] Starting \u001b[36mcompile-non-native-extensions-build\u001b[39m ...\n[\u001b[90m21:38:53\u001b[39m] Finished \u001b[36mcompile-non-native-extensions-build\u001b[39m after \u001b[35m0 ms\u001b[39m\n[\u001b[90m21:38:53\u001b[39m] Starting \u001b[36mcompile-copilot-extension-build\u001b[39m ...\n[\u001b[90m21:38:55\u001b[39m] \u001b[32mesbuilding\u001b[39m: Running in CI environment, applying package.json patch for correct versioning and pre-release status...\n\nC:\\b\\wt\\p2\\extensions\\copilot\n[]\n[\u001b[90m21:38:55\u001b[39m] 'vscode-win32-x64-min' errored after 6.47 s\n[\u001b[90m21:38:55\u001b[39m] Error: Command failed: C:\\Program Files\\nodejs\\node.exe C:\\b\\wt\\p2\\extensions\\copilot\\.esbuild.mts\nfile:///C:/b/wt/p2/extensions/copilot/.esbuild.mts:413\r\n\t\tthrow new Error('VSCODE_QUALITY environment variable is not set. This should be set by the build pipeline to ensure correct versioning and pre-release status in package.json.');\r\n\t\t      ^\r\n\r\nError: VSCODE_QUALITY environment variable is not set. This should be set by the build pipeline to ensure correct versioning and pre-release status in package.json.\r\n    at applyPackageJsonPatch (file:///C:/b/wt/p2/extensions/copilot/.esbuild.mts:413:9)\r\n    at main (file:///C:/b/wt/p2/extensions/copilot/.esbuild.mts:308:3)\r\n    at file:///C:/b/wt/p2/extensions/copilot/.esbuild.mts:459:1\r\n    at ModuleJob.run (node:internal/modules/esm/module_job:561:25)\r\n    at async node:internal/modules/esm/loader:647:26\r\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)\r\n\r\nNode.js v24.22.1\r\n\n    at genericNodeError (node:internal/errors:986:15)\n    at wrappedFn (node:internal/errors:540:14)\n    at ChildProcess.exithandler (node:child_process:417:12)\n    at ChildProcess.emit (node:events:514:28)\n    at ChildProcess.emit (node:domain:552:15)\n    at maybeClose (node:internal/child_process:1172:16)\n    at Socket.<anonymous> (node:internal/child_process:527:11)\n    at Socket.emit (node:events:514:28)\n    at Socket.emit (node:domain:552:15)\n    at Pipe.<anonymous> (node:net:362:12)\n[ELIFECYCLE] Command failed with exit code 1.\n",
+      "message": "パッケージ化が 1 で終わった"
+    }
+  ],
+  "warnings": [],
+  "applyResult": "ok",
+  "unitsFrom": {
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-14-p2-builds\\1.146.0-p2-base\\checks.json",
+    "applyRan": false
+  },
+  "message": "package で止まった: パッケージ化が 1 で終わった"
+}
