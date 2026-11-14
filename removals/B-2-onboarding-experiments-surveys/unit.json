@@ -2,7 +2,7 @@
   "id": "B-2-onboarding-experiments-surveys",
   "stage": "B",
   "order": 220,
-  "enabled": false,
+  "enabled": true,
   "intent": "歓迎画面・ウォークスルー・新しい初回案内・アンケートを消す。実験（services/assignment）は多くの部品が注入しているので、割り当てを取りに行かない実装に差し替える。product.json の onboardingKeymaps・onboardingThemes を消す",
   "after": [],
   "delete": [

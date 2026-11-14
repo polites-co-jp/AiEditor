@@ -2,7 +2,7 @@
   "id": "B-3-issue-share",
   "stage": "B",
   "order": 230,
-  "enabled": false,
+  "enabled": true,
   "intent": "課題の報告（Issue Reporter）と共有（Share）を消す。サービスの ID は何もしない実装にして残す。product.json の reportIssueUrl を消す",
   "after": [],
   "delete": [

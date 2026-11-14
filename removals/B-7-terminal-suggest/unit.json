@@ -2,7 +2,7 @@
   "id": "B-7-terminal-suggest",
   "stage": "B",
   "order": 270,
-  "enabled": false,
+  "enabled": true,
   "intent": "ターミナルの入力候補（terminal IntelliSense）の本体の部品 src/vs/workbench/contrib/terminalContrib/suggest と設定 terminal.integrated.suggest.* を消す（裁定: terminal-suggest は消す。組み込み拡張 terminal-suggest は A-7 が消す）。拡張 API の補完の提供者の登録は受け取って何もしない",
   "after": [],
   "delete": [

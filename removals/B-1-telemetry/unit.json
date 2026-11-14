@@ -2,7 +2,7 @@
   "id": "B-1-telemetry",
   "stage": "B",
   "order": 210,
-  "enabled": false,
+  "enabled": true,
   "intent": "テレメトリを消す。1DS の送り手（src/vs/platform/telemetry の common・browser・node の 1dsAppender.ts）を同じ名前と型で何もしない実装に差し替え、workbench のテレメトリの contrib（telemetry・editTelemetry・bracketPairColorizer2Telemetry・terminalContrib/telemetry）と 1DS の依存を消す。テレメトリのサービスとそれを呼ぶ側は残す（裁定: 送信を担う部品を何もしない実装に差し替える）",
   "after": [],
   "delete": [
