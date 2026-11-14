@@ -1,0 +1,5 @@
+{
+    "telemetry.telemetryLevel": "all",
+    "workbench.enableExperiments": true,
+    "security.workspace.trust.enabled": false
+}
