@@ -123,6 +123,7 @@ C:\b\dist\                        zip の置き場
 | Node.js | タグの `.nvmrc` の版（main で 24.22.1 [一次・要照合] https://github.com/microsoft/vscode/blob/main/.nvmrc）。x64 |
 | Python | node-gyp 用。setuptools を入れる |
 | C/C++ | Visual Studio 2026 Build Tools。wiki の例: `winget install --id Microsoft.VisualStudio.BuildTools -e --source winget --override "--add Microsoft.VisualStudio.Component.Windows11SDK.26100 --add Microsoft.VisualStudio.Workload.VCTools --add Microsoft.VisualStudio.Component.VC.Runtimes.x86.x64.Spectre --add Microsoft.VisualStudio.Component.VC.ATL.Spectre --add Microsoft.VisualStudio.Component.VC.ATLMFC.Spectre"`。"Do not pick the option to install Windows Build Tools" |
+| 署名の道具 `signtool.exe` | 1.146.0 のパッケージ化（`build/gulpfile.vscode.ts` の `patchWin32DependenciesTask`）が PATH から呼ぶ。無いとタスクが落ちる。上の Build Tools の Windows 11 SDK に入る（`C:\Program Files (x86)\Windows Kits\10\bin\<版>\x64\`）。`build.mjs` が子のプロセスの PATH に足す（2026-11-14、`tasks/2026-11-14-build-env-research/`） |
 | パッケージマネージャー | タグの手順に従う（1.146.0 は pnpm の見込み。4節） |
 | Claude Code の CLI | 取り込みの判定（`claude -p`） |
 
