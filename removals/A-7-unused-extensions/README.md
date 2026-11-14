@@ -38,6 +38,11 @@
 
 戻すときは `enabled: false` にしてビルドし直す（docs/03 の8節）。
 
+## 消えたことの検査（checks）
+
+- `absentCommands` の3件（`simpleBrowser.show`・`terminal.integrated.suggest.clearCachedGlobals`・`_mermaid-markdown.openInEditor`）は **manifest の網**（各拡張の `package.json` の `contributes.commands`・`menus`）で見る。8件の拡張は公式でも起動時に起動しない（公式の実行の `snapshot.json` で `active: false`。`terminal-suggest` は一覧にも出ない）ので、実行時の網では公式でも「無い」になる（関門の記録 `records/take-in/1.146.0-p2-A-7/gate-A-7-unused-extensions.md`）。
+- 実行時の網で公式に「在る」になり、この単位で消えるコマンドは見つからなかった（出力チャネルも、起動しないので作られない）。実行時の網は設定の6件（登録簿で見える）が担う。`extension-editing`・`terminal-suggest` は設定を持たないので、manifest の網と absentStrings だけで見る。
+
 ## 未確認
 
 - ターミナルの入力候補が、拡張を消した後に何を出すか（スモークの base のターミナルの項目で見る）。

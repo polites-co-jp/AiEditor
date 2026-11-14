@@ -11,6 +11,9 @@
 //   absentProcesses: プロセス名かコマンドラインの断片。起動した木に無いこと
 //   absentStrings / absentHosts: ここでは見ない（前者は apply.mjs の適用後の検査、後者は scripts/netaudit.ps1）
 
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
+import { join } from 'node:path';
+
 export const KINDS = ['absentCommands', 'absentViews', 'absentSettings', 'absentProcesses'];
 export const NOT_HANDLED = ['absentStrings', 'absentHosts'];
 
@@ -37,7 +40,49 @@ export function collectTargets(checksList) {
 }
 
 /**
+ * manifest の網。出力の組み込み拡張の package.json にある contributes を集める（起動しない拡張のコマンドも見える）。
+ * 返す: { commands: string[], views: string[], settings: string[], extensions: number }
+ *   commands: contributes.commands[].command、menus の各項目の command、keybindings の command
+ *   views:    contributes.views の各 id、viewsContainers の各 id
+ *   settings: contributes.configuration（オブジェクトか配列）の properties のキー
+ */
+export function manifestOf(pkg) {
+  const c = pkg?.contributes ?? {};
+  const commands = new Set();
+  const views = new Set();
+  const settings = new Set();
+  const list = (v) => (Array.isArray(v) ? v : v ? [v] : []);
+  for (const x of list(c.commands)) if (x?.command) commands.add(x.command);
+  for (const group of Object.values(c.menus ?? {})) for (const x of list(group)) if (x?.command) commands.add(x.command);
+  for (const x of list(c.keybindings)) if (x?.command) commands.add(String(x.command).replace(/^-/, ''));
+  for (const group of Object.values(c.views ?? {})) for (const x of list(group)) if (x?.id) views.add(x.id);
+  for (const group of Object.values(c.viewsContainers ?? {})) for (const x of list(group)) if (x?.id) views.add(x.id);
+  for (const conf of list(c.configuration)) for (const k of Object.keys(conf?.properties ?? {})) settings.add(k);
+  return { commands, views, settings };
+}
+
+/** extensionsDir（resources/app/extensions）の直下の各拡張の package.json を読んで manifestOf を足し合わせる。 */
+export function collectManifest(extensionsDir) {
+  const out = { commands: new Set(), views: new Set(), settings: new Set(), extensions: 0 };
+  if (!existsSync(extensionsDir)) return { commands: [], views: [], settings: [], extensions: 0 };
+  for (const d of readdirSync(extensionsDir, { withFileTypes: true })) {
+    if (!d.isDirectory()) continue;
+    const f = join(extensionsDir, d.name, 'package.json');
+    if (!existsSync(f)) continue;
+    let pkg;
+    try { pkg = JSON.parse(readFileSync(f, 'utf8').replace(/^﻿/, '')); } catch { continue; }
+    const m = manifestOf(pkg);
+    for (const k of ['commands', 'views', 'settings']) for (const x of m[k]) out[k].add(x);
+    out.extensions++;
+  }
+  return { commands: [...out.commands].sort(), views: [...out.views].sort(), settings: [...out.settings].sort(), extensions: out.extensions };
+}
+
+/**
  * checks を snapshot と照らす。
+ * snapshot.manifest（collectManifest の結果）があれば、実行時の網（runtime）に加えて manifest の網でも見る。
+ * どちらかで在れば「在る」。各結果の net は 'runtime' | 'manifest' | 'runtime+manifest' | 'none'（在った網。無ければ none）。
+ * manifest が無い snapshot では runtime だけ（結果の nets に 'runtime' だけが入る）。
  * expect:
  *   'absent'  — 消した後のビルド向き。在ったら fail
  *   'present' — 公式の zip など、まだ消していないビルド向き。在れば pass（検査の網が空振りしていないことの確認）。無ければ fail
@@ -47,20 +92,28 @@ export function collectTargets(checksList) {
 export function evaluateAbsent(checks, snapshot, { expect = 'absent' } = {}) {
   if (expect !== 'absent' && expect !== 'present') throw new Error(`expect が不正: ${expect}`);
   const commands = new Set(snapshot?.commands ?? []);
+  const mf = snapshot?.manifest;
+  const mfCommands = new Set(mf?.commands ?? []);
+  const mfViews = new Set(mf?.views ?? []);
+  const mfSettings = new Set(mf?.settings ?? []);
   const results = [];
-  const add = (kind, name, present) => {
-    if (present === null) {
-      results.push({ kind, name, present: null, status: 'unknown', detail: '取れていない' });
+  const add = (kind, name, rt, mn = false) => {
+    if (rt === null && !mn) {
+      results.push({ kind, name, present: null, net: 'none', status: 'unknown', detail: '取れていない' });
       return;
     }
+    const present = Boolean(rt) || mn;
+    const net = rt && mn ? 'runtime+manifest' : rt ? 'runtime' : mn ? 'manifest' : 'none';
     const ok = expect === 'absent' ? !present : present;
-    results.push({ kind, name, present, status: ok ? 'pass' : 'fail', detail: present ? '在る' : '無い' });
+    results.push({ kind, name, present, net, status: ok ? 'pass' : 'fail', detail: present ? `在る（${net}）` : `無い（${mf ? 'runtime+manifest' : 'runtime'} のどちらにも）` });
   };
-  for (const c of checks?.absentCommands ?? []) add('absentCommands', c, snapshot?.commands ? commands.has(c) : null);
-  for (const v of checks?.absentViews ?? []) add('absentViews', v, snapshot?.commands ? isViewPresent(v, commands) : null);
+  for (const c of checks?.absentCommands ?? []) add('absentCommands', c, snapshot?.commands ? commands.has(c) : null, mfCommands.has(c));
+  for (const v of checks?.absentViews ?? []) {
+    add('absentViews', v, snapshot?.commands ? isViewPresent(v, commands) : null, mfViews.has(v) || mfCommands.has(v) || mfCommands.has(`${v}.focus`));
+  }
   for (const s of checks?.absentSettings ?? []) {
     const known = snapshot?.settings && Object.prototype.hasOwnProperty.call(snapshot.settings, s);
-    add('absentSettings', s, known ? Boolean(snapshot.settings[s]) : null);
+    add('absentSettings', s, known ? Boolean(snapshot.settings[s]) : null, mfSettings.has(s));
   }
   for (const p of checks?.absentProcesses ?? []) add('absentProcesses', p, snapshot?.processes ? isProcessPresent(p, snapshot.processes) : null);
   return results;

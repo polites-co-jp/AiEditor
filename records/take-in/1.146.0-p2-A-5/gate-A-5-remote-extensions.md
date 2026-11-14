@@ -58,3 +58,33 @@ node tests/smoke-run.mjs --build C:/b/p2/1.146.0-p2-A-5/Shuko-win32-x64-1.146.0-
 - claude-code の組の自動の3項目（動作中・ログ・`.lock`）は2回とも PASS。パネルが開くこと自体は手の項目（ユーザーが Phase 2 の最後に確かめる）
 
 判定: 新しい誤りは無く、自動の組はすべて通った。**合格。** ふるまいの違いは記録に残し、合否には使わない。
+
+## 4. 関門の3の流し直し（追記。2026-11-14 JST 23:51〜23:53）
+
+- 依頼: `tasks/2026-11-14-p2-regate-a/brief.md`。曹参の網の直し（`tasks/2026-11-14-fix-absent-probe/`）と、蒙恬の checks の足し（`tasks/2026-11-14-units-checks-revise/`。absentViews `~remote.forwardedPorts`）の後に、関門の3だけを流し直した
+- 版は作り直していない（展開した `resources\app\product.json` の commit `ffa17004…f748` は builds.md と同じ）。1・2・4 は上の合格のまま
+- 2節の README との食い違い（ポートのビュー）は、リーダーが受け入れると決め（`docs/user-decisions.md` の 2026-11-14「Phase 2 の関門で出た点」）、蒙恬が README と `intent` を直した。直した文は裁定と合っている
+
+### 実行したこと
+
+```
+node tests/absent-run.mjs --build C:/b/p0/vscode-1.146.0 --units all --expect present --label regate-official
+node tests/absent-run.mjs --build C:/b/p2/1.146.0-p2-A-4/Shuko-win32-x64-1.146.0-p2-A-4 --units A-5-remote-extensions --expect present --label regate-prev-A-5-on-A-4
+node tests/absent-run.mjs --build C:/b/p2/1.146.0-p2-A-5/Shuko-win32-x64-1.146.0-p2-A-5 --units A-5-remote-extensions --expect absent --label regate-A-5
+```
+
+| 項目 | 公式（present） | A-4 の版（present） | A-5（absent） |
+|---|---|---|---|
+| absentCommands `tunnel-forwarding.showLog` | 在る（manifest） | 在る（manifest） | 無い（pass） |
+| absentCommands `tunnel-forwarding.restart` | 在る（manifest） | 在る（manifest） | 無い（pass） |
+| absentViews `~remote.forwardedPorts` | 在る（runtime） | 在る（runtime） | 無い（pass） |
+
+結果: `C:\b\smoke\absent\regate-official-20261114T144944\`、`regate-prev-A-5-on-A-4-20261114T145314\`、`regate-A-5-20261114T145133\`。A-5 の実行は pass 3 / fail 0 / unknown 0。
+
+### 判定（流し直し）
+
+| 関門 | 結果 | 要点 |
+|---|---|---|
+| 3. 消えている | **合格** | 3件とも公式と前の版（A-4）で在り、A-5 の版で無い。ビュー1件は実行時の網で見える |
+
+**1〜4 がすべて合格。A-5 は `enabled: true` にしてよい。**

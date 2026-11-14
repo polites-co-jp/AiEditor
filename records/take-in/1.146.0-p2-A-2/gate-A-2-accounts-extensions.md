@@ -60,3 +60,36 @@ node tests/smoke-run.mjs --build C:/b/p2/1.146.0-p2-A-2/Shuko-win32-x64-1.146.0-
 - claude-code の組: 3回とも `claude.running`・`claude.exthost-log`・`claude.lock` が PASS
 - コマンドの数は 3294 → 3282（github の拡張の分が減った）。拡張 11（動作中 8）は同じ
 - docs/03 の表の注意「`defaultChatAgent.providerExtensionId` が `vscode.github-authentication` を指すので、チャットの設定の画面がエラーを出す恐れ」: 自動のスモークの範囲では、誤りの一覧に出なかった。チャットの設定の画面を開く項目は台本に無いので、画面の上でのことは確かめていない
+
+## 4. 関門の3の流し直し（追記。2026-11-14 JST 23:49〜23:53）
+
+- 依頼: `tasks/2026-11-14-p2-regate-a/brief.md`。曹参の網の直し（`tasks/2026-11-14-fix-absent-probe/`）と、蒙恬の checks の足し（`tasks/2026-11-14-units-checks-revise/`。出力チャネルの表示のコマンド2件）の後に、関門の3だけを流し直した
+- 版は作り直していない（展開した `resources\app\product.json` の commit `47a15a84…9546` は builds.md と同じ）。1・2・4 は上の合格のまま
+
+### 実行したこと
+
+```
+node tests/absent-run.mjs --build C:/b/p0/vscode-1.146.0 --units all --expect present --label regate-official
+node tests/absent-run.mjs --build C:/b/p2/1.146.0-p2-A-1/Shuko-win32-x64-1.146.0-p2-A-1 --units A-2-accounts-extensions --expect present --label regate-prev-A-2-on-A-1
+node tests/absent-run.mjs --build C:/b/p2/1.146.0-p2-A-2/Shuko-win32-x64-1.146.0-p2-A-2 --units A-2-accounts-extensions --expect absent --label regate-A-2
+```
+
+| 項目 | 公式（present） | A-1 の版（present） | A-2（absent） |
+|---|---|---|---|
+| absentCommands `github.publish` | 在る（manifest） | 在る（manifest） | 無い（pass） |
+| absentCommands `github.copyVscodeDevLink` | 在る（manifest） | 在る（manifest） | 無い（pass） |
+| absentCommands `workbench.action.output.show.vscode.github.GitHub.log` | 在る（runtime） | 在る（runtime） | 無い（pass） |
+| absentCommands `workbench.action.output.show.vscode.github-authentication.GitHub Authentication.log` | 在る（runtime） | 在る（runtime） | 無い（pass） |
+| absentSettings `github.gitAuthentication` | 在る（runtime+manifest） | 在る（runtime+manifest） | 無い（pass） |
+| absentSettings `github-authentication.preferDeviceCodeFlow` | 在る（runtime+manifest） | 在る（runtime+manifest） | 無い（pass） |
+| absentSettings `microsoft-authentication.implementation` | 在る（runtime+manifest） | 在る（runtime+manifest） | 無い（pass） |
+
+結果: `C:\b\smoke\absent\regate-official-20261114T144944\`、`regate-prev-A-2-on-A-1-20261114T145226\`、`regate-A-2-20261114T145049\`。A-2 の実行は pass 7 / fail 0 / unknown 0。設定の網の対照は A-1 の記録の5節（登録の無いキーは「無い」になる）。
+
+### 判定（流し直し）
+
+| 関門 | 結果 | 要点 |
+|---|---|---|
+| 3. 消えている | **合格** | 7件とも公式と前の版（A-1）で在り、A-2 の版で無い。うち実行時の網で見える項目が6件（コマンド2・設定3。設定は runtime+manifest） |
+
+**1〜4 がすべて合格。A-2 は `enabled: true` にしてよい。**

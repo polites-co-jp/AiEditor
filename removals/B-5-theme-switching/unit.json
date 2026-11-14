@@ -2,7 +2,7 @@
   "id": "B-5-theme-switching",
   "stage": "B",
   "order": 250,
-  "enabled": false,
+  "enabled": true,
   "intent": "テーマの切り替えの画面とコマンド（色・ファイルアイコン・製品アイコンのテーマの選択、明暗の切り替え、マーケットプレイスのテーマの閲覧、テーマの試し）を消す。テーマのサービスは残し、テーマは mydist の既定 workbench.colorTheme で Light Modern に固定する",
   "after": [],
   "delete": [

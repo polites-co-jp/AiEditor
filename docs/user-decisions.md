@@ -262,3 +262,5 @@
 | A-5 でポートのビューのコマンドが消えた（README の intent は「残す」） | 受け入れる。リモートは裁定で消す（C-3）ので、ポートのビューも要らない。README を直す |
 | B-4 の後、残したパンくずリストが消えた設定 `outline.icons` を読む | 受け入れる。パンくずリストは既定で無効で、C-7 で消す。README に書く |
 | notion-sync が日本語の表示で `No bundle location found` を出す | 直す（組み込みの拡張の翻訳の扱い） |
+| A-1 の関門の3を manifest の網（出力の組み込み拡張の `package.json` の `contributes`）だけで判定すること | 認める。直した検査の台本の網そのもので、「代わりの証拠」（拡張の一覧・出力の文字列を人が照らす）とは別とする。copilot の拡張は公式でも実行時の網に出ない |
+| B-1 の `absentCommands` を空にすること（`workbench.action.showTelemetry` は `--disable-telemetry` のもとで公式でも登録されず、替えも無い） | 認める。網は absentSettings・absentStrings・absentHosts で足りる |

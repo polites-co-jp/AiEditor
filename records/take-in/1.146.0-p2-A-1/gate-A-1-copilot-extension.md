@@ -107,3 +107,36 @@ Phase 1 の r3 と比べて、ほかに違ったこと（誤りには数えら�
 - 蒙恬（notion-sync）: 日本語の表示で、組み込みの notion-sync が起動のたびに拡張ホストのログに `[error] No bundle location found` を出す。後の版の比べは、この誤りを含めた基準 `baseline-p2-A-1.json` で行うので、以降の版では「新しい誤り」にならない。直すか、残すかの判断はリーダーへ
 - `C:\b\smoke\runs\` の実行の置き場所に `.keep` を置けなかった（検証役の書き込み先は `records/`・`tasks/` だけ）。後の実行は `--keep-runs 40` で走らせ、ここに挙げた置き場所が消えないようにした
 - 手の項目（パネルからの送信、統合ターミナルの `claude` の接続、選択範囲、差分、診断、テーマ・Sublime のキー）は台本の範囲外。Phase 2 の最後にユーザーが行う
+
+## 5. 関門の3の流し直し（追記。2026-11-14 JST 23:49〜23:54）
+
+- 依頼: `tasks/2026-11-14-p2-regate-a/brief.md`。曹参の網の直し（`tasks/2026-11-14-fix-absent-probe/`。設定は登録簿の `defaultValue` と manifest、コマンド・ビューは runtime と manifest）の後に、関門の3だけを流し直した
+- 版は作り直していない（展開した `resources\app\product.json` の commit `3f478e8b…c684` は builds.md と同じ）。1・2・4 は上の合格のまま
+
+### 実行したこと
+
+```
+node tests/absent-run.mjs --build C:/b/p0/vscode-1.146.0 --units all --expect present --label regate-official
+node tests/absent-run.mjs --build C:/b/p2/1.146.0-p2-A-1/Shuko-win32-x64-1.146.0-p2-A-1 --units A-1-copilot-extension --expect absent --label regate-A-1
+node tests/absent-run.mjs --build C:/b/p2/1.146.0-p2-A-1/Shuko-win32-x64-1.146.0-p2-A-1 --expect absent --setting zzzShukoControl.never.registered --cmd zzzShukoControl.never.registered --view zzzShukoControl.never.view --setting editor.fontSize --setting github.gitAuthentication --cmd github.publish --label regate-control-A-1
+```
+
+| 項目 | 公式（present） | A-1（absent） |
+|---|---|---|
+| absentCommands `github.copilot.cli.sessions.delete` | 在る（pass、net: manifest） | 無い（pass、net: none） |
+| absentCommands `github.copilot.chat.triggerPermissiveSignIn` | 在る（pass、net: manifest） | 無い（pass、net: none） |
+| absentSettings `github.copilot.chat.backgroundAgent.enabled` | 在る（pass、net: manifest） | 無い（pass、net: none。snapshot の `settingsVia` も `none`） |
+
+対照（A-1 の版、`--expect absent`）: 登録の無い設定・コマンド・ビュー `zzzShukoControl.*` は3件とも「無い」（pass）。A-1 の版に残る `editor.fontSize`（runtime）・`github.gitAuthentication`（runtime+manifest）・`github.publish`（manifest）は3件とも「在る」（fail）。網は、無いものを無い、在るものを在ると返す。
+
+結果: `C:\b\smoke\absent\regate-official-20261114T144944\`、`regate-A-1-20261114T145020\`、`regate-control-A-1-20261114T145414\`。A-1 の実行の manifest の網は、A-1 の版の `resources\app\extensions`（拡張 91 件）を読んだ（`absent-result.json` の `nets.manifest.dir`）。
+
+### 判定（流し直し）
+
+| 関門 | 結果 | 要点 |
+|---|---|---|
+| 3. 消えている | **合格** | 3件とも公式で在り（網になっている）、A-1 の版で無い |
+
+- 注: A-1 の3件は、公式でも manifest の網だけで「在る」になる（copilot の拡張は公式の実行で `vscode.extensions.all` に出ない）。実行時の網の項目は無い（蒙恬の README の「消えたことの検査（checks）」のとおり、替えられるものが見つかっていない）。manifest の網は直した台本の網そのもので、裁定の「代わりの証拠（拡張の一覧・出力の文字列）」とは別と見て判定した
+
+**1〜4 がすべて合格。A-1 は `enabled: true` にしてよい。**

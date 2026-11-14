@@ -36,6 +36,15 @@ GitHub と Microsoft のアカウントの組み込み拡張を消す（docs/03 
 
 戻すときは `enabled: false` にしてビルドし直す（docs/03 の8節）。
 
+## 消えたことの検査（checks）
+
+- `github.publish`・`github.copyVscodeDevLink` は **manifest の網**で見る（`extensions/github/package.json` の `contributes.commands`）。`github` の拡張は公式でも起動するが、この2件は起動後5秒の時点で実行時に登録されていなかった（関門の記録 `records/take-in/1.146.0-p2-A-2/gate-A-2-accounts-extensions.md`）。
+- 実行時の網として、2つの拡張が起動して作る出力チャネルの表示のコマンドを足した（2026-11-14）:
+  - `workbench.action.output.show.vscode.github.GitHub.log`（`github` の拡張の `createOutputChannel("GitHub", {log: true})`）
+  - `workbench.action.output.show.vscode.github-authentication.GitHub Authentication.log`（`github-authentication` の拡張の `` `${name} Authentication` ``。name は `GitHub`）
+  - 本体がチャネルごとに `workbench.action.output.show.<拡張の ID>.<名前>.log` を登録する。2026-11-14 までの公式の zip の実行8回（`C:\b\smoke\absent\` の `*official*`・`fix-*`・`p2try-*`）と A-1 の版の実行2回のすべてで在り、A-2〜B-7 の版の実行のすべてで無い。チャネルの名前は訳されない文字列（出力の `dist/extension.js` で確かめた）なので、表示の言語に左右されない。
+- `microsoft-authentication` は起動しないので、設定 `microsoft-authentication.implementation`（登録簿と manifest の両方で見える）だけで見る。
+
 ## 未確認（型検査・依存の導入・スモークで確かめる）
 
 - `pnpm install`（extensions のルート）が、消えたフォルダを指す overrides の `file:` で止まらないか。ロックファイルの差分（docs/03 の5.4）が「消した拡張の依存の削除」だけになるか（MSAL・keytar など）。

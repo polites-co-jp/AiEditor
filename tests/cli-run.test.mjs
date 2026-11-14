@@ -191,6 +191,12 @@ test('notion-sync: pnpm run build で dist/extension.js ができ、activate・d
   assert.equal(inst.status, 0, `pnpm install: ${(inst.stdout + inst.stderr).slice(-1500)}`);
   const b = pnpm(['run', 'build']);
   assert.equal(b.status, 0, `pnpm run build: ${(b.stdout + b.stderr).slice(-1500)}`);
+  assert.ok(b.stdout.includes('[notion-sync] dist/i18n の翻訳の束を作る'), '翻訳の束を作る行');
+  assert.ok(b.stdout.includes('翻訳の束がある（contributes.localizations の自分の ID の項目）'), '翻訳の束の確かめの行');
+  const bundle = path.join(dst, 'dist', 'i18n', 'shuko.notion-sync.ja.i18n.json');
+  assert.ok(fs.existsSync(bundle), 'dist/i18n/shuko.notion-sync.ja.i18n.json');
+  const bj = JSON.parse(fs.readFileSync(bundle, 'utf8'));
+  assert.deepEqual(bj.contents, { package: {}, bundle: {} });
   const out = path.join(dst, 'dist', 'extension.js');
   assert.ok(fs.existsSync(out), 'dist/extension.js');
   assert.ok(fs.statSync(out).size > 10000, '1つにまとめられている');

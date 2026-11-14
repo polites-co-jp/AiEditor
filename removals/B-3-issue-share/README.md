@@ -3,7 +3,7 @@
 ## 消すもの
 
 - `src/vs/workbench/contrib/issue` のうち、下の「残すもの」の `common/issue.ts` を除く全部: 課題の報告の画面（desktop の `electron-browser`、web の `browser`）、「問題を報告」のコマンド `workbench.action.openIssueReporter`、設定 `issueReporter.*`、GitHub への送信・画面の写し・録画、テスト。
-- `src/vs/workbench/contrib/share/browser`: 共有のコマンド `workbench.action.share`（コマンドセンターなどのメニュー）と、設定 `workbench.experimental.share.enabled`。
+- `src/vs/workbench/contrib/share/browser`: 共有のコマンド `workbench.action.share`（コマンドセンターなどのメニュー。設定 `workbench.experimental.share.enabled` が true のときだけ登録される）、タイトルバーの右クリックの「共有」の切り替え `toggle.workbench.experimental.share.enabled`（`shareService.ts` の `ToggleShareControl`。常に登録される）、設定 `workbench.experimental.share.enabled`。
 - import の行（`removeLines`）: `workbench.desktop.main.ts`・`workbench.web.main.ts`・`workbench.common.main.ts`・`sessions.desktop.main.ts`・`sessions.web.main.ts`・`sessions.common.main.ts` の各1行。
 - product.json の `reportIssueUrl`（`productRemove`。docs/02 の3節の表）。これを読む残りの部品は、`src/vs/platform/menubar/electron-main/menubar.ts`（149行。値が無ければメニューの代わりの処理を足さない）と `src/vs/workbench/contrib/performance/electron-browser/startupProfiler.ts`（116行。値が無ければ何もしない）で、どちらも値の無いときを扱っている。
 
@@ -16,6 +16,11 @@
 
 - 拡張の「問題を報告」、ヘルプメニューの「問題の報告」、Process Explorer などから課題の報告を開く操作は、何も起きないか、コマンドが見つからない。
 - 提案中の API `vscode.window.registerShareProvider` を使う拡張（台帳には無い）は、登録は通るが共有のメニューが出ない。
+
+## 消えたことの検査（checks）
+
+- 共有のコマンドは、`workbench.action.share` から `toggle.workbench.experimental.share.enabled` に替えた（2026-11-14）。`workbench.action.share` は設定 `workbench.experimental.share.enabled`（既定 false）が true のときだけ `ShareWorkbenchContribution.registerActions` が登録するので、公式でも実行時に「無い」になり網にならなかった（関門の記録 `records/take-in/1.146.0-p2-B-3/gate-B-3-issue-share.md`）。替えたコマンドは `contrib/share/browser/shareService.ts` の読み込みで登録される。2026-11-14 までの公式の zip の実行と A-1〜B-2 の版の実行のすべてで在り、B-3〜B-7 の版の実行で無い（`C:\b\smoke\absent\` の `snapshot.json`）。
+- `workbench.action.openIssueReporter` は実行時の網で見える（公式と B-2 に在り B-3 に無い）。
 
 ## 壊れたときの症状と戻し方
 

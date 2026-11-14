@@ -43,3 +43,31 @@ node tests/smoke-run.mjs --build C:/b/p2/1.146.0-p2-A-7/Shuko-win32-x64-1.146.0-
 - claude-code の組: 3項目 PASS（木 25 個、`claude.exe` x1）
 - コマンドの数 3274 → 3273
 - この版の zip は 379,089,309 B（A-6 から約 22.7 MB 減った）
+
+## 4. 関門の3の流し直し（追記。2026-11-14 JST 23:52〜23:54）
+
+- 依頼: `tasks/2026-11-14-p2-regate-a/brief.md`。曹参の網の直し（`tasks/2026-11-14-fix-absent-probe/`）の後に、関門の3だけを流し直した。A-7 の checks は変わっていない。2節の「代わりの証拠」は、裁定（`docs/user-decisions.md` の 2026-11-14「Phase 2 の関門で出た点」）のとおり、ここでも判定に使っていない
+- 版は作り直していない（展開した `resources\app\product.json` の commit `a0690779…c4c7` は builds.md と同じ）。1・2・4 は上の合格のまま
+
+### 実行したこと
+
+```
+node tests/absent-run.mjs --build C:/b/p0/vscode-1.146.0 --units all --expect present --label regate-official
+node tests/absent-run.mjs --build C:/b/p2/1.146.0-p2-A-6/Shuko-win32-x64-1.146.0-p2-A-6 --units A-7-unused-extensions --expect present --label regate-prev-A-7-on-A-6
+node tests/absent-run.mjs --build C:/b/p2/1.146.0-p2-A-7/Shuko-win32-x64-1.146.0-p2-A-7 --units A-7-unused-extensions --expect absent --label regate-A-7
+```
+
+| 項目 | 公式（present） | A-6 の版（present） | A-7（absent） |
+|---|---|---|---|
+| absentCommands `simpleBrowser.show`・`terminal.integrated.suggest.clearCachedGlobals`・`_mermaid-markdown.openInEditor` | 3件とも在る（manifest） | 3件とも在る（manifest） | 3件とも無い（pass） |
+| absentSettings `grunt.autoDetect`・`gulp.autoDetect`・`jake.autoDetect`・`simpleBrowser.focusLockIndicator.enabled`・`markdown-mermaid.languages`・`php.validate.enable` | 6件とも在る（runtime+manifest） | 6件とも在る（runtime+manifest） | 6件とも無い（pass） |
+
+結果: `C:\b\smoke\absent\regate-official-20261114T144944\`、`regate-prev-A-7-on-A-6-20261114T145333\`、`regate-A-7-20261114T145200\`。A-7 の実行は pass 9 / fail 0 / unknown 0。設定の網の対照は A-1 の記録の5節。
+
+### 判定（流し直し）
+
+| 関門 | 結果 | 要点 |
+|---|---|---|
+| 3. 消えている | **合格** | 9件とも公式と前の版（A-6）で在り、A-7 の版で無い。設定6件は実行時の網（runtime+manifest）でも見える |
+
+**1〜4 がすべて合格。A-7 は `enabled: true` にしてよい。**

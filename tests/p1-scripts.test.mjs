@@ -223,6 +223,62 @@ test('p1-launch-check.ps1: -Dest が C:\\b\\p1 そのもの（直下でない）
   const r = launch(['-Zip', zip, '-Dest', 'C:\\b\\p1']);
   assert.equal(r.status, 2, r.stderr);
 });
+test('p1-launch-check.ps1: 断る文は C:\\b\\p1 と C:\\b\\p2 の両方を挙げる', () => {
+  const zip = path.join(sb, 'd.zip');
+  writeFile(zip, 'PK');
+  const r = launch(['-Zip', zip, '-Dest', path.join(sb, 'not-p-dest')]);
+  assert.equal(r.status, 2, r.stderr);
+  assert.match(r.stderr, /outside C:\\b\\p1 and C:\\b\\p2/i);
+});
+test('p1-launch-check.ps1: -Dest が C:\\b\\p2 そのもの → 2', { skip: skipNoCb }, () => {
+  const zip = path.join(sb, 'e.zip');
+  writeFile(zip, 'PK');
+  const r = launch(['-Zip', zip, '-Dest', 'C:\\b\\p2']);
+  assert.equal(r.status, 2, r.stderr);
+  assert.match(r.stderr, /outside/i);
+});
+test('p1-launch-check.ps1: -Dest が C:\\b\\p3\\<x>（p1・p2 の外）→ 2。何も作らない', { skip: skipNoCb }, () => {
+  const zip = path.join(sb, 'f.zip');
+  writeFile(zip, 'PK');
+  const dest = 'C:\\b\\p3\\tests-l10n-launch-x';
+  const r = launch(['-Zip', zip, '-Dest', dest]);
+  assert.equal(r.status, 2, r.stderr);
+  assert.match(r.stderr, /outside/i);
+  assert.ok(!fs.existsSync(dest), '何も作らない');
+});
+test('p1-launch-check.ps1: C:\\b\\p2xyz\\<x> のような前方一致の偽装も断る → 2', { skip: skipNoCb }, () => {
+  const zip = path.join(sb, 'g.zip');
+  writeFile(zip, 'PK');
+  const r = launch(['-Zip', zip, '-Dest', 'C:\\b\\p2xyz\\x']);
+  assert.equal(r.status, 2, r.stderr);
+});
+test('p1-launch-check.ps1: C:\\b\\p2\\..\\p3\\<x> は正規化して p3 とみなし断る → 2', { skip: skipNoCb }, () => {
+  const zip = path.join(sb, 'h.zip');
+  writeFile(zip, 'PK');
+  const r = launch(['-Zip', zip, '-Dest', 'C:\\b\\p2\\..\\p3\\x']);
+  assert.equal(r.status, 2, r.stderr);
+});
+// 引数の検査を通ったことの確かめ: 壊れた zip（PK だけ）を渡すと、検査のあと tar の展開で失敗する（終了コードは 2 でない、stderr に outside が無い）。
+// 展開に失敗するので、エディタの起動には進まない。作られた C:\b\p2\<一時名> は終わりに消す。
+test('p1-launch-check.ps1: -Dest C:\\b\\p2\\<x> は引数の検査を通る（壊れた zip で展開に失敗して止まる。起動しない）', { skip: skipNoCb }, () => {
+  const zip = path.join(sb, 'i.zip');
+  writeFile(zip, 'PK');
+  const name = 'tests-l10n-launch-' + process.pid;
+  const dest = path.join('C:\\b\\p2', name);
+  const out = path.join(sb, 'p2-result.json');
+  try {
+    const r = launch(['-Zip', zip, '-Dest', dest, '-OutFile', out]);
+    assert.notEqual(r.status, 2, '引数の検査で断ってはいけない: ' + r.stderr);
+    assert.doesNotMatch(r.stderr, /outside/i);
+    const j = JSON.parse(fs.readFileSync(out, 'utf8').replace(/^\uFEFF/, ''));
+    assert.equal(j.dest.toLowerCase(), dest.toLowerCase());
+    assert.equal(j.result, 'error');
+    assert.equal(j.started, null, '起動していない');
+    assert.equal(j.editor, null);
+  } finally {
+    fs.rmSync(dest, { recursive: true, force: true });
+  }
+});
 
 // ---- p1-ci-events.ps1 ---------------------------------------------------------------------
 test('p1-ci-events.ps1: JSON の形（readable・error・since・count・events）と終了コード 0。-OutFile にも同じものを書く', () => {

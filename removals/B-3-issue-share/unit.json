@@ -30,7 +30,7 @@
     { "path": "src/vs/workbench/contrib/share/common/share.ts", "reason": "拡張 API の mainThreadShare.ts（提案中の API の共有の提供者）がサービスの ID（IShareService）を注入している。拡張ホストの起動で作られるので、edits.patch で何もしない実装を登録する" }
   ],
   "checks": {
-    "absentCommands": ["workbench.action.openIssueReporter", "workbench.action.share"],
+    "absentCommands": ["workbench.action.openIssueReporter", "toggle.workbench.experimental.share.enabled"],
     "absentViews": [],
     "absentSettings": ["issueReporter.wizard.enabled", "workbench.experimental.share.enabled"],
     "absentStrings": [

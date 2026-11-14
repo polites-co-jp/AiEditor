@@ -31,6 +31,11 @@ Jupyter ノートブックの組み込み拡張を消す（docs/03 の4節の段
 
 戻すときは `enabled: false` にしてビルドし直す（docs/03 の8節）。
 
+## 消えたことの検査（checks）
+
+- `absentCommands` の2件（`ipynb.newUntitledIpynb`・`ipynb.openIpynbInNotebookEditor`）は **manifest の網**（`extensions/ipynb/package.json` の `contributes.commands`）で見る。`ipynb` は `.ipynb` を開くまで起動しないので、実行時の網では公式でも「無い」になる（関門の記録 `records/take-in/1.146.0-p2-A-4/gate-A-4-notebook-extensions.md`）。
+- 実行時の網で公式に「在る」になり、この単位で消えるコマンドは見つからなかった（`ipynb` が manifest に持つ `notebook.cellOutput.*` は本体も登録するので網にならない。`notebook-renderers` はコマンドを持たない）。実行時の網は設定 `ipynb.pasteImagesAsAttachments.enabled`（登録簿で見える）が担う。
+
 ## 未確認
 
 - `.ipynb` を開いたときの動き（スモークの base で、開発者ツールのコンソールに誤りが出ないか）。

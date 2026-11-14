@@ -15,7 +15,9 @@
 
 ## 影響しうるもの
 
-- 設定 `outline.icons`・`outline.problems.*`・`outline.collapseItems` が登録されなくなる。残る `documentSymbolsTree.ts`・`documentSymbolsOutline.ts`（パンくずリスト）と、ノートブックのアウトラインがこれらを読む。値は `undefined` になり、パンくずリストの記号のアイコンと問題の色が出なくなる見込み（推定）。パンくずリストは `mydist` の既定 `breadcrumbs.enabled: false` で隠れているので、見た目の影響は小さい。
+- 設定 `outline.icons`・`outline.problems.*`・`outline.collapseItems` が登録されなくなる。残る `documentSymbolsTree.ts`・`documentSymbolsOutline.ts`（パンくずリスト）と、ノートブックのアウトラインがこれらを読む。値は `undefined` になり、パンくずリストの記号のアイコンと問題の色が出なくなる見込み（推定）。
+  - 関門で、B-4 の版の出力の `workbench.desktop.main.js` に `getValue("outline.icons")` などの読む文が残り、登録の文が無いことを確かめた（`records/take-in/1.146.0-p2-B-4/gate-B-4-outline-view.md` の2節）。
+  - 扱い: 受け入れる（2026-11-14 のリーダーの判断。`docs/user-decisions.md` の「Phase 2 の関門で出た点」）。パンくずリストは `mydist` の既定 `breadcrumbs.enabled: false` で隠れていて、C-7 でパンくずリストごと消す。C-7 までの間に利用者が `breadcrumbs.enabled` を true にすると、パンくずリストの記号の欄にアイコンが出ない（文字は出る見込み。推定）。設定を残す直しはしない。
 - `outline.show*` の設定は、アウトラインのビューのための絞り込み。パンくずリストは `breadcrumbs.show*` を使うので影響しない（推定）。
 
 ## 壊れたときの症状と戻し方

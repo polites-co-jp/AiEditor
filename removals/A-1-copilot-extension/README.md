@@ -44,6 +44,12 @@
 
 戻すときは `enabled: false` にしてビルドし直す（docs/03 の8節）。
 
+## 消えたことの検査（checks）
+
+- `absentCommands` の2件（`github.copilot.cli.sessions.delete`・`github.copilot.chat.triggerPermissiveSignIn`）と `absentSettings` の1件は、**manifest の網**（出力の組み込み拡張の `package.json` の `contributes`）で見る。公式の zip の実行では copilot の拡張が `vscode.extensions.all` に出ず、実行時の網（`commands.getCommands`）では公式でも「無い」になるため（2026-11-14 の関門の記録 `records/take-in/1.146.0-p2-A-1/gate-A-1-copilot-extension.md` の2節）。
+- 実行時の網で公式に「在る」になり、この単位で消えるコマンドは見つからなかった（公式の実行の `snapshot.json` に `github.copilot.*` のコマンドも copilot の出力チャネルも無い。`prompt-basics` は文法と設定だけでコマンドを持たない）。替えられるものが無いので、この単位は manifest の網だけで見る。
+- 公式の zip に `--expect present` を流すと3件とも manifest で pass（`C:\b\smoke\absent\fix-units-official-20261114T142041\absent-result.json`）。
+
 ## 未確認（型検査とビルドで確かめる）
 
 - `pnpm -C build run typecheck`（`build/tsconfig.json` は `noUnusedLocals: true`）が、edits.patch の後の `build/npm/postinstall.ts` で通るか（`fs`・`path`・`log` はほかでも使っているので通る見込み）。

@@ -97,3 +97,99 @@ test('loadUnitChecks: 単位が無ければ Error。ids が空なら []', () => 
   assert.deepEqual(loadUnitChecks([]), []);
   assert.throws(() => loadUnitChecks(['Z-9-none'], 'C:\\no\\such\\dir'));
 });
+
+// ---- manifest の網（起動しない拡張のコマンドも見る）----
+import { mkdtempSync, mkdirSync, readFileSync, writeFileSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { createRequire } from 'node:module';
+import { collectManifest, manifestOf } from './removals/lib/absent.mjs';
+
+test('manifestOf: commands・menus・keybindings・views・viewsContainers・configuration（配列も）を集める', () => {
+  const m = manifestOf({ contributes: {
+    commands: [{ command: 'a.cmd' }],
+    menus: { 'view/title': [{ command: 'a.menu' }], commandPalette: [{ command: 'a.cmd' }] },
+    keybindings: [{ command: '-a.unbound' }, { command: 'a.key' }],
+    views: { explorer: [{ id: 'a.view' }] },
+    viewsContainers: { activitybar: [{ id: 'a.container' }] },
+    configuration: [{ properties: { 'a.s1': {} } }, { properties: { 'a.s2': {} } }],
+  } });
+  assert.deepEqual([...m.commands].sort(), ['a.cmd', 'a.key', 'a.menu', 'a.unbound']);
+  assert.deepEqual([...m.views].sort(), ['a.container', 'a.view']);
+  assert.deepEqual([...m.settings].sort(), ['a.s1', 'a.s2']);
+  const o = manifestOf({ contributes: { configuration: { properties: { 'b.s': {} } } } });
+  assert.deepEqual([...o.settings], ['b.s']);
+  assert.deepEqual([...manifestOf({}).commands], []);
+});
+
+test('collectManifest: 拡張のフォルダを読む。壊れた JSON・package.json の無いフォルダは読み飛ばし、BOM は許す', () => {
+  const d = mkdtempSync(join(tmpdir(), 'absent-mf-'));
+  try {
+    mkdirSync(join(d, 'x')); writeFileSync(join(d, 'x', 'package.json'), '\uFEFF' + JSON.stringify({ contributes: { commands: [{ command: 'x.never.activated' }], configuration: { properties: { 'x.set': {} } } } }));
+    mkdirSync(join(d, 'bad')); writeFileSync(join(d, 'bad', 'package.json'), '{oops');
+    mkdirSync(join(d, 'empty'));
+    assert.deepEqual(collectManifest(d), { commands: ['x.never.activated'], views: [], settings: ['x.set'], extensions: 1 });
+    assert.deepEqual(collectManifest(join(d, 'none')).commands, []);
+  } finally { rmSync(d, { recursive: true, force: true }); }
+});
+
+test('evaluateAbsent: 実行時に無くても manifest に在れば「在る」（起動しない拡張のコマンド）。net に網が出る', () => {
+  const snap = { commands: ['other'], settings: { 'x.set': false }, manifest: { commands: ['x.never.activated'], views: ['x.view'], settings: ['x.set'] } };
+  const r = evaluateAbsent({ absentCommands: ['x.never.activated', 'gone'], absentViews: ['x.view', 'gone.view'], absentSettings: ['x.set'] }, snap);
+  assert.deepEqual(r.map((x) => x.status), ['fail', 'pass', 'fail', 'pass', 'fail']);
+  assert.deepEqual(r.map((x) => x.net), ['manifest', 'none', 'manifest', 'none', 'manifest']);
+  const p = evaluateAbsent({ absentCommands: ['x.never.activated'] }, snap, { expect: 'present' });
+  assert.equal(p[0].status, 'pass');
+  assert.equal(p[0].net, 'manifest');
+});
+
+test('evaluateAbsent: runtime と manifest の両方に在れば net は runtime+manifest。manifest が無い snapshot は runtime だけ', () => {
+  assert.equal(evaluateAbsent({ absentCommands: ['c'] }, { commands: ['c'], manifest: { commands: ['c'] } })[0].net, 'runtime+manifest');
+  assert.equal(evaluateAbsent({ absentCommands: ['c'] }, { commands: ['c'] })[0].net, 'runtime');
+  assert.match(evaluateAbsent({ absentCommands: ['z'] }, { commands: ['c'] })[0].detail, /runtime/);
+});
+
+// ---- probe（設定の見方）。本物の vscode の振る舞い（登録の無いキーでも inspect はオブジェクトを返す）を模した偽物で動かす ----
+async function runProbe(settingKeys, { extensions = [] } = {}) {
+  const dir = mkdtempSync(join(tmpdir(), 'absent-probe-'));
+  const req = createRequire(import.meta.url);
+  const Module = req('node:module');
+  const origLoad = Module._load;
+  const REGISTERED = { 'editor.fontSize': 14, 'debug.console.fontSize': 14 };
+  const fake = {
+    commands: { getCommands: async () => ['a'] },
+    workspace: { getConfiguration: () => ({ inspect: (key) => ({ key, defaultValue: REGISTERED[key], globalValue: undefined }) }) },
+    extensions: { all: extensions },
+  };
+  const probePath = req.resolve('./removals/probe/extension.js');
+  delete req.cache[probePath];
+  Module._load = function (request, ...rest) { return request === 'vscode' ? fake : origLoad.call(this, request, ...rest); };
+  const cfg = join(dir, 'cfg.json'); const out = join(dir, 'out.json');
+  writeFileSync(cfg, JSON.stringify({ out, settings: settingKeys, settleMs: 0 }));
+  const prev = process.env.AIED_ABSENT_CONFIG;
+  process.env.AIED_ABSENT_CONFIG = cfg;
+  try {
+    await req(probePath).activate();
+    return JSON.parse(readFileSync(out, 'utf8'));
+  } finally {
+    Module._load = origLoad; delete req.cache[probePath];
+    if (prev === undefined) delete process.env.AIED_ABSENT_CONFIG; else process.env.AIED_ABSENT_CONFIG = prev;
+    rmSync(dir, { recursive: true, force: true });
+  }
+}
+
+test('probe: 登録の無い対照のキーは false、確かに在るキー（editor.fontSize）は true（inspect が常にオブジェクトを返しても）', async () => {
+  const s = await runProbe(['zzzShukoControl.never.registered', 'editor.fontSize', 'debug.console.fontSize']);
+  assert.equal(s.settings['zzzShukoControl.never.registered'], false);
+  assert.equal(s.settings['editor.fontSize'], true);
+  assert.equal(s.settings['debug.console.fontSize'], true);
+  assert.equal(s.settingsVia['zzzShukoControl.never.registered'], 'none');
+  assert.equal(s.done, true);
+});
+
+test('probe: 起動していない拡張の contributes.configuration にあるキーも「在る」（manifest 経由）', async () => {
+  const s = await runProbe(['ext.only.in.manifest', 'ext.nope'], { extensions: [{ id: 'e', isActive: false, packageJSON: { contributes: { configuration: [{ properties: { 'ext.only.in.manifest': {} } }] } } }] });
+  assert.equal(s.settings['ext.only.in.manifest'], true);
+  assert.equal(s.settingsVia['ext.only.in.manifest'], 'manifest');
+  assert.equal(s.settings['ext.nope'], false);
+});

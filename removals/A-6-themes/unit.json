@@ -2,7 +2,7 @@
   "id": "A-6-themes",
   "stage": "A",
   "order": 160,
-  "enabled": false,
+  "enabled": true,
   "intent": "テーマの組み込み拡張のうち theme-defaults（Light Modern を含む）と theme-seti（既定のファイルのアイコン）以外の10件を消す。theme-modern-icons（アイコンのテーマ vscode-modern-icons）も含む。テーマのサービスとテーマを選ぶ画面は残す（選ぶ画面は B-5）",
   "after": [],
   "delete": [

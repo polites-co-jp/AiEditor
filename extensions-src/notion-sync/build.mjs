@@ -1,6 +1,6 @@
 // notion-sync のビルド（docs/02 の4.1、docs/05 の9節）。
 //
-//   pnpm --dir extensions-src/notion-sync run build            型検査 → dist/extension.js を1つにまとめる → 読み込みの確かめ
+//   pnpm --dir extensions-src/notion-sync run build            型検査 → dist/extension.js を1つにまとめる → dist/i18n の翻訳の束 → 読み込みの確かめ
 //   pnpm --dir extensions-src/notion-sync run build --no-check 型検査を飛ばす
 //   pnpm --dir extensions-src/notion-sync run build --trial    上に加えて、差し替えた Notion API で同期の流れを試す（dev/trial.mts）
 //
@@ -11,6 +11,7 @@ import { createRequire, Module } from "node:module";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { checkBuiltinLocalizations, writeBuiltinTranslations } from "./builtin-l10n.mjs";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const require = createRequire(import.meta.url);
@@ -61,6 +62,15 @@ const inputs = Object.keys(result.metafile.inputs);
 console.log(`  dist/extension.js ${outBytes} バイト、入力 ${inputs.length} 個`);
 for (const i of inputs) console.log(`    ${i}`);
 
+// 2b. 組み込み拡張の翻訳の束（日本語の表示で No bundle location found を出さないため。builtin-l10n.mjs の説明）
+step("dist/i18n の翻訳の束を作る");
+{
+  const manifest = JSON.parse(fs.readFileSync(path.join(HERE, "package.json"), "utf8"));
+  const pre = checkBuiltinLocalizations(manifest);
+  if (pre.length) fail(`package.json の contributes.localizations: ${pre.join(" / ")}`);
+  for (const rel of writeBuiltinTranslations(manifest, HERE)) console.log(`  ${rel}`);
+}
+
 // 3. 読み込みの確かめ（vscode を空の代わりに差し替えて require し、activate・deactivate があるか）
 step("dist/extension.js を読み込んで確かめる");
 {
@@ -75,6 +85,9 @@ step("dist/extension.js を読み込んで確かめる");
     const ext = require(path.join(dist, "extension.js"));
     if (typeof ext.activate !== "function" || typeof ext.deactivate !== "function") fail("activate・deactivate が出ていない");
     console.log("  activate・deactivate がある");
+    const l10nErrors = checkBuiltinLocalizations(JSON.parse(fs.readFileSync(path.join(HERE, "package.json"), "utf8")), HERE);
+    if (l10nErrors.length) fail(`翻訳の束: ${l10nErrors.join(" / ")}`);
+    console.log("  翻訳の束がある（contributes.localizations の自分の ID の項目）");
   } finally {
     Module._resolveFilename = origResolve;
     delete require.cache[stubPath];

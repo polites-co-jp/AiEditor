@@ -2,7 +2,7 @@
   "id": "B-6-online-feeds",
   "stage": "B",
   "order": 260,
-  "enabled": false,
+  "enabled": true,
   "intent": "外から一覧や知らせを取りに行く部品を消す。緊急の知らせ（contrib/emergencyAlert。product.json の emergencyAlertUrl を定期的に取りに行く）を消す。emergencyAlertUrl・profileTemplatesUrl は 1.146.0 の OSS の product.json に無いので、product.overlay.json の removeIfPresent で本家が足したときに外す",
   "after": [],
   "delete": [

@@ -2,7 +2,7 @@
 
 - 担当: meng-tian（蒙恬。B-1 を直している蒙恬とは別）
 - 依頼日: 2026-11-14
-- 状態: 依頼中
+- 状態: 完了
 
 ## 目的
 
@@ -33,11 +33,12 @@ Phase 2 の関門（`tasks/2026-11-14-p2-gates/handoff-notes.md`）で出た点�
 
 ## 結果
 
-<完了後にリーダーが記入する>
+採用。A-3・A-6・B-5・B-6 を有効にした。checks は A-2・A-5・B-3 で足し・替え、A-1・A-4・A-7 は manifest の網だけで見ることを README に書いた。A-5・B-4 の README を裁定どおり直した。notion-sync の `No bundle location found` は、`contributes.localizations` の `ja` に自分の ID の空の束を出す形で直した（実機の確かめは次のビルド）。
 
 ## 未解決
 
-<無ければ「なし」>
+- notion-sync の直しを実機で確かめる（次のビルドとスモーク）。
+- テスト（`tasks/2026-11-14-tests-l10n-launch/`）。
 
 ## 次の担当
 

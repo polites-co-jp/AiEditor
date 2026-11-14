@@ -75,6 +75,19 @@
         "title": "トークンを消す",
         "category": "Notion 同期"
       }
+    ],
+    "localizations": [
+      {
+        "languageId": "ja",
+        "languageName": "Japanese",
+        "localizedLanguageName": "日本語",
+        "translations": [
+          {
+            "id": "shuko.notion-sync",
+            "path": "./dist/i18n/shuko.notion-sync.ja.i18n.json"
+          }
+        ]
+      }
     ]
   },
   "scripts": {

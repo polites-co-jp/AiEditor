@@ -9,6 +9,7 @@ Shuko の既定の設定とキー割り当てを持つ、コードの無い組�
     - 型定義の自動取得は、1.146.0 では新しい設定 `js/ts.tsserver.automaticTypeAcquisition.enabled` が先に読まれるが、ユーザーかワークスペースが値を書いたときだけ（既定値は見ない）。書いていなければ古い `typescript.disableAutomaticTypeAcquisition` を既定値ごと読むので、既定を入れるのは古いほう（`extensions/typescript-language-features/src/configuration/configuration.ts` の `readDisableAutomaticTypeAcquisition`、`src/utils/configuration.ts` の `readUnifiedConfig`）。
   - `claudeCode.environmentVariables`: `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1`（裁定 2026-11-13、「0-5 の棚卸しの後」）と `CLAUDE_CODE_DISABLE_OFFICIAL_MARKETPLACE_AUTOINSTALL=1`（同じ裁定へのリーダーの当てはめ。`docs/user-decisions.md` の「CLI の付帯の通信の裁定の当てはめ」）。Claude Code の拡張が起動する CLI にだけ渡す。普段のターミナルの `claude` には効かない。設定の名前と形は Claude Code 2.1.322 の manifest の `contributes.configuration`（`type: array`、要素は `{ name, value }`、`scope: machine`）。machine スコープなので、既定が効くのは起動の処理の順による見込み（Phase 2 で確かめる）。ユーザー設定にこの配列を書くと丸ごと置き換わる。
 - `contributes.keybindings`: Sublime Text のキー割り当て（docs/04 の6.2）。`node scripts/convert-sublime-keys.mjs --apply` が書く。手で直さない。
+- 翻訳（`contributes.localizations`）は持たない。日本語の表示で組み込み拡張が `[error] No bundle location found for extension <ID>` を出すのは、拡張ホストがコードを読み込むとき（本家 1.146.0 の `src/vs/workbench/api/node/extHostExtensionService.ts` の `_doLoadModule` が `initializeLocalizedMessages` を呼ぶ）だけで、`main` の無いこの拡張では起きない（Phase 2 の関門の A-1 でも、この誤りは notion-sync の分だけだった。`records/take-in/1.146.0-p2-A-1/gate-A-1-copilot-extension.md` の3節）。コードを足すときは、`extensions-src/notion-sync/` と同じく自分の ID の翻訳の項目と空の束を足す（`extensions-src/notion-sync/builtin-l10n.mjs` の説明）。
 
 ## キー割り当ての元
 

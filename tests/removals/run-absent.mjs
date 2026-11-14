@@ -10,6 +10,10 @@
 //   --expect absent|present  absent=消えていること（既定）。present=まだ在ること（公式の zip で網が空振りしないかの確認）
 //   --strict           取れなかった項目（unknown）も失敗にする
 //   --timeout <秒>     probe の待ち（既定 120）
+// 網は2つ。runtime（起動後の commands.getCommands と設定の登録簿）と manifest（出力の組み込み拡張の package.json の
+// contributes.commands・menus・keybindings・views・configuration）。どちらかに在れば「在る」。結果の net と absent-result.json の nets に出る。
+// checks が網になっている条件: 公式の zip に --units <id> --expect present を流して全項目が pass（= 公式には在る）。fail の項目は網にならない。
+//   例: node tests/absent-run.mjs --build C:\b\p0\vscode-1.146.0 --units A-1-copilot-extension --expect present
 // 書き込みは C:\b\smoke\absent\ の下だけ。起動した PID の木だけを止める。普段使いのデータには触れない（VSCODE_PORTABLE を使う）。
 import { spawn } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
@@ -18,7 +22,7 @@ import { fileURLToPath } from 'node:url';
 import {
   DEFAULT_BUILD, SMOKE_ROOT, assertSafeWritePath, cleanEditorEnv, listProcesses, readJson, resolveEditor, stopTree, treeFromProcesses,
 } from '../smoke/lib/common.mjs';
-import { collectTargets, evaluateAbsent, summarize, NOT_HANDLED } from './lib/absent.mjs';
+import { collectManifest, collectTargets, evaluateAbsent, summarize, NOT_HANDLED } from './lib/absent.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..', '..');
@@ -116,6 +120,10 @@ export async function main() {
     process.exitCode = 2;
     return;
   }
+  // 2つの網: runtime（起動した拡張が登録したもの・設定の登録簿）と manifest（出力の組み込み拡張の package.json の contributes）
+  snap.manifest = collectManifest(editor.builtinExtDir);
+  const nets = { runtime: { commands: (snap.commands ?? []).length, settingsAsked: Object.keys(snap.settings ?? {}).length }, manifest: { dir: editor.builtinExtDir, extensions: snap.manifest.extensions, commands: snap.manifest.commands.length, views: snap.manifest.views.length, settings: snap.manifest.settings.length } };
+  console.log(`網: runtime（コマンド ${nets.runtime.commands} 件・設定 ${nets.runtime.settingsAsked} 件を照会）+ manifest（拡張 ${nets.manifest.extensions} 件の package.json: コマンド ${nets.manifest.commands}・ビュー ${nets.manifest.views}・設定 ${nets.manifest.settings}）`);
   let failed = false;
   const report = [];
   for (const g of groups) {
@@ -126,8 +134,9 @@ export async function main() {
     report.push({ unit: g.id, summary: s, results, notHandled: NOT_HANDLED.filter((k) => (g.checks[k] ?? []).length > 0) });
     console.log(`${g.id}: pass ${s.pass} / fail ${s.fail} / unknown ${s.unknown}`);
     for (const r of results.filter((x) => x.status !== 'pass')) console.log(`  ${r.status}  ${r.kind}  ${r.name}  (${r.detail})`);
+    if (o.expect === 'present') for (const r of results.filter((x) => x.status === 'pass')) console.log(`  pass  ${r.kind}  ${r.name}  (${r.net})`);
   }
-  writeFileSync(join(runDir, 'absent-result.json'), JSON.stringify({ build: editor.root, version: editor.version, expect: o.expect, report }, null, 2), 'utf8');
+  writeFileSync(join(runDir, 'absent-result.json'), JSON.stringify({ build: editor.root, version: editor.version, expect: o.expect, nets, report }, null, 2), 'utf8');
   console.log(`結果: ${join(runDir, 'absent-result.json')}`);
   process.exitCode = failed ? 1 : 0;
 }

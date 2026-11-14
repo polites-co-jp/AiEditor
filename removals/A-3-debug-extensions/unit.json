@@ -2,7 +2,7 @@
   "id": "A-3-debug-extensions",
   "stage": "A",
   "order": 130,
-  "enabled": false,
+  "enabled": true,
   "intent": "デバッグの組み込み拡張（extensions/debug-auto-launch・debug-server-ready）を消す。product.json の builtInExtensions（js-debug 系3件。ビルドのときに GitHub から取得される）を [] にするのは product.overlay.json の set（docs/02 の3節の表の『set（A-3）』）。本体のデバッガ（contrib/debug）と vscode.debug は C-2 まで残す",
   "after": [],
   "delete": [

@@ -48,3 +48,32 @@ node tests/smoke-run.mjs --build C:/b/p2/1.146.0-p2-A-4/Shuko-win32-x64-1.146.0-
 - 置き場所 `C:\b\smoke\runs\p2-A-4-20261114T132021\`。PASS 49 / FAIL 0 / INFO 9。誤りの件数は A-3 と同じ
 - claude-code の組: 3項目 PASS
 - コマンドの数 3281（A-3 と同じ）。ノートブックの部品（本体の contrib/notebook）は C-4 まで残る
+
+## 4. 関門の3の流し直し（追記。2026-11-14 JST 23:49〜23:53）
+
+- 依頼: `tasks/2026-11-14-p2-regate-a/brief.md`。曹参の網の直し（`tasks/2026-11-14-fix-absent-probe/`）の後に、関門の3だけを流し直した。A-4 の checks は変わっていない
+- 版は作り直していない（展開した `resources\app\product.json` の commit `35a89e77…609c` は builds.md と同じ）。1・2・4 は上の合格のまま
+
+### 実行したこと
+
+```
+node tests/absent-run.mjs --build C:/b/p0/vscode-1.146.0 --units all --expect present --label regate-official
+node tests/absent-run.mjs --build C:/b/p2/1.146.0-p2-A-3/Shuko-win32-x64-1.146.0-p2-A-3 --units A-4-notebook-extensions --expect present --label regate-prev-A-4-on-A-3
+node tests/absent-run.mjs --build C:/b/p2/1.146.0-p2-A-4/Shuko-win32-x64-1.146.0-p2-A-4 --units A-4-notebook-extensions --expect absent --label regate-A-4
+```
+
+| 項目 | 公式（present） | A-3 の版（present） | A-4（absent） |
+|---|---|---|---|
+| absentCommands `ipynb.newUntitledIpynb` | 在る（manifest） | 在る（manifest） | 無い（pass） |
+| absentCommands `ipynb.openIpynbInNotebookEditor` | 在る（manifest） | 在る（manifest） | 無い（pass） |
+| absentSettings `ipynb.pasteImagesAsAttachments.enabled` | 在る（runtime+manifest） | 在る（runtime+manifest） | 無い（pass） |
+
+結果: `C:\b\smoke\absent\regate-official-20261114T144944\`、`regate-prev-A-4-on-A-3-20261114T145250\`、`regate-A-4-20261114T145111\`。A-4 の実行は pass 3 / fail 0 / unknown 0。設定の網の対照は A-1 の記録の5節。
+
+### 判定（流し直し）
+
+| 関門 | 結果 | 要点 |
+|---|---|---|
+| 3. 消えている | **合格** | 3件とも公式と前の版（A-3）で在り、A-4 の版で無い。コマンド2件は manifest の網、設定1件は実行時の網（runtime+manifest）でも見える |
+
+**1〜4 がすべて合格。A-4 は `enabled: true` にしてよい。**
