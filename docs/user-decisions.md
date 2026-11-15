@@ -301,3 +301,13 @@
 | `vscode.debug.activeDebugConsole` | `undefined` でなく何もしないコンソールにする（型が undefined を許さず、拡張がそのまま呼ぶと誤りになる） |
 | C-1 のパッチと隣り合う行（`extHost.protocol.ts`・`repl.contribution.ts` の import の3行） | main のファイルでなくても `removeLines` に回す。docs/03 の5.3 に書いた |
 | C-2 が `workbench.common.main.ts` に1行を足す（2026-11-14 の案A） | docs/03 の5.3 に例外として書いた |
+
+## 記録（2026-11-15、C-3 の edits.patch を作るときに出た点。リーダーの判断）
+
+根拠: `tasks/2026-11-15-p5-c3-patch/handoff-notes.md`
+
+| 論点 | 扱い |
+|---|---|
+| `productRemove`（server・tunnel のキー）で build/ の台本（`gulpfile.vscode.ts` など）に型だけの誤りが6件出る | 直さない。手元のパッケージ化は実行時に止まらず、関門の型検査（`typecheck-client`）の外。A-3 の前からの1件と同じ扱い。パッケージ化で止まったら直す |
+| `gulpfile.vscode.ts` の `esbuild-vscode-reh-min`・`esbuild-vscode-reh-web-min` の定義 | 残す。呼ぶ所が無くなるだけで、消すと C-1 が直すファイルに触れる |
+| docs/03 の表の C-3 の行が、残すと決めた `services/tunnel` などを消す側に挙げていた | 表を直した |
