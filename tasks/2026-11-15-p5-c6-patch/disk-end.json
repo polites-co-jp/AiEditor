@@ -1,0 +1,20 @@
+{
+  "countedAt": "2026-11-15T04:54:45.204Z",
+  "seconds": 0.001,
+  "drive": {
+    "root": "C:\\",
+    "freeBytes": 20479406080,
+    "freeGB": 19.07
+  },
+  "entries": [
+    {
+      "name": "none",
+      "path": "C:\\b\\__none__",
+      "exists": false
+    }
+  ],
+  "uniqueTotal": {
+    "bytes": 0,
+    "gb": 0
+  }
+}

@@ -465,3 +465,131 @@ edits.patch は108ファイル（新規は `extHostRemovedApi.ai.ts` の1つ）�
 - `services/chat/common/nullChatEntitlementService.ts` は無くなった。テストや検査がこのファイル名を見ているなら、`chatEntitlementService.ts` の中の `export class NullChatEntitlementService` に読み替えてほしい。
 - `removeLines` に `pnpm-workspace.yaml` の4行が増えた。
 - 大岡越前守の当て直しは、タグの状態の `C:\b\wt\p2` から、1回目と同じ `apply.mjs ... --only <15単位>` で始められる。
+
+---
+
+## 6回目（2026-11-15、提案中の API の門の抜け）
+
+### 結果
+
+**完了**。作業ツリー `C:\b\wt\p2` はタグ 1.146.0（`69047191`）に戻した。未コミットの変更は 0。
+
+### 直したこと
+
+`src/vs/workbench/api/common/extHostRemovedApi.ai.ts`（edits.patch）:
+
+| 所 | 本家の門（消すファイル） | 直し |
+|---|---|---|
+| `lm.registerToolDefinition` | `extHostLanguageModelTools.ts` 352 `languageModelToolSupportsModel` | 最初の文に同じ門を足した（曹参の指摘） |
+| `lm.fileIsIgnored` | `extHostLanguageModels.ts` 750 `chatParticipantAdditions` | 同じ門を足した。本家は async 関数なので、誤りは reject で返す |
+| `lm.registerIgnoredFileProvider` | `extHostLanguageModels.ts` 791 `chatParticipantPrivate` | 同じ門を足した |
+| `chat.createChatParticipant`・`createDynamicChatParticipant` が返す参加者 | `extHostChatAgents2.ts` 1450〜1526（`apiAgent`） | 次の3点を本家と同じにした（`noopChatParticipant` に `extension` を渡す） |
+
+参加者の直しの中身:
+- 読み書きに門のある項目は、ただの値だったのを、本家と同じ門を持つ getter・setter にした。
+  - `defaultChatParticipant`: `helpTextPrefix`・`helpTextPostfix`・`additionalWelcomeMessage`・`titleProvider`・`summarizer`
+  - `chatParticipantPrivate`: `supportIssueReporting`
+  - `chatParticipantAdditions`: `participantVariableProvider`
+- `onDidChangePauseState` は getter に門（`chatParticipantAdditions`）を付けた。`onDidPerformAction` は、提案が無ければ undefined になる。
+- `requestHandler` の setter の型の確かめと、`participantVariableProvider` の `triggerCharacters` の確かめも、本家に合わせた。
+
+2の突き合わせ（`removals/C-1-ai/README.md` の「提案中の API の門の照らし合わせ（2026-11-15、6回目）」の表）では、本家の4ファイルの門を全部、行ごとに並べた。
+- 曹参が見つけた `registerToolDefinition` のほかに、抜けが2つの所と参加者の項目にあった。それぞれ `fileIsIgnored`・`registerIgnoredFileProvider` と、参加者の9項目（`helpTextPrefix`・`helpTextPostfix`・`supportIssueReporting`・`participantVariableProvider`・`additionalWelcomeMessage`・`titleProvider`・`summarizer`・`onDidChangePauseState`・`onDidPerformAction`）。
+- これらは曹参の検査（門の提案の名前の集まりを比べる形）では見えなかった。同じ提案の名前が、ほかの所に別に出てくるため。
+- 呼べない所の門には、要らない理由を書いた。
+  - `languageModelSystem` は送るときのメッセージの変換。`selectChatModels` が `[]` なので送る口が無い。
+  - `mcpToolDefinitions` は提供者が返したサーバーの定義の検証。提供者を呼ばない。
+  - ほかに、応答の流れ・main から道具を呼ぶとき・提供者の情報の変換。
+- `invokeTool` の119行（編集の道具の名前）は門を足していない。何もしない実装はどの名前でも reject するので、拡張から見て失敗することは変わらない。
+
+unit.json は変えていない。edits.patch は108ファイル、852行の追加、5418行の削除。From の commit は `efd76c0c`。
+
+### 確かめたこと
+
+- 直した後の型検査（`trial/round6-typecheck-1.json`）は `ok`、誤り 0。
+- **15単位**: タグから当て直した（`trial/round6-checks-verify.json`）。
+  - `result: ok`。C-1-ai の edits（commit `b72ca1e6`）は `conflicts: []`。fail・warn の検査は無い
+  - 型検査（`trial/round6-typecheck-verify.json`）は `ok`、誤り 0（HEAD `6b8518b8`、未コミット 0）
+  - `pnpm install --lockfile-only --ignore-scripts` の後の `--lockfile-check` は `ok`（同じ記録に追記。差分は `trial/round6-lockfile.diff`）。ロックファイルは戻した
+- **20単位（A・B の14と C-1〜C-6）**: タグから当て直した（`trial/round6-checks-c1-c6.json`）。
+  - `result: ok`。衝突も fail・warn も無い
+  - 警告は1つだけ: `C-2-debug: delete: src/vs/workbench/contrib/debug/browser/debugChatIntegration.ts が本家に無い（改名の恐れ）`。C-1 が先にこのファイルを消すためで、C-1 の今回の直しとは関係ない（前からある）
+  - 型検査（`trial/round6-typecheck-c1-c6.json`）は `ok`、誤り 0（HEAD `94e79c3b`、未コミット 0）
+- `git -C C:/b/wt/p2 checkout 1.146.0` でタグに戻した。`git -C C:/b/wt/p2 status --short` は空。
+- ディスク: C: の空きは 18.83 GB（`disk-end-6.json`）。
+
+### テストの入口（曹参へ）
+
+`tests/c1-unit.test.mjs` の門の検査（提案の名前の集まり）は、`languageModelToolSupportsModel` が入ったので通るはず。今回の抜けが名前の比べ方では見えなかったので、所（メンバー）ごとに試すとよい。提案を有効にしていない拡張で、次のとおり。
+- `createRemovedLanguageModelApi(ext, emb)`:
+  - `.registerToolDefinition(def, tool)` が `languageModelToolSupportsModel` の誤りを投げる
+  - `.registerIgnoredFileProvider(p)` が `chatParticipantPrivate` の誤りを投げる
+  - `.fileIsIgnored(uri)` が `chatParticipantAdditions` の誤りで reject する
+- `createRemovedChatApi(ext).createChatParticipant('p', h)` の戻り値:
+  - `.helpTextPrefix = 'x'` が `defaultChatParticipant` の誤りを投げる。`titleProvider`・`summarizer`・`additionalWelcomeMessage`・`helpTextPostfix` の読み書きも同じ
+  - `.supportIssueReporting` の読み書きが `chatParticipantPrivate` の誤りを投げる
+  - `.participantVariableProvider` の読み書き、`.onDidChangePauseState` の読みが `chatParticipantAdditions` の誤りを投げる
+  - `.onDidPerformAction` は undefined
+  - `.id` は `'p'`
+  - `.requestHandler = 1` が `Invalid request handler` を投げる
+- 提案を有効にした拡張では、どれも誤りにならない。`fileIsIgnored` は false で resolve し、`onDidPerformAction` はイベントになる。
+
+本家の行ごとの対応表は、README の「提案中の API の門の照らし合わせ」にある。期待を本家から読む形の検査に、所の単位を足すときの手がかりにしてほしい。
+
+（6回目の記述の訂正: 上の「`lm.fileIsIgnored` は reject する」「本家は async 関数なので、誤りは reject で返す」は、本家の読み違いだった。7回目で同期で投げる形に直した。）
+
+---
+
+## 7回目（2026-11-15、門の誤りの出方）
+
+### 結果
+
+**完了**。ただし、2つのうち `lm.getModelProxy` は変えていない。今の実装が、拡張から見た本家の出方と同じだったため。根拠は下にあり、曹参のテストの期待を直す必要がある。
+
+作業ツリー `C:\b\wt\p2` はタグ 1.146.0（`69047191`）に戻した。未コミットの変更は 0。
+
+### 本家の出方（本家 1.146.0 の `C:\b\wt\1.146.0` で確かめた）
+
+| メンバー | 拡張が呼ぶ口（`extHost.api.impl.ts`） | その先（消すファイル） | 拡張から見た出方（本家） | 7回目の後の実装 |
+|---|---|---|---|---|
+| `lm.fileIsIgnored` | 1964〜1966行。門を持たず、`extHostLanguageModels.fileIsIgnored(extension, uri, token)` をそのまま返す | `extHostLanguageModels.ts` 749〜753行。`fileIsIgnored(...): Promise<boolean> {` で `async` が無い。先頭で `checkProposedApiEnabled(extension, 'chatParticipantAdditions')` | **同期で投げる** | 同期で投げる（**直した**） |
+| `lm.getModelProxy` | 1920〜1923行。`getModelProxy: () => { checkProposedApiEnabled(extension, 'languageModelProxy'); return extHostLanguageModels.getModelProxy(extension); }` | `extHostLanguageModels.ts` 759〜760行。`async getModelProxy(extension)` の先頭にも同じ門がある | **同期で投げる**。外側の口が、async 関数に入る前に同期で門を呼ぶので、内側の async の門には届かない | 同期で投げる（**変えていない**） |
+
+- 曹参の表の「`lm.getModelProxy` は本家が async（reject する）」は、内側の `ExtHostLanguageModels.getModelProxy` だけを読んだもの。外側の `extHost.api.impl.ts` の門（同期）を見落としている。
+- 実装を reject の形にすると、かえって本家と違う出方になる。docs の決まり（門は本家と同じにする）に従い、変えていない。
+- テストの期待は、`lm.getModelProxy` を「同期で投げる」に直す必要がある（曹参へ）。
+- 部品 `tests/gate-members.mjs` が async かどうかを消すファイルのメソッドだけで決めているなら、次のとおりにするとよい。
+  - 外側の口（`extHost.api.impl.ts` の `lm`・`chat` の宣言）が async でなく、先に門を呼ぶメンバーは「同期」とする
+  - または、外側の口で門を呼ぶメンバーは外側の形を優先する
+
+### 直したこと
+
+`src/vs/workbench/api/common/extHostRemovedApi.ai.ts`（edits.patch）:
+- `lm.fileIsIgnored`: `try { checkProposedApiEnabled(...) } catch (err) { return Promise.reject(err); }` をやめて、先頭で `checkProposedApiEnabled(extension, 'chatParticipantAdditions')` を同期で呼ぶ形にした。提案があれば `Promise.resolve(false)`。コメントも「async でないので同期で投げる」に直した。
+- `lm.getModelProxy`: コードは変えていない。「本家の `extHost.api.impl.ts` と同じく、async の本体の前に同期で門を呼ぶ」というコメントだけを足した。
+
+README の門の表（「提案中の API の門の照らし合わせ」）の2行と、「Claude Code が使う API への影響」の `fileIsIgnored` の行も直した。
+
+edits.patch は108ファイル、849行の追加、5418行の削除。From の commit は `f2cf5706`。unit.json は変えていない。
+
+### 確かめたこと
+
+- **15単位**: タグから当て直した（`trial/round7-checks-verify.json`）。
+  - `result: ok`。C-1-ai の edits（commit `b6c42da1`）は `conflicts: []`。fail・warn の検査は無い
+  - 型検査（`trial/round7-typecheck-verify.json`）は `ok`、誤り 0（HEAD `2b1cc633`、未コミット 0）
+- **21単位（A・B の14と C-1〜C-7）**: タグから当て直した（`trial/round7-checks-c1-c7.json`）。
+  - `result: ok`。衝突も fail・warn も無い
+  - 警告は前からある1つだけ（C-2 の `debugChatIntegration.ts` が無い。C-1 が先に消すため）
+  - 型検査（`trial/round7-typecheck-c1-c7.json`）は `ok`、誤り 0（HEAD `e5f54bc7`、未コミット 0）
+- `node --test tests/c1-unit.test.mjs` は許可に無いので、走らせていない。
+- `git -C C:/b/wt/p2 checkout 1.146.0` でタグに戻した。`status --short` は空。
+
+### テストの入口（曹参へ）
+
+提案を有効にしていない拡張で:
+- `createRemovedLanguageModelApi(ext, emb).fileIsIgnored(uri)` を呼ぶと、**同期で**門の誤り（`chatParticipantAdditions`）を投げる。戻り値の Promise は作られない。
+- `createRemovedLanguageModelApi(ext, emb).getModelProxy()` を呼ぶと、**同期で**門の誤り（`languageModelProxy`）を投げる。今のテストの期待（reject）は、上の根拠で「同期で投げる」に直してほしい。直せば、`c1-unit` の「門の誤りが、本家と同じ形で返る」と、`c1-mutation` の対照が通る見込み。
+
+提案を有効にした拡張では:
+- `fileIsIgnored` は false で resolve する。
+- `getModelProxy` は reject する（`lm.getModelProxy: The built-in AI features are removed from this build`）。

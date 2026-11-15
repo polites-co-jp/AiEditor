@@ -2,7 +2,7 @@
 
 裁定（2026-11-12）: 本家の AI は消す。ただし Claude Code 拡張が依存する部分があれば特定して残す。拡張 API の入口（`vscode.lm`・`vscode.chat` など）は何もしない実装にして残し、中身のコードは消す。
 
-状態: **edits.patch あり、関門の前**（2026-11-15）。A・B の14単位の上に C-1 を当てた作業ツリー（`C:\b\wt\p2`、本家 1.146.0）で、型検査（`pnpm run typecheck-client`）が誤り 0 で通る。タグに戻して A＋B＋C-1 を `apply.mjs` で当て直すと、edits.patch は衝突なく当たり（`git am -3`）、適用後の検査は `ok`、型検査も誤り 0（`tasks/2026-11-15-p5-c1-patch/typecheck-log.md`）。`enabled` はまだ `false`。ビルド（パッケージ化）・起動の確かめ・関門は、古い版の片づけの許可の後に行う。直した点の一覧は下の「edits.patch で直した点（2026-11-15）」。2回目（同じ日、パッケージ化の前に要る直し）は「edits.patch の2回目の直し（2026-11-15）」。3回目は「edits.patch の3回目の直し（2026-11-15）」。3回目の後も、当て直しは衝突なく `ok`、型検査は誤り 0。ロックファイルの検査（`--lockfile-check`）も `ok` になった。5回目（大岡越前守の検証の軽微な指摘の1〜4）の後の edits.patch は108ファイル（新しいファイルは `extHostRemovedApi.ai.ts` の1つ）、742行の追加、5418行の削除。当て直し・型検査・ロックファイルの検査はどれも `ok`。
+状態: **edits.patch あり、関門の前**（2026-11-15）。A・B の14単位の上に C-1 を当てた作業ツリー（`C:\b\wt\p2`、本家 1.146.0）で、型検査（`pnpm run typecheck-client`）が誤り 0 で通る。タグに戻して A＋B＋C-1 を `apply.mjs` で当て直すと、edits.patch は衝突なく当たり（`git am -3`）、適用後の検査は `ok`、型検査も誤り 0（`tasks/2026-11-15-p5-c1-patch/typecheck-log.md`）。`enabled` はまだ `false`。ビルド（パッケージ化）・起動の確かめ・関門は、古い版の片づけの許可の後に行う。直した点の一覧は下の「edits.patch で直した点（2026-11-15）」。2回目（同じ日、パッケージ化の前に要る直し）は「edits.patch の2回目の直し（2026-11-15）」。3回目は「edits.patch の3回目の直し（2026-11-15）」。3回目の後も、当て直しは衝突なく `ok`、型検査は誤り 0。ロックファイルの検査（`--lockfile-check`）も `ok` になった。5回目（大岡越前守の検証の軽微な指摘の1〜4）の後の edits.patch は108ファイル（新しいファイルは `extHostRemovedApi.ai.ts` の1つ）、742行の追加、5418行の削除。当て直し・型検査・ロックファイルの検査はどれも `ok`。6回目（提案中の API の門の抜け）の後は108ファイル、852行の追加、5418行の削除（下の「提案中の API の門の照らし合わせ」）。15単位と、C-1〜C-6 の20単位の組のどちらでも、当て直しと型検査は `ok`。7回目（`fileIsIgnored` の誤りの出方）の後は108ファイル、849行の追加、5418行の削除。15単位と、C-1〜C-7 の21単位の組のどちらでも、当て直しと型検査は `ok`。
 
 ## 消すもの
 
@@ -231,6 +231,38 @@ edits.patch は109ファイル、750行の追加、5417行の削除になった�
   - ほかの名前の増減、残る名前の中身の変化、ほかの節の変化は、今までどおり止める。
   - C-1 を当ててロックファイルを作り直すと、`--lockfile-check` は `ok`（`changedSections: []`、`removedPatches: ["foundry-local-sdk"]`）。
 
+## 提案中の API の門の照らし合わせ（2026-11-15、6回目）
+
+C-1 が消す拡張ホストのファイルにある `checkProposedApiEnabled`・`isProposedApiEnabled` を、本家 1.146.0 で全部数え、何もしない実装（`extHostRemovedApi.ai.ts`）と突き合わせた。門があるファイルは4つで、`extHostChatAgents2.ts`・`extHostLanguageModels.ts`・`extHostLanguageModelTools.ts`・`extHostMcp.ts`。ほかの消すファイル（`extHostChat{Context,Sessions,Status,Quota,Debug,OutputRenderer,InputNotification,ArtifactIntegrations}.ts`・`extHostCodeMapper.ts`・`extHostAgentEditorComments.ts`・`api/node/extHostMcpNode.ts`）には門が無い。`extHost.api.impl.ts` の `chat`・`lm` の門は、1回目から同じ所に写してある。
+
+「呼べる」は、拡張が何もしない実装に直接触れられる所。「呼べない」は、本物のチャット・モデル・提供者が動いたときだけ通る所で、何もしない実装にはその道が無い。
+
+| 本家の門（ファイル:行） | 提案 | 所 | 何もしない実装 |
+|---|---|---|---|
+| ChatAgents2 162〜460（19か所） | `chatParticipantAdditions`・`chatParticipantPrivate` | 応答の流れ（`ChatResponseStream`）の各メソッド | 呼べない。要求の手続きを呼ばないので、流れを作らない |
+| ChatAgents2 1069 | `chatParticipantPrivate` | 手続きの結果の誤りの詳細 | 呼べない（同上） |
+| ChatAgents2 1107・1148〜1150 | `chatReferenceDiagnostic`・`chatParticipantPrivate` | 要求の変換 | 呼べない（同上） |
+| ChatAgents2 1450〜1475 | `defaultChatParticipant`・`chatParticipantPrivate` | 参加者の `helpTextPrefix`・`helpTextPostfix`・`supportIssueReporting` の読み書き | **同じ門**（6回目に足した） |
+| ChatAgents2 1480・1493 | `chatParticipantAdditions` | 参加者の `participantVariableProvider` の読み書き | **同じ門**（6回目に足した） |
+| ChatAgents2 1497〜1519 | `defaultChatParticipant` | 参加者の `additionalWelcomeMessage`・`titleProvider`・`summarizer` の読み書き | **同じ門**（6回目に足した） |
+| ChatAgents2 1523 | `chatParticipantAdditions` | 参加者の `onDidChangePauseState` | **同じ門**（6回目に足した） |
+| ChatAgents2 1526 | `chatParticipantAdditions`（is） | 参加者の `onDidPerformAction`（提案が無ければ undefined） | **同じ**（6回目に足した） |
+| LanguageModels 205・212・215・219 | `chatProvider`・`languageModelCapabilities` | 提供者が返したモデルの情報の変換 | 呼べない。提供者を呼ばない |
+| LanguageModels 590 | `languageModelSystem` | 送るときのメッセージの変換 | 呼べない。`selectChatModels` が `[]` なので送る口が無い |
+| LanguageModels 750 | `chatParticipantAdditions` | `lm.fileIsIgnored` | **同じ門**（6回目に足した）。本家の `fileIsIgnored` は async でないので、同期で投げる（7回目に直した。6回目は reject にしていた） |
+| LanguageModels 760 | `languageModelProxy` | `lm.getModelProxy` | 同じ門（1回目から）。本家の `ExtHostLanguageModels.getModelProxy` は async だが、拡張が呼ぶ `extHost.api.impl.ts` 1920〜1923行の `lm.getModelProxy` が、先に同期で `checkProposedApiEnabled` を呼ぶ。そのため、拡張から見ると同期で投げる。何もしない実装も同期で投げる（7回目に確かめた。変えていない） |
+| LanguageModels 791 | `chatParticipantPrivate` | `lm.registerIgnoredFileProvider` | **同じ門**（6回目に足した） |
+| LanguageModels 803 | `chatParticipantPrivate` | `lm.registerLanguageModelProxyProvider` | 同じ門（1回目から） |
+| LanguageModelTools 119 | `chatParticipantPrivate`（is） | `lm.invokeTool` の編集の道具の名前 | 門は無いが、何もしない実装はどの名前でも reject する。拡張から見て「失敗する」ことは変わらない |
+| LanguageModelTools 130〜136 | `chatParticipantPrivate`・`chatParticipantAdditions`（is） | `invokeTool` が main へ送る項目の選び分け | 呼べない。送らない |
+| LanguageModelTools 166・176 | `chatParticipantPrivate`（is） | `lm.tools` の絞り込み | 要らない。`lm.tools` は `[]` |
+| LanguageModelTools 193〜230・268・302・311・315 | `chatParticipantPrivate`・`chatParticipantAdditions`・`toolProgress`・`toolInvocationApproveCombination` | main から道具を呼ぶとき（`$invokeTool`・`$handleToolStream`・`$prepareToolInvocation`） | 呼べない。道具を登録しないので、main から呼ばれない |
+| LanguageModelTools 352 | `languageModelToolSupportsModel` | `lm.registerToolDefinition` | **同じ門**（6回目に足した。曹参の指摘） |
+| Mcp 219・224 | `mcpToolDefinitions` | 提供者が返したサーバーの定義の検証 | 呼べない。提供者を呼ばない |
+
+6回目に足した門は、本家と同じく次の扱いになる。Claude Code は提案を使わない（manifest に `enabledApiProposals` が無い）ので、影響しない。
+- 提案を有効にしていない拡張が `lm.registerToolDefinition`・`lm.registerIgnoredFileProvider`・`lm.fileIsIgnored`、参加者の提案の項目に触れると、同期で誤りを投げる（`fileIsIgnored` は7回目に reject から直した）
+
 ## Claude Code が使う API への影響
 
 manifest（2.1.322）には `chatParticipants`・`languageModelTools`・`languageModelChatProviders`・`mcpServerDefinitionProviders`・`enabledApiProposals` が無い（`records/phase0/claude-code-manifest.md`）。提案中の API は呼べない（`checkProposedApiEnabled` が元どおり止める）ので、影響は安定版の API だけ。
@@ -242,7 +274,7 @@ manifest（2.1.322）には `chatParticipants`・`languageModelTools`・`languag
 | `vscode.lm.registerTool`・`registerLanguageModelChatProvider`・`registerMcpServerDefinitionProvider`・`registerIgnoredFileProvider` | 何もしない Disposable | 壊れない。登録したものは使われない |
 | `vscode.lm.tools` | 空の配列 | 壊れない |
 | `vscode.lm.invokeTool` | 「AI が無い」の誤りで reject | 呼べば誤り。catch していなければ拡張ホストのログに出る |
-| `vscode.lm.fileIsIgnored` | false で resolve | 壊れない |
+| `vscode.lm.fileIsIgnored` | 提案 `chatParticipantAdditions` が無ければ同期で投げる（本家と同じ。7回目）。あれば false で resolve | Claude Code は提案を使わないので、本家でも同じく呼べない |
 | `vscode.chat.createChatParticipant` | 何もしない参加者（id・requestHandler を持ち、イベントは `Event.None`） | 壊れない。チャットには出ない |
 | `ExtensionContext.languageModelAccessInformation` | `canSendRequest` は undefined、`onDidChange` は `Event.None` | 壊れない |
 

@@ -263,3 +263,84 @@ edits.patch は `diff --git` ごとの区画に分け、新しいファイルの
 
 - 消せずに残るファイル(リーダーが消す): `tests/removals/c1-check-json.mjs`、`tests/removals/c1-check-worktree.mjs`、`tasks/2026-11-15-p5-c1-tests/handoff-notes-round2-part.md`
 - 大岡越前守がロックファイルの検査を取り直すときは、`c1-check-worktree.mjs` が `nullChatEntitlementService.ts` の残りを見る。5回目より前の作業ツリーでは食い違いが出る
+
+## 5回目（2026-11-15、蒙恬の6回目。提案中の API の門を所ごとに試す）
+
+### 結果
+
+**一部完了**。門を所（メンバー）ごとに試す検査を足し、壊した写しの検査も足した。**`c1-unit` の1件と、その対照の `c1-mutation` の1件が落ちたまま**（実装の不具合。下の「見つけたこと」）。それ以外は通る。件数は末尾。
+
+### 足したもの
+
+1. `tests/gate-members.mjs`（新規。テストの部品。run-all は `*.test.mjs` だけ走らせるので、これ自体は走らない）
+   - 本家の消す `api/common/extHost*.ts` から、メンバー（メソッド・getter・setter を区別する）ごとの `checkProposedApiEnabled(.., '<名前>')` を読む。宣言の行（`;` で終わらない行）だけをメンバーの始まりとみなす
+   - 何もしない実装の面（`lm`・`chat`・参加者など）のメンバーを実際に触る。提案を有効にしていない拡張で門の誤りになること、有効にした拡張で誤りにならないことを確かめる。本家のメソッドが `async` なら reject、そうでなければ同期で投げるかも見る
+2. `tests/c1-unit.test.mjs`（+5件、既存3件を6回目の形に合わせた）
+   - 「本家の消すファイルでメンバーごとに門があるものは、提案を有効にしていない拡張で門の誤りになる…」: 13メンバーを突き合わせる（`lm.registerToolDefinition`・`lm.fileIsIgnored`・`lm.registerIgnoredFileProvider`・`lm.getModelProxy`・`lm.registerLanguageModelProxyProvider`、参加者の `helpTextPrefix`・`helpTextPostfix`・`supportIssueReporting`・`participantVariableProvider`・`additionalWelcomeMessage`・`titleProvider`・`summarizer` の getter と setter、`onDidChangePauseState`）。読み方が外れて 0 件にならないよう、6回目で見つかった抜けの所が突き合わせに入っていることも見る
+   - 「門の誤りが、本家と同じ形で返る」: **落ちる**
+   - 「門を持つメンバーのうち、実装に同じ名前が無いもの」: 本家の `extHost.api.impl.ts` の `lm`・`chat` の宣言のメンバーのうち、本家で門があるものが、実装に全部ある
+   - 「参加者の値」: `id` は渡した名前、`requestHandler` に関数でない値で `Invalid request handler`、`onDidPerformAction` は提案が無ければ undefined・有効ならイベント、`triggerCharacters` が空なら誤り
+   - 「`fileIsIgnored` は提案が有効なら false で resolve する。`registerToolDefinition`・`registerIgnoredFileProvider` は有効なら Disposable を返す」
+   - 既存3件を6回目の形に合わせた（テストの誤りで、実装の不具合ではない）: ①値のイベントの検査で `onDidPerformAction` が `isProposedApiEnabled` の条件式になった ②`noopChatParticipant` が拡張を受ける ③`import { checkProposedApiEnabled, isProposedApiEnabled }`。「安定版の API は門を通さない」の一覧から、門を足した `fileIsIgnored`・`registerIgnoredFileProvider` を外した
+3. `tests/c1-mutation.test.mjs`（+12件）: 門を外す壊し方
+   - `registerToolDefinition`・`fileIsIgnored`（同じ提案 `chatParticipantAdditions` は別の所に残るので、名前の集まりでは見えない壊し方）・`registerIgnoredFileProvider`（同上。別の提案の名前に替える壊し方も）
+   - 参加者の `helpTextPrefix` の getter、`titleProvider` の setter、`supportIssueReporting`、`participantVariableProvider`、`onDidChangePauseState` の門
+   - `onDidPerformAction` が提案なしでもイベントになる、`fileIsIgnored` が有効な拡張でも reject する、`registerToolDefinition` が有効な拡張でも投げる
+   - 名前の集まりの検査だけでは落ちない壊し方は、メンバーごとの検査が落ちることを期待している（`/メンバーごとに門/`）
+4. C-2・C-4（同じ「名前の集まりでは見えない」抜けが無いか）
+   - `c4-unit.test.mjs` に同じ部品で突き合わせを足した（コントローラーの `variableProvider` の setter・`createNotebookExecution`・`postMessage`・`asWebviewUri`・`updateNotebookAffinity` を突き合わせる）。**抜けは無かった**。途中で、本家の `variableProvider` は setter にだけ門があり getter には無いことが分かり、部品が getter と setter を区別する形にした
+   - `c2-unit.test.mjs` に同じ形を足した。C-2 の門（`debugVisualization` の2つ）は、消す extHost のファイルではなく `extHost.api.impl.ts` の消す塊にある。その塊を本家のメンバーの宣言として読んで突き合わせる。**抜けは無かった**（2つは別々のメンバーで、既存の「最初の文にある」検査がメンバーごとに見ていた）
+   - C-3・C-5 は何もしない API の実装が無いので対象外
+
+### 見つけたこと（実装の不具合。蒙恬へ）
+
+メンバーごとの突き合わせで、門を持つメンバーのうち2つで、**誤りの出方が本家と違う**。門そのものは付いている。
+
+| メンバー | 本家 | 実装 |
+|---|---|---|
+| `lm.fileIsIgnored` | **同期で投げる**（`extHostLanguageModels.ts` の `fileIsIgnored(...)` は `async` でなく、`Promise<boolean>` を返す関数の先頭で `checkProposedApiEnabled` が投げる。API 側の `extHost.api.impl.ts` 1965 行もそのまま返す） | reject する（`try/catch` で `Promise.reject`） |
+| `lm.getModelProxy` | **async（reject する）**（`async getModelProxy(extension)`） | 同期で投げる（`checkProposedApiEnabled` の後に `Promise.reject`） |
+
+- 蒙恬の6回目の記述「`fileIsIgnored`… 本家は async 関数なので、誤りは reject で返す」は、本家の読み違い。`async` は付いていない
+- 影響: 拡張から見て、`try { lm.fileIsIgnored(...) } catch {}` と `lm.fileIsIgnored(...).catch(...)` の違いに出る。提案を有効にしていない拡張は、そもそも門で止まるのが本家の振る舞い。Claude Code が呼ぶ口ではない
+- どちらが正しいかを決めるのは私ではない。本家と同じにするのが docs（「提案中の API の門は本家と同じにする」）と C-4 の教訓に合うので、テストは本家と同じ形を期待している。本家のままでよい（実装が正しい）と判断するなら、テストの期待を直す
+- 落ちるテスト: `c1-unit.test.mjs`「門の誤りが、本家と同じ形で返る…」と、`c1-mutation.test.mjs`「壊さない写しは c1-unit.test.mjs が全部通る(対照)」（対照が全体の pass を要求するため）
+
+### 件数
+
+run-all の最終の件数は、`tasks/2026-11-15-p5-c6-tests/run-all-result-final.txt`: 2410 件（pass 2401、fail 2、skip 7）。fail は上の2件（`c1-unit` の「門の誤りが、本家と同じ形で返る」と `c1-mutation` の対照）だけ。C-1 の門の抜け（`registerToolDefinition`）の以前の2件は、6回目で直って通る。C-1 の4本は 98 件（`c1-unit` 43、`c1-mutation` 33、`c1-round2` 14、`c1-check-json` 8）。**fail 0 に戻るのは、蒙恬が上の2メンバーの誤りの出方を本家に合わせた後**（または、実装のままでよいと判断してテストの期待を直した後）。
+
+### 未解決・注意（5回目）
+
+- `tests/gate-members.mjs` の突き合わせは、本家のメンバーの宣言を行の形（インデントと `;` で終わらない行）で読む。本家の書き方が大きく変わる版では、`expectChecked` が落ちて気づける形にしてある
+
+## 6回目（2026-11-15、蒙恬の7回目。getModelProxy の期待の直し）
+
+### 結果
+
+**完了**。`c1` の4本は 98 件すべて pass。`c2-unit` 58、`c4-unit` 55 も pass。全体の件数は末尾。
+
+### 本家の読みの確かめ（蒙恬は正しかった）
+
+本家 1.146.0 の `src/vs/workbench/api/common/extHost.api.impl.ts` 1921〜1924行:
+
+```
+getModelProxy: () => {
+	checkProposedApiEnabled(extension, 'languageModelProxy');
+	return extHostLanguageModels.getModelProxy(extension);
+},
+```
+
+外側の口は `async` でなく、内側の `async getModelProxy` を呼ぶ**前に**同期で門を呼ぶ。拡張が触るのは外側の口なので、提案の無い拡張には**同期で投げる**のが本家の出方。私の部品は内側（`extHostLanguageModels.ts`）の `async` だけを見て「reject」を期待していた。**テスト側の誤り**で、実装の不具合ではなかった。`fileIsIgnored` は私の読みが外側・内側とも同期だったとおり、蒙恬が7回目で同期に直した。
+
+### 直したこと
+
+1. `tests/gate-members.mjs`: `outerSyncGateNames(apiImplText)` を足した。本家 `extHost.api.impl.ts` の `const lm: typeof vscode.lm = {` と `const chat: typeof vscode.chat = {` の宣言を読み、`async` でなく、直後の文で `checkProposedApiEnabled` を呼ぶメンバーの集まりを返す。`compareMemberGates` は `outerSync` を受け取り、その集まりにあるメンバーは、内側が `async` でも「同期で投げる」を期待する（外側の形を優先）。
+2. `tests/c1-unit.test.mjs`: 上を使う。`getModelProxy` が外側の同期の集まりに読めていることも確かめる（読み方の退行を見張る）。「`fileIsIgnored` は提案が有効なら false で resolve」の検査は、提案なしの場合を「reject」から「同期で投げる」に直した（本家のとおり）。
+3. `tests/c1-mutation.test.mjs`: `fileIsIgnored` の2件の壊し方（門が消える、有効な拡張でも reject する）を、7回目の形（`try/catch` が無く、門の直後に `Promise.resolve(false)`）に合わせた。
+4. C-2・C-4: `outerSync` は C-1 の `lm`・`chat` の宣言だけに使い、C-2・C-4 は影響を受けない。`c2-unit` 58、`c4-unit` 55 は通る。
+
+### 件数
+
+- `c1` の4本: `c1-unit` 43、`c1-mutation` 33、`c1-round2` 14、`c1-check-json` 8。98 件で fail 0。
+- 全体: 2538 件、pass 2529、skip 7、**fail 0**（C-1 の2件が直ったため）。内訳は、C-1 以外の全ファイルを個別に走らせて確かめた（`c2-unit`・`c2-mutation`・`c3-mutation`・`c4-unit`・`c4-mutation`・`c5-mutation`・`c6-mutation`・`c7-` の4本・`removals`・`lock`・`take-in`・`watch`・`smoke` が pass。PowerShell のテストは前回の全体と同じで pass）。1回の全体の記録は `tasks/2026-11-15-p5-c1-tests/run-all-result-6.txt` に保存する設定で走らせてある（終わっていれば同じ件数）。

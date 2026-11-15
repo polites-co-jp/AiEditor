@@ -1,0 +1,86 @@
+{
+  "label": "c7tc-1",
+  "upstream": {
+    "tag": "1.146.0",
+    "commit": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+  },
+  "units": [],
+  "patches": [],
+  "lockfileDiff": "tasks/2026-11-15-p5-c7-patch/trial/take-in/lockfile.diff",
+  "toolchain": null,
+  "durations": {
+    "typecheck": 5.958
+  },
+  "zip": null,
+  "extensionsLockSha256": "6b4c3ceae7d6cb407f62bbcbd57ca50267e998975887884cc325fd26a85cce10",
+  "result": "error",
+  "stoppedAt": "typecheck",
+  "dryRun": false,
+  "startedAt": "2026-11-15T08:11:13.138Z",
+  "finishedAt": "2026-11-15T08:11:19.239Z",
+  "paths": {
+    "buildRoot": "C:\\b",
+    "worktree": "C:\\b\\wt\\p2",
+    "packageDir": "C:\\b\\wt\\VSCode-win32-x64",
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-15-p5-c7-patch\\trial\\take-in\\checks.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\removals",
+    "dist": "C:\\b\\dist",
+    "logs": "C:\\b\\logs\\c7tc-1"
+  },
+  "config": {
+    "path": "C:\\Users\\kou_z\\AppData\\Local\\Shuko\\local.json",
+    "exists": false,
+    "buildRootFrom": "default"
+  },
+  "stepsSelected": [
+    "typecheck"
+  ],
+  "envRemovedForChildren": [
+    "ELECTRON_RUN_AS_NODE",
+    "VSCODE_CODE_CACHE_PATH",
+    "VSCODE_CRASH_REPORTER_PROCESS_TYPE",
+    "VSCODE_CWD",
+    "VSCODE_ESM_ENTRYPOINT",
+    "VSCODE_HANDLES_UNCAUGHT_ERRORS",
+    "VSCODE_IPC_HOOK",
+    "VSCODE_NLS_CONFIG",
+    "VSCODE_PID",
+    "VSCODE_PROCESS_TITLE"
+  ],
+  "sourceVersion": {
+    "name": "BUILD_SOURCEVERSION",
+    "value": "307dedcf5a058a0fb77261af76656e5ea8cae2cd",
+    "source": "worktree HEAD",
+    "worktree": "C:\\b\\wt\\p2",
+    "readAt": "typecheck",
+    "steps": [
+      "typecheck",
+      "package"
+    ],
+    "error": null,
+    "uncommittedEntries": 0,
+    "checksHeadCommit": null,
+    "matchesChecksHead": null
+  },
+  "branch": null,
+  "steps": [
+    {
+      "name": "typecheck",
+      "status": "error",
+      "startedAt": "2026-11-15T08:11:13.146Z",
+      "env": {
+        "BUILD_SOURCEVERSION": "307dedcf5a058a0fb77261af76656e5ea8cae2cd"
+      },
+      "command": "pnpm run typecheck-client",
+      "cwd": "C:\\b\\wt\\p2",
+      "log": "C:\\b\\logs\\c7tc-1\\typecheck.log",
+      "seconds": 5.958,
+      "exitCode": 1,
+      "tail": "$ tsc --project ./src/tsconfig.json --noEmit --skipLibCheck\nsrc/vs/workbench/api/browser/mainThreadCustomEditors.ts(14,33): error TS2307: Cannot find module '../../services/outline/browser/outline.js' or its corresponding type declarations.\nsrc/vs/workbench/api/test/browser/mainThreadCustomEditors.test.ts(43,33): error TS2307: Cannot find module '../../../services/outline/browser/outline.js' or its corresponding type declarations.\nsrc/vs/workbench/browser/parts/editor/editorHeaderControl.ts(12,63): error TS2307: Cannot find module './breadcrumbsControl.js' or its corresponding type declarations.\nsrc/vs/workbench/browser/parts/editor/singleEditorTabsControl.ts(21,43): error TS2307: Cannot find module './breadcrumbsControl.js' or its corresponding type declarations.\nsrc/vs/workbench/contrib/codeEditor/browser/quickaccess/gotoSymbolQuickAccess.ts(29,58): error TS2307: Cannot find module '../../../../services/outline/browser/outline.js' or its corresponding type declarations.\nsrc/vs/workbench/contrib/codeEditor/browser/quickaccess/gotoSymbolQuickAccess.ts(166,84): error TS7006: Parameter 'outline' implicitly has an 'any' type.\nsrc/vs/workbench/contrib/codeEditor/browser/quickaccess/gotoSymbolQuickAccess.ts(187,12): error TS7006: Parameter 'err' implicitly has an 'any' type.\nsrc/vs/workbench/contrib/codeEditor/browser/quickaccess/gotoSymbolQuickAccess.ts(198,72): error TS7006: Parameter 'element' implicitly has an 'any' type.\nsrc/vs/workbench/contrib/search/test/browser/anythingQuickAccess.test.ts(27,33): error TS2307: Cannot find module '../../../../services/outline/browser/outline.js' or its corresponding type declarations.\nsrc/vs/workbench/test/browser/componentFixtures/editor/tabs.fixture.ts(37,57): error TS2307: Cannot find module '../../../../browser/parts/editor/breadcrumbs.js' or its corresponding type declarations.\nsrc/vs/workbench/test/browser/componentFixtures/editor/tabs.fixture.ts(43,33): error TS2307: Cannot find module '../../../../services/outline/browser/outline.js' or its corresponding type declarations.\n[ELIFECYCLE] Command failed with exit code 1.\n",
+      "message": "型検査が 1 で終わった"
+    }
+  ],
+  "warnings": [],
+  "message": "typecheck で止まった: 型検査が 1 で終わった"
+}

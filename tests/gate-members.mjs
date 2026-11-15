@@ -32,6 +32,26 @@ export function memberGatesOf(files) {
   return map;
 }
 
+/**
+ * 外側の口（extHost.api.impl.ts の lm・chat の宣言）が、async でなく、先に（同期で）門を呼ぶメンバーの名前の集まり。
+ * 拡張が触るのは外側の口なので、内側のメソッドが async でも、門の誤りは同期で投げられる（例: getModelProxy）。
+ * 外側の形が内側より優先する。
+ */
+export function outerSyncGateNames(apiImplText) {
+  const names = new Set();
+  for (const start of ['const lm: typeof vscode.lm = {', 'const chat: typeof vscode.chat = {']) {
+    const at = apiImplText.indexOf(start);
+    if (at < 0) continue;
+    const end = apiImplText.indexOf('\n\t\t};', at);
+    const lines = apiImplText.slice(at, end < 0 ? undefined : end).split('\n');
+    for (let i = 0; i < lines.length - 1; i++) {
+      const m = /^\t{3,4}(async\s+)?(?:get\s+|set\s+)?([A-Za-z_$][\w$]*)\s*(?:<[^>(]*>)?\(?[^\n]*?(?:\)\s*(?::[^={]*)?(?:=>)?\s*\{|\(\)\s*\{)\s*$/.exec(lines[i]);
+      if (m && !m[1] && /^\t{4,5}checkProposedApiEnabled\(/.test(lines[i + 1])) names.add(m[2]);
+    }
+  }
+  return names;
+}
+
 /** メンバーを触って、結果を 'ok' | 'throws:<メッセージ>' | 'rejects:<メッセージ>' で返す。 */
 async function touch(obj, name, mode, args) {
   try {
@@ -55,7 +75,7 @@ async function touch(obj, name, mode, args) {
  *   bad = 提案を有効にしていない拡張で門の誤りにならない / 有効にした拡張でも門の誤りになる
  *   asyncBad = 門の誤りの出方（本家が async なら reject、そうでなければ同期で投げる）が本家と違う
  */
-export async function compareMemberGates({ map, surfacesFor, callArgs = {}, skip = [] }) {
+export async function compareMemberGates({ map, surfacesFor, callArgs = {}, skip = [], outerSync = new Set() }) {
   const plain = surfacesFor([]);
   const skipSet = new Set(['dispose', 'constructor', ...skip]);
   const checked = [];
@@ -77,11 +97,12 @@ export async function compareMemberGates({ map, surfacesFor, callArgs = {}, skip
       checked.push(`${where}.${info.kind === 'get' ? 'get ' : info.kind === 'set' ? 'set ' : ''}${name}`);
       const target = surfacesFor([...info.gates])[where];
       const got = await touch(obj, name, mode, callArgs[name]);
-      const want = mode === 'call' && info.async ? 'rejects' : 'throws';
+      // 外側の口が async でなく先に門を呼ぶなら、内側が async でも同期で投げる(外側の形が優先)
+      const want = mode === 'call' && info.async && !outerSync.has(name) ? 'rejects' : 'throws';
       if (!new RegExp(`^(throws|rejects):.*CANNOT use API proposal: (${[...info.gates].join('|')})`).test(got)) {
         bad.push(`${where}.${name} (${mode}): 提案を有効にしていない拡張で、門 ${[...info.gates].join('/')} の誤りにならない: ${got}`);
       } else if (mode === 'call' && !got.startsWith(want)) {
-        asyncBad.push(`${where}.${name}: 本家は${info.async ? ' async（reject する）' : '同期（投げる）'}だが、${got.split(':')[0]}`);
+        asyncBad.push(`${where}.${name}: 本家は${want === 'rejects' ? ' async（reject する）' : '同期（投げる）'}だが、${got.split(':')[0]}`);
       }
       const ok = await touch(target, name, mode, callArgs[name]);
       if (/CANNOT use API proposal/.test(ok)) bad.push(`${where}.${name} (${mode}): 提案を有効にした拡張でも門の誤りになる: ${ok}`);

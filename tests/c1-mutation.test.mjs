@@ -71,6 +71,19 @@ const CASES = [
   ['delete と kept に同じパス', ({ patch, unit }) => ({ patch, unit: { ...unit, delete: [...unit.delete, 'src/vs/workbench/contrib/comments'] } }), /delete と kept/],
   ['removeLines に delete 外の import', ({ patch, unit }) => ({ patch, unit: { ...unit, removeLines: [...unit.removeLines, { file: 'src/vs/workbench/workbench.common.main.ts', line: "import './services/keep/keep.js';" }] } }), /removeLines の各行/],
   ['patch の指定が消える', ({ patch, unit }) => { const { patch: _p, ...rest } = unit; return { patch, unit: rest }; }, /patch が edits\.patch/],
+  // 所(メンバー)ごとの門(5回目)。名前の集まりでは見えない抜け(同じ提案の名前が別の所に出る)を、メンバーごとの走らせる検査が見つける
+  ['registerToolDefinition の門が消える', ({ patch, unit }) => ({ patch: sub(patch, /\+\t\t\tcheckProposedApiEnabled\(extension, 'languageModelToolSupportsModel'\);\r?\n/, ''), unit }), /メンバーごとに門|提案中の API の門が、本家/],
+  ['fileIsIgnored の門が消える(同じ提案 chatParticipantAdditions は別の所に残る)', ({ patch, unit }) => ({ patch: sub(patch, /\+\t\t\tcheckProposedApiEnabled\(extension, 'chatParticipantAdditions'\);\r?\n(\+\t\t\treturn Promise\.resolve\(false\);)/, '+\t\t\t// no gate\n$1'), unit }), /メンバーごとに門/],
+  ['registerIgnoredFileProvider の門が消える(同じ提案 chatParticipantPrivate は別の所に残る)', ({ patch, unit }) => ({ patch: sub(patch, /(registerIgnoredFileProvider\(_provider[^\n]*\n\+[^\n]*\n)\+\t\t\tcheckProposedApiEnabled\(extension, 'chatParticipantPrivate'\);\r?\n/, '$1'), unit }), /メンバーごとに門/],
+  ['registerIgnoredFileProvider の門が別の提案になる', ({ patch, unit }) => ({ patch: sub(patch, /(registerIgnoredFileProvider\(_provider[^\n]*\n\+[^\n]*\n\+\t\t\tcheckProposedApiEnabled\(extension, ')chatParticipantPrivate/, '$1chatParticipantAdditions'), unit }), /メンバーごとに門/],
+  ['参加者の helpTextPrefix の門が消える', ({ patch, unit }) => ({ patch: sub(patch, /(\+\t\tget helpTextPrefix\(\) \{\r?\n)\+\t\t\tcheckProposedApiEnabled\(extension, 'defaultChatParticipant'\);\r?\n/, '$1'), unit }), /メンバーごとに門/],
+  ['参加者の titleProvider の書き込みの門が消える', ({ patch, unit }) => ({ patch: sub(patch, /(\+\t\tset titleProvider\(v\) \{\r?\n)\+\t\t\tcheckProposedApiEnabled\(extension, 'defaultChatParticipant'\);\r?\n/, '$1'), unit }), /メンバーごとに門/],
+  ['参加者の supportIssueReporting の門が消える', ({ patch, unit }) => ({ patch: sub(patch, /(\+\t\tget supportIssueReporting\(\) \{\r?\n)\+\t\t\tcheckProposedApiEnabled\(extension, 'chatParticipantPrivate'\);\r?\n/, '$1'), unit }), /メンバーごとに門/],
+  ['参加者の participantVariableProvider の門が消える', ({ patch, unit }) => ({ patch: sub(patch, /(\+\t\tget participantVariableProvider\(\) \{\r?\n)\+\t\t\tcheckProposedApiEnabled\(extension, 'chatParticipantAdditions'\);\r?\n/, '$1'), unit }), /メンバーごとに門/],
+  ['参加者の onDidChangePauseState の門が消える', ({ patch, unit }) => ({ patch: sub(patch, /(\+\t\tget onDidChangePauseState\(\) \{\r?\n)\+\t\t\tcheckProposedApiEnabled\(extension, 'chatParticipantAdditions'\);\r?\n/, '$1'), unit }), /メンバーごとに門/],
+  ['参加者の onDidPerformAction が提案なしでもイベントになる', ({ patch, unit }) => ({ patch: sub(patch, '+\t\t\t? undefined!', '+\t\t\t? Event.None'), unit }), /参加者の値/],
+  ['fileIsIgnored が有効な拡張でも reject する', ({ patch, unit }) => ({ patch: sub(patch, /(\+\t\t\tcheckProposedApiEnabled\(extension, 'chatParticipantAdditions'\);\r?\n)\+\t\t\treturn Promise\.resolve\(false\);/, '$1+\t\t\treturn Promise.reject(new Error("x"));'), unit }), /fileIsIgnored|lm\.tools/],
+  ['registerToolDefinition が有効な拡張でも投げる', ({ patch, unit }) => ({ patch: sub(patch, /(\+\t\t\tcheckProposedApiEnabled\(extension, 'languageModelToolSupportsModel'\);\r?\n)\+\t\t\treturn noopDisposable\(\);/, "$1+\t\t\tthrow new Error('x');"), unit }), /fileIsIgnored|registerToolDefinition|登録系/],
 ];
 
 for (const [name, mutate, expect] of CASES) {

@@ -1,0 +1,137 @@
+{
+  "label": "c7-gate-noc1-ooka",
+  "worktree": "C:\\b\\wt\\p2",
+  "tag": "1.146.0",
+  "baseCommit": "69047191fc427f2f92828279aae1d90d8eeda7ab",
+  "headCommit": "69047191fc427f2f92828279aae1d90d8eeda7ab",
+  "prevTag": null,
+  "dryRun": false,
+  "options": {
+    "only": [
+      "A-1-copilot-extension",
+      "A-2-accounts-extensions",
+      "A-3-debug-extensions",
+      "A-4-notebook-extensions",
+      "A-5-remote-extensions",
+      "A-6-themes",
+      "A-7-unused-extensions",
+      "B-1-telemetry",
+      "B-2-onboarding-experiments-surveys",
+      "B-3-issue-share",
+      "B-4-outline-view",
+      "B-5-theme-switching",
+      "B-6-online-feeds",
+      "B-7-terminal-suggest",
+      "C-7-breadcrumbs-outline"
+    ],
+    "until": null,
+    "keepConflict": false
+  },
+  "inputs": {
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\removals",
+    "patches": "e:\\develop\\self\\Team\\projects\\ai-editor\\patches",
+    "assets": "e:\\develop\\self\\Team\\projects\\ai-editor\\assets",
+    "overlay": "e:\\develop\\self\\Team\\projects\\ai-editor\\product.overlay.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "extensionsSrc": "e:\\develop\\self\\Team\\projects\\ai-editor\\extensions-src",
+    "manifests": "C:\\b\\cache\\vsix"
+  },
+  "startedAt": "2026-11-15T09:35:13.238Z",
+  "finishedAt": "2026-11-15T09:35:13.599Z",
+  "result": "fail",
+  "stoppedAt": {
+    "phase": "inputs",
+    "id": null,
+    "message": "入力に誤りがある（errors を見る）"
+  },
+  "overlay": null,
+  "units": [],
+  "unitsSkipped": [
+    {
+      "id": "C-1-ai",
+      "reason": "not in --only"
+    },
+    {
+      "id": "C-2-debug",
+      "reason": "not in --only"
+    },
+    {
+      "id": "C-3-remote",
+      "reason": "not in --only"
+    },
+    {
+      "id": "C-4-notebook",
+      "reason": "not in --only"
+    },
+    {
+      "id": "C-5-extension-gallery",
+      "reason": "not in --only"
+    },
+    {
+      "id": "C-6-settings-sync",
+      "reason": "not in --only"
+    }
+  ],
+  "patches": [],
+  "assets": null,
+  "builtinExtensions": null,
+  "checks": {
+    "remnants": {
+      "status": "skipped",
+      "reason": "途中で止めた"
+    },
+    "absentStrings": {
+      "status": "skipped",
+      "reason": "途中で止めた"
+    },
+    "unclassifiedExtensions": {
+      "status": "ok",
+      "upstreamCount": 95,
+      "items": [],
+      "nonExtensionDirs": [
+        "types"
+      ]
+    },
+    "upstreamAdditions": {
+      "status": "skipped",
+      "reason": "--prev-tag が無い"
+    },
+    "dependencies": {
+      "status": "skipped",
+      "reason": "--prev-tag が無い"
+    },
+    "toolchain": {
+      "status": "info",
+      "nvmrc": {
+        "prev": null,
+        "now": "24.22.1",
+        "changed": null
+      },
+      "electron": {
+        "prev": null,
+        "now": "43.8.6",
+        "changed": null
+      },
+      "reason": "--prev-tag が無い"
+    },
+    "registeredKeys": {
+      "status": "skipped",
+      "reason": "途中で止めた"
+    },
+    "lockfile": {
+      "status": "pending",
+      "reason": "依存の導入の後に --lockfile-check（build.mjs は checkLockfiles）で埋める"
+    },
+    "commitIdentity": {
+      "status": "ok",
+      "expected": "shuko-apply <apply@shuko.invalid>",
+      "items": []
+    }
+  },
+  "warnings": [],
+  "errors": [
+    "C-7-breadcrumbs-outline: after の単位 C-1-ai が先に当たらない（--only に入っていない）",
+    "C-7-breadcrumbs-outline: after の単位 C-4-notebook が先に当たらない（--only に入っていない）"
+  ],
+  "commits": []
+}

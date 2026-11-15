@@ -1,0 +1,738 @@
+From 1547dc3ec3f873da2645a13c4c3e298d061ac576 Mon Sep 17 00:00:00 2001
+From: shuko-apply <apply@shuko.invalid>
+Date: Sun, 15 Nov 2026 17:19:45 +0900
+Subject: [PATCH] unit C-7-breadcrumbs-outline: edits
+
+---
+ .../api/browser/mainThreadCustomEditors.ts    |   4 -
+ .../browser/mainThreadCustomEditors.test.ts   |   9 +-
+ .../parts/editor/auxiliaryEditorPart.ts       |   1 -
+ .../parts/editor/editorHeaderControl.ts       |  57 +------
+ .../parts/editor/editorTitleControl.ts        |  26 +--
+ .../parts/editor/singleEditorTabsControl.ts   |  44 +----
+ src/vs/workbench/common/editor.ts             |   1 -
+ .../quickaccess/gotoSymbolQuickAccess.ts      | 161 +-----------------
+ .../test/browser/anythingQuickAccess.test.ts  |   2 -
+ .../componentFixtures/editor/tabs.fixture.ts  |  31 ----
+ 10 files changed, 13 insertions(+), 323 deletions(-)
+
+diff --git a/src/vs/workbench/api/browser/mainThreadCustomEditors.ts b/src/vs/workbench/api/browser/mainThreadCustomEditors.ts
+index fad5534da86..6fc187ebbcd 100644
+--- a/src/vs/workbench/api/browser/mainThreadCustomEditors.ts
++++ b/src/vs/workbench/api/browser/mainThreadCustomEditors.ts
+@@ -11,7 +11,6 @@ import { isCancellationError, onUnexpectedError } from '../../../base/common/err
+ import { Emitter, Event } from '../../../base/common/event.js';
+ import { Disposable, DisposableMap, DisposableStore, IReference, toDisposable } from '../../../base/common/lifecycle.js';
+ import { ISelection } from '../../../editor/common/core/selection.js';
+-import { IOutlineService } from '../../services/outline/browser/outline.js';
+ import { MainThreadCustomTextEditorNavigation } from './mainThreadCustomTextEditorNavigation.js';
+ import { Schemas } from '../../../base/common/network.js';
+ import { basename } from '../../../base/common/path.js';
+@@ -112,7 +111,6 @@ export class MainThreadCustomEditors extends Disposable implements extHostProtoc
+ 		@IWebviewWorkbenchService private readonly _webviewWorkbenchService: IWebviewWorkbenchService,
+ 		@IUriIdentityService private readonly _uriIdentityService: IUriIdentityService,
+ 		@IUntitledTextEditorService private readonly _untitledTextEditorService: IUntitledTextEditorService,
+-		@IOutlineService private readonly _outlineService: IOutlineService,
+ 	) {
+ 		super();
+ 
+@@ -365,7 +363,6 @@ export class MainThreadCustomEditors extends Disposable implements extHostProtoc
+ 			this._navigation.deleteAndDispose(handle);
+ 			if (input.navigation) {
+ 				input.navigation = undefined;
+-				this._outlineService.notifyOutlineChanged();
+ 			}
+ 		}));
+ 		cleanup.add(input.onWillDispose(clear));
+@@ -386,7 +383,6 @@ export class MainThreadCustomEditors extends Disposable implements extHostProtoc
+ 			});
+ 			this._navigation.set(handle, navigation);
+ 			input.navigation = navigation;
+-			this._outlineService.notifyOutlineChanged();
+ 		} catch (error) {
+ 			clear();
+ 			if (!isCancellationError(error)) {
+diff --git a/src/vs/workbench/api/test/browser/mainThreadCustomEditors.test.ts b/src/vs/workbench/api/test/browser/mainThreadCustomEditors.test.ts
+index b8548cb3e9c..40ffc81a632 100644
+--- a/src/vs/workbench/api/test/browser/mainThreadCustomEditors.test.ts
++++ b/src/vs/workbench/api/test/browser/mainThreadCustomEditors.test.ts
+@@ -40,7 +40,6 @@ import { IExtensionService } from '../../../services/extensions/common/extension
+ import { IFilesConfigurationService } from '../../../services/filesConfiguration/common/filesConfigurationService.js';
+ import { IWorkbenchLayoutService } from '../../../services/layout/browser/layoutService.js';
+ import { IPathService } from '../../../services/path/common/pathService.js';
+-import { IOutlineService } from '../../../services/outline/browser/outline.js';
+ import { ITextFileEditorModelManager, ITextFileService } from '../../../services/textfile/common/textfiles.js';
+ import { IUntitledTextEditorService } from '../../../services/untitled/common/untitledTextEditorService.js';
+ import { IWorkingCopyFileService } from '../../../services/workingCopy/common/workingCopyFileService.js';
+@@ -181,8 +180,6 @@ suite('MainThreadCustomEditors', () => {
+ 		instantiationService.stub(IWorkbenchEnvironmentService, {});
+ 		instantiationService.stub(IPathService, {});
+ 		instantiationService.stub(IWorkbenchLayoutService, {});
+-		let outlineChanges = 0;
+-		instantiationService.stub(IOutlineService, { notifyOutlineChanged: () => { outlineChanges++; } });
+ 		if (extHost.textEditor) {
+ 			const textModel = store.add(createTextModel('text', undefined, undefined, resource));
+ 			const resolved = new class extends mock<IResolvedTextEditorModel>() {
+@@ -239,7 +236,7 @@ suite('MainThreadCustomEditors', () => {
+ 			return { input };
+ 		}
+ 
+-		return { calls, models, resolvers, createInput, createDiffInput, customEditors, outlineChanges: () => outlineChanges };
++		return { calls, models, resolvers, createInput, createDiffInput, customEditors };
+ 	}
+ 
+ 	test('custom text navigation resolves only after its editor and invalidates Outline capability on disposal', async () => {
+@@ -248,7 +245,6 @@ suite('MainThreadCustomEditors', () => {
+ 		assert.strictEqual(input.navigation, undefined);
+ 		await input.resolve();
+ 		assert.ok(input.navigation);
+-		assert.strictEqual(fixture.outlineChanges(), 1);
+ 		assert.deepStrictEqual(fixture.calls, [
+ 			'addWebviewInput(webview#1)',
+ 			'$resolveCustomEditor(/workspace/file.custom, webview#1)',
+@@ -257,7 +253,6 @@ suite('MainThreadCustomEditors', () => {
+ 		await input.applyOptions({ selection: { startLineNumber: 1, startColumn: 1 } }, CancellationToken.Cancelled);
+ 		input.dispose();
+ 		assert.strictEqual(input.navigation, undefined);
+-		assert.strictEqual(fixture.outlineChanges(), 2);
+ 		assert.strictEqual(fixture.calls.at(-1), 'disposeNavigation(webview#1)');
+ 		assert.deepStrictEqual(unexpectedErrors, []);
+ 	});
+@@ -272,7 +267,6 @@ suite('MainThreadCustomEditors', () => {
+ 		fixture.customEditors.$unregisterEditorProvider(viewType);
+ 		assert.strictEqual(first.navigation, undefined);
+ 		assert.strictEqual(second.navigation, undefined);
+-		assert.strictEqual(fixture.outlineChanges(), 4);
+ 		assert.deepStrictEqual(unexpectedErrors, []);
+ 	});
+ 
+@@ -294,7 +288,6 @@ suite('MainThreadCustomEditors', () => {
+ 		await resolution;
+ 		navigation.complete({ selection: undefined });
+ 		assert.strictEqual(input.navigation, undefined);
+-		assert.strictEqual(fixture.outlineChanges(), 0);
+ 		assert.deepStrictEqual(unexpectedErrors, []);
+ 	});
+ 
+diff --git a/src/vs/workbench/browser/parts/editor/auxiliaryEditorPart.ts b/src/vs/workbench/browser/parts/editor/auxiliaryEditorPart.ts
+index b71633f0656..3d4f81fb0ba 100644
+--- a/src/vs/workbench/browser/parts/editor/auxiliaryEditorPart.ts
++++ b/src/vs/workbench/browser/parts/editor/auxiliaryEditorPart.ts
+@@ -379,7 +379,6 @@ export class AuxiliaryEditorPartImpl extends EditorPart implements IAuxiliaryEdi
+ 			if (!this.optionsDisposable.value) {
+ 				this.optionsDisposable.value = this.enforcePartOptions({
+ 					showTabs: 'none',
+-					showBreadcrumbs: false,
+ 					closeEmptyGroups: true
+ 				});
+ 			}
+diff --git a/src/vs/workbench/browser/parts/editor/editorHeaderControl.ts b/src/vs/workbench/browser/parts/editor/editorHeaderControl.ts
+index b7fd3ca5fdc..be46513198c 100644
+--- a/src/vs/workbench/browser/parts/editor/editorHeaderControl.ts
++++ b/src/vs/workbench/browser/parts/editor/editorHeaderControl.ts
+@@ -3,13 +3,12 @@
+  *  Licensed under the MIT License. See License.txt in the project root for license information.
+  *--------------------------------------------------------------------------------------------*/
+ 
+-import { $, append, Dimension, reset } from '../../../../base/browser/dom.js';
++import { $, append, reset } from '../../../../base/browser/dom.js';
+ import { Disposable, DisposableStore, MutableDisposable, toDisposable } from '../../../../base/common/lifecycle.js';
+ import { MenuWorkbenchToolBar } from '../../../../platform/actions/browser/toolbar.js';
+ import { IInstantiationService } from '../../../../platform/instantiation/common/instantiation.js';
+ import { localize } from '../../../../nls.js';
+ import { EditorResourceAccessor, SideBySideEditor } from '../../../common/editor.js';
+-import { BreadcrumbsControl, BreadcrumbsControlFactory } from './breadcrumbsControl.js';
+ import { IEditorGroupMenuIds, IEditorGroupsView, IEditorGroupView, IEditorGroupViewOptions } from './editor.js';
+ 
+ export class EditorHeaderControl extends Disposable {
+@@ -26,10 +25,6 @@ export class EditorHeaderControl extends Disposable {
+ 	private secondaryActionsToolbar: MenuWorkbenchToolBar | undefined;
+ 	private layoutActionsToolbar: MenuWorkbenchToolBar | undefined;
+ 	private readonly headerActions = this._register(new MutableDisposable());
+-	private readonly breadcrumbsContainer: HTMLElement | undefined;
+-	private readonly breadcrumbsControlFactory: BreadcrumbsControlFactory | undefined;
+-	private get breadcrumbsControl() { return this.breadcrumbsControlFactory?.control; }
+-	private breadcrumbsVisible = false;
+ 	private visible = false;
+ 
+ 	get height(): number {
+@@ -39,7 +34,7 @@ export class EditorHeaderControl extends Disposable {
+ 			}
+ 			return this.groupsView.partOptions.tabHeight === 'compact' ? EditorHeaderControl.COMPACT_HEIGHT : EditorHeaderControl.DEFAULT_HEIGHT;
+ 		}
+-		return this.breadcrumbsControl?.isHidden() === false ? BreadcrumbsControl.HEIGHT : 0;
++		return 0;
+ 	}
+ 
+ 	constructor(
+@@ -54,9 +49,8 @@ export class EditorHeaderControl extends Disposable {
+ 	) {
+ 		super();
+ 
+-		let breadcrumbsParent = parent;
+ 		if (showHeader) {
+-			this.headerContainer = breadcrumbsParent = append(parent, $('.editor-group-header.breadcrumbs-in-header'));
++			this.headerContainer = append(parent, $('.editor-group-header'));
+ 			this.actionsContainer = $('.editor-group-header-actions');
+ 			this.primaryActionsContainer = append(this.actionsContainer, $('.editor-group-header-primary-actions'));
+ 			this.secondaryActionsContainer = append(this.actionsContainer, $('.editor-group-header-secondary-actions'));
+@@ -65,56 +59,17 @@ export class EditorHeaderControl extends Disposable {
+ 			this._register(this.groupView.onDidActiveEditorChange(() => this.renderActions(true)));
+ 		}
+ 
+-		if (showHeader || groupsView.partOptions.showTabs !== 'single') {
+-			this.breadcrumbsContainer = append(breadcrumbsParent, $('.breadcrumbs-below-tabs'));
+-			this.breadcrumbsControlFactory = this._register(this.instantiationService.createInstance(BreadcrumbsControlFactory, this.breadcrumbsContainer, this.groupView, {
+-				showFileIcons: true,
+-				showSymbolIcons: true,
+-				showDecorationColors: false,
+-				showPlaceholder: false,
+-				dragEditor: false,
+-				showEditorTypePicker: true,
+-			}));
+-			this._register(this.breadcrumbsControlFactory.onDidEnablementChange(() => this.updateBreadcrumbsVisibility(true)));
+-			this._register(this.breadcrumbsControlFactory.onDidVisibilityChange(() => this.updateBreadcrumbsVisibility(true)));
+-			this.updateBreadcrumbsVisibility(false);
+-		}
+-
+ 		if (this.headerContainer && this.actionsContainer) {
+ 			this.headerContainer.appendChild(this.actionsContainer);
+ 			this.renderActions(false);
+ 		}
+ 	}
+ 
+-	handleEditorsChange(changed: boolean): void {
+-		if (changed) {
+-			this.breadcrumbsControl?.update();
+-		} else {
+-			this.breadcrumbsControl?.revealLast();
+-		}
+-	}
+-
+ 	layout(width: number): void {
+ 		this.updateVisibility(false);
+ 		if (this.headerContainer) {
+ 			this.headerContainer.style.width = `${Math.max(0, width)}px`;
+ 		}
+-		if (this.breadcrumbsControl?.isHidden() === false && this.breadcrumbsContainer) {
+-			let breadcrumbsWidth = 0;
+-			if (this.headerContainer) {
+-				breadcrumbsWidth = Math.max(0, this.breadcrumbsControl.domNode.clientWidth);
+-			} else {
+-				breadcrumbsWidth = Math.max(0, width);
+-				this.breadcrumbsContainer.style.width = `${breadcrumbsWidth}px`;
+-			}
+-			this.breadcrumbsControl.layout(new Dimension(breadcrumbsWidth, BreadcrumbsControl.HEIGHT));
+-		}
+-	}
+-
+-	private updateBreadcrumbsVisibility(relayout: boolean): void {
+-		this.breadcrumbsVisible = this.breadcrumbsControl?.isHidden() === false;
+-		this.breadcrumbsContainer?.classList.toggle('hidden', !this.breadcrumbsVisible);
+-		this.updateVisibility(relayout);
+ 	}
+ 
+ 	private updateVisibility(relayout: boolean): void {
+@@ -134,10 +89,10 @@ export class EditorHeaderControl extends Disposable {
+ 		this.layoutActionsContainer.style.display = hasLayoutActions ? '' : 'none';
+ 		this.layoutActionsContainer.style.marginLeft = hasSecondaryActions && hasLayoutActions ? 'var(--vscode-spacing-size40, 4px)' : '';
+ 		this.actionsContainer.style.display = hasMenuActions ? '' : 'none';
+-		this.actionsContainer.style.flex = this.breadcrumbsVisible ? '0 1 auto' : '1 1 auto';
+-		this.actionsContainer.style.gridTemplateColumns = this.breadcrumbsVisible ? 'auto auto auto' : 'minmax(0, 1fr) auto auto';
++		this.actionsContainer.style.flex = '1 1 auto';
++		this.actionsContainer.style.gridTemplateColumns = 'minmax(0, 1fr) auto auto';
+ 		const activeEditor = this.groupView.activeEditor ?? undefined;
+-		this.visible = (this.showHeaderFor?.(activeEditor) ?? true) && (this.breadcrumbsVisible || hasMenuActions || this.reserveHeaderSpace?.(activeEditor) === true);
++		this.visible = (this.showHeaderFor?.(activeEditor) ?? true) && (hasMenuActions || this.reserveHeaderSpace?.(activeEditor) === true);
+ 		this.headerContainer.style.display = this.visible ? '' : 'none';
+ 		if (relayout) {
+ 			this.groupView.relayout();
+diff --git a/src/vs/workbench/browser/parts/editor/editorTitleControl.ts b/src/vs/workbench/browser/parts/editor/editorTitleControl.ts
+index 7d686396407..e83e11766a8 100644
+--- a/src/vs/workbench/browser/parts/editor/editorTitleControl.ts
++++ b/src/vs/workbench/browser/parts/editor/editorTitleControl.ts
+@@ -87,19 +87,11 @@ export class EditorTitleControl extends Themable {
+ 	}
+ 
+ 	openEditor(editor: EditorInput, options?: IInternalEditorOpenOptions): void {
+-		const didChange = this.editorTabsControl.openEditor(editor, options);
+-
+-		this.handleOpenedEditors(didChange);
++		this.editorTabsControl.openEditor(editor, options);
+ 	}
+ 
+ 	openEditors(editors: EditorInput[]): void {
+-		const didChange = this.editorTabsControl.openEditors(editors);
+-
+-		this.handleOpenedEditors(didChange);
+-	}
+-
+-	private handleOpenedEditors(didChange: boolean): void {
+-		this.headerControl.handleEditorsChange(didChange);
++		this.editorTabsControl.openEditors(editors);
+ 	}
+ 
+ 	beforeCloseEditor(editor: EditorInput): void {
+@@ -108,20 +100,10 @@ export class EditorTitleControl extends Themable {
+ 
+ 	closeEditor(editor: EditorInput): void {
+ 		this.editorTabsControl.closeEditor(editor);
+-
+-		this.handleClosedEditors();
+ 	}
+ 
+ 	closeEditors(editors: EditorInput[]): void {
+ 		this.editorTabsControl.closeEditors(editors);
+-
+-		this.handleClosedEditors();
+-	}
+-
+-	private handleClosedEditors(): void {
+-		if (!this.groupView.activeEditor) {
+-			this.headerControl.handleEditorsChange(true);
+-		}
+ 	}
+ 
+ 	moveEditor(editor: EditorInput, fromIndex: number, targetIndex: number, stickyStateChange: boolean): void {
+@@ -150,10 +132,6 @@ export class EditorTitleControl extends Themable {
+ 
+ 	updateEditorLabel(editor: EditorInput): void {
+ 		this.editorTabsControl.updateEditorLabel(editor);
+-		if (this.groupView.activeEditor === editor) {
+-			// An active input may change its effective resource without being reopened.
+-			this.headerControl.handleEditorsChange(true);
+-		}
+ 	}
+ 
+ 	updateEditorCapabilities(editor: EditorInput): void {
+diff --git a/src/vs/workbench/browser/parts/editor/singleEditorTabsControl.ts b/src/vs/workbench/browser/parts/editor/singleEditorTabsControl.ts
+index 05c6ecb9a54..8a592a006d6 100644
+--- a/src/vs/workbench/browser/parts/editor/singleEditorTabsControl.ts
++++ b/src/vs/workbench/browser/parts/editor/singleEditorTabsControl.ts
+@@ -12,13 +12,9 @@ import { TAB_ACTIVE_FOREGROUND, TAB_UNFOCUSED_ACTIVE_FOREGROUND } from '../../..
+ import { EventType as TouchEventType, GestureEvent, Gesture } from '../../../../base/browser/touch.js';
+ import { addDisposableListener, EventType, EventHelper, Dimension, isAncestor, DragAndDropObserver, isHTMLElement, $ } from '../../../../base/browser/dom.js';
+ import { CLOSE_EDITOR_COMMAND_ID, UNLOCK_GROUP_COMMAND_ID } from './editorCommands.js';
+-import { Color } from '../../../../base/common/color.js';
+ import { assertReturnsDefined, assertReturnsAllDefined } from '../../../../base/common/types.js';
+ import { equals } from '../../../../base/common/objects.js';
+-import { toDisposable } from '../../../../base/common/lifecycle.js';
+-import { defaultBreadcrumbsWidgetStyles } from '../../../../platform/theme/browser/defaultStyles.js';
+ import { IEditorTitleControlDimensions } from './editorTitleControl.js';
+-import { BreadcrumbsControlFactory } from './breadcrumbsControl.js';
+ 
+ interface IRenderedEditorLabel {
+ 	readonly editor?: EditorInput;
+@@ -31,9 +27,6 @@ export class SingleEditorTabsControl extends EditorTabsControl {
+ 	private editorLabel: IResourceLabel | undefined;
+ 	private activeLabel: IRenderedEditorLabel = Object.create(null);
+ 
+-	private breadcrumbsControlFactory: BreadcrumbsControlFactory | undefined;
+-	private get breadcrumbsControl() { return this.breadcrumbsControlFactory?.control; }
+-
+ 	protected override create(parent: HTMLElement): HTMLElement {
+ 		super.create(parent);
+ 
+@@ -59,20 +52,6 @@ export class SingleEditorTabsControl extends EditorTabsControl {
+ 		this.editorLabel = this._register(this.instantiationService.createInstance(ResourceLabel, labelContainer, {})).element;
+ 		this._register(addDisposableListener(this.editorLabel.element, EventType.CLICK, e => this.onTitleLabelClick(e)));
+ 
+-		if (!this.breadcrumbsInHeader) {
+-			this.breadcrumbsControlFactory = this._register(this.instantiationService.createInstance(BreadcrumbsControlFactory, labelContainer, this.groupView, {
+-				showFileIcons: false,
+-				showSymbolIcons: true,
+-				showDecorationColors: false,
+-				widgetStyles: { ...defaultBreadcrumbsWidgetStyles, breadcrumbsBackground: Color.transparent.toString() },
+-				showPlaceholder: false,
+-				dragEditor: true,
+-			}));
+-			this._register(this.breadcrumbsControlFactory.onDidEnablementChange(() => this.handleBreadcrumbsEnablementChange()));
+-		}
+-		titleContainer.classList.toggle('breadcrumbs', Boolean(this.breadcrumbsControl));
+-		this._register(toDisposable(() => titleContainer.classList.remove('breadcrumbs'))); // important to remove because the container is a shared dom node
+-
+ 		if (this.menuIds?.tabsBarAddTab) {
+ 			this.createAddTabControl(labelContainer, this.menuIds.tabsBarAddTab);
+ 		}
+@@ -238,13 +217,6 @@ export class SingleEditorTabsControl extends EditorTabsControl {
+ 		this.redraw();
+ 	}
+ 
+-	protected handleBreadcrumbsEnablementChange(): void {
+-		const titleContainer = assertReturnsDefined(this.titleContainer);
+-		titleContainer.classList.toggle('breadcrumbs', Boolean(this.breadcrumbsControl));
+-
+-		this.redraw();
+-	}
+-
+ 	private ifActiveEditorChanged(fn: () => void): boolean {
+ 		if (
+ 			!this.activeLabel.editor && this.tabsModel.activeEditor || 						// active editor changed from null => editor
+@@ -284,16 +256,6 @@ export class SingleEditorTabsControl extends EditorTabsControl {
+ 
+ 		this.activeLabel = { editor, pinned: isEditorPinned };
+ 
+-		// Update Breadcrumbs
+-		if (this.breadcrumbsControl) {
+-			if (isGroupActive) {
+-				this.breadcrumbsControl.update();
+-				this.breadcrumbsControl.domNode.classList.toggle('preview', !isEditorPinned);
+-			} else {
+-				this.breadcrumbsControl.hide();
+-			}
+-		}
+-
+ 		// Clear if there is no editor
+ 		const [titleContainer, editorLabel] = assertReturnsAllDefined(this.titleContainer, this.editorLabel);
+ 		if (!editor) {
+@@ -311,9 +273,7 @@ export class SingleEditorTabsControl extends EditorTabsControl {
+ 			// Editor Label
+ 			const { labelFormat } = this.groupsView.partOptions;
+ 			let description: string;
+-			if (this.breadcrumbsInHeader || this.breadcrumbsControl && !this.breadcrumbsControl.isHidden()) {
+-				description = ''; // hide description when showing breadcrumbs
+-			} else if (labelFormat === 'default' && !isGroupActive) {
++			if (labelFormat === 'default' && !isGroupActive) {
+ 				description = ''; // hide description when group is not active and style is 'default'
+ 			} else {
+ 				description = editor.getDescription(this.getVerbosity(labelFormat)) || '';
+@@ -387,8 +347,6 @@ export class SingleEditorTabsControl extends EditorTabsControl {
+ 	}
+ 
+ 	layout(dimensions: IEditorTitleControlDimensions): Dimension {
+-		this.breadcrumbsControl?.layout(undefined);
+-
+ 		return new Dimension(dimensions.container.width, this.getHeight());
+ 	}
+ }
+diff --git a/src/vs/workbench/common/editor.ts b/src/vs/workbench/common/editor.ts
+index e9b0ce3e0b1..c069fb49c45 100644
+--- a/src/vs/workbench/common/editor.ts
++++ b/src/vs/workbench/common/editor.ts
+@@ -1342,7 +1342,6 @@ interface IEditorPartConfiguration {
+ 
+ export interface IEditorPartOptions extends DeepRequiredNonNullable<IEditorPartConfiguration> {
+ 	hasIcons: boolean;
+-	showBreadcrumbs?: boolean;
+ }
+ 
+ export interface IEditorPartOptionsChangeEvent {
+diff --git a/src/vs/workbench/contrib/codeEditor/browser/quickaccess/gotoSymbolQuickAccess.ts b/src/vs/workbench/contrib/codeEditor/browser/quickaccess/gotoSymbolQuickAccess.ts
+index 213ff405ade..95c9d547a63 100644
+--- a/src/vs/workbench/contrib/codeEditor/browser/quickaccess/gotoSymbolQuickAccess.ts
++++ b/src/vs/workbench/contrib/codeEditor/browser/quickaccess/gotoSymbolQuickAccess.ts
+@@ -5,7 +5,7 @@
+ 
+ import { Event } from '../../../../../base/common/event.js';
+ import { localize, localize2 } from '../../../../../nls.js';
+-import { IKeyMods, IQuickPickSeparator, IQuickInputService, IQuickPick, ItemActivation } from '../../../../../platform/quickinput/common/quickInput.js';
++import { IKeyMods, IQuickPickSeparator, IQuickInputService, ItemActivation } from '../../../../../platform/quickinput/common/quickInput.js';
+ import { IEditorService, SIDE_GROUP } from '../../../../services/editor/common/editorService.js';
+ import { IRange } from '../../../../../editor/common/core/range.js';
+ import { Registry } from '../../../../../platform/registry/common/platform.js';
+@@ -14,40 +14,21 @@ import { AbstractGotoSymbolQuickAccessProvider, IGotoSymbolQuickPickItem } from
+ import { IConfigurationService } from '../../../../../platform/configuration/common/configuration.js';
+ import { IWorkbenchEditorConfiguration } from '../../../../common/editor.js';
+ import { ITextModel } from '../../../../../editor/common/model.js';
+-import { DisposableStore, IDisposable, toDisposable, Disposable, MutableDisposable } from '../../../../../base/common/lifecycle.js';
++import { DisposableStore } from '../../../../../base/common/lifecycle.js';
+ import { timeout } from '../../../../../base/common/async.js';
+-import { CancellationToken, CancellationTokenSource } from '../../../../../base/common/cancellation.js';
++import { CancellationToken } from '../../../../../base/common/cancellation.js';
+ import { registerAction2, Action2, MenuId } from '../../../../../platform/actions/common/actions.js';
+ import { KeyMod, KeyCode } from '../../../../../base/common/keyCodes.js';
+ import { prepareQuery } from '../../../../../base/common/fuzzyScorer.js';
+-import { SymbolKind } from '../../../../../editor/common/languages.js';
+-import { fuzzyScore } from '../../../../../base/common/filters.js';
+-import { onUnexpectedError } from '../../../../../base/common/errors.js';
+ import { ServicesAccessor } from '../../../../../platform/instantiation/common/instantiation.js';
+ import { KeybindingWeight } from '../../../../../platform/keybinding/common/keybindingsRegistry.js';
+ import { IQuickAccessTextEditorContext } from '../../../../../editor/contrib/quickAccess/browser/editorNavigationQuickAccess.js';
+-import { IOutline, IOutlineService, OutlineTarget } from '../../../../services/outline/browser/outline.js';
+ import { isCompositeEditor } from '../../../../../editor/browser/editorBrowser.js';
+ import { ITextEditorOptions } from '../../../../../platform/editor/common/editor.js';
+ import { IOutlineModelService } from '../../../../../editor/contrib/documentSymbols/browser/outlineModel.js';
+ import { ILanguageFeaturesService } from '../../../../../editor/common/services/languageFeatures.js';
+ import { ContextKeyExpr } from '../../../../../platform/contextkey/common/contextkey.js';
+ import { accessibilityHelpIsShown, accessibleViewIsShown } from '../../../accessibility/browser/accessibilityConfiguration.js';
+-import { matchesFuzzyIconAware, parseLabelWithIcons } from '../../../../../base/common/iconLabels.js';
+-
+-/**
+- * A single navigable entry backing the "no text editor" symbol picks (chat
+- * outline or editor-pane outline). Provides the label to render and how to
+- * reveal/preview the underlying element.
+- */
+-interface INavigablePickEntry {
+-	readonly label: string;
+-	readonly description?: string;
+-	readonly ariaLabel?: string;
+-	readonly iconClasses?: string[];
+-	reveal(): void;
+-	preview(): IDisposable;
+-}
+ 
+ export class GotoSymbolQuickAccessProvider extends AbstractGotoSymbolQuickAccessProvider {
+ 
+@@ -57,7 +38,6 @@ export class GotoSymbolQuickAccessProvider extends AbstractGotoSymbolQuickAccess
+ 		@IEditorService private readonly editorService: IEditorService,
+ 		@IConfigurationService private readonly configurationService: IConfigurationService,
+ 		@ILanguageFeaturesService languageFeaturesService: ILanguageFeaturesService,
+-		@IOutlineService private readonly outlineService: IOutlineService,
+ 		@IOutlineModelService outlineModelService: IOutlineModelService,
+ 	) {
+ 		super(languageFeaturesService, outlineModelService, {
+@@ -138,141 +118,6 @@ export class GotoSymbolQuickAccessProvider extends AbstractGotoSymbolQuickAccess
+ 	// Shuko (C-1-ai): attaching a symbol to chat and the chat outline picks are removed with contrib/chat.
+ 
+ 	//#endregion
+-
+-	protected override provideWithoutTextEditor(picker: IQuickPick<IGotoSymbolQuickPickItem, { useSeparators: true }>): IDisposable {
+-		if (this.canPickWithOutlineService()) {
+-			return this.doGetOutlinePicks(picker);
+-		}
+-
+-		return super.provideWithoutTextEditor(picker);
+-	}
+-
+-	private canPickWithOutlineService(): boolean {
+-		return this.editorService.activeEditorPane ? this.outlineService.canCreateOutline(this.editorService.activeEditorPane) : false;
+-	}
+-
+-	private doGetOutlinePicks(picker: IQuickPick<IGotoSymbolQuickPickItem, { useSeparators: true }>): IDisposable {
+-		const pane = this.editorService.activeEditorPane;
+-		if (!pane) {
+-			return Disposable.None;
+-		}
+-		const cts = new CancellationTokenSource();
+-
+-		const disposables = new DisposableStore();
+-		disposables.add(toDisposable(() => cts.dispose(true)));
+-
+-		picker.busy = true;
+-
+-		this.outlineService.createOutline(pane, OutlineTarget.QuickPick, cts.token).then(outline => {
+-
+-			if (!outline) {
+-				return;
+-			}
+-			if (cts.token.isCancellationRequested) {
+-				outline.dispose();
+-				return;
+-			}
+-
+-			disposables.add(outline);
+-
+-			const viewState = outline.captureViewState();
+-			disposables.add(toDisposable(() => {
+-				if (picker.selectedItems.length === 0) {
+-					viewState.dispose();
+-				}
+-			}));
+-
+-			this.installNavigablePicks(picker, disposables, this.outlineToNavigableEntries(outline));
+-
+-		}).catch(err => {
+-			onUnexpectedError(err);
+-			picker.hide();
+-		}).finally(() => {
+-			picker.busy = false;
+-		});
+-
+-		return disposables;
+-	}
+-
+-	private outlineToNavigableEntries<E>(outline: IOutline<E>): INavigablePickEntry[] {
+-		return outline.config.quickPickDataSource.getQuickPickElements().map(element => ({
+-			label: element.label,
+-			description: element.description,
+-			ariaLabel: element.ariaLabel,
+-			iconClasses: element.iconClasses,
+-			reveal: () => outline.reveal(element.element, {}, false, false),
+-			preview: () => outline.preview(element.element)
+-		}));
+-	}
+-
+-	private installNavigablePicks(picker: IQuickPick<IGotoSymbolQuickPickItem, { useSeparators: true }>, disposables: DisposableStore, entries: readonly INavigablePickEntry[]): void {
+-		const items: IGotoSymbolQuickPickItem[] = entries.map((entry, index) => {
+-			return {
+-				kind: SymbolKind.File,
+-				index,
+-				score: 0,
+-				label: entry.label,
+-				description: entry.description,
+-				ariaLabel: entry.ariaLabel,
+-				iconClasses: entry.iconClasses
+-			};
+-		});
+-
+-		disposables.add(picker.onDidAccept(() => {
+-			picker.hide();
+-			const [item] = picker.selectedItems;
+-			if (item) {
+-				entries[item.index]?.reveal();
+-			}
+-		}));
+-
+-		const updatePickerItems = () => {
+-			const filteredItems = items.filter(item => {
+-				if (picker.value === '@') {
+-					// default, no filtering, scoring...
+-					item.score = 0;
+-					item.highlights = undefined;
+-					return true;
+-				}
+-
+-				const trimmedQuery = picker.value.substring(AbstractGotoSymbolQuickAccessProvider.PREFIX.length).trim();
+-				const parsedLabel = parseLabelWithIcons(item.label);
+-				const score = fuzzyScore(trimmedQuery, trimmedQuery.toLowerCase(), 0,
+-					parsedLabel.text, parsedLabel.text.toLowerCase(), 0,
+-					{ firstMatchCanBeWeak: true, boostFullMatch: true });
+-
+-				if (!score) {
+-					return false;
+-				}
+-
+-				item.score = score[1];
+-				item.highlights = { label: matchesFuzzyIconAware(trimmedQuery, parsedLabel) ?? undefined };
+-				return true;
+-			});
+-
+-			if (filteredItems.length === 0) {
+-				const label = localize('empty', 'No matching entries');
+-				picker.items = [{ label, index: -1, kind: SymbolKind.String }];
+-				picker.ariaLabel = label;
+-			} else {
+-				picker.items = filteredItems;
+-			}
+-		};
+-		updatePickerItems();
+-		disposables.add(picker.onDidChangeValue(updatePickerItems));
+-
+-		const previewDisposable = new MutableDisposable();
+-		disposables.add(previewDisposable);
+-
+-		disposables.add(picker.onDidChangeActive(() => {
+-			const [item] = picker.activeItems;
+-			if (item) {
+-				previewDisposable.value = entries[item.index]?.preview();
+-			} else {
+-				previewDisposable.clear();
+-			}
+-		}));
+-	}
+ }
+ 
+ class GotoSymbolAction extends Action2 {
+diff --git a/src/vs/workbench/contrib/search/test/browser/anythingQuickAccess.test.ts b/src/vs/workbench/contrib/search/test/browser/anythingQuickAccess.test.ts
+index 87f2c9a83df..8be8c97bb7c 100644
+--- a/src/vs/workbench/contrib/search/test/browser/anythingQuickAccess.test.ts
++++ b/src/vs/workbench/contrib/search/test/browser/anythingQuickAccess.test.ts
+@@ -24,7 +24,6 @@ import { IOpenerService, OpenOptions } from '../../../../../platform/opener/comm
+ import { TriggerAction } from '../../../../../platform/quickinput/browser/pickerQuickAccess.js';
+ import { IQuickInputService, IQuickPickSeparator, NO_KEY_MODS } from '../../../../../platform/quickinput/common/quickInput.js';
+ import { IEditorGroup, IEditorGroupsService } from '../../../../services/editor/common/editorGroupsService.js';
+-import { IOutlineService } from '../../../../services/outline/browser/outline.js';
+ import { ISearchService } from '../../../../services/search/common/search.js';
+ import { workbenchInstantiationService } from '../../../../test/browser/workbenchTestServices.js';
+ import { IExternalUriOpenerService, ILinkHandler } from '../../../externalUriOpener/common/externalUriOpenerService.js';
+@@ -104,7 +103,6 @@ suite('AnythingQuickAccess - links', () => {
+ 			fileSearch: async () => ({ results: [], messages: [] }),
+ 			clearCache: async () => { }
+ 		});
+-		instantiationService.stub(IOutlineService, {});
+ 		instantiationService.stub(IOutlineModelService, {});
+ 		configurationService = new TestConfigurationService({
+ 			workbench: { editor: { enablePreview: true, enablePreviewFromQuickOpen: true, openSideBySideDirection: 'right' } },
+diff --git a/src/vs/workbench/test/browser/componentFixtures/editor/tabs.fixture.ts b/src/vs/workbench/test/browser/componentFixtures/editor/tabs.fixture.ts
+index 374b2d987d4..4972d2716d2 100644
+--- a/src/vs/workbench/test/browser/componentFixtures/editor/tabs.fixture.ts
++++ b/src/vs/workbench/test/browser/componentFixtures/editor/tabs.fixture.ts
+@@ -24,8 +24,6 @@ import { ContextKeyService } from '../../../../../platform/contextkey/browser/co
+ import { listErrorForeground, listWarningForeground } from '../../../../../platform/theme/common/colors/listColors.js';
+ import { IThemeService } from '../../../../../platform/theme/common/themeService.js';
+ import { TestThemeService } from '../../../../../platform/theme/test/common/testThemeService.js';
+-import { IWorkspaceContextService } from '../../../../../platform/workspace/common/workspace.js';
+-import { testWorkspace } from '../../../../../platform/workspace/test/common/testWorkspace.js';
+ import { ITreeViewsDnDService } from '../../../../../editor/common/services/treeViewsDndService.js';
+ import { TreeViewsDnDService } from '../../../../../editor/common/services/treeViewsDnd.js';
+ import { CodeEditorWidget } from '../../../../../editor/browser/widget/codeEditor/codeEditorWidget.js';
+@@ -34,15 +32,12 @@ import { EditorInputCapabilities, EditorsOrder, IEditorPartOptions, IToolbarActi
+ import { EditorGroupModel } from '../../../../common/editor/editorGroupModel.js';
+ import { EDITOR_GROUP_HEADER_NO_TABS_BACKGROUND, EDITOR_GROUP_HEADER_TABS_BACKGROUND } from '../../../../common/theme.js';
+ import { DEFAULT_EDITOR_PART_OPTIONS, IEditorGroupMenuIds, IEditorGroupsView, IEditorGroupView, IEditorPartsView } from '../../../../browser/parts/editor/editor.js';
+-import { BreadcrumbsService, IBreadcrumbsService } from '../../../../browser/parts/editor/breadcrumbs.js';
+ import { EditorTitleControl } from '../../../../browser/parts/editor/editorTitleControl.js';
+ import { IDecorationData, IDecorationsProvider, IDecorationsService } from '../../../../services/decorations/common/decorations.js';
+ import { DecorationsService } from '../../../../services/decorations/browser/decorationsService.js';
+ import '../../../../services/themes/browser/modernTabColorCustomizations.js';
+ import { INotebookDocumentService, NotebookDocumentWorkbenchService } from '../../../../services/notebook/common/notebookDocumentService.js';
+-import { IOutlineService } from '../../../../services/outline/browser/outline.js';
+ import { LayoutSettings, ModernUIEditorTabStyle } from '../../../../services/layout/browser/layoutService.js';
+-import { TestContextService } from '../../../common/workbenchTestServices.js';
+ import { workbenchInstantiationService } from '../../workbenchTestServices.js';
+ import { ComponentFixtureContext, createEditorServices, createTextModel, defineComponentFixture, defineThemedFixtureGroup } from '../fixtureUtils.js';
+ import '../../../../contrib/modernUI/browser/media/tabs.css';
+@@ -263,10 +258,6 @@ export interface IEditorTabsFixtureOptions {
+ 	readonly partOptions?: Partial<IEditorPartOptions>;
+ 	readonly editorTabStyle?: ModernUIEditorTabStyle;
+ 	readonly editors?: IEditorSpec[];
+-	readonly breadcrumbs?: {
+-		readonly filePath?: 'on' | 'off' | 'last';
+-		readonly icons?: boolean;
+-	};
+ 	readonly width?: number;
+ 	/** Whether this group is the active group. Inactive groups exercise the
+ 	 *  `alwaysShowEditorActions` filtering and unfocused tab styling. */
+@@ -325,12 +316,6 @@ export function renderEditorTabsFixture(ctx: ComponentFixtureContext, options: I
+ 	const partOptions = createPartOptions(options.partOptions);
+ 
+ 	const configurationService = new TestConfigurationService();
+-	configurationService.setUserConfiguration('breadcrumbs', {
+-		enabled: Boolean(options.breadcrumbs),
+-		filePath: options.breadcrumbs?.filePath ?? 'on',
+-		symbolPath: 'off',
+-		icons: options.breadcrumbs?.icons ?? true,
+-	});
+ 	configurationService.setUserConfiguration(LayoutSettings.MODERN_UI, options.modernUI);
+ 	configurationService.setUserConfiguration(LayoutSettings.MODERN_UI_EDITOR_TAB_STYLE, options.editorTabStyle ?? ModernUIEditorTabStyle.Connected);
+ 
+@@ -354,12 +339,6 @@ export function renderEditorTabsFixture(ctx: ComponentFixtureContext, options: I
+ 		instantiationService.stub(IMenuService, disposableStore.add(instantiationService.createInstance(MenuService)));
+ 	}
+ 
+-	if (options.breadcrumbs) {
+-		instantiationService.stub(IBreadcrumbsService, new BreadcrumbsService());
+-		instantiationService.stub(IOutlineService, new class extends mock<IOutlineService>() { }());
+-		instantiationService.stub(IWorkspaceContextService, new TestContextService(testWorkspace(file('/project'))));
+-	}
+-
+ 	// Real decorations service + provider so resource labels get deterministic badges/colors
+ 	// (the `decorations` setting then has something to toggle).
+ 	const decorationsService = disposableStore.add(instantiationService.createInstance(DecorationsService));
+@@ -550,7 +529,6 @@ function renderTabStyleDensityComparison(tabHeight: IEditorPartOptions['tabHeigh
+ 				editorTabStyle,
+ 				partOptions: { tabHeight, titleScrollbarVisibility: showScrollbar ? 'visible' : 'auto' },
+ 				width: showScrollbar ? 520 : undefined,
+-				breadcrumbs: showScrollbar ? {} : undefined,
+ 				editors: showScrollbar ? manyEditorSpecs(5) : [
+ 					{ resource: file('/project/alpha.ts'), pinned: true },
+ 					{ resource: file('/project/beta.ts'), pinned: true, active: true },
+@@ -727,15 +705,6 @@ function createLayoutFixtures() {
+ 			render: renderPinnedSeparateRow(),
+ 			expectedVisualDescriptions: ['Pinned tabs appear in a separate row above ordinary tabs with balanced labels and actions.'],
+ 		}),
+-		ShowBreadCrumbs: defineComponentFixture({
+-			render: render(true, {
+-				partOptions: { titleScrollbarVisibility: 'visible' },
+-				breadcrumbs: {},
+-				editors: manyEditorSpecs(5),
+-				width: 360,
+-			}),
+-			expectedVisualDescriptions: ['The horizontal tab scrollbar, connected strip separator, and breadcrumb border remain distinct and aligned while the active tab is revealed within an overflowing strip.'],
+-		}),
+ 	};
+ }
+ 
+-- 
+2.54.0.windows.1
+

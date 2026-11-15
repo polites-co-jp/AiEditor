@@ -2,7 +2,7 @@
 
 - 担当: meng-tian（蒙恬）
 - 依頼日: 2026-11-15
-- 状態: 差し戻し
+- 状態: 完了
 
 ## 目的
 
@@ -78,6 +78,8 @@
 7. handoff-notes に「5回目」の節を足す。
 
 ## 結果
+
+6・7回目（2026-11-15）: 門の検査を本家から読む形にして見つかった門の抜け12か所と、`fileIsIgnored` の誤りの出方を直した。大岡越前守の検証で「パッケージ化の前まで」合格（`tasks/2026-11-15-p5-c1-c6-c7-verify/verification-ooka.md`）。`enabled` は `false` のまま。
 
 採用。C-1 の `edits.patch`（108ファイル、新規は `api/common/extHostRemovedApi.ai.ts` の1つ）と `unit.json` を5回で仕上げた。A・B の14と C-1 を当てて型検査は誤り 0。`compareLockfile` を、単位が消したパッチの名前の分だけ `patchedDependencies` が減るのを許す形に直した。判断は `docs/user-decisions.md` の 2026-11-15 の2つの表。大岡越前守の再検証で「パッケージ化の前まで」合格（`tasks/2026-11-15-p5-c1-verify/verification-ooka.md`）。`enabled` は `false` のまま（関門の後に有効にする）。
 

@@ -1,4 +1,4 @@
-From 9ab6123da21a8481623f4e43fa5c4288cc4f08a7 Mon Sep 17 00:00:00 2001
+From f2cf57060499e9fb76b31ea01a509edf85efcfa1 Mon Sep 17 00:00:00 2001
 From: shuko-apply <apply@shuko.invalid>
 Date: Sun, 15 Nov 2026 10:50:31 +0900
 Subject: [PATCH] unit C-1-ai: edits
@@ -27,7 +27,7 @@ Remove the references to the built-in AI - chat, inline chat, language models, t
  .../workbench/api/common/extHost.protocol.ts  |  895 --------
  .../api/common/extHostApiCommands.ts          |   63 +-
  .../api/common/extHostExtensionService.ts     |    5 +-
- .../api/common/extHostRemovedApi.ai.ts        |  348 +++
+ .../api/common/extHostRemovedApi.ai.ts        |  455 ++++
  .../api/common/extHostTypeConverters.ts       | 1857 +----------------
  src/vs/workbench/api/common/extHostTypes.ts   |    5 +-
  .../api/node/extHostBrowserTunnelProxy.ts     |    3 +-
@@ -113,7 +113,7 @@ Remove the references to the built-in AI - chat, inline chat, language models, t
  .../browser/componentFixtures/fixtureUtils.ts |  125 +-
  .../test/browser/workbenchTestServices.ts     |   37 +-
  test/unit/browser/renderer.html               |    4 +-
- 108 files changed, 742 insertions(+), 5418 deletions(-)
+ 108 files changed, 849 insertions(+), 5418 deletions(-)
  create mode 100644 src/vs/workbench/api/common/extHostRemovedApi.ai.ts
 
 diff --git a/build/gulpfile.ts b/build/gulpfile.ts
@@ -2986,10 +2986,10 @@ index 42008549e96..7994a8bdc0e 100644
  		const secrets = extensionInternalStore.add(new ExtensionSecrets(extensionDescription, this._secretState));
 diff --git a/src/vs/workbench/api/common/extHostRemovedApi.ai.ts b/src/vs/workbench/api/common/extHostRemovedApi.ai.ts
 new file mode 100644
-index 00000000000..a53dd5db7d1
+index 00000000000..0e38b67884e
 --- /dev/null
 +++ b/src/vs/workbench/api/common/extHostRemovedApi.ai.ts
-@@ -0,0 +1,348 @@
+@@ -0,0 +1,455 @@
 +/*---------------------------------------------------------------------------------------------
 + *  Copyright (c) Microsoft Corporation. All rights reserved.
 + *  Licensed under the MIT License. See License.txt in the project root for license information.
@@ -2998,7 +2998,8 @@ index 00000000000..a53dd5db7d1
 +import type * as vscode from 'vscode';
 +import { Event } from '../../../base/common/event.js';
 +import { IExtensionDescription } from '../../../platform/extensions/common/extensions.js';
-+import { checkProposedApiEnabled } from '../../services/extensions/common/extensions.js';
++import { assertType } from '../../../base/common/types.js';
++import { checkProposedApiEnabled, isProposedApiEnabled } from '../../services/extensions/common/extensions.js';
 +import { ExtHostEmbeddings } from './extHostEmbedding.js';
 +import { ChatInputNotificationSeverity } from './extHostTypes.js';
 +
@@ -3021,17 +3022,116 @@ index 00000000000..a53dd5db7d1
 +	return new Error(`${what}: ${REMOVED}`);
 +}
 +
-+function noopChatParticipant(id: string, handler: vscode.ChatExtendedRequestHandler): vscode.ChatParticipant {
++/**
++ * A chat participant that is never shown and never receives a request. The members keep the same
++ * proposed API checks as upstream `ExtHostChatAgent.apiAgent` (extHostChatAgents2.ts), so that an
++ * extension without the proposal still gets the same error when it touches a proposed member.
++ */
++function noopChatParticipant(extension: IExtensionDescription, id: string, handler: vscode.ChatExtendedRequestHandler): vscode.ChatParticipant {
++	let iconPath: vscode.ChatParticipant['iconPath'];
++	let requestHandler = handler;
++	let followupProvider: vscode.ChatParticipant['followupProvider'];
++	let helpTextPrefix: vscode.ChatParticipant['helpTextPrefix'];
++	let helpTextPostfix: vscode.ChatParticipant['helpTextPostfix'];
++	let supportIssueReporting: vscode.ChatParticipant['supportIssueReporting'];
++	let participantVariableProvider: vscode.ChatParticipant['participantVariableProvider'];
++	let additionalWelcomeMessage: vscode.ChatParticipant['additionalWelcomeMessage'];
++	let titleProvider: vscode.ChatParticipant['titleProvider'];
++	let summarizer: vscode.ChatParticipant['summarizer'];
 +	return {
-+		id,
-+		iconPath: undefined,
-+		requestHandler: handler,
-+		followupProvider: undefined,
-+		onDidReceiveFeedback: Event.None,
-+		onDidChangePauseState: Event.None,
-+		onDidPerformAction: Event.None,
++		get id() {
++			return id;
++		},
++		get iconPath() {
++			return iconPath;
++		},
++		set iconPath(v) {
++			iconPath = v;
++		},
++		get requestHandler() {
++			return requestHandler;
++		},
++		set requestHandler(v) {
++			assertType(typeof v === 'function', 'Invalid request handler');
++			requestHandler = v;
++		},
++		get followupProvider() {
++			return followupProvider;
++		},
++		set followupProvider(v) {
++			followupProvider = v;
++		},
++		get helpTextPrefix() {
++			checkProposedApiEnabled(extension, 'defaultChatParticipant');
++			return helpTextPrefix;
++		},
++		set helpTextPrefix(v) {
++			checkProposedApiEnabled(extension, 'defaultChatParticipant');
++			helpTextPrefix = v;
++		},
++		get helpTextPostfix() {
++			checkProposedApiEnabled(extension, 'defaultChatParticipant');
++			return helpTextPostfix;
++		},
++		set helpTextPostfix(v) {
++			checkProposedApiEnabled(extension, 'defaultChatParticipant');
++			helpTextPostfix = v;
++		},
++		get supportIssueReporting() {
++			checkProposedApiEnabled(extension, 'chatParticipantPrivate');
++			return supportIssueReporting;
++		},
++		set supportIssueReporting(v) {
++			checkProposedApiEnabled(extension, 'chatParticipantPrivate');
++			supportIssueReporting = v;
++		},
++		get onDidReceiveFeedback() {
++			return Event.None;
++		},
++		set participantVariableProvider(v) {
++			checkProposedApiEnabled(extension, 'chatParticipantAdditions');
++			if (v && !v.triggerCharacters.length) {
++				throw new Error('triggerCharacters are required');
++			}
++			participantVariableProvider = v;
++		},
++		get participantVariableProvider() {
++			checkProposedApiEnabled(extension, 'chatParticipantAdditions');
++			return participantVariableProvider;
++		},
++		set additionalWelcomeMessage(v) {
++			checkProposedApiEnabled(extension, 'defaultChatParticipant');
++			additionalWelcomeMessage = v;
++		},
++		get additionalWelcomeMessage() {
++			checkProposedApiEnabled(extension, 'defaultChatParticipant');
++			return additionalWelcomeMessage;
++		},
++		set titleProvider(v) {
++			checkProposedApiEnabled(extension, 'defaultChatParticipant');
++			titleProvider = v;
++		},
++		get titleProvider() {
++			checkProposedApiEnabled(extension, 'defaultChatParticipant');
++			return titleProvider;
++		},
++		set summarizer(v) {
++			checkProposedApiEnabled(extension, 'defaultChatParticipant');
++			summarizer = v;
++		},
++		get summarizer() {
++			checkProposedApiEnabled(extension, 'defaultChatParticipant');
++			return summarizer;
++		},
++		get onDidChangePauseState() {
++			checkProposedApiEnabled(extension, 'chatParticipantAdditions');
++			return Event.None;
++		},
++		onDidPerformAction: !isProposedApiEnabled(extension, 'chatParticipantAdditions')
++			? undefined!
++			: Event.None,
 +		dispose() { },
-+	};
++	} satisfies vscode.ChatParticipant;
 +}
 +
 +export function createRemovedChatApi(extension: IExtensionDescription): typeof vscode.chat {
@@ -3049,11 +3149,11 @@ index 00000000000..a53dd5db7d1
 +			return noopDisposable();
 +		},
 +		createChatParticipant(id: string, handler: vscode.ChatExtendedRequestHandler) {
-+			return noopChatParticipant(id, handler);
++			return noopChatParticipant(extension, id, handler);
 +		},
 +		createDynamicChatParticipant(id: string, _dynamicProps: vscode.DynamicChatParticipantProps, handler: vscode.ChatExtendedRequestHandler): vscode.ChatParticipant {
 +			checkProposedApiEnabled(extension, 'chatParticipantPrivate');
-+			return noopChatParticipant(id, handler);
++			return noopChatParticipant(extension, id, handler);
 +		},
 +		registerChatParticipantDetectionProvider(_provider: vscode.ChatParticipantDetectionProvider) {
 +			checkProposedApiEnabled(extension, 'chatParticipantPrivate');
@@ -3221,6 +3321,7 @@ index 00000000000..a53dd5db7d1
 +			return Event.None(listener, thisArgs, disposables);
 +		},
 +		getModelProxy: () => {
++			// Same as upstream extHost.api.impl.ts: the check throws synchronously before the async ExtHostLanguageModels.getModelProxy runs.
 +			checkProposedApiEnabled(extension, 'languageModelProxy');
 +			return Promise.reject(removedError('lm.getModelProxy'));
 +		},
@@ -3254,6 +3355,8 @@ index 00000000000..a53dd5db7d1
 +			return noopDisposable();
 +		},
 +		registerToolDefinition<T>(_definition: vscode.LanguageModelToolDefinition, _tool: vscode.LanguageModelTool<T>) {
++			// Same check as upstream ExtHostLanguageModelTools.registerToolDefinition.
++			checkProposedApiEnabled(extension, 'languageModelToolSupportsModel');
 +			return noopDisposable();
 +		},
 +		invokeTool<T>(nameOrInfo: string | vscode.LanguageModelToolInformation, _parameters: vscode.LanguageModelToolInvocationOptions<T>, _token?: vscode.CancellationToken) {
@@ -3267,9 +3370,13 @@ index 00000000000..a53dd5db7d1
 +			return [];
 +		},
 +		fileIsIgnored(_uri: vscode.Uri, _token?: vscode.CancellationToken) {
++			// Same check as upstream ExtHostLanguageModels.fileIsIgnored. That function is not async, so the check throws synchronously.
++			checkProposedApiEnabled(extension, 'chatParticipantAdditions');
 +			return Promise.resolve(false);
 +		},
 +		registerIgnoredFileProvider(_provider: vscode.LanguageModelIgnoredFileProvider) {
++			// Same check as upstream ExtHostLanguageModels.registerIgnoredFileProvider.
++			checkProposedApiEnabled(extension, 'chatParticipantPrivate');
 +			return noopDisposable();
 +		},
 +		registerMcpServerDefinitionProvider(_id, _provider) {

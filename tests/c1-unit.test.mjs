@@ -12,6 +12,7 @@ import { spawnSync } from 'node:child_process';
 import { dirname, join, resolve } from 'node:path';
 import { posix } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { compareMemberGates, expectChecked, memberGatesOf, outerSyncGateNames } from './gate-members.mjs';
 
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 // AIED_C1_UNIT_DIR: 単位のフォルダの代わり(tests/c1-mutation.test.mjs が、壊した写しでこのテストが落ちることを確かめるのに使う)
@@ -27,6 +28,7 @@ const UP_REPO = process.env.AIED_UPSTREAM_REPO || 'C:/b/vscode';
 const UP_TAG = process.env.AIED_UPSTREAM_TAG || '1.146.0';
 const upOk = existsSync(UP_REPO) && spawnSync('git', ['-C', UP_REPO, 'rev-parse', '--verify', `${UP_TAG}^{commit}`]).status === 0;
 const upHas = (p) => spawnSync('git', ['-C', UP_REPO, 'cat-file', '-e', `${UP_TAG}:${p}`]).status === 0;
+const upShow = (p) => { const r = spawnSync('git', ['-C', UP_REPO, 'show', `${UP_TAG}:${p}`], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 }); return r.status === 0 ? r.stdout.replace(/\r\n/g, '\n') : null; };
 
 // ---------------------------------------------------------------------------
 // edits.patch を、ファイルごとの区画に分ける
@@ -340,7 +342,7 @@ test('C-1 何もしない実装: イベントはすべて Event.None（listener 
   const names = [...apiText.matchAll(/^\s*(onDid\w+)\s*[:(]\s*\(?listener\b/gm)].map((m) => m[1]);
   assert.ok(names.length >= 10, `イベントのメンバーが少ない: ${names.length}`);
   // listener を受けない形（値のイベント）は、右辺がちょうど Event.None
-  const valueForm = [...apiText.matchAll(/^\s*(onDid\w+)\s*:(?!\s*\(?listener\b)([^\n]*)$/gm)].filter((m) => !/^Event\.None,?$/.test(m[2].trim())).map((m) => `${m[1]}: ${m[2]}`);
+  const valueForm = [...apiText.matchAll(/^\s*(onDid\w+)\s*:(?!\s*\(?listener\b)([^\n]*)$/gm)].filter((m) => !/^Event\.None,?$/.test(m[2].trim()) && !(m[1] === 'onDidPerformAction' && /isProposedApiEnabled\(extension, 'chatParticipantAdditions'\)/.test(m[2]))).map((m) => `${m[1]}: ${m[2]}`);
   assert.deepEqual(valueForm, [], '値のイベントが Event.None でない');
   const bad = [];
   for (const n of names) {
@@ -352,7 +354,7 @@ test('C-1 何もしない実装: イベントはすべて Event.None（listener 
   assert.deepEqual(bad, []);
   // 値のイベント（アクセス情報・参加者）
   assert.match(apiText, /onDidChange: Event\.None,/);
-  assert.match(apiText, /onDidReceiveFeedback: Event\.None,/);
+  assert.match(apiText, /onDidReceiveFeedback: Event\.None,|get onDidReceiveFeedback\(\) \{\s*return Event\.None;/);
 });
 
 test('C-1 何もしない実装: lm.onDidChangeChatModels は Event.None で、registerLanguageModelChatProvider は何も登録しない', { skip: noApi }, () => {
@@ -365,14 +367,15 @@ test('C-1 何もしない実装: lm.onDidChangeChatModels は Event.None で、r
 test('C-1 何もしない実装: createChatParticipant は id を持つ何もしない参加者（requestHandler を渡すだけ）', { skip: noApi }, () => {
   const p = fnBody(apiText, /function noopChatParticipant\(/);
   assert.ok(p, 'noopChatParticipant が無い');
-  assert.match(p, /\bid,/);
+  assert.match(p, /\bid;?\s*\n|\bid,/);
   assert.match(p, /dispose\(\) \{ \}/);
   const c = member(apiText, 'createChatParticipant');
-  assert.ok(c && /return noopChatParticipant\(id, handler\);/.test(c));
+  // 6回目から、参加者のメンバーが本家と同じ門を持つので、拡張(extension)も渡す
+  assert.ok(c && /return noopChatParticipant\((?:extension, )?id, handler\);/.test(c));
 });
 
 test('C-1 何もしない実装: 提案中の API の門 checkProposedApiEnabled が残る（services/extensions/common/extensions.js から import）', { skip: noApi }, () => {
-  assert.match(apiText, /import \{ checkProposedApiEnabled \} from '\.\.\/\.\.\/services\/extensions\/common\/extensions\.js';/);
+  assert.match(apiText, /import \{ checkProposedApiEnabled(?:, isProposedApiEnabled)? \} from '\.\.\/\.\.\/services\/extensions\/common\/extensions\.js';/);
   const calls = [...apiText.matchAll(/checkProposedApiEnabled\(extension, '(\w+)'\)/g)].map((m) => m[1]);
   assert.ok(calls.length >= 30, `門の呼び出しが少ない: ${calls.length}`);
   const proposals = new Set(calls);
@@ -380,6 +383,148 @@ test('C-1 何もしない実装: 提案中の API の門 checkProposedApiEnabled
     'chatContextProvider', 'chatPromptFiles', 'chatDebug', 'chatOutputRenderer', 'chatInputNotification', 'embeddings']) {
     assert.ok(proposals.has(p), `提案 ${p} の門が無い`);
   }
+});
+
+// 提案中の API の門の期待は、手で並べず、本家のタグの、C-1 が消す extHost のファイル(api/common の extHost*.ts)の
+// `checkProposedApiEnabled(extension, '<名前>')` と、edits.patch が extHost.api.impl.ts から消す塊の同じ呼び出しから読む
+// (C-4 で、手で並べた期待が実装の門の抜けを通した。大岡越前守の検証 2026-11-15。同じ見逃しが無いかを C-1 でも確かめた)。
+function upstreamGateSites() {
+  const names = [];
+  const gate = /checkProposedApiEnabled\(extension, '(\w+)'\)/g;
+  for (const d of unit.delete ?? []) {
+    if (!/^src\/vs\/workbench\/api\/common\/extHost[^/]*\.ts$/.test(d)) continue;
+    const t = upShow(d);
+    assert.ok(t !== null, `本家に無い: ${d}`);
+    for (const m of t.matchAll(gate)) names.push(m[1]);
+  }
+  for (const l of section('api/common/extHost.api.impl.ts')?.removed ?? []) for (const m of l.matchAll(gate)) names.push(m[1]);
+  return names;
+}
+test('C-1 何もしない実装: 提案中の API の門が、本家の消すファイルと edits.patch が消す塊の門を、すべて含む(本家から読む。実装の一覧から写さない)', { skip: noApi || (upOk ? false : '本家のソースが読めない') }, () => {
+  // 何もしない実装から呼べない場所の門は、持たなくてよい(呼び出し口が無い):
+  //   languageModelSystem = 本物のモデルへ送るときのメッセージの変換(selectChatModels が [] なので、送る口が無い)
+  //   mcpToolDefinitions = プロバイダーが返した定義の検証(何もしない実装はプロバイダーを呼ばない)
+  const UNREACHABLE = new Set(['languageModelSystem', 'mcpToolDefinitions']);
+  const expected = new Set(upstreamGateSites().filter((n) => !UNREACHABLE.has(n)));
+  assert.ok(expected.size >= 10, `本家の門が少ない: ${[...expected].join(',')}`);
+  const have = new Set([...apiText.matchAll(/checkProposedApiEnabled\(extension, '(\w+)'\)/g)].map((m) => m[1]));
+  assert.deepEqual([...expected].filter((n) => !have.has(n)), [], '本家にある提案中の API の門が、何もしない実装から抜けている');
+});
+
+// ---------------------------------------------------------------------------
+// 所（メンバー）ごとの門(5回目。6回目の直しを受けて)。名前の集まりを比べるだけでは、同じ提案の名前が別の所に出てくると抜けが見えない
+// (registerToolDefinition・fileIsIgnored・registerIgnoredFileProvider・参加者の9項目がそうだった)。
+// 期待は本家の消すファイル(api/common の extHost*.ts)の、メンバーごとの `checkProposedApiEnabled(.., '<名前>')` から読む。実装の一覧から写さない。
+// 何もしない実装の本文を node で走らせ(型を外す。import は模擬)、提案を有効にしていない拡張で投げる(本家が async なら reject する)ことと、
+// 有効にした拡張で投げないことを、メンバーごとに確かめる。
+// ---------------------------------------------------------------------------
+// (読み方と突き合わせは共通の部品 tests/gate-members.mjs。C-4 も同じ部品を使う)
+/** 本家の消す extHost のファイルから、メンバー -> { name, kind, gates, async } を読む。 */
+function upstreamMemberGates() {
+  const files = [];
+  for (const d of unit.delete ?? []) {
+    if (!/^src\/vs\/workbench\/api\/common\/extHost[^/]*\.ts$/.test(d)) continue;
+    const text = upShow(d);
+    assert.ok(text !== null, `本家に無い: ${d}`);
+    files.push({ path: d, text });
+  }
+  return memberGatesOf(files);
+}
+const nodeModule = await import('node:module');
+const stripTs = nodeModule.stripTypeScriptTypes ?? nodeModule.default?.stripTypeScriptTypes;
+const noRunApi = noApi || (typeof stripTs === 'function' ? false : 'node に module.stripTypeScriptTypes が無い');
+function loadApi() {
+  const src = apiText.replace(/^import .*$/gm, '').replace(/^export (function|interface) /gm, 'function ');
+  const js = stripTs(src, { mode: 'strip' });
+  const None = () => ({ dispose() { } });
+  const Event = { None };
+  const check = (ext, name) => { if (!(ext.enabledApiProposals ?? []).includes(name)) throw new Error(`Extension '${ext.name}' CANNOT use API proposal: ${name}.`); };
+  const isEnabled = (ext, name) => (ext.enabledApiProposals ?? []).includes(name);
+  const assertType = (cond, msg) => { if (!cond) throw new Error(msg ?? 'Assertion Failed'); };
+  const ChatInputNotificationSeverity = { Info: 0, Warning: 1, Error: 2 };
+  const fns = new Function('Event', 'checkProposedApiEnabled', 'isProposedApiEnabled', 'assertType', 'ChatInputNotificationSeverity',
+    `${js}\nreturn { createRemovedChatApi, createRemovedLanguageModelApi };`)(Event, check, isEnabled, assertType, ChatInputNotificationSeverity);
+  return { ...fns, None };
+}
+const extOf = (proposals) => ({ name: 'x.ext', identifier: { value: 'x.ext' }, enabledApiProposals: proposals });
+const lmMock = { embeddingsModels: [], onDidChange: () => ({ dispose() { } }), registerEmbeddingsProvider: () => ({ dispose() { } }), computeEmbeddings: async () => ({}) };
+
+/** 「メンバー名 -> オブジェクト(lm / chat / 参加者)」の、実装が持つもの。 */
+function surfaces(ext) {
+  const { createRemovedChatApi, createRemovedLanguageModelApi } = loadApi();
+  const lm = createRemovedLanguageModelApi(ext, lmMock);
+  const chat = createRemovedChatApi(ext);
+  const participant = chat.createChatParticipant('p', () => { });
+  return { lm, chat, participant };
+}
+async function compareGates() {
+  const map = upstreamMemberGates();
+  // invokeTool の門は、情報オブジェクトを渡したときだけ(本家と同じ)
+  const outerSync = outerSyncGateNames(upShow('src/vs/workbench/api/common/extHost.api.impl.ts') ?? '');
+  assert.ok(outerSync.has('getModelProxy'), `外側の口が同期で門を呼ぶ getModelProxy が読めていない: ${[...outerSync].join(',')}`);
+  const r = await compareMemberGates({ map, surfacesFor: (proposals) => surfaces(extOf(proposals)), callArgs: { invokeTool: [{ name: 't' }, {}] }, outerSync });
+  const gated = [...map].filter(([, v]) => v.gates.size > 0).map(([k, v]) => `${k}:${[...v.gates].join('/')}`);
+  return { ...r, gated, mapSize: map.size };
+}
+
+test('C-1 何もしない実装(走らせる): 本家の消すファイルでメンバーごとに門があるものは、提案を有効にしていない拡張で門の誤りになる(投げる・reject する)。有効にした拡張では誤りにならない', { skip: noRunApi || (upOk ? false : '本家のソースが読めない') }, async () => {
+  const { checked, bad, gated, mapSize } = await compareGates();
+  assert.ok(checked.length >= 10, `突き合わせたメンバーが少ない(${checked.length}): 読み方が外れている。メンバー ${mapSize} 件、門のあるもの ${gated.length} 件: ${gated.slice(0, 12).join(', ')}`);
+  // 6回目で見つかった抜けの所が、突き合わせに入っている(読み方の退行を見張る)
+  expectChecked(checked, ['lm.registerToolDefinition', 'lm.fileIsIgnored', 'lm.registerIgnoredFileProvider', 'participant.get helpTextPrefix', 'participant.set helpTextPrefix', 'participant.get supportIssueReporting',
+    'participant.set supportIssueReporting', 'participant.get participantVariableProvider', 'participant.set participantVariableProvider', 'participant.get onDidChangePauseState']);
+  assert.deepEqual(bad, [], `突き合わせたメンバー: ${checked.join(', ')}`);
+});
+
+test('C-1 何もしない実装(走らせる): 門の誤りが、本家と同じ形で返る(本家のメソッドが async なら reject、そうでなければ同期で投げる)', { skip: noRunApi || (upOk ? false : '本家のソースが読めない') }, async () => {
+  const { asyncBad } = await compareGates();
+  assert.deepEqual(asyncBad, []);
+});
+
+test('C-1 何もしない実装(走らせる): 本家の門を持つメンバーのうち、実装に同じ名前が無いものが、呼べない所の例外の一覧だけである', { skip: noRunApi || (upOk ? false : '本家のソースが読めない') }, () => {
+  // 本家で門のあるメンバーは多い(ホスト側の道・RPC の受け口)。API として拡張に出るのは lm / chat / 参加者のメンバーだけで、
+  // 実装が持たないのに API に出るものがあれば、ここで見える。その確認は「API に出る本家の名前」= 本家の extHost.api.impl.ts の lm / chat の宣言から取る。
+  const api = upShow('src/vs/workbench/api/common/extHost.api.impl.ts');
+  const map = upstreamMemberGates();
+  const { lm, chat, participant } = surfaces(extOf([]));
+  const have = (n) => n in lm || n in chat || n in participant;
+  // lm / chat の宣言のメンバー名(インデント3つ)
+  const names = new Set();
+  for (const start of ['const lm: typeof vscode.lm = {', 'const chat: typeof vscode.chat = {']) {
+    const at = api.indexOf(start);
+    if (at < 0) continue;
+    const end = api.indexOf('\n\t\t};', at);
+    for (const m of api.slice(at, end).matchAll(/^\t\t\t(?:get\s+|async\s+)?([A-Za-z_$][\w$]*)\s*(?:[(:<]|=)/gm)) names.add(m[1]);
+  }
+  assert.ok(names.size >= 15, `本家の lm / chat の宣言が読めない(${names.size})`);
+  const gatedNames = new Set([...map.values()].filter((v) => v.gates.size > 0).map((v) => v.name));
+  const missing = [...names].filter((n) => gatedNames.has(n) && !have(n));
+  assert.deepEqual(missing, [], '本家の API に出る、門のあるメンバーが、何もしない実装に無い');
+});
+
+test('C-1 何もしない実装(走らせる): 参加者の値 — id は渡した名前、requestHandler に関数でない値を入れると Invalid request handler、onDidPerformAction は提案が無ければ undefined・有効ならイベント', { skip: noRunApi }, () => {
+  const plain = surfaces(extOf([])).participant;
+  assert.equal(plain.id, 'p');
+  assert.throws(() => { plain.requestHandler = 1; }, /Invalid request handler/);
+  assert.equal(plain.onDidPerformAction, undefined);
+  const all = surfaces(extOf(['chatParticipantAdditions', 'chatParticipantPrivate', 'defaultChatParticipant'])).participant;
+  assert.equal(typeof all.onDidPerformAction, 'function');
+  assert.doesNotThrow(() => { all.helpTextPrefix = 'x'; all.titleProvider = undefined; all.supportIssueReporting = true; });
+  assert.throws(() => { all.participantVariableProvider = { triggerCharacters: [] }; }, /triggerCharacters are required/);
+  // 提案のないメンバーは、提案が無くても読み書きできる
+  assert.doesNotThrow(() => { plain.iconPath = undefined; plain.followupProvider = undefined; void plain.onDidReceiveFeedback; });
+});
+
+test('C-1 何もしない実装(走らせる): lm.fileIsIgnored は提案が有効なら false で resolve する。registerToolDefinition・registerIgnoredFileProvider は有効なら Disposable を返す', { skip: noRunApi }, async () => {
+  const on = surfaces(extOf(['chatParticipantAdditions', 'chatParticipantPrivate', 'languageModelToolSupportsModel'])).lm;
+  assert.equal(await on.fileIsIgnored({}), false);
+  assert.equal(typeof on.registerToolDefinition({}, {}).dispose, 'function');
+  assert.equal(typeof on.registerIgnoredFileProvider({}).dispose, 'function');
+  const off = surfaces(extOf([])).lm;
+  // 本家の fileIsIgnored は async でなく、先頭で同期に投げる(7回目で実装を合わせた)
+  assert.throws(() => off.fileIsIgnored({}), /CANNOT use API proposal: chatParticipantAdditions/);
+  assert.throws(() => off.registerToolDefinition({}, {}), /CANNOT use API proposal: languageModelToolSupportsModel/);
+  assert.throws(() => off.registerIgnoredFileProvider({}), /CANNOT use API proposal: chatParticipantPrivate/);
 });
 
 test('C-1 何もしない実装: 提案中の API のメンバー（registerChatSessionItemProvider など）は、門を通ってから何もしない値を返す', { skip: noApi }, () => {
@@ -398,7 +543,8 @@ test('C-1 何もしない実装: 提案中の API のメンバー（registerChat
 
 test('C-1 何もしない実装: 安定版の API の登録系・参加者は門を通さない（Claude Code が呼んでも誤りにならない）', { skip: noApi }, () => {
   for (const n of ['selectChatModels', 'onDidChangeChatModels', 'registerLanguageModelChatProvider', 'registerTool', 'registerMcpServerDefinitionProvider',
-    'registerIgnoredFileProvider', 'fileIsIgnored', 'createChatParticipant']) {
+    'createChatParticipant']) {
+    // (fileIsIgnored・registerIgnoredFileProvider は、本家に門があるので 6回目で門を足した。所ごとの検査が見る)
     const m = member(apiText, n);
     assert.ok(m, `${n} が無い`);
     assert.ok(!m.includes('checkProposedApiEnabled'), `${n} に門がある（安定版のはず）`);

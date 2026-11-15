@@ -23,6 +23,7 @@
     { "file": "src/vs/workbench/workbench.common.main.ts", "line": "import './contrib/codeEditor/browser/outline/documentSymbolsOutline.js';" }
   ],
   "productRemove": [],
+  "patch": "edits.patch",
   "kept": [
     { "path": "src/vs/base/browser/ui/breadcrumbs", "reason": "パンくずの部品（BreadcrumbsWidget）。差分エディタの変更の無い部分の表示（editor/contrib/diffEditorBreadcrumbs。Claude Code の差分エディタの受け手）とチャットのデバッグのビュー（C-1）が使う" },
     { "path": "src/vs/platform/theme/browser/defaultStyles.ts", "reason": "defaultBreadcrumbsWidgetStyles を含む既定の見た目の一覧。多くの部品が使う共有のファイルなので触らない" },
@@ -49,7 +50,11 @@
       { "in": ["src/vs"], "text": "parts/editor/breadcrumbs.js'" },
       { "in": ["src/vs"], "text": "services/outline/browser/outline.js'" },
       { "in": ["src/vs"], "text": "services/outline/browser/outlineService.js'" },
-      { "in": ["src/vs"], "text": "codeEditor/browser/outline/documentSymbolsOutline.js'" }
+      { "in": ["src/vs"], "text": "codeEditor/browser/outline/documentSymbolsOutline.js'" },
+      { "in": ["src/vs/workbench/browser/parts/editor"], "text": "BreadcrumbsControlFactory" },
+      { "in": ["src/vs/workbench"], "text": "@IOutlineService" },
+      { "in": ["src/vs/workbench"], "text": "notifyOutlineChanged" },
+      { "in": ["src/vs/workbench"], "text": "showBreadcrumbs" }
     ],
     "absentProcesses": [],
     "absentHosts": []
