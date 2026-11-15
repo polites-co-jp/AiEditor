@@ -145,7 +145,7 @@ Phase 2 の作業で表から変えた点（2026-11-14）: B-1 に `terminalCont
 - C-3 は `services/tunnel`（Webview＝Claude Code のパネルが注入する）・`sharedProcessTunnelService`・`remoteExplorerService` を残す。
 - C-4 は `contrib/notebook/common`（拡張 API の中心が型を使う）と `services/notebook`（理由は C-4 の `kept`）を残す。全文検索がノートブックの部品と強く結びついていて、直しは検索の約15ファイルに及ぶ見込み。
 - C-5 は `extensionGalleryManifestService` のワークベンチ側を残す（共有プロセスの待ち合わせに要る）。
-- C-6 は、型検査に掛からず起動時に壊れる注入が2か所ある（`IUserDataSyncWorkbenchService`）。関門のスモークで見る。
+- C-6 は、型検査に掛からず起動時に壊れる注入が2か所ある（`IUserDataSyncWorkbenchService`）。関門のスモークで見る。「続きの編集」（`contrib/editSessions`）は C-6 に入れず残す（2026-11-15 のユーザーの裁定。通信の監査で通信が見つかったら改めて諮る）。
 
 テスト（`contrib/testing`）とコメント（`contrib/comments`）は裁定で残す。使って重ければ改めてユーザーに諮る。ほかに、裁定に挙がっていない機能を消すときは、ユーザーの確認を経て単位を足す。
 
