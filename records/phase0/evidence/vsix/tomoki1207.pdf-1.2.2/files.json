@@ -1,0 +1,1522 @@
+[
+  {
+    "path": "extension.vsixmanifest",
+    "size": 2614
+  },
+  {
+    "path": "[Content_Types].xml",
+    "size": 978
+  },
+  {
+    "path": "extension/.eslintignore",
+    "size": 6
+  },
+  {
+    "path": "extension/CHANGELOG.md",
+    "size": 3191
+  },
+  {
+    "path": "extension/lib/build/pdf.js",
+    "size": 671846
+  },
+  {
+    "path": "extension/lib/build/pdf.sandbox.js",
+    "size": 640105
+  },
+  {
+    "path": "extension/lib/build/pdf.worker.js",
+    "size": 2083411
+  },
+  {
+    "path": "extension/lib/LICENSE",
+    "size": 10174
+  },
+  {
+    "path": "extension/lib/main.js",
+    "size": 3374
+  },
+  {
+    "path": "extension/lib/pdf.css",
+    "size": 208
+  },
+  {
+    "path": "extension/lib/web/cmaps/78-EUC-H.bcmap",
+    "size": 2404
+  },
+  {
+    "path": "extension/lib/web/cmaps/78-EUC-V.bcmap",
+    "size": 173
+  },
+  {
+    "path": "extension/lib/web/cmaps/78-H.bcmap",
+    "size": 2379
+  },
+  {
+    "path": "extension/lib/web/cmaps/78-RKSJ-H.bcmap",
+    "size": 2398
+  },
+  {
+    "path": "extension/lib/web/cmaps/78-RKSJ-V.bcmap",
+    "size": 173
+  },
+  {
+    "path": "extension/lib/web/cmaps/78-V.bcmap",
+    "size": 169
+  },
+  {
+    "path": "extension/lib/web/cmaps/78ms-RKSJ-H.bcmap",
+    "size": 2651
+  },
+  {
+    "path": "extension/lib/web/cmaps/78ms-RKSJ-V.bcmap",
+    "size": 290
+  },
+  {
+    "path": "extension/lib/web/cmaps/83pv-RKSJ-H.bcmap",
+    "size": 905
+  },
+  {
+    "path": "extension/lib/web/cmaps/90ms-RKSJ-H.bcmap",
+    "size": 721
+  },
+  {
+    "path": "extension/lib/web/cmaps/90ms-RKSJ-V.bcmap",
+    "size": 290
+  },
+  {
+    "path": "extension/lib/web/cmaps/90msp-RKSJ-H.bcmap",
+    "size": 715
+  },
+  {
+    "path": "extension/lib/web/cmaps/90msp-RKSJ-V.bcmap",
+    "size": 291
+  },
+  {
+    "path": "extension/lib/web/cmaps/90pv-RKSJ-H.bcmap",
+    "size": 982
+  },
+  {
+    "path": "extension/lib/web/cmaps/90pv-RKSJ-V.bcmap",
+    "size": 260
+  },
+  {
+    "path": "extension/lib/web/cmaps/Add-H.bcmap",
+    "size": 2419
+  },
+  {
+    "path": "extension/lib/web/cmaps/Add-RKSJ-H.bcmap",
+    "size": 2413
+  },
+  {
+    "path": "extension/lib/web/cmaps/Add-RKSJ-V.bcmap",
+    "size": 287
+  },
+  {
+    "path": "extension/lib/web/cmaps/Add-V.bcmap",
+    "size": 282
+  },
+  {
+    "path": "extension/lib/web/cmaps/Adobe-CNS1-0.bcmap",
+    "size": 317
+  },
+  {
+    "path": "extension/lib/web/cmaps/Adobe-CNS1-1.bcmap",
+    "size": 371
+  },
+  {
+    "path": "extension/lib/web/cmaps/Adobe-CNS1-2.bcmap",
+    "size": 376
+  },
+  {
+    "path": "extension/lib/web/cmaps/Adobe-CNS1-3.bcmap",
+    "size": 401
+  },
+  {
+    "path": "extension/lib/web/cmaps/Adobe-CNS1-4.bcmap",
+    "size": 405
+  },
+  {
+    "path": "extension/lib/web/cmaps/Adobe-CNS1-5.bcmap",
+    "size": 406
+  },
+  {
+    "path": "extension/lib/web/cmaps/Adobe-CNS1-6.bcmap",
+    "size": 406
+  },
+  {
+    "path": "extension/lib/web/cmaps/Adobe-CNS1-UCS2.bcmap",
+    "size": 41193
+  },
+  {
+    "path": "extension/lib/web/cmaps/Adobe-GB1-0.bcmap",
+    "size": 217
+  },
+  {
+    "path": "extension/lib/web/cmaps/Adobe-GB1-1.bcmap",
+    "size": 250
+  },
+  {
+    "path": "extension/lib/web/cmaps/Adobe-GB1-2.bcmap",
+    "size": 465
+  },
+  {
+    "path": "extension/lib/web/cmaps/Adobe-GB1-3.bcmap",
+    "size": 470
+  },
+  {
+    "path": "extension/lib/web/cmaps/Adobe-GB1-4.bcmap",
+    "size": 601
+  },
+  {
+    "path": "extension/lib/web/cmaps/Adobe-GB1-5.bcmap",
+    "size": 625
+  },
+  {
+    "path": "extension/lib/web/cmaps/Adobe-GB1-UCS2.bcmap",
+    "size": 33974
+  },
+  {
+    "path": "extension/lib/web/cmaps/Adobe-Japan1-0.bcmap",
+    "size": 225
+  },
+  {
+    "path": "extension/lib/web/cmaps/Adobe-Japan1-1.bcmap",
+    "size": 226
+  },
+  {
+    "path": "extension/lib/web/cmaps/Adobe-Japan1-2.bcmap",
+    "size": 233
+  },
+  {
+    "path": "extension/lib/web/cmaps/Adobe-Japan1-3.bcmap",
+    "size": 242
+  },
+  {
+    "path": "extension/lib/web/cmaps/Adobe-Japan1-4.bcmap",
+    "size": 337
+  },
+  {
+    "path": "extension/lib/web/cmaps/Adobe-Japan1-5.bcmap",
+    "size": 430
+  },
+  {
+    "path": "extension/lib/web/cmaps/Adobe-Japan1-6.bcmap",
+    "size": 485
+  },
+  {
+    "path": "extension/lib/web/cmaps/Adobe-Japan1-UCS2.bcmap",
+    "size": 40951
+  },
+  {
+    "path": "extension/lib/web/cmaps/Adobe-Korea1-0.bcmap",
+    "size": 241
+  },
+  {
+    "path": "extension/lib/web/cmaps/Adobe-Korea1-1.bcmap",
+    "size": 386
+  },
+  {
+    "path": "extension/lib/web/cmaps/Adobe-Korea1-2.bcmap",
+    "size": 391
+  },
+  {
+    "path": "extension/lib/web/cmaps/Adobe-Korea1-UCS2.bcmap",
+    "size": 23293
+  },
+  {
+    "path": "extension/lib/web/cmaps/B5-H.bcmap",
+    "size": 1086
+  },
+  {
+    "path": "extension/lib/web/cmaps/B5-V.bcmap",
+    "size": 142
+  },
+  {
+    "path": "extension/lib/web/cmaps/B5pc-H.bcmap",
+    "size": 1099
+  },
+  {
+    "path": "extension/lib/web/cmaps/B5pc-V.bcmap",
+    "size": 144
+  },
+  {
+    "path": "extension/lib/web/cmaps/CNS-EUC-H.bcmap",
+    "size": 1780
+  },
+  {
+    "path": "extension/lib/web/cmaps/CNS-EUC-V.bcmap",
+    "size": 1920
+  },
+  {
+    "path": "extension/lib/web/cmaps/CNS1-H.bcmap",
+    "size": 706
+  },
+  {
+    "path": "extension/lib/web/cmaps/CNS1-V.bcmap",
+    "size": 143
+  },
+  {
+    "path": "extension/lib/web/cmaps/CNS2-H.bcmap",
+    "size": 504
+  },
+  {
+    "path": "extension/lib/web/cmaps/CNS2-V.bcmap",
+    "size": 93
+  },
+  {
+    "path": "extension/lib/web/cmaps/ETen-B5-H.bcmap",
+    "size": 1125
+  },
+  {
+    "path": "extension/lib/web/cmaps/ETen-B5-V.bcmap",
+    "size": 158
+  },
+  {
+    "path": "extension/lib/web/cmaps/ETenms-B5-H.bcmap",
+    "size": 101
+  },
+  {
+    "path": "extension/lib/web/cmaps/ETenms-B5-V.bcmap",
+    "size": 172
+  },
+  {
+    "path": "extension/lib/web/cmaps/ETHK-B5-H.bcmap",
+    "size": 4426
+  },
+  {
+    "path": "extension/lib/web/cmaps/ETHK-B5-V.bcmap",
+    "size": 158
+  },
+  {
+    "path": "extension/lib/web/cmaps/EUC-H.bcmap",
+    "size": 578
+  },
+  {
+    "path": "extension/lib/web/cmaps/EUC-V.bcmap",
+    "size": 170
+  },
+  {
+    "path": "extension/lib/web/cmaps/Ext-H.bcmap",
+    "size": 2536
+  },
+  {
+    "path": "extension/lib/web/cmaps/Ext-RKSJ-H.bcmap",
+    "size": 2542
+  },
+  {
+    "path": "extension/lib/web/cmaps/Ext-RKSJ-V.bcmap",
+    "size": 218
+  },
+  {
+    "path": "extension/lib/web/cmaps/Ext-V.bcmap",
+    "size": 215
+  },
+  {
+    "path": "extension/lib/web/cmaps/GB-EUC-H.bcmap",
+    "size": 549
+  },
+  {
+    "path": "extension/lib/web/cmaps/GB-EUC-V.bcmap",
+    "size": 179
+  },
+  {
+    "path": "extension/lib/web/cmaps/GB-H.bcmap",
+    "size": 528
+  },
+  {
+    "path": "extension/lib/web/cmaps/GB-V.bcmap",
+    "size": 175
+  },
+  {
+    "path": "extension/lib/web/cmaps/GBK-EUC-H.bcmap",
+    "size": 14692
+  },
+  {
+    "path": "extension/lib/web/cmaps/GBK-EUC-V.bcmap",
+    "size": 180
+  },
+  {
+    "path": "extension/lib/web/cmaps/GBK2K-H.bcmap",
+    "size": 19662
+  },
+  {
+    "path": "extension/lib/web/cmaps/GBK2K-V.bcmap",
+    "size": 219
+  },
+  {
+    "path": "extension/lib/web/cmaps/GBKp-EUC-H.bcmap",
+    "size": 14686
+  },
+  {
+    "path": "extension/lib/web/cmaps/GBKp-EUC-V.bcmap",
+    "size": 181
+  },
+  {
+    "path": "extension/lib/web/cmaps/GBpc-EUC-H.bcmap",
+    "size": 557
+  },
+  {
+    "path": "extension/lib/web/cmaps/GBpc-EUC-V.bcmap",
+    "size": 181
+  },
+  {
+    "path": "extension/lib/web/cmaps/GBT-EUC-H.bcmap",
+    "size": 7290
+  },
+  {
+    "path": "extension/lib/web/cmaps/GBT-EUC-V.bcmap",
+    "size": 180
+  },
+  {
+    "path": "extension/lib/web/cmaps/GBT-H.bcmap",
+    "size": 7269
+  },
+  {
+    "path": "extension/lib/web/cmaps/GBT-V.bcmap",
+    "size": 176
+  },
+  {
+    "path": "extension/lib/web/cmaps/GBTpc-EUC-H.bcmap",
+    "size": 7298
+  },
+  {
+    "path": "extension/lib/web/cmaps/GBTpc-EUC-V.bcmap",
+    "size": 182
+  },
+  {
+    "path": "extension/lib/web/cmaps/H.bcmap",
+    "size": 553
+  },
+  {
+    "path": "extension/lib/web/cmaps/Hankaku.bcmap",
+    "size": 132
+  },
+  {
+    "path": "extension/lib/web/cmaps/Hiragana.bcmap",
+    "size": 124
+  },
+  {
+    "path": "extension/lib/web/cmaps/HKdla-B5-H.bcmap",
+    "size": 2654
+  },
+  {
+    "path": "extension/lib/web/cmaps/HKdla-B5-V.bcmap",
+    "size": 148
+  },
+  {
+    "path": "extension/lib/web/cmaps/HKdlb-B5-H.bcmap",
+    "size": 2414
+  },
+  {
+    "path": "extension/lib/web/cmaps/HKdlb-B5-V.bcmap",
+    "size": 148
+  },
+  {
+    "path": "extension/lib/web/cmaps/HKgccs-B5-H.bcmap",
+    "size": 2292
+  },
+  {
+    "path": "extension/lib/web/cmaps/HKgccs-B5-V.bcmap",
+    "size": 149
+  },
+  {
+    "path": "extension/lib/web/cmaps/HKm314-B5-H.bcmap",
+    "size": 1772
+  },
+  {
+    "path": "extension/lib/web/cmaps/HKm314-B5-V.bcmap",
+    "size": 149
+  },
+  {
+    "path": "extension/lib/web/cmaps/HKm471-B5-H.bcmap",
+    "size": 2171
+  },
+  {
+    "path": "extension/lib/web/cmaps/HKm471-B5-V.bcmap",
+    "size": 149
+  },
+  {
+    "path": "extension/lib/web/cmaps/HKscs-B5-H.bcmap",
+    "size": 4437
+  },
+  {
+    "path": "extension/lib/web/cmaps/HKscs-B5-V.bcmap",
+    "size": 159
+  },
+  {
+    "path": "extension/lib/web/cmaps/Katakana.bcmap",
+    "size": 100
+  },
+  {
+    "path": "extension/lib/web/cmaps/KSC-EUC-H.bcmap",
+    "size": 1848
+  },
+  {
+    "path": "extension/lib/web/cmaps/KSC-EUC-V.bcmap",
+    "size": 164
+  },
+  {
+    "path": "extension/lib/web/cmaps/KSC-H.bcmap",
+    "size": 1831
+  },
+  {
+    "path": "extension/lib/web/cmaps/KSC-Johab-H.bcmap",
+    "size": 16791
+  },
+  {
+    "path": "extension/lib/web/cmaps/KSC-Johab-V.bcmap",
+    "size": 166
+  },
+  {
+    "path": "extension/lib/web/cmaps/KSC-V.bcmap",
+    "size": 160
+  },
+  {
+    "path": "extension/lib/web/cmaps/KSCms-UHC-H.bcmap",
+    "size": 2787
+  },
+  {
+    "path": "extension/lib/web/cmaps/KSCms-UHC-HW-H.bcmap",
+    "size": 2789
+  },
+  {
+    "path": "extension/lib/web/cmaps/KSCms-UHC-HW-V.bcmap",
+    "size": 169
+  },
+  {
+    "path": "extension/lib/web/cmaps/KSCms-UHC-V.bcmap",
+    "size": 166
+  },
+  {
+    "path": "extension/lib/web/cmaps/KSCpc-EUC-H.bcmap",
+    "size": 2024
+  },
+  {
+    "path": "extension/lib/web/cmaps/KSCpc-EUC-V.bcmap",
+    "size": 166
+  },
+  {
+    "path": "extension/lib/web/cmaps/LICENSE",
+    "size": 2080
+  },
+  {
+    "path": "extension/lib/web/cmaps/NWP-H.bcmap",
+    "size": 2765
+  },
+  {
+    "path": "extension/lib/web/cmaps/NWP-V.bcmap",
+    "size": 252
+  },
+  {
+    "path": "extension/lib/web/cmaps/RKSJ-H.bcmap",
+    "size": 534
+  },
+  {
+    "path": "extension/lib/web/cmaps/RKSJ-V.bcmap",
+    "size": 170
+  },
+  {
+    "path": "extension/lib/web/cmaps/Roman.bcmap",
+    "size": 96
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniCNS-UCS2-H.bcmap",
+    "size": 48280
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniCNS-UCS2-V.bcmap",
+    "size": 156
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniCNS-UTF16-H.bcmap",
+    "size": 50419
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniCNS-UTF16-V.bcmap",
+    "size": 156
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniCNS-UTF32-H.bcmap",
+    "size": 52679
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniCNS-UTF32-V.bcmap",
+    "size": 160
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniCNS-UTF8-H.bcmap",
+    "size": 53629
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniCNS-UTF8-V.bcmap",
+    "size": 157
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniGB-UCS2-H.bcmap",
+    "size": 43366
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniGB-UCS2-V.bcmap",
+    "size": 193
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniGB-UTF16-H.bcmap",
+    "size": 44086
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniGB-UTF16-V.bcmap",
+    "size": 178
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniGB-UTF32-H.bcmap",
+    "size": 45738
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniGB-UTF32-V.bcmap",
+    "size": 182
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniGB-UTF8-H.bcmap",
+    "size": 46837
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniGB-UTF8-V.bcmap",
+    "size": 181
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniJIS-UCS2-H.bcmap",
+    "size": 25439
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniJIS-UCS2-HW-H.bcmap",
+    "size": 119
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniJIS-UCS2-HW-V.bcmap",
+    "size": 680
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniJIS-UCS2-V.bcmap",
+    "size": 664
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniJIS-UTF16-H.bcmap",
+    "size": 39443
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniJIS-UTF16-V.bcmap",
+    "size": 643
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniJIS-UTF32-H.bcmap",
+    "size": 40539
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniJIS-UTF32-V.bcmap",
+    "size": 677
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniJIS-UTF8-H.bcmap",
+    "size": 41695
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniJIS-UTF8-V.bcmap",
+    "size": 678
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniJIS2004-UTF16-H.bcmap",
+    "size": 39534
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniJIS2004-UTF16-V.bcmap",
+    "size": 647
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniJIS2004-UTF32-H.bcmap",
+    "size": 40630
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniJIS2004-UTF32-V.bcmap",
+    "size": 681
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniJIS2004-UTF8-H.bcmap",
+    "size": 41779
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniJIS2004-UTF8-V.bcmap",
+    "size": 682
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniJISPro-UCS2-HW-V.bcmap",
+    "size": 705
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniJISPro-UCS2-V.bcmap",
+    "size": 689
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniJISPro-UTF8-V.bcmap",
+    "size": 726
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniJISX0213-UTF32-H.bcmap",
+    "size": 40517
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniJISX0213-UTF32-V.bcmap",
+    "size": 684
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniJISX02132004-UTF32-H.bcmap",
+    "size": 40608
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniJISX02132004-UTF32-V.bcmap",
+    "size": 688
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniKS-UCS2-H.bcmap",
+    "size": 25783
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniKS-UCS2-V.bcmap",
+    "size": 178
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniKS-UTF16-H.bcmap",
+    "size": 26327
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniKS-UTF16-V.bcmap",
+    "size": 164
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniKS-UTF32-H.bcmap",
+    "size": 26451
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniKS-UTF32-V.bcmap",
+    "size": 168
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniKS-UTF8-H.bcmap",
+    "size": 27790
+  },
+  {
+    "path": "extension/lib/web/cmaps/UniKS-UTF8-V.bcmap",
+    "size": 169
+  },
+  {
+    "path": "extension/lib/web/cmaps/V.bcmap",
+    "size": 166
+  },
+  {
+    "path": "extension/lib/web/cmaps/WP-Symbol.bcmap",
+    "size": 179
+  },
+  {
+    "path": "extension/lib/web/debugger.css",
+    "size": 2493
+  },
+  {
+    "path": "extension/lib/web/debugger.js",
+    "size": 18211
+  },
+  {
+    "path": "extension/lib/web/images/annotation-check.svg",
+    "size": 415
+  },
+  {
+    "path": "extension/lib/web/images/annotation-comment.svg",
+    "size": 883
+  },
+  {
+    "path": "extension/lib/web/images/annotation-help.svg",
+    "size": 2168
+  },
+  {
+    "path": "extension/lib/web/images/annotation-insert.svg",
+    "size": 408
+  },
+  {
+    "path": "extension/lib/web/images/annotation-key.svg",
+    "size": 1452
+  },
+  {
+    "path": "extension/lib/web/images/annotation-newparagraph.svg",
+    "size": 426
+  },
+  {
+    "path": "extension/lib/web/images/annotation-noicon.svg",
+    "size": 158
+  },
+  {
+    "path": "extension/lib/web/images/annotation-note.svg",
+    "size": 1041
+  },
+  {
+    "path": "extension/lib/web/images/annotation-paragraph.svg",
+    "size": 1143
+  },
+  {
+    "path": "extension/lib/web/images/cursor-editorInk.svg",
+    "size": 1323
+  },
+  {
+    "path": "extension/lib/web/images/findbarButton-next.svg",
+    "size": 578
+  },
+  {
+    "path": "extension/lib/web/images/findbarButton-previous.svg",
+    "size": 578
+  },
+  {
+    "path": "extension/lib/web/images/loading-dark.svg",
+    "size": 1586
+  },
+  {
+    "path": "extension/lib/web/images/loading-icon.gif",
+    "size": 2545
+  },
+  {
+    "path": "extension/lib/web/images/loading.svg",
+    "size": 1559
+  },
+  {
+    "path": "extension/lib/web/images/secondaryToolbarButton-documentProperties.svg",
+    "size": 417
+  },
+  {
+    "path": "extension/lib/web/images/secondaryToolbarButton-firstPage.svg",
+    "size": 260
+  },
+  {
+    "path": "extension/lib/web/images/secondaryToolbarButton-handTool.svg",
+    "size": 1344
+  },
+  {
+    "path": "extension/lib/web/images/secondaryToolbarButton-lastPage.svg",
+    "size": 257
+  },
+  {
+    "path": "extension/lib/web/images/secondaryToolbarButton-rotateCcw.svg",
+    "size": 596
+  },
+  {
+    "path": "extension/lib/web/images/secondaryToolbarButton-rotateCw.svg",
+    "size": 576
+  },
+  {
+    "path": "extension/lib/web/images/secondaryToolbarButton-scrollHorizontal.svg",
+    "size": 971
+  },
+  {
+    "path": "extension/lib/web/images/secondaryToolbarButton-scrollPage.svg",
+    "size": 731
+  },
+  {
+    "path": "extension/lib/web/images/secondaryToolbarButton-scrollVertical.svg",
+    "size": 969
+  },
+  {
+    "path": "extension/lib/web/images/secondaryToolbarButton-scrollWrapped.svg",
+    "size": 1228
+  },
+  {
+    "path": "extension/lib/web/images/secondaryToolbarButton-selectTool.svg",
+    "size": 1085
+  },
+  {
+    "path": "extension/lib/web/images/secondaryToolbarButton-spreadEven.svg",
+    "size": 775
+  },
+  {
+    "path": "extension/lib/web/images/secondaryToolbarButton-spreadNone.svg",
+    "size": 395
+  },
+  {
+    "path": "extension/lib/web/images/secondaryToolbarButton-spreadOdd.svg",
+    "size": 711
+  },
+  {
+    "path": "extension/lib/web/images/shadow.png",
+    "size": 269
+  },
+  {
+    "path": "extension/lib/web/images/toolbarButton-bookmark.svg",
+    "size": 861
+  },
+  {
+    "path": "extension/lib/web/images/toolbarButton-currentOutlineItem.svg",
+    "size": 607
+  },
+  {
+    "path": "extension/lib/web/images/toolbarButton-download.svg",
+    "size": 1036
+  },
+  {
+    "path": "extension/lib/web/images/toolbarButton-editorFreeText.svg",
+    "size": 915
+  },
+  {
+    "path": "extension/lib/web/images/toolbarButton-editorInk.svg",
+    "size": 1189
+  },
+  {
+    "path": "extension/lib/web/images/toolbarButton-menuArrow.svg",
+    "size": 681
+  },
+  {
+    "path": "extension/lib/web/images/toolbarButton-openFile.svg",
+    "size": 1400
+  },
+  {
+    "path": "extension/lib/web/images/toolbarButton-pageDown.svg",
+    "size": 701
+  },
+  {
+    "path": "extension/lib/web/images/toolbarButton-pageUp.svg",
+    "size": 682
+  },
+  {
+    "path": "extension/lib/web/images/toolbarButton-presentationMode.svg",
+    "size": 681
+  },
+  {
+    "path": "extension/lib/web/images/toolbarButton-print.svg",
+    "size": 927
+  },
+  {
+    "path": "extension/lib/web/images/toolbarButton-search.svg",
+    "size": 1234
+  },
+  {
+    "path": "extension/lib/web/images/toolbarButton-secondaryToolbarToggle.svg",
+    "size": 1080
+  },
+  {
+    "path": "extension/lib/web/images/toolbarButton-sidebarToggle.svg",
+    "size": 1560
+  },
+  {
+    "path": "extension/lib/web/images/toolbarButton-viewAttachments.svg",
+    "size": 570
+  },
+  {
+    "path": "extension/lib/web/images/toolbarButton-viewLayers.svg",
+    "size": 671
+  },
+  {
+    "path": "extension/lib/web/images/toolbarButton-viewOutline.svg",
+    "size": 332
+  },
+  {
+    "path": "extension/lib/web/images/toolbarButton-viewThumbnail.svg",
+    "size": 1396
+  },
+  {
+    "path": "extension/lib/web/images/toolbarButton-zoomIn.svg",
+    "size": 958
+  },
+  {
+    "path": "extension/lib/web/images/toolbarButton-zoomOut.svg",
+    "size": 472
+  },
+  {
+    "path": "extension/lib/web/images/treeitem-collapsed.svg",
+    "size": 93
+  },
+  {
+    "path": "extension/lib/web/images/treeitem-expanded.svg",
+    "size": 94
+  },
+  {
+    "path": "extension/lib/web/locale/ach/viewer.properties",
+    "size": 8390
+  },
+  {
+    "path": "extension/lib/web/locale/af/viewer.properties",
+    "size": 7249
+  },
+  {
+    "path": "extension/lib/web/locale/an/viewer.properties",
+    "size": 11413
+  },
+  {
+    "path": "extension/lib/web/locale/ar/viewer.properties",
+    "size": 12659
+  },
+  {
+    "path": "extension/lib/web/locale/ast/viewer.properties",
+    "size": 9392
+  },
+  {
+    "path": "extension/lib/web/locale/az/viewer.properties",
+    "size": 11435
+  },
+  {
+    "path": "extension/lib/web/locale/be/viewer.properties",
+    "size": 14889
+  },
+  {
+    "path": "extension/lib/web/locale/bg/viewer.properties",
+    "size": 13302
+  },
+  {
+    "path": "extension/lib/web/locale/bn/viewer.properties",
+    "size": 14239
+  },
+  {
+    "path": "extension/lib/web/locale/bo/viewer.properties",
+    "size": 10565
+  },
+  {
+    "path": "extension/lib/web/locale/br/viewer.properties",
+    "size": 11686
+  },
+  {
+    "path": "extension/lib/web/locale/brx/viewer.properties",
+    "size": 11966
+  },
+  {
+    "path": "extension/lib/web/locale/bs/viewer.properties",
+    "size": 8592
+  },
+  {
+    "path": "extension/lib/web/locale/ca/viewer.properties",
+    "size": 11866
+  },
+  {
+    "path": "extension/lib/web/locale/cak/viewer.properties",
+    "size": 11897
+  },
+  {
+    "path": "extension/lib/web/locale/ckb/viewer.properties",
+    "size": 12302
+  },
+  {
+    "path": "extension/lib/web/locale/cs/viewer.properties",
+    "size": 12363
+  },
+  {
+    "path": "extension/lib/web/locale/cy/viewer.properties",
+    "size": 12310
+  },
+  {
+    "path": "extension/lib/web/locale/da/viewer.properties",
+    "size": 12282
+  },
+  {
+    "path": "extension/lib/web/locale/de/viewer.properties",
+    "size": 12482
+  },
+  {
+    "path": "extension/lib/web/locale/dsb/viewer.properties",
+    "size": 12396
+  },
+  {
+    "path": "extension/lib/web/locale/el/viewer.properties",
+    "size": 16024
+  },
+  {
+    "path": "extension/lib/web/locale/en-CA/viewer.properties",
+    "size": 11610
+  },
+  {
+    "path": "extension/lib/web/locale/en-GB/viewer.properties",
+    "size": 11606
+  },
+  {
+    "path": "extension/lib/web/locale/en-US/viewer.properties",
+    "size": 10794
+  },
+  {
+    "path": "extension/lib/web/locale/eo/viewer.properties",
+    "size": 12049
+  },
+  {
+    "path": "extension/lib/web/locale/es-AR/viewer.properties",
+    "size": 12197
+  },
+  {
+    "path": "extension/lib/web/locale/es-CL/viewer.properties",
+    "size": 12382
+  },
+  {
+    "path": "extension/lib/web/locale/es-ES/viewer.properties",
+    "size": 12405
+  },
+  {
+    "path": "extension/lib/web/locale/es-MX/viewer.properties",
+    "size": 12326
+  },
+  {
+    "path": "extension/lib/web/locale/et/viewer.properties",
+    "size": 11764
+  },
+  {
+    "path": "extension/lib/web/locale/eu/viewer.properties",
+    "size": 12228
+  },
+  {
+    "path": "extension/lib/web/locale/fa/viewer.properties",
+    "size": 11035
+  },
+  {
+    "path": "extension/lib/web/locale/ff/viewer.properties",
+    "size": 10491
+  },
+  {
+    "path": "extension/lib/web/locale/fi/viewer.properties",
+    "size": 12070
+  },
+  {
+    "path": "extension/lib/web/locale/fr/viewer.properties",
+    "size": 12683
+  },
+  {
+    "path": "extension/lib/web/locale/fy-NL/viewer.properties",
+    "size": 11989
+  },
+  {
+    "path": "extension/lib/web/locale/ga-IE/viewer.properties",
+    "size": 9243
+  },
+  {
+    "path": "extension/lib/web/locale/gd/viewer.properties",
+    "size": 12055
+  },
+  {
+    "path": "extension/lib/web/locale/gl/viewer.properties",
+    "size": 11770
+  },
+  {
+    "path": "extension/lib/web/locale/gn/viewer.properties",
+    "size": 12405
+  },
+  {
+    "path": "extension/lib/web/locale/gu-IN/viewer.properties",
+    "size": 14435
+  },
+  {
+    "path": "extension/lib/web/locale/he/viewer.properties",
+    "size": 13223
+  },
+  {
+    "path": "extension/lib/web/locale/hi-IN/viewer.properties",
+    "size": 14037
+  },
+  {
+    "path": "extension/lib/web/locale/hr/viewer.properties",
+    "size": 11643
+  },
+  {
+    "path": "extension/lib/web/locale/hsb/viewer.properties",
+    "size": 12421
+  },
+  {
+    "path": "extension/lib/web/locale/hu/viewer.properties",
+    "size": 12531
+  },
+  {
+    "path": "extension/lib/web/locale/hy-AM/viewer.properties",
+    "size": 13179
+  },
+  {
+    "path": "extension/lib/web/locale/hye/viewer.properties",
+    "size": 14290
+  },
+  {
+    "path": "extension/lib/web/locale/ia/viewer.properties",
+    "size": 12338
+  },
+  {
+    "path": "extension/lib/web/locale/id/viewer.properties",
+    "size": 11994
+  },
+  {
+    "path": "extension/lib/web/locale/is/viewer.properties",
+    "size": 12006
+  },
+  {
+    "path": "extension/lib/web/locale/it/viewer.properties",
+    "size": 9131
+  },
+  {
+    "path": "extension/lib/web/locale/ja/viewer.properties",
+    "size": 13247
+  },
+  {
+    "path": "extension/lib/web/locale/ka/viewer.properties",
+    "size": 17119
+  },
+  {
+    "path": "extension/lib/web/locale/kab/viewer.properties",
+    "size": 12113
+  },
+  {
+    "path": "extension/lib/web/locale/kk/viewer.properties",
+    "size": 14659
+  },
+  {
+    "path": "extension/lib/web/locale/km/viewer.properties",
+    "size": 12875
+  },
+  {
+    "path": "extension/lib/web/locale/kn/viewer.properties",
+    "size": 11262
+  },
+  {
+    "path": "extension/lib/web/locale/ko/viewer.properties",
+    "size": 12353
+  },
+  {
+    "path": "extension/lib/web/locale/lij/viewer.properties",
+    "size": 10856
+  },
+  {
+    "path": "extension/lib/web/locale/lo/viewer.properties",
+    "size": 7386
+  },
+  {
+    "path": "extension/lib/web/locale/locale.properties",
+    "size": 4522
+  },
+  {
+    "path": "extension/lib/web/locale/lt/viewer.properties",
+    "size": 12237
+  },
+  {
+    "path": "extension/lib/web/locale/ltg/viewer.properties",
+    "size": 9442
+  },
+  {
+    "path": "extension/lib/web/locale/lv/viewer.properties",
+    "size": 10802
+  },
+  {
+    "path": "extension/lib/web/locale/meh/viewer.properties",
+    "size": 5250
+  },
+  {
+    "path": "extension/lib/web/locale/mk/viewer.properties",
+    "size": 7007
+  },
+  {
+    "path": "extension/lib/web/locale/mr/viewer.properties",
+    "size": 13782
+  },
+  {
+    "path": "extension/lib/web/locale/ms/viewer.properties",
+    "size": 10573
+  },
+  {
+    "path": "extension/lib/web/locale/my/viewer.properties",
+    "size": 11693
+  },
+  {
+    "path": "extension/lib/web/locale/nb-NO/viewer.properties",
+    "size": 11750
+  },
+  {
+    "path": "extension/lib/web/locale/ne-NP/viewer.properties",
+    "size": 13497
+  },
+  {
+    "path": "extension/lib/web/locale/nl/viewer.properties",
+    "size": 12237
+  },
+  {
+    "path": "extension/lib/web/locale/nn-NO/viewer.properties",
+    "size": 11732
+  },
+  {
+    "path": "extension/lib/web/locale/oc/viewer.properties",
+    "size": 12534
+  },
+  {
+    "path": "extension/lib/web/locale/pa-IN/viewer.properties",
+    "size": 15931
+  },
+  {
+    "path": "extension/lib/web/locale/pl/viewer.properties",
+    "size": 12418
+  },
+  {
+    "path": "extension/lib/web/locale/pt-BR/viewer.properties",
+    "size": 12302
+  },
+  {
+    "path": "extension/lib/web/locale/pt-PT/viewer.properties",
+    "size": 12377
+  },
+  {
+    "path": "extension/lib/web/locale/rm/viewer.properties",
+    "size": 12597
+  },
+  {
+    "path": "extension/lib/web/locale/ro/viewer.properties",
+    "size": 11368
+  },
+  {
+    "path": "extension/lib/web/locale/ru/viewer.properties",
+    "size": 14952
+  },
+  {
+    "path": "extension/lib/web/locale/sat/viewer.properties",
+    "size": 11732
+  },
+  {
+    "path": "extension/lib/web/locale/sc/viewer.properties",
+    "size": 11517
+  },
+  {
+    "path": "extension/lib/web/locale/scn/viewer.properties",
+    "size": 4739
+  },
+  {
+    "path": "extension/lib/web/locale/sco/viewer.properties",
+    "size": 11021
+  },
+  {
+    "path": "extension/lib/web/locale/si/viewer.properties",
+    "size": 12990
+  },
+  {
+    "path": "extension/lib/web/locale/sk/viewer.properties",
+    "size": 12494
+  },
+  {
+    "path": "extension/lib/web/locale/sl/viewer.properties",
+    "size": 12004
+  },
+  {
+    "path": "extension/lib/web/locale/son/viewer.properties",
+    "size": 6986
+  },
+  {
+    "path": "extension/lib/web/locale/sq/viewer.properties",
+    "size": 12076
+  },
+  {
+    "path": "extension/lib/web/locale/sr/viewer.properties",
+    "size": 13853
+  },
+  {
+    "path": "extension/lib/web/locale/sv-SE/viewer.properties",
+    "size": 11776
+  },
+  {
+    "path": "extension/lib/web/locale/szl/viewer.properties",
+    "size": 11345
+  },
+  {
+    "path": "extension/lib/web/locale/ta/viewer.properties",
+    "size": 12346
+  },
+  {
+    "path": "extension/lib/web/locale/te/viewer.properties",
+    "size": 13222
+  },
+  {
+    "path": "extension/lib/web/locale/tg/viewer.properties",
+    "size": 15140
+  },
+  {
+    "path": "extension/lib/web/locale/th/viewer.properties",
+    "size": 15929
+  },
+  {
+    "path": "extension/lib/web/locale/tl/viewer.properties",
+    "size": 11267
+  },
+  {
+    "path": "extension/lib/web/locale/tr/viewer.properties",
+    "size": 12155
+  },
+  {
+    "path": "extension/lib/web/locale/trs/viewer.properties",
+    "size": 9534
+  },
+  {
+    "path": "extension/lib/web/locale/uk/viewer.properties",
+    "size": 14769
+  },
+  {
+    "path": "extension/lib/web/locale/ur/viewer.properties",
+    "size": 12024
+  },
+  {
+    "path": "extension/lib/web/locale/uz/viewer.properties",
+    "size": 6897
+  },
+  {
+    "path": "extension/lib/web/locale/vi/viewer.properties",
+    "size": 12756
+  },
+  {
+    "path": "extension/lib/web/locale/wo/viewer.properties",
+    "size": 4854
+  },
+  {
+    "path": "extension/lib/web/locale/xh/viewer.properties",
+    "size": 7687
+  },
+  {
+    "path": "extension/lib/web/locale/zh-CN/viewer.properties",
+    "size": 11591
+  },
+  {
+    "path": "extension/lib/web/locale/zh-TW/viewer.properties",
+    "size": 11691
+  },
+  {
+    "path": "extension/lib/web/standard_fonts/FoxitDingbats.pfb",
+    "size": 29513
+  },
+  {
+    "path": "extension/lib/web/standard_fonts/FoxitFixed.pfb",
+    "size": 17597
+  },
+  {
+    "path": "extension/lib/web/standard_fonts/FoxitFixedBold.pfb",
+    "size": 18055
+  },
+  {
+    "path": "extension/lib/web/standard_fonts/FoxitFixedBoldItalic.pfb",
+    "size": 19151
+  },
+  {
+    "path": "extension/lib/web/standard_fonts/FoxitFixedItalic.pfb",
+    "size": 18746
+  },
+  {
+    "path": "extension/lib/web/standard_fonts/FoxitSans.pfb",
+    "size": 15025
+  },
+  {
+    "path": "extension/lib/web/standard_fonts/FoxitSansBold.pfb",
+    "size": 16344
+  },
+  {
+    "path": "extension/lib/web/standard_fonts/FoxitSansBoldItalic.pfb",
+    "size": 16418
+  },
+  {
+    "path": "extension/lib/web/standard_fonts/FoxitSansItalic.pfb",
+    "size": 16339
+  },
+  {
+    "path": "extension/lib/web/standard_fonts/FoxitSerif.pfb",
+    "size": 19469
+  },
+  {
+    "path": "extension/lib/web/standard_fonts/FoxitSerifBold.pfb",
+    "size": 19395
+  },
+  {
+    "path": "extension/lib/web/standard_fonts/FoxitSerifBoldItalic.pfb",
+    "size": 20733
+  },
+  {
+    "path": "extension/lib/web/standard_fonts/FoxitSerifItalic.pfb",
+    "size": 21227
+  },
+  {
+    "path": "extension/lib/web/standard_fonts/FoxitSymbol.pfb",
+    "size": 16729
+  },
+  {
+    "path": "extension/lib/web/standard_fonts/LiberationSans-Bold.ttf",
+    "size": 137052
+  },
+  {
+    "path": "extension/lib/web/standard_fonts/LiberationSans-BoldItalic.ttf",
+    "size": 135124
+  },
+  {
+    "path": "extension/lib/web/standard_fonts/LiberationSans-Italic.ttf",
+    "size": 162036
+  },
+  {
+    "path": "extension/lib/web/standard_fonts/LiberationSans-Regular.ttf",
+    "size": 139512
+  },
+  {
+    "path": "extension/lib/web/standard_fonts/LICENSE_FOXIT",
+    "size": 1553
+  },
+  {
+    "path": "extension/lib/web/standard_fonts/LICENSE_LIBERATION",
+    "size": 4414
+  },
+  {
+    "path": "extension/lib/web/viewer.css",
+    "size": 69940
+  },
+  {
+    "path": "extension/lib/web/viewer.html",
+    "size": 25052
+  },
+  {
+    "path": "extension/lib/web/viewer.js",
+    "size": 521595
+  },
+  {
+    "path": "extension/LICENSE.txt",
+    "size": 1286
+  },
+  {
+    "path": "extension/out/src/disposable.js",
+    "size": 876
+  },
+  {
+    "path": "extension/out/src/extension.js",
+    "size": 751
+  },
+  {
+    "path": "extension/out/src/pdfPreview.js",
+    "size": 28467
+  },
+  {
+    "path": "extension/out/src/pdfProvider.js",
+    "size": 2112
+  },
+  {
+    "path": "extension/out/src/test/runTest.js",
+    "size": 1648
+  },
+  {
+    "path": "extension/out/src/test/suite/index.js",
+    "size": 1159
+  },
+  {
+    "path": "extension/package.json",
+    "size": 3282
+  },
+  {
+    "path": "extension/README.md",
+    "size": 948
+  },
+  {
+    "path": "extension/vscode-pdf.png",
+    "size": 6730
+  },
+  {
+    "path": "extension/node_modules/@types/vscode/index.d.ts",
+    "size": 449326
+  },
+  {
+    "path": "extension/node_modules/@types/vscode/LICENSE",
+    "size": 1141
+  },
+  {
+    "path": "extension/node_modules/@types/vscode/package.json",
+    "size": 1576
+  },
+  {
+    "path": "extension/node_modules/@types/vscode/README.md",
+    "size": 526
+  }
+]

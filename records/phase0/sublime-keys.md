@@ -1,13 +1,13 @@
 # 0-10 Sublime のキーの変換の試し
 
 - 記録: 大岡越前守（2026-11-13）。下書き `tasks/2026-11-13-p0-envs-mydist-keys/sublime-keys.md`（蒙恬）を、材料と照らして確かめたうえで清書した。検証の記録は `tasks/2026-11-13-p0-verify-envs/verification-log.md`。
-- 台本: `node scripts/convert-sublime-keys.mjs --md C:/b/p0/sublime/conversion.md --apply`（蒙恬が 2026-11-12T20:37:47Z に実行）。部品は `scripts/lib/sublime-keys.mjs`（純粋な関数）、`scripts/lib/zip-read.mjs`。
-- 結果の正本: `extensions-src/mydist/package.json` の `contributes.keybindings`。機械の出力は `C:\b\p0\sublime\`（`converted-keybindings.json`・`dropped.json`・`claude-code-keybindings.json`・`conflicts.json`・`same-key-different-when.json`・`convert-meta.json`・`conversion.md`）。
+- 台本: `node scripts/convert-sublime-keys.mjs --md C:/b/p0/sublime/conversion.md --apply`（蒙恬が 2026-11-12T20:37:47Z に実行）。部品は `scripts/lib/sublime-keys.mjs`（純粋な関数）、`scripts/lib/zip-read.mjs`。`conversion.md` の写しは `records/phase0/evidence/sublime/conversion.md`（2026-11-16。`C:\b\p0` を消す前に写した。SHA-256 は元と一致）。
+- 結果の正本: `extensions-src/mydist/package.json` の `contributes.keybindings`。機械の出力は `C:\b\p0\sublime\`（`converted-keybindings.json`・`dropped.json`・`claude-code-keybindings.json`・`conflicts.json`・`same-key-different-when.json`・`convert-meta.json`・`conversion.md`）。写しは `records/phase0/evidence/sublime/`（2026-11-16。7ファイルとも SHA-256 は元と一致。`C:\b\p0` は消すと決まった）。
 
 ## 確かめ方
 
 - `sha256sum` で元の VSIX を独立にハッシュした: `fe064eb9f0b83466ede5ed1c7b1a8289b11af8abba82005f7187d571fdb26a34`（Open VSX の `.sha256` と一致）。Claude Code の VSIX も `8c0b09c6aefbca3196bcfe87e33b4e531cab3c13b2d9fd43a441562c74c5e4a4`（台帳と一致）。
-- 元の manifest（`C:\b\p0\sublime\sublime-4.1.10.package.json`）の `contributes.keybindings` 71 項目を1つずつ読み、規則で選ばれる Windows のキーと `command`・`when` を、`extensions-src/mydist/package.json` の 69 項目と順に突き合わせた。過不足・取り違えは無い。
+- 元の manifest（`C:\b\p0\sublime\sublime-4.1.10.package.json`）の `contributes.keybindings` 71 項目を1つずつ読み、規則で選ばれる Windows のキーと `command`・`when` を、`extensions-src/mydist/package.json` の 69 項目と順に突き合わせた。過不足・取り違えは無い。元の manifest の写しは `records/phase0/evidence/sublime/sublime-4.1.10.package.json`（2026-11-16。SHA-256 は元と一致）。
 - `node tests/sublime-keys.test.mjs`（曹参のテスト）: 27 件すべて通過。
 - Claude Code の既定のキーを、0-1 の記録（`records/phase0/claude-code-manifest.md`）の9件と突き合わせた。
 

@@ -1,0 +1,46 @@
+[
+  {
+    "id": "tomoki1207.pdf",
+    "version": "1.2.2",
+    "source": "open-vsx",
+    "download": "https://open-vsx.org/api/tomoki1207/pdf/1.2.2/file/tomoki1207.pdf-1.2.2.vsix",
+    "sha256": "5697cd022caf93fa0fdb8c5b9c3624951394d8126ed09184ad4fdbcad62dadce",
+    "sha256Source": "https://open-vsx.org/api/tomoki1207/pdf/1.2.2/file/tomoki1207.pdf-1.2.2.sha256",
+    "signature": "https://open-vsx.org/api/tomoki1207/pdf/1.2.2/file/tomoki1207.pdf-1.2.2.sigzip",
+    "publicKey": "https://open-vsx.org/api/-/public-key/14ccb407-4e79-41ed-be5a-6d608325c45a",
+    "publishedAt": "2022-12-23T03:58:06.463846Z",
+    "publishedBy": "open-vsx",
+    "verified": true,
+    "licenseSha256": "4a122ef7d968fb456f9ae28b8af03d45ece22438ac61556bf7121ca41ac4fba3",
+    "engines": "^1.46.0",
+    "crossCheck": {
+      "sourceTag": null,
+      "sourceRepository": "tomoki1207/vscode-pdfviewer"
+    },
+    "manifestDigest": {
+      "activationEvents": [
+        "onCustomEditor:pdf.preview"
+      ],
+      "enabledApiProposals": [],
+      "extensionDependencies": []
+    },
+    "verifiedAt": "2026-11-12T20:40:13.505Z",
+    "verdict": "records/phase0/lock-verification.md",
+    "checks": {
+      "publisher": "pass",
+      "sha256": "pass",
+      "signature": "pass",
+      "ovsx": "pass",
+      "soak": "pass",
+      "engines": "pass",
+      "defender": "pass"
+    },
+    "references": {
+      "sourceTag": "not-found"
+    }
+  },
+  {
+    "id": "trial.not-in-fetch",
+    "version": "1.0.0"
+  }
+]

@@ -1,0 +1,198 @@
+[
+  {
+    "path": "extension.vsixmanifest",
+    "size": 2146
+  },
+  {
+    "path": "[Content_Types].xml",
+    "size": 754
+  },
+  {
+    "path": "extension/claude-code-settings.schema.json",
+    "size": 288691
+  },
+  {
+    "path": "extension/extension.js",
+    "size": 3579313
+  },
+  {
+    "path": "extension/package.json",
+    "size": 24521
+  },
+  {
+    "path": "extension/README.md",
+    "size": 1473
+  },
+  {
+    "path": "extension/resources/AcceptMode.jpg",
+    "size": 136014
+  },
+  {
+    "path": "extension/resources/audio-capture/x64-win32/audio-capture.node",
+    "size": 509440
+  },
+  {
+    "path": "extension/resources/claude-logo-done.svg",
+    "size": 1907
+  },
+  {
+    "path": "extension/resources/claude-logo-pending.svg",
+    "size": 1910
+  },
+  {
+    "path": "extension/resources/claude-logo.png",
+    "size": 10358
+  },
+  {
+    "path": "extension/resources/claude-logo.svg",
+    "size": 1696
+  },
+  {
+    "path": "extension/resources/clawd.svg",
+    "size": 1751
+  },
+  {
+    "path": "extension/resources/ClawdWithGradCap.png",
+    "size": 905
+  },
+  {
+    "path": "extension/resources/HighlightText.jpg",
+    "size": 218828
+  },
+  {
+    "path": "extension/resources/native-binary/claude.exe",
+    "size": 346496160
+  },
+  {
+    "path": "extension/resources/PlanMode.jpg",
+    "size": 128933
+  },
+  {
+    "path": "extension/resources/walkthrough/chat.png",
+    "size": 127137
+  },
+  {
+    "path": "extension/resources/walkthrough/click.png",
+    "size": 132059
+  },
+  {
+    "path": "extension/resources/walkthrough/past.png",
+    "size": 84524
+  },
+  {
+    "path": "extension/resources/walkthrough/step1.md",
+    "size": 433
+  },
+  {
+    "path": "extension/resources/walkthrough/step2.md",
+    "size": 239
+  },
+  {
+    "path": "extension/resources/walkthrough/step3.md",
+    "size": 439
+  },
+  {
+    "path": "extension/resources/walkthrough/step4.md",
+    "size": 445
+  },
+  {
+    "path": "extension/resources/walkthrough/welcome.png",
+    "size": 112125
+  },
+  {
+    "path": "extension/resources/welcome-art-dark.svg",
+    "size": 228426
+  },
+  {
+    "path": "extension/resources/welcome-art-light.svg",
+    "size": 214192
+  },
+  {
+    "path": "extension/webview/fonts/KaTeX_AMS-Regular.woff2",
+    "size": 28076
+  },
+  {
+    "path": "extension/webview/fonts/KaTeX_Caligraphic-Bold.woff2",
+    "size": 6912
+  },
+  {
+    "path": "extension/webview/fonts/KaTeX_Caligraphic-Regular.woff2",
+    "size": 6908
+  },
+  {
+    "path": "extension/webview/fonts/KaTeX_Fraktur-Bold.woff2",
+    "size": 11348
+  },
+  {
+    "path": "extension/webview/fonts/KaTeX_Fraktur-Regular.woff2",
+    "size": 11316
+  },
+  {
+    "path": "extension/webview/fonts/KaTeX_Main-Bold.woff2",
+    "size": 25324
+  },
+  {
+    "path": "extension/webview/fonts/KaTeX_Main-BoldItalic.woff2",
+    "size": 16780
+  },
+  {
+    "path": "extension/webview/fonts/KaTeX_Main-Italic.woff2",
+    "size": 16988
+  },
+  {
+    "path": "extension/webview/fonts/KaTeX_Main-Regular.woff2",
+    "size": 26272
+  },
+  {
+    "path": "extension/webview/fonts/KaTeX_Math-BoldItalic.woff2",
+    "size": 16400
+  },
+  {
+    "path": "extension/webview/fonts/KaTeX_Math-Italic.woff2",
+    "size": 16440
+  },
+  {
+    "path": "extension/webview/fonts/KaTeX_SansSerif-Bold.woff2",
+    "size": 12216
+  },
+  {
+    "path": "extension/webview/fonts/KaTeX_SansSerif-Italic.woff2",
+    "size": 12028
+  },
+  {
+    "path": "extension/webview/fonts/KaTeX_SansSerif-Regular.woff2",
+    "size": 10344
+  },
+  {
+    "path": "extension/webview/fonts/KaTeX_Script-Regular.woff2",
+    "size": 9644
+  },
+  {
+    "path": "extension/webview/fonts/KaTeX_Size1-Regular.woff2",
+    "size": 5468
+  },
+  {
+    "path": "extension/webview/fonts/KaTeX_Size2-Regular.woff2",
+    "size": 5208
+  },
+  {
+    "path": "extension/webview/fonts/KaTeX_Size3-Regular.woff2",
+    "size": 3624
+  },
+  {
+    "path": "extension/webview/fonts/KaTeX_Size4-Regular.woff2",
+    "size": 4928
+  },
+  {
+    "path": "extension/webview/fonts/KaTeX_Typewriter-Regular.woff2",
+    "size": 13568
+  },
+  {
+    "path": "extension/webview/index.css",
+    "size": 474592
+  },
+  {
+    "path": "extension/webview/index.js",
+    "size": 6047746
+  }
+]

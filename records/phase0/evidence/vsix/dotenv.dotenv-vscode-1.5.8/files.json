@@ -1,0 +1,1106 @@
+[
+  {
+    "path": "extension.vsixmanifest",
+    "size": 3183
+  },
+  {
+    "path": "[Content_Types].xml",
+    "size": 693
+  },
+  {
+    "path": "extension/changelog.md",
+    "size": 11733
+  },
+  {
+    "path": "extension/DEVELOPMENT.md",
+    "size": 5339
+  },
+  {
+    "path": "extension/LICENSE.txt",
+    "size": 1068
+  },
+  {
+    "path": "extension/readme.md",
+    "size": 12129
+  },
+  {
+    "path": "extension/dotenv.png",
+    "size": 1353
+  },
+  {
+    "path": "extension/extension.js",
+    "size": 793
+  },
+  {
+    "path": "extension/package.json",
+    "size": 4423
+  },
+  {
+    "path": "extension/lib/autocloaking.js",
+    "size": 3248
+  },
+  {
+    "path": "extension/lib/autocompletion.js",
+    "size": 3838
+  },
+  {
+    "path": "extension/lib/completion-reveal.js",
+    "size": 3980
+  },
+  {
+    "path": "extension/lib/decorations.js",
+    "size": 2298
+  },
+  {
+    "path": "extension/lib/decrypt-value.js",
+    "size": 1471
+  },
+  {
+    "path": "extension/lib/dotnet.js",
+    "size": 2030
+  },
+  {
+    "path": "extension/lib/env-files.js",
+    "size": 2788
+  },
+  {
+    "path": "extension/lib/env-literals.js",
+    "size": 4031
+  },
+  {
+    "path": "extension/lib/helpers.js",
+    "size": 5547
+  },
+  {
+    "path": "extension/lib/hover-reveal.js",
+    "size": 2579
+  },
+  {
+    "path": "extension/lib/javascript-env.js",
+    "size": 1011
+  },
+  {
+    "path": "extension/lib/peeking.js",
+    "size": 3480
+  },
+  {
+    "path": "extension/lib/providers.js",
+    "size": 7503
+  },
+  {
+    "path": "extension/lib/secure-document.js",
+    "size": 2428
+  },
+  {
+    "path": "extension/lib/secure-editor.js",
+    "size": 6683
+  },
+  {
+    "path": "extension/lib/settings.js",
+    "size": 4275
+  },
+  {
+    "path": "extension/lib/yaml-cloaking.js",
+    "size": 928
+  },
+  {
+    "path": "extension/lib/yaml-values.js",
+    "size": 2922
+  },
+  {
+    "path": "extension/media/install.png",
+    "size": 4387
+  },
+  {
+    "path": "extension/syntaxes/dotenv-legacy.tmLanguage.json",
+    "size": 5233
+  },
+  {
+    "path": "extension/syntaxes/dotenv-simple.tmLanguage.json",
+    "size": 443
+  },
+  {
+    "path": "extension/syntaxes/dotenv.tmLanguage.json",
+    "size": 3269
+  },
+  {
+    "path": "extension/syntaxes/language-configuration.json",
+    "size": 335
+  },
+  {
+    "path": "extension/media/editor/style.css",
+    "size": 1722
+  },
+  {
+    "path": "extension/media/editor/dist/MONACO-LICENSE.txt",
+    "size": 1098
+  },
+  {
+    "path": "extension/media/editor/dist/main.css",
+    "size": 98929
+  },
+  {
+    "path": "extension/media/editor/dist/main.js",
+    "size": 2940238
+  },
+  {
+    "path": "extension/media/editor/dist/worker.js",
+    "size": 304417
+  },
+  {
+    "path": "extension/node_modules/dotenv/LICENSE",
+    "size": 1294
+  },
+  {
+    "path": "extension/node_modules/dotenv/README.md",
+    "size": 23586
+  },
+  {
+    "path": "extension/node_modules/dotenv/package.json",
+    "size": 1752
+  },
+  {
+    "path": "extension/node_modules/dotenv/dist/config.cjs",
+    "size": 32
+  },
+  {
+    "path": "extension/node_modules/dotenv/dist/index.cjs",
+    "size": 10413
+  },
+  {
+    "path": "extension/node_modules/dotenv/dist/index.d.ts",
+    "size": 5133
+  },
+  {
+    "path": "extension/node_modules/yaml/LICENSE",
+    "size": 738
+  },
+  {
+    "path": "extension/node_modules/yaml/README.md",
+    "size": 6266
+  },
+  {
+    "path": "extension/node_modules/yaml/bin.mjs",
+    "size": 310
+  },
+  {
+    "path": "extension/node_modules/yaml/package.json",
+    "size": 3254
+  },
+  {
+    "path": "extension/node_modules/yaml/util.js",
+    "size": 80
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/index.js",
+    "size": 191
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/package.json",
+    "size": 23
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/cli.d.ts",
+    "size": 1254
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/cli.mjs",
+    "size": 7462
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/errors.d.ts",
+    "size": 1260
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/errors.js",
+    "size": 2118
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/index.d.ts",
+    "size": 1394
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/index.js",
+    "size": 1769
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/log.d.ts",
+    "size": 226
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/log.js",
+    "size": 459
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/options.d.ts",
+    "size": 11186
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/public-api.d.ts",
+    "size": 2864
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/public-api.js",
+    "size": 4187
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/test-events.d.ts",
+    "size": 96
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/test-events.js",
+    "size": 4274
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/util.d.ts",
+    "size": 835
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/util.js",
+    "size": 1008
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/visit.d.ts",
+    "size": 5048
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/visit.js",
+    "size": 9253
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/errors.js",
+    "size": 2023
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/index.js",
+    "size": 879
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/log.js",
+    "size": 260
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/public-api.js",
+    "size": 3992
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/util.js",
+    "size": 594
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/visit.js",
+    "size": 9107
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/compose/compose-collection.d.ts",
+    "size": 582
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/compose/compose-collection.js",
+    "size": 3613
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/compose/compose-doc.d.ts",
+    "size": 623
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/compose/compose-doc.js",
+    "size": 1615
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/compose/compose-node.d.ts",
+    "size": 1225
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/compose/compose-node.js",
+    "size": 4269
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/compose/compose-scalar.d.ts",
+    "size": 393
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/compose/compose-scalar.js",
+    "size": 3446
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/compose/composer.d.ts",
+    "size": 2652
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/compose/composer.js",
+    "size": 8692
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/compose/resolve-block-map.d.ts",
+    "size": 457
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/compose/resolve-block-map.js",
+    "size": 5071
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/compose/resolve-block-scalar.d.ts",
+    "size": 484
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/compose/resolve-block-scalar.js",
+    "size": 7500
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/compose/resolve-block-seq.d.ts",
+    "size": 467
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/compose/resolve-block-seq.js",
+    "size": 1812
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/compose/resolve-end.d.ts",
+    "size": 283
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/compose/resolve-end.js",
+    "size": 1264
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/compose/resolve-flow-collection.d.ts",
+    "size": 636
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/compose/resolve-flow-collection.js",
+    "size": 8927
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/compose/resolve-flow-scalar.d.ts",
+    "size": 437
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/compose/resolve-flow-scalar.js",
+    "size": 7417
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/compose/resolve-props.d.ts",
+    "size": 848
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/compose/resolve-props.js",
+    "size": 5579
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/compose/util-contains-newline.d.ts",
+    "size": 131
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/compose/util-contains-newline.js",
+    "size": 1081
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/compose/util-empty-scalar-position.d.ts",
+    "size": 161
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/compose/util-empty-scalar-position.js",
+    "size": 850
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/compose/util-flow-indent-check.d.ts",
+    "size": 221
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/compose/util-flow-indent-check.js",
+    "size": 547
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/compose/util-map-includes.d.ts",
+    "size": 260
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/compose/util-map-includes.js",
+    "size": 471
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/doc/Document.d.ts",
+    "size": 6540
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/doc/Document.js",
+    "size": 13114
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/doc/anchors.d.ts",
+    "size": 958
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/doc/anchors.js",
+    "size": 2386
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/doc/applyReviver.d.ts",
+    "size": 445
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/doc/applyReviver.js",
+    "size": 1950
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/doc/createNode.d.ts",
+    "size": 662
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/doc/createNode.js",
+    "size": 3138
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/doc/directives.d.ts",
+    "size": 1910
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/doc/directives.js",
+    "size": 6237
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/nodes/Alias.d.ts",
+    "size": 1077
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/nodes/Alias.js",
+    "size": 4042
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/nodes/Collection.d.ts",
+    "size": 2909
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/nodes/Collection.js",
+    "size": 5221
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/nodes/Node.d.ts",
+    "size": 2538
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/nodes/Node.js",
+    "size": 1382
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/nodes/Pair.d.ts",
+    "size": 1118
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/nodes/Pair.js",
+    "size": 1232
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/nodes/Scalar.d.ts",
+    "size": 1792
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/nodes/Scalar.js",
+    "size": 759
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/nodes/YAMLMap.d.ts",
+    "size": 2376
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/nodes/YAMLMap.js",
+    "size": 5105
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/nodes/YAMLSeq.d.ts",
+    "size": 2511
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/nodes/YAMLSeq.js",
+    "size": 3667
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/nodes/addPairToJSMap.d.ts",
+    "size": 236
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/nodes/addPairToJSMap.js",
+    "size": 2338
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/nodes/identity.d.ts",
+    "size": 1379
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/nodes/identity.js",
+    "size": 1794
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/nodes/toJS.d.ts",
+    "size": 986
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/nodes/toJS.js",
+    "size": 1292
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/parse/cst-scalar.d.ts",
+    "size": 3528
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/parse/cst-scalar.js",
+    "size": 9382
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/parse/cst-stringify.d.ts",
+    "size": 310
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/parse/cst-stringify.js",
+    "size": 1799
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/parse/cst-visit.d.ts",
+    "size": 2241
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/parse/cst-visit.js",
+    "size": 3986
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/parse/cst.d.ts",
+    "size": 3500
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/parse/cst.js",
+    "size": 3242
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/parse/lexer.d.ts",
+    "size": 2921
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/parse/lexer.js",
+    "size": 24149
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/parse/line-counter.d.ts",
+    "size": 733
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/parse/line-counter.js",
+    "size": 1445
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/parse/parser.d.ts",
+    "size": 2534
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/parse/parser.js",
+    "size": 35551
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/Schema.d.ts",
+    "size": 787
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/Schema.js",
+    "size": 1547
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/json-schema.d.ts",
+    "size": 1998
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/tags.d.ts",
+    "size": 1423
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/tags.js",
+    "size": 3239
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/types.d.ts",
+    "size": 3763
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/stringify/foldFlowLines.d.ts",
+    "size": 1273
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/stringify/foldFlowLines.js",
+    "size": 4885
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/stringify/stringify.d.ts",
+    "size": 865
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/stringify/stringify.js",
+    "size": 4534
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/stringify/stringifyCollection.d.ts",
+    "size": 528
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/stringify/stringifyCollection.js",
+    "size": 5718
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/stringify/stringifyComment.d.ts",
+    "size": 419
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/stringify/stringifyComment.js",
+    "size": 801
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/stringify/stringifyDocument.d.ts",
+    "size": 260
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/stringify/stringifyDocument.js",
+    "size": 3104
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/stringify/stringifyNumber.d.ts",
+    "size": 147
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/stringify/stringifyNumber.js",
+    "size": 808
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/stringify/stringifyPair.d.ts",
+    "size": 248
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/stringify/stringifyPair.js",
+    "size": 5470
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/stringify/stringifyString.d.ts",
+    "size": 357
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/stringify/stringifyString.js",
+    "size": 13345
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/compose/compose-collection.js",
+    "size": 3500
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/compose/compose-doc.js",
+    "size": 1555
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/compose/compose-node.js",
+    "size": 4122
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/compose/compose-scalar.js",
+    "size": 3316
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/compose/composer.js",
+    "size": 8484
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/compose/resolve-block-map.js",
+    "size": 4915
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/compose/resolve-block-scalar.js",
+    "size": 7447
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/compose/resolve-block-seq.js",
+    "size": 1740
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/compose/resolve-end.js",
+    "size": 1239
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/compose/resolve-flow-collection.js",
+    "size": 8778
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/compose/resolve-flow-scalar.js",
+    "size": 7355
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/compose/resolve-props.js",
+    "size": 5552
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/compose/util-contains-newline.js",
+    "size": 1051
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/compose/util-empty-scalar-position.js",
+    "size": 816
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/compose/util-flow-indent-check.js",
+    "size": 494
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/compose/util-map-includes.js",
+    "size": 428
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/doc/Document.js",
+    "size": 12903
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/doc/anchors.js",
+    "size": 2276
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/doc/applyReviver.js",
+    "size": 1923
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/doc/createNode.js",
+    "size": 3061
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/doc/directives.js",
+    "size": 6188
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/nodes/Alias.js",
+    "size": 3998
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/nodes/Collection.js",
+    "size": 5076
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/nodes/Node.js",
+    "size": 1339
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/nodes/Pair.js",
+    "size": 1124
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/nodes/Scalar.js",
+    "size": 700
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/nodes/YAMLMap.js",
+    "size": 4957
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/nodes/YAMLSeq.js",
+    "size": 3573
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/nodes/addPairToJSMap.js",
+    "size": 2289
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/nodes/identity.js",
+    "size": 1513
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/nodes/toJS.js",
+    "size": 1266
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/parse/cst-scalar.js",
+    "size": 9235
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/parse/cst-stringify.js",
+    "size": 1775
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/parse/cst-visit.js",
+    "size": 3966
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/parse/cst.js",
+    "size": 2886
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/parse/lexer.js",
+    "size": 24138
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/parse/line-counter.js",
+    "size": 1419
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/parse/parser.js",
+    "size": 35393
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/schema/Schema.js",
+    "size": 1495
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/schema/tags.js",
+    "size": 2962
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/stringify/foldFlowLines.js",
+    "size": 4794
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/stringify/stringify.js",
+    "size": 4400
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/stringify/stringifyCollection.js",
+    "size": 5552
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/stringify/stringifyComment.js",
+    "size": 724
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/stringify/stringifyDocument.js",
+    "size": 2983
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/stringify/stringifyNumber.js",
+    "size": 778
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/stringify/stringifyPair.js",
+    "size": 5285
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/stringify/stringifyString.js",
+    "size": 13164
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/common/map.d.ts",
+    "size": 88
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/common/map.js",
+    "size": 483
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/common/null.d.ts",
+    "size": 108
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/common/null.js",
+    "size": 469
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/common/seq.d.ts",
+    "size": 88
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/common/seq.js",
+    "size": 484
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/common/string.d.ts",
+    "size": 83
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/common/string.js",
+    "size": 457
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/json/schema.d.ts",
+    "size": 118
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/json/schema.js",
+    "size": 1900
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/core/bool.d.ts",
+    "size": 108
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/core/bool.js",
+    "size": 635
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/core/float.d.ts",
+    "size": 166
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/core/float.js",
+    "size": 1510
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/core/int.d.ts",
+    "size": 160
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/core/int.js",
+    "size": 1407
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/core/schema.d.ts",
+    "size": 98
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/core/schema.js",
+    "size": 509
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/yaml-1.1/binary.d.ts",
+    "size": 83
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/yaml-1.1/binary.js",
+    "size": 2800
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/yaml-1.1/bool.d.ts",
+    "size": 174
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/yaml-1.1/bool.js",
+    "size": 841
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/yaml-1.1/float.d.ts",
+    "size": 166
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/yaml-1.1/float.js",
+    "size": 1626
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/yaml-1.1/int.d.ts",
+    "size": 200
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/yaml-1.1/int.js",
+    "size": 2232
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/yaml-1.1/merge.d.ts",
+    "size": 459
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/yaml-1.1/merge.js",
+    "size": 2616
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/yaml-1.1/omap.d.ts",
+    "size": 936
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/yaml-1.1/omap.js",
+    "size": 2581
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/yaml-1.1/pairs.d.ts",
+    "size": 725
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/yaml-1.1/pairs.js",
+    "size": 2854
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/yaml-1.1/schema.d.ts",
+    "size": 98
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/yaml-1.1/schema.js",
+    "size": 912
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/yaml-1.1/set.d.ts",
+    "size": 1259
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/yaml-1.1/set.js",
+    "size": 3114
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/yaml-1.1/timestamp.d.ts",
+    "size": 194
+  },
+  {
+    "path": "extension/node_modules/yaml/dist/schema/yaml-1.1/timestamp.js",
+    "size": 3775
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/schema/core/bool.js",
+    "size": 607
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/schema/core/float.js",
+    "size": 1399
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/schema/core/int.js",
+    "size": 1324
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/schema/core/schema.js",
+    "size": 480
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/schema/yaml-1.1/binary.js",
+    "size": 2315
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/schema/yaml-1.1/bool.js",
+    "size": 787
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/schema/yaml-1.1/float.js",
+    "size": 1515
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/schema/yaml-1.1/int.js",
+    "size": 2132
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/schema/yaml-1.1/merge.js",
+    "size": 2524
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/schema/yaml-1.1/omap.js",
+    "size": 2473
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/schema/yaml-1.1/pairs.js",
+    "size": 2751
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/schema/yaml-1.1/schema.js",
+    "size": 860
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/schema/yaml-1.1/set.js",
+    "size": 3030
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/schema/yaml-1.1/timestamp.js",
+    "size": 3698
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/schema/common/map.js",
+    "size": 439
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/schema/common/null.js",
+    "size": 434
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/schema/common/seq.js",
+    "size": 440
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/schema/common/string.js",
+    "size": 421
+  },
+  {
+    "path": "extension/node_modules/yaml/browser/dist/schema/json/schema.js",
+    "size": 1867
+  }
+]

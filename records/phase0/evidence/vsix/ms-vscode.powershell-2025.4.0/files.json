@@ -1,0 +1,1174 @@
+[
+  {
+    "path": "extension.vsixmanifest",
+    "size": 3877
+  },
+  {
+    "path": "[Content_Types].xml",
+    "size": 1103
+  },
+  {
+    "path": "extension/SUPPORT.md",
+    "size": 675
+  },
+  {
+    "path": "extension/SECURITY.md",
+    "size": 2742
+  },
+  {
+    "path": "extension/readme.md",
+    "size": 7621
+  },
+  {
+    "path": "extension/package.json",
+    "size": 60484
+  },
+  {
+    "path": "extension/NOTICE.txt",
+    "size": 37994
+  },
+  {
+    "path": "extension/LICENSE.txt",
+    "size": 1095
+  },
+  {
+    "path": "extension/CODE_OF_CONDUCT.md",
+    "size": 568
+  },
+  {
+    "path": "extension/changelog.md",
+    "size": 337447
+  },
+  {
+    "path": "extension/snippets/PowerShell.json",
+    "size": 29971
+  },
+  {
+    "path": "extension/modules/SECURITY.md",
+    "size": 2742
+  },
+  {
+    "path": "extension/modules/README.md",
+    "size": 11325
+  },
+  {
+    "path": "extension/modules/NOTICE.txt",
+    "size": 206120
+  },
+  {
+    "path": "extension/modules/LICENSE",
+    "size": 1105
+  },
+  {
+    "path": "extension/media/walkthrough.md",
+    "size": 0
+  },
+  {
+    "path": "extension/media/PowerShell_Preview_Icon.png",
+    "size": 76709
+  },
+  {
+    "path": "extension/media/PowerShell_Icon.png",
+    "size": 188095
+  },
+  {
+    "path": "extension/examples/StopTest.ps1",
+    "size": 14757
+  },
+  {
+    "path": "extension/examples/Stop-Process2.ps1",
+    "size": 15361
+  },
+  {
+    "path": "extension/examples/SampleModule.psm1",
+    "size": 14788
+  },
+  {
+    "path": "extension/examples/SampleModule.psd1",
+    "size": 18469
+  },
+  {
+    "path": "extension/examples/ReleaseNotes.md",
+    "size": 339
+  },
+  {
+    "path": "extension/examples/README.md",
+    "size": 7217
+  },
+  {
+    "path": "extension/examples/PSScriptAnalyzerSettings.psd1",
+    "size": 16643
+  },
+  {
+    "path": "extension/examples/PromptExamples.ps1",
+    "size": 16444
+  },
+  {
+    "path": "extension/examples/PathProcessingWildcards.ps1",
+    "size": 18815
+  },
+  {
+    "path": "extension/examples/PathProcessingNoWildcards.ps1",
+    "size": 16803
+  },
+  {
+    "path": "extension/examples/PathProcessingNonExistingPaths.ps1",
+    "size": 16432
+  },
+  {
+    "path": "extension/examples/ExtensionExamples.ps1",
+    "size": 16446
+  },
+  {
+    "path": "extension/examples/DebugTest.ps1",
+    "size": 15491
+  },
+  {
+    "path": "extension/examples/ChildDebugSessionTarget.ps1",
+    "size": 15671
+  },
+  {
+    "path": "extension/examples/ChildDebugSessionAttach.ps1",
+    "size": 15656
+  },
+  {
+    "path": "extension/examples/Build.ps1",
+    "size": 26160
+  },
+  {
+    "path": "extension/examples/.gitignore",
+    "size": 85
+  },
+  {
+    "path": "extension/dist/extension.js",
+    "size": 2150347
+  },
+  {
+    "path": "extension/docs/troubleshooting.md",
+    "size": 20621
+  },
+  {
+    "path": "extension/docs/preview_to_stable_changelog.md",
+    "size": 25081
+  },
+  {
+    "path": "extension/docs/development.md",
+    "size": 10909
+  },
+  {
+    "path": "extension/docs/community_snippets.md",
+    "size": 30281
+  },
+  {
+    "path": "extension/themes/theme-psise/theme.json",
+    "size": 4518
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/Start-EditorServices.ps1",
+    "size": 17868
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/PowerShellEditorServices.psd1",
+    "size": 18998
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/InvokePesterStub.ps1",
+    "size": 22046
+  },
+  {
+    "path": "extension/modules/docs/Unregister-EditorCommand.md",
+    "size": 1200
+  },
+  {
+    "path": "extension/modules/docs/Test-ScriptExtent.md",
+    "size": 3418
+  },
+  {
+    "path": "extension/modules/docs/Start-DebugAttachSession.md",
+    "size": 9080
+  },
+  {
+    "path": "extension/modules/docs/Set-ScriptExtent.md",
+    "size": 3751
+  },
+  {
+    "path": "extension/modules/docs/Register-EditorCommand.md",
+    "size": 3815
+  },
+  {
+    "path": "extension/modules/docs/PowerShellEditorServices.Commands.md",
+    "size": 2741
+  },
+  {
+    "path": "extension/modules/docs/Out-CurrentFile.md",
+    "size": 1075
+  },
+  {
+    "path": "extension/modules/docs/Join-ScriptExtent.md",
+    "size": 2431
+  },
+  {
+    "path": "extension/modules/docs/Import-EditorCommand.md",
+    "size": 4450
+  },
+  {
+    "path": "extension/modules/docs/Get-Token.md",
+    "size": 1652
+  },
+  {
+    "path": "extension/modules/docs/Find-Ast.md",
+    "size": 7648
+  },
+  {
+    "path": "extension/modules/docs/ConvertTo-ScriptExtent.md",
+    "size": 5818
+  },
+  {
+    "path": "extension/modules/docs/ConvertFrom-ScriptExtent.md",
+    "size": 3683
+  },
+  {
+    "path": "extension/examples/Tests/SampleModule.Tests.ps1",
+    "size": 14949
+  },
+  {
+    "path": "extension/examples/Tests/PathProcessing.Tests.ps1",
+    "size": 20171
+  },
+  {
+    "path": "extension/examples/en-US/about_SampleModule.help.txt",
+    "size": 480
+  },
+  {
+    "path": "extension/examples/Assets/style.css",
+    "size": 67
+  },
+  {
+    "path": "extension/examples/Assets/script.js",
+    "size": 138
+  },
+  {
+    "path": "extension/examples/.vscode/tasks.json",
+    "size": 2938
+  },
+  {
+    "path": "extension/examples/.vscode/settings.json",
+    "size": 292
+  },
+  {
+    "path": "extension/examples/.vscode/launch.json",
+    "size": 1558
+  },
+  {
+    "path": "extension/docs/azure_data_studio/Server-Creation-With-Docker-Notebook.ipynb",
+    "size": 2501
+  },
+  {
+    "path": "extension/docs/azure_data_studio/README_FOR_MARKETPLACE.md",
+    "size": 10160
+  },
+  {
+    "path": "extension/docs/azure_data_studio/README.md",
+    "size": 649
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/ThirdPartyNotices.txt",
+    "size": 1732
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/SECURITY.md",
+    "size": 2701
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/ScriptAnalyzer.types.ps1xml",
+    "size": 18798
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/ScriptAnalyzer.format.ps1xml",
+    "size": 20877
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/README.md",
+    "size": 8524
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/PSScriptAnalyzer.psm1",
+    "size": 17873
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/PSScriptAnalyzer.psd1",
+    "size": 17842
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/Newtonsoft.Json.dll",
+    "size": 732584
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/Microsoft.Windows.PowerShell.ScriptAnalyzer.dll",
+    "size": 226336
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules.dll",
+    "size": 367648
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/Microsoft.PowerShell.CrossCompatibility.dll",
+    "size": 143392
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/LICENSE",
+    "size": 1073
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/.signature.p7s",
+    "size": 12812
+  },
+  {
+    "path": "extension/modules/PSReadLine/2.4.4/SamplePSReadLineProfile.ps1",
+    "size": 41542
+  },
+  {
+    "path": "extension/modules/PSReadLine/2.4.4/PSReadLine.psm1",
+    "size": 15076
+  },
+  {
+    "path": "extension/modules/PSReadLine/2.4.4/PSReadLine.psd1",
+    "size": 15497
+  },
+  {
+    "path": "extension/modules/PSReadLine/2.4.4/PSReadLine.format.ps1xml",
+    "size": 26638
+  },
+  {
+    "path": "extension/modules/PSReadLine/2.4.4/Microsoft.PowerShell.PSReadLine.dll",
+    "size": 339488
+  },
+  {
+    "path": "extension/modules/PSReadLine/2.4.4/Microsoft.PowerShell.Pager.dll",
+    "size": 16784
+  },
+  {
+    "path": "extension/modules/PSReadLine/2.4.4/License.txt",
+    "size": 1324
+  },
+  {
+    "path": "extension/modules/PSReadLine/2.4.4/Changes.txt",
+    "size": 41000
+  },
+  {
+    "path": "extension/modules/PSReadLine/2.4.4/.signature.p7s",
+    "size": 12872
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/Commands/PowerShellEditorServices.Commands.types.ps1xml",
+    "size": 17314
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/Commands/PowerShellEditorServices.Commands.psm1",
+    "size": 15044
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/Commands/PowerShellEditorServices.Commands.psd1",
+    "size": 19276
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/Settings/ScriptSecurity.psd1",
+    "size": 14933
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/Settings/ScriptingStyle.psd1",
+    "size": 14756
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/Settings/ScriptFunctions.psd1",
+    "size": 15125
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/Settings/PSGallery.psd1",
+    "size": 15679
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/Settings/DSC.psd1",
+    "size": 14698
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/Settings/desktop-5.1.14393.206-windows.json",
+    "size": 1821748
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/Settings/desktop-4.0-windows.json",
+    "size": 1213067
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/Settings/desktop-3.0-windows.json",
+    "size": 1083242
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/Settings/desktop-2.0-windows.json",
+    "size": 287033
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/Settings/core-6.1.0-windows.json",
+    "size": 184113
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/Settings/core-6.1.0-macos.json",
+    "size": 141310
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/Settings/core-6.1.0-linux.json",
+    "size": 141310
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/Settings/core-6.1.0-linux-arm.json",
+    "size": 141310
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/Settings/CodeFormattingStroustrup.psd1",
+    "size": 16371
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/Settings/CodeFormattingOTBS.psd1",
+    "size": 16335
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/Settings/CodeFormattingAllman.psd1",
+    "size": 16331
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/Settings/CodeFormatting.psd1",
+    "size": 16334
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/Settings/CmdletDesign.psd1",
+    "size": 15045
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/PSv7/Pluralize.NET.dll",
+    "size": 30256
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/PSv7/Microsoft.Windows.PowerShell.ScriptAnalyzer.dll",
+    "size": 250912
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/PSv7/Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules.dll",
+    "size": 414240
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/PSv7/Microsoft.PowerShell.CrossCompatibility.dll",
+    "size": 153632
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/en-US/Microsoft.Windows.PowerShell.ScriptAnalyzer.dll-Help.xml",
+    "size": 109093
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/compatibility_profiles/win-8_x64_6.3.9600.0_4.0_x64_4.0.30319.42000_framework.json",
+    "size": 21716676
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/compatibility_profiles/win-8_x64_6.2.9200.0_3.0_x64_4.0.30319.42000_framework.json",
+    "size": 21257822
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/compatibility_profiles/win-8_x64_10.0.17763.0_7.0.0_x64_3.1.2_core.json",
+    "size": 32967223
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/compatibility_profiles/win-8_x64_10.0.17763.0_6.2.4_x64_4.0.30319.42000_core.json",
+    "size": 17196301
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/compatibility_profiles/win-8_x64_10.0.17763.0_5.1.17763.316_x64_4.0.30319.42000_framework.json",
+    "size": 24690250
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/compatibility_profiles/win-8_x64_10.0.14393.0_7.0.0_x64_3.1.2_core.json",
+    "size": 30796461
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/compatibility_profiles/win-8_x64_10.0.14393.0_6.2.4_x64_4.0.30319.42000_core.json",
+    "size": 15076121
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/compatibility_profiles/win-8_x64_10.0.14393.0_5.1.14393.2791_x64_4.0.30319.42000_framework.json",
+    "size": 23727309
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/compatibility_profiles/win-4_x64_10.0.18362.0_7.0.0_x64_3.1.2_core.json",
+    "size": 33660662
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/compatibility_profiles/win-4_x64_10.0.18362.0_6.2.4_x64_4.0.30319.42000_core.json",
+    "size": 17942759
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/compatibility_profiles/win-48_x64_10.0.17763.0_5.1.17763.316_x64_4.0.30319.42000_framework.json",
+    "size": 23653457
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/compatibility_profiles/ubuntu_x64_18.04_7.0.0_x64_3.1.2_core.json",
+    "size": 14800607
+  },
+  {
+    "path": "extension/modules/PSScriptAnalyzer/1.24.0/compatibility_profiles/ubuntu_x64_18.04_6.2.4_x64_4.0.30319.42000_core.json",
+    "size": 14057147
+  },
+  {
+    "path": "extension/modules/PSReadLine/2.4.4/netstd/Microsoft.PowerShell.PSReadLine.Polyfiller.dll",
+    "size": 16928
+  },
+  {
+    "path": "extension/modules/PSReadLine/2.4.4/net6plus/Microsoft.PowerShell.PSReadLine.Polyfiller.dll",
+    "size": 14888
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Core/Microsoft.PowerShell.EditorServices.Hosting.xml",
+    "size": 36115
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Core/Microsoft.PowerShell.EditorServices.Hosting.pdb",
+    "size": 24456
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Core/Microsoft.PowerShell.EditorServices.Hosting.dll",
+    "size": 64032
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Core/Microsoft.PowerShell.EditorServices.Hosting.deps.json",
+    "size": 42289
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Xml.XPath.XDocument.dll",
+    "size": 22904
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Xml.XPath.dll",
+    "size": 21176
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Xml.XmlSerializer.dll",
+    "size": 21712
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Xml.XmlDocument.dll",
+    "size": 21712
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Xml.XDocument.dll",
+    "size": 21696
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Xml.ReaderWriter.dll",
+    "size": 21712
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.ValueTuple.dll",
+    "size": 75048
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Threading.Timer.dll",
+    "size": 21200
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Threading.ThreadPool.dll",
+    "size": 21216
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Threading.Thread.dll",
+    "size": 21200
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Threading.Tasks.Parallel.dll",
+    "size": 21232
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Threading.Tasks.dll",
+    "size": 22224
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Threading.Overlapped.dll",
+    "size": 37752
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Threading.dll",
+    "size": 22192
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Text.RegularExpressions.dll",
+    "size": 21232
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Text.Encoding.Extensions.dll",
+    "size": 21232
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Text.Encoding.dll",
+    "size": 21696
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Security.SecureString.dll",
+    "size": 22392
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Security.Cryptography.X509Certificates.dll",
+    "size": 22832
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Security.Cryptography.Primitives.dll",
+    "size": 21784
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Security.Cryptography.Encoding.dll",
+    "size": 21256
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Security.Cryptography.Csp.dll",
+    "size": 21240
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Security.Cryptography.Algorithms.dll",
+    "size": 47016
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Security.Claims.dll",
+    "size": 21200
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Runtime.Serialization.Xml.dll",
+    "size": 24816
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Runtime.Serialization.Primitives.dll",
+    "size": 27048
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Runtime.Serialization.Json.dll",
+    "size": 21240
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Runtime.Serialization.Formatters.dll",
+    "size": 21264
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Runtime.Numerics.dll",
+    "size": 21200
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Runtime.InteropServices.RuntimeInformation.dll",
+    "size": 28624
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Runtime.InteropServices.dll",
+    "size": 24296
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Runtime.Handles.dll",
+    "size": 21200
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Runtime.Extensions.dll",
+    "size": 21720
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Runtime.dll",
+    "size": 29360
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Runtime.CompilerServices.VisualC.dll",
+    "size": 21784
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Resources.Writer.dll",
+    "size": 21200
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Resources.ResourceManager.dll",
+    "size": 21232
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Resources.Reader.dll",
+    "size": 21200
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Reflection.Primitives.dll",
+    "size": 21736
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Reflection.Extensions.dll",
+    "size": 21224
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Reflection.dll",
+    "size": 22200
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.ObjectModel.dll",
+    "size": 21696
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Net.WebSockets.dll",
+    "size": 21192
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Net.WebSockets.Client.dll",
+    "size": 21224
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Net.WebHeaderCollection.dll",
+    "size": 21232
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Net.Sockets.dll",
+    "size": 30544
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Net.Security.dll",
+    "size": 21696
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Net.Requests.dll",
+    "size": 21184
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Net.Primitives.dll",
+    "size": 22216
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Net.Ping.dll",
+    "size": 21168
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Net.NetworkInformation.dll",
+    "size": 22248
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Net.NameResolution.dll",
+    "size": 21208
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Net.Http.dll",
+    "size": 198472
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Linq.Queryable.dll",
+    "size": 21192
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Linq.Parallel.dll",
+    "size": 21192
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Linq.Expressions.dll",
+    "size": 22224
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Linq.dll",
+    "size": 21152
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.IO.UnmanagedMemoryStream.dll",
+    "size": 21232
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.IO.Pipes.dll",
+    "size": 21168
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.IO.MemoryMappedFiles.dll",
+    "size": 21216
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.IO.IsolatedStorage.dll",
+    "size": 21208
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.IO.FileSystem.Watcher.dll",
+    "size": 21224
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.IO.FileSystem.Primitives.dll",
+    "size": 21232
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.IO.FileSystem.DriveInfo.dll",
+    "size": 21232
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.IO.FileSystem.dll",
+    "size": 21192
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.IO.dll",
+    "size": 21144
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.IO.Compression.ZipFile.dll",
+    "size": 21224
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.IO.Compression.dll",
+    "size": 110944
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Globalization.Extensions.dll",
+    "size": 25992
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Globalization.dll",
+    "size": 21192
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Globalization.Calendars.dll",
+    "size": 21744
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Dynamic.Runtime.dll",
+    "size": 22224
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Drawing.Primitives.dll",
+    "size": 21208
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Diagnostics.Tracing.dll",
+    "size": 31608
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Diagnostics.TraceSource.dll",
+    "size": 21744
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Diagnostics.Tools.dll",
+    "size": 21208
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Diagnostics.TextWriterTraceListener.dll",
+    "size": 21280
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Diagnostics.StackTrace.dll",
+    "size": 23936
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Diagnostics.Process.dll",
+    "size": 21728
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Diagnostics.FileVersionInfo.dll",
+    "size": 21248
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Diagnostics.Debug.dll",
+    "size": 21208
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Diagnostics.Contracts.dll",
+    "size": 21736
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Data.Common.dll",
+    "size": 154448
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Console.dll",
+    "size": 21160
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.ComponentModel.TypeConverter.dll",
+    "size": 22784
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.ComponentModel.Primitives.dll",
+    "size": 21752
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.ComponentModel.EventBasedAsync.dll",
+    "size": 21768
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.ComponentModel.dll",
+    "size": 21192
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Collections.Specialized.dll",
+    "size": 21224
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Collections.NonGeneric.dll",
+    "size": 21224
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Collections.dll",
+    "size": 21696
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Collections.Concurrent.dll",
+    "size": 21224
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.AppContext.dll",
+    "size": 21176
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/netstandard.dll",
+    "size": 98616
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/Microsoft.Win32.Primitives.dll",
+    "size": 21216
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/Microsoft.PowerShell.EditorServices.Hosting.xml",
+    "size": 35617
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/Microsoft.PowerShell.EditorServices.Hosting.pdb",
+    "size": 21900
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Desktop/Microsoft.PowerShell.EditorServices.Hosting.dll",
+    "size": 64032
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/System.Threading.Tasks.Extensions.dll",
+    "size": 25984
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/System.Threading.Channels.dll",
+    "size": 51816
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/System.Security.Principal.Windows.dll",
+    "size": 37768
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/System.Security.Principal.dll",
+    "size": 21736
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/System.Security.AccessControl.dll",
+    "size": 55688
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/System.Runtime.CompilerServices.Unsafe.dll",
+    "size": 18024
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/System.Reactive.dll",
+    "size": 1354928
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/System.Numerics.Vectors.dll",
+    "size": 163712
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/System.Memory.dll",
+    "size": 142752
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/System.IO.Pipes.AccessControl.dll",
+    "size": 27280
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/System.IO.Pipelines.dll",
+    "size": 85120
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/System.Diagnostics.DiagnosticSource.dll",
+    "size": 186640
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/System.ComponentModel.Annotations.dll",
+    "size": 81040
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/System.Collections.Immutable.dll",
+    "size": 189312
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/System.Buffers.dll",
+    "size": 21376
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/OmniSharp.Extensions.LanguageServer.Shared.dll",
+    "size": 47664
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/OmniSharp.Extensions.LanguageServer.dll",
+    "size": 120368
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/OmniSharp.Extensions.LanguageProtocol.dll",
+    "size": 1357360
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/OmniSharp.Extensions.JsonRpc.dll",
+    "size": 866872
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/OmniSharp.Extensions.DebugAdapter.Shared.dll",
+    "size": 41520
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/OmniSharp.Extensions.DebugAdapter.Server.dll",
+    "size": 54832
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/OmniSharp.Extensions.DebugAdapter.dll",
+    "size": 324672
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/Newtonsoft.Json.dll",
+    "size": 715608
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/Nerdbank.Streams.dll",
+    "size": 238856
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/Microsoft.Win32.Registry.dll",
+    "size": 41352
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/Microsoft.VisualStudio.Validation.dll",
+    "size": 34736
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/Microsoft.VisualStudio.Threading.dll",
+    "size": 421288
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/Microsoft.PowerShell.EditorServices.xml",
+    "size": 309757
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/Microsoft.PowerShell.EditorServices.pdb",
+    "size": 160480
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/Microsoft.PowerShell.EditorServices.dll",
+    "size": 583200
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/Microsoft.PowerShell.EditorServices.deps.json",
+    "size": 40180
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/Microsoft.Extensions.Primitives.dll",
+    "size": 50488
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/Microsoft.Extensions.Options.dll",
+    "size": 68904
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/Microsoft.Extensions.Options.ConfigurationExtensions.dll",
+    "size": 22656
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/Microsoft.Extensions.Logging.dll",
+    "size": 54568
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/Microsoft.Extensions.Logging.Abstractions.dll",
+    "size": 69392
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/Microsoft.Extensions.FileSystemGlobbing.dll",
+    "size": 48944
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/Microsoft.Extensions.DependencyInjection.dll",
+    "size": 91448
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+    "size": 64280
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/Microsoft.Extensions.Configuration.dll",
+    "size": 39064
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/Microsoft.Extensions.Configuration.Binder.dll",
+    "size": 33920
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/Microsoft.Extensions.Configuration.Abstractions.dll",
+    "size": 25216
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/Microsoft.CSharp.dll",
+    "size": 302664
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/Microsoft.Bcl.AsyncInterfaces.dll",
+    "size": 26408
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/bin/Common/MediatR.dll",
+    "size": 44608
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/Commands/Public/Test-ScriptExtent.ps1",
+    "size": 16228
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/Commands/Public/Start-DebugAttachSession.ps1",
+    "size": 21421
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/Commands/Public/Set-ScriptExtent.ps1",
+    "size": 17357
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/Commands/Public/Out-CurrentFile.ps1",
+    "size": 15622
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/Commands/Public/Join-ScriptExtent.ps1",
+    "size": 15758
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/Commands/Public/Import-EditorCommand.ps1",
+    "size": 20580
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/Commands/Public/Get-Token.ps1",
+    "size": 15960
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/Commands/Public/Find-Ast.ps1",
+    "size": 21140
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/Commands/Public/ConvertTo-ScriptExtent.ps1",
+    "size": 19608
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/Commands/Public/ConvertFrom-ScriptExtent.ps1",
+    "size": 16910
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/Commands/Public/CmdletInterface.ps1",
+    "size": 20803
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/Commands/Public/Clear-Host.ps1",
+    "size": 15206
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/Commands/Private/BuiltInCommands.ps1",
+    "size": 16192
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/Commands/en-US/Strings.psd1",
+    "size": 14952
+  },
+  {
+    "path": "extension/modules/PowerShellEditorServices/Commands/en-US/PowerShellEditorServices.Commands-help.xml",
+    "size": 137977
+  }
+]

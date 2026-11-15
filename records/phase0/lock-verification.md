@@ -1,7 +1,7 @@
 # 0-6 台帳の取得と検証
 
 - 記録: 大岡越前守（2026-11-13）。下書き `tasks/2026-11-13-p0-fetch-and-lock/lock-verification.md`（蒙恬）を、自分で走らせた結果と照らして清書した。検証の記録は `tasks/2026-11-13-p0-verify-lock-measure/verification-log.md`。
-- 自分で走らせた検証: `node scripts/lock-verify.mjs --dir C:/b/p0/vsix --vscode 1.146.0`。各拡張の判定の時刻は 2026-11-12T20:30:15Z〜20:30:48Z（日本時間 2026-11-13 05:30:15〜05:30:48）。記録は `C:\b\p0\vsix\verify-result.json`（`verifiedAt` 2026-11-12T20:30:50.657Z）。終了コード 1（Claude Code の寝かせる期間が通らないため）。
+- 自分で走らせた検証: `node scripts/lock-verify.mjs --dir C:/b/p0/vsix --vscode 1.146.0`。各拡張の判定の時刻は 2026-11-12T20:30:15Z〜20:30:48Z（日本時間 2026-11-13 05:30:15〜05:30:48）。記録は `C:\b\p0\vsix\verify-result.json`（`verifiedAt` 2026-11-12T20:30:50.657Z）。終了コード 1（Claude Code の寝かせる期間が通らないため）。この回の `verify-result.json` は、7節の回が同じ場所に書いて上書きした。`C:\b\p0` を消す前（2026-11-16）に写した `records/phase0/evidence/vsix/verify-result.json` は7節の回（`verifiedAt` 2026-11-13T03:26:03.284Z）のもので、この回のものは残っていない。
 - `--write-lock` は付けていない。Claude Code 2.1.322 の寝かせる期間がまだ満ちていないため（下の1節）。
 - 独立の照合: `sha256sum` で9件の VSIX、同梱の claude.exe、本体の zip 2件をハッシュした（4節）。
 
@@ -50,8 +50,8 @@
 | 3 Claude Code (b) GPG | 鍵 `https://downloads.claude.ai/keys/claude-code.asc` を使い捨ての鍵束に入れ、`gpg --batch --status-fd 1 --verify manifest.json.sig manifest.json`。Git for Windows の gpg には `/c/...` の形でパスを渡す | `GOODSIG`、`VALIDSIG 31DDDE24DDFAB679F42D7BD2BAA929FF1A7ECACE`。取り込んだ鍵の指紋も docs の指紋と一致。使い捨ての鍵束は終わったら消える。gpg は GnuPG 2.4.9（Git for Windows） |
 | 3 Claude Code (c) Authenticode | `Get-AuthenticodeSignature -LiteralPath <claude.exe>` | `Valid`。署名者 `CN="Anthropic, PBC", O="Anthropic, PBC"`、発行者 DigiCert Trusted G4 Code Signing RSA4096 SHA384 2021 CA1、拇印 `60C2D9C51F09822FFF4F194DE9EEDB67451292D1`、期限 2027-10-29、タイムスタンプ DigiCert |
 | 4 寝かせる期間 | `isSoaked(publishedAt, now)`（72時間以上で真）と、`allVersions` に版があること | Claude Code だけ時間待ち（1節） |
-| 5 manifest の差分・6 ファイルの一覧の差分 | 前の版が無いので差は取っていない。次からは `node scripts/lock-diff.mjs --from <前> --to <新>` | 要約は台帳の `manifestDigest`、一覧は拡張ごとの `files.json` |
-| 7 ライセンス | VSIX の `extension/LICENSE*` の本文の SHA-256 | Claude Code・bash-ide-vscode・言語パックは拡張自身の LICENSE のファイルを持たない（`files.json` で確かめた）。ほかの6件は台帳の `licenseSha256` にある |
+| 5 manifest の差分・6 ファイルの一覧の差分 | 前の版が無いので差は取っていない。次からは `node scripts/lock-diff.mjs --from <前> --to <新>` | 要約は台帳の `manifestDigest`、一覧は拡張ごとの `files.json`。`C:\b\p0\vsix\<拡張>\files.json` の写しは `records/phase0/evidence/vsix/<拡張>/files.json`（2026-11-16。9件のうち7件で、SHA-256 は元と一致。basedpyright と bash-ide-vscode の2件は写せていない。`records/phase0/evidence/README.md`） |
+| 7 ライセンス | VSIX の `extension/LICENSE*` の本文の SHA-256 | Claude Code・bash-ide-vscode・言語パックは拡張自身の LICENSE のファイルを持たない（`files.json` で確かめた）。ほかの6件は台帳の `licenseSha256` にある。Claude Code と言語パックの `files.json` は写した（上の行）。3件とも LICENSE が無いことは、`records/phase0/evidence/vsix/verify-result.json` の `license.reason` にも残る |
 | 8 Defender | `MpCmdRun.exe -Scan -ScanType 3 -File <vsix> -DisableRemediation`（`C:\ProgramData\Microsoft\Windows Defender\Platform\4.18.26100.4-0\MpCmdRun.exe`） | 9件の VSIX と取り出した claude.exe が、終了コード 0、`found no threats` |
 | 9 engines | `satisfiesEngine(engines.vscode, "1.146.0")` | 9件とも満たす |
 
@@ -89,7 +89,7 @@
 ## 7. 追記（2026-11-13）: 台帳の確定（固定した ovsx での全件の走らせ直し）
 
 - 記録: 大岡越前守（2026-11-13）。蒙恬の走らせ直し `tasks/2026-11-13-p0-lock-final/lock-rerun.md` を確かめた。検証の記録は `tasks/2026-11-13-p0-verify-lock-final/verification-log.md`。判定は合格。
-- 蒙恬の実行: `node scripts/lock-verify.mjs --dir C:/b/p0/vsix --vscode 1.146.0 --write-lock extensions.lock.json`（`--only` なし）。判定の時刻は 2026-11-13T03:25:31.820Z〜03:26:01.687Z（日本時間 12:25:31〜12:26:01）。終了コード 0。記録は `C:\b\p0\vsix\verify-result.json`（`verifiedAt` 2026-11-13T03:26:03.284Z）。
+- 蒙恬の実行: `node scripts/lock-verify.mjs --dir C:/b/p0/vsix --vscode 1.146.0 --write-lock extensions.lock.json`（`--only` なし）。判定の時刻は 2026-11-13T03:25:31.820Z〜03:26:01.687Z（日本時間 12:25:31〜12:26:01）。終了コード 0。記録は `C:\b\p0\vsix\verify-result.json`（`verifiedAt` 2026-11-13T03:26:03.284Z）。写しは `records/phase0/evidence/vsix/verify-result.json`（2026-11-16。`C:\b\p0` を消す前に写した。SHA-256 は元と一致）。同じ場所の `fetch-result.json`（`lock-fetch` の結果。`fetchedAt` 2026-11-12T20:18:09.108Z）も `records/phase0/evidence/vsix/fetch-result.json` に写した（SHA-256 は元と一致）。
 - 結果: 9件とも `ok: true`。`failed`・`skipped` はどれも空。台帳への書き込み（`lockWrite`）は9件とも `written` で、`kept`・`omitted`・`untouched` は無い。
 - 1〜3節は前の回（2026-11-12T20:30Z）の記録としてそのまま残す。2節の表と違うのは、Claude Code の「4 72時間」が「通」になったことと、「3 ソースのタグ」が参考の項目になったこと（下の 7.3）だけ。
 
@@ -103,7 +103,7 @@
 - `package.json` の devDependencies が `ovsx: "1.4.0"`。`pnpm-lock.yaml` の importer も `specifier: 1.4.0`、`version: 1.4.0`。`ovsx@1.4.0` の完全性 `sha512-QrbKEXh9EEaDfZ8kojxtsRkJTXXdhX4zH3gweANSbonDlMF69vDjLm0cYQFQOExlVAQ+0A0F5CATawTG/iN4iw==`。
 - 入っている依存の木は lockfile のとおり（`pnpm-lock.yaml` と `node_modules/.pnpm/lock.yaml` の SHA-256 が同じ `92478f97...bcaf`）。pnpm は 11.8.0。
 - 起動は `node.exe <repo>\node_modules\ovsx\bin\ovsx verify-signature -i <vsix> -m <.signature.manifest> -s <.signature.sig> -k <公開鍵の PEM>`。npx は使っていない。9件とも `ovsxVersion: "1.4.0"`、終了コード 0、`✅  Signature is valid.`。
-- 私も `node scripts/lock-verify.mjs --dir C:/b/p0/vsix --only tomoki1207.pdf --result C:/b/p0/trial/verify-result.json` で試し、同じ起動の形と出力を確かめた（判定の時刻 2026-11-13T03:33:35.876Z、pdf の `ok: true`）。
+- 私も `node scripts/lock-verify.mjs --dir C:/b/p0/vsix --only tomoki1207.pdf --result C:/b/p0/trial/verify-result.json` で試し、同じ起動の形と出力を確かめた（判定の時刻 2026-11-13T03:33:35.876Z、pdf の `ok: true`）。結果の写しは `records/phase0/evidence/trial/verify-result.json`、同じ場所の `lock.json` の写しは `records/phase0/evidence/trial/lock.json`（2026-11-16。どちらも SHA-256 は元と一致）。
 - 依存の `@vscode/vsce-sign@2.1.0` の install スクリプト（`postinstall`。同じ PC 向けの包みの `vsce-sign.exe` を `bin/` に写す）は、pnpm が走らせていない（`ignoredBuilds`）。ovsx 1.4.0 の `verify-signature` はこの道具を使わず、Node.js の `crypto`（Ed25519）と manifest の各エントリーの SHA-256 で検証する。`bin/` が無い状態で9件とも通った。裁定（2026-11-13）は「走らせない。`allowBuilds` に `false`」。
 
 ### 7.3 台帳の差（`git diff extensions.lock.json`）

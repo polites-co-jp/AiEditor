@@ -1,0 +1,2414 @@
+{
+  "verifiedAt": "2026-11-13T03:26:03.284Z",
+  "vscode": "1.146.0",
+  "dir": "C:\\b\\p0\\vsix",
+  "results": [
+    {
+      "id": "anthropic.claude-code",
+      "version": "2.1.322",
+      "targetPlatform": "win32-x64",
+      "skip": [],
+      "publisher": {
+        "status": "pass",
+        "verified": true,
+        "namespace": "anthropic",
+        "namespaceDisplayName": "Anthropic",
+        "publishedBy": "igorkofman",
+        "publishedByProvider": "github",
+        "publishedWithTrustedPublishing": false,
+        "previousPublishedBy": null,
+        "publishedByChanged": null
+      },
+      "sha256": {
+        "status": "pass",
+        "computed": "8c0b09c6aefbca3196bcfe87e33b4e531cab3c13b2d9fd43a441562c74c5e4a4",
+        "published": "8c0b09c6aefbca3196bcfe87e33b4e531cab3c13b2d9fd43a441562c74c5e4a4"
+      },
+      "sigzipEntries": [
+        ".signature.sig",
+        ".signature.manifest",
+        ".signature.p7s"
+      ],
+      "signature": {
+        "status": "pass",
+        "algorithm": "ed25519",
+        "signatureValid": true,
+        "manifestEntries": 49,
+        "entriesChecked": 49,
+        "issues": [],
+        "issueCount": 0
+      },
+      "ovsx": {
+        "status": "pass",
+        "ovsxVersion": "1.4.0",
+        "command": "C:\\Program Files\\nodejs\\node.exe e:\\develop\\self\\Team\\projects\\ai-editor\\node_modules\\ovsx\\bin\\ovsx verify-signature -i C:\\b\\p0\\vsix\\anthropic.claude-code-2.1.322@win32-x64\\Anthropic.claude-code-2.1.322@win32-x64.vsix -m C:\\b\\p0\\vsix\\anthropic.claude-code-2.1.322@win32-x64\\sig\\.signature.manifest -s C:\\b\\p0\\vsix\\anthropic.claude-code-2.1.322@win32-x64\\sig\\.signature.sig -k C:\\b\\p0\\vsix\\anthropic.claude-code-2.1.322@win32-x64\\public-key.pem",
+        "exitCode": 0,
+        "stdout": "✅  Signature is valid.",
+        "stderr": "",
+        "error": null
+      },
+      "soak": {
+        "status": "pass",
+        "publishedAt": "2026-11-10T02:30:51.973288Z",
+        "now": "2026-11-13T03:25:31.820Z",
+        "soaked": true,
+        "listedInAllVersions": true,
+        "security": false
+      },
+      "engines": {
+        "status": "pass",
+        "range": "^1.94.0",
+        "vscode": "1.146.0"
+      },
+      "files": {
+        "status": "info",
+        "files": 49,
+        "totalSize": 359086949,
+        "executables": [
+          {
+            "path": "extension/resources/audio-capture/x64-win32/audio-capture.node",
+            "size": 509440
+          },
+          {
+            "path": "extension/resources/native-binary/claude.exe",
+            "size": 346496160
+          }
+        ],
+        "folders": [
+          {
+            "folder": "extension/resources/native-binary/",
+            "files": 1,
+            "size": 346496160
+          },
+          {
+            "folder": "extension/webview/",
+            "files": 2,
+            "size": 6522338
+          },
+          {
+            "folder": "extension/",
+            "files": 4,
+            "size": 3893998
+          },
+          {
+            "folder": "extension/resources/",
+            "files": 11,
+            "size": 944920
+          },
+          {
+            "folder": "extension/resources/audio-capture/",
+            "files": 1,
+            "size": 509440
+          },
+          {
+            "folder": "extension/resources/walkthrough/",
+            "files": 8,
+            "size": 457401
+          },
+          {
+            "folder": "extension/webview/fonts/",
+            "files": 20,
+            "size": 259792
+          },
+          {
+            "folder": "(直下)",
+            "files": 2,
+            "size": 2900
+          }
+        ]
+      },
+      "manifest": {
+        "status": "info",
+        "digest": {
+          "activationEvents": [
+            "onStartupFinished",
+            "onWebviewPanel:claudeVSCodePanel"
+          ],
+          "enabledApiProposals": [],
+          "extensionDependencies": [],
+          "extensionPack": [],
+          "main": "./extension.js",
+          "browser": null,
+          "engines": {
+            "vscode": "^1.94.0"
+          },
+          "extensionKind": null,
+          "capabilities": {
+            "untrustedWorkspaces": {
+              "supported": false,
+              "description": "untusted workspaces are not supported"
+            }
+          },
+          "contributesKeys": [
+            "commands",
+            "configuration",
+            "jsonValidation",
+            "keybindings",
+            "menus",
+            "views",
+            "viewsContainers",
+            "walkthroughs"
+          ],
+          "contributes.chatParticipants": 0,
+          "contributes.languageModelTools": 0,
+          "contributes.languageModelChatProviders": 0,
+          "contributes.mcpServerDefinitionProviders": 0,
+          "contributes.debuggers": 0,
+          "contributes.notebooks": 0
+        }
+      },
+      "license": {
+        "status": "info",
+        "file": null,
+        "sha256": null,
+        "apiLicense": "© Anthropic PBC. All rights reserved. Use is subject to the Legal Agreements outlined here: https://code.claude.com/docs/en/legal-and-compliance.",
+        "reason": "VSIX に extension/LICENSE* が無い"
+      },
+      "defender": {
+        "status": "pass",
+        "mpcmdrun": "C:\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.26100.4-0\\MpCmdRun.exe",
+        "command": "C:\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.26100.4-0\\MpCmdRun.exe -Scan -ScanType 3 -File C:\\b\\p0\\vsix\\anthropic.claude-code-2.1.322@win32-x64\\Anthropic.claude-code-2.1.322@win32-x64.vsix -DisableRemediation",
+        "exitCode": 0,
+        "stdout": "Scan starting...\r\nScan finished.\r\nScanning C:\\b\\p0\\vsix\\anthropic.claude-code-2.1.322@win32-x64\\Anthropic.claude-code-2.1.322@win32-x64.vsix found no threats.",
+        "stderr": "",
+        "error": null
+      },
+      "bundledCli": {
+        "status": "pass",
+        "pathInVsix": "extension/resources/native-binary/claude.exe",
+        "extractedTo": "C:\\b\\p0\\vsix\\anthropic.claude-code-2.1.322@win32-x64\\bundled-cli\\claude.exe",
+        "bytes": 346496160,
+        "sha256": "345996b4bdbae21d817f750fae2f34cbf8d81224a5444c78136091d121beb298",
+        "releaseManifest": "https://downloads.claude.ai/claude-code-releases/2.1.322/manifest.json",
+        "releaseVersion": "2.1.322",
+        "platformKey": "win32-x64",
+        "platformKeys": [
+          "darwin-arm64",
+          "darwin-x64",
+          "linux-arm64",
+          "linux-x64",
+          "linux-arm64-musl",
+          "linux-x64-musl",
+          "win32-x64",
+          "win32-arm64"
+        ],
+        "manifestChecksum": "345996b4bdbae21d817f750fae2f34cbf8d81224a5444c78136091d121beb298",
+        "manifestSize": 346496160,
+        "manifestBinary": "claude.exe",
+        "sizeMatches": true
+      },
+      "authenticode": {
+        "status": "pass",
+        "Status": "Valid",
+        "StatusMessage": "署名を確認しました。",
+        "Subject": "CN=\"Anthropic, PBC\", O=\"Anthropic, PBC\", L=San Francisco, S=California, C=US, SERIALNUMBER=4860621, OID.2.5.4.15=Private Organization, OID.1.3.6.1.4.1.311.60.2.1.2=Delaware, OID.1.3.6.1.4.1.311.60.2.1.3=US",
+        "Issuer": "CN=DigiCert Trusted G4 Code Signing RSA4096 SHA384 2021 CA1, O=\"DigiCert, Inc.\", C=US",
+        "Thumbprint": "60C2D9C51F09822FFF4F194DE9EEDB67451292D1",
+        "NotAfter": "2027-10-29T08:59:59.0000000+09:00",
+        "TimeStamper": "CN=DigiCert SHA256 RSA4096 Timestamp Responder 2026 1, O=\"DigiCert, Inc.\", C=US",
+        "expectedOrganization": "Anthropic, PBC"
+      },
+      "defenderCli": {
+        "status": "pass",
+        "mpcmdrun": "C:\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.26100.4-0\\MpCmdRun.exe",
+        "command": "C:\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.26100.4-0\\MpCmdRun.exe -Scan -ScanType 3 -File C:\\b\\p0\\vsix\\anthropic.claude-code-2.1.322@win32-x64\\bundled-cli\\claude.exe -DisableRemediation",
+        "exitCode": 0,
+        "stdout": "Scan starting...\r\nScan finished.\r\nScanning C:\\b\\p0\\vsix\\anthropic.claude-code-2.1.322@win32-x64\\bundled-cli\\claude.exe found no threats.",
+        "stderr": "",
+        "error": null
+      },
+      "manifestGpg": {
+        "status": "pass",
+        "gpg": "E:\\ProgramFiles\\Git\\usr\\bin\\gpg.exe",
+        "gpgVersion": "gpg (GnuPG) 2.4.9",
+        "importedFingerprints": [
+          "31DDDE24DDFAB679F42D7BD2BAA929FF1A7ECACE"
+        ],
+        "expectedFingerprint": "31DDDE24DDFAB679F42D7BD2BAA929FF1A7ECACE",
+        "keyMatches": true,
+        "signerKey": "31DDDE24DDFAB679F42D7BD2BAA929FF1A7ECACE",
+        "signerPrimary": "31DDDE24DDFAB679F42D7BD2BAA929FF1A7ECACE",
+        "goodsig": true,
+        "exitCode": 0,
+        "status_fd": [
+          "[GNUPG:] GOODSIG BAA929FF1A7ECACE Anthropic Claude Code Release Signing <security@anthropic.com>",
+          "[GNUPG:] VALIDSIG 31DDDE24DDFAB679F42D7BD2BAA929FF1A7ECACE 2026-11-10 1794272884 0 4 0 1 10 00 31DDDE24DDFAB679F42D7BD2BAA929FF1A7ECACE"
+        ],
+        "stderr": "gpg: keybox '/c/b/p0/vsix/anthropic.claude-code-2.1.322@win32-x64/gnupg-tmp/pubring.kbx' created\ngpg: /c/b/p0/vsix/anthropic.claude-code-2.1.322@win32-x64/gnupg-tmp/trustdb.gpg: trustdb created\ngpg: key BAA929FF1A7ECACE: public key \"Anthropic Claude Code Release Signing <security@anthropic.com>\" imported\ngpg: Total number processed: 1\ngpg:               imported: 1\ngpg: Signature made Tue Nov 10 10:08:04 2026    \ngpg:                using RSA key 31DDDE24DDFAB679F42D7BD2BAA929FF1A7ECACE\ngpg: Good signature from \"Anthropic Claude Code Release Signing <security@anthropic.com>\" [unknown]\ngpg: WARNING: This key is not certified with a trusted signature!\ngpg:          There is no indication that the signature belongs to the owner.\nPrimary key fingerprint: 31DD DE24 DDFA B679 F42D  7BD2 BAA9 29FF 1A7E CACE"
+      },
+      "marketplace": {
+        "status": "pass",
+        "publisherName": "anthropic",
+        "publisherDisplayName": "Anthropic",
+        "publisherDomain": "https://anthropic.com",
+        "isDomainVerified": true,
+        "publisherFlags": "verified",
+        "extensionName": "claude-code",
+        "sameVersionTargets": [
+          "darwin-x64",
+          "win32-x64",
+          "linux-x64",
+          "win32-arm64",
+          "linux-arm64",
+          "alpine-arm64",
+          "darwin-arm64",
+          "alpine-x64"
+        ],
+        "sameVersionLastUpdated": "2026-11-10T02:40:34.717Z",
+        "latestListed": "2.1.323"
+      },
+      "failed": [],
+      "skipped": [],
+      "ok": true,
+      "verifiedAt": "2026-11-13T03:25:31.820Z"
+    },
+    {
+      "id": "detachhead.basedpyright",
+      "version": "1.40.2",
+      "targetPlatform": "universal",
+      "skip": [],
+      "publisher": {
+        "status": "pass",
+        "verified": true,
+        "namespace": "detachhead",
+        "namespaceDisplayName": "detachhead",
+        "publishedBy": "DetachHead",
+        "publishedByProvider": "github",
+        "publishedWithTrustedPublishing": false,
+        "previousPublishedBy": null,
+        "publishedByChanged": null
+      },
+      "sha256": {
+        "status": "pass",
+        "computed": "9c87b0b992714ca2f9298cb7e98bda621612f0ee96121a8e77ee7fcccce2f351",
+        "published": "9c87b0b992714ca2f9298cb7e98bda621612f0ee96121a8e77ee7fcccce2f351"
+      },
+      "sigzipEntries": [
+        ".signature.sig",
+        ".signature.manifest",
+        ".signature.p7s"
+      ],
+      "signature": {
+        "status": "pass",
+        "algorithm": "ed25519",
+        "signatureValid": true,
+        "manifestEntries": 5425,
+        "entriesChecked": 5425,
+        "issues": [],
+        "issueCount": 0
+      },
+      "ovsx": {
+        "status": "pass",
+        "ovsxVersion": "1.4.0",
+        "command": "C:\\Program Files\\nodejs\\node.exe e:\\develop\\self\\Team\\projects\\ai-editor\\node_modules\\ovsx\\bin\\ovsx verify-signature -i C:\\b\\p0\\vsix\\detachhead.basedpyright-1.40.2\\detachhead.basedpyright-1.40.2.vsix -m C:\\b\\p0\\vsix\\detachhead.basedpyright-1.40.2\\sig\\.signature.manifest -s C:\\b\\p0\\vsix\\detachhead.basedpyright-1.40.2\\sig\\.signature.sig -k C:\\b\\p0\\vsix\\detachhead.basedpyright-1.40.2\\public-key.pem",
+        "exitCode": 0,
+        "stdout": "✅  Signature is valid.",
+        "stderr": "",
+        "error": null
+      },
+      "soak": {
+        "status": "pass",
+        "publishedAt": "2026-10-04T12:25:49.914519Z",
+        "now": "2026-11-13T03:25:45.412Z",
+        "soaked": true,
+        "listedInAllVersions": true,
+        "security": false
+      },
+      "engines": {
+        "status": "pass",
+        "range": "^1.101.0",
+        "vscode": "1.146.0"
+      },
+      "files": {
+        "status": "info",
+        "files": 5425,
+        "totalSize": 21700433,
+        "executables": [],
+        "folders": [
+          {
+            "folder": "extension/dist/typeshed-fallback/",
+            "files": 5410,
+            "size": 13508100
+          },
+          {
+            "folder": "extension/dist/",
+            "files": 4,
+            "size": 8031213
+          },
+          {
+            "folder": "extension/",
+            "files": 7,
+            "size": 100857
+          },
+          {
+            "folder": "extension/schemas/",
+            "files": 1,
+            "size": 49709
+          },
+          {
+            "folder": "extension/images/",
+            "files": 1,
+            "size": 6927
+          },
+          {
+            "folder": "(直下)",
+            "files": 2,
+            "size": 3627
+          }
+        ]
+      },
+      "manifest": {
+        "status": "info",
+        "digest": {
+          "activationEvents": [
+            "onLanguage:python",
+            "workspaceContains:pyrightconfig.json",
+            "workspaceContains:pyproject.toml"
+          ],
+          "enabledApiProposals": [],
+          "extensionDependencies": [],
+          "extensionPack": [],
+          "main": "./dist/extension.js",
+          "browser": null,
+          "engines": {
+            "vscode": "^1.101.0"
+          },
+          "extensionKind": null,
+          "capabilities": null,
+          "contributesKeys": [
+            "commands",
+            "configuration",
+            "configurationDefaults",
+            "jsonValidation",
+            "languages",
+            "menus",
+            "semanticTokenTypes"
+          ],
+          "contributes.chatParticipants": 0,
+          "contributes.languageModelTools": 0,
+          "contributes.languageModelChatProviders": 0,
+          "contributes.mcpServerDefinitionProviders": 0,
+          "contributes.debuggers": 0,
+          "contributes.notebooks": 0
+        }
+      },
+      "license": {
+        "status": "info",
+        "file": "extension/LICENSE.txt",
+        "sha256": "f7c936bc43f132b08497ac952e9376cbc102e5eedb4bf6ec902ea8442bd9c68d",
+        "apiLicense": "MIT"
+      },
+      "defender": {
+        "status": "pass",
+        "mpcmdrun": "C:\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.26100.4-0\\MpCmdRun.exe",
+        "command": "C:\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.26100.4-0\\MpCmdRun.exe -Scan -ScanType 3 -File C:\\b\\p0\\vsix\\detachhead.basedpyright-1.40.2\\detachhead.basedpyright-1.40.2.vsix -DisableRemediation",
+        "exitCode": 0,
+        "stdout": "Scan starting...\r\nScan finished.\r\nScanning C:\\b\\p0\\vsix\\detachhead.basedpyright-1.40.2\\detachhead.basedpyright-1.40.2.vsix found no threats.",
+        "stderr": "",
+        "error": null
+      },
+      "references": {
+        "sourceTag": {
+          "status": "found",
+          "required": false,
+          "repository": "detachhead/basedpyright",
+          "matchingTags": [
+            "v1.40.2"
+          ],
+          "tagCount": 123
+        }
+      },
+      "failed": [],
+      "skipped": [],
+      "ok": true,
+      "verifiedAt": "2026-11-13T03:25:45.412Z"
+    },
+    {
+      "id": "ms-vscode.powershell",
+      "version": "2025.4.0",
+      "targetPlatform": "universal",
+      "skip": [],
+      "publisher": {
+        "status": "pass",
+        "verified": true,
+        "namespace": "ms-vscode",
+        "namespaceDisplayName": "ms-vscode",
+        "publishedBy": "open-vsx",
+        "publishedByProvider": "github",
+        "publishedWithTrustedPublishing": false,
+        "previousPublishedBy": null,
+        "publishedByChanged": null
+      },
+      "sha256": {
+        "status": "pass",
+        "computed": "458eef45b6110e3d9867d23943b843ca4a9d0d96d1672db5ad156bc178f6b283",
+        "published": "458eef45b6110e3d9867d23943b843ca4a9d0d96d1672db5ad156bc178f6b283"
+      },
+      "sigzipEntries": [
+        ".signature.sig",
+        ".signature.manifest",
+        ".signature.p7s"
+      ],
+      "signature": {
+        "status": "pass",
+        "algorithm": "ed25519",
+        "signatureValid": true,
+        "manifestEntries": 293,
+        "entriesChecked": 293,
+        "issues": [],
+        "issueCount": 0
+      },
+      "ovsx": {
+        "status": "pass",
+        "ovsxVersion": "1.4.0",
+        "command": "C:\\Program Files\\nodejs\\node.exe e:\\develop\\self\\Team\\projects\\ai-editor\\node_modules\\ovsx\\bin\\ovsx verify-signature -i C:\\b\\p0\\vsix\\ms-vscode.powershell-2025.4.0\\ms-vscode.powershell-2025.4.0.vsix -m C:\\b\\p0\\vsix\\ms-vscode.powershell-2025.4.0\\sig\\.signature.manifest -s C:\\b\\p0\\vsix\\ms-vscode.powershell-2025.4.0\\sig\\.signature.sig -k C:\\b\\p0\\vsix\\ms-vscode.powershell-2025.4.0\\public-key.pem",
+        "exitCode": 0,
+        "stdout": "✅  Signature is valid.",
+        "stderr": "",
+        "error": null
+      },
+      "soak": {
+        "status": "pass",
+        "publishedAt": "2025-10-09T03:36:27.240064Z",
+        "now": "2026-11-13T03:25:50.123Z",
+        "soaked": true,
+        "listedInAllVersions": true,
+        "security": false
+      },
+      "engines": {
+        "status": "pass",
+        "range": "^1.101.0",
+        "vscode": "1.146.0"
+      },
+      "files": {
+        "status": "info",
+        "files": 293,
+        "totalSize": 315561343,
+        "executables": [
+          {
+            "path": "extension/modules/PSScriptAnalyzer/1.24.0/Newtonsoft.Json.dll",
+            "size": 732584
+          },
+          {
+            "path": "extension/modules/PSScriptAnalyzer/1.24.0/Microsoft.Windows.PowerShell.ScriptAnalyzer.dll",
+            "size": 226336
+          },
+          {
+            "path": "extension/modules/PSScriptAnalyzer/1.24.0/Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules.dll",
+            "size": 367648
+          },
+          {
+            "path": "extension/modules/PSScriptAnalyzer/1.24.0/Microsoft.PowerShell.CrossCompatibility.dll",
+            "size": 143392
+          },
+          {
+            "path": "extension/modules/PSReadLine/2.4.4/Microsoft.PowerShell.PSReadLine.dll",
+            "size": 339488
+          },
+          {
+            "path": "extension/modules/PSReadLine/2.4.4/Microsoft.PowerShell.Pager.dll",
+            "size": 16784
+          },
+          {
+            "path": "extension/modules/PSScriptAnalyzer/1.24.0/PSv7/Pluralize.NET.dll",
+            "size": 30256
+          },
+          {
+            "path": "extension/modules/PSScriptAnalyzer/1.24.0/PSv7/Microsoft.Windows.PowerShell.ScriptAnalyzer.dll",
+            "size": 250912
+          },
+          {
+            "path": "extension/modules/PSScriptAnalyzer/1.24.0/PSv7/Microsoft.Windows.PowerShell.ScriptAnalyzer.BuiltinRules.dll",
+            "size": 414240
+          },
+          {
+            "path": "extension/modules/PSScriptAnalyzer/1.24.0/PSv7/Microsoft.PowerShell.CrossCompatibility.dll",
+            "size": 153632
+          },
+          {
+            "path": "extension/modules/PSReadLine/2.4.4/netstd/Microsoft.PowerShell.PSReadLine.Polyfiller.dll",
+            "size": 16928
+          },
+          {
+            "path": "extension/modules/PSReadLine/2.4.4/net6plus/Microsoft.PowerShell.PSReadLine.Polyfiller.dll",
+            "size": 14888
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Core/Microsoft.PowerShell.EditorServices.Hosting.dll",
+            "size": 64032
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Xml.XPath.XDocument.dll",
+            "size": 22904
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Xml.XPath.dll",
+            "size": 21176
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Xml.XmlSerializer.dll",
+            "size": 21712
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Xml.XmlDocument.dll",
+            "size": 21712
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Xml.XDocument.dll",
+            "size": 21696
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Xml.ReaderWriter.dll",
+            "size": 21712
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.ValueTuple.dll",
+            "size": 75048
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Threading.Timer.dll",
+            "size": 21200
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Threading.ThreadPool.dll",
+            "size": 21216
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Threading.Thread.dll",
+            "size": 21200
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Threading.Tasks.Parallel.dll",
+            "size": 21232
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Threading.Tasks.dll",
+            "size": 22224
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Threading.Overlapped.dll",
+            "size": 37752
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Threading.dll",
+            "size": 22192
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Text.RegularExpressions.dll",
+            "size": 21232
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Text.Encoding.Extensions.dll",
+            "size": 21232
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Text.Encoding.dll",
+            "size": 21696
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Security.SecureString.dll",
+            "size": 22392
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Security.Cryptography.X509Certificates.dll",
+            "size": 22832
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Security.Cryptography.Primitives.dll",
+            "size": 21784
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Security.Cryptography.Encoding.dll",
+            "size": 21256
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Security.Cryptography.Csp.dll",
+            "size": 21240
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Security.Cryptography.Algorithms.dll",
+            "size": 47016
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Security.Claims.dll",
+            "size": 21200
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Runtime.Serialization.Xml.dll",
+            "size": 24816
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Runtime.Serialization.Primitives.dll",
+            "size": 27048
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Runtime.Serialization.Json.dll",
+            "size": 21240
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Runtime.Serialization.Formatters.dll",
+            "size": 21264
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Runtime.Numerics.dll",
+            "size": 21200
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Runtime.InteropServices.RuntimeInformation.dll",
+            "size": 28624
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Runtime.InteropServices.dll",
+            "size": 24296
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Runtime.Handles.dll",
+            "size": 21200
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Runtime.Extensions.dll",
+            "size": 21720
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Runtime.dll",
+            "size": 29360
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Runtime.CompilerServices.VisualC.dll",
+            "size": 21784
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Resources.Writer.dll",
+            "size": 21200
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Resources.ResourceManager.dll",
+            "size": 21232
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Resources.Reader.dll",
+            "size": 21200
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Reflection.Primitives.dll",
+            "size": 21736
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Reflection.Extensions.dll",
+            "size": 21224
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Reflection.dll",
+            "size": 22200
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.ObjectModel.dll",
+            "size": 21696
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Net.WebSockets.dll",
+            "size": 21192
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Net.WebSockets.Client.dll",
+            "size": 21224
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Net.WebHeaderCollection.dll",
+            "size": 21232
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Net.Sockets.dll",
+            "size": 30544
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Net.Security.dll",
+            "size": 21696
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Net.Requests.dll",
+            "size": 21184
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Net.Primitives.dll",
+            "size": 22216
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Net.Ping.dll",
+            "size": 21168
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Net.NetworkInformation.dll",
+            "size": 22248
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Net.NameResolution.dll",
+            "size": 21208
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Net.Http.dll",
+            "size": 198472
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Linq.Queryable.dll",
+            "size": 21192
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Linq.Parallel.dll",
+            "size": 21192
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Linq.Expressions.dll",
+            "size": 22224
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Linq.dll",
+            "size": 21152
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.IO.UnmanagedMemoryStream.dll",
+            "size": 21232
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.IO.Pipes.dll",
+            "size": 21168
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.IO.MemoryMappedFiles.dll",
+            "size": 21216
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.IO.IsolatedStorage.dll",
+            "size": 21208
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.IO.FileSystem.Watcher.dll",
+            "size": 21224
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.IO.FileSystem.Primitives.dll",
+            "size": 21232
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.IO.FileSystem.DriveInfo.dll",
+            "size": 21232
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.IO.FileSystem.dll",
+            "size": 21192
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.IO.dll",
+            "size": 21144
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.IO.Compression.ZipFile.dll",
+            "size": 21224
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.IO.Compression.dll",
+            "size": 110944
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Globalization.Extensions.dll",
+            "size": 25992
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Globalization.dll",
+            "size": 21192
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Globalization.Calendars.dll",
+            "size": 21744
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Dynamic.Runtime.dll",
+            "size": 22224
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Drawing.Primitives.dll",
+            "size": 21208
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Diagnostics.Tracing.dll",
+            "size": 31608
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Diagnostics.TraceSource.dll",
+            "size": 21744
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Diagnostics.Tools.dll",
+            "size": 21208
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Diagnostics.TextWriterTraceListener.dll",
+            "size": 21280
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Diagnostics.StackTrace.dll",
+            "size": 23936
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Diagnostics.Process.dll",
+            "size": 21728
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Diagnostics.FileVersionInfo.dll",
+            "size": 21248
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Diagnostics.Debug.dll",
+            "size": 21208
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Diagnostics.Contracts.dll",
+            "size": 21736
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Data.Common.dll",
+            "size": 154448
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Console.dll",
+            "size": 21160
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.ComponentModel.TypeConverter.dll",
+            "size": 22784
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.ComponentModel.Primitives.dll",
+            "size": 21752
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.ComponentModel.EventBasedAsync.dll",
+            "size": 21768
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.ComponentModel.dll",
+            "size": 21192
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Collections.Specialized.dll",
+            "size": 21224
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Collections.NonGeneric.dll",
+            "size": 21224
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Collections.dll",
+            "size": 21696
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.Collections.Concurrent.dll",
+            "size": 21224
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/System.AppContext.dll",
+            "size": 21176
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/netstandard.dll",
+            "size": 98616
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/Microsoft.Win32.Primitives.dll",
+            "size": 21216
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Desktop/Microsoft.PowerShell.EditorServices.Hosting.dll",
+            "size": 64032
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/System.Threading.Tasks.Extensions.dll",
+            "size": 25984
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/System.Threading.Channels.dll",
+            "size": 51816
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/System.Security.Principal.Windows.dll",
+            "size": 37768
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/System.Security.Principal.dll",
+            "size": 21736
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/System.Security.AccessControl.dll",
+            "size": 55688
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/System.Runtime.CompilerServices.Unsafe.dll",
+            "size": 18024
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/System.Reactive.dll",
+            "size": 1354928
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/System.Numerics.Vectors.dll",
+            "size": 163712
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/System.Memory.dll",
+            "size": 142752
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/System.IO.Pipes.AccessControl.dll",
+            "size": 27280
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/System.IO.Pipelines.dll",
+            "size": 85120
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/System.Diagnostics.DiagnosticSource.dll",
+            "size": 186640
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/System.ComponentModel.Annotations.dll",
+            "size": 81040
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/System.Collections.Immutable.dll",
+            "size": 189312
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/System.Buffers.dll",
+            "size": 21376
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/OmniSharp.Extensions.LanguageServer.Shared.dll",
+            "size": 47664
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/OmniSharp.Extensions.LanguageServer.dll",
+            "size": 120368
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/OmniSharp.Extensions.LanguageProtocol.dll",
+            "size": 1357360
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/OmniSharp.Extensions.JsonRpc.dll",
+            "size": 866872
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/OmniSharp.Extensions.DebugAdapter.Shared.dll",
+            "size": 41520
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/OmniSharp.Extensions.DebugAdapter.Server.dll",
+            "size": 54832
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/OmniSharp.Extensions.DebugAdapter.dll",
+            "size": 324672
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/Newtonsoft.Json.dll",
+            "size": 715608
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/Nerdbank.Streams.dll",
+            "size": 238856
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/Microsoft.Win32.Registry.dll",
+            "size": 41352
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/Microsoft.VisualStudio.Validation.dll",
+            "size": 34736
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/Microsoft.VisualStudio.Threading.dll",
+            "size": 421288
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/Microsoft.PowerShell.EditorServices.dll",
+            "size": 583200
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/Microsoft.Extensions.Primitives.dll",
+            "size": 50488
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/Microsoft.Extensions.Options.dll",
+            "size": 68904
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/Microsoft.Extensions.Options.ConfigurationExtensions.dll",
+            "size": 22656
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/Microsoft.Extensions.Logging.dll",
+            "size": 54568
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/Microsoft.Extensions.Logging.Abstractions.dll",
+            "size": 69392
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/Microsoft.Extensions.FileSystemGlobbing.dll",
+            "size": 48944
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/Microsoft.Extensions.DependencyInjection.dll",
+            "size": 91448
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+            "size": 64280
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/Microsoft.Extensions.Configuration.dll",
+            "size": 39064
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/Microsoft.Extensions.Configuration.Binder.dll",
+            "size": 33920
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/Microsoft.Extensions.Configuration.Abstractions.dll",
+            "size": 25216
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/Microsoft.CSharp.dll",
+            "size": 302664
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/Microsoft.Bcl.AsyncInterfaces.dll",
+            "size": 26408
+          },
+          {
+            "path": "extension/modules/PowerShellEditorServices/bin/Common/MediatR.dll",
+            "size": 44608
+          }
+        ],
+        "folders": [
+          {
+            "folder": "extension/modules/PSScriptAnalyzer/",
+            "files": 49,
+            "size": 299241860
+          },
+          {
+            "folder": "extension/modules/PowerShellEditorServices/",
+            "files": 168,
+            "size": 12215774
+          },
+          {
+            "folder": "extension/dist/",
+            "files": 1,
+            "size": 2150347
+          },
+          {
+            "folder": "extension/modules/PSReadLine/",
+            "files": 11,
+            "size": 542037
+          },
+          {
+            "folder": "extension/",
+            "files": 8,
+            "size": 448626
+          },
+          {
+            "folder": "extension/media/",
+            "files": 3,
+            "size": 264804
+          },
+          {
+            "folder": "extension/examples/",
+            "files": 17,
+            "size": 245577
+          },
+          {
+            "folder": "extension/modules/",
+            "files": 4,
+            "size": 221292
+          },
+          {
+            "folder": "extension/docs/",
+            "files": 4,
+            "size": 86892
+          },
+          {
+            "folder": "extension/modules/docs/",
+            "files": 13,
+            "size": 50762
+          },
+          {
+            "folder": "extension/examples/Tests/",
+            "files": 2,
+            "size": 35120
+          },
+          {
+            "folder": "extension/snippets/",
+            "files": 1,
+            "size": 29971
+          },
+          {
+            "folder": "extension/docs/azure_data_studio/",
+            "files": 3,
+            "size": 13310
+          },
+          {
+            "folder": "(直下)",
+            "files": 2,
+            "size": 4980
+          },
+          {
+            "folder": "extension/examples/.vscode/",
+            "files": 3,
+            "size": 4788
+          },
+          {
+            "folder": "extension/themes/theme-psise/",
+            "files": 1,
+            "size": 4518
+          },
+          {
+            "folder": "extension/examples/en-US/",
+            "files": 1,
+            "size": 480
+          },
+          {
+            "folder": "extension/examples/Assets/",
+            "files": 2,
+            "size": 205
+          }
+        ]
+      },
+      "manifest": {
+        "status": "info",
+        "digest": {
+          "activationEvents": [
+            "onDebugResolve:PowerShell",
+            "onLanguage:powershell",
+            "onCommand:PowerShell.PickPSHostProcess",
+            "onCommand:PowerShell.PickRunspace",
+            "onCommand:PowerShell.SpecifyScriptArgs"
+          ],
+          "enabledApiProposals": [],
+          "extensionDependencies": [
+            "vscode.powershell"
+          ],
+          "extensionPack": [],
+          "main": "./dist/extension.js",
+          "browser": null,
+          "engines": {
+            "vscode": "^1.101.0"
+          },
+          "extensionKind": null,
+          "capabilities": null,
+          "contributesKeys": [
+            "breakpoints",
+            "capabilities",
+            "commands",
+            "configuration",
+            "configurationDefaults",
+            "debuggers",
+            "keybindings",
+            "menus",
+            "problemMatchers",
+            "snippets",
+            "themes",
+            "views",
+            "viewsContainers",
+            "walkthroughs"
+          ],
+          "contributes.chatParticipants": 0,
+          "contributes.languageModelTools": 0,
+          "contributes.languageModelChatProviders": 0,
+          "contributes.mcpServerDefinitionProviders": 0,
+          "contributes.debuggers": 1,
+          "contributes.notebooks": 0
+        }
+      },
+      "license": {
+        "status": "info",
+        "file": "extension/LICENSE.txt",
+        "sha256": "296604f12546653ed97726dc5fc2f3945d4cca1f07abd2589f531647177b06fc",
+        "apiLicense": "SEE LICENSE IN LICENSE.txt"
+      },
+      "defender": {
+        "status": "pass",
+        "mpcmdrun": "C:\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.26100.4-0\\MpCmdRun.exe",
+        "command": "C:\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.26100.4-0\\MpCmdRun.exe -Scan -ScanType 3 -File C:\\b\\p0\\vsix\\ms-vscode.powershell-2025.4.0\\ms-vscode.powershell-2025.4.0.vsix -DisableRemediation",
+        "exitCode": 0,
+        "stdout": "Scan starting...\r\nScan finished.\r\nScanning C:\\b\\p0\\vsix\\ms-vscode.powershell-2025.4.0\\ms-vscode.powershell-2025.4.0.vsix found no threats.",
+        "stderr": "",
+        "error": null
+      },
+      "references": {
+        "sourceTag": {
+          "status": "found",
+          "required": false,
+          "repository": "PowerShell/vscode-powershell",
+          "matchingTags": [
+            "v2025.4.0"
+          ],
+          "tagCount": 202
+        }
+      },
+      "failed": [],
+      "skipped": [],
+      "ok": true,
+      "verifiedAt": "2026-11-13T03:25:50.123Z"
+    },
+    {
+      "id": "mads-hartmann.bash-ide-vscode",
+      "version": "1.43.2",
+      "targetPlatform": "universal",
+      "skip": [],
+      "publisher": {
+        "status": "pass",
+        "verified": true,
+        "namespace": "mads-hartmann",
+        "namespaceDisplayName": "mads-hartmann",
+        "publishedBy": "open-vsx",
+        "publishedByProvider": "github",
+        "publishedWithTrustedPublishing": false,
+        "previousPublishedBy": null,
+        "publishedByChanged": null
+      },
+      "sha256": {
+        "status": "pass",
+        "computed": "2eb16563ed946b801a45d3d298f0ca35a268d39656ea18f33062ff9d65fc04c2",
+        "published": "2eb16563ed946b801a45d3d298f0ca35a268d39656ea18f33062ff9d65fc04c2"
+      },
+      "sigzipEntries": [
+        ".signature.sig",
+        ".signature.manifest",
+        ".signature.p7s"
+      ],
+      "signature": {
+        "status": "pass",
+        "algorithm": "ed25519",
+        "signatureValid": true,
+        "manifestEntries": 2453,
+        "entriesChecked": 2453,
+        "issues": [],
+        "issueCount": 0
+      },
+      "ovsx": {
+        "status": "pass",
+        "ovsxVersion": "1.4.0",
+        "command": "C:\\Program Files\\nodejs\\node.exe e:\\develop\\self\\Team\\projects\\ai-editor\\node_modules\\ovsx\\bin\\ovsx verify-signature -i C:\\b\\p0\\vsix\\mads-hartmann.bash-ide-vscode-1.43.2\\mads-hartmann.bash-ide-vscode-1.43.2.vsix -m C:\\b\\p0\\vsix\\mads-hartmann.bash-ide-vscode-1.43.2\\sig\\.signature.manifest -s C:\\b\\p0\\vsix\\mads-hartmann.bash-ide-vscode-1.43.2\\sig\\.signature.sig -k C:\\b\\p0\\vsix\\mads-hartmann.bash-ide-vscode-1.43.2\\public-key.pem",
+        "exitCode": 0,
+        "stdout": "✅  Signature is valid.",
+        "stderr": "",
+        "error": null
+      },
+      "soak": {
+        "status": "pass",
+        "publishedAt": "2026-09-21T03:38:44.995031Z",
+        "now": "2026-11-13T03:25:52.784Z",
+        "soaked": true,
+        "listedInAllVersions": true,
+        "security": false
+      },
+      "engines": {
+        "status": "pass",
+        "range": "^1.91.0",
+        "vscode": "1.146.0"
+      },
+      "files": {
+        "status": "info",
+        "files": 2453,
+        "totalSize": 19239682,
+        "executables": [],
+        "folders": [
+          {
+            "folder": "extension/node_modules/@mixmark-io/",
+            "files": 1023,
+            "size": 7736745
+          },
+          {
+            "folder": "extension/node_modules/zod/",
+            "files": 596,
+            "size": 3594196
+          },
+          {
+            "folder": "extension/node_modules/bash-language-server/",
+            "files": 135,
+            "size": 2163967
+          },
+          {
+            "folder": "extension/node_modules/web-tree-sitter/",
+            "files": 11,
+            "size": 1887602
+          },
+          {
+            "folder": "extension/node_modules/vscode-languageclient/",
+            "files": 121,
+            "size": 771545
+          },
+          {
+            "folder": "extension/node_modules/vscode-languageserver-types/",
+            "files": 10,
+            "size": 414407
+          },
+          {
+            "folder": "extension/node_modules/vscode-languageserver-protocol/",
+            "files": 66,
+            "size": 404818
+          },
+          {
+            "folder": "extension/node_modules/fuzzy-search/",
+            "files": 18,
+            "size": 335516
+          },
+          {
+            "folder": "extension/node_modules/vscode-jsonrpc/",
+            "files": 45,
+            "size": 225125
+          },
+          {
+            "folder": "extension/node_modules/minimatch/",
+            "files": 29,
+            "size": 211137
+          },
+          {
+            "folder": "extension/node_modules/commander/",
+            "files": 14,
+            "size": 208654
+          },
+          {
+            "folder": "extension/node_modules/vscode-languageserver/",
+            "files": 59,
+            "size": 206859
+          },
+          {
+            "folder": "extension/node_modules/turndown/",
+            "files": 10,
+            "size": 191636
+          },
+          {
+            "folder": "extension/node_modules/@one-ini/",
+            "files": 6,
+            "size": 102549
+          },
+          {
+            "folder": "extension/node_modules/semver/",
+            "files": 53,
+            "size": 101065
+          },
+          {
+            "folder": "extension/node_modules/fast-glob/",
+            "files": 55,
+            "size": 98396
+          },
+          {
+            "folder": "extension/node_modules/picomatch/",
+            "files": 9,
+            "size": 90605
+          },
+          {
+            "folder": "extension/node_modules/@nodelib/",
+            "files": 63,
+            "size": 60377
+          },
+          {
+            "folder": "extension/node_modules/micromatch/",
+            "files": 4,
+            "size": 56599
+          },
+          {
+            "folder": "extension/node_modules/editorconfig/",
+            "files": 12,
+            "size": 48850
+          },
+          {
+            "folder": "extension/node_modules/vscode-languageserver-textdocument/",
+            "files": 10,
+            "size": 45034
+          },
+          {
+            "folder": "extension/node_modules/braces/",
+            "files": 10,
+            "size": 44635
+          },
+          {
+            "folder": "extension/node_modules/fastq/",
+            "files": 14,
+            "size": 38885
+          },
+          {
+            "folder": "extension/node_modules/brace-expansion/",
+            "files": 9,
+            "size": 34153
+          },
+          {
+            "folder": "extension/",
+            "files": 6,
+            "size": 23607
+          },
+          {
+            "folder": "extension/node_modules/to-regex-range/",
+            "files": 4,
+            "size": 22939
+          },
+          {
+            "folder": "extension/node_modules/fill-range/",
+            "files": 4,
+            "size": 16743
+          },
+          {
+            "folder": "extension/node_modules/is-glob/",
+            "files": 4,
+            "size": 13609
+          },
+          {
+            "folder": "extension/node_modules/glob-parent/",
+            "files": 5,
+            "size": 12134
+          },
+          {
+            "folder": "extension/node_modules/is-number/",
+            "files": 4,
+            "size": 9615
+          },
+          {
+            "folder": "extension/node_modules/reusify/",
+            "files": 10,
+            "size": 9442
+          },
+          {
+            "folder": "extension/assets/",
+            "files": 1,
+            "size": 9078
+          },
+          {
+            "folder": "extension/node_modules/merge2/",
+            "files": 4,
+            "size": 8897
+          },
+          {
+            "folder": "extension/node_modules/balanced-match/",
+            "files": 9,
+            "size": 8594
+          },
+          {
+            "folder": "extension/node_modules/queue-microtask/",
+            "files": 5,
+            "size": 8367
+          },
+          {
+            "folder": "extension/node_modules/run-parallel/",
+            "files": 4,
+            "size": 6563
+          },
+          {
+            "folder": "extension/node_modules/is-extglob/",
+            "files": 4,
+            "size": 6217
+          },
+          {
+            "folder": "extension/out/",
+            "files": 4,
+            "size": 4912
+          },
+          {
+            "folder": "(直下)",
+            "files": 2,
+            "size": 4110
+          },
+          {
+            "folder": "extension/__tests__/",
+            "files": 1,
+            "size": 1500
+          }
+        ]
+      },
+      "manifest": {
+        "status": "info",
+        "digest": {
+          "activationEvents": [
+            "onLanguage:shellscript"
+          ],
+          "enabledApiProposals": [],
+          "extensionDependencies": [],
+          "extensionPack": [],
+          "main": "./out/extension",
+          "browser": null,
+          "engines": {
+            "vscode": "^1.91.0"
+          },
+          "extensionKind": null,
+          "capabilities": null,
+          "contributesKeys": [
+            "configuration"
+          ],
+          "contributes.chatParticipants": 0,
+          "contributes.languageModelTools": 0,
+          "contributes.languageModelChatProviders": 0,
+          "contributes.mcpServerDefinitionProviders": 0,
+          "contributes.debuggers": 0,
+          "contributes.notebooks": 0
+        }
+      },
+      "license": {
+        "status": "info",
+        "file": null,
+        "sha256": null,
+        "apiLicense": "MIT",
+        "reason": "VSIX に extension/LICENSE* が無い"
+      },
+      "defender": {
+        "status": "pass",
+        "mpcmdrun": "C:\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.26100.4-0\\MpCmdRun.exe",
+        "command": "C:\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.26100.4-0\\MpCmdRun.exe -Scan -ScanType 3 -File C:\\b\\p0\\vsix\\mads-hartmann.bash-ide-vscode-1.43.2\\mads-hartmann.bash-ide-vscode-1.43.2.vsix -DisableRemediation",
+        "exitCode": 0,
+        "stdout": "Scan starting...\r\nScan finished.\r\nScanning C:\\b\\p0\\vsix\\mads-hartmann.bash-ide-vscode-1.43.2\\mads-hartmann.bash-ide-vscode-1.43.2.vsix found no threats.",
+        "stderr": "",
+        "error": null
+      },
+      "references": {
+        "sourceTag": {
+          "status": "found",
+          "required": false,
+          "repository": "bash-lsp/bash-language-server",
+          "matchingTags": [
+            "vscode-client-1.43.2"
+          ],
+          "tagCount": 151
+        }
+      },
+      "failed": [],
+      "skipped": [],
+      "ok": true,
+      "verifiedAt": "2026-11-13T03:25:52.784Z"
+    },
+    {
+      "id": "mechatroner.rainbow-csv",
+      "version": "3.24.1",
+      "targetPlatform": "universal",
+      "skip": [],
+      "publisher": {
+        "status": "pass",
+        "verified": true,
+        "namespace": "mechatroner",
+        "namespaceDisplayName": "mechatroner",
+        "publishedBy": "mechatroner",
+        "publishedByProvider": "github",
+        "publishedWithTrustedPublishing": false,
+        "previousPublishedBy": null,
+        "publishedByChanged": null
+      },
+      "sha256": {
+        "status": "pass",
+        "computed": "0ecb7da3fb2a54517cd41fce8e858d6276ea8523bed6fbfd64d5ed281bd7514a",
+        "published": "0ecb7da3fb2a54517cd41fce8e858d6276ea8523bed6fbfd64d5ed281bd7514a"
+      },
+      "sigzipEntries": [
+        ".signature.sig",
+        ".signature.manifest",
+        ".signature.p7s"
+      ],
+      "signature": {
+        "status": "pass",
+        "algorithm": "ed25519",
+        "signatureValid": true,
+        "manifestEntries": 59,
+        "entriesChecked": 59,
+        "issues": [],
+        "issueCount": 0
+      },
+      "ovsx": {
+        "status": "pass",
+        "ovsxVersion": "1.4.0",
+        "command": "C:\\Program Files\\nodejs\\node.exe e:\\develop\\self\\Team\\projects\\ai-editor\\node_modules\\ovsx\\bin\\ovsx verify-signature -i C:\\b\\p0\\vsix\\mechatroner.rainbow-csv-3.24.1\\mechatroner.rainbow-csv-3.24.1.vsix -m C:\\b\\p0\\vsix\\mechatroner.rainbow-csv-3.24.1\\sig\\.signature.manifest -s C:\\b\\p0\\vsix\\mechatroner.rainbow-csv-3.24.1\\sig\\.signature.sig -k C:\\b\\p0\\vsix\\mechatroner.rainbow-csv-3.24.1\\public-key.pem",
+        "exitCode": 0,
+        "stdout": "✅  Signature is valid.",
+        "stderr": "",
+        "error": null
+      },
+      "soak": {
+        "status": "pass",
+        "publishedAt": "2026-03-01T03:14:35.623063Z",
+        "now": "2026-11-13T03:25:55.853Z",
+        "soaked": true,
+        "listedInAllVersions": true,
+        "security": false
+      },
+      "engines": {
+        "status": "pass",
+        "range": "^1.95.0",
+        "vscode": "1.146.0"
+      },
+      "files": {
+        "status": "info",
+        "files": 59,
+        "totalSize": 3019933,
+        "executables": [],
+        "folders": [
+          {
+            "folder": "extension/dist/web/",
+            "files": 5,
+            "size": 2141948
+          },
+          {
+            "folder": "extension/",
+            "files": 18,
+            "size": 447897
+          },
+          {
+            "folder": "extension/rbql_core/rbql/",
+            "files": 11,
+            "size": 146444
+          },
+          {
+            "folder": "extension/rbql_core/rbql-js/",
+            "files": 6,
+            "size": 129552
+          },
+          {
+            "folder": "extension/rbql_core/",
+            "files": 4,
+            "size": 128632
+          },
+          {
+            "folder": "extension/contrib/wcwidth/",
+            "files": 4,
+            "size": 7819
+          },
+          {
+            "folder": "extension/contrib/textarea-caret-position/",
+            "files": 2,
+            "size": 6178
+          },
+          {
+            "folder": "extension/syntaxes/",
+            "files": 6,
+            "size": 5663
+          },
+          {
+            "folder": "(直下)",
+            "files": 2,
+            "size": 3838
+          },
+          {
+            "folder": "extension/rbql mock/",
+            "files": 1,
+            "size": 1962
+          }
+        ]
+      },
+      "manifest": {
+        "status": "info",
+        "digest": {
+          "activationEvents": [
+            "onLanguage:csv",
+            "onLanguage:tsv",
+            "onLanguage:csv (semicolon)",
+            "onLanguage:csv (pipe)",
+            "onLanguage:csv (whitespace)",
+            "onLanguage:dynamic csv",
+            "onLanguage:plaintext",
+            "onCommand:rainbow-csv.RBQL",
+            "onCommand:rainbow-csv.RainbowSeparator",
+            "onCommand:rainbow-csv.SampleHead",
+            "onCommand:rainbow-csv.SampleTail"
+          ],
+          "enabledApiProposals": [],
+          "extensionDependencies": [],
+          "extensionPack": [],
+          "main": "./extension",
+          "browser": "./dist/web/extension.js",
+          "engines": {
+            "vscode": "^1.95.0"
+          },
+          "extensionKind": null,
+          "capabilities": {
+            "hoverProvider": "true"
+          },
+          "contributesKeys": [
+            "colors",
+            "commands",
+            "configuration",
+            "configurationDefaults",
+            "grammars",
+            "languages",
+            "menus",
+            "semanticTokenScopes",
+            "submenus"
+          ],
+          "contributes.chatParticipants": 0,
+          "contributes.languageModelTools": 0,
+          "contributes.languageModelChatProviders": 0,
+          "contributes.mcpServerDefinitionProviders": 0,
+          "contributes.debuggers": 0,
+          "contributes.notebooks": 0
+        }
+      },
+      "license": {
+        "status": "info",
+        "file": "extension/LICENSE.txt",
+        "sha256": "513c680325145127f89c5b8e994325dd9235948428f959f7ad32be7659473d6d",
+        "apiLicense": "MIT"
+      },
+      "defender": {
+        "status": "pass",
+        "mpcmdrun": "C:\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.26100.4-0\\MpCmdRun.exe",
+        "command": "C:\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.26100.4-0\\MpCmdRun.exe -Scan -ScanType 3 -File C:\\b\\p0\\vsix\\mechatroner.rainbow-csv-3.24.1\\mechatroner.rainbow-csv-3.24.1.vsix -DisableRemediation",
+        "exitCode": 0,
+        "stdout": "Scan starting...\r\nScan finished.\r\nScanning C:\\b\\p0\\vsix\\mechatroner.rainbow-csv-3.24.1\\mechatroner.rainbow-csv-3.24.1.vsix found no threats.",
+        "stderr": "",
+        "error": null
+      },
+      "references": {
+        "sourceTag": {
+          "status": "found",
+          "required": false,
+          "repository": "mechatroner/vscode_rainbow_csv",
+          "matchingTags": [
+            "3.24.1"
+          ],
+          "tagCount": 2
+        }
+      },
+      "failed": [],
+      "skipped": [],
+      "ok": true,
+      "verifiedAt": "2026-11-13T03:25:55.853Z"
+    },
+    {
+      "id": "dotenv.dotenv-vscode",
+      "version": "1.5.8",
+      "targetPlatform": "universal",
+      "skip": [],
+      "publisher": {
+        "status": "pass",
+        "verified": true,
+        "namespace": "dotenv",
+        "namespaceDisplayName": "dotenvx",
+        "publishedBy": "motdotla",
+        "publishedByProvider": "github",
+        "publishedWithTrustedPublishing": false,
+        "previousPublishedBy": null,
+        "publishedByChanged": null
+      },
+      "sha256": {
+        "status": "pass",
+        "computed": "c8905977784ddebcc2fd45ecafd7ce66d7675f7c3435c2a2d41c7023161f2537",
+        "published": "c8905977784ddebcc2fd45ecafd7ce66d7675f7c3435c2a2d41c7023161f2537"
+      },
+      "sigzipEntries": [
+        ".signature.sig",
+        ".signature.manifest",
+        ".signature.p7s"
+      ],
+      "signature": {
+        "status": "pass",
+        "algorithm": "ed25519",
+        "signatureValid": true,
+        "manifestEntries": 276,
+        "entriesChecked": 276,
+        "issues": [],
+        "issueCount": 0
+      },
+      "ovsx": {
+        "status": "pass",
+        "ovsxVersion": "1.4.0",
+        "command": "C:\\Program Files\\nodejs\\node.exe e:\\develop\\self\\Team\\projects\\ai-editor\\node_modules\\ovsx\\bin\\ovsx verify-signature -i C:\\b\\p0\\vsix\\dotenv.dotenv-vscode-1.5.8\\dotenv.dotenv-vscode-1.5.8.vsix -m C:\\b\\p0\\vsix\\dotenv.dotenv-vscode-1.5.8\\sig\\.signature.manifest -s C:\\b\\p0\\vsix\\dotenv.dotenv-vscode-1.5.8\\sig\\.signature.sig -k C:\\b\\p0\\vsix\\dotenv.dotenv-vscode-1.5.8\\public-key.pem",
+        "exitCode": 0,
+        "stdout": "✅  Signature is valid.",
+        "stderr": "",
+        "error": null
+      },
+      "soak": {
+        "status": "pass",
+        "publishedAt": "2026-10-01T16:02:32.595343Z",
+        "now": "2026-11-13T03:25:56.943Z",
+        "soaked": true,
+        "listedInAllVersions": true,
+        "security": false
+      },
+      "engines": {
+        "status": "pass",
+        "range": "^1.65.0",
+        "vscode": "1.146.0"
+      },
+      "files": {
+        "status": "info",
+        "files": 276,
+        "totalSize": 4190332,
+        "executables": [],
+        "folders": [
+          {
+            "folder": "extension/media/editor/",
+            "files": 5,
+            "size": 3346404
+          },
+          {
+            "folder": "extension/node_modules/yaml/",
+            "files": 233,
+            "size": 686297
+          },
+          {
+            "folder": "extension/lib/",
+            "files": 18,
+            "size": 61040
+          },
+          {
+            "folder": "extension/node_modules/dotenv/",
+            "files": 6,
+            "size": 42210
+          },
+          {
+            "folder": "extension/",
+            "files": 7,
+            "size": 36838
+          },
+          {
+            "folder": "extension/syntaxes/",
+            "files": 4,
+            "size": 9280
+          },
+          {
+            "folder": "extension/media/",
+            "files": 1,
+            "size": 4387
+          },
+          {
+            "folder": "(直下)",
+            "files": 2,
+            "size": 3876
+          }
+        ]
+      },
+      "manifest": {
+        "status": "info",
+        "digest": {
+          "activationEvents": [
+            "*",
+            "onCustomEditor:dotenv.sourceEditor"
+          ],
+          "enabledApiProposals": [],
+          "extensionDependencies": [],
+          "extensionPack": [],
+          "main": "./extension.js",
+          "browser": null,
+          "engines": {
+            "vscode": "^1.65.0"
+          },
+          "extensionKind": null,
+          "capabilities": null,
+          "contributesKeys": [
+            "commands",
+            "configuration",
+            "customEditors",
+            "grammars",
+            "languages"
+          ],
+          "contributes.chatParticipants": 0,
+          "contributes.languageModelTools": 0,
+          "contributes.languageModelChatProviders": 0,
+          "contributes.mcpServerDefinitionProviders": 0,
+          "contributes.debuggers": 0,
+          "contributes.notebooks": 0
+        }
+      },
+      "license": {
+        "status": "info",
+        "file": "extension/LICENSE.txt",
+        "sha256": "3e52872c802245dfe69494710634b674ae45d06eed4a513462f33eabf0141faf",
+        "apiLicense": "MIT"
+      },
+      "defender": {
+        "status": "pass",
+        "mpcmdrun": "C:\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.26100.4-0\\MpCmdRun.exe",
+        "command": "C:\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.26100.4-0\\MpCmdRun.exe -Scan -ScanType 3 -File C:\\b\\p0\\vsix\\dotenv.dotenv-vscode-1.5.8\\dotenv.dotenv-vscode-1.5.8.vsix -DisableRemediation",
+        "exitCode": 0,
+        "stdout": "Scan starting...\r\nScan finished.\r\nScanning C:\\b\\p0\\vsix\\dotenv.dotenv-vscode-1.5.8\\dotenv.dotenv-vscode-1.5.8.vsix found no threats.",
+        "stderr": "",
+        "error": null
+      },
+      "references": {
+        "sourceTag": {
+          "status": "found",
+          "required": false,
+          "repository": "dotenvx/dotenv-vscode",
+          "matchingTags": [
+            "v1.5.8"
+          ],
+          "tagCount": 71
+        }
+      },
+      "failed": [],
+      "skipped": [],
+      "ok": true,
+      "verifiedAt": "2026-11-13T03:25:56.943Z"
+    },
+    {
+      "id": "weixu.wx-vsce-dotenv",
+      "version": "0.2.3",
+      "targetPlatform": "universal",
+      "skip": [],
+      "publisher": {
+        "status": "pass",
+        "verified": true,
+        "namespace": "weixu",
+        "namespaceDisplayName": "weixu",
+        "publishedBy": "xuwaters",
+        "publishedByProvider": "github",
+        "publishedWithTrustedPublishing": false,
+        "previousPublishedBy": null,
+        "publishedByChanged": null
+      },
+      "sha256": {
+        "status": "pass",
+        "computed": "9c081a0e26328c86055bf722b9d99237a88151622187ef9709c54380198f2b1a",
+        "published": "9c081a0e26328c86055bf722b9d99237a88151622187ef9709c54380198f2b1a"
+      },
+      "sigzipEntries": [
+        ".signature.sig",
+        ".signature.manifest",
+        ".signature.p7s"
+      ],
+      "signature": {
+        "status": "pass",
+        "algorithm": "ed25519",
+        "signatureValid": true,
+        "manifestEntries": 12,
+        "entriesChecked": 12,
+        "issues": [],
+        "issueCount": 0
+      },
+      "ovsx": {
+        "status": "pass",
+        "ovsxVersion": "1.4.0",
+        "command": "C:\\Program Files\\nodejs\\node.exe e:\\develop\\self\\Team\\projects\\ai-editor\\node_modules\\ovsx\\bin\\ovsx verify-signature -i C:\\b\\p0\\vsix\\weixu.wx-vsce-dotenv-0.2.3\\weixu.wx-vsce-dotenv-0.2.3.vsix -m C:\\b\\p0\\vsix\\weixu.wx-vsce-dotenv-0.2.3\\sig\\.signature.manifest -s C:\\b\\p0\\vsix\\weixu.wx-vsce-dotenv-0.2.3\\sig\\.signature.sig -k C:\\b\\p0\\vsix\\weixu.wx-vsce-dotenv-0.2.3\\public-key.pem",
+        "exitCode": 0,
+        "stdout": "✅  Signature is valid.",
+        "stderr": "",
+        "error": null
+      },
+      "soak": {
+        "status": "pass",
+        "publishedAt": "2026-10-15T04:16:45.844718Z",
+        "now": "2026-11-13T03:25:58.419Z",
+        "soaked": true,
+        "listedInAllVersions": true,
+        "security": false
+      },
+      "engines": {
+        "status": "pass",
+        "range": "^1.96.0",
+        "vscode": "1.146.0"
+      },
+      "files": {
+        "status": "info",
+        "files": 12,
+        "totalSize": 234368,
+        "executables": [],
+        "folders": [
+          {
+            "folder": "extension/wasm/",
+            "files": 3,
+            "size": 167767
+          },
+          {
+            "folder": "extension/",
+            "files": 5,
+            "size": 53725
+          },
+          {
+            "folder": "extension/dist/",
+            "files": 1,
+            "size": 6528
+          },
+          {
+            "folder": "extension/syntaxes/",
+            "files": 1,
+            "size": 3228
+          },
+          {
+            "folder": "(直下)",
+            "files": 2,
+            "size": 3120
+          }
+        ]
+      },
+      "manifest": {
+        "status": "info",
+        "digest": {
+          "activationEvents": [
+            "onLanguage:dotenv"
+          ],
+          "enabledApiProposals": [],
+          "extensionDependencies": [],
+          "extensionPack": [],
+          "main": "./dist/extension.js",
+          "browser": null,
+          "engines": {
+            "vscode": "^1.96.0"
+          },
+          "extensionKind": null,
+          "capabilities": null,
+          "contributesKeys": [
+            "configuration",
+            "grammars",
+            "languages"
+          ],
+          "contributes.chatParticipants": 0,
+          "contributes.languageModelTools": 0,
+          "contributes.languageModelChatProviders": 0,
+          "contributes.mcpServerDefinitionProviders": 0,
+          "contributes.debuggers": 0,
+          "contributes.notebooks": 0
+        }
+      },
+      "license": {
+        "status": "info",
+        "file": "extension/LICENSE.md",
+        "sha256": "f1c342b0e6e3fc9d9bc9e68d490d91437db08962e56aa7f9e10c5675a0fbee41",
+        "apiLicense": "MIT"
+      },
+      "defender": {
+        "status": "pass",
+        "mpcmdrun": "C:\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.26100.4-0\\MpCmdRun.exe",
+        "command": "C:\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.26100.4-0\\MpCmdRun.exe -Scan -ScanType 3 -File C:\\b\\p0\\vsix\\weixu.wx-vsce-dotenv-0.2.3\\weixu.wx-vsce-dotenv-0.2.3.vsix -DisableRemediation",
+        "exitCode": 0,
+        "stdout": "Scan starting...\r\nScan finished.\r\nScanning C:\\b\\p0\\vsix\\weixu.wx-vsce-dotenv-0.2.3\\weixu.wx-vsce-dotenv-0.2.3.vsix found no threats.",
+        "stderr": "",
+        "error": null
+      },
+      "references": {
+        "sourceTag": {
+          "status": "not-found",
+          "required": false,
+          "repository": "xuwaters/vscode-extensions",
+          "matchingTags": [],
+          "tagCount": 0
+        }
+      },
+      "failed": [],
+      "skipped": [],
+      "ok": true,
+      "verifiedAt": "2026-11-13T03:25:58.419Z"
+    },
+    {
+      "id": "tomoki1207.pdf",
+      "version": "1.2.2",
+      "targetPlatform": "universal",
+      "skip": [],
+      "publisher": {
+        "status": "pass",
+        "verified": true,
+        "namespace": "tomoki1207",
+        "namespaceDisplayName": "tomoki1207",
+        "publishedBy": "open-vsx",
+        "publishedByProvider": "github",
+        "publishedWithTrustedPublishing": false,
+        "previousPublishedBy": null,
+        "publishedByChanged": null
+      },
+      "sha256": {
+        "status": "pass",
+        "computed": "5697cd022caf93fa0fdb8c5b9c3624951394d8126ed09184ad4fdbcad62dadce",
+        "published": "5697cd022caf93fa0fdb8c5b9c3624951394d8126ed09184ad4fdbcad62dadce"
+      },
+      "sigzipEntries": [
+        ".signature.sig",
+        ".signature.manifest",
+        ".signature.p7s"
+      ],
+      "signature": {
+        "status": "pass",
+        "algorithm": "ed25519",
+        "signatureValid": true,
+        "manifestEntries": 380,
+        "entriesChecked": 380,
+        "issues": [],
+        "issueCount": 0
+      },
+      "ovsx": {
+        "status": "pass",
+        "ovsxVersion": "1.4.0",
+        "command": "C:\\Program Files\\nodejs\\node.exe e:\\develop\\self\\Team\\projects\\ai-editor\\node_modules\\ovsx\\bin\\ovsx verify-signature -i C:\\b\\p0\\vsix\\tomoki1207.pdf-1.2.2\\tomoki1207.pdf-1.2.2.vsix -m C:\\b\\p0\\vsix\\tomoki1207.pdf-1.2.2\\sig\\.signature.manifest -s C:\\b\\p0\\vsix\\tomoki1207.pdf-1.2.2\\sig\\.signature.sig -k C:\\b\\p0\\vsix\\tomoki1207.pdf-1.2.2\\public-key.pem",
+        "exitCode": 0,
+        "stdout": "✅  Signature is valid.",
+        "stderr": "",
+        "error": null
+      },
+      "soak": {
+        "status": "pass",
+        "publishedAt": "2022-12-23T03:58:06.463846Z",
+        "now": "2026-11-13T03:26:00.369Z",
+        "soaked": true,
+        "listedInAllVersions": true,
+        "security": false
+      },
+      "engines": {
+        "status": "pass",
+        "range": "^1.46.0",
+        "vscode": "1.146.0"
+      },
+      "files": {
+        "status": "info",
+        "files": 380,
+        "totalSize": 7899489,
+        "executables": [],
+        "folders": [
+          {
+            "folder": "extension/lib/web/",
+            "files": 356,
+            "size": 3983754
+          },
+          {
+            "folder": "extension/lib/build/",
+            "files": 3,
+            "size": 3395362
+          },
+          {
+            "folder": "extension/node_modules/@types/",
+            "files": 4,
+            "size": 452569
+          },
+          {
+            "folder": "extension/out/src/",
+            "files": 6,
+            "size": 35013
+          },
+          {
+            "folder": "extension/",
+            "files": 6,
+            "size": 15443
+          },
+          {
+            "folder": "extension/lib/",
+            "files": 3,
+            "size": 13756
+          },
+          {
+            "folder": "(直下)",
+            "files": 2,
+            "size": 3592
+          }
+        ]
+      },
+      "manifest": {
+        "status": "info",
+        "digest": {
+          "activationEvents": [
+            "onCustomEditor:pdf.preview"
+          ],
+          "enabledApiProposals": [],
+          "extensionDependencies": [],
+          "extensionPack": [],
+          "main": "./out/src/extension",
+          "browser": null,
+          "engines": {
+            "vscode": "^1.46.0"
+          },
+          "extensionKind": [
+            "ui"
+          ],
+          "capabilities": null,
+          "contributesKeys": [
+            "capabilities",
+            "configuration",
+            "customEditors"
+          ],
+          "contributes.chatParticipants": 0,
+          "contributes.languageModelTools": 0,
+          "contributes.languageModelChatProviders": 0,
+          "contributes.mcpServerDefinitionProviders": 0,
+          "contributes.debuggers": 0,
+          "contributes.notebooks": 0
+        }
+      },
+      "license": {
+        "status": "info",
+        "file": "extension/LICENSE.txt",
+        "sha256": "4a122ef7d968fb456f9ae28b8af03d45ece22438ac61556bf7121ca41ac4fba3",
+        "apiLicense": null
+      },
+      "defender": {
+        "status": "pass",
+        "mpcmdrun": "C:\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.26100.4-0\\MpCmdRun.exe",
+        "command": "C:\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.26100.4-0\\MpCmdRun.exe -Scan -ScanType 3 -File C:\\b\\p0\\vsix\\tomoki1207.pdf-1.2.2\\tomoki1207.pdf-1.2.2.vsix -DisableRemediation",
+        "exitCode": 0,
+        "stdout": "Scan starting...\r\nScan finished.\r\nScanning C:\\b\\p0\\vsix\\tomoki1207.pdf-1.2.2\\tomoki1207.pdf-1.2.2.vsix found no threats.",
+        "stderr": "",
+        "error": null
+      },
+      "references": {
+        "sourceTag": {
+          "status": "not-found",
+          "required": false,
+          "repository": "tomoki1207/vscode-pdfviewer",
+          "matchingTags": [],
+          "tagCount": 4
+        }
+      },
+      "failed": [],
+      "skipped": [],
+      "ok": true,
+      "verifiedAt": "2026-11-13T03:26:00.369Z"
+    },
+    {
+      "id": "MS-CEINTL.vscode-language-pack-ja",
+      "version": "1.131.0",
+      "targetPlatform": "universal",
+      "skip": [],
+      "publisher": {
+        "status": "pass",
+        "verified": true,
+        "namespace": "MS-CEINTL",
+        "namespaceDisplayName": "MS-CEINTL",
+        "publishedBy": "open-vsx",
+        "publishedByProvider": "github",
+        "publishedWithTrustedPublishing": false,
+        "previousPublishedBy": null,
+        "publishedByChanged": null
+      },
+      "sha256": {
+        "status": "pass",
+        "computed": "fae5a90170d48121bd8fe246d7d8ecbdab5bf88f21a0d58c94a3cc3af8c0f601",
+        "published": "fae5a90170d48121bd8fe246d7d8ecbdab5bf88f21a0d58c94a3cc3af8c0f601"
+      },
+      "sigzipEntries": [
+        ".signature.sig",
+        ".signature.manifest",
+        ".signature.p7s"
+      ],
+      "signature": {
+        "status": "pass",
+        "algorithm": "ed25519",
+        "signatureValid": true,
+        "manifestEntries": 100,
+        "entriesChecked": 100,
+        "issues": [],
+        "issueCount": 0
+      },
+      "ovsx": {
+        "status": "pass",
+        "ovsxVersion": "1.4.0",
+        "command": "C:\\Program Files\\nodejs\\node.exe e:\\develop\\self\\Team\\projects\\ai-editor\\node_modules\\ovsx\\bin\\ovsx verify-signature -i C:\\b\\p0\\vsix\\MS-CEINTL.vscode-language-pack-ja-1.131.0\\MS-CEINTL.vscode-language-pack-ja-1.131.0.vsix -m C:\\b\\p0\\vsix\\MS-CEINTL.vscode-language-pack-ja-1.131.0\\sig\\.signature.manifest -s C:\\b\\p0\\vsix\\MS-CEINTL.vscode-language-pack-ja-1.131.0\\sig\\.signature.sig -k C:\\b\\p0\\vsix\\MS-CEINTL.vscode-language-pack-ja-1.131.0\\public-key.pem",
+        "exitCode": 0,
+        "stdout": "✅  Signature is valid.",
+        "stderr": "",
+        "error": null
+      },
+      "soak": {
+        "status": "pass",
+        "publishedAt": "2026-07-28T04:15:48.245385Z",
+        "now": "2026-11-13T03:26:01.687Z",
+        "soaked": true,
+        "listedInAllVersions": true,
+        "security": false
+      },
+      "engines": {
+        "status": "pass",
+        "range": "^1.131.0",
+        "vscode": "1.146.0"
+      },
+      "files": {
+        "status": "info",
+        "files": 100,
+        "totalSize": 2962798,
+        "executables": [],
+        "folders": [
+          {
+            "folder": "extension/translations/",
+            "files": 1,
+            "size": 2444599
+          },
+          {
+            "folder": "extension/translations/extensions/",
+            "files": 93,
+            "size": 487816
+          },
+          {
+            "folder": "extension/",
+            "files": 4,
+            "size": 22681
+          },
+          {
+            "folder": "(直下)",
+            "files": 2,
+            "size": 7702
+          }
+        ]
+      },
+      "manifest": {
+        "status": "info",
+        "digest": {
+          "activationEvents": [],
+          "enabledApiProposals": [],
+          "extensionDependencies": [],
+          "extensionPack": [],
+          "main": null,
+          "browser": null,
+          "engines": {
+            "vscode": "^1.131.0"
+          },
+          "extensionKind": null,
+          "capabilities": null,
+          "contributesKeys": [
+            "localizations"
+          ],
+          "contributes.chatParticipants": 0,
+          "contributes.languageModelTools": 0,
+          "contributes.languageModelChatProviders": 0,
+          "contributes.mcpServerDefinitionProviders": 0,
+          "contributes.debuggers": 0,
+          "contributes.notebooks": 0
+        }
+      },
+      "license": {
+        "status": "info",
+        "file": null,
+        "sha256": null,
+        "apiLicense": "SEE MIT LICENSE IN LICENSE.md",
+        "reason": "VSIX に extension/LICENSE* が無い"
+      },
+      "defender": {
+        "status": "pass",
+        "mpcmdrun": "C:\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.26100.4-0\\MpCmdRun.exe",
+        "command": "C:\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.26100.4-0\\MpCmdRun.exe -Scan -ScanType 3 -File C:\\b\\p0\\vsix\\MS-CEINTL.vscode-language-pack-ja-1.131.0\\MS-CEINTL.vscode-language-pack-ja-1.131.0.vsix -DisableRemediation",
+        "exitCode": 0,
+        "stdout": "Scan starting...\r\nScan finished.\r\nScanning C:\\b\\p0\\vsix\\MS-CEINTL.vscode-language-pack-ja-1.131.0\\MS-CEINTL.vscode-language-pack-ja-1.131.0.vsix found no threats.",
+        "stderr": "",
+        "error": null
+      },
+      "references": {
+        "sourceTag": {
+          "status": "not-found",
+          "required": false,
+          "repository": "Microsoft/vscode-loc",
+          "matchingTags": [],
+          "tagCount": 141
+        }
+      },
+      "failed": [],
+      "skipped": [],
+      "ok": true,
+      "verifiedAt": "2026-11-13T03:26:01.687Z"
+    }
+  ],
+  "lockWrite": {
+    "path": "e:\\develop\\self\\Team\\projects\\ai-editor\\extensions.lock.json",
+    "written": [
+      "anthropic.claude-code",
+      "detachhead.basedpyright",
+      "ms-vscode.powershell",
+      "mads-hartmann.bash-ide-vscode",
+      "mechatroner.rainbow-csv",
+      "dotenv.dotenv-vscode",
+      "weixu.wx-vsce-dotenv",
+      "tomoki1207.pdf",
+      "MS-CEINTL.vscode-language-pack-ja"
+    ],
+    "kept": [],
+    "omitted": [],
+    "untouched": []
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "generatedAt": "2026-11-12T20:37:47.996Z",
+  "sourceCount": 71,
+  "convertedCount": 69,
+  "droppedCount": 2,
+  "droppedByReason": {
+    "no-windows-key": 1,
+    "invalid-key": 1
+  },
+  "sublime": {
+    "id": "ms-vscode.sublime-keybindings",
+    "version": "4.1.10",
+    "vsix": "C:\\b\\p0\\sublime\\ms-vscode.sublime-keybindings-4.1.10.vsix",
+    "sha256": "fe064eb9f0b83466ede5ed1c7b1a8289b11af8abba82005f7187d571fdb26a34",
+    "sha256Published": "fe064eb9f0b83466ede5ed1c7b1a8289b11af8abba82005f7187d571fdb26a34",
+    "url": "https://open-vsx.org/api/ms-vscode/sublime-keybindings/4.1.10/file/ms-vscode.sublime-keybindings-4.1.10.vsix"
+  },
+  "claude": {
+    "version": "2.1.322",
+    "source": "C:\\b\\p0\\vsix\\anthropic.claude-code-2.1.322@win32-x64\\Anthropic.claude-code-2.1.322@win32-x64.vsix",
+    "sha256": "8c0b09c6aefbca3196bcfe87e33b4e531cab3c13b2d9fd43a441562c74c5e4a4",
+    "keybindingsCount": 9
+  },
+  "conflictsCount": 0,
+  "sameKeyDifferentWhenCount": 0,
+  "suspiciousKeys": []
+}

@@ -1,0 +1,69 @@
+[
+  {
+    "command": "claude-vscode.insertAtMention",
+    "key": "alt+k",
+    "mac": "alt+k",
+    "when": "editorTextFocus"
+  },
+  {
+    "command": "claude-vscode.focus",
+    "key": "cmd+escape",
+    "mac": "cmd+escape",
+    "win": "ctrl+escape",
+    "linux": "ctrl+escape",
+    "when": "!config.claudeCode.useTerminal && editorTextFocus"
+  },
+  {
+    "command": "claude-vscode.blur",
+    "key": "cmd+escape",
+    "mac": "cmd+escape",
+    "win": "ctrl+escape",
+    "linux": "ctrl+escape",
+    "when": "!config.claudeCode.useTerminal && !editorTextFocus"
+  },
+  {
+    "command": "claude-vscode.editor.open",
+    "key": "cmd+shift+escape",
+    "mac": "cmd+shift+escape",
+    "win": "ctrl+shift+escape",
+    "linux": "ctrl+shift+escape",
+    "when": "!config.claudeCode.useTerminal"
+  },
+  {
+    "command": "claude-vscode.terminal.open.keyboard",
+    "key": "cmd+escape",
+    "mac": "cmd+escape",
+    "win": "ctrl+escape",
+    "linux": "ctrl+escape",
+    "when": "config.claudeCode.useTerminal"
+  },
+  {
+    "command": "claude-code.insertAtMentioned",
+    "key": "cmd+alt+K",
+    "mac": "cmd+alt+K",
+    "win": "ctrl+alt+K",
+    "linux": "ctrl+alt+K",
+    "when": "editorTextFocus"
+  },
+  {
+    "command": "claude-vscode.newConversation",
+    "key": "cmd+n",
+    "mac": "cmd+n",
+    "win": "ctrl+n",
+    "linux": "ctrl+n",
+    "when": "config.claudeCode.enableNewConversationShortcut && (activeWebviewPanelId == 'claudeVSCodePanel' || (claude-vscode.sideBarActive && !editorFocus && !panelFocus))"
+  },
+  {
+    "command": "claude-vscode.toggleFocusView",
+    "key": "ctrl+alt+f",
+    "when": "(activeWebviewPanelId == 'claudeVSCodePanel' || claude-vscode.sideBarActive) && (isMac || (!(listFocus && listSupportsFind) && !inDebugRepl))"
+  },
+  {
+    "command": "claude-vscode.reopenClosedSession",
+    "key": "cmd+shift+t",
+    "mac": "cmd+shift+t",
+    "win": "ctrl+shift+t",
+    "linux": "ctrl+shift+t",
+    "when": "config.claudeCode.enableReopenClosedSessionShortcut && claude-vscode.lastClosedWasSession"
+  }
+]

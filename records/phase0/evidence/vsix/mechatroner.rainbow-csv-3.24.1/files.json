@@ -1,0 +1,238 @@
+[
+  {
+    "path": "extension.vsixmanifest",
+    "size": 3082
+  },
+  {
+    "path": "[Content_Types].xml",
+    "size": 756
+  },
+  {
+    "path": "extension/rbql_suggest.js",
+    "size": 12019
+  },
+  {
+    "path": "extension/rbql_logo.svg",
+    "size": 122654
+  },
+  {
+    "path": "extension/rbql_client.js",
+    "size": 16688
+  },
+  {
+    "path": "extension/rbql_client.html",
+    "size": 23200
+  },
+  {
+    "path": "extension/rainbow_utils.js",
+    "size": 63104
+  },
+  {
+    "path": "extension/rainbow_csv_logo.png",
+    "size": 2550
+  },
+  {
+    "path": "extension/package.json",
+    "size": 23493
+  },
+  {
+    "path": "extension/language-configuration.json",
+    "size": 95
+  },
+  {
+    "path": "extension/fast_load_utils.js",
+    "size": 6676
+  },
+  {
+    "path": "extension/extension.js",
+    "size": 136516
+  },
+  {
+    "path": "extension/eslint.config_browser.mjs",
+    "size": 695
+  },
+  {
+    "path": "extension/eslint.config.mjs",
+    "size": 763
+  },
+  {
+    "path": "extension/dialect_select.js",
+    "size": 3048
+  },
+  {
+    "path": "extension/dialect_select.html",
+    "size": 2981
+  },
+  {
+    "path": "extension/readme.md",
+    "size": 11091
+  },
+  {
+    "path": "extension/LICENSE.txt",
+    "size": 1074
+  },
+  {
+    "path": "extension/DEV_README.md",
+    "size": 11484
+  },
+  {
+    "path": "extension/changelog.md",
+    "size": 9766
+  },
+  {
+    "path": "extension/syntaxes/wspcsv.tmLanguage.json",
+    "size": 884
+  },
+  {
+    "path": "extension/syntaxes/tsv.tmLanguage.json",
+    "size": 928
+  },
+  {
+    "path": "extension/syntaxes/scsv.tmLanguage.json",
+    "size": 1394
+  },
+  {
+    "path": "extension/syntaxes/pipe_simple.tmLanguage.json",
+    "size": 897
+  },
+  {
+    "path": "extension/syntaxes/dynamic_csv.tmLanguage.json",
+    "size": 169
+  },
+  {
+    "path": "extension/syntaxes/csv.tmLanguage.json",
+    "size": 1391
+  },
+  {
+    "path": "extension/rbql_core/vscode_rbql.py",
+    "size": 1974
+  },
+  {
+    "path": "extension/rbql_core/rbql_logo.png",
+    "size": 113463
+  },
+  {
+    "path": "extension/rbql_core/README.md",
+    "size": 12121
+  },
+  {
+    "path": "extension/rbql_core/LICENSE",
+    "size": 1074
+  },
+  {
+    "path": "extension/rbql mock/rbql_mock.py",
+    "size": 1962
+  },
+  {
+    "path": "extension/rbql_core/rbql-js/rbql_csv.js",
+    "size": 27632
+  },
+  {
+    "path": "extension/rbql_core/rbql-js/rbql.js",
+    "size": 77222
+  },
+  {
+    "path": "extension/rbql_core/rbql-js/csv_utils.js",
+    "size": 5919
+  },
+  {
+    "path": "extension/rbql_core/rbql-js/cli_rbql.js",
+    "size": 16069
+  },
+  {
+    "path": "extension/rbql_core/rbql-js/cli_parser.js",
+    "size": 2111
+  },
+  {
+    "path": "extension/rbql_core/rbql-js/.eslintrc.json",
+    "size": 599
+  },
+  {
+    "path": "extension/rbql_core/rbql/rbql_sqlite.py",
+    "size": 4673
+  },
+  {
+    "path": "extension/rbql_core/rbql/rbql_pandas.py",
+    "size": 3977
+  },
+  {
+    "path": "extension/rbql_core/rbql/rbql_main.py",
+    "size": 24312
+  },
+  {
+    "path": "extension/rbql_core/rbql/rbql_json.py",
+    "size": 6343
+  },
+  {
+    "path": "extension/rbql_core/rbql/rbql_ipython.py",
+    "size": 5944
+  },
+  {
+    "path": "extension/rbql_core/rbql/rbql_engine.py",
+    "size": 73116
+  },
+  {
+    "path": "extension/rbql_core/rbql/rbql_csv.py",
+    "size": 23833
+  },
+  {
+    "path": "extension/rbql_core/rbql/csv_utils.py",
+    "size": 3803
+  },
+  {
+    "path": "extension/rbql_core/rbql/_version.py",
+    "size": 105
+  },
+  {
+    "path": "extension/rbql_core/rbql/__main__.py",
+    "size": 35
+  },
+  {
+    "path": "extension/rbql_core/rbql/__init__.py",
+    "size": 303
+  },
+  {
+    "path": "extension/dist/web/extension.js.map",
+    "size": 628476
+  },
+  {
+    "path": "extension/dist/web/extension.js",
+    "size": 161791
+  },
+  {
+    "path": "extension/contrib/wcwidth/index.js",
+    "size": 2954
+  },
+  {
+    "path": "extension/contrib/wcwidth/combining.js",
+    "size": 3078
+  },
+  {
+    "path": "extension/contrib/wcwidth/README",
+    "size": 206
+  },
+  {
+    "path": "extension/contrib/wcwidth/LICENSE",
+    "size": 1581
+  },
+  {
+    "path": "extension/contrib/textarea-caret-position/index.js",
+    "size": 5080
+  },
+  {
+    "path": "extension/contrib/textarea-caret-position/LICENSE",
+    "size": 1098
+  },
+  {
+    "path": "extension/dist/web/test/suite/index.js.map",
+    "size": 1071384
+  },
+  {
+    "path": "extension/dist/web/test/suite/index.js.LICENSE.txt",
+    "size": 153
+  },
+  {
+    "path": "extension/dist/web/test/suite/index.js",
+    "size": 280144
+  }
+]

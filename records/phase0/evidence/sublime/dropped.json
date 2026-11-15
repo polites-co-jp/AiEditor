@@ -1,0 +1,22 @@
+[
+  {
+    "item": {
+      "mac": "alt+cmd+s",
+      "key": "none",
+      "command": "workbench.action.files.saveAll"
+    },
+    "reason": "no-windows-key"
+  },
+  {
+    "item": {
+      "mac": "alt+cmd+[",
+      "key": "ctr+shift+[",
+      "command": "editor.fold",
+      "when": "editorFocus"
+    },
+    "reason": "invalid-key",
+    "unknown": [
+      "ctr"
+    ]
+  }
+]

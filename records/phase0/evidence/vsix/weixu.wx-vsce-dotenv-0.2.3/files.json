@@ -1,0 +1,50 @@
+[
+  {
+    "path": "extension.vsixmanifest",
+    "size": 2702
+  },
+  {
+    "path": "[Content_Types].xml",
+    "size": 418
+  },
+  {
+    "path": "extension/package.json",
+    "size": 4528
+  },
+  {
+    "path": "extension/language-configuration.json",
+    "size": 610
+  },
+  {
+    "path": "extension/THIRD-PARTY-NOTICES.md",
+    "size": 39376
+  },
+  {
+    "path": "extension/readme.md",
+    "size": 7525
+  },
+  {
+    "path": "extension/LICENSE.md",
+    "size": 1686
+  },
+  {
+    "path": "extension/syntaxes/dotenv.tmLanguage.json",
+    "size": 3228
+  },
+  {
+    "path": "extension/wasm/package.json",
+    "size": 374
+  },
+  {
+    "path": "extension/wasm/dotenv_analyzer_bg.wasm",
+    "size": 154264
+  },
+  {
+    "path": "extension/wasm/dotenv_analyzer.js",
+    "size": 13129
+  },
+  {
+    "path": "extension/dist/extension.js",
+    "size": 6528
+  }
+]

@@ -1,0 +1,706 @@
+{
+  "fetchedAt": "2026-11-12T20:18:09.108Z",
+  "now": "2026-11-12T20:18:00.391Z",
+  "source": "tasks/2026-11-13-p0-fetch-and-lock/lock-seed.json",
+  "out": "C:\\b\\p0\\vsix",
+  "items": [
+    {
+      "id": "anthropic.claude-code",
+      "namespace": "anthropic",
+      "name": "claude-code",
+      "targetPlatform": "win32-x64",
+      "note": null,
+      "baselineVersion": "2.1.322",
+      "latestVersion": "2.1.322",
+      "latestPublishedAt": "2026-11-10T02:30:51.973288Z",
+      "latestSoaked": false,
+      "security": false,
+      "chosenVersion": "2.1.322",
+      "chosenDiffersFromBaseline": false,
+      "reason": "最新が基準と同じ 2.1.322",
+      "listedInAllVersions": true,
+      "errors": [],
+      "warnings": [],
+      "version": "2.1.322",
+      "publishedAt": "2026-11-10T02:30:51.973288Z",
+      "publishedBy": "igorkofman",
+      "publishedByProvider": "github",
+      "publishedWithTrustedPublishing": false,
+      "verified": true,
+      "namespaceDisplayName": "Anthropic",
+      "displayName": "Claude Code for VS Code",
+      "license": "© Anthropic PBC. All rights reserved. Use is subject to the Legal Agreements outlined here: https://code.claude.com/docs/en/legal-and-compliance.",
+      "engines": {
+        "vscode": "^1.94.0"
+      },
+      "repository": null,
+      "preRelease": false,
+      "soaked": false,
+      "dir": "C:\\b\\p0\\vsix\\anthropic.claude-code-2.1.322@win32-x64",
+      "files": {
+        "download": {
+          "url": "https://open-vsx.org/api/Anthropic/claude-code/win32-x64/2.1.322/file/Anthropic.claude-code-2.1.322@win32-x64.vsix",
+          "file": "C:\\b\\p0\\vsix\\anthropic.claude-code-2.1.322@win32-x64\\Anthropic.claude-code-2.1.322@win32-x64.vsix",
+          "sha256": "8c0b09c6aefbca3196bcfe87e33b4e531cab3c13b2d9fd43a441562c74c5e4a4",
+          "bytes": 165854286
+        },
+        "sha256": {
+          "url": "https://open-vsx.org/api/Anthropic/claude-code/win32-x64/2.1.322/file/Anthropic.claude-code-2.1.322@win32-x64.sha256",
+          "file": "C:\\b\\p0\\vsix\\anthropic.claude-code-2.1.322@win32-x64\\Anthropic.claude-code-2.1.322@win32-x64.sha256",
+          "sha256": "ea549940aa83e22b84617c5f460636fe78e389482e5cb5adebdec3c710d58825",
+          "bytes": 64
+        },
+        "signature": {
+          "url": "https://open-vsx.org/api/Anthropic/claude-code/win32-x64/2.1.322/file/Anthropic.claude-code-2.1.322@win32-x64.sigzip",
+          "file": "C:\\b\\p0\\vsix\\anthropic.claude-code-2.1.322@win32-x64\\Anthropic.claude-code-2.1.322@win32-x64.sigzip",
+          "sha256": "e869a2d4f21be2a27e0f411086c010633bd796da9cfff2e45d9eba2388f2f20e",
+          "bytes": 3207
+        },
+        "manifest": {
+          "url": "https://open-vsx.org/api/Anthropic/claude-code/win32-x64/2.1.322/file/package.json",
+          "file": "C:\\b\\p0\\vsix\\anthropic.claude-code-2.1.322@win32-x64\\package.json",
+          "sha256": "ab8fa8330ec7c5cd584ead332b9fa4488228b09824b3b66f34e37167fec5b4ff",
+          "bytes": 24521
+        },
+        "vsixmanifest": {
+          "url": "https://open-vsx.org/api/Anthropic/claude-code/win32-x64/2.1.322/file/extension.vsixmanifest",
+          "file": "C:\\b\\p0\\vsix\\anthropic.claude-code-2.1.322@win32-x64\\extension.vsixmanifest",
+          "sha256": "301bdf41b2eaf9dbb9604c588b5b6146e4e51cb5615b01a4ee5182a794fdd3e9",
+          "bytes": 2146
+        },
+        "publicKey": {
+          "url": "https://open-vsx.org/api/-/public-key/14ccb407-4e79-41ed-be5a-6d608325c45a",
+          "file": "C:\\b\\p0\\vsix\\anthropic.claude-code-2.1.322@win32-x64\\public-key.pem",
+          "sha256": "ef5759c51be559f00443ab7d568d26304430bdd422592bfa63e6ac584bfe983b",
+          "bytes": 113
+        }
+      },
+      "sha256Published": "8c0b09c6aefbca3196bcfe87e33b4e531cab3c13b2d9fd43a441562c74c5e4a4",
+      "sha256Computed": "8c0b09c6aefbca3196bcfe87e33b4e531cab3c13b2d9fd43a441562c74c5e4a4"
+    },
+    {
+      "id": "detachhead.basedpyright",
+      "namespace": "detachhead",
+      "name": "basedpyright",
+      "targetPlatform": "universal",
+      "note": null,
+      "baselineVersion": "1.40.2",
+      "latestVersion": "1.40.2",
+      "latestPublishedAt": "2026-10-04T12:25:49.914519Z",
+      "latestSoaked": true,
+      "security": false,
+      "chosenVersion": "1.40.2",
+      "chosenDiffersFromBaseline": false,
+      "reason": "最新が基準と同じ 1.40.2",
+      "listedInAllVersions": true,
+      "errors": [],
+      "warnings": [],
+      "version": "1.40.2",
+      "publishedAt": "2026-10-04T12:25:49.914519Z",
+      "publishedBy": "DetachHead",
+      "publishedByProvider": "github",
+      "publishedWithTrustedPublishing": false,
+      "verified": true,
+      "namespaceDisplayName": "detachhead",
+      "displayName": "BasedPyright",
+      "license": "MIT",
+      "engines": {
+        "vscode": "^1.101.0"
+      },
+      "repository": "https://github.com/detachhead/basedpyright.git",
+      "preRelease": false,
+      "soaked": true,
+      "dir": "C:\\b\\p0\\vsix\\detachhead.basedpyright-1.40.2",
+      "files": {
+        "download": {
+          "url": "https://open-vsx.org/api/detachhead/basedpyright/1.40.2/file/detachhead.basedpyright-1.40.2.vsix",
+          "file": "C:\\b\\p0\\vsix\\detachhead.basedpyright-1.40.2\\detachhead.basedpyright-1.40.2.vsix",
+          "sha256": "9c87b0b992714ca2f9298cb7e98bda621612f0ee96121a8e77ee7fcccce2f351",
+          "bytes": 6433623
+        },
+        "sha256": {
+          "url": "https://open-vsx.org/api/detachhead/basedpyright/1.40.2/file/detachhead.basedpyright-1.40.2.sha256",
+          "file": "C:\\b\\p0\\vsix\\detachhead.basedpyright-1.40.2\\detachhead.basedpyright-1.40.2.sha256",
+          "sha256": "c54740d31a57cd5340efb70637be5d9bf08b5e972f3e7f44d977e2ae88b011ba",
+          "bytes": 64
+        },
+        "signature": {
+          "url": "https://open-vsx.org/api/detachhead/basedpyright/1.40.2/file/detachhead.basedpyright-1.40.2.sigzip",
+          "file": "C:\\b\\p0\\vsix\\detachhead.basedpyright-1.40.2\\detachhead.basedpyright-1.40.2.sigzip",
+          "sha256": "efa5a9408bd51314f72cb583c1aa5339ecb8f4d77384b8a57afcf2fdb39b7f33",
+          "bytes": 255945
+        },
+        "manifest": {
+          "url": "https://open-vsx.org/api/detachhead/basedpyright/1.40.2/file/package.json",
+          "file": "C:\\b\\p0\\vsix\\detachhead.basedpyright-1.40.2\\package.json",
+          "sha256": "9e640e66962ec6f1febd06785a346d6e0d6778ece3df468889eabdbdaed46718",
+          "bytes": 94363
+        },
+        "vsixmanifest": {
+          "url": "https://open-vsx.org/api/detachhead/basedpyright/1.40.2/file/extension.vsixmanifest",
+          "file": "C:\\b\\p0\\vsix\\detachhead.basedpyright-1.40.2\\extension.vsixmanifest",
+          "sha256": "85eafaf435e895b36cbb1dc647697de6361141f2ca78197fddcc7abe80601a6e",
+          "bytes": 2838
+        },
+        "license": {
+          "url": "https://open-vsx.org/api/detachhead/basedpyright/1.40.2/file/LICENSE.txt",
+          "file": "C:\\b\\p0\\vsix\\detachhead.basedpyright-1.40.2\\LICENSE.txt",
+          "sha256": "f7c936bc43f132b08497ac952e9376cbc102e5eedb4bf6ec902ea8442bd9c68d",
+          "bytes": 1150
+        },
+        "publicKey": {
+          "url": "https://open-vsx.org/api/-/public-key/14ccb407-4e79-41ed-be5a-6d608325c45a",
+          "file": "C:\\b\\p0\\vsix\\detachhead.basedpyright-1.40.2\\public-key.pem",
+          "sha256": "ef5759c51be559f00443ab7d568d26304430bdd422592bfa63e6ac584bfe983b",
+          "bytes": 113
+        }
+      },
+      "sha256Published": "9c87b0b992714ca2f9298cb7e98bda621612f0ee96121a8e77ee7fcccce2f351",
+      "sha256Computed": "9c87b0b992714ca2f9298cb7e98bda621612f0ee96121a8e77ee7fcccce2f351"
+    },
+    {
+      "id": "ms-vscode.powershell",
+      "namespace": "ms-vscode",
+      "name": "powershell",
+      "targetPlatform": "universal",
+      "note": null,
+      "baselineVersion": "2025.4.0",
+      "latestVersion": "2025.4.0",
+      "latestPublishedAt": "2025-10-09T03:36:27.240064Z",
+      "latestSoaked": true,
+      "security": false,
+      "chosenVersion": "2025.4.0",
+      "chosenDiffersFromBaseline": false,
+      "reason": "最新が基準と同じ 2025.4.0",
+      "listedInAllVersions": true,
+      "errors": [],
+      "warnings": [],
+      "version": "2025.4.0",
+      "publishedAt": "2025-10-09T03:36:27.240064Z",
+      "publishedBy": "open-vsx",
+      "publishedByProvider": "github",
+      "publishedWithTrustedPublishing": false,
+      "verified": true,
+      "namespaceDisplayName": "ms-vscode",
+      "displayName": "PowerShell",
+      "license": "SEE LICENSE IN LICENSE.txt",
+      "engines": {
+        "vscode": "^1.101.0"
+      },
+      "repository": "https://github.com/PowerShell/vscode-powershell.git",
+      "preRelease": false,
+      "soaked": true,
+      "dir": "C:\\b\\p0\\vsix\\ms-vscode.powershell-2025.4.0",
+      "files": {
+        "download": {
+          "url": "https://open-vsx.org/api/ms-vscode/powershell/2025.4.0/file/ms-vscode.powershell-2025.4.0.vsix",
+          "file": "C:\\b\\p0\\vsix\\ms-vscode.powershell-2025.4.0\\ms-vscode.powershell-2025.4.0.vsix",
+          "sha256": "458eef45b6110e3d9867d23943b843ca4a9d0d96d1672db5ad156bc178f6b283",
+          "bytes": 20672771
+        },
+        "sha256": {
+          "url": "https://open-vsx.org/api/ms-vscode/powershell/2025.4.0/file/ms-vscode.powershell-2025.4.0.sha256",
+          "file": "C:\\b\\p0\\vsix\\ms-vscode.powershell-2025.4.0\\ms-vscode.powershell-2025.4.0.sha256",
+          "sha256": "69bb7b6c0511b2f1371d7a0a515798e81e4ae20504c1e22e295ae3e02ee12165",
+          "bytes": 64
+        },
+        "signature": {
+          "url": "https://open-vsx.org/api/ms-vscode/powershell/2025.4.0/file/ms-vscode.powershell-2025.4.0.sigzip",
+          "file": "C:\\b\\p0\\vsix\\ms-vscode.powershell-2025.4.0\\ms-vscode.powershell-2025.4.0.sigzip",
+          "sha256": "c729c03345baea7c1c84aac282f9245064f306f710186f32d0a327519cff40c3",
+          "bytes": 16690
+        },
+        "manifest": {
+          "url": "https://open-vsx.org/api/ms-vscode/powershell/2025.4.0/file/package.json",
+          "file": "C:\\b\\p0\\vsix\\ms-vscode.powershell-2025.4.0\\package.json",
+          "sha256": "2c328949e55f0299a46dbcd702465d1da24777b1849419d1bcef1631a7cd2d8c",
+          "bytes": 60484
+        },
+        "vsixmanifest": {
+          "url": "https://open-vsx.org/api/ms-vscode/powershell/2025.4.0/file/extension.vsixmanifest",
+          "file": "C:\\b\\p0\\vsix\\ms-vscode.powershell-2025.4.0\\extension.vsixmanifest",
+          "sha256": "5638e5bb13fbe06fbbf864ce45029f72016643dd7711ce98b9efeacbb6b45461",
+          "bytes": 3877
+        },
+        "license": {
+          "url": "https://open-vsx.org/api/ms-vscode/powershell/2025.4.0/file/LICENSE.txt",
+          "file": "C:\\b\\p0\\vsix\\ms-vscode.powershell-2025.4.0\\LICENSE.txt",
+          "sha256": "296604f12546653ed97726dc5fc2f3945d4cca1f07abd2589f531647177b06fc",
+          "bytes": 1095
+        },
+        "publicKey": {
+          "url": "https://open-vsx.org/api/-/public-key/14ccb407-4e79-41ed-be5a-6d608325c45a",
+          "file": "C:\\b\\p0\\vsix\\ms-vscode.powershell-2025.4.0\\public-key.pem",
+          "sha256": "ef5759c51be559f00443ab7d568d26304430bdd422592bfa63e6ac584bfe983b",
+          "bytes": 113
+        }
+      },
+      "sha256Published": "458eef45b6110e3d9867d23943b843ca4a9d0d96d1672db5ad156bc178f6b283",
+      "sha256Computed": "458eef45b6110e3d9867d23943b843ca4a9d0d96d1672db5ad156bc178f6b283"
+    },
+    {
+      "id": "mads-hartmann.bash-ide-vscode",
+      "namespace": "mads-hartmann",
+      "name": "bash-ide-vscode",
+      "targetPlatform": "universal",
+      "note": null,
+      "baselineVersion": "1.43.2",
+      "latestVersion": "1.43.2",
+      "latestPublishedAt": "2026-09-21T03:38:44.995031Z",
+      "latestSoaked": true,
+      "security": false,
+      "chosenVersion": "1.43.2",
+      "chosenDiffersFromBaseline": false,
+      "reason": "最新が基準と同じ 1.43.2",
+      "listedInAllVersions": true,
+      "errors": [],
+      "warnings": [],
+      "version": "1.43.2",
+      "publishedAt": "2026-09-21T03:38:44.995031Z",
+      "publishedBy": "open-vsx",
+      "publishedByProvider": "github",
+      "publishedWithTrustedPublishing": false,
+      "verified": true,
+      "namespaceDisplayName": "mads-hartmann",
+      "displayName": "Bash IDE",
+      "license": "MIT",
+      "engines": {
+        "vscode": "^1.91.0"
+      },
+      "repository": "https://github.com/bash-lsp/bash-language-server.git",
+      "preRelease": false,
+      "soaked": true,
+      "dir": "C:\\b\\p0\\vsix\\mads-hartmann.bash-ide-vscode-1.43.2",
+      "files": {
+        "download": {
+          "url": "https://open-vsx.org/api/mads-hartmann/bash-ide-vscode/1.43.2/file/mads-hartmann.bash-ide-vscode-1.43.2.vsix",
+          "file": "C:\\b\\p0\\vsix\\mads-hartmann.bash-ide-vscode-1.43.2\\mads-hartmann.bash-ide-vscode-1.43.2.vsix",
+          "sha256": "2eb16563ed946b801a45d3d298f0ca35a268d39656ea18f33062ff9d65fc04c2",
+          "bytes": 5334250
+        },
+        "sha256": {
+          "url": "https://open-vsx.org/api/mads-hartmann/bash-ide-vscode/1.43.2/file/mads-hartmann.bash-ide-vscode-1.43.2.sha256",
+          "file": "C:\\b\\p0\\vsix\\mads-hartmann.bash-ide-vscode-1.43.2\\mads-hartmann.bash-ide-vscode-1.43.2.sha256",
+          "sha256": "889e5de329097ec56b1a67776a838dd6cad44d3c6604249d7a1f7da90cd1fba6",
+          "bytes": 64
+        },
+        "signature": {
+          "url": "https://open-vsx.org/api/mads-hartmann/bash-ide-vscode/1.43.2/file/mads-hartmann.bash-ide-vscode-1.43.2.sigzip",
+          "file": "C:\\b\\p0\\vsix\\mads-hartmann.bash-ide-vscode-1.43.2\\mads-hartmann.bash-ide-vscode-1.43.2.sigzip",
+          "sha256": "13ad74ef9c7817dba181485a7102f84e3cd2b42197e8a699869ccf44c565e6a5",
+          "bytes": 110207
+        },
+        "manifest": {
+          "url": "https://open-vsx.org/api/mads-hartmann/bash-ide-vscode/1.43.2/file/package.json",
+          "file": "C:\\b\\p0\\vsix\\mads-hartmann.bash-ide-vscode-1.43.2\\package.json",
+          "sha256": "1505e1c89e2072b72d45f24208c095c7c4b8060e6c40fd64df7455ffad2947aa",
+          "bytes": 6437
+        },
+        "vsixmanifest": {
+          "url": "https://open-vsx.org/api/mads-hartmann/bash-ide-vscode/1.43.2/file/extension.vsixmanifest",
+          "file": "C:\\b\\p0\\vsix\\mads-hartmann.bash-ide-vscode-1.43.2\\extension.vsixmanifest",
+          "sha256": "24d93de0ac60fb669c5043812d60dd38425ea751a74e1b7b534fe98afc1b16f5",
+          "bytes": 2673
+        },
+        "publicKey": {
+          "url": "https://open-vsx.org/api/-/public-key/14ccb407-4e79-41ed-be5a-6d608325c45a",
+          "file": "C:\\b\\p0\\vsix\\mads-hartmann.bash-ide-vscode-1.43.2\\public-key.pem",
+          "sha256": "ef5759c51be559f00443ab7d568d26304430bdd422592bfa63e6ac584bfe983b",
+          "bytes": 113
+        }
+      },
+      "sha256Published": "2eb16563ed946b801a45d3d298f0ca35a268d39656ea18f33062ff9d65fc04c2",
+      "sha256Computed": "2eb16563ed946b801a45d3d298f0ca35a268d39656ea18f33062ff9d65fc04c2"
+    },
+    {
+      "id": "mechatroner.rainbow-csv",
+      "namespace": "mechatroner",
+      "name": "rainbow-csv",
+      "targetPlatform": "universal",
+      "note": null,
+      "baselineVersion": "3.24.1",
+      "latestVersion": "3.24.1",
+      "latestPublishedAt": "2026-03-01T03:14:35.623063Z",
+      "latestSoaked": true,
+      "security": false,
+      "chosenVersion": "3.24.1",
+      "chosenDiffersFromBaseline": false,
+      "reason": "最新が基準と同じ 3.24.1",
+      "listedInAllVersions": true,
+      "errors": [],
+      "warnings": [],
+      "version": "3.24.1",
+      "publishedAt": "2026-03-01T03:14:35.623063Z",
+      "publishedBy": "mechatroner",
+      "publishedByProvider": "github",
+      "publishedWithTrustedPublishing": false,
+      "verified": true,
+      "namespaceDisplayName": "mechatroner",
+      "displayName": "Rainbow CSV",
+      "license": "MIT",
+      "engines": {
+        "vscode": "^1.95.0"
+      },
+      "repository": "https://github.com/mechatroner/vscode_rainbow_csv.git",
+      "preRelease": false,
+      "soaked": true,
+      "dir": "C:\\b\\p0\\vsix\\mechatroner.rainbow-csv-3.24.1",
+      "files": {
+        "download": {
+          "url": "https://open-vsx.org/api/mechatroner/rainbow-csv/3.24.1/file/mechatroner.rainbow-csv-3.24.1.vsix",
+          "file": "C:\\b\\p0\\vsix\\mechatroner.rainbow-csv-3.24.1\\mechatroner.rainbow-csv-3.24.1.vsix",
+          "sha256": "0ecb7da3fb2a54517cd41fce8e858d6276ea8523bed6fbfd64d5ed281bd7514a",
+          "bytes": 880552
+        },
+        "sha256": {
+          "url": "https://open-vsx.org/api/mechatroner/rainbow-csv/3.24.1/file/mechatroner.rainbow-csv-3.24.1.sha256",
+          "file": "C:\\b\\p0\\vsix\\mechatroner.rainbow-csv-3.24.1\\mechatroner.rainbow-csv-3.24.1.sha256",
+          "sha256": "4b5efebb757ee2b09f4836b0fdd157663a7e8312f81f9725dddffde4229aba5b",
+          "bytes": 64
+        },
+        "signature": {
+          "url": "https://open-vsx.org/api/mechatroner/rainbow-csv/3.24.1/file/mechatroner.rainbow-csv-3.24.1.sigzip",
+          "file": "C:\\b\\p0\\vsix\\mechatroner.rainbow-csv-3.24.1\\mechatroner.rainbow-csv-3.24.1.sigzip",
+          "sha256": "7a026dd7e9fc2884a5a1214d9ae0be942d881dbc80ac57caf68c7145c6bf2389",
+          "bytes": 3654
+        },
+        "manifest": {
+          "url": "https://open-vsx.org/api/mechatroner/rainbow-csv/3.24.1/file/package.json",
+          "file": "C:\\b\\p0\\vsix\\mechatroner.rainbow-csv-3.24.1\\package.json",
+          "sha256": "0b5a13543fa320fba24151ab496ec6c86d0ea55252755b551dddc6056b499c24",
+          "bytes": 23493
+        },
+        "vsixmanifest": {
+          "url": "https://open-vsx.org/api/mechatroner/rainbow-csv/3.24.1/file/extension.vsixmanifest",
+          "file": "C:\\b\\p0\\vsix\\mechatroner.rainbow-csv-3.24.1\\extension.vsixmanifest",
+          "sha256": "1d4c8cb775da5d4538bfd9aa6b4c9beb5bc88d2954e0ea2e5b254c82e5a941d4",
+          "bytes": 3082
+        },
+        "license": {
+          "url": "https://open-vsx.org/api/mechatroner/rainbow-csv/3.24.1/file/LICENSE.txt",
+          "file": "C:\\b\\p0\\vsix\\mechatroner.rainbow-csv-3.24.1\\LICENSE.txt",
+          "sha256": "513c680325145127f89c5b8e994325dd9235948428f959f7ad32be7659473d6d",
+          "bytes": 1074
+        },
+        "publicKey": {
+          "url": "https://open-vsx.org/api/-/public-key/14ccb407-4e79-41ed-be5a-6d608325c45a",
+          "file": "C:\\b\\p0\\vsix\\mechatroner.rainbow-csv-3.24.1\\public-key.pem",
+          "sha256": "ef5759c51be559f00443ab7d568d26304430bdd422592bfa63e6ac584bfe983b",
+          "bytes": 113
+        }
+      },
+      "sha256Published": "0ecb7da3fb2a54517cd41fce8e858d6276ea8523bed6fbfd64d5ed281bd7514a",
+      "sha256Computed": "0ecb7da3fb2a54517cd41fce8e858d6276ea8523bed6fbfd64d5ed281bd7514a"
+    },
+    {
+      "id": "dotenv.dotenv-vscode",
+      "namespace": "dotenv",
+      "name": "dotenv-vscode",
+      "targetPlatform": "universal",
+      "note": ".env の候補A。0-3 の後に dotenv.dotenv-vscode と weixu.wx-vsce-dotenv のどちらを残すかを決める（裁定: エラー表示を持つほう）",
+      "baselineVersion": "1.5.8",
+      "latestVersion": "1.5.8",
+      "latestPublishedAt": "2026-10-01T16:02:32.595343Z",
+      "latestSoaked": true,
+      "security": false,
+      "chosenVersion": "1.5.8",
+      "chosenDiffersFromBaseline": false,
+      "reason": "最新が基準と同じ 1.5.8",
+      "listedInAllVersions": true,
+      "errors": [],
+      "warnings": [],
+      "version": "1.5.8",
+      "publishedAt": "2026-10-01T16:02:32.595343Z",
+      "publishedBy": "motdotla",
+      "publishedByProvider": "github",
+      "publishedWithTrustedPublishing": false,
+      "verified": true,
+      "namespaceDisplayName": "dotenvx",
+      "displayName": "Dotenv Official",
+      "license": "MIT",
+      "engines": {
+        "vscode": "^1.65.0"
+      },
+      "repository": "https://github.com/dotenvx/dotenv-vscode.git",
+      "preRelease": false,
+      "soaked": true,
+      "dir": "C:\\b\\p0\\vsix\\dotenv.dotenv-vscode-1.5.8",
+      "files": {
+        "download": {
+          "url": "https://open-vsx.org/api/dotenv/dotenv-vscode/1.5.8/file/dotenv.dotenv-vscode-1.5.8.vsix",
+          "file": "C:\\b\\p0\\vsix\\dotenv.dotenv-vscode-1.5.8\\dotenv.dotenv-vscode-1.5.8.vsix",
+          "sha256": "c8905977784ddebcc2fd45ecafd7ce66d7675f7c3435c2a2d41c7023161f2537",
+          "bytes": 1179947
+        },
+        "sha256": {
+          "url": "https://open-vsx.org/api/dotenv/dotenv-vscode/1.5.8/file/dotenv.dotenv-vscode-1.5.8.sha256",
+          "file": "C:\\b\\p0\\vsix\\dotenv.dotenv-vscode-1.5.8\\dotenv.dotenv-vscode-1.5.8.sha256",
+          "sha256": "1c54894b788715188a263a732944bba95b9056cec189e4d4895a86bf768a65de",
+          "bytes": 64
+        },
+        "signature": {
+          "url": "https://open-vsx.org/api/dotenv/dotenv-vscode/1.5.8/file/dotenv.dotenv-vscode-1.5.8.sigzip",
+          "file": "C:\\b\\p0\\vsix\\dotenv.dotenv-vscode-1.5.8\\dotenv.dotenv-vscode-1.5.8.sigzip",
+          "sha256": "b903279d9aec0e3c8cd4791f464dd373feb48eb3f0fb6176a5a75f66e7de0298",
+          "bytes": 13935
+        },
+        "manifest": {
+          "url": "https://open-vsx.org/api/dotenv/dotenv-vscode/1.5.8/file/package.json",
+          "file": "C:\\b\\p0\\vsix\\dotenv.dotenv-vscode-1.5.8\\package.json",
+          "sha256": "e211743f164154f2e2593e60716b417aa305743ca87ef8b3777728f4b159d611",
+          "bytes": 4423
+        },
+        "vsixmanifest": {
+          "url": "https://open-vsx.org/api/dotenv/dotenv-vscode/1.5.8/file/extension.vsixmanifest",
+          "file": "C:\\b\\p0\\vsix\\dotenv.dotenv-vscode-1.5.8\\extension.vsixmanifest",
+          "sha256": "05a70c87d746a4563b5fbde44222963c06eeec68ed7da0f454b6a45393005cc8",
+          "bytes": 3183
+        },
+        "license": {
+          "url": "https://open-vsx.org/api/dotenv/dotenv-vscode/1.5.8/file/LICENSE.txt",
+          "file": "C:\\b\\p0\\vsix\\dotenv.dotenv-vscode-1.5.8\\LICENSE.txt",
+          "sha256": "3e52872c802245dfe69494710634b674ae45d06eed4a513462f33eabf0141faf",
+          "bytes": 1068
+        },
+        "publicKey": {
+          "url": "https://open-vsx.org/api/-/public-key/14ccb407-4e79-41ed-be5a-6d608325c45a",
+          "file": "C:\\b\\p0\\vsix\\dotenv.dotenv-vscode-1.5.8\\public-key.pem",
+          "sha256": "ef5759c51be559f00443ab7d568d26304430bdd422592bfa63e6ac584bfe983b",
+          "bytes": 113
+        }
+      },
+      "sha256Published": "c8905977784ddebcc2fd45ecafd7ce66d7675f7c3435c2a2d41c7023161f2537",
+      "sha256Computed": "c8905977784ddebcc2fd45ecafd7ce66d7675f7c3435c2a2d41c7023161f2537"
+    },
+    {
+      "id": "weixu.wx-vsce-dotenv",
+      "namespace": "weixu",
+      "name": "wx-vsce-dotenv",
+      "targetPlatform": "universal",
+      "note": ".env の候補B。0-3 の後に dotenv.dotenv-vscode と weixu.wx-vsce-dotenv のどちらを残すかを決める（裁定: エラー表示を持つほう）",
+      "baselineVersion": "0.2.3",
+      "latestVersion": "0.2.3",
+      "latestPublishedAt": "2026-10-15T04:16:45.844718Z",
+      "latestSoaked": true,
+      "security": false,
+      "chosenVersion": "0.2.3",
+      "chosenDiffersFromBaseline": false,
+      "reason": "最新が基準と同じ 0.2.3",
+      "listedInAllVersions": true,
+      "errors": [],
+      "warnings": [],
+      "version": "0.2.3",
+      "publishedAt": "2026-10-15T04:16:45.844718Z",
+      "publishedBy": "xuwaters",
+      "publishedByProvider": "github",
+      "publishedWithTrustedPublishing": false,
+      "verified": true,
+      "namespaceDisplayName": "weixu",
+      "displayName": "dotenv (.env)",
+      "license": "MIT",
+      "engines": {
+        "vscode": "^1.96.0"
+      },
+      "repository": "https://github.com/xuwaters/vscode-extensions.git",
+      "preRelease": false,
+      "soaked": true,
+      "dir": "C:\\b\\p0\\vsix\\weixu.wx-vsce-dotenv-0.2.3",
+      "files": {
+        "download": {
+          "url": "https://open-vsx.org/api/weixu/wx-vsce-dotenv/0.2.3/file/weixu.wx-vsce-dotenv-0.2.3.vsix",
+          "file": "C:\\b\\p0\\vsix\\weixu.wx-vsce-dotenv-0.2.3\\weixu.wx-vsce-dotenv-0.2.3.vsix",
+          "sha256": "9c081a0e26328c86055bf722b9d99237a88151622187ef9709c54380198f2b1a",
+          "bytes": 87986
+        },
+        "sha256": {
+          "url": "https://open-vsx.org/api/weixu/wx-vsce-dotenv/0.2.3/file/weixu.wx-vsce-dotenv-0.2.3.sha256",
+          "file": "C:\\b\\p0\\vsix\\weixu.wx-vsce-dotenv-0.2.3\\weixu.wx-vsce-dotenv-0.2.3.sha256",
+          "sha256": "ee48e6ef3722a976c5ba716e4c475b1e4d295e25810915d4f1d1a3f8f823bec7",
+          "bytes": 64
+        },
+        "signature": {
+          "url": "https://open-vsx.org/api/weixu/wx-vsce-dotenv/0.2.3/file/weixu.wx-vsce-dotenv-0.2.3.sigzip",
+          "file": "C:\\b\\p0\\vsix\\weixu.wx-vsce-dotenv-0.2.3\\weixu.wx-vsce-dotenv-0.2.3.sigzip",
+          "sha256": "fef58a6cae565cbc7125fc2b38f27640e4f9867de727a409780698715e65e6bf",
+          "bytes": 1282
+        },
+        "manifest": {
+          "url": "https://open-vsx.org/api/weixu/wx-vsce-dotenv/0.2.3/file/package.json",
+          "file": "C:\\b\\p0\\vsix\\weixu.wx-vsce-dotenv-0.2.3\\package.json",
+          "sha256": "d8eafbd9fcfbe09a82558750f34438e54eb1b0203402712e965bbe3d5b5d7396",
+          "bytes": 4528
+        },
+        "vsixmanifest": {
+          "url": "https://open-vsx.org/api/weixu/wx-vsce-dotenv/0.2.3/file/extension.vsixmanifest",
+          "file": "C:\\b\\p0\\vsix\\weixu.wx-vsce-dotenv-0.2.3\\extension.vsixmanifest",
+          "sha256": "adb088bf9dd456155cc5549cc7b1f58ce4b52a324a503d98576abc35fc79d040",
+          "bytes": 2702
+        },
+        "license": {
+          "url": "https://open-vsx.org/api/weixu/wx-vsce-dotenv/0.2.3/file/LICENSE.md",
+          "file": "C:\\b\\p0\\vsix\\weixu.wx-vsce-dotenv-0.2.3\\LICENSE.md",
+          "sha256": "f1c342b0e6e3fc9d9bc9e68d490d91437db08962e56aa7f9e10c5675a0fbee41",
+          "bytes": 1686
+        },
+        "publicKey": {
+          "url": "https://open-vsx.org/api/-/public-key/14ccb407-4e79-41ed-be5a-6d608325c45a",
+          "file": "C:\\b\\p0\\vsix\\weixu.wx-vsce-dotenv-0.2.3\\public-key.pem",
+          "sha256": "ef5759c51be559f00443ab7d568d26304430bdd422592bfa63e6ac584bfe983b",
+          "bytes": 113
+        }
+      },
+      "sha256Published": "9c081a0e26328c86055bf722b9d99237a88151622187ef9709c54380198f2b1a",
+      "sha256Computed": "9c081a0e26328c86055bf722b9d99237a88151622187ef9709c54380198f2b1a"
+    },
+    {
+      "id": "tomoki1207.pdf",
+      "namespace": "tomoki1207",
+      "name": "pdf",
+      "targetPlatform": "universal",
+      "note": null,
+      "baselineVersion": "1.2.2",
+      "latestVersion": "1.2.2",
+      "latestPublishedAt": "2022-12-23T03:58:06.463846Z",
+      "latestSoaked": true,
+      "security": false,
+      "chosenVersion": "1.2.2",
+      "chosenDiffersFromBaseline": false,
+      "reason": "最新が基準と同じ 1.2.2",
+      "listedInAllVersions": true,
+      "errors": [],
+      "warnings": [
+        "vsixmanifest を取れない: ダウンロードに失敗 https://open-vsx.org/api/tomoki1207/pdf/1.2.2/file/extension.vsixmanifest: HTTP 404 Not Found: https://open-vsx.org/api/tomoki1207/pdf/1.2.2/file/extension.vsixmanifest"
+      ],
+      "version": "1.2.2",
+      "publishedAt": "2022-12-23T03:58:06.463846Z",
+      "publishedBy": "open-vsx",
+      "publishedByProvider": "github",
+      "publishedWithTrustedPublishing": false,
+      "verified": true,
+      "namespaceDisplayName": "tomoki1207",
+      "displayName": "vscode-pdf",
+      "license": null,
+      "engines": {
+        "vscode": "^1.46.0"
+      },
+      "repository": "https://github.com/tomoki1207/vscode-pdfviewer.git",
+      "preRelease": false,
+      "soaked": true,
+      "dir": "C:\\b\\p0\\vsix\\tomoki1207.pdf-1.2.2",
+      "files": {
+        "download": {
+          "url": "https://open-vsx.org/api/tomoki1207/pdf/1.2.2/file/tomoki1207.pdf-1.2.2.vsix",
+          "file": "C:\\b\\p0\\vsix\\tomoki1207.pdf-1.2.2\\tomoki1207.pdf-1.2.2.vsix",
+          "sha256": "5697cd022caf93fa0fdb8c5b9c3624951394d8126ed09184ad4fdbcad62dadce",
+          "bytes": 3093014
+        },
+        "sha256": {
+          "url": "https://open-vsx.org/api/tomoki1207/pdf/1.2.2/file/tomoki1207.pdf-1.2.2.sha256",
+          "file": "C:\\b\\p0\\vsix\\tomoki1207.pdf-1.2.2\\tomoki1207.pdf-1.2.2.sha256",
+          "sha256": "15af7de81980cef48b154f31098b98bf81e91db37c0504c8fa64510006174711",
+          "bytes": 64
+        },
+        "signature": {
+          "url": "https://open-vsx.org/api/tomoki1207/pdf/1.2.2/file/tomoki1207.pdf-1.2.2.sigzip",
+          "file": "C:\\b\\p0\\vsix\\tomoki1207.pdf-1.2.2\\tomoki1207.pdf-1.2.2.sigzip",
+          "sha256": "ffd40d47f0f610be1a3f74400dbe9c77c59edfd4bbd2963db6b1b718aa2433ef",
+          "bytes": 18239
+        },
+        "manifest": {
+          "url": "https://open-vsx.org/api/tomoki1207/pdf/1.2.2/file/package.json",
+          "file": "C:\\b\\p0\\vsix\\tomoki1207.pdf-1.2.2\\package.json",
+          "sha256": "75876441d548fb53c8537168fdc780036600712b7d4bce52bbacffb94bc2ea5e",
+          "bytes": 3282
+        },
+        "license": {
+          "url": "https://open-vsx.org/api/tomoki1207/pdf/1.2.2/file/LICENSE.txt",
+          "file": "C:\\b\\p0\\vsix\\tomoki1207.pdf-1.2.2\\LICENSE.txt",
+          "sha256": "4a122ef7d968fb456f9ae28b8af03d45ece22438ac61556bf7121ca41ac4fba3",
+          "bytes": 1286
+        },
+        "publicKey": {
+          "url": "https://open-vsx.org/api/-/public-key/14ccb407-4e79-41ed-be5a-6d608325c45a",
+          "file": "C:\\b\\p0\\vsix\\tomoki1207.pdf-1.2.2\\public-key.pem",
+          "sha256": "ef5759c51be559f00443ab7d568d26304430bdd422592bfa63e6ac584bfe983b",
+          "bytes": 113
+        }
+      },
+      "sha256Published": "5697cd022caf93fa0fdb8c5b9c3624951394d8126ed09184ad4fdbcad62dadce",
+      "sha256Computed": "5697cd022caf93fa0fdb8c5b9c3624951394d8126ed09184ad4fdbcad62dadce"
+    },
+    {
+      "id": "MS-CEINTL.vscode-language-pack-ja",
+      "namespace": "MS-CEINTL",
+      "name": "vscode-language-pack-ja",
+      "targetPlatform": "universal",
+      "note": null,
+      "baselineVersion": "1.131.0",
+      "latestVersion": "1.131.0",
+      "latestPublishedAt": "2026-07-28T04:15:48.245385Z",
+      "latestSoaked": true,
+      "security": false,
+      "chosenVersion": "1.131.0",
+      "chosenDiffersFromBaseline": false,
+      "reason": "最新が基準と同じ 1.131.0",
+      "listedInAllVersions": true,
+      "errors": [],
+      "warnings": [],
+      "version": "1.131.0",
+      "publishedAt": "2026-07-28T04:15:48.245385Z",
+      "publishedBy": "open-vsx",
+      "publishedByProvider": "github",
+      "publishedWithTrustedPublishing": false,
+      "verified": true,
+      "namespaceDisplayName": "MS-CEINTL",
+      "displayName": "Japanese Language Pack for Visual Studio Code",
+      "license": "SEE MIT LICENSE IN LICENSE.md",
+      "engines": {
+        "vscode": "^1.131.0"
+      },
+      "repository": "https://github.com/Microsoft/vscode-loc.git",
+      "preRelease": false,
+      "soaked": true,
+      "dir": "C:\\b\\p0\\vsix\\MS-CEINTL.vscode-language-pack-ja-1.131.0",
+      "files": {
+        "download": {
+          "url": "https://open-vsx.org/api/MS-CEINTL/vscode-language-pack-ja/1.131.0/file/MS-CEINTL.vscode-language-pack-ja-1.131.0.vsix",
+          "file": "C:\\b\\p0\\vsix\\MS-CEINTL.vscode-language-pack-ja-1.131.0\\MS-CEINTL.vscode-language-pack-ja-1.131.0.vsix",
+          "sha256": "fae5a90170d48121bd8fe246d7d8ecbdab5bf88f21a0d58c94a3cc3af8c0f601",
+          "bytes": 686124
+        },
+        "sha256": {
+          "url": "https://open-vsx.org/api/MS-CEINTL/vscode-language-pack-ja/1.131.0/file/MS-CEINTL.vscode-language-pack-ja-1.131.0.sha256",
+          "file": "C:\\b\\p0\\vsix\\MS-CEINTL.vscode-language-pack-ja-1.131.0\\MS-CEINTL.vscode-language-pack-ja-1.131.0.sha256",
+          "sha256": "4849ee5d3528d3cca170e23f392c6409c1c9b256871d451d1e9b7b3c6016c82e",
+          "bytes": 64
+        },
+        "signature": {
+          "url": "https://open-vsx.org/api/MS-CEINTL/vscode-language-pack-ja/1.131.0/file/MS-CEINTL.vscode-language-pack-ja-1.131.0.sigzip",
+          "file": "C:\\b\\p0\\vsix\\MS-CEINTL.vscode-language-pack-ja-1.131.0\\MS-CEINTL.vscode-language-pack-ja-1.131.0.sigzip",
+          "sha256": "0dcb644d0584a74506dfde2604848443077ef878d8d2e377298eb8c2d0c5fdff",
+          "bytes": 5539
+        },
+        "manifest": {
+          "url": "https://open-vsx.org/api/MS-CEINTL/vscode-language-pack-ja/1.131.0/file/package.json",
+          "file": "C:\\b\\p0\\vsix\\MS-CEINTL.vscode-language-pack-ja-1.131.0\\package.json",
+          "sha256": "3d49c59e4856fef34cacae76ece31344d2229e76f8aae9f0d365f497d88b163b",
+          "bytes": 11865
+        },
+        "vsixmanifest": {
+          "url": "https://open-vsx.org/api/MS-CEINTL/vscode-language-pack-ja/1.131.0/file/extension.vsixmanifest",
+          "file": "C:\\b\\p0\\vsix\\MS-CEINTL.vscode-language-pack-ja-1.131.0\\extension.vsixmanifest",
+          "sha256": "deeaf169b601a87a882dadb874500febbe970e153c6e4188c19cf174291cef59",
+          "bytes": 7355
+        },
+        "publicKey": {
+          "url": "https://open-vsx.org/api/-/public-key/14ccb407-4e79-41ed-be5a-6d608325c45a",
+          "file": "C:\\b\\p0\\vsix\\MS-CEINTL.vscode-language-pack-ja-1.131.0\\public-key.pem",
+          "sha256": "ef5759c51be559f00443ab7d568d26304430bdd422592bfa63e6ac584bfe983b",
+          "bytes": 113
+        }
+      },
+      "sha256Published": "fae5a90170d48121bd8fe246d7d8ecbdab5bf88f21a0d58c94a3cc3af8c0f601",
+      "sha256Computed": "fae5a90170d48121bd8fe246d7d8ecbdab5bf88f21a0d58c94a3cc3af8c0f601"
+    }
+  ]
+}

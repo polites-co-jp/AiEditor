@@ -431,3 +431,4 @@
 | 取り込みの通信の監査の作業場所 | `<buildRoot>\audit`（パスの長さのため。前は `<buildRoot>\take-in\<label>\netaudit-run`） |
 | `p0-check-ps.ps1`（PowerShell の台本の構文と ASCII の検査。`C:\b` を使わない） | 引退の注記のまま、検査として使い続けてよい |
 | 写す方法 | `cp -a` でなく、写すだけの台本 `scripts/move-build-root.mjs`（消さない・上書きしない・数と大きさと SHA-256 を照らす） |
+| `C:\b\p0` の basedpyright・bash-ide-vscode の `files.json`（大きく、今の許可では records へ写せない） | 写さずに消す。要点（ファイル数・フォルダごとの数と大きさ・実行ファイル・LICENSE の有無）は写した `verify-result.json` に残り、一覧は台帳の VSIX（SHA-256 は台帳にある）を Open VSX から取り直せば作り直せる。写した22ファイルの一覧は `records/phase0/evidence/README.md` |

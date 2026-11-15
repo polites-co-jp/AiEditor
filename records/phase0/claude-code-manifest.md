@@ -2,7 +2,7 @@
 
 - 記録: 大岡越前守（2026-11-13）。下書き `tasks/2026-11-13-p0-fetch-and-lock/claude-code-manifest.md`（蒙恬）を、材料と照らして確かめたうえで清書した。検証の記録は `tasks/2026-11-13-p0-verify-lock-measure/verification-log.md`。
 - 対象: `anthropic.claude-code` 2.1.322（win32-x64）。2026-11-13 の時点で Open VSX の最新。docs/04 の2節の版と同じ。
-- 材料: `C:\b\p0\vsix\anthropic.claude-code-2.1.322@win32-x64\`（`package.json`＝Open VSX の `files.manifest`、`extension.vsixmanifest`、`files.json`＝VSIX の中央ディレクトリから読んだ名前とサイズ、`api.json`）
+- 材料: `C:\b\p0\vsix\anthropic.claude-code-2.1.322@win32-x64\`（`package.json`＝Open VSX の `files.manifest`、`extension.vsixmanifest`、`files.json`＝VSIX の中央ディレクトリから読んだ名前とサイズ、`api.json`）。`C:\b\p0` を消す前（2026-11-16）に、`files.json`・`extension.vsixmanifest`・`api.json` を `records/phase0/evidence/vsix/anthropic.claude-code-2.1.322@win32-x64/` に写した。`files.json` と `api.json` の SHA-256 は元と一致。`extension.vsixmanifest` の写しは、空白だけの行のタブ（10行・38字）が落ちていて、元と同じではない（元は 2,146 バイト、SHA-256 `301bdf41b2eaf9dbb9604c588b5b6146e4e51cb5615b01a4ee5182a794fdd3e9`。空白でない文字は同じ。元は Open VSX の `https://open-vsx.org/api/Anthropic/claude-code/win32-x64/2.1.322/file/extension.vsixmanifest` と VSIX の中にもある）。`package.json` は `C:\b\cache\vsix\anthropic.claude-code-2.1.322@win32-x64\package.json`（`<buildRoot>\cache\vsix\` へ移す予定）に同じもの（SHA-256 `ab8fa833…b4ff`）がある。`api.json` は `C:\b\cache\vsix\` にも同じ版のものがあるが、取得の時刻が違い、中身（`downloadCount` など）が違う。写したのは `C:\b\p0` の側（SHA-256 `902c6fcd…b221`）。
 - JS の中身は開いていない（裁定）。確かめに開いたのは `package.json`・`extension.vsixmanifest`・`files.json`・`verify-result.json` だけ。
 
 ## 確かめ方
@@ -82,7 +82,7 @@ docs/03 の9節の「消さない受け手」に、コメント（`commentContro
 ## 3. VSIX のファイルの一覧
 
 - VSIX: `Anthropic.claude-code-2.1.322@win32-x64.vsix`（165,854,286 バイト、SHA-256 `8c0b09c6aefbca3196bcfe87e33b4e531cab3c13b2d9fd43a441562c74c5e4a4`）
-- エントリーは49件（ディレクトリのエントリーは無い）。展開後の合計は 359,086,949 バイト。全件は `C:\b\p0\vsix\anthropic.claude-code-2.1.322@win32-x64\files.json`。
+- エントリーは49件（ディレクトリのエントリーは無い）。展開後の合計は 359,086,949 バイト。全件は `C:\b\p0\vsix\anthropic.claude-code-2.1.322@win32-x64\files.json`。写しは `records/phase0/evidence/vsix/anthropic.claude-code-2.1.322@win32-x64/files.json`（2026-11-16。SHA-256 は元と一致）。
 - `LICENSE` のファイルは無い。`node_modules` も無い。
 
 | パス | サイズ（バイト） | 種類 |
