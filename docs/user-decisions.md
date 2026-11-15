@@ -289,3 +289,15 @@
 | C-1 で消した AI の部品だけが使っていた依存（ルートの10、`remote` の5。`@hpke/core`・`libsodium-wrappers`・`@devcontainers/cli`・dev-tunnels・`ssh2`・`ws` など） | 外す（2026-11-14 の規則の当てはめ）。`remote` のロックファイルの差分は、片づけの後のビルドの依存の導入で見る。docs/03 の表を直す |
 | `chat.disableAIFeatures` の登録が消え、残る読み手が「AI 有効」と読む | 読み手ごとに直す形を採る（ジャンプリストの「Agents Window」、新しい利用者のセカンダリサイドバー）。隠した登録を残す別案は、`checks.absentSettings` と食い違うので採らない。関門のスモークで見る |
 | 「バージョン情報」の Copilot の2行（`@github/copilot: Unknown` など） | 消す（`platform/dialogs/electron-browser/dialog.ts` を edits.patch に足す） |
+
+## 記録（2026-11-15、C-2 の edits.patch を作るときに出た点。リーダーの判断）
+
+根拠: `tasks/2026-11-15-p5-c2-patch/handoff-notes.md`
+
+| 論点 | 扱い |
+|---|---|
+| `platform/telemetry/node/customEndpointTelemetryService.ts`（呼び手は消した `debugSession.ts` だけ） | 今は残す（`kept`）。呼ばれないので通信は起きない。消すと C-1 も直す `sharedProcessMain.ts` と main のファイルに触れる。テレメトリの部品なので、段階 C の後に B-1 で消すかを見直す |
+| ノートブックのインラインの値（設定 `notebook.inlineValues`）と `notebook.variablesView` | 消す。部品は前から C-2 の `delete` に入っていた `notebookVariables` の中にあり、ノートブックも C-4 で消す |
+| `vscode.debug.activeDebugConsole` | `undefined` でなく何もしないコンソールにする（型が undefined を許さず、拡張がそのまま呼ぶと誤りになる） |
+| C-1 のパッチと隣り合う行（`extHost.protocol.ts`・`repl.contribution.ts` の import の3行） | main のファイルでなくても `removeLines` に回す。docs/03 の5.3 に書いた |
+| C-2 が `workbench.common.main.ts` に1行を足す（2026-11-14 の案A） | docs/03 の5.3 に例外として書いた |
