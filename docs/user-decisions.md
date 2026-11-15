@@ -311,5 +311,12 @@
 | `productRemove`（server・tunnel のキー）で build/ の台本（`gulpfile.vscode.ts` など）に型だけの誤りが6件出る | 直さない。手元のパッケージ化は実行時に止まらず、関門の型検査（`typecheck-client`）の外。A-3 の前からの1件と同じ扱い。パッケージ化で止まったら直す |
 | `gulpfile.vscode.ts` の `esbuild-vscode-reh-min`・`esbuild-vscode-reh-web-min` の定義 | 残す。呼ぶ所が無くなるだけで、消すと C-1 が直すファイルに触れる |
 | docs/03 の表の C-3 の行が、残すと決めた `services/tunnel` などを消す側に挙げていた | 表を直した |
+
+## 記録（2026-11-15、C-2 のテストで出た点。リーダーの判断）
+
+根拠: `tasks/2026-11-15-p5-c2-tests/handoff-notes.md`
+
+| 論点 | 扱い |
+|---|---|
 | C-1 と C-2 の `delete` が `debugChatIntegration.ts` で重なり、両方を当てると C-2 の側が「本家に無い」の警告を出す | 重なりを残す。C-2 は C-1 なしでも当たらなければならず（`after` は A-3 だけ）、そのとき `debugChatIntegration.ts` は消したデバッガの部品を読むので、C-2 の `delete` に要る。照らし役はこの1件の警告だけを許す |
 | C-2 の `checks.absentStrings` の2つ（`debug/browser/debugService.js'`・`debug/browser/linkDetector.js'`）が本家に無い文字列で、消し損ねても当たらない | 本家にある形に替える（蒙恬） |
