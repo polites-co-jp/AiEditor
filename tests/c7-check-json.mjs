@@ -6,7 +6,7 @@
 // どちらの組でも C-2 の delete の1件（C-1 が先に消す debugChatIntegration.ts）が警告に出る。
 // 使い方:
 //   node tests/c7-check-json.mjs <checks.json> [<typecheck.json>]
-//   node tests/c7-check-json.mjs --stopped <checks.json>     （--only から C-1 を外した当て直し。C-7 の前で止まること）
+//   node tests/c7-check-json.mjs --stopped <checks.json> [<外した単位の ID>]   （--only から前提の B-4・C-1・C-4 のどれかを外した当て直し。C-7 の前で止まること。ID を渡すと、その単位が理由の誤りを見る）
 // 終了コード 0 = 期待どおり、1 = 食い違い、2 = 使い方の誤り。
 // 置き場所: tests/ の直下(大岡越前守の許可 `node tests/*.mjs` に一致させるため)。
 import { readFileSync, existsSync } from 'node:fs';
@@ -142,16 +142,17 @@ export function checkApply(j, unitJson) {
   return bad;
 }
 
-/** --only から C-1 を外した当て直しの記録を照らす。C-7 の前で止まること(docs/03 の5.1 の2-1)。 */
-export function checkStopped(j) {
+/** --only から前提の単位(missingId。省略なら AFTER のどれか)を外した当て直しの記録を照らす。C-7 の前で止まること(docs/03 の5.1 の2-1)。 */
+export function checkStopped(j, missingId = null) {
   const bad = [];
   if (j.result === 'ok') bad.push('result が ok（前提の単位が無いのに C-7 が当たってしまった）');
   const me = (j.units ?? []).find((u) => u.id === ME_ID);
   if (me && me.applied === 'ok') bad.push(`${ME_ID} が applied: ok（前提の単位が無いのに当たった）`);
   const said = [...(j.errors ?? []), j.stoppedAt?.message ?? ''].join('\n');
-  // 計画の誤り「C-7-breadcrumbs-outline: after の単位 C-1-ai が先に当たらない」か、単位の中の止め「…: after の単位が当たっていない: C-1-ai」
-  if (!/C-7-breadcrumbs-outline: after の単位(?: C-1-ai|が当たっていない: [^\n]*C-1-ai)/.test(said)) bad.push(`C-7 の after（C-1-ai）が理由の誤りが記録に無い。errors: ${JSON.stringify(j.errors ?? [])} / stoppedAt: ${JSON.stringify(j.stoppedAt ?? null)}`);
-  if ((j.units ?? []).some((u) => u.id === 'C-1-ai' && u.applied === 'ok')) bad.push('C-1-ai が当たっている（--only から外した記録ではない）');
+  const idRe = missingId ? missingId.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') : `(?:${AFTER.join('|')})`;
+  // 計画の誤り「C-7-breadcrumbs-outline: after の単位 X が先に当たらない」か、単位の中の止め「…: after の単位が当たっていない: X」
+  if (!new RegExp(`C-7-breadcrumbs-outline: after の単位(?: ${idRe}|が当たっていない: [^\\n]*${idRe})`).test(said)) bad.push(`C-7 の after（${missingId ?? AFTER.join('・')}）が理由の誤りが記録に無い。errors: ${JSON.stringify(j.errors ?? [])} / stoppedAt: ${JSON.stringify(j.stoppedAt ?? null)}`);
+  if (missingId && (j.units ?? []).some((u) => u.id === missingId && u.applied === 'ok')) bad.push(`${missingId} が当たっている（--only から外した記録ではない）`);
   return bad;
 }
 
@@ -175,11 +176,11 @@ if (isMain) {
   const args = process.argv.slice(2);
   const stopped = args[0] === '--stopped';
   const [a, b] = stopped ? args.slice(1) : args;
-  if (!a || !existsSync(a)) { console.error('使い方: node tests/c7-check-json.mjs <checks.json> [<typecheck.json>]  または  --stopped <checks.json>'); process.exit(2); }
+  if (!a || !existsSync(a)) { console.error('使い方: node tests/c7-check-json.mjs <checks.json> [<typecheck.json>]  または  --stopped <checks.json> [<外した単位の ID>]'); process.exit(2); }
   const unitJson = readJson(join(REPO, 'removals', ME_ID, 'unit.json'));
   const aj = readJson(a);
   let bad;
-  if (stopped) bad = checkStopped(aj).map((x) => `[止まる] ${x}`);
+  if (stopped) bad = checkStopped(aj, b || null).map((x) => `[止まる] ${x}`);
   else {
     bad = checkApply(aj, unitJson).map((x) => `[当て直し ${kindOf(aj)}] ${x}`);
     if (b) {

@@ -9,7 +9,7 @@ import { spawnSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { AFTER, C2_WARNING_FILE, checkApply, checkStopped, checkTypecheck, kindOf, UNITS_A, UNITS_B } from './c6-check-json.mjs';
+import { AFTER, C2_WARNING_FILE, checkApply, checkStopped, checkTypecheck, kindOf, UNITS_A, UNITS_B, UNITS_C } from './c6-check-json.mjs';
 
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const readJson = (p) => JSON.parse(readFileSync(p, 'utf8').replace(/^﻿/, ''));
@@ -198,6 +198,45 @@ test('c6-check: C-1 を外した記録(止まる)を照らす。止まってい�
   assert.ok(checkStopped(why).some((x) => /理由の誤りが記録に無い/.test(x)));
   const c1 = stopped(); c1.units.push({ id: 'C-1-ai', applied: 'ok' });
   assert.ok(checkStopped(c1).some((x) => /C-1-ai が当たっている/.test(x)));
+});
+
+// 大岡越前守の実記録(tasks/2026-11-15-p5-c1-c6-c7-verify/run/)。段階 C のすべて(21単位。組 c)でも C-6 を照らせる
+const RUN = join(REPO, 'tasks', '2026-11-15-p5-c1-c6-c7-verify', 'run');
+const haveRun = ['checks-21.json', 'typecheck-21.json', 'checks-c6-noc1.json'].every((f) => existsSync(join(RUN, f)));
+test('c6-check: 実記録の 21 単位(組 c。C-1〜C-7)の当て直しと型検査は、C-6 として期待どおり。警告は C-2 の1件', { skip: haveRun ? false : '記録が無い' }, () => {
+  const j = readJson(join(RUN, 'checks-21.json'));
+  assert.equal(kindOf(j), 'c');
+  assert.equal(UNITS_C.length, 21);
+  assert.deepEqual(checkApply(j, unitJson), []);
+  assert.deepEqual(checkTypecheck(readJson(join(RUN, 'typecheck-21.json')), j), []);
+  assert.equal(j.warnings.length, 1);
+});
+
+test('c6-check: 21 単位の記録を壊すと食い違いが出る(単位の欠け・C-6 の衝突・順序・警告が無い)', { skip: haveRun ? false : '記録が無い' }, () => {
+  const base = readJson(join(RUN, 'checks-21.json'));
+  const me = (j) => j.units.find((u) => u.id === ME);
+  const cases = [
+    [(j) => { j.units = j.units.filter((u) => u.id !== 'C-5-extension-gallery'); }, /C-5-extension-gallery が記録に無い/],
+    [(j) => { me(j).edits.conflicts = ['x.ts']; }, /衝突/],
+    [(j) => { j.units.find((u) => u.id === 'C-7-breadcrumbs-outline').applied = 'skipped'; }, /applied が ok でない/],
+    [(j) => { j.warnings = []; }, /1 件でない/],
+    [(j) => { const i = j.units.findIndex((u) => u.id === ME); const [u] = j.units.splice(i, 1); j.units.splice(j.units.findIndex((x) => x.id === 'C-1-ai'), 0, u); }, /C-6 が前提の C-1-ai より先/],
+  ];
+  for (const [mutate, re] of cases) {
+    const j = clone(base);
+    mutate(j);
+    assert.ok(checkApply(j, unitJson).some((x) => re.test(x)), `${re} が出ない`);
+  }
+});
+
+test('c6-check: 実記録の C-1 を外した記録(checks-c6-noc1.json)は「止まる」で期待どおり。コマンドも 0', { skip: haveRun ? false : '記録が無い' }, () => {
+  const j = readJson(join(RUN, 'checks-c6-noc1.json'));
+  assert.deepEqual(checkStopped(j), []);
+  const r = spawnSync(process.execPath, [join('tests', 'c6-check-json.mjs'), '--stopped', join(RUN, 'checks-c6-noc1.json')], { cwd: REPO, encoding: 'utf8' });
+  assert.equal(r.status, 0, r.stdout + r.stderr);
+  const r21 = spawnSync(process.execPath, [join('tests', 'c6-check-json.mjs'), join(RUN, 'checks-21.json'), join(RUN, 'typecheck-21.json')], { cwd: REPO, encoding: 'utf8' });
+  assert.equal(r21.status, 0, r21.stdout + r21.stderr);
+  assert.match(r21.stdout, /組 c/);
 });
 
 test('c6-check: 型検査の食い違いを見つける（result・exitCode・HEAD の不一致・未コミット）', () => {

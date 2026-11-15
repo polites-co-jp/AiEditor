@@ -50,8 +50,10 @@ C-7 の edits に衝突が出る、C-7 の `warnings` が出る、のどれか�
 
 ```
 node scripts/apply.mjs C:/b/wt/p2 --label c7-gate-noc1 --only A-1-copilot-extension,A-2-accounts-extensions,A-3-debug-extensions,A-4-notebook-extensions,A-5-remote-extensions,A-6-themes,A-7-unused-extensions,B-1-telemetry,B-2-onboarding-experiments-surveys,B-3-issue-share,B-4-outline-view,B-5-theme-switching,B-6-online-feeds,B-7-terminal-suggest,C-7-breadcrumbs-outline --checks-out C:/b/logs/c7-gate/checks-noc1.json
-node tests/c7-check-json.mjs --stopped C:/b/logs/c7-gate/checks-noc1.json
+node tests/c7-check-json.mjs --stopped C:/b/logs/c7-gate/checks-noc1.json C-1-ai
 ```
+
+外した単位の ID（`C-1-ai`・`B-4-outline-view`・`C-4-notebook`）を最後に渡すと、その単位が理由の誤りを見る（渡さなければ、3つのどれかの理由を見る）。B-4 を外す組は、`--only` から `B-4-outline-view` を除く。C-4 を外す組は `C-4-notebook` を除く（C-7 の誤りは `after の単位 C-4-notebook が先に当たらない`）。
 
 期待: `result` が `ok` でない（`fail`）。`errors` に `C-7-breadcrumbs-outline: after の単位 C-1-ai が先に当たらない（--only に入っていない）`、または `stoppedAt.message` に `C-7-breadcrumbs-outline: after の単位が当たっていない: ...C-1-ai`。C-7 は `applied: ok` にならない。終わったら作業ツリーをタグに戻す。静的な代わりは `c7-unit.test.mjs` の「after の確かめ」（`planUnits` を直接呼ぶ）。
 

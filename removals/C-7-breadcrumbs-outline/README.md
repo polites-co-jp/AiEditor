@@ -21,7 +21,7 @@
 
 ## 残すもの
 
-- `src/vs/base/browser/ui/breadcrumbs`（パンくずの汎用の部品）: 差分エディタの「変更の無い部分」の表示（`editor/contrib/diffEditorBreadcrumbs`。差分エディタは Claude Code の受け手。docs/03 の9節）が使う。
+- `src/vs/base/browser/ui/breadcrumbs`（パンくずの汎用の部品 `BreadcrumbsWidget`）: 共有の `platform/theme/browser/defaultStyles.ts`（14行）が型 `IBreadcrumbsWidgetStyles` を import する。消すと共有のファイルに触れることになり、毎週の衝突が増える。21単位の木でほかに使うのは、部品自身のテスト（`base/test/browser/ui/breadcrumbs/breadcrumbsWidget.test.ts`）だけ。差分エディタの「変更の無い部分」のパンくず（`editor/contrib/diffEditorBreadcrumbs`）はこの部品を使わない。チャットのデバッグのビュー（`contrib/chat/browser/chatDebug`）は C-1 で消える（2026-11-15 に `C:\b\wt\1.146.0` で確かめた）。
 - `src/vs/editor/contrib/documentSymbols`（`IOutlineModelService`）: 記号へ移動（Ctrl+Shift+O。`gotoSymbolQuickAccess.ts`）とスティッキースクロールが使う。テキストエディタの記号へ移動は「従来の記号の取得」で動く。
 - タブの枠の CSS（`singleeditortabscontrol.css`・`editortabscontrol.css`・`multieditortabscontrol.css`・`editortitlecontrol.css` のパンくずの規則）: 共有のファイルなので触らない。当てる要素が無くなり、効かないだけ。
 - edits.patch を作るときに見つけて、残したもの（理由つき）

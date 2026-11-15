@@ -2,13 +2,15 @@
 
 大岡越前守から、リーダー（ヴラド・ツェペシュ）へ。2026-11-15。
 
+> 末尾に「付記（軽微な指摘の直し）」がある。軽微な指摘の2つは、どちらも直ったことを確かめた（**合格**）。
+
 ## 判定
 
 | 単位 | パッケージ化の前まで | 理由の要点 |
 |---|---|---|
 | C-1-ai（6・7回目） | **合格** | 門と誤りの出方が本家と一致した（本家 1.146.0 と自分で照らした）。テストは門の期待を本家から読み、外側の口を優先する形になり、通る |
 | C-6-settings-sync | **合格** | 直す点なし。消した登録（`IUserDataSyncWorkbenchService`）を注入する所が残らない（判断済みの `update.ts` を除く）。プロファイル・設定・拡張の管理と `contrib/editSessions` に触れない |
-| C-7-breadcrumbs-outline | **合格** | 直す点なし。エディタの枠は決まった4ファイルだけで、タブ・グループ・差分エディタ・Webview に触れない。注入の外し損ねも無い。`kept` の理由の1つが事実と違う（軽微な指摘の1） |
+| C-7-breadcrumbs-outline | **合格** | 直す点なし。エディタの枠は決まった4ファイルだけで、タブ・グループ・差分エディタ・Webview に触れない。注入の外し損ねも無い。`kept` の理由の1つが事実と違う（軽微な指摘の1。付記のとおり直った） |
 
 関門の合否は出していない。これで C-1〜C-7 の全部が「パッケージ化の前まで」合格になった。
 
@@ -39,17 +41,17 @@
 | `removals/C-6-settings-sync/edits.patch` | `a4c971e76e69adfc598011d304a1a3c4eed8903591abb56f3a4be7c2aa36e7c8` |
 | `removals/C-6-settings-sync/unit.json` | `b2e51d37d06fdba5622f109df61e707f533fa64525ccbbeba4b969eee59d309a` |
 | `removals/C-7-breadcrumbs-outline/edits.patch` | `a0584bbb34003c980ba4f226a7e605a302f3c978d5527328067ce951dd7b65b8` |
-| `removals/C-7-breadcrumbs-outline/unit.json` | `7c4cef400e546967ea9f1574651809a13a9ed11612b77edd82bbded04224047b` |
+| `removals/C-7-breadcrumbs-outline/unit.json` | `7c4cef400e546967ea9f1574651809a13a9ed11612b77edd82bbded04224047b`（付記の直しの前） |
 | `tests/gate-members.mjs` | `508911691391d73a0d1f34260b4e3493fa0e511e36778283b62b144e861a874e` |
 | `tests/c1-unit.test.mjs` | `a6f322dedba34970998248c93b952f42a0ef2774a08fa4bf068759ccb5b16641` |
 | `tests/c1-mutation.test.mjs` | `38c1767f95f4f062eda51e62bb3682a4fb9cbb929f227839c2d99b41ff196e6c` |
 | `tests/c1-check-json.mjs` | `d032da2eec8a9b212d2bc70d1e33e7e473b79012dd6f1150482c958ad34f7980` |
 | `tests/c1-check-worktree.mjs` | `e04c19f86ad3a98e5568fe5dac911b882c481192771ac6437d96090952118674` |
 | `tests/c6-unit.test.mjs` | `277fba02d2a99bd0b1207f3e1def0e74163801eb4800f88ca1295b1763539992` |
-| `tests/c6-check-json.mjs` | `af934b7f82e2a6761a055f991e7b07b4f12545c6ff347ca5965f6bcc4b785662` |
+| `tests/c6-check-json.mjs` | `af934b7f82e2a6761a055f991e7b07b4f12545c6ff347ca5965f6bcc4b785662`（付記の直しの前） |
 | `tests/c6-check-worktree.mjs` | `c3159d9eff886f3245cb04ef01f3e6732fd186cda7f2c6695ce60c92931b01be` |
 | `tests/c7-unit.test.mjs` | `7c63d410bf83cd328fa352b01a2ec7e7a8cf4f13348b362b11da0176fc6232b8` |
-| `tests/c7-check-json.mjs` | `23383a41313101f3c478446ff0e3282e07c15769468b2cadb67dd8eecd4ab3ed` |
+| `tests/c7-check-json.mjs` | `23383a41313101f3c478446ff0e3282e07c15769468b2cadb67dd8eecd4ab3ed`（付記の直しの前） |
 | `tests/c7-check-worktree.mjs` | `9384159bf4f67d291f45fd917bb19eeb99bc47a16e8510931c8f5a0f579122bb` |
 
 ## 1. 差分のレビュー
@@ -153,7 +155,7 @@
 |---|---|---|---|
 | C-6 から C-1-ai | `checks-c6-noc1.json` | `C-6-settings-sync: after の単位 C-1-ai が先に当たらない（--only に入っていない）` | `node tests/c6-check-json.mjs --stopped …` → 期待どおり |
 | C-7 から C-1-ai（台本のとおり。C-4 も入らない） | `checks-c7-noc1.json` | C-1-ai と C-4-notebook の2件 | `node tests/c7-check-json.mjs --stopped …` → 期待どおり |
-| C-7 から C-4-notebook | `checks-c7-noc4.json` | `C-7-breadcrumbs-outline: after の単位 C-4-notebook が先に当たらない（…）` の1件 | 照らし役は「C-1 を外す」組だけを前提にしている。記録を読んで確かめた |
+| C-7 から C-4-notebook | `checks-c7-noc4.json` | `C-7-breadcrumbs-outline: after の単位 C-4-notebook が先に当たらない（…）` の1件 | 照らし役は「C-1 を外す」組だけを前提にしていた。記録を読んで確かめた（付記で照らし役でも確かめた） |
 | C-7 から B-4-outline-view | `checks-c7-nob4.json` | B-4 についての2件（C-4-notebook と C-7。C-4 も B-4 を前提にする） | 同上 |
 
 - 4つとも `stoppedAt.phase: inputs`、`commits: []`。走らせた後も、HEAD は `69047191` のままだった。
@@ -166,7 +168,7 @@
 | 当て直し | `node scripts/apply.mjs C:/b/wt/p2 --label c7-gate-b-ooka --only <A・B の14>,C-1-ai,C-2-debug,C-3-remote,C-4-notebook,C-5-extension-gallery,C-6-settings-sync,C-7-breadcrumbs-outline --checks-out …/run/checks-21.json` | `結果: ok`。警告は `C-2-debug: delete: …debugChatIntegration.ts が本家に無い（改名の恐れ）` の1件だけ（想定済み） |
 | 照らし | `node tests/c7-check-json.mjs …/run/checks-21.json` | 期待どおり（組 b: 当て直しのみ） |
 | 照らし | `node tests/c1-check-json.mjs …/run/checks-21.json` | 期待どおり（当て直しのみ） |
-| 参考 | `node tests/c6-check-json.mjs …/run/checks-21.json` | 食い違いは「想定していない単位が当たっている: C-7-breadcrumbs-outline（b の組は 20 単位）」の1件だけ。照らし役が20単位の組を前提にしているため。C-6 のほかの期待は、この記録でも満たす |
+| 参考 | `node tests/c6-check-json.mjs …/run/checks-21.json` | 食い違いは「想定していない単位が当たっている: C-7-breadcrumbs-outline（b の組は 20 単位）」の1件だけ。照らし役が20単位の組を前提にしていたため（付記で直った） |
 | 照らし | `node tests/c1-check-worktree.mjs`〜`c7-check-worktree.mjs C:/b/wt/p2`（7つ） | 7つとも期待どおり（作業ツリー） |
 | 型検査 | `node scripts/build.mjs 1.146.0 --label c7-gate-b-ooka --from typecheck --to typecheck --worktree C:/b/wt/p2 --no-branch --record …/run/typecheck-21.json --take-in-dir …/run/take-in-21` | `result: ok` |
 | 照らし | `node tests/c7-check-json.mjs …/run/checks-21.json …/run/typecheck-21.json` | 期待どおり（組 b: 当て直し・型検査） |
@@ -259,7 +261,7 @@ C-6・C-7 の記録は、C-1 の edits.patch が6・7回目に変わる前に取
   - 21単位の組での当て直し・照らし・型検査と、`after` の止まり（3つ）は、自分で確かめた。組 a・ロックファイル・`git apply --check` は、蒙恬の記録の照らしだけ。
 - 直す点: 無い。
 
-### 軽微な指摘（直さなくても、パッケージ化の前の合否には響かない）
+### 軽微な指摘（直さなくても、パッケージ化の前の合否には響かない。付記のとおり2つとも直った）
 
 1. **蒙恬（C-7 の `kept` の `src/vs/base/browser/ui/breadcrumbs` の理由。`unit.json` の28行と README の24行）**: 理由は「差分エディタの変更の無い部分の表示（`editor/contrib/diffEditorBreadcrumbs`）とチャットのデバッグのビュー（C-1）が使う」。これは事実と違う。
    - `editor/contrib/diffEditorBreadcrumbs/browser/contribution.ts` は `BreadcrumbsWidget` を使わない。import は配列・observable・差分エディタの部品・`IOutlineModelService` など。
@@ -308,3 +310,95 @@ C-6・C-7 の記録は、C-1 の edits.patch が6・7回目に変わる前に取
   - `typecheck-21.json`（型検査）。ログは `C:\b\logs\c7-gate-b-ooka\typecheck.log`
   - `run-all-ooka.txt`（run-all）
 - `--take-in-dir` に渡した `run/take-in-21/` は作られなかった（型検査の手順だけでは書かれない）。
+
+---
+
+## 付記（軽微な指摘の直し。2026-11-15）
+
+### 判定
+
+**合格**。軽微な指摘の1（蒙恬）・2（曹参）は、どちらも直った。作業ツリーは使っていない（HEAD は `ed59899d` のまま）。
+
+| 指摘 | 判定 | 根拠 |
+|---|---|---|
+| 1. C-7 の `kept` の理由（蒙恬） | 直った | `git diff` で理由の文だけが替わり、新しい理由は事実に合う。edits.patch は変わっていない |
+| 2. C-6・C-7 の照らし役（曹参） | 直った | 私の実記録で、21単位の組 c と、B-4・C-4・C-1 を外した組が照らせる。落ちるべき組み合わせでは落ちる |
+| run-all | — | tests 2544、pass 2537、**fail 0**、skip 7 |
+
+### 1. 蒙恬の直し（`git diff`）
+
+- 替わったのは `removals/C-7-breadcrumbs-outline/unit.json` の `kept` の1件の `reason` と、README の「残すもの」の1行だけ。
+- 新しい理由は「共有の `platform/theme/browser/defaultStyles.ts`（14行）が型 `IBreadcrumbsWidgetStyles` を import するので、消すと共有のファイルに触れる。21単位の木でほかに使うのは部品自身のテストだけ（`diffEditorBreadcrumbs` は使わない。チャットのデバッグのビューは C-1 で消える）」。
+  - 私が前の検証で21単位の木で見た事実と合う（`defaultStyles.ts` の14行の import、`base/test/browser/ui/breadcrumbs/breadcrumbsWidget.test.ts`、`diffEditorBreadcrumbs/browser/contribution.ts` の import）。
+- `edits.patch` の sha は `a0584bbb…` で、前の検証と同じ（`git diff --stat` も空）。
+- `c7-unit`（26件）・`c7-mutation`（59件）を単独で走らせ、どれも通った（`kept` の理由が空でないことなどの検査）。
+- 消すかどうかの判断（リーダー）は残る。今は「残す」の理由が事実に合っている。
+
+### 2. 曹参の直し（`git diff`）
+
+**`tests/c6-check-json.mjs`**
+
+- 組 c（21単位。`UNITS_C` = 組 b の20単位に C-7）を足した。記録に C-7 があれば組 c と見分ける。
+- 組 b・c は同じ期待（C-2〜C-5 の edits、C-2 の警告1件、並び）で照らす。
+
+**`tests/c7-check-json.mjs`**
+
+- `--stopped <checks.json> [<外した単位の ID>]` の形にした（C-4 の照らし役と同じ）。
+- ID を渡すと、その単位が理由の誤りと、その単位が当たっていないことを見る。
+- ID を渡さないと、`after`（B-4・C-1・C-4）のどれかが理由であることだけを見る。
+
+**テスト**
+
+- `c6-check-json.test.mjs`（+3件）・`c7-check-json.test.mjs`（+3件）は、私の実記録を読んで照らす検査と、壊した記録で落ちる検査を足した。単独で30件とも通った。
+
+**私の実記録での照らし（`tasks/2026-11-15-p5-c1-c6-c7-verify/run/`）**
+
+| コマンド | 結果 |
+|---|---|
+| `node tests/c6-check-json.mjs …/checks-21.json …/typecheck-21.json` | 期待どおり（組 c: 当て直し・型検査） |
+| `node tests/c6-check-json.mjs --stopped …/checks-c6-noc1.json` | 期待どおり（C-1 を外すと C-6 の前で止まる） |
+| `node tests/c7-check-json.mjs --stopped …/checks-c7-nob4.json B-4-outline-view` | 期待どおり（前提の単位を外すと C-7 の前で止まる） |
+| `node tests/c7-check-json.mjs --stopped …/checks-c7-noc4.json C-4-notebook` | 期待どおり |
+| `node tests/c7-check-json.mjs --stopped …/checks-c7-noc1.json C-1-ai` | 期待どおり |
+| `node tests/c7-check-json.mjs --stopped …/checks-c7-noc1.json`（ID なし） | 期待どおり |
+| `node tests/c7-check-json.mjs …/checks-21.json …/typecheck-21.json` | 期待どおり（組 b: 当て直し・型検査。前と同じ） |
+
+**落ちるべきときに落ちるか**
+
+| コマンド | 結果 |
+|---|---|
+| `node tests/c7-check-json.mjs --stopped …/checks-c7-nob4.json C-1-ai`（違う単位の ID） | 食い違い1件で 1（「C-7 の after（C-1-ai）が理由の誤りが記録に無い」） |
+| `node tests/c7-check-json.mjs --stopped …/checks-21.json B-4-outline-view`（当たった記録） | 食い違い4件で 1 |
+| `node tests/c6-check-json.mjs …/checks-21.json tasks/2026-11-15-p5-c4-c5-verify/run/typecheck-19.json`（別の HEAD の型検査） | 「型検査の HEAD が当て直しの HEAD と違う」で 1 |
+| `node tests/c6-check-json.mjs tasks/2026-11-15-p5-c4-c5-verify/run/checks-19.json`（C-6 の無い記録） | 食い違い5件で 1 |
+
+**小さな弱まり（直さなくてよい。知らせておく）**
+
+- 前の `c7-check-json.mjs` の `--stopped` は、ID を渡さなくても「C-1-ai が当たっていない（`--only` から外した記録である）」を見ていた。
+- 今は、この確かめを ID を渡したときだけ行う。前からあった検査（`c7-check-json.test.mjs` の200行）も、ID を渡す形に替わった。
+- 台本 `tests/removals/c7-gate-script.md` の 1c は ID を渡さない形（`--stopped <checks.json>`）のまま。この使い方では「外した単位が当たっていない」を見ない。
+- `apply.mjs` は前提が欠けると作業ツリーに触れる前に止まるので、実害は無い。台本の 1c に ID（`C-1-ai`）を足すと、前と同じ強さで見られる（曹参の担当。任意）。
+
+### 3. テスト
+
+`node tests/run-all.mjs --save tasks/2026-11-15-p5-c1-c6-c7-verify/run/run-all-ooka-2.txt` を走らせた。終了コードは 0。
+
+- TOTAL: tests 2544、pass 2537、**fail 0**、skip 7（`removals.test.mjs` の既存の分）。
+- 前の2538件から6件増えた（`c6-check-json.test` 12 → 15、`c7-check-json.test` 12 → 15）。
+
+### 読んだときの sha256（付記）
+
+| ファイル | sha256 |
+|---|---|
+| `removals/C-7-breadcrumbs-outline/unit.json` | `d5d27b2a3e2cc0670555eb46cf63bac99056c0c145478a3bca60a28fd75d27cf` |
+| `removals/C-7-breadcrumbs-outline/README.md` | `bcbf132aef981c6df500ccc3a9303c4cc72dc7f31f1e77f891b74e3b66a5385d` |
+| `removals/C-7-breadcrumbs-outline/edits.patch` | `a0584bbb34003c980ba4f226a7e605a302f3c978d5527328067ce951dd7b65b8`（変わっていない） |
+| `tests/c6-check-json.mjs` | `3e4d314b63987165b452fcaab21348a308fe4da9d75777e9e71fb6e8c291c37a` |
+| `tests/c7-check-json.mjs` | `076ffa454e491e7ea8d6d2ea47feaecd60f05721c3ac18f8597cf1e8858c61a5` |
+| `tests/c6-check-json.test.mjs` | `9453f4395788fc7689d2f71ec6870752331ad3be22c54aea215f67b1a07f4d3e` |
+| `tests/c7-check-json.test.mjs` | `a0301b8a809cebab0d35badc2f9ffa44d7b0b960983e2b2d37fdf5b48e12e84e` |
+
+### 記録（付記）
+
+- `tasks/2026-11-15-p5-c1-c6-c7-verify/run/run-all-ooka-2.txt`（run-all）
+- 照らし役は読むだけで、新しい当て直しの記録は作っていない。

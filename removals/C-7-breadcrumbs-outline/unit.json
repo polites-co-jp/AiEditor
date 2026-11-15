@@ -25,7 +25,7 @@
   "productRemove": [],
   "patch": "edits.patch",
   "kept": [
-    { "path": "src/vs/base/browser/ui/breadcrumbs", "reason": "パンくずの部品（BreadcrumbsWidget）。差分エディタの変更の無い部分の表示（editor/contrib/diffEditorBreadcrumbs。Claude Code の差分エディタの受け手）とチャットのデバッグのビュー（C-1）が使う" },
+    { "path": "src/vs/base/browser/ui/breadcrumbs", "reason": "パンくずの部品（BreadcrumbsWidget）。共有の platform/theme/browser/defaultStyles.ts（14行）が型 IBreadcrumbsWidgetStyles を import するので、消すと共有のファイルに触れる（毎週の衝突が増える）。21単位の木でほかに使うのは部品自身のテストだけ（diffEditorBreadcrumbs は使わない。チャットのデバッグのビューは C-1 で消える）" },
     { "path": "src/vs/platform/theme/browser/defaultStyles.ts", "reason": "defaultBreadcrumbsWidgetStyles を含む既定の見た目の一覧。多くの部品が使う共有のファイルなので触らない" },
     { "path": "src/vs/editor/contrib/documentSymbols", "reason": "IOutlineModelService（エディタの記号の木）。記号へ移動（gotoSymbolQuickAccess.ts）とスティッキースクロールが使う。services/outline とは別の部品" },
     { "path": "src/vs/workbench/browser/parts/editor/media/singleeditortabscontrol.css", "reason": "パンくずの見た目の規則を含むが、タブの枠の共有の CSS。残っても効かないだけなので触らない（editortabscontrol.css・multieditortabscontrol.css・editortitlecontrol.css も同じ）" }

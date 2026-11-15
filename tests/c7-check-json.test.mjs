@@ -197,7 +197,37 @@ test('c7-check: 前提の単位を外した記録(止まる)を照らす。止�
   const why = stopped(); why.errors = ['何か別の誤り'];
   assert.ok(checkStopped(why).some((x) => /理由の誤りが記録に無い/.test(x)));
   const c1 = stopped(); c1.units.push({ id: 'C-1-ai', applied: 'ok' });
-  assert.ok(checkStopped(c1).some((x) => /C-1-ai が当たっている/.test(x)));
+  assert.ok(checkStopped(c1, 'C-1-ai').some((x) => /C-1-ai が当たっている/.test(x)));
+});
+
+// 大岡越前守の実記録(tasks/2026-11-15-p5-c1-c6-c7-verify/run/)。外した単位を引数で渡す形（C-4 の照らし役と同じ）
+const RUN = join(REPO, 'tasks', '2026-11-15-p5-c1-c6-c7-verify', 'run');
+const have = ['checks-c7-noc1.json', 'checks-c7-nob4.json', 'checks-c7-noc4.json', 'checks-21.json', 'typecheck-21.json'].every((f) => existsSync(join(RUN, f)));
+test('c7-check: 大岡越前守の実記録で、B-4・C-1・C-4 のどれを外した記録も「止まる」で期待どおり。外した単位の ID を渡すと、その単位の理由を見る', { skip: have ? false : '記録が無い' }, () => {
+  for (const [f, id] of [['checks-c7-noc1.json', 'C-1-ai'], ['checks-c7-nob4.json', 'B-4-outline-view'], ['checks-c7-noc4.json', 'C-4-notebook']]) {
+    const j = readJson(join(RUN, f));
+    assert.deepEqual(checkStopped(j, id), [], `${f}`);
+    assert.deepEqual(checkStopped(j), [], `${f}（ID なし）`);
+  }
+  // 別の単位の理由を渡すと食い違い（C-4 を外した記録に B-4 の理由は無い）
+  assert.ok(checkStopped(readJson(join(RUN, 'checks-c7-noc4.json')), 'B-4-outline-view').length > 0);
+  assert.ok(checkStopped(readJson(join(RUN, 'checks-c7-nob4.json')), 'C-4-notebook').some((x) => /C-4-notebook/.test(x)));
+});
+
+test('c7-check: 実記録の 21 単位(checks-21.json・typecheck-21.json)は当て直しとして期待どおり。成功した記録は「止まる」としては食い違い', { skip: have ? false : '記録が無い' }, () => {
+  const j = readJson(join(RUN, 'checks-21.json'));
+  assert.deepEqual(checkApply(j, unitJson), []);
+  assert.deepEqual(checkTypecheck(readJson(join(RUN, 'typecheck-21.json')), j), []);
+  assert.ok(checkStopped(j, 'C-4-notebook').length > 0);
+});
+
+test('c7-check: コマンドとして --stopped <記録> <外した単位の ID> が走る(0 = 期待どおり、別の単位の ID は 1)', { skip: have ? false : '記録が無い' }, () => {
+  const run = (...args) => spawnSync(process.execPath, [join('tests', 'c7-check-json.mjs'), ...args], { cwd: REPO, encoding: 'utf8' });
+  for (const [f, id] of [['checks-c7-nob4.json', 'B-4-outline-view'], ['checks-c7-noc4.json', 'C-4-notebook']]) {
+    const r = run('--stopped', join(RUN, f), id);
+    assert.equal(r.status, 0, r.stdout + r.stderr);
+  }
+  assert.equal(run('--stopped', join(RUN, 'checks-c7-noc4.json'), 'B-4-outline-view').status, 1);
 });
 
 test('c7-check: 型検査の食い違いを見つける（result・exitCode・HEAD の不一致・未コミット）', () => {

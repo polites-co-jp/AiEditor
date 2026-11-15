@@ -59,7 +59,7 @@ README の「残すもの」と `unit.json` の `kept` が正本。`kept` は変
 
 | 部品 | 理由 |
 |---|---|
-| `base/browser/ui/breadcrumbs` | 差分エディタの「変更の無い部分」の表示が使う |
+| `base/browser/ui/breadcrumbs` | 共有の `defaultStyles.ts` が型を import する（付記2で直した） |
 | `editor/contrib/documentSymbols`（`IOutlineModelService`） | 記号へ移動とスティッキースクロールが使う |
 | タブの枠の CSS のパンくずの規則 | 共有の CSS。当てる要素が無く効かないだけ |
 | 引数の名前 `breadcrumbsInHeader`（枠の4ファイル） | 中身は「全幅のヘッダーを出すか」。改名すると枠のハンクが増える |
@@ -210,3 +210,14 @@ README の「残すもの」と `unit.json` の `kept` が正本。`kept` は変
    - `removals/C-4-notebook/README.md` の `notebooks.createNotebookController` の行を直した（大岡越前守の軽微な指摘の1）。前は「`updateNotebookAffinity`・`dispose` は何もしない」だった。
    - 今は「`dispose` は何もしない、`updateNotebookAffinity` は何もしないが `NotebookControllerAffinity2.Hidden`（-1）を渡したときだけ門（下の表の `notebookControllerAffinityHidden`）をかける」。118行の門の表と合う。
    - ほかの行と `edits.patch`・`unit.json` は変えていない。
+
+## 付記2（2026-11-15。C-7 の kept の理由の直し。大岡越前守の軽微な指摘の1）
+
+- `src/vs/base/browser/ui/breadcrumbs` を残す理由を、事実に合わせて直した。部品は残す。直したのは `removals/C-7-breadcrumbs-outline/unit.json` の28行と、README の「残すもの」の1つ目（24行）。
+  - 前: 差分エディタの変更の無い部分の表示（`diffEditorBreadcrumbs`）と、チャットのデバッグのビューが使う
+  - 今: 共有の `platform/theme/browser/defaultStyles.ts`（14行）が型 `IBreadcrumbsWidgetStyles` を import する。消すと共有のファイルに触れる（毎週の衝突が増える）。21単位の木でほかに使うのは、部品自身のテストだけ
+- `C:\b\wt\1.146.0` を `Grep` して確かめた（読むだけ）。
+  - `ui/breadcrumbs/` を import するのは、`defaultStyles.ts` の14行、部品自身のテスト、C-7 が消す `breadcrumbs.ts`・`breadcrumbsControl.ts`・`breadcrumbsControl.test.ts`、C-1 が消す `contrib/chat`（`chatDebug` の6ファイルと `chatOutline.test.ts`）だけ。ほかはテストの性能の資料の文字列
+  - `editor/contrib/diffEditorBreadcrumbs/browser/contribution.ts` は `BreadcrumbsWidget` を import しない（`hideUnchangedRegionsFeature.js` の `IDiffEditorBreadcrumbsSource` だけを使う）
+- 上の「残した部品と理由」の表の該当の行も同じに直した。
+- `edits.patch` とほかの `unit.json` の項目は変えていない。作業ツリーは使っていない（タグ 1.146.0 のまま）。当て直しは要らない。

@@ -53,6 +53,14 @@
 
 **fail 2 は C-1 の1件（実装の不具合）に由来する**: `c1-unit.test.mjs`「門の誤りが、本家と同じ形で返る…」と、その対照の `c1-mutation.test.mjs`「壊さない写しは…全部通る」。蒙恬の C-1 の 6回目で、`lm.fileIsIgnored`（本家は同期で投げる。実装は reject する）と `lm.getModelProxy`（本家は async で reject。実装は同期で投げる）の誤りの出方が本家と違う。詳細は `tasks/2026-11-15-p5-c1-tests/handoff-notes.md` の「5回目」。C-7 とは関係しない。brief の完了条件「fail が 0」は、C-1 が直るまで満たせない。
 
+## 2回目（2026-11-15、照らし役を C-4 と同じ形にそろえる。大岡越前守の軽微な指摘の2）
+
+- `tests/c7-check-json.mjs`: `--stopped <checks.json> [<外した単位の ID>]` にした。ID を渡すと、その単位の `after の単位 X が先に当たらない`（または `が当たっていない: X`）を理由として見る。渡さなければ B-4・C-1・C-4 のどれかの理由を見る。外した単位が当たっていれば食い違い。
+- 実記録 `tasks/2026-11-15-p5-c1-c6-c7-verify/run/` の `checks-c7-noc1.json`・`checks-c7-nob4.json`・`checks-c7-noc4.json` が、それぞれの ID で（ID なしでも）「止まる」として期待どおりになることを、`c7-check-json.test.mjs` に3件足して確かめた（12 → 15件）。別の単位の ID を渡すと食い違いになる。`checks-21.json`・`typecheck-21.json` は当て直しとして期待どおり（組 b）。コマンドの `--stopped <記録> <ID>` も0/1で走る。
+- 既存の「C-1 が当たっている」の検査は、ID を渡す形に直した。
+- 台本 `c7-gate-script.md` の 1c に、ID を渡す書き方と B-4・C-4 を外す組を足した。
+- 件数: `node tests/run-all.mjs` は 2544 件の見込み。記録は `tasks/2026-11-15-p5-c6-tests/run-all-result-2.txt`。
+
 ## 実行結果と未解決の点
 
 - 消せずに残るファイル（リーダーが消す）: `tasks/2026-11-15-p5-c2-tests/run-all-no-ps-result.txt`、`tests/removals/c1-check-json.mjs`・`c1-check-worktree.mjs`（殻）、`tasks/2026-11-15-p5-c1-tests/handoff-notes-round2-part.md`。

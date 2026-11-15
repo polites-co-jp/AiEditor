@@ -22,6 +22,8 @@ node scripts/apply.mjs C:/b/wt/p2 --label c6-gate-b --only A-1-copilot-extension
 node tests/c6-check-json.mjs C:/b/logs/c6-gate/checks-b.json
 ```
 
+段階 C のすべて（C-1〜C-7。21単位。C-6 の後に C-7）の記録も、組 c として C-6 を照らせる（`node tests/c6-check-json.mjs <checks-21.json> <typecheck-21.json>`）。警告は C-2 の1件。
+
 期待（`checks-a.json`・`checks-b.json`）。照らす手順は上の `node tests/c6-check-json.mjs`（3節）。
 
 | 項目 | a | b |
