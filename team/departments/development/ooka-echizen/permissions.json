@@ -19,7 +19,18 @@
     "powershell -NoProfile -ExecutionPolicy Bypass -File tests/*.ps1",
     "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/measure.ps1",
     "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/netaudit.ps1",
-    "sha256sum"
+    "sha256sum",
+    "git -C C:/b/wt/* status",
+    "git -C C:/b/wt/* diff",
+    "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/p1-ci-events.ps1 -OutFile tasks/*/*.json",
+    "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check-env.ps1 -OutFile tasks/*/*.json",
+    "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/p1-launch-check.ps1 -OutFile tasks/*/*.json"
+  ],
+  "bash_exact": [
+    "git -C C:/b/wt/* checkout *.*.*",
+    "git -C C:/b/wt/* checkout -- pnpm-lock.yaml",
+    "pnpm --dir C:/b/wt/* install --lockfile-only --ignore-scripts",
+    "node scripts/disk-usage.mjs records=records"
   ],
   "write_paths": [
     "records/",

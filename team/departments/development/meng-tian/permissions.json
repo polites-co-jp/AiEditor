@@ -30,6 +30,7 @@
     "node --check scripts/",
     "node --check tools/",
     "node --check extensions-src/",
+    "node --test tests/",
     "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/*.ps1",
     "powershell -NoProfile -ExecutionPolicy Bypass -File tools/watch/*.ps1",
     "pnpm --dir C:/b/wt/* install",
@@ -77,5 +78,20 @@
     "%LOCALAPPDATA%/Shuko/secrets/"
   ],
   "agents": [],
-  "skills": []
+  "skills": [],
+  "delete_paths": [
+    "C:/b/p2/",
+    "C:/b/dist/",
+    "C:/b/smoke/ext/",
+    "C:/b/trial-*"
+  ],
+  "delete_keep": [
+    "C:/b/p2/1.146.0-p2-all",
+    "C:/b/p2/1.146.0-p1-a1-r3",
+    "C:/b/dist/1.146.0-p2-all.zip",
+    "C:/b/dist/1.146.0-p1-a1-r3.zip",
+    "C:/b/smoke/ext/1.146.0-p1-a1-r3",
+    "C:/b/smoke/ext/1.146.0-p1-a1-r3.marker.json",
+    "C:/b/smoke/ext/1.146.0-p2-all*"
+  ]
 }

@@ -6,10 +6,14 @@
 """
 
 import json
+import os
+import shutil
+import subprocess
 import tempfile
 import unittest
+from pathlib import Path
 
-from hookrun import BARE_NODE_CHECK, PROJECT, HookTestCase, bare_node_check_project, event, make_project, run
+from hookrun import BARE_NODE_CHECK, NODE, PROJECT, HookTestCase, bare_node_check_project, event, make_project, run
 
 
 class MemberCommandsTest(HookTestCase):
@@ -63,11 +67,11 @@ class MemberCommandsTest(HookTestCase):
         "cao-shen": [
             "git status",
             "git show HEAD",
-            "node --test tests/",                                 # 第2段: ディレクトリそのもの
-            "node --test tests/unit/watch.test.mjs",              # 第2段: その下のパス
-            "node --test tests/a.test.mjs tests/b.test.mjs",      # 第2段: 下のパスが複数でも通る
+            # 2026-11-13 から node --test の行は tests/*.test.mjs・extensions-src/*/test/*.test.mjs（docs/user-decisions.md
+            # の 115 行）。ディレクトリそのもの（tests/）と2段下（tests/unit/…）は止まる（NodeTestGlobLinesTest）
+            "node --test tests/watch.test.mjs",
+            "node --test tests/a.test.mjs tests/b.test.mjs",      # 下のパスが複数でも通る
             "node --test extensions-src/mydist/test/x.test.mjs",
-            "node --test extensions-src/mydist/test/",
             "node tests/build.test.mjs",
             "node --check tests/a.mjs",
             "pnpm --dir extensions-src/mydist run test",
@@ -78,8 +82,7 @@ class MemberCommandsTest(HookTestCase):
         ],
         "ooka-echizen": [
             "git show HEAD",
-            "node --test tests/",
-            "node --test tests/unit/a.test.mjs",
+            "node --test tests/a.test.mjs",                       # 2026-11-13 の行（cao-shen と同じ。NodeTestGlobLinesTest）
             "node --test extensions-src/mydist/test/x.test.mjs",
             "node tests/build.test.mjs",
             "node scripts/apply.mjs",
@@ -143,7 +146,9 @@ class MemberCommandsTest(HookTestCase):
         "cao-shen": [
             "node scripts/build.mjs",
             "node --test records/x.mjs",                  # node --test は tests/・extensions-src/*/test/ の下だけ
-            "node --test tests/a.mjs records/x.mjs",      # 2語目が外。全部を確かめる
+            # 2026-11-13 からは、1語目 tests/a.mjs が tests/*.test.mjs に一致しないので止まる。2語目を確かめる守りは
+            # 崩れている（tests/a.test.mjs records/x.mjs は通る。NodeTestGlobLinesTest の既知の穴）
+            "node --test tests/a.mjs records/x.mjs",
             "node --test tests/../records/x.mjs",         # .. は不可
             "pnpm --dir extensions-src/mydist build",     # run test が要る
             "pnpm --dir extensions-src/.. run test",
@@ -328,7 +333,9 @@ class Stage2RecheckTest(HookTestCase):
 
     def test_node_not_overblocked(self):
         self.passes("meng-tian", ["node --check scripts/build.mjs", "node scripts/build.mjs --dry-run"])
-        self.passes("cao-shen", ["node --test tests/", "node --test tests/a_b.test.mjs"])
+        # 2026-11-13 から曹参の行は node --test tests/*.test.mjs（docs/user-decisions.md の 115 行）。
+        # ディレクトリそのもの（tests/）は行に一致しないので、ファイルを名指しした形で見る
+        self.passes("cao-shen", ["node --test tests/a.test.mjs", "node --test tests/a_b.test.mjs"])
         # 2026-11-13 から本物の node --check は <ディレクトリ>/ の行だけで、オプションを書けない。
         # フックの node のオプションの検査が止めすぎないことは、素の node --check を許す仮のメンバーで見る
         for command in ("node --check --max_old_space_size=4096 scripts/a.mjs",):
@@ -791,7 +798,140 @@ class RegressionTest(HookTestCase):
         self.block("ooka-echizen", "npx --prefix C:/b/wt/x tsc --outDir .claude")
 
     def test_hole_12_ooka_runs_records(self):
+        # 1語目に records/ を置く形は今も止まる。後ろに足す形は 2026-11-13 の書き換えで通るようになった
+        # （NodeTestGlobLinesTest の既知の穴）
         self.block("ooka-echizen", "node --test records/x.mjs")
+
+
+class NodeTestGlobLinesTest(HookTestCase):
+    """2026-11-13 に曹参・大岡越前守の node --test の行を「node --test tests/*.test.mjs」
+    「node --test extensions-src/*/test/*.test.mjs」にした（docs/user-decisions.md の 115 行）。その行の判定。
+
+    行は「許可＋半角空白」の前方一致なので、1語目が行に一致すれば後ろの語は確かめない。2026-11-12 の作成時に
+    塞いだ「検証役が自分で書いたもの（records/・tasks/）を走らせない」（RegressionTest の #12）と、
+    「node --test の語を全部確かめる」守りが、この書き換えで崩れている。守りの期待は書き換えずに残し、
+    崩れていることを expectedFailure（既知の穴）で示す。行を末尾が / の形（node --test tests/）に戻すと
+    予期しない成功になり、このテストが落ちるので、そのときは expectedFailure を外す。
+
+    既知の穴の出典: docs/user-decisions.md の 115 行（2026-11-13 の裁定）、E:/develop/self/Team の
+    tasks/2026-11-15-ai-editor-perm-requests/perm-proposal.md の 3.4（行を戻す任意の直しは、2026-11-15 に採らなかった）。"""
+
+    NOT_LISTED = "ホワイトリストに無いコマンドです"
+
+    def test_files_directly_under_pass(self):
+        for member in ("cao-shen", "ooka-echizen"):
+            for command in ("node --test tests/p1-scripts.test.mjs",
+                            "node --test tests/a.test.mjs tests/b.test.mjs",
+                            "node --test extensions-src/mydist/test/x.test.mjs"):
+                with self.subTest(member=member, command=command):
+                    self.assertPass(self.bash(member, command))
+
+    def test_directory_and_deeper_paths_are_not_listed(self):
+        # 11-13 の行でできなくなったこと（第2段のテストでは通していた形）。STAR は空にも / にも一致しない
+        for member in ("cao-shen", "ooka-echizen"):
+            for command in ("node --test tests/",
+                            "node --test tests/unit/watch.test.mjs",
+                            "node --test extensions-src/mydist/test/",
+                            "node --test tests/*.test.mjs"):                # シェルのグロブそのもの
+                with self.subTest(member=member, command=command):
+                    self.assertBlock(self.bash(member, command), self.NOT_LISTED)
+
+    def test_first_word_outside_is_still_blocked(self):
+        for member in ("cao-shen", "ooka-echizen"):
+            for command in ("node --test records/x.mjs", "node --test tasks/x/mine.mjs", "node --test tests/../records/x.test.mjs"):
+                with self.subTest(member=member, command=command):
+                    self.assertBlock(self.bash(member, command), self.NOT_LISTED)
+
+    def test_dangerous_options_after_the_file_are_still_blocked(self):
+        # 後ろの語は行で確かめないが、フックの固定の node の検査は効く
+        for member in ("cao-shen", "ooka-echizen"):
+            with self.subTest(member=member):
+                self.assertBlock(self.bash(member, "node --test tests/a.test.mjs --require ./x.cjs"), "node の危険なオプション")
+
+    # ---- 既知の穴（出典はクラスの説明）。守りの期待のまま、今は落ちる ----
+
+    @unittest.expectedFailure
+    def test_known_hole_12_ooka_runs_own_records_after_a_test_file(self):
+        # #12 の守り: 大岡越前守は自分が書ける records/ のファイルを走らせられない
+        self.assertBlock(self.bash("ooka-echizen", "node --test tests/a.test.mjs records/x.mjs"))
+
+    @unittest.expectedFailure
+    def test_known_hole_12_ooka_runs_own_tasks_file_after_a_test_file(self):
+        # #12 の守り: 大岡越前守は自分が書ける tasks/ のファイルを走らせられない
+        self.assertBlock(self.bash("ooka-echizen", "node --test tests/a.test.mjs tasks/x/mine.mjs"))
+
+    @unittest.expectedFailure
+    def test_known_hole_cao_shen_every_word_is_checked(self):
+        # 第2段の守り: node --test の語を全部確かめる（2語目が tests/ の外なら止める）
+        self.assertBlock(self.bash("cao-shen", "node --test tests/a.test.mjs records/x.mjs"))
+
+    @unittest.expectedFailure
+    def test_known_hole_extensions_line_every_word_is_checked(self):
+        self.assertBlock(self.bash("ooka-echizen", "node --test extensions-src/mydist/test/x.test.mjs records/x.mjs"))
+
+
+class MengTianNodeTestTest(HookTestCase):
+    """2026-11-15 に蒙恬へ足した「node --test tests/」（末尾が / の行。node --test の後ろの語を全部 tests/ の下のパスに限る）。
+    出典: Team の tasks/2026-11-15-ai-editor-perm-requests/perm-proposal.md の 3、perm-tests/test_3_4.py・bacon-tests/test_b3_ooka_tools.py。"""
+
+    def test_allowed(self):
+        for command in ("node --test tests/p1-scripts.test.mjs",
+                        "node --test tests/p1-scripts.test.mjs tests/signtool.test.mjs",
+                        "node --test tests/unit/a.test.mjs",
+                        "node --test tests/"):
+            with self.subTest(command=command):
+                self.assertPass(self.bash("meng-tian", command))
+
+    def test_blocked(self):
+        for command in ("node --test tests/a.test.mjs records/x.mjs",
+                        "node --test tests/a.test.mjs C:/b/x.mjs",
+                        "node --test tests/a.test.mjs ../x.mjs",
+                        "node --test tests/*.test.mjs",                          # シェルのグロブそのもの
+                        "node --test tests/a.test.mjs --test-reporter=./tasks/x/r.mjs",
+                        "node --test --test-reporter=spec tests/a.test.mjs",
+                        "node --test --test-reporter=./r.mjs tests/a.test.mjs",
+                        "node --test tests/../scripts/x.mjs",
+                        "node --test tests/../records/x.mjs",
+                        "node --test --require ./x.cjs tests/a.test.mjs",
+                        "node --test records/x.mjs",
+                        "node --test C:/b/x.mjs",
+                        "node --test",
+                        "node --test tests/a.test.mjs; node x.mjs"):
+            with self.subTest(command=command):
+                self.assertBlock(self.bash("meng-tian", command))
+
+
+@unittest.skipIf(NODE is None, "node が見つからない")
+class NodeTestRunnerBehaviourTest(unittest.TestCase):
+    """node --test の後ろに足したファイル・オプションが実際に効くかを、tempfile の下で確かめる（行の形を選んだ根拠。
+    後ろに足したファイルも走るので、前方一致の *.test.mjs の行は「自分のファイルを走らせない」守りにならない）。"""
+
+    def setUp(self):
+        self.tmp = Path(os.path.realpath(tempfile.mkdtemp(prefix="ai-editor-hooks-nt-")))
+        self.addCleanup(shutil.rmtree, self.tmp, True)
+        (self.tmp / "a.test.mjs").write_text("import test from 'node:test';\ntest('a', () => {});\n", encoding="utf-8")
+        (self.tmp / "b.mjs").write_text("import fs from 'node:fs';\nfs.writeFileSync('marker-b.txt', 'x');\n", encoding="utf-8")
+        (self.tmp / "r.mjs").write_text(
+            "import fs from 'node:fs';\nfs.writeFileSync('marker-r.txt', 'x');\n"
+            "export default async function* (source) { for await (const _ of source) {} }\n", encoding="utf-8")
+
+    def node(self, *args):
+        return subprocess.run([NODE, *args], cwd=self.tmp, capture_output=True, text=True, encoding="utf-8",
+                              errors="replace", timeout=120)
+
+    def test_second_file_runs(self):
+        self.node("--test", "a.test.mjs", "b.mjs")
+        self.assertTrue((self.tmp / "marker-b.txt").exists(), "2つ目のファイルが走らなかった")
+
+    def test_reporter_before_file_loads(self):
+        # 対照: ファイルより前の --test-reporter はモジュールを読む（どの行の形でも、許可の先頭の語の間には置けない）
+        self.node("--test", "--test-reporter=./r.mjs", "a.test.mjs")
+        self.assertTrue((self.tmp / "marker-r.txt").exists())
+
+    def test_reporter_after_file_is_not_an_option(self):
+        # ファイルより後ろの --test-reporter は、node のオプションとしては読まれない（この node の版で確かめた）
+        self.node("--test", "a.test.mjs", "--test-reporter=./r.mjs")
+        self.assertFalse((self.tmp / "marker-r.txt").exists())
 
 
 class SecretInCommandTest(HookTestCase):

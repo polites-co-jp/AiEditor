@@ -175,15 +175,17 @@ class ExploreTest(HookTestCase):
 class ToolsTest(HookTestCase):
     """定義の tools に無いツールは止める（Agent と Task は同じ名前として扱う）。"""
 
+    # SubagentHandback は 2026-11-15 に3人の tools へ足した（Team の tasks/2026-11-15-ai-editor-perm-requests の 4）
     CASES = {
-        "meng-tian": (["Read", "Write", "Edit", "Glob", "Grep", "Bash", "WebSearch", "WebFetch"],
-                      ["Agent", "Task", "PowerShell", "NotebookEdit", "Skill", "SendMessage", "StructuredOutput", "mcp__x__y", ""]),
-        "cao-shen": (["Read", "Write", "Edit", "Glob", "Grep", "Bash", "WebSearch", "WebFetch"],
-                     ["Agent", "Task", "PowerShell", "NotebookEdit", "MultiEdit", "Skill"]),
-        "ooka-echizen": (["Read", "Write", "Glob", "Grep", "Bash"],
-                         ["Edit", "WebSearch", "WebFetch", "Agent", "Task", "PowerShell", "NotebookEdit"]),
+        "meng-tian": (["Read", "Write", "Edit", "Glob", "Grep", "Bash", "WebSearch", "WebFetch", "SubagentHandback"],
+                      ["Agent", "Task", "PowerShell", "NotebookEdit", "Skill", "SendMessage", "StructuredOutput", "mcp__x__y", "",
+                       "AskUserQuestion"]),
+        "cao-shen": (["Read", "Write", "Edit", "Glob", "Grep", "Bash", "WebSearch", "WebFetch", "SubagentHandback"],
+                     ["Agent", "Task", "PowerShell", "NotebookEdit", "MultiEdit", "Skill", "AskUserQuestion"]),
+        "ooka-echizen": (["Read", "Write", "Glob", "Grep", "Bash", "SubagentHandback"],
+                         ["Edit", "WebSearch", "WebFetch", "Agent", "Task", "PowerShell", "NotebookEdit", "AskUserQuestion"]),
         "di-renjie": (["Read", "Glob", "Grep", "StructuredOutput"],
-                      ["Bash", "Write", "Edit", "WebSearch", "WebFetch", "Agent", "PowerShell"]),
+                      ["Bash", "Write", "Edit", "WebSearch", "WebFetch", "Agent", "PowerShell", "SubagentHandback"]),
     }
 
     # ツールごとに、許可の範囲で通る入力
@@ -197,7 +199,14 @@ class ToolsTest(HookTestCase):
         "WebSearch": {"query": "vscode release notes"},
         "WebFetch": {"url": "https://code.visualstudio.com/updates", "prompt": "x"},
         "StructuredOutput": {},
+        "SubagentHandback": {"message": "報告"},
     }
+
+    def test_subagent_handback_with_empty_input(self):
+        # SubagentHandback は checkTool の後段に特別な検査が無い（入力が空でも、tools にあれば通る）
+        for member in ("meng-tian", "cao-shen", "ooka-echizen"):
+            with self.subTest(member=member):
+                self.assertPass(event("SubagentHandback", {}, agent_type=member))
 
     def test_tools(self):
         for member, (allowed, denied) in self.CASES.items():

@@ -2,23 +2,27 @@
 規則で効く書き方になっているかを検査する。あわせて、あるメンバーのある操作が allowlist.js で通るかを試す。
 
 土台は E:\\develop\\self\\Team の team/hooks/permcheck.py。書式を AiEditor の新書式に合わせた。
+案（2026-11-15。bash_exact・delete_paths・delete_keep を足した）: E:\\develop\\self\\Team\\tasks\\2026-11-15-ai-editor-perm-requests\\perm-proposal.md
 
 規則（ERROR は終了コード 1。WARN は終了コードに影響しない）:
   a. ERROR JSON として読めない（BOM・NaN・Infinity も読めないとする）。トップレベルがオブジェクトでない。
   b. ERROR キーの重複（JSON.parse は最後の値だけを使う）。
-  c. ERROR 未知のキー。使えるのは bash / write_paths / write_paths_deny / read_paths / secret_paths / agents / skills。
+  c. ERROR 未知のキー。使えるのは bash / bash_exact / write_paths / write_paths_deny / read_paths / secret_paths /
+     agents / skills / delete_paths / delete_keep。
   d. ERROR 値が文字列の配列でない（allowlist.js は配列でない値を見るとそのメンバーの呼び出しを全部止める）。
      WARN  同じ配列の中の重複。
-  e. bash の許可1つ:
+  e. bash・bash_exact の許可1つ:
      ERROR 空・前後に空白・末尾が \\。
      末尾が / の行は「コマンド 語… ディレクトリ/」（ディレクトリの下に限る許可）とみなし、次を ERROR にする:
            語が1つだけ（コマンドだけ）・ディレクトリの語がコマンド名のすぐ後ろ（git status/ と見分けられない）・
            最後の語が絶対パス・ドライブ・コロンを含む・空の区切り（tests//）・プロジェクト直下（./）・. の区切り・
            * だけの区切りで始まる（*/x/）。
+     ERROR bash_exact の行の末尾が /（ディレクトリの下に限る書き方は bash だけ）。
      ERROR 区切り（&& || ; | & 改行）、$( ・`・<・>・(・) を含む（allowlist.js が分ける・止めるので一致しない）。
      ERROR * の置き方: ** がある、先頭の語（コマンド名）に * がある、* だけの語がある。
            * は「パスの1区切りの一部」に一致する（/・\\・空白・引用符などを含まず、末尾が . でない）。
      ERROR .. の区切りを含む語がある（* の外で外へ出る形を許可にしない）。
+     ERROR 先頭の語が rm（許可＋半角空白の前方一致で、後ろに別のパスを足した形も通る。削除は delete_paths に書く）。
      WARN  中身のある単一引用符 '...' を含む（土台と同じ。ふつうの書き方では一致しない）。
   f. パスの要素（write_paths / write_paths_deny / read_paths）1つ:
      ERROR 空・前後に空白・\\ を含む（/ で書く）・.. の区切り・. の区切り・空の区切り（a//b）。
@@ -28,6 +32,11 @@
      ERROR ** がある、ドライブの区切りに * がある。
      ERROR write_paths の要素が自己防護の場所（.claude/・team/・.git）にかかる（allowlist.js が固定で止めるので効かない）。
      WARN  write_paths_deny の要素が、どの write_paths の下にも無い（効かない）。
+  f2. 削除の要素（delete_paths / delete_keep）1つ:
+     ERROR 空・前後に空白・C:/ のドライブから始まる絶対パスでない（相対・/c/…・\\ は不可）・f の止める形。
+     ERROR 英数字と . _ @ + = - / * 以外の文字（allowlist.js が rm -rf の語に許す文字と同じ。* は規則だけ）。
+     ERROR ドライブの下の区切りが2つ未満（C:/・C:/b/ は広すぎる）、* だけの区切り、ドライブのすぐ下の区切りに *。
+     WARN  delete_keep の要素が、どの delete_paths の下にも無い（消せない場所にあり、残すものとして効かない）。
   g. secret_paths の要素1つ:
      ERROR 空・前後に空白・* を含む・.. の区切り・%NAME% が先頭以外にある・NAME が英数字と _ でない。
      ERROR 展開した後のパスが f の止める形（ドライブ相対・UNC など）。
@@ -72,8 +81,10 @@ ALLOWLIST_JS = HOOKS_DIR / "allowlist.js"
 
 ERROR = "ERROR"
 WARN = "WARN"
-KEYS = ("bash", "write_paths", "write_paths_deny", "read_paths", "secret_paths", "agents", "skills")
+KEYS = ("bash", "bash_exact", "write_paths", "write_paths_deny", "read_paths", "secret_paths", "agents", "skills",
+        "delete_paths", "delete_keep")
 PATH_KEYS = ("write_paths", "write_paths_deny", "read_paths")
+DELETE_KEYS = ("delete_paths", "delete_keep")
 LEADER_ID = "vlad-tepes"
 SELF_PROTECTED = (".claude", "team", ".git")
 AGENT_ID = re.compile(r"^[A-Za-z0-9_-]+$")
@@ -83,6 +94,7 @@ JS_SPACE = "\t\n\v\f\r \u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\u
 EDGE_SPACE = re.compile(f"\\A[{JS_SPACE}]|[{JS_SPACE}]\\Z")
 ENV_REF = re.compile(r"%([^%]*)%")
 ENV_NAME = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
+DELETE_CHARS = re.compile(r"^[A-Za-z]:/[A-Za-z0-9._@+=/*-]*$")
 
 
 def q(value):
@@ -124,7 +136,7 @@ def dir_scoped_issues(entry):
     return issues
 
 
-def bash_entry_issues(entry):
+def bash_entry_issues(entry, exact=False):
     if entry == "":
         return [(ERROR, "空文字。どのコマンドにも一致しない")]
     issues = []
@@ -133,8 +145,11 @@ def bash_entry_issues(entry):
     if entry.endswith("\\"):
         issues.append((ERROR, "末尾が \\。「完全一致」か「許可＋半角空白」でしか一致しない（ファイル名まで書く）"))
     elif entry.endswith("/"):
-        # ディレクトリの下に限る書き方（例 node --test tests/）。末尾の / は誤りにしないが、書き間違いは見逃さない。
-        issues += dir_scoped_issues(entry)
+        if exact:
+            issues.append((ERROR, "bash_exact の行の末尾が /。ディレクトリの下に限る書き方は bash にだけ書ける"))
+        else:
+            # ディレクトリの下に限る書き方（例 node --test tests/）。末尾の / は誤りにしないが、書き間違いは見逃さない。
+            issues += dir_scoped_issues(entry)
     for sep in SEPARATORS:
         if sep in entry:
             issues.append((ERROR, f"区切り {q(sep)} を含む。allowlist.js は区切りごとに分けて比べるので一致しない"))
@@ -152,6 +167,8 @@ def bash_entry_issues(entry):
         issues.append((ERROR, "* だけの語がある（* はパスの1区切りの一部として、/ の後などに置く）"))
     if any(".." in re.split(r"[\\/]", w) for w in words):
         issues.append((ERROR, ".. の区切りを含む語がある（外へ出る形を許可にしない）"))
+    if words and words[0] == "rm":
+        issues.append((ERROR, "先頭の語が rm。後ろに別のパスを足した形も通る（許可＋半角空白の前方一致）。削除は delete_paths に書く"))
     if not any(level == ERROR for level, _ in issues) and strip_single_quoted(entry) != entry:
         issues.append((WARN, "中身のある単一引用符 '...' を含む（ふつうの書き方では一致しない）"))
     return issues
@@ -219,6 +236,37 @@ def path_entry_issues(entry, key):
         if first in SELF_PROTECTED or ".git" in entry.lower().split("/"):
             issues.append((ERROR, ".claude/・team/・.git にかかる。allowlist.js が固定で止めるので効かない"))
     return issues
+
+
+def delete_entry_issues(entry):
+    """delete_paths・delete_keep の要素1つの書き間違い。"""
+    if entry == "":
+        return [(ERROR, "空文字。allowlist.js は使わない")]
+    issues = []
+    if EDGE_SPACE.search(entry):
+        issues.append((ERROR, "前後に空白がある。allowlist.js は使わない"))
+    if not re.match(r"^[A-Za-z]:/", entry):
+        return issues + [(ERROR, "C:/… のドライブから始まる絶対パスで書く（相対パス・/c/… の形・\\ は使わない）")]
+    if not DELETE_CHARS.match(entry):
+        issues.append((ERROR, "使える文字は英数字と . _ @ + = - / *（allowlist.js が rm -rf の語に許す文字と同じ。* は規則だけ）"))
+    issues += [(ERROR, m) for m in path_shape_issues(entry)]
+    segs = [s for s in entry[3:].split("/") if s]
+    if len(segs) < 2:
+        issues.append((ERROR, "ドライブの下の区切りが2つ未満（C:/・C:/b/ は広すぎる）"))
+    if any(s == "*" for s in segs):
+        issues.append((ERROR, "* だけの区切りがある（その階層の全部に一致する）"))
+    if segs and "*" in segs[0]:
+        issues.append((ERROR, "ドライブのすぐ下の区切りに * がある"))
+    return list(dict.fromkeys(issues))
+
+
+def _delete_covers(base, entry):
+    """delete_keep の要素 entry が、delete_paths の要素 base の下（末尾が / でない base はそのものも）にあるか。"""
+    b = [s for s in base.lower().split("/") if s]
+    e = [s for s in entry.lower().split("/") if s]
+    if len(e) < len(b) + (1 if base.endswith("/") else 0):
+        return False
+    return all(es == bs or "*" in es or re.fullmatch(re.escape(bs).replace(r"\*", "[^/]+"), es) for bs, es in zip(b, e))
 
 
 def secret_entry_issues(entry):
@@ -321,9 +369,17 @@ def check_text(text, member_id, root):
 
     for i, item in enumerate(lists.get("bash", [])):
         issues += [(level, f"{_where('bash', i, item)}: {m}") for level, m in bash_entry_issues(item)]
+    for i, item in enumerate(lists.get("bash_exact", [])):
+        issues += [(level, f"{_where('bash_exact', i, item)}: {m}") for level, m in bash_entry_issues(item, exact=True)]
     for key in PATH_KEYS:
         for i, item in enumerate(lists.get(key, [])):
             issues += [(level, f"{_where(key, i, item)}: {m}") for level, m in path_entry_issues(item, key)]
+    for key in DELETE_KEYS:
+        for i, item in enumerate(lists.get(key, [])):
+            issues += [(level, f"{_where(key, i, item)}: {m}") for level, m in delete_entry_issues(item)]
+    for i, item in enumerate(lists.get("delete_keep", [])):
+        if not any(_delete_covers(base, item) for base in lists.get("delete_paths", [])):
+            issues.append((WARN, f"{_where('delete_keep', i, item)}: どの delete_paths の下にも無い（消せない場所にあり、残すものとして効かない）"))
     for i, item in enumerate(lists.get("secret_paths", [])):
         issues += [(level, f"{_where('secret_paths', i, item)}: {m}") for level, m in secret_entry_issues(item)]
     for i, item in enumerate(lists.get("agents", [])):

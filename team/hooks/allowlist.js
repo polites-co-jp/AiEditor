@@ -3,6 +3,7 @@
 // 土台は E:\develop\self\Team の team/hooks/allowlist.js（Bash の検査をそのまま引き継ぎ、書式を AiEditor の
 // permissions.json に合わせた。ops-log・Notion・SendMessage の記録など Team 固有の仕組みは持ち込まない）。
 // 作成の記録: E:\develop\self\Team\tasks\2026-11-12-ai-editor-hooks\build-notes.md
+// 案（2026-11-15。bash_exact・delete_paths・delete_keep を足した）: E:\develop\self\Team\tasks\2026-11-15-ai-editor-perm-requests\perm-proposal.md
 //
 // 呼び方（.claude/settings.json の PreToolUse。matcher は "*"＝全ツール。起動役 guard.js を exec form で通す）:
 //   "command": "node", "args": ["${CLAUDE_PROJECT_DIR}/team/hooks/guard.js", "allowlist.js"], "onFailure": "block"
@@ -25,6 +26,7 @@
 //    含むコマンドは止める。区切り（&& || ; | & LF・CR LF）で分けた断片が、全部 bash の許可に「完全一致」か「許可＋半角空白」の
 //    前方一致で一致するときだけ通す。許可の * はパスの1区切りの一部に一致する（下の STAR）。末尾が / の許可
 //    （node --test tests/ など）は、そのディレクトリの下のパス（.. を含まない）に限って一致する（buildDirScopedMatcher）。
+//    bash_exact の許可は、断片の全体に一致するときだけ通す（後ろに語を足せない。* は STAR と同じ）。
 //    $( ・`・<・>・(・) を含むコマンド、secret_paths が文字列に現れるコマンドは止める。
 //    第2段: permissions.json の bash とは別に、全員に効く固定の検査（checkCommandSafety）で次を止める——node の
 //    危険なオプション（--require・--import・-r・-e・--eval・-p・--loader・--experimental-loader・--test-reporter-destination。
@@ -35,6 +37,14 @@
 //    build-notes 12.1・12.11）。git format-patch の -o・--output-directory（全部。--output はファイルとしても）と tsc の
 //    書き出し先は、そのメンバーの書き込み先（4 と同じ規則）と照合して、外なら止める。tsc の照合できない
 //    形（--build・--incremental・--composite・--init・--noEmit false・@ファイル）は止める。
+// 3a. 削除（delete_paths・delete_keep）: rm で始まる断片が bash・bash_exact のどれにも一致せず、そのメンバーに
+//    delete_paths があるときは、断片を「rm -rf <パス> [<パス>…]」（半角空白1つずつ）の形に限って判定する（checkDelete。
+//    Bash ツールだけ。PowerShell では止める）。パスはどれも C:/… のドライブから始まる絶対パスで、英数字と . _ @ + = - /
+//    だけ（引用符・\・$・グロブ・~・%・コロンは不可）、. と .. と空の区切りを含まないこと。そろえた形と realpath で
+//    たどった形の両方が、delete_paths の規則の下にあり（末尾が / の規則はそのディレクトリの下だけで、そのものは不可。
+//    末尾が / でない規則〔C:/b/trial-* など〕はその区切りそのものと下）、delete_keep（大文字小文字を問わない）そのもの・
+//    その下・その祖先でなく、secret_paths（その祖先も）と自己防護（プロジェクトの .claude/・team/・どこであれ .git、
+//    プロジェクトそのものとその祖先）に触れないときだけ通す。消す対象の中にあるジャンクションの先は確かめない。
 // 3b. 組み込みの Explore（agent_type＝Explore）は permissions.json を持たないが、固定の決まりで Read・Glob・Grep だけを
 //    通す（読める場所は ./ と C:/b/、secret_paths は止める）。general-purpose・Plan・plugin:x は止める。
 // 4. Write / Edit / MultiEdit / NotebookEdit: write_paths に一致し、write_paths_deny と固定の自己防護
@@ -58,19 +68,25 @@ const path = require("path");
 const pw = path.win32;
 const LEADER_AGENT_ID = "vlad-tepes";
 const AGENT_ID_PATTERN = /^[A-Za-z0-9_-]+$/;
-const LIST_KEYS = ["bash", "write_paths", "write_paths_deny", "read_paths", "secret_paths", "agents", "skills"];
+const LIST_KEYS = [
+  "bash", "bash_exact", "write_paths", "write_paths_deny", "read_paths", "secret_paths", "agents", "skills",
+  "delete_paths", "delete_keep",
+];
 const WRITE_TOOLS = new Set(["Write", "Edit", "MultiEdit", "NotebookEdit"]);
 const SELF_PROTECTED = [".claude/", "team/", ".git/"];
 // 組み込みの Explore の固定の権限（permissions.json は持てない）。読める場所は ./ と C:/b/、秘密は止める。
 const EXPLORE_TOOLS = new Set(["Read", "Glob", "Grep"]);
 const EXPLORE_ALLOWLIST = {
   bash: [],
+  bash_exact: [],
   write_paths: [],
   write_paths_deny: [],
   read_paths: ["./", "C:/b/"],
   secret_paths: ["%LOCALAPPDATA%/Shuko/watch/", "%LOCALAPPDATA%/Shuko/secrets/"],
   agents: [],
   skills: [],
+  delete_paths: [],
+  delete_keep: [],
 };
 
 function block(message) {
@@ -296,6 +312,12 @@ function pathUnderDir(word, dirSegs) {
 function buildMatcher(entry) {
   if (entry.endsWith("/")) return buildDirScopedMatcher(entry);
   const re = compileCommand(entry);
+  return (segment) => re.test(segment);
+}
+
+// bash_exact の許可1つを、断片の全体に一致する照合器にする（後ろに語を足せない。* は STAR）。
+function buildExactMatcher(entry) {
+  const re = new RegExp(`^${entry.split("*").map(escapeRegExp).join(STAR)}$`);
   return (segment) => re.test(segment);
 }
 
@@ -808,12 +830,92 @@ function checkBash(rawCommand, allowlist, secrets, ctx) {
   }
   // permissions.json の bash とは別に、全員に効く固定の検査（node・NODE_OPTIONS・pnpm/npx・git の危険なオプション・書き出し先）
   checkCommandSafety(rawCommand, allowlist, secrets, ctx);
-  const matchers = allowlist.bash.map(buildMatcher);
+  const matchers = allowlist.bash.map(buildMatcher).concat(allowlist.bash_exact.map(buildExactMatcher));
   const segments = splitCommand(command);
   if (segments.length === 0) block(`${agentId}: 空のコマンドは許可していません: ${JSON.stringify(rawCommand)}`);
   for (const segment of segments) {
-    if (!matchers.some((matcher) => matcher(segment))) {
-      block(`${agentId}: ホワイトリストに無いコマンドです: ${segment}（リーダーに許可の追加を依頼してください）`);
+    if (matchers.some((matcher) => matcher(segment))) continue;
+    // delete_paths を持つメンバーの rm は、削除の規則で判定する（通らなければ checkDelete が止める）
+    if (allowlist.delete_paths.length > 0 && /^rm(?:\s|$)/.test(segment)) {
+      checkDelete(segment, allowlist, secrets, ctx);
+      continue;
+    }
+    block(`${agentId}: ホワイトリストに無いコマンドです: ${segment}（リーダーに許可の追加を依頼してください）`);
+  }
+}
+
+// ---- 削除（delete_paths・delete_keep） ----
+
+// 断片の形: rm -rf のあとに、半角空白1つずつで区切ったパスが1つ以上。
+const DELETE_SEGMENT = /^rm -rf((?: [^ ]+)+)$/;
+// パス1つの形: ドライブから始まる絶対パスで、英数字と . _ @ + = - / だけ（引用符・\・$・グロブ・~・%・コロンは不可）。
+const DELETE_WORD = /^[A-Za-z]:\/[A-Za-z0-9._@+=\/-]+$/;
+
+// 規則の区切り（文字列か正規表現）の先頭 n 個が、対象の区切りの先頭 n 個に一致するか。
+function headMatches(ruleSegs, segs, n) {
+  for (let i = 0; i < n; i++) {
+    const want = ruleSegs[i];
+    if (typeof want === "string" ? want !== segs[i] : !want.test(segs[i])) return false;
+  }
+  return true;
+}
+
+// 削除の規則が対象を覆うか。末尾が / の規則はそのディレクトリの下だけ（そのものは不可）、
+// 末尾が / でない規則（C:/b/trial-* など）はその区切りそのものとその下。
+function deleteRuleCovers(rule, segs) {
+  const n = rule.segs.length;
+  if (segs.length < (rule.dir ? n + 1 : n)) return false;
+  return headMatches(rule.segs, segs, n);
+}
+
+// 残すもの（delete_keep）の規則に対象が触れるか。残すものそのもの・その下・その祖先のどれでも触れるとみなす。
+function keepTouches(rule, segs) {
+  return headMatches(rule.segs, segs, Math.min(rule.segs.length, segs.length));
+}
+
+function checkDelete(segment, allowlist, secrets, ctx) {
+  const { agentId } = ctx;
+  if (ctx.toolName !== "Bash") block(`${agentId}: 削除（rm -rf）は Bash ツールでだけ許可します: ${segment}`);
+  const m = DELETE_SEGMENT.exec(segment);
+  if (!m) {
+    block(
+      `${agentId}: ホワイトリストに無いコマンドです: ${segment}` +
+        `（削除は「rm -rf <パス> [<パス>…]」〔半角空白1つずつ〕の形だけ許可します）`,
+    );
+  }
+  const rules = compileRules(allowlist.delete_paths.filter((entry) => /^[A-Za-z]:\//.test(entry)), false, false);
+  const keep = compileRules(allowlist.delete_keep, false, true);
+  const selfRules = compileRules(SELF_PROTECTED, false, true);
+  if (!keep || !selfRules) block(`${agentId}: 残すもの・自己防護の場所の実体をたどれないため削除を止めました: ${segment}`);
+  const projectReal = realize(PROJECT_DIR);
+  const projectForms = [keyOf(PROJECT_DIR)].concat(projectReal.error ? [] : [keyOf(projectReal.win)]);
+  for (const word of m[1].trim().split(" ")) {
+    if (!DELETE_WORD.test(word)) {
+      block(
+        `${agentId}: 削除するパスは C:/… の絶対パスで、英数字と . _ @ + = - / だけにしてください` +
+          `（引用符・\\・$・グロブ・~・%・/c/… の形は不可）: ${word}`,
+      );
+    }
+    const parts = word.slice(3).replace(/\/+$/, "").split("/");
+    if (parts.some((s) => s === "" || s === "." || s === "..")) {
+      block(`${agentId}: 削除するパスに . ・.. ・空の区切りを含めないでください: ${word}`);
+    }
+    const forms = targetForms(word, { agentId, relativeOk: false }, "削除");
+    checkSecretPath(forms, secrets, agentId, word, true);
+    for (const t of forms) {
+      if (
+        t.segs.includes(".git") ||
+        selfRules.some((rule) => ruleMatches(rule, t.segs)) ||
+        projectForms.some((p) => under(p.segs, t.segs))
+      ) {
+        block(`${agentId}: プロジェクトそのもの・その祖先・.claude/・team/・.git は削除できません: ${word}`);
+      }
+      if (!rules.some((rule) => deleteRuleCovers(rule, t.segs))) {
+        block(`${agentId}: 削除を許可していない場所です（delete_paths の下ではない。規則のディレクトリそのものも不可）: ${word}`);
+      }
+      if (keep.some((rule) => keepTouches(rule, t.segs))) {
+        block(`${agentId}: 残すもの（delete_keep）そのもの・その下・その祖先は削除できません: ${word}`);
+      }
     }
   }
 }
@@ -1173,7 +1275,7 @@ function main() {
       cwd = normalized.win;
     }
     const relativeOk = cwd === null || keyOf(cwd).key === keyOf(PROJECT_DIR).key;
-    const ctx = { agentId, relativeOk, cwdWin: cwd || PROJECT_DIR };
+    const ctx = { agentId, relativeOk, cwdWin: cwd || PROJECT_DIR, toolName };
     const lazySecrets = () => compileSecrets(allowlist.secret_paths);
 
     if (toolName === "Bash" || toolName === "PowerShell") {
