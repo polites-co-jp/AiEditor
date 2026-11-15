@@ -56,15 +56,22 @@
   .gitignore                      作業ツリー・キャッシュ・zip・秘密を外す
 ```
 
-ビルドの作業場所はリポジトリの外に置く。パスに空白と ASCII 以外の文字を入れない（本家の手順の条件）[一次] https://github.com/microsoft/vscode/wiki/How-to-Contribute 。Windows のパス長の制限を避けるため、短い場所にする（推定。既定 `C:\b\`。`local.json` の `buildRoot` で変えられる。6.1）。
+ビルドの作業場所と一時のファイルは C: に置かない。既定はリポジトリの `tmp\b\`（`.gitignore` 済み。`local.json` の `buildRoot` で変えられる。6.1）。2026-11-15 のユーザーの裁定（`docs/user-decisions.md` の「C: に置かない」「ビルドの置き場所と Phase 0 の残り」）。パスに空白と ASCII 以外の文字を入れない（本家の手順の条件）[一次] https://github.com/microsoft/vscode/wiki/How-to-Contribute 。この PC は長いパス（`LongPathsEnabled`）が無効なので、260 文字を超えないように、`tmp\b` の下の名前を短く保つ（`C:\b` より 41 文字長い。ビルドの木は 233 文字まで。スモークと「消えている」の検査の実行のフォルダの名前は短くする。`tasks/2026-11-15-move-off-c/`）。
 
 ```
-C:\b\vscode\                      本家の常設 clone（fetch だけする）
-C:\b\wt\<tag>\                    タグごとの作業ツリー（git worktree。使い捨て）
-C:\b\wt\VSCode-win32-x64\         gulp の出力（作業ツリーの親の直下。作業ツリーが C:\b\wt\<tag> なので C:\b\wt の下）
-C:\b\cache\vsix\                  台帳の VSIX のキャッシュ
-C:\b\dist\                        zip の置き場
+<repo>\tmp\b\vscode\                 本家の常設 clone（fetch だけする）
+<repo>\tmp\b\wt\<tag>\               タグごとの作業ツリー（git worktree。使い捨て）
+<repo>\tmp\b\wt\VSCode-win32-x64\    gulp の出力（作業ツリーの親の直下）
+<repo>\tmp\b\cache\vsix\             台帳の VSIX のキャッシュ
+<repo>\tmp\b\cache\...               pnpm の store・キャッシュ、npm のキャッシュ、Electron などの道具のキャッシュ（ビルドの子の環境だけで向ける）
+<repo>\tmp\b\tmp\                    ビルドの子の TEMP・TMP
+<repo>\tmp\b\dist\                   zip の置き場
+<repo>\tmp\b\smoke\                  スモークの実行と基準
 ```
+
+- ビルドの子の環境（`scripts/build.mjs` の `childEnv`、`scripts/lib/build-env.mjs`）は、`TEMP`・`TMP` を `<buildRoot>\tmp` に、pnpm の store とキャッシュ（`pnpm_config_store_dir`・`pnpm_config_cache_dir`）と npm のキャッシュ（`npm_config_cache`）を `<buildRoot>\cache\...` に向ける。依存の導入・型検査・パッケージ化の手順だけは `LOCALAPPDATA` も `<buildRoot>\cache\localappdata` に向ける（Electron のキャッシュと node-gyp のヘッダーは `LOCALAPPDATA` を決め打ちで見るため）。利用者の全体の設定（`~/.npmrc`・環境変数）は変えない。
+- テストの子の `TEMP`・`TMP` も `<repo>\tmp\` の下に向ける（`tests/run-all.mjs`）。
+- エージェントは `tmp/` の下を探さない（`CLAUDE.md`）。
 
 ## 3. product.json の上書き
 
@@ -178,7 +185,7 @@ C:\b\dist\                        zip の置き場
   "installRoot": "%LOCALAPPDATA%\\Programs\\Shuko",
   "keepVersions": 3,
   "builderRepo": "E:\\develop\\shuko",
-  "buildRoot": "C:\\b"
+  "buildRoot": "E:\\develop\\shuko\\tmp\\b"
 }
 ```
 
@@ -187,7 +194,7 @@ C:\b\dist\                        zip の置き場
 | `installRoot` | 版のフォルダ（`versions\`・`current`・`history.txt`・`backups\`）を置く場所 | `%LOCALAPPDATA%\Programs\Shuko` |
 | `keepVersions` | 残す版のフォルダの数 | `3` |
 | `builderRepo` | ビルドリポジトリの場所（台帳 `extensions.lock.json` やスクリプトを読むため） | 既定なし。`configure.ps1` を実行したリポジトリの場所を書く |
-| `buildRoot` | ビルドの作業場所（本家の clone、作業ツリー、キャッシュ、zip。2節） | `C:\b` |
+| `buildRoot` | ビルドの作業場所（本家の clone、作業ツリー、キャッシュ、zip。2節） | `<ビルドリポジトリ>\tmp\b`（2026-11-15 まで `C:\b`） |
 
 - 値の中の `%NAME%` は、読むときに環境変数で展開する。
 - ファイルやキーが無ければ既定値を使う。JSON として読めない、型が違う、などのときは止めてエラーを出す（推測で既定値に戻さない）。

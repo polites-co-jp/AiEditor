@@ -35,4 +35,5 @@ Claude Code でのコーディングに特化した、省メモリの VS Code �
 - LLM の処理は Anthropic の API キーを使わず、すべて `claude -p` で起動する。
 - 成果物のファイル名を、`report` / `summary` / `findings` / `analysis` で始まる `.md` にしない（大文字小文字を問わない）。サブエージェントがこの名前を書こうとすると、Claude Code 本体が拒否する。例: `report.md` ではなく `verification-report.md`、`summary.md` ではなく `phase0-summary.md`。
 - トークンなどの秘密は、DPAPI で保護したファイル（`%LOCALAPPDATA%\<editor>\` の下。docs/06 の2.4）に置く。エージェントは直接開かず、スクリプト（`scripts/lib/read-secret.ps1`）だけが読む。
-- ビルドの作業場所はリポジトリの外（既定 `C:\b\`。`local.json` の `buildRoot`）。
+- ビルドの作業場所と一時のファイルは C: に置かない。既定はリポジトリの `tmp\b\`（`.gitignore` 済み。`local.json` の `buildRoot` で変えられる）。2026-11-15 のユーザーの裁定。この PC は長いパスが無効なので、`tmp\b` の下に深い名前を作らない。
+- **`tmp/` の下を探さない**。`tmp/b` には本家の clone・作業ツリー・`node_modules` があり、数十万のファイルがある。Glob・Grep は `.gitignore` を見ないことがあるので、リポジトリの直下で探すときは `path` を `docs/`・`scripts/`・`tests/`・`removals/`・`tasks/` などに絞る。作業ツリーの中を探すときは、そのフォルダを `path` に渡す。
