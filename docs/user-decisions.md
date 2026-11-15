@@ -365,3 +365,15 @@
 | C-6: `update.ts` の `accessor.get(IUserDataSyncWorkbenchService)` | 直さない（デスクトップでは操作が登録されない） |
 | C-1: 何もしない実装の `lm.registerToolDefinition` に、提案中の API の門（`languageModelToolSupportsModel`）が無い。C-4 の門の抜けを受けて、テストの期待を本家から読む形にして見つかった | 直す（蒙恬）。C-1 は 0a76c75 でコミット済みで `enabled` は `false` なので、日常の版には響かない。直した後に大岡越前守が確かめ直す |
 | 門の検査の期待を実装から写していた（C-1・C-2・C-4） | 本家の消すファイルから読む形にそろえる（曹参が直した） |
+
+## 記録（2026-11-15、C-7 の edits.patch を作るときに出た点。リーダーの判断）
+
+根拠: `tasks/2026-11-15-p5-c7-patch/handoff-notes.md`
+
+| 論点 | 扱い |
+|---|---|
+| `IEditorPartOptions.showBreadcrumbs`（読み手は消した `breadcrumbsControl.ts` だけ） | 消す（2026-11-14 の規則の当てはめ） |
+| `EditorHeaderControl.handleEditorsChange` と呼ぶ側 | 消す（何もしない入口を枠に残さない） |
+| 1枚のタブの説明の出し方（`breadcrumbsInHeader` の分岐） | 採った案のまま（ヘッダーを使うのは C-1 が消す窓だけで、このビルドの画面は変わらない見込み。関門で見る） |
+| テストの設定値と見本の説明の文の「breadcrumb」 | 残す（動きに関わらない。ハンクを増やさない） |
+| C-7 を今の案で関門へ進めるか、別案（設定で隠して止める）を先に諮るか | 今の案で進める。docs/07 の8節のとおり、関門を2回続けて通らなければユーザーに諮る。枠のファイルの衝突の手間は Phase 3 と同じ形で測る |
