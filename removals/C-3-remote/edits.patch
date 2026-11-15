@@ -1,0 +1,35 @@
+From 582bd5eb3af3eacddc8cce9ef3559ba6220047e1 Mon Sep 17 00:00:00 2001
+From: shuko-apply <apply@shuko.invalid>
+Date: Sun, 15 Nov 2026 11:41:25 +0900
+Subject: [PATCH] unit C-3-remote: edits
+
+---
+ src/vs/workbench/api/browser/viewsExtensionPoint.ts | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/src/vs/workbench/api/browser/viewsExtensionPoint.ts b/src/vs/workbench/api/browser/viewsExtensionPoint.ts
+index 833787070f3..9be3d3ca598 100644
+--- a/src/vs/workbench/api/browser/viewsExtensionPoint.ts
++++ b/src/vs/workbench/api/browser/viewsExtensionPoint.ts
+@@ -24,13 +24,17 @@ import { IWorkbenchContribution, WorkbenchPhase, registerWorkbenchContribution2
+ import { ICustomViewDescriptor, IViewContainersRegistry, IViewDescriptor, IViewsRegistry, ViewContainer, Extensions as ViewContainerExtensions, ViewContainerLocation } from '../../common/views.js';
+ import { VIEWLET_ID as DEBUG } from '../../contrib/debug/common/debug.js';
+ import { VIEWLET_ID as EXPLORER } from '../../contrib/files/common/files.js';
+-import { VIEWLET_ID as REMOTE } from '../../contrib/remote/browser/remoteExplorer.js';
+ import { VIEWLET_ID as SCM } from '../../contrib/scm/common/scm.js';
+ import { WebviewViewPane } from '../../contrib/webviewView/browser/webviewViewPane.js';
+ import { Extensions as ExtensionFeaturesRegistryExtensions, IExtensionFeatureTableRenderer, IExtensionFeaturesRegistry, IRenderedData, IRowData, ITableData } from '../../services/extensionManagement/common/extensionFeatures.js';
+ import { isProposedApiEnabled } from '../../services/extensions/common/extensions.js';
+ import { ExtensionMessageCollector, ExtensionsRegistry, IExtensionPoint, IExtensionPointUser } from '../../services/extensions/common/extensionsRegistry.js';
+ 
++// Shuko (C-3-remote): the remote explorer (contrib/remote) is removed. Same value as VIEWLET_ID in
++// contrib/remote/browser/remoteExplorer.ts. The container is no longer registered, so views that
++// extensions contribute to 'remote' go to the Explorer with the existing warning.
++const REMOTE = 'workbench.view.remote';
++
+ export interface IUserFriendlyViewsContainerDescriptor {
+ 	id: string;
+ 	title: string;
+-- 
+2.54.0.windows.1
+

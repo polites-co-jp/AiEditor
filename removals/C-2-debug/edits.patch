@@ -1,0 +1,533 @@
+From c448c24793ebd5fc02c56ca57a7a3843f430007e Mon Sep 17 00:00:00 2001
+From: shuko-apply <apply@shuko.invalid>
+Date: Sun, 15 Nov 2026 11:25:45 +0900
+Subject: [PATCH] unit C-2-debug: edits
+
+Remove the references to the debugger - run and debug view, breakpoints, debug console, debug adapters, notebook variables view - from the remaining files. The debug member of the extension API does nothing, see extHostRemovedApi.debug.ts. IDebugService and IDebugVisualizerService are backed by the upstream NullDebugService and NullDebugVisualizerService, registered by debug.service.contribution.ts, which workbench.common.main.ts now imports. The removed debug API shapes are dropped from extHost.protocol.ts. The notebook settings notebook.variablesView and notebook.inlineValues are no longer registered, and the find keybinding of the debug console is gone.
+---
+ .../workbench/api/common/extHost.api.impl.ts  |  71 +-------
+ .../workbench/api/common/extHost.protocol.ts  | 153 ------------------
+ .../api/common/extHostRemovedApi.debug.ts     | 109 +++++++++++++
+ .../browser/debug.service.contribution.ts     |  11 +-
+ .../browser/controller/editActions.ts         |   3 -
+ .../notebook/browser/notebook.contribution.ts |  20 +--
+ .../replNotebook/browser/repl.contribution.ts |  14 +-
+ src/vs/workbench/workbench.common.main.ts     |   1 +
+ 8 files changed, 121 insertions(+), 261 deletions(-)
+ create mode 100644 src/vs/workbench/api/common/extHostRemovedApi.debug.ts
+
+diff --git a/src/vs/workbench/api/common/extHost.api.impl.ts b/src/vs/workbench/api/common/extHost.api.impl.ts
+index c42da7f6e97..84f1fbf9cce 100644
+--- a/src/vs/workbench/api/common/extHost.api.impl.ts
++++ b/src/vs/workbench/api/common/extHost.api.impl.ts
+@@ -52,7 +52,7 @@ import { createExtHostComments } from './extHostComments.js';
+ import { ExtHostConfigProvider, IExtHostConfiguration } from './extHostConfiguration.js';
+ import { ExtHostCustomEditors } from './extHostCustomEditors.js';
+ import { IExtHostDataChannels } from './extHostDataChannels.js';
+-import { IExtHostDebugService } from './extHostDebugService.js';
++import { createRemovedDebugApi } from './extHostRemovedApi.debug.js';
+ import { IExtHostDecorations } from './extHostDecorations.js';
+ import { ExtHostDiagnostics } from './extHostDiagnostics.js';
+ import { ExtHostDialogs } from './extHostDialogs.js';
+@@ -212,7 +212,6 @@ export function createApiFactoryAndRegisterActors(accessor: ServicesAccessor): I
+ 	const extHostCommands = rpcProtocol.set(ExtHostContext.ExtHostCommands, accessor.get(IExtHostCommands));
+ 	const extHostTerminalService = rpcProtocol.set(ExtHostContext.ExtHostTerminalService, accessor.get(IExtHostTerminalService));
+ 	const extHostTerminalShellIntegration = rpcProtocol.set(ExtHostContext.ExtHostTerminalShellIntegration, accessor.get(IExtHostTerminalShellIntegration));
+-	const extHostDebugService = rpcProtocol.set(ExtHostContext.ExtHostDebugService, accessor.get(IExtHostDebugService));
+ 	const extHostSearch = rpcProtocol.set(ExtHostContext.ExtHostSearch, accessor.get(IExtHostSearch));
+ 	const extHostTask = rpcProtocol.set(ExtHostContext.ExtHostTask, accessor.get(IExtHostTask));
+ 	const extHostOutputService = rpcProtocol.set(ExtHostContext.ExtHostOutputService, accessor.get(IExtHostOutputService));
+@@ -1553,73 +1552,7 @@ export function createApiFactoryAndRegisterActors(accessor: ServicesAccessor): I
+ 		};
+ 
+ 		// namespace: debug
+-		const debug: typeof vscode.debug = {
+-			get activeDebugSession() {
+-				return extHostDebugService.activeDebugSession;
+-			},
+-			get activeDebugConsole() {
+-				return extHostDebugService.activeDebugConsole;
+-			},
+-			get breakpoints() {
+-				return extHostDebugService.breakpoints;
+-			},
+-			get activeStackItem() {
+-				return extHostDebugService.activeStackItem;
+-			},
+-			registerDebugVisualizationProvider(id, provider) {
+-				checkProposedApiEnabled(extension, 'debugVisualization');
+-				return extHostDebugService.registerDebugVisualizationProvider(extension, id, provider);
+-			},
+-			registerDebugVisualizationTreeProvider(id, provider) {
+-				checkProposedApiEnabled(extension, 'debugVisualization');
+-				return extHostDebugService.registerDebugVisualizationTree(extension, id, provider);
+-			},
+-			onDidStartDebugSession(listener, thisArg?, disposables?) {
+-				return _asExtensionEvent(extHostDebugService.onDidStartDebugSession)(listener, thisArg, disposables);
+-			},
+-			onDidTerminateDebugSession(listener, thisArg?, disposables?) {
+-				return _asExtensionEvent(extHostDebugService.onDidTerminateDebugSession)(listener, thisArg, disposables);
+-			},
+-			onDidChangeActiveDebugSession(listener, thisArg?, disposables?) {
+-				return _asExtensionEvent(extHostDebugService.onDidChangeActiveDebugSession)(listener, thisArg, disposables);
+-			},
+-			onDidReceiveDebugSessionCustomEvent(listener, thisArg?, disposables?) {
+-				return _asExtensionEvent(extHostDebugService.onDidReceiveDebugSessionCustomEvent)(listener, thisArg, disposables);
+-			},
+-			onDidChangeBreakpoints(listener, thisArgs?, disposables?) {
+-				return _asExtensionEvent(extHostDebugService.onDidChangeBreakpoints)(listener, thisArgs, disposables);
+-			},
+-			onDidChangeActiveStackItem(listener, thisArg?, disposables?) {
+-				return _asExtensionEvent(extHostDebugService.onDidChangeActiveStackItem)(listener, thisArg, disposables);
+-			},
+-			registerDebugConfigurationProvider(debugType: string, provider: vscode.DebugConfigurationProvider, triggerKind?: vscode.DebugConfigurationProviderTriggerKind) {
+-				return extHostDebugService.registerDebugConfigurationProvider(debugType, provider, triggerKind || DebugConfigurationProviderTriggerKind.Initial);
+-			},
+-			registerDebugAdapterDescriptorFactory(debugType: string, factory: vscode.DebugAdapterDescriptorFactory) {
+-				return extHostDebugService.registerDebugAdapterDescriptorFactory(extension, debugType, factory);
+-			},
+-			registerDebugAdapterTrackerFactory(debugType: string, factory: vscode.DebugAdapterTrackerFactory) {
+-				return extHostDebugService.registerDebugAdapterTrackerFactory(debugType, factory);
+-			},
+-			startDebugging(folder: vscode.WorkspaceFolder | undefined, nameOrConfig: string | vscode.DebugConfiguration, parentSessionOrOptions?: vscode.DebugSession | vscode.DebugSessionOptions) {
+-				if (!parentSessionOrOptions || (typeof parentSessionOrOptions === 'object' && 'configuration' in parentSessionOrOptions)) {
+-					return extHostDebugService.startDebugging(folder, nameOrConfig, { parentSession: parentSessionOrOptions });
+-				}
+-				return extHostDebugService.startDebugging(folder, nameOrConfig, parentSessionOrOptions || {});
+-			},
+-			stopDebugging(session?: vscode.DebugSession) {
+-				return extHostDebugService.stopDebugging(session);
+-			},
+-			addBreakpoints(breakpoints: readonly vscode.Breakpoint[]) {
+-				return extHostDebugService.addBreakpoints(breakpoints);
+-			},
+-			removeBreakpoints(breakpoints: readonly vscode.Breakpoint[]) {
+-				return extHostDebugService.removeBreakpoints(breakpoints);
+-			},
+-			asDebugSourceUri(source: vscode.DebugProtocolSource, session?: vscode.DebugSession): vscode.Uri {
+-				return extHostDebugService.asDebugSourceUri(source, session);
+-			}
+-		};
++		const debug: typeof vscode.debug = createRemovedDebugApi(extension);
+ 
+ 		const tasks: typeof vscode.tasks = {
+ 			registerTaskProvider: (type: string, provider: vscode.TaskProvider) => {
+diff --git a/src/vs/workbench/api/common/extHost.protocol.ts b/src/vs/workbench/api/common/extHost.protocol.ts
+index 6f681cd86e7..0d9853991d9 100644
+--- a/src/vs/workbench/api/common/extHost.protocol.ts
++++ b/src/vs/workbench/api/common/extHost.protocol.ts
+@@ -2286,52 +2286,6 @@ export interface MainThreadDocumentDiffShape extends IDisposable {
+ 	$computeDocumentDiff(originalUri: UriComponents, modifiedUri: UriComponents, ignoreTrimWhitespace: boolean, maxComputationTimeMs: number, computeMoves: boolean): Promise<IDocumentDiffResultDto | null>;
+ }
+ 
+-export type DebugSessionUUID = string;
+-
+-export interface IDebugConfiguration {
+-	type: string;
+-	name: string;
+-	request: string;
+-	[key: string]: any;
+-}
+-
+-export interface IStartDebuggingOptions {
+-	parentSessionID?: DebugSessionUUID;
+-	lifecycleManagedByParent?: boolean;
+-	repl?: IDebugSessionReplMode;
+-	noDebug?: boolean;
+-	compact?: boolean;
+-	suppressDebugToolbar?: boolean;
+-	suppressDebugStatusbar?: boolean;
+-	suppressDebugView?: boolean;
+-	suppressSaveBeforeStart?: boolean;
+-	testRun?: IDebugTestRunReference;
+-}
+-
+-export interface MainThreadDebugServiceShape extends IDisposable {
+-	$registerDebugTypes(debugTypes: string[]): void;
+-	$sessionCached(sessionID: string): void;
+-	$acceptDAMessage(handle: number, message: DebugProtocol.ProtocolMessage): void;
+-	$acceptDAError(handle: number, name: string, message: string, stack: string | undefined): void;
+-	$acceptDAExit(handle: number, code: number | undefined, signal: string | undefined): void;
+-	$registerDebugConfigurationProvider(type: string, triggerKind: DebugConfigurationProviderTriggerKind, hasProvideMethod: boolean, hasResolveMethod: boolean, hasResolve2Method: boolean, handle: number): Promise<void>;
+-	$registerDebugAdapterDescriptorFactory(type: string, handle: number): Promise<void>;
+-	$unregisterDebugConfigurationProvider(handle: number): void;
+-	$unregisterDebugAdapterDescriptorFactory(handle: number): void;
+-	$startDebugging(folder: UriComponents | undefined, nameOrConfig: string | IDebugConfiguration, options: IStartDebuggingOptions): Promise<boolean>;
+-	$stopDebugging(sessionId: DebugSessionUUID | undefined): Promise<void>;
+-	$setDebugSessionName(id: DebugSessionUUID, name: string): void;
+-	$customDebugAdapterRequest(id: DebugSessionUUID, command: string, args: any): Promise<any>;
+-	$getDebugProtocolBreakpoint(id: DebugSessionUUID, breakpoinId: string): Promise<DebugProtocol.Breakpoint | undefined>;
+-	$appendDebugConsole(value: string): void;
+-	$registerBreakpoints(breakpoints: Array<ISourceMultiBreakpointDto | IFunctionBreakpointDto | IDataBreakpointDto>): Promise<void>;
+-	$unregisterBreakpoints(breakpointIds: string[], functionBreakpointIds: string[], dataBreakpointIds: string[]): Promise<void>;
+-	$registerDebugVisualizer(extensionId: string, id: string): void;
+-	$unregisterDebugVisualizer(extensionId: string, id: string): void;
+-	$registerDebugVisualizerTree(treeId: string, canEdit: boolean): void;
+-	$unregisterDebugVisualizerTree(treeId: string): void;
+-}
+-
+ export interface IOpenUriOptions {
+ 	readonly allowTunneling?: boolean;
+ 	readonly allowContributedOpeners?: boolean | string;
+@@ -3363,113 +3317,6 @@ export interface ExtHostTaskShape {
+ 	$findExecutable(command: string, cwd?: string, paths?: string[]): Promise<string | undefined>;
+ }
+ 
+-export interface IBreakpointDto {
+-	type: string;
+-	id?: string;
+-	enabled: boolean;
+-	condition?: string;
+-	hitCondition?: string;
+-	logMessage?: string;
+-	mode?: string;
+-}
+-
+-export interface IFunctionBreakpointDto extends IBreakpointDto {
+-	type: 'function';
+-	functionName: string;
+-	mode?: string;
+-}
+-
+-export interface IDataBreakpointDto extends IBreakpointDto {
+-	type: 'data';
+-	dataId: string;
+-	canPersist: boolean;
+-	label: string;
+-	accessTypes?: DebugProtocol.DataBreakpointAccessType[];
+-	accessType: DebugProtocol.DataBreakpointAccessType;
+-	mode?: string;
+-}
+-
+-export interface ISourceBreakpointDto extends IBreakpointDto {
+-	type: 'source';
+-	uri: UriComponents;
+-	line: number;
+-	character: number;
+-}
+-
+-export interface IBreakpointsDeltaDto {
+-	added?: Array<ISourceBreakpointDto | IFunctionBreakpointDto | IDataBreakpointDto>;
+-	removed?: string[];
+-	changed?: Array<ISourceBreakpointDto | IFunctionBreakpointDto | IDataBreakpointDto>;
+-}
+-
+-export interface ISourceMultiBreakpointDto {
+-	type: 'sourceMulti';
+-	uri: UriComponents;
+-	lines: {
+-		id: string;
+-		enabled: boolean;
+-		condition?: string;
+-		hitCondition?: string;
+-		logMessage?: string;
+-		line: number;
+-		character: number;
+-		mode?: string;
+-	}[];
+-}
+-
+-export interface IDebugSessionFullDto {
+-	id: DebugSessionUUID;
+-	type: string;
+-	name: string;
+-	parent: DebugSessionUUID | undefined;
+-	folderUri: UriComponents | undefined;
+-	configuration: IConfig;
+-}
+-
+-export type IDebugSessionDto = IDebugSessionFullDto | DebugSessionUUID;
+-
+-export interface IThreadFocusDto {
+-	kind: 'thread';
+-	sessionId: string;
+-	threadId: number;
+-}
+-
+-export interface IStackFrameFocusDto {
+-	kind: 'stackFrame';
+-	sessionId: string;
+-	threadId: number;
+-	frameId: number;
+-}
+-
+-
+-export interface ExtHostDebugServiceShape {
+-	$substituteVariables(folder: UriComponents | undefined, config: IConfig): Promise<IConfig>;
+-	$runInTerminal(args: DebugProtocol.RunInTerminalRequestArguments, sessionId: string): Promise<number | undefined>;
+-	$startDASession(handle: number, session: IDebugSessionDto): Promise<void>;
+-	$stopDASession(handle: number): Promise<void>;
+-	$sendDAMessage(handle: number, message: DebugProtocol.ProtocolMessage): void;
+-	$resolveDebugConfiguration(handle: number, folder: UriComponents | undefined, debugConfiguration: IConfig, token: CancellationToken): Promise<IConfig | null | undefined>;
+-	$resolveDebugConfigurationWithSubstitutedVariables(handle: number, folder: UriComponents | undefined, debugConfiguration: IConfig, token: CancellationToken): Promise<IConfig | null | undefined>;
+-	$provideDebugConfigurations(handle: number, folder: UriComponents | undefined, token: CancellationToken): Promise<IConfig[]>;
+-	$provideDebugAdapter(handle: number, session: IDebugSessionDto): Promise<Dto<IAdapterDescriptor>>;
+-	$acceptDebugSessionStarted(session: IDebugSessionDto): void;
+-	$acceptDebugSessionTerminated(session: IDebugSessionDto): void;
+-	$acceptDebugSessionActiveChanged(session: IDebugSessionDto | undefined): void;
+-	$acceptDebugSessionCustomEvent(session: IDebugSessionDto, event: any): void;
+-	$acceptBreakpointsDelta(delta: IBreakpointsDeltaDto): void;
+-	$acceptDebugSessionNameChanged(session: IDebugSessionDto, name: string): void;
+-	$acceptStackFrameFocus(focus: IThreadFocusDto | IStackFrameFocusDto | undefined): void;
+-	$provideDebugVisualizers(extensionId: string, id: string, context: IDebugVisualizationContext, token: CancellationToken): Promise<IDebugVisualization.Serialized[]>;
+-	$resolveDebugVisualizer(id: number, token: CancellationToken): Promise<MainThreadDebugVisualization>;
+-	$executeDebugVisualizerCommand(id: number): Promise<void>;
+-	$disposeDebugVisualizers(ids: number[]): void;
+-	$getVisualizerTreeItem(treeId: string, element: IDebugVisualizationContext): Promise<IDebugVisualizationTreeItem.Serialized | undefined>;
+-	$getVisualizerTreeItemChildren(treeId: string, element: number): Promise<IDebugVisualizationTreeItem.Serialized[]>;
+-	$editVisualizerTreeItem(element: number, value: string): Promise<IDebugVisualizationTreeItem.Serialized | undefined>;
+-	$disposeVisualizedTree(element: number): void;
+-}
+-
+-
+ export interface DecorationRequest {
+ 	readonly id: number;
+ 	readonly uri: UriComponents;
+diff --git a/src/vs/workbench/api/common/extHostRemovedApi.debug.ts b/src/vs/workbench/api/common/extHostRemovedApi.debug.ts
+new file mode 100644
+index 00000000000..be8017d15bc
+--- /dev/null
++++ b/src/vs/workbench/api/common/extHostRemovedApi.debug.ts
+@@ -0,0 +1,109 @@
++/*---------------------------------------------------------------------------------------------
++ *  Copyright (c) Microsoft Corporation. All rights reserved.
++ *  Licensed under the MIT License. See License.txt in the project root for license information.
++ *--------------------------------------------------------------------------------------------*/
++
++import type * as vscode from 'vscode';
++import { Event } from '../../../base/common/event.js';
++import { URI } from '../../../base/common/uri.js';
++import { IExtensionDescription } from '../../../platform/extensions/common/extensions.js';
++import { checkProposedApiEnabled } from '../../services/extensions/common/extensions.js';
++
++/**
++ * Shuko (C-2-debug): the debugger (run and debug view, breakpoints, debug console, debug adapters)
++ * is removed. The extension API entry point `vscode.debug` stays, but does nothing:
++ * there is never an active session, registrations return a disposable that does nothing,
++ * `startDebugging` resolves to `false`, the debug console swallows its output and events never fire.
++ * Proposed API checks are kept so that the gating is the same as before.
++ */
++
++function noopDisposable(): vscode.Disposable {
++	return { dispose() { } };
++}
++
++const noopDebugConsole: vscode.DebugConsole = Object.freeze({
++	append(_value: string): void { },
++	appendLine(_value: string): void { },
++});
++
++/**
++ * Same as `ExtHostDebugServiceBase.asDebugSourceUri` of the removed `extHostDebugService.ts`
++ * (it does not need a debug session to exist).
++ */
++function asDebugSourceUri(src: vscode.DebugProtocolSource, session?: vscode.DebugSession): URI {
++	const source = src as { path?: string; sourceReference?: number };
++
++	if (typeof source.sourceReference === 'number' && source.sourceReference > 0) {
++		// src can be retrieved via DAP's "source" request
++
++		let debug = `debug:${encodeURIComponent(source.path || '')}`;
++		let sep = '?';
++
++		if (session) {
++			debug += `${sep}session=${encodeURIComponent(session.id)}`;
++			sep = '&';
++		}
++
++		debug += `${sep}ref=${source.sourceReference}`;
++
++		return URI.parse(debug);
++	} else if (source.path) {
++		// src is just a local file path
++		return URI.file(source.path);
++	} else {
++		throw new Error(`cannot create uri from DAP 'source' object; properties 'path' and 'sourceReference' are both missing.`);
++	}
++}
++
++export function createRemovedDebugApi(extension: IExtensionDescription): typeof vscode.debug {
++	return {
++		get activeDebugSession() {
++			return undefined;
++		},
++		get activeDebugConsole() {
++			return noopDebugConsole;
++		},
++		get breakpoints() {
++			return [];
++		},
++		get activeStackItem() {
++			return undefined;
++		},
++		registerDebugVisualizationProvider(_id, _provider) {
++			checkProposedApiEnabled(extension, 'debugVisualization');
++			return noopDisposable();
++		},
++		registerDebugVisualizationTreeProvider(_id, _provider) {
++			checkProposedApiEnabled(extension, 'debugVisualization');
++			return noopDisposable();
++		},
++		onDidStartDebugSession: Event.None,
++		onDidTerminateDebugSession: Event.None,
++		onDidChangeActiveDebugSession: Event.None,
++		onDidReceiveDebugSessionCustomEvent: Event.None,
++		onDidChangeBreakpoints: Event.None,
++		onDidChangeActiveStackItem: Event.None,
++		registerDebugConfigurationProvider(_debugType: string, _provider: vscode.DebugConfigurationProvider, _triggerKind?: vscode.DebugConfigurationProviderTriggerKind) {
++			return noopDisposable();
++		},
++		registerDebugAdapterDescriptorFactory(_debugType: string, _factory: vscode.DebugAdapterDescriptorFactory) {
++			return noopDisposable();
++		},
++		registerDebugAdapterTrackerFactory(_debugType: string, _factory: vscode.DebugAdapterTrackerFactory) {
++			return noopDisposable();
++		},
++		startDebugging(_folder: vscode.WorkspaceFolder | undefined, _nameOrConfig: string | vscode.DebugConfiguration, _parentSessionOrOptions?: vscode.DebugSession | vscode.DebugSessionOptions) {
++			return Promise.resolve(false);
++		},
++		stopDebugging(_session?: vscode.DebugSession) {
++			return Promise.resolve();
++		},
++		addBreakpoints(_breakpoints: readonly vscode.Breakpoint[]) {
++		},
++		removeBreakpoints(_breakpoints: readonly vscode.Breakpoint[]) {
++		},
++		asDebugSourceUri(source: vscode.DebugProtocolSource, session?: vscode.DebugSession): vscode.Uri {
++			return asDebugSourceUri(source, session);
++		}
++	};
++}
+diff --git a/src/vs/workbench/contrib/debug/browser/debug.service.contribution.ts b/src/vs/workbench/contrib/debug/browser/debug.service.contribution.ts
+index 93038daa11f..5d6d5458ca4 100644
+--- a/src/vs/workbench/contrib/debug/browser/debug.service.contribution.ts
++++ b/src/vs/workbench/contrib/debug/browser/debug.service.contribution.ts
+@@ -4,9 +4,12 @@
+  *--------------------------------------------------------------------------------------------*/
+ 
+ import { registerSingleton, InstantiationType } from '../../../../platform/instantiation/common/extensions.js';
+-import { DebugService } from './debugService.js';
+ import { IDebugService } from '../common/debug.js';
+-import { IDebugVisualizerService, DebugVisualizerService } from '../common/debugVisualizers.js';
++import { IDebugVisualizerService } from '../common/debugVisualizers.js';
++// Shuko (C-2-debug): the debugger is removed. The service IDs stay for the parts that remain
++// (testing, tasks, accessibility signals, extensions view, notebooks), backed by the
++// do-nothing implementations that upstream uses for the Agents window.
++import { NullDebugService, NullDebugVisualizerService } from '../common/nullDebugService.js';
+ 
+-registerSingleton(IDebugService, DebugService, InstantiationType.Delayed);
+-registerSingleton(IDebugVisualizerService, DebugVisualizerService, InstantiationType.Delayed);
++registerSingleton(IDebugService, NullDebugService, InstantiationType.Delayed);
++registerSingleton(IDebugVisualizerService, NullDebugVisualizerService, InstantiationType.Delayed);
+diff --git a/src/vs/workbench/contrib/notebook/browser/controller/editActions.ts b/src/vs/workbench/contrib/notebook/browser/controller/editActions.ts
+index c8debe80afe..dea8d12079a 100644
+--- a/src/vs/workbench/contrib/notebook/browser/controller/editActions.ts
++++ b/src/vs/workbench/contrib/notebook/browser/controller/editActions.ts
+@@ -374,9 +374,6 @@ registerAction2(class ClearAllCellOutputsAction extends NotebookAction {
+ 		if (clearExecutionMetadataEdits.length) {
+ 			context.notebookEditor.textModel.applyEdits(clearExecutionMetadataEdits, true, undefined, () => undefined, undefined, computeUndoRedo);
+ 		}
+-
+-		const controller = editor.getContribution<NotebookInlineVariablesController>(NotebookInlineVariablesController.id);
+-		controller.clearNotebookInlineDecorations();
+ 	}
+ });
+ 
+diff --git a/src/vs/workbench/contrib/notebook/browser/notebook.contribution.ts b/src/vs/workbench/contrib/notebook/browser/notebook.contribution.ts
+index ada0cfb0bb2..cb71b8c173c 100644
+--- a/src/vs/workbench/contrib/notebook/browser/notebook.contribution.ts
++++ b/src/vs/workbench/contrib/notebook/browser/notebook.contribution.ts
+@@ -19,10 +19,9 @@ import { Extensions, IConfigurationPropertySchema, IConfigurationRegistry } from
+ import { SyncDescriptor } from '../../../../platform/instantiation/common/descriptors.js';
+ import { InstantiationType, registerSingleton } from '../../../../platform/instantiation/common/extensions.js';
+ import { IInstantiationService } from '../../../../platform/instantiation/common/instantiation.js';
+-import { LifecyclePhase } from '../../../services/lifecycle/common/lifecycle.js';
+ import { Registry } from '../../../../platform/registry/common/platform.js';
+ import { EditorPaneDescriptor, IEditorPaneRegistry } from '../../../browser/editor.js';
+-import { Extensions as WorkbenchExtensions, IWorkbenchContribution, IWorkbenchContributionsRegistry, WorkbenchPhase, registerWorkbenchContribution2 } from '../../../common/contributions.js';
++import { IWorkbenchContribution, WorkbenchPhase, registerWorkbenchContribution2 } from '../../../common/contributions.js';
+ import { IEditorSerializer, IEditorFactoryRegistry, EditorExtensions } from '../../../common/editor.js';
+ import { EditorInput } from '../../../common/editor/editorInput.js';
+ import { NotebookEditor } from './notebookEditor.js';
+@@ -886,7 +885,6 @@ class NotebookLanguageSelectorScoreRefine {
+ 	}
+ }
+ 
+-const workbenchContributionsRegistry = Registry.as<IWorkbenchContributionsRegistry>(WorkbenchExtensions.Workbench);
+ registerWorkbenchContribution2(NotebookContribution.ID, NotebookContribution, WorkbenchPhase.BlockStartup);
+ registerWorkbenchContribution2(CellContentProvider.ID, CellContentProvider, WorkbenchPhase.BlockStartup);
+ registerWorkbenchContribution2(CellInfoContentProvider.ID, CellInfoContentProvider, WorkbenchPhase.BlockStartup);
+@@ -1261,22 +1259,6 @@ configurationRegistry.registerConfiguration({
+ 			type: 'boolean',
+ 			default: true
+ 		},
+-		[NotebookSetting.notebookVariablesView]: {
+-			markdownDescription: nls.localize('notebook.VariablesView.description', "Enable the experimental notebook variables view within the debug panel."),
+-			type: 'boolean',
+-			default: false
+-		},
+-		[NotebookSetting.notebookInlineValues]: {
+-			markdownDescription: nls.localize('notebook.inlineValues.description', "Control whether to show inline values within notebook code cells after cell execution. Values will remain until the cell is edited, re-executed, or explicitly cleared via the Clear All Outputs toolbar button or the `Notebook: Clear Inline Values` command."),
+-			type: 'string',
+-			enum: ['on', 'auto', 'off'],
+-			enumDescriptions: [
+-				nls.localize('notebook.inlineValues.on', "Always show inline values, with a regex fallback if no inline value provider is registered. Note: There may be a performance impact in larger cells if the fallback is used."),
+-				nls.localize('notebook.inlineValues.auto', "Show inline values only when an inline value provider is registered."),
+-				nls.localize('notebook.inlineValues.off', "Never show inline values."),
+-			],
+-			default: 'off'
+-		},
+ 		[NotebookSetting.cellFailureDiagnostics]: {
+ 			markdownDescription: nls.localize('notebook.cellFailureDiagnostics', "Show available diagnostics for cell failures."),
+ 			type: 'boolean',
+diff --git a/src/vs/workbench/contrib/replNotebook/browser/repl.contribution.ts b/src/vs/workbench/contrib/replNotebook/browser/repl.contribution.ts
+index 7f0774765b2..2baae3fceba 100644
+--- a/src/vs/workbench/contrib/replNotebook/browser/repl.contribution.ts
++++ b/src/vs/workbench/contrib/replNotebook/browser/repl.contribution.ts
+@@ -22,7 +22,7 @@ import { IConfigurationService } from '../../../../platform/configuration/common
+ import { ContextKeyExpr, IContextKeyService } from '../../../../platform/contextkey/common/contextkey.js';
+ import { SyncDescriptor } from '../../../../platform/instantiation/common/descriptors.js';
+ import { IInstantiationService, ServicesAccessor } from '../../../../platform/instantiation/common/instantiation.js';
+-import { KeybindingsRegistry, KeybindingWeight } from '../../../../platform/keybinding/common/keybindingsRegistry.js';
++import { KeybindingWeight } from '../../../../platform/keybinding/common/keybindingsRegistry.js';
+ import { Registry } from '../../../../platform/registry/common/platform.js';
+ import { EditorPaneDescriptor, IEditorPaneRegistry } from '../../../browser/editor.js';
+ import { IWorkbenchContribution, registerWorkbenchContribution2, WorkbenchPhase } from '../../../common/contributions.js';
+@@ -31,7 +31,6 @@ import { EditorInput } from '../../../common/editor/editorInput.js';
+ import { IEditorResolverService, RegisteredEditorPriority } from '../../../services/editor/common/editorResolverService.js';
+ import { IEditorService } from '../../../services/editor/common/editorService.js';
+ import { IExtensionService } from '../../../services/extensions/common/extensions.js';
+-import { IViewsService } from '../../../services/views/common/viewsService.js';
+ import { IWorkingCopyIdentifier } from '../../../services/workingCopy/common/workingCopy.js';
+ import { IWorkingCopyEditorHandler, IWorkingCopyEditorService } from '../../../services/workingCopy/common/workingCopyEditorService.js';
+ import { ResourceNotebookCellEdit } from '../../bulkEdit/browser/bulkCellEdits.js';
+@@ -482,14 +481,3 @@ async function executeReplInput(
+ }
+ 
+ AccessibleViewRegistry.register(new ReplEditorAccessibleView());
+-
+-KeybindingsRegistry.registerCommandAndKeybindingRule({
+-	id: 'list.find.replInputFocus',
+-	weight: KeybindingWeight.WorkbenchContrib + 1,
+-	when: ContextKeyExpr.equals('view', REPL_VIEW_ID),
+-	primary: KeyMod.CtrlCmd | KeyMod.Alt | KeyCode.KeyF,
+-	secondary: [KeyCode.F3],
+-	handler: (accessor) => {
+-		getReplView(accessor.get(IViewsService))?.openFind();
+-	}
+-});
+diff --git a/src/vs/workbench/workbench.common.main.ts b/src/vs/workbench/workbench.common.main.ts
+index b6951d9a8dd..e35a81b5a95 100644
+--- a/src/vs/workbench/workbench.common.main.ts
++++ b/src/vs/workbench/workbench.common.main.ts
+@@ -288,6 +288,7 @@ import './contrib/scm/browser/quickDiff.contribution.js';
+ import './contrib/scm/browser/scm.service.contribution.js';
+ 
+ // Debug
++import './contrib/debug/browser/debug.service.contribution.js';
+ 
+ // Markers
+ import './contrib/markers/browser/markers.contribution.js';
+-- 
+2.54.0.windows.1
+

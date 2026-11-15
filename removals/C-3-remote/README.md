@@ -2,7 +2,7 @@
 
 裁定（2026-11-12）: 削る候補にリモート開発（SSH・WSL・コンテナ）。裁定（同日、荀彧の方針の後）: 段階的に全部消す。
 
-> 状態: 下準備（2026-11-14）。`unit.json` の ops（`delete`・`removeLines`・`productRemove`）だけを作った。`edits.patch` は型検査を走らせられるようになってから作り、そのときに `unit.json` に `"patch": "edits.patch"` を足す。
+> 状態: edits.patch あり、関門の前（2026-11-15）。`enabled` は `false` のまま。A・B の14単位と C-1 の上で型検査が誤り 0 で通り、C-2 を挟んだ17単位でも当たる（`tasks/2026-11-15-p5-c3-patch/`）。ビルド・起動の確かめ・関門は、片づけの許可の後。
 
 ## 消すもの
 
@@ -43,11 +43,59 @@
 - lint の一覧（`.eslint-allowed-bracket-notation-files` の270・475・476行、`eslint.config.js` の441・845行）に消したファイルの名前が残る。関門は型検査とビルドなので直さない（ほかの単位と同じ扱い）。
 - `build/lib/i18n.resources.json` の `vs/workbench/contrib/remote`・`remoteTunnel`（翻訳の書き出し用。自前のビルドでは使わない見込み。B-2 と同じ）。
 
+## edits.patch で直した点（2026-11-15）
+
+A・B の14単位と C-1 と C-3 の ops を当てた作業ツリーで、型検査（`pnpm run typecheck-client`）の誤りは1件だけだった（上の表の見込みどおり）。1件を直して 0 になった。
+
+| ファイル | 直し方 |
+|---|---|
+| `src/vs/workbench/api/browser/viewsExtensionPoint.ts` | `contrib/remote/browser/remoteExplorer.js` の import の1行を消し、import の並びの後に同じ値の定数 `const REMOTE = 'workbench.view.remote';` を置いた（コメント `// Shuko (C-3-remote): ...`）。使う所（`canMoveView`・`workspace`・`getViewContainer('remote')`）は変えていない |
+
+- edits.patch は1ファイル、5行の追加、1行の削除。件名は `unit C-3-remote: edits`、作者は `shuko-apply <apply@shuko.invalid>`。
+- 拡張 API は変えていない。`extHost.api.impl.ts`・`extHost.protocol.ts` に触れず、`api/common/extHostRemovedApi.remote.ts` も作っていない（残す `mainThreadTunnelService.ts`・`extHostTunnelService.ts` が `workspace.openTunnel` などをそのまま受ける）。
+- `unit.json` は `"patch": "edits.patch"` を足しただけ。`delete`・`removeLines`・`kept`・`checks` は下準備のまま。
+
+### ほかの単位と独立に保つ形（docs/03 の5.3）
+
+- 直したファイル `viewsExtensionPoint.ts` は、A・B の単位・C-1・C-2 の edits.patch と `patches/` のどれも触らない（2026-11-15 に `removals/`・`patches/` を `grep` で確かめた）。前後の文脈の行（`contrib/debug/common/debug.js` の import を含む）も、C-2 は変えない。
+- そのため、C-2 の有無で C-3 のパッチの文脈は変わらない。C-2 を挟んだ組の C-3 の ops の commit の上で、`git apply --check` が行のずれも無く当たった（3-way に頼らない）。`removeLines` に回すものは無い。
+- `workbench.*.main.ts` と `sharedProcessMain.ts` は、下準備のとおり `removeLines` だけで直している（パッチに入れない）。
+
+### build/ の型（関門の外。直していない）
+
+`productRemove` で product.json から9つのキーを消すと、build/ の台本の型（product.json から推論される型）に誤りが6件出る（`npx tsc --noEmit --project build/tsconfig.json`）。
+
+| ファイル | 行（C-1 の後） | 読むキー | 実行時 |
+|---|---|---|---|
+| `build/gulpfile.vscode.ts` | 353・367 | `serverDataFolderName` | `|| '.vscode-remote'` の既定がある。パッケージ化で通る所だが、誤りにならない |
+| `build/gulpfile.vscode.win32.ts` | 96〜98 | `win32TunnelMutex`・`win32TunnelServiceMutex`・`tunnelApplicationName` | インストーラーの作成（`vscode-win32-x64-*-setup`）の中だけ。このビルドでは走らない |
+| `build/linux/dependencies-generator.ts` | 60 | `tunnelApplicationName` | Linux の版だけ |
+
+- gulp は `node --experimental-strip-types` で走る（`package.json` の `gulp`）ので、型の誤りでは止まらない。関門の型検査は `typecheck-client`（src だけ）。
+- A-3 の `builtInExtensions: []` から来る1件（`gulpfile.vscode.ts` の139行）と同じ扱いにして、直していない。直すなら、`gulpfile.vscode.ts` を C-1 も直しているので、パッチの文脈が重ならない形にする必要がある（判断を仰ぐ点）。
+
+## Claude Code と台帳の拡張への影響
+
+- Claude Code（2.1.322）の manifest（`records/phase0/claude-code-manifest.md`、`C:\b\cache\vsix\anthropic.claude-code-2.1.322@win32-x64\package.json`）に、`viewsContainers`・`views` の `remote`、`extensionKind`、`resolvers`・`remoteHelp`、`onResolveRemoteAuthority`・`onTunnel` などの起動の条件は無い。
+- Claude Code の受け手は消していない。
+  - Webview（パネル）が注入する `ITunnelService`（`services/tunnel`）、`ISharedProcessTunnelService`（`platform/remote`）、`platform/tunnel` は残した。ローカルの窓では `canTunnel` が偽で、何もしない。
+  - `vscode.env.asExternalUri`（外部の URI の解決。`electron-browser/window.ts` が `ITunnelService` を使う）も残る部品だけを通る。ローカルでは URI はそのまま返る（本家と同じ）。
+  - セカンダリサイドバー・JSON の検査・ワークスペースの信頼・コメント・差分エディタ・拡張のファイルシステムには触れていない。
+- 台帳のほかの7つ（PowerShell・basedpyright・bash-ide・rainbow-csv・dotenv・pdf・日本語の言語パック）の package.json にも、上の項目は無い（2026-11-15 に `grep` で確かめた）。`tomoki1207.pdf` の `extensionKind` は manifest の項目で、リモートでどちら側に置くかの指定。ローカルだけの窓では効かない。
+- 日本語の言語パックの `vs/workbench/contrib/remote`・`remoteTunnel` の訳は、読み手が無くなるだけ。
+- 拡張が `viewsContainers`/`views` の `remote` に足すビューは、コンテナーが無いので、既存の扱い（「View container 'remote' does not exist」の警告を出して、エクスプローラーに置く）になる。台帳の拡張には該当が無い。
+
 ## 影響しうるもの
 
 - 状態表示の左端の「><」（リモートの窓を開く）が消える。コマンドパレットの「Remote-*」「Ports」「Remote Tunnel」の項目が消える。
 - `B-2` の `edits.patch` は `contrib/remote/browser/remote.ts` を直している。C-3 は B-2 の後に当たるので、直したファイルを消すだけになる（衝突しない）。B-2 の README の「リモートは C-3 で消える」のとおり。
 - 拡張 API の `vscode.env.remoteName` などはローカルでは元から `undefined`。`extensionKind` の上書きの設定 `remote.extensionKind` は登録されなくなり、値は読まれても既定どおりになる。
+- 残す部品が、登録の無くなった `remote.*` の設定を読む所（1.146.0 で `grep`。値は `undefined` になる）:
+  - `platform/tunnel/common/tunnel.ts` の `remote.localPortHost`: 値が無いときは `127.0.0.1`。既定の `localhost` と同じ結果。
+  - `services/remote/common/tunnelModel.ts` の `remote.restoreForwardedPorts`（既定は true だった）・`remote.portsAttributes`・`remote.otherPortsAttributes`: 転送したポートを戻さなくなる。ポートの転送はリモートの窓だけのもの。
+  - `contrib/terminalContrib/links` の `remote.forwardOnOpen`: リモートの窓のときだけ読む。
+  - `services/extensionManagement/electron-browser/remoteExtensionManagementService.ts` の `remote.downloadExtensionsLocally`: リモートの拡張の導入だけ。
+  - `api/browser/mainThreadTunnelService.ts` が `remote.autoForwardPorts`・`remote.autoForwardPortsSource` の既定を上書きする登録: 拡張がポートの候補の出し方を指定したときだけ走る。登録の無いキーの既定を足すだけで、誤りにはならない（見込み。関門の起動で見る）。
 
 ## 壊れたときの症状と戻し方
 
@@ -62,6 +110,15 @@
 
 ## 未確認（型検査とビルドで確かめる）
 
-- 型検査が通るか（上の表のほか）。
-- 依存の導入（`build/npm/postinstall.ts`）が `remote/` を入れ続けること、`gulpfile.reh.ts` が無くても `vscode-win32-x64-min` などのタスクが残ること。
-- `build/next/`（新しいビルド）が reh のタスクを別に持っていないか。
+2026-11-15 に確かめたもの:
+
+- 型検査: 通った（上の「edits.patch で直した点」）。
+- `gulpfile.reh.ts` が無くても、gulp のタスクの一覧（`pnpm run gulp --tasks-simple`）に `vscode-win32-x64-min` が残り、`vscode-reh-*` は無くなった。gulpfile の読み込みで誤りは出なかった。
+- `build/next/index.ts` には、gulp のタスクではなく、引数で選ぶ束ねの対象 `server`・`server-web` がある（844・845行の使い方の例）。`gulpfile.vscode.ts` の72・73行の `esbuild-vscode-reh-min`・`esbuild-vscode-reh-web-min` はこれを呼ぶタスクで、定義は残る。呼ぶ所は消えた `gulpfile.reh.ts` だけで、`vscode-win32-x64-min` からは呼ばれない。
+- ロックファイル: C-3 は依存を消さないので、差分は C-1 の分だけ（`--lockfile-check` は `ok`）。
+
+まだのもの（片づけの許可の後）:
+
+- 依存の導入（`build/npm/postinstall.ts`）が `remote/` を入れ続けること。C-3 は `build/npm/` に触れないので変わらない見込み。
+- パッケージ化（`vscode-win32-x64-min`）と起動。起動時の開発者ツールのコンソールに、`ITunnelService`・`IRemoteExplorerService`・`remoteTunnel` のチャンネルの誤りが無いこと。共有プロセスが起動すること。
+- Claude Code のパネル（Webview）が開き、ログインの外部 URI（`asExternalUri`）が動くこと。

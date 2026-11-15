@@ -1,0 +1,86 @@
+{
+  "label": "c2tc-3",
+  "upstream": {
+    "tag": "1.146.0",
+    "commit": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+  },
+  "units": [],
+  "patches": [],
+  "lockfileDiff": "tasks/2026-11-15-p5-c2-patch/trial/take-in/lockfile.diff",
+  "toolchain": null,
+  "durations": {
+    "typecheck": 18.488
+  },
+  "zip": null,
+  "extensionsLockSha256": "6b4c3ceae7d6cb407f62bbcbd57ca50267e998975887884cc325fd26a85cce10",
+  "result": "error",
+  "stoppedAt": "typecheck",
+  "dryRun": false,
+  "startedAt": "2026-11-15T02:23:00.671Z",
+  "finishedAt": "2026-11-15T02:23:19.318Z",
+  "paths": {
+    "buildRoot": "C:\\b",
+    "worktree": "C:\\b\\wt\\p2",
+    "packageDir": "C:\\b\\wt\\VSCode-win32-x64",
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-15-p5-c2-patch\\trial\\take-in\\checks.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\removals",
+    "dist": "C:\\b\\dist",
+    "logs": "C:\\b\\logs\\c2tc-3"
+  },
+  "config": {
+    "path": "C:\\Users\\kou_z\\AppData\\Local\\Shuko\\local.json",
+    "exists": false,
+    "buildRootFrom": "default"
+  },
+  "stepsSelected": [
+    "typecheck"
+  ],
+  "envRemovedForChildren": [
+    "ELECTRON_RUN_AS_NODE",
+    "VSCODE_CODE_CACHE_PATH",
+    "VSCODE_CRASH_REPORTER_PROCESS_TYPE",
+    "VSCODE_CWD",
+    "VSCODE_ESM_ENTRYPOINT",
+    "VSCODE_HANDLES_UNCAUGHT_ERRORS",
+    "VSCODE_IPC_HOOK",
+    "VSCODE_NLS_CONFIG",
+    "VSCODE_PID",
+    "VSCODE_PROCESS_TITLE"
+  ],
+  "sourceVersion": {
+    "name": "BUILD_SOURCEVERSION",
+    "value": "8d45b2894adf46b82cbecb840ab1d3dcc004815a",
+    "source": "worktree HEAD",
+    "worktree": "C:\\b\\wt\\p2",
+    "readAt": "typecheck",
+    "steps": [
+      "typecheck",
+      "package"
+    ],
+    "error": null,
+    "uncommittedEntries": 8,
+    "checksHeadCommit": null,
+    "matchesChecksHead": null
+  },
+  "branch": null,
+  "steps": [
+    {
+      "name": "typecheck",
+      "status": "error",
+      "startedAt": "2026-11-15T02:23:00.679Z",
+      "env": {
+        "BUILD_SOURCEVERSION": "8d45b2894adf46b82cbecb840ab1d3dcc004815a"
+      },
+      "command": "pnpm run typecheck-client",
+      "cwd": "C:\\b\\wt\\p2",
+      "log": "C:\\b\\logs\\c2tc-3\\typecheck.log",
+      "seconds": 18.488,
+      "exitCode": 1,
+      "tail": "$ tsc --project ./src/tsconfig.json --noEmit --skipLibCheck\nsrc/vs/workbench/contrib/notebook/browser/controller/variablesActions.ts(12,48): error TS2307: Cannot find module '../contrib/notebookVariables/notebookVariableContextKeys.js' or its corresponding type declarations.\n[ELIFECYCLE] Command failed with exit code 1.\n",
+      "message": "型検査が 1 で終わった"
+    }
+  ],
+  "warnings": [],
+  "message": "typecheck で止まった: 型検査が 1 で終わった"
+}

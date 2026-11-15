@@ -2,7 +2,7 @@
 
 - 担当: meng-tian（蒙恬）
 - 依頼日: 2026-11-15
-- 状態: 依頼中
+- 状態: 完了
 
 ## 目的
 
@@ -44,11 +44,12 @@
 
 ## 結果
 
-<完了後にリーダーが記入する>
+採用。C-3 の `edits.patch`（1ファイル、`viewsExtensionPoint.ts` の定数）。判断は `docs/user-decisions.md` の 2026-11-15 の C-3 の表。大岡越前守の検証で「パッケージ化の前まで」合格（`tasks/2026-11-15-p5-c2-c4-verify/verification-ooka.md`）。`enabled` は `false` のまま。
 
 ## 未解決
 
-<無ければ「なし」>
+- ビルド（パッケージ化）・起動・関門は、古い版の片づけの許可の後。
+- 検証役が自分で走らせていない組（C-1 なし・C-2 なしの組 a）、ロックファイルの作り直し、`git apply --check` は、許可の追加（`tasks/2026-11-15-permission-requests/requests.md` の2）か関門のビルドで確かめる。
 
 ## 次の担当
 

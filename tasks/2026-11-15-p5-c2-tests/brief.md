@@ -2,7 +2,7 @@
 
 - 担当: cao-shen（曹参）
 - 依頼日: 2026-11-15
-- 状態: 依頼中
+- 状態: 完了
 
 ## 目的
 
@@ -39,11 +39,12 @@
 
 ## 結果
 
-<完了後にリーダーが記入する>
+採用。`tests/c2-unit.test.mjs`・`c2-mutation.test.mjs`・`c2-check-json.test.mjs`・`c2-worktree.test.mjs`、照らし役 `tests/c2-check-json.mjs`・`c2-check-worktree.mjs`、台本 `tests/removals/c2-gate-script.md`。大岡越前守の検証で合格（軽微な指摘: `c2-check-json.test.mjs` のテストの名前、照らし役が C-4 を含む組を前提にしない）。
 
 ## 未解決
 
-<無ければ「なし」>
+- ビルド（パッケージ化）・起動・関門は、古い版の片づけの許可の後。
+- 検証役が自分で走らせていない組（C-1 なし・C-2 なしの組 a）、ロックファイルの作り直し、`git apply --check` は、許可の追加（`tasks/2026-11-15-permission-requests/requests.md` の2）か関門のビルドで確かめる。
 
 ## 次の担当
 

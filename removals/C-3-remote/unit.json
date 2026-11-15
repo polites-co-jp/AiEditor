@@ -38,6 +38,7 @@
     "win32TunnelServiceMutex",
     "win32TunnelMutex"
   ],
+  "patch": "edits.patch",
   "kept": [
     { "path": "src/vs/workbench/services/remote", "reason": "ローカルの拡張ホストの部品（services/extensions の extensionService.ts・nativeExtensionService.ts）が IRemoteAgentService と IRemoteExplorerService を注入している。拡張 API の main thread（mainThreadTunnelService.ts など）も使う。remoteExplorerService.ts・tunnelModel.ts は docs/03 の表では消す側だが、消すと拡張の起動の部品と拡張 API の入口を直すことになるので残した（README の「残すもの」と別案）" },
     { "path": "src/vs/workbench/services/tunnel", "reason": "ITunnelService の登録。Webview（contrib/webview の webviewElement.ts。Claude Code のパネルは Webview）、ウィンドウの外部 URI の解決（electron-browser/window.ts）、ターミナルのリンクが注入している。ローカルでは canTunnel が偽になり何もしない" },
