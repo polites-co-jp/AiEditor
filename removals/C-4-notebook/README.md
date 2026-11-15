@@ -103,7 +103,7 @@ edits.patch は25ファイル（新規1）、211行の追加、907行の削除�
 | `window.visibleNotebookEditors` | `[]` |
 | `window.onDidChangeActiveNotebookEditor`・`onDidChangeVisibleNotebookEditors`・`onDidChangeNotebookEditorSelection`・`onDidChangeNotebookEditorVisibleRanges` | `Event.None` |
 | `window.showNotebookDocument` | reject |
-| `notebooks.createNotebookController` | 何もしないコントローラー。`id`・`notebookType`・`label` は渡した値、`onDidChangeSelectedNotebooks`・`onDidReceiveMessage` は `Event.None`、`executeHandler`・`interruptHandler` は読み書きできる、`updateNotebookAffinity`・`dispose` は何もしない、`createNotebookCellExecution` は誤りを投げる。`rendererScripts` は、本家と同じく提案 notebookMessaging が有効なときだけ渡した値を持つ（無効なら `[]`） |
+| `notebooks.createNotebookController` | 何もしないコントローラー。`id`・`notebookType`・`label` は渡した値、`onDidChangeSelectedNotebooks`・`onDidReceiveMessage` は `Event.None`、`executeHandler`・`interruptHandler` は読み書きできる、`dispose` は何もしない、`updateNotebookAffinity` は何もしないが `NotebookControllerAffinity2.Hidden`（-1）を渡したときだけ門（下の表の `notebookControllerAffinityHidden`）をかける、`createNotebookCellExecution` は誤りを投げる。`rendererScripts` は、本家と同じく提案 notebookMessaging が有効なときだけ渡した値を持つ（無効なら `[]`） |
 | `notebooks.registerNotebookCellStatusBarItemProvider` | 何もしない Disposable |
 | `notebooks.createRendererMessaging` | `onDidReceiveMessage` は `Event.None`、`postMessage` は `false` |
 | `notebooks.createNotebookControllerDetectionTask`・`registerKernelSourceActionProvider` | 提案中（notebookKernelSource）の門を残し、何もしない Disposable |
