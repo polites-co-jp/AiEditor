@@ -1,0 +1,86 @@
+{
+  "label": "c1tc-4",
+  "upstream": {
+    "tag": "1.146.0",
+    "commit": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+  },
+  "units": [],
+  "patches": [],
+  "lockfileDiff": "tasks/2026-11-15-p5-c1-patch/trial/lockfile.diff",
+  "toolchain": null,
+  "durations": {
+    "typecheck": 6.378
+  },
+  "zip": null,
+  "extensionsLockSha256": "6b4c3ceae7d6cb407f62bbcbd57ca50267e998975887884cc325fd26a85cce10",
+  "result": "error",
+  "stoppedAt": "typecheck",
+  "dryRun": false,
+  "startedAt": "2026-11-15T00:01:31.424Z",
+  "finishedAt": "2026-11-15T00:01:37.942Z",
+  "paths": {
+    "buildRoot": "C:\\b",
+    "worktree": "C:\\b\\wt\\p2",
+    "packageDir": "C:\\b\\wt\\VSCode-win32-x64",
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-15-p5-c1-patch\\trial\\checks.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\removals",
+    "dist": "C:\\b\\dist",
+    "logs": "C:\\b\\logs\\c1tc-4"
+  },
+  "config": {
+    "path": "C:\\Users\\kou_z\\AppData\\Local\\Shuko\\local.json",
+    "exists": false,
+    "buildRootFrom": "default"
+  },
+  "stepsSelected": [
+    "typecheck"
+  ],
+  "envRemovedForChildren": [
+    "ELECTRON_RUN_AS_NODE",
+    "VSCODE_CODE_CACHE_PATH",
+    "VSCODE_CRASH_REPORTER_PROCESS_TYPE",
+    "VSCODE_CWD",
+    "VSCODE_ESM_ENTRYPOINT",
+    "VSCODE_HANDLES_UNCAUGHT_ERRORS",
+    "VSCODE_IPC_HOOK",
+    "VSCODE_NLS_CONFIG",
+    "VSCODE_PID",
+    "VSCODE_PROCESS_TITLE"
+  ],
+  "sourceVersion": {
+    "name": "BUILD_SOURCEVERSION",
+    "value": "4518424d9947d980186e1ee09eb777b4be171d94",
+    "source": "worktree HEAD",
+    "worktree": "C:\\b\\wt\\p2",
+    "readAt": "typecheck",
+    "steps": [
+      "typecheck",
+      "package"
+    ],
+    "error": null,
+    "uncommittedEntries": 44,
+    "checksHeadCommit": null,
+    "matchesChecksHead": null
+  },
+  "branch": null,
+  "steps": [
+    {
+      "name": "typecheck",
+      "status": "error",
+      "startedAt": "2026-11-15T00:01:31.431Z",
+      "env": {
+        "BUILD_SOURCEVERSION": "4518424d9947d980186e1ee09eb777b4be171d94"
+      },
+      "command": "pnpm run typecheck-client",
+      "cwd": "C:\\b\\wt\\p2",
+      "log": "C:\\b\\logs\\c1tc-4\\typecheck.log",
+      "seconds": 6.378,
+      "exitCode": 1,
+      "tail": "Cannot find module '../../../contrib/chat/browser/chat.js' or its corresponding type declarations.\nsrc/vs/workbench/test/browser/componentFixtures/fixtureUtils.ts(69,36): error TS2307: Cannot find module '../../../contrib/chatWindow/browser/chatWindow.js' or its corresponding type declarations.\nsrc/vs/workbench/test/browser/componentFixtures/fixtureUtils.ts(70,40): error TS2307: Cannot find module '../../../contrib/chat/browser/attachments/chatPasteTargetService.js' or its corresponding type declarations.\nsrc/vs/workbench/test/browser/componentFixtures/fixtureUtils.ts(110,76): error TS2307: Cannot find module '../../../contrib/sessions/browser/agentFeedback.js' or its corresponding type declarations.\nsrc/vs/workbench/test/browser/componentFixtures/fixtureUtils.ts(111,37): error TS2307: Cannot find module '../../../contrib/chat/common/editing/chatEditingService.js' or its corresponding type declarations.\nsrc/vs/workbench/test/browser/componentFixtures/fixtureUtils.ts(112,44): error TS2307: Cannot find module '../../../contrib/sessions/common/sessionsManagement.js' or its corresponding type declarations.\nsrc/vs/workbench/test/browser/componentFixtures/fixtureUtils.ts(113,34): error TS2307: Cannot find module '../../../contrib/sessions/browser/sessionsService.js' or its corresponding type declarations.\nsrc/vs/workbench/test/browser/componentFixtures/fixtureUtils.ts(114,44): error TS2307: Cannot find module '../../../services/sessions/browser/sessionsHostLayoutService.js' or its corresponding type declarations.\nsrc/vs/workbench/test/browser/componentFixtures/fixtureUtils.ts(116,46): error TS2307: Cannot find module '../../../services/sessions/browser/sessionHost.js' or its corresponding type declarations.\nsrc/vs/workbench/test/browser/componentFixtures/fixtureUtils.ts(117,69): error TS2307: Cannot find module '../../../services/sessions/common/sessionChangesStatsCache.js' or its corresponding type declarations.\nsrc/vs/workbench/test/browser/componentFixtures/fixtureUtils.ts(118,55): error TS2307: Cannot find module '../../../contrib/sessions/browser/codeReviewService.js' or its corresponding type declarations.\nsrc/vs/workbench/test/browser/componentFixtures/fixtureUtilsCss.ts(16,8): error TS2882: Cannot find module or type declarations for side-effect import of '../../../contrib/chat/browser/widget/input/modelPicker/modelPickerColors.js'.\nsrc/vs/workbench/test/browser/componentFixtures/migrationProgressNotification.fixture.ts(19,85): error TS2307: Cannot find module '../../../contrib/chat/browser/aiCustomization/customizationMigrationCategories.js' or its corresponding type declarations.\nsrc/vs/workbench/test/browser/workbenchTestServices.ts(135,49): error TS2307: Cannot find module '../../contrib/chat/browser/chat.js' or its corresponding type declarations.\nsrc/vs/workbench/test/browser/workbenchTestServices.ts(136,36): error TS2307: Cannot find module '../../contrib/chat/browser/widgetHosts/editor/chatEditor.js' or its corresponding type declarations.\nsrc/vs/workbench/test/browser/workbenchTestServices.ts(137,35): error TS2307: Cannot find module '../../contrib/chat/common/constants.js' or its corresponding type declarations.\nsrc/vs/workbench/test/browser/workbenchTestServices.ts(148,59): error TS2307: Cannot find module '../../contrib/chat/common/chatSideChatService.js' or its corresponding type declarations.\nsrc/vs/workbench/test/browser/workbenchTestServices.ts(149,43): error TS2307: Cannot find module '../../contrib/chat/common/chatThinkingTitleService.js' or its corresponding type declarations.\nsrc/vs/workbench/test/browser/workbenchTestServices.ts(150,69): error TS2307: Cannot find module '../../contrib/chat/common/chatRequestOrigin.js' or its corresponding type declarations.\nsrc/vs/workbench/test/browser/workbenchTestServices.ts(203,46): error TS2307: Cannot find module '../../../platform/agentHost/common/agentHostConnectionsService.js' or its corresponding type declarations.\n[ELIFECYCLE] Command failed with exit code 1.\n",
+      "message": "型検査が 1 で終わった"
+    }
+  ],
+  "warnings": [],
+  "message": "typecheck で止まった: 型検査が 1 で終わった"
+}

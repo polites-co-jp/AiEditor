@@ -2,7 +2,7 @@
 
 - 担当: cao-shen（曹参）
 - 依頼日: 2026-11-15
-- 状態: 依頼中
+- 状態: 完了
 
 ## 目的
 
@@ -55,11 +55,13 @@
 
 ## 結果
 
-<完了後にリーダーが記入する>
+採用。`tests/c1-unit.test.mjs`（37）・`c1-round2.test.mjs`（13）・`c1-check-json.test.mjs`（8）・`c1-mutation.test.mjs`（21）・`lockfile-patched.test.mjs`（17）、照らし役 `tests/c1-check-json.mjs`・`tests/c1-check-worktree.mjs`、台本 `tests/removals/c1-gate-script.md`。run-all 1705 件、fail 0。大岡越前守の再検証で合格。
 
 ## 未解決
 
-<無ければ「なし」>
+- ビルド（パッケージ化）・起動・関門は、古い版の片づけの許可の後（`docs/user-decisions.md` 2026-11-15）。
+- ロックファイルの検査を検証役が自分で作り直して確かめること（ルートと `remote/`）、本物の `pnpm install` の警告、起動時の DI と拡張ホストのログ（`vscode.lm`・`vscode.chat`）は、関門で見る。
+- 消せずに残る殻のファイル（`tests/removals/c1-check-*.mjs`、`*.round2.tmp`、`handoff-notes-round2-part.md`）。コミットしない。
 
 ## 次の担当
 

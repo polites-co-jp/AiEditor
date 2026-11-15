@@ -371,6 +371,8 @@ export function checkLockfiles({ worktree, baseRef, units, diffOut = null }) {
       changedDeps: c.changedDeps,
       addedPackages: c.addedPackages,
       addedSnapshots: c.addedSnapshots,
+      unexpectedPatchChanges: c.unexpectedPatchChanges,
+      removedPatches: c.removedPatches,
       removedDeps: cap(c.removedDeps),
       removedPackages: cap(c.removedPackages),
       removedSnapshots: cap(c.removedSnapshots),

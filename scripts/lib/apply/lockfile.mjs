@@ -4,7 +4,14 @@
 // テストの入口（tasks/2026-11-13-p2-apply/apply-design.md の3節）:
 //   parsePnpmLock(text)                               → { sections, importers, packages, snapshots }
 //   compareLockfile(beforeText, afterText, expected)  → { ok, ... }
-//   expectedLockRemovals(lockDir, importers, units)   → { removedImporters, removedDeps }
+//   expectedLockRemovals(lockDir, importers, units)   → { removedImporters, removedDeps, removedPatches }
+//   sectionEntries(sectionText)                       → Map（節の中の2字下げのキー → そのキーの行と下の行の中身）
+//
+// patchedDependencies の節（2026-11-15、C-1 の3回目。docs/03 の5.4）:
+//   単位が pnpm-workspace.yaml の patchedDependencies の行（`<名前>: <パス>.patch`）を removeLines で消すと、
+//   pnpm はロックファイルの patchedDependencies の節からその名前を外す（全部消えれば節ごと無くなる）。
+//   compareLockfile は、expected.removedPatches に挙がった名前が節から減っただけなら、この節の変化を許す
+//   （changedSections に入れない）。ほかの名前の増減・値の変化、ほかの節の変化は今までどおり止める。
 
 import path from "node:path";
 import { normalizeRelPath, isUnderPath } from "./units.mjs";
@@ -123,14 +130,56 @@ function linkTarget(importerName, version) {
   return joined === "" ? "." : joined.replace(/\/$/, "");
 }
 
+// 節の生の文字列（parsePnpmLock の sections の値。1行目は節の見出し）から、2字下げのキーごとの中身を読む。
+// 中身は、キーの行の値と、その下のもっと深い行（字下げを含む）を "\n" でつないだもの。節が無ければ空の Map。
+export function sectionEntries(sectionText) {
+  const m = new Map();
+  if (typeof sectionText !== "string") return m;
+  let key = null;
+  for (const line of sectionText.split("\n").slice(1)) {
+    if (line.trim() === "") continue;
+    const ind = indentOf(line);
+    if (ind === 2) {
+      const k = readKey(line.slice(2));
+      key = k ? k.key : line.slice(2);
+      m.set(key, k ? k.rest : "");
+    } else if (ind > 2 && key !== null) {
+      m.set(key, `${m.get(key)}\n${line}`);
+    }
+  }
+  return m;
+}
+
+// patchedDependencies の節の変化を、許すもの（expected の名前の削除）とそれ以外に分ける。
+function comparePatchedDependencies(beforeSection, afterSection, expectedRemoved) {
+  const before = sectionEntries(beforeSection);
+  const after = sectionEntries(afterSection);
+  const removedPatches = [];
+  const unexpectedPatchChanges = [];
+  for (const [name, value] of before) {
+    if (!after.has(name)) {
+      removedPatches.push(name);
+      if (!expectedRemoved.has(name)) unexpectedPatchChanges.push({ name, change: "removed" });
+    } else if (after.get(name) !== value) {
+      unexpectedPatchChanges.push({ name, change: "changed" });
+    }
+  }
+  for (const name of after.keys()) if (!before.has(name)) unexpectedPatchChanges.push({ name, change: "added" });
+  return { removedPatches: removedPatches.sort(), unexpectedPatchChanges };
+}
+
 export function compareLockfile(beforeText, afterText, expected = {}) {
   const a = parsePnpmLock(beforeText);
   const b = parsePnpmLock(afterText);
   const expImporters = new Set(Array.isArray(expected.removedImporters) ? expected.removedImporters : []);
   const expDeps = expected.removedDeps && typeof expected.removedDeps === "object" ? expected.removedDeps : {};
+  const expPatches = new Set(Array.isArray(expected.removedPatches) ? expected.removedPatches : []);
 
+  const PATCHED = "patchedDependencies";
+  const patch = comparePatchedDependencies(a.sections[PATCHED], b.sections[PATCHED], expPatches);
   const changedSections = [...new Set([...Object.keys(a.sections), ...Object.keys(b.sections)])]
     .filter((s) => a.sections[s] !== b.sections[s])
+    .filter((s) => !(s === PATCHED && patch.unexpectedPatchChanges.length === 0))
     .sort();
   const impA = Object.keys(a.importers);
   const impB = Object.keys(b.importers);
@@ -193,7 +242,18 @@ export function compareLockfile(beforeText, afterText, expected = {}) {
     removedPackages,
     addedSnapshots,
     removedSnapshots,
+    removedPatches: patch.removedPatches,
+    unexpectedPatchChanges: patch.unexpectedPatchChanges,
   };
+}
+
+// pnpm-workspace.yaml の removeLines の1行（字下げを除いた形）が patchedDependencies の項目なら、その名前を返す。
+// 形は `<名前>: <パス>.patch`（名前は引用符で囲まれていてもよい）。それ以外は null。
+export function patchNameFromWorkspaceLine(line) {
+  if (typeof line !== "string") return null;
+  const k = readKey(line.trim());
+  if (!k || !k.key || !/\.patch['"]?$/.test(k.rest)) return null;
+  return k.key;
 }
 
 // lockDir（ルートからの相対。ルートは ""）のロックファイルの importer のうち、単位が消すもの・依存を消すもの。
@@ -206,6 +266,16 @@ export function expectedLockRemovals(lockDir, importers, units) {
   const removedImporters = [];
   const removedDeps = {};
   const list = Array.isArray(units) ? units : [];
+  // 同じフォルダの pnpm-workspace.yaml から単位が消した patchedDependencies の名前
+  const workspaceYaml = dir ? `${dir}/pnpm-workspace.yaml` : "pnpm-workspace.yaml";
+  const removedPatches = [];
+  for (const u of list) {
+    for (const rl of Array.isArray(u.removeLines) ? u.removeLines : []) {
+      if (!rl || normalizeRelPath(rl.file) !== workspaceYaml) continue;
+      const name = patchNameFromWorkspaceLine(rl.line);
+      if (name !== null && !removedPatches.includes(name)) removedPatches.push(name);
+    }
+  }
   for (const imp of Array.isArray(importers) ? importers : []) {
     const f = full(imp);
     if (f && list.some((u) => Array.isArray(u.delete) && u.delete.some((d) => isUnderPath(f, d)))) removedImporters.push(imp);
@@ -219,5 +289,5 @@ export function expectedLockRemovals(lockDir, importers, units) {
       }
     }
   }
-  return { removedImporters, removedDeps };
+  return { removedImporters, removedDeps, removedPatches: removedPatches.sort() };
 }
