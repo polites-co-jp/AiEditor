@@ -36,6 +36,15 @@
 
 このディレクトリに `handoff-notes.md`（足したテスト、件数、大岡越前守が走らせる台本の入口）。
 
+## 追加の依頼（2026-11-15、蒙恬の2回目の後）
+
+蒙恬の2回目（`tasks/2026-11-15-p5-c1-patch/handoff-notes.md` の「2回目」）で edits.patch と unit.json が変わり、3回目でロックファイルの検査が直る（同じ brief の「2回目の後」）。
+
+1. `c1-unit.test.mjs`・`c1-check-json.test.mjs` が2回目の edits.patch で通るかを確かめ、落ちればテストの誤りか実装の誤りかを書いて直す（テストの側だけ）。
+2. 2回目の「テストの入口」の1〜3を足す: 当てた後の `package.json`・`remote/package.json` の依存の有無と `pnpm-workspace.yaml` の `patchedDependencies` の有無（照らし役 `c1-check-json.mjs` か台本に）、`checks.absentStrings` に足した7つ、消したファイル。
+3. `compareLockfile` の単体テスト: 単位が消したパッチの名前の分だけ `patchedDependencies` の節が減るのは許す。ほかの名前が減る・増える、ほかの節が変わるのは止める（docs/03 の5.4、`docs/user-decisions.md` の 2026-11-15 の項）。
+4. `node tests/run-all.mjs --save <ファイル>` の件数。handoff-notes に「2回目」の節を足す。
+
 ## 結果
 
 <完了後にリーダーが記入する>

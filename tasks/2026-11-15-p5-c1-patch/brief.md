@@ -55,6 +55,16 @@
 6. `build/` の側の型検査が走らせられるなら走らせる（たとえば本家の `build/tsconfig.json`）。走らせられなければ、その理由を書く。
 7. 直したら、1回目と同じく、タグからの当て直し（15単位、衝突なし）と型検査（誤り 0）を確かめ、`handoff-notes.md` に「2回目」の節を足す。作業ツリーとディスクの守りは上と同じ。
 
+## 追加の依頼（2026-11-15、2回目の後）
+
+2回目の判断を仰ぐ点の1〜4はリーダーが判断した（`docs/user-decisions.md`）。docs/03 の5.4 と表も直した。
+
+1. `scripts/lib/apply/lockfile.mjs` の `compareLockfile` を直す（許可する）: 単位が `pnpm-workspace.yaml` の `patchedDependencies` の行を消したとき、ロックファイルの `patchedDependencies` の節がその名前の分だけ減るのを許す。それ以外の節の変化と、ほかの名前の増減は今までどおり止める。直したら `--lockfile-check` が `ok` になることを確かめる（確かめた後にロックファイルを戻す）。
+2. 依存の追加の削除は認める。`remote/pnpm-lock.yaml` は、片づけの後のビルドの依存の導入で見るので、今は作り直さない。
+3. `chat.disableAIFeatures` の副作用は、読み手ごとに直す形で認める。
+4. 「バージョン情報」の Copilot の2行を消す（`platform/dialogs/electron-browser/dialog.ts` を edits.patch に足す）。
+5. 当て直し（15単位、衝突なし）と型検査（誤り 0）を確かめ直し、handoff-notes に「3回目」の節を足す。曹参が `compareLockfile` のテストと C-1 のテストの更新を並行して書く。
+
 ## 結果
 
 <完了後にリーダーが記入する>

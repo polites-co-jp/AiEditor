@@ -285,3 +285,7 @@
 | ターミナルの案内 `terminalContrib/inlineHint`（設定 `terminal.integrated.initialHint`） | 消す。チャットのエージェントにだけ使う AI の部品 |
 | `chat.tools.terminal.*` とサンドボックスのファイルシステムの設定の登録が消え、読む側では `undefined` になる | 認める。関門の設定の画面とターミナルの組で、誤りが出ないかを見る |
 | `build/gulpfile.vscode.ts` の Copilot の梱包・`agentHostCrypto` の入口・Agents の窓へのリンクが残っている | パッケージ化の前に C-1 の edits.patch へ足す（関門の前に蒙恬が直す） |
+| ロックファイルの検査が、単位が `pnpm-workspace.yaml` の `patchedDependencies` の行を消したときに、ロックファイルの同じ名前の節が減るのを「変わった」と見て止める | 検査の台本（`scripts/lib/apply/lockfile.mjs` の `compareLockfile`）を直し、単位が消したパッチの名前の分だけ節が減るのを許す。ほかの節の変化は今までどおり止める。docs/03 の5.4 を直す |
+| C-1 で消した AI の部品だけが使っていた依存（ルートの10、`remote` の5。`@hpke/core`・`libsodium-wrappers`・`@devcontainers/cli`・dev-tunnels・`ssh2`・`ws` など） | 外す（2026-11-14 の規則の当てはめ）。`remote` のロックファイルの差分は、片づけの後のビルドの依存の導入で見る。docs/03 の表を直す |
+| `chat.disableAIFeatures` の登録が消え、残る読み手が「AI 有効」と読む | 読み手ごとに直す形を採る（ジャンプリストの「Agents Window」、新しい利用者のセカンダリサイドバー）。隠した登録を残す別案は、`checks.absentSettings` と食い違うので採らない。関門のスモークで見る |
+| 「バージョン情報」の Copilot の2行（`@github/copilot: Unknown` など） | 消す（`platform/dialogs/electron-browser/dialog.ts` を edits.patch に足す） |
