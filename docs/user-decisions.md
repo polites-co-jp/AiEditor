@@ -333,3 +333,17 @@
 | `extHost.protocol.ts` のノートブックの DTO | 残す（一部は残る変換が使い、使われないものの切り分けは型検査に掛からない） |
 | セルの編集を含む `workspace.applyEdit` | reject で失敗させる（黙って捨てて成功に見せない） |
 | `.ipynb` の全文検索 | ripgrep がテキスト（JSON）として探す形になる。関門の検索の組で見る |
+
+## 記録（2026-11-15、C-5 の edits.patch を作るときに出た点。リーダーの判断）
+
+根拠: `tasks/2026-11-15-p5-c5-patch/handoff-notes.md`
+
+| 論点 | 扱い |
+|---|---|
+| 画面からの VSIX の導入（エクスプローラーの右クリック・拡張のビューへのドロップ）を残した | 採らない。docs/01 の「拡張のインストール（CLI のみ）」「画面からの検索・追加は消す」に従い、右クリックのメニューとドロップを外す。内部のコマンド `installFromVSIX` は残す（README の前からの決まり） |
+| `ext install ` の Quick Access | 消す（画面からの検索に当たる） |
+| `CONTEXT_HAS_GALLERY` の条件つきの画面 | 残す（条件が常に偽で出ない。消すとハンクが増える） |
+| 設定 `extensions.gallery.serviceUrl`・`extensions.gallery.authProvider` の登録 | 残す（`policyData.jsonc` のポリシーの一覧と食い違わないため） |
+| `.vscode/extensions.json` の JSON の検査（`extensionsFileTemplate.ts`） | 残す（編集の手伝いだけで通信しない） |
+| マーケットプレイスの状態のバッジ | 消す（状態を作るのは消したアカウントだけ） |
+| 何もしないギャラリーの `getExtensions` など | 誤りを投げず空を返す |
