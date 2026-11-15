@@ -1,0 +1,25 @@
+{
+  "countedAt": "2026-11-15T13:36:18.726Z",
+  "seconds": 0.001,
+  "drive": {
+    "root": "C:\\",
+    "freeBytes": 105387139072,
+    "freeGB": 98.15
+  },
+  "entries": [
+    {
+      "name": "trialinstall",
+      "path": "C:\\b\\trial-install",
+      "exists": false
+    },
+    {
+      "name": "trialbuild",
+      "path": "C:\\b\\trial-build",
+      "exists": false
+    }
+  ],
+  "uniqueTotal": {
+    "bytes": 0,
+    "gb": 0
+  }
+}

@@ -1,0 +1,223 @@
+{
+  "startedAt": "2026-11-15T22:40:51.185Z",
+  "from": "C:\\b",
+  "to": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b",
+  "dryRun": true,
+  "items": [
+    {
+      "name": "clone",
+      "kind": "git",
+      "problems": [
+        "元の clone に作業ツリーが付いている（13 個。先に外す）: C:/b/wt/1.145.3, C:/b/wt/1.146.0, C:/b/wt/dev-a"
+      ],
+      "src": "C:\\b\\vscode",
+      "dst": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\vscode",
+      "files": 22151,
+      "bytes": 2242327648,
+      "gb": 2.09,
+      "sourceWorktrees": {
+        "count": 13,
+        "paths": [
+          "C:/b/vscode",
+          "C:/b/wt/1.145.3",
+          "C:/b/wt/1.146.0",
+          "C:/b/wt/dev-a",
+          "C:/b/wt/dev-a-apply",
+          "C:/b/wt/dev-apply",
+          "C:/b/wt/dev-b",
+          "C:/b/wt/dev-c1",
+          "C:/b/wt/dev-c3",
+          "C:/b/wt/p1-a1",
+          "C:/b/wt/p2",
+          "C:/b/wt/trial-bwt",
+          "C:/b/wt/verify-p2"
+        ]
+      },
+      "destExists": false,
+      "status": "problem"
+    },
+    {
+      "name": "dist-p2-all",
+      "kind": "file",
+      "problems": [],
+      "src": "C:\\b\\dist\\1.146.0-p2-all.zip",
+      "dst": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\dist\\1.146.0-p2-all.zip",
+      "files": 1,
+      "bytes": 373218781,
+      "gb": 0.35,
+      "destExists": false,
+      "status": "planned"
+    },
+    {
+      "name": "dist-p1-a1-r3",
+      "kind": "file",
+      "problems": [],
+      "src": "C:\\b\\dist\\1.146.0-p1-a1-r3.zip",
+      "dst": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\dist\\1.146.0-p1-a1-r3.zip",
+      "files": 1,
+      "bytes": 406723259,
+      "gb": 0.38,
+      "destExists": false,
+      "status": "planned"
+    },
+    {
+      "name": "p2-all",
+      "kind": "dir",
+      "problems": [],
+      "src": "C:\\b\\p2\\1.146.0-p2-all",
+      "dst": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p2\\1.146.0-p2-all",
+      "files": 1974,
+      "bytes": 1155051584,
+      "gb": 1.08,
+      "destExists": false,
+      "status": "planned"
+    },
+    {
+      "name": "p1-a1-r3",
+      "kind": "dir",
+      "problems": [],
+      "src": "C:\\b\\p1\\1.146.0-p1-a1-r3",
+      "dst": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p1\\1.146.0-p1-a1-r3",
+      "files": 2698,
+      "bytes": 1281705707,
+      "gb": 1.19,
+      "destExists": false,
+      "status": "planned"
+    },
+    {
+      "name": "smoke-ext",
+      "kind": "dir",
+      "problems": [],
+      "src": "C:\\b\\smoke\\ext",
+      "dst": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\smoke\\ext",
+      "files": 35060,
+      "bytes": 2918588996,
+      "gb": 2.72,
+      "destExists": false,
+      "status": "planned"
+    },
+    {
+      "name": "smoke-baselines",
+      "kind": "files",
+      "problems": [],
+      "src": "C:\\b\\smoke",
+      "dst": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\smoke",
+      "files": 24,
+      "bytes": 34496,
+      "gb": 0,
+      "destExists": false,
+      "status": "planned"
+    },
+    {
+      "name": "smoke-runs",
+      "kind": "results",
+      "problems": [],
+      "src": "C:\\b\\smoke\\runs",
+      "dst": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\smoke\\archive\\runs",
+      "files": 349,
+      "bytes": 9530513,
+      "gb": 0.01,
+      "destExists": false,
+      "status": "planned"
+    },
+    {
+      "name": "smoke-absent",
+      "kind": "results",
+      "problems": [],
+      "src": "C:\\b\\smoke\\absent",
+      "dst": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\smoke\\archive\\absent",
+      "files": 153,
+      "bytes": 6392934,
+      "gb": 0.01,
+      "destExists": false,
+      "status": "planned"
+    },
+    {
+      "name": "vsix-cache",
+      "kind": "dir",
+      "problems": [],
+      "src": "C:\\b\\cache\\vsix",
+      "dst": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\vsix",
+      "files": 62,
+      "bytes": 203818345,
+      "gb": 0.19,
+      "destExists": false,
+      "status": "planned"
+    },
+    {
+      "name": "logs",
+      "kind": "dir",
+      "problems": [],
+      "src": "C:\\b\\logs",
+      "dst": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\logs",
+      "files": 208,
+      "bytes": 1867919,
+      "gb": 0,
+      "destExists": false,
+      "status": "planned"
+    },
+    {
+      "name": "work-b",
+      "kind": "dir",
+      "problems": [],
+      "src": "C:\\b\\work-b",
+      "dst": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\work-b",
+      "files": 1,
+      "bytes": 94,
+      "gb": 0,
+      "destExists": false,
+      "status": "planned"
+    },
+    {
+      "name": "official-1.146.0",
+      "kind": "dir",
+      "problems": [],
+      "src": "C:\\b\\p0\\vscode-1.146.0",
+      "dst": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\official\\vscode-1.146.0",
+      "files": 3278,
+      "bytes": 1132067509,
+      "gb": 1.05,
+      "destExists": false,
+      "status": "planned"
+    },
+    {
+      "name": "official-zip",
+      "kind": "file",
+      "problems": [],
+      "src": "C:\\b\\p0\\downloads\\VSCode-win32-x64-1.146.0.zip",
+      "dst": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\official\\downloads\\VSCode-win32-x64-1.146.0.zip",
+      "files": 1,
+      "bytes": 402750279,
+      "gb": 0.38,
+      "destExists": false,
+      "status": "planned"
+    },
+    {
+      "name": "official-fetch-record",
+      "kind": "file",
+      "problems": [],
+      "src": "C:\\b\\p0\\p0-fetch.json",
+      "dst": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\official\\downloads\\p0-fetch.json",
+      "files": 1,
+      "bytes": 2473,
+      "gb": 0,
+      "destExists": false,
+      "status": "planned"
+    },
+    {
+      "name": "ws-info",
+      "kind": "file",
+      "problems": [],
+      "src": "C:\\b\\p0\\ws-info.json",
+      "dst": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\measure\\ws-info.json",
+      "files": 1,
+      "bytes": 3879,
+      "gb": 0,
+      "destExists": false,
+      "status": "planned"
+    }
+  ],
+  "result": "problem",
+  "totalGB": 9.44,
+  "finishedAt": "2026-11-15T22:40:58.261Z"
+}

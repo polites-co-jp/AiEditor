@@ -1,0 +1,559 @@
+{
+  "countedAt": "2026-11-15T13:35:29.563Z",
+  "from": "C:\\b",
+  "to": {
+    "path": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b",
+    "length": 45,
+    "hasSpace": false,
+    "nonAscii": false,
+    "drive": "E:",
+    "freeGB": 4197.46
+  },
+  "delta": 41,
+  "limits": {
+    "file": 259,
+    "dir": 247
+  },
+  "localConfig": {
+    "configPath": "C:\\Users\\kou_z\\AppData\\Local\\Shuko\\local.json",
+    "configExists": false,
+    "buildRoot": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b",
+    "installRoot": "C:\\Users\\kou_z\\AppData\\Local\\Programs\\Shuko",
+    "builderRepo": null,
+    "sources": {
+      "installRoot": "default",
+      "keepVersions": "default",
+      "builderRepo": "default",
+      "buildRoot": "default"
+    }
+  },
+  "longPaths": {
+    "registry": {
+      "key": "HKLM\\SYSTEM\\CurrentControlSet\\Control\\FileSystem",
+      "name": "LongPathsEnabled",
+      "found": true,
+      "type": "REG_DWORD",
+      "value": "0x0"
+    },
+    "gitCoreLongpaths": {
+      "status": 1,
+      "stdout": "",
+      "stderr": "",
+      "error": null
+    },
+    "gitVersion": "git version 2.54.0.windows.1",
+    "nodeVersion": "v24.22.1"
+  },
+  "tools": {
+    "pnpmVersion": {
+      "status": 0,
+      "stdout": "12.16.0",
+      "stderr": "",
+      "error": null
+    },
+    "pnpmStorePathAtTo": {
+      "status": 0,
+      "stdout": "E:\\.pnpm-store\\v11",
+      "stderr": "",
+      "error": null
+    },
+    "pnpmStorePathAtFrom": {
+      "status": 0,
+      "stdout": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11",
+      "stderr": "",
+      "error": null
+    },
+    "npmCache": {
+      "status": 0,
+      "stdout": "C:\\Users\\kou_z\\AppData\\Local\\npm-cache",
+      "stderr": "",
+      "error": null
+    },
+    "pnpmGlobalConfig": {
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\config\\rc",
+      "exists": false
+    },
+    "userNpmrc": {
+      "path": "C:\\Users\\kou_z\\.npmrc",
+      "exists": false
+    }
+  },
+  "env": {
+    "APPDATA": "C:\\Users\\kou_z\\AppData\\Roaming",
+    "ELECTRON_RUN_AS_NODE": "1",
+    "HOME": "C:\\Users\\kou_z",
+    "LOCALAPPDATA": "C:\\Users\\kou_z\\AppData\\Local",
+    "TEMP": "C:\\Users\\kou_z\\AppData\\Local\\Temp",
+    "TMP": "C:\\Users\\kou_z\\AppData\\Local\\Temp",
+    "USERPROFILE": "C:\\Users\\kou_z"
+  },
+  "cFreeGB": 92.84,
+  "toExists": false,
+  "repoTmpExists": true,
+  "worktrees": {
+    "clone": {
+      "repo": "C:\\b\\vscode",
+      "items": [
+        {
+          "path": "C:/b/vscode",
+          "head": "9f2bcd2269d23919b216d23529e5fb3cc2badc8f",
+          "branch": "refs/heads/main",
+          "reachableFrom": {
+            "branches": 95,
+            "tags": 0,
+            "sampleBranches": [
+              "refs/heads/main",
+              "refs/remotes/origin/HEAD",
+              "refs/remotes/origin/aeschli/agents/fix-empty-md-editor-on-skill-create"
+            ]
+          },
+          "reachable": true
+        },
+        {
+          "path": "C:/b/wt/1.145.3",
+          "head": "79055c2cb190e7937d217a2928ed0079881686cc",
+          "detached": true,
+          "reachableFrom": {
+            "branches": 0,
+            "tags": 0,
+            "sampleBranches": []
+          },
+          "reachable": false
+        },
+        {
+          "path": "C:/b/wt/1.146.0",
+          "head": "69047191fc427f2f92828279aae1d90d8eeda7ab",
+          "detached": true,
+          "reachableFrom": {
+            "branches": 10,
+            "tags": 1,
+            "sampleBranches": [
+              "refs/heads/builds/1.146.0-p2-B-1-r2",
+              "refs/heads/builds/1.146.0-p2-B-2-r2",
+              "refs/heads/builds/1.146.0-p2-B-3-r2"
+            ]
+          },
+          "reachable": true
+        },
+        {
+          "path": "C:/b/wt/dev-a",
+          "head": "a8145cd7bee686d8b9ac63fe366a7ddfdbe879ee",
+          "branch": "refs/heads/units-a",
+          "reachableFrom": {
+            "branches": 1,
+            "tags": 0,
+            "sampleBranches": [
+              "refs/heads/units-a"
+            ]
+          },
+          "reachable": true
+        },
+        {
+          "path": "C:/b/wt/dev-a-apply",
+          "head": "28869a097e3553e56440ca20561d79915c7e8ebd",
+          "detached": true,
+          "reachableFrom": {
+            "branches": 0,
+            "tags": 0,
+            "sampleBranches": []
+          },
+          "reachable": false
+        },
+        {
+          "path": "C:/b/wt/dev-apply",
+          "head": "69047191fc427f2f92828279aae1d90d8eeda7ab",
+          "detached": true,
+          "reachableFrom": {
+            "branches": 10,
+            "tags": 1,
+            "sampleBranches": [
+              "refs/heads/builds/1.146.0-p2-B-1-r2",
+              "refs/heads/builds/1.146.0-p2-B-2-r2",
+              "refs/heads/builds/1.146.0-p2-B-3-r2"
+            ]
+          },
+          "reachable": true
+        },
+        {
+          "path": "C:/b/wt/dev-b",
+          "head": "44be84f8aa6d5f3c61b8badfc75f5c4fef492c61",
+          "detached": true,
+          "reachableFrom": {
+            "branches": 0,
+            "tags": 0,
+            "sampleBranches": []
+          },
+          "reachable": false
+        },
+        {
+          "path": "C:/b/wt/dev-c1",
+          "head": "8d5cdfd0b1767e434a4205d9ead55a3030d03a9e",
+          "detached": true,
+          "reachableFrom": {
+            "branches": 0,
+            "tags": 0,
+            "sampleBranches": []
+          },
+          "reachable": false
+        },
+        {
+          "path": "C:/b/wt/dev-c3",
+          "head": "526d25d777f5a7c2abe71513cf9f6c870121cbe2",
+          "detached": true,
+          "reachableFrom": {
+            "branches": 0,
+            "tags": 0,
+            "sampleBranches": []
+          },
+          "reachable": false
+        },
+        {
+          "path": "C:/b/wt/p1-a1",
+          "head": "cff68091803f933ffbd34c93d1a7dc14633f7a72",
+          "detached": true,
+          "reachableFrom": {
+            "branches": 0,
+            "tags": 0,
+            "sampleBranches": []
+          },
+          "reachable": false
+        },
+        {
+          "path": "C:/b/wt/p2",
+          "head": "ed59899d41cd3035594ff62df3a57c3e62f2f483",
+          "detached": true,
+          "reachableFrom": {
+            "branches": 0,
+            "tags": 0,
+            "sampleBranches": []
+          },
+          "reachable": false
+        },
+        {
+          "path": "C:/b/wt/trial-bwt",
+          "head": "4be87ac66ef0fb21941e9d4e1830efb134d94156",
+          "detached": true,
+          "reachableFrom": {
+            "branches": 0,
+            "tags": 0,
+            "sampleBranches": []
+          },
+          "reachable": false
+        },
+        {
+          "path": "C:/b/wt/verify-p2",
+          "head": "6fba38db6119ca8dbb2de9244f07b5ae8f323d0d",
+          "detached": true,
+          "reachableFrom": {
+            "branches": 0,
+            "tags": 0,
+            "sampleBranches": []
+          },
+          "reachable": false
+        }
+      ]
+    },
+    "builderRepo": {
+      "repo": "e:\\develop\\self\\Team\\projects\\ai-editor",
+      "items": [
+        {
+          "path": "E:/develop/self/Team/projects/ai-editor",
+          "head": "1d65da0369d2aa90407880b44c6bfa14013d4ecc",
+          "branch": "refs/heads/main",
+          "reachableFrom": {
+            "branches": 2,
+            "tags": 0,
+            "sampleBranches": [
+              "refs/heads/main",
+              "refs/remotes/origin/main"
+            ]
+          },
+          "reachable": true
+        }
+      ]
+    }
+  },
+  "tree": [
+    {
+      "name": "trial-build",
+      "path": "C:\\b\\trial-build",
+      "children": [
+        {
+          "name": "dist",
+          "gb": 0.39,
+          "globalGB": 0.39,
+          "files": 2,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T15:20:55.223Z",
+          "longestFile": {
+            "path": "C:\\b\\trial-build\\dist\\1.146.0-t0.zip",
+            "length": 36,
+            "after": 77
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "env-check-signtool.json",
+          "file": true,
+          "bytes": 5151,
+          "mtime": "2026-11-14T00:38:44.832Z"
+        },
+        {
+          "name": "fake",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 10,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T15:18:11.893Z",
+          "longestFile": {
+            "path": "C:\\b\\trial-build\\fake\\VSCode-win32-x64\\resources\\app\\extensions\\ms-vscode.js-debug\\package.json",
+            "length": 95,
+            "after": 136
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "fake-versioned",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 6,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T15:19:22.111Z",
+          "longestFile": {
+            "path": "C:\\b\\trial-build\\fake-versioned\\VSCode-win32-x64\\69047191fc\\resources\\app\\extensions\\mydist\\package.json",
+            "length": 104,
+            "after": 145
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "fixtures",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 3,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T15:18:30.655Z",
+          "longestFile": {
+            "path": "C:\\b\\trial-build\\fixtures\\removals-bad\\A-9-trial\\unit.json",
+            "length": 58,
+            "after": 99
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "logs",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 2,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T15:19:43.401Z",
+          "longestFile": {
+            "path": "C:\\b\\trial-build\\logs\\1.146.0-t1\\zip.log",
+            "length": 40,
+            "after": 81
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        }
+      ],
+      "gb": 0.39,
+      "globalGB": 0.39,
+      "files": 24,
+      "overFile": 0,
+      "overDir": 0,
+      "longestFile": {
+        "path": "C:\\b\\trial-build\\fake-versioned\\VSCode-win32-x64\\69047191fc\\resources\\app\\extensions\\mydist\\package.json",
+        "length": 104,
+        "after": 145
+      },
+      "linkCount": 0
+    },
+    {
+      "name": "trial-install",
+      "path": "C:\\b\\trial-install",
+      "children": [
+        {
+          "name": "A",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 0,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T15:27:07.372Z",
+          "longestFile": null,
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "B",
+          "gb": 4.22,
+          "globalGB": 4.22,
+          "files": 13131,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T16:31:35.507Z",
+          "longestFile": {
+            "path": "C:\\b\\trial-install\\B\\versions\\1.146.0-t2\\69047191fc\\resources\\app\\node_modules.asar.unpacked\\@github\\copilot-sdk-win32-x64\\plugins\\browser-use\\scripts\\nativeMessagingRegistration.mjs",
+            "length": 182,
+            "after": 223
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 1,
+          "links": [
+            {
+              "path": "C:\\b\\trial-install\\B\\current",
+              "target": "C:\\b\\trial-install\\B\\versions\\1.146.0-3"
+            }
+          ]
+        },
+        {
+          "name": "C",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 0,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T15:30:22.882Z",
+          "longestFile": null,
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "cfg",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 9,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T16:31:35.532Z",
+          "longestFile": {
+            "path": "C:\\b\\trial-install\\cfg\\ledger-badsha.json",
+            "length": 41,
+            "after": 82
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "D",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 0,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T16:31:35.506Z",
+          "longestFile": null,
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "portable",
+          "gb": 0.68,
+          "globalGB": 0.68,
+          "files": 9075,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T15:23:42.941Z",
+          "longestFile": {
+            "path": "C:\\b\\trial-install\\portable\\extensions\\ms-vscode.powershell-2025.4.0\\modules\\PSScriptAnalyzer\\1.24.0\\compatibility_profiles\\win-48_x64_10.0.17763.0_5.1.17763.316_x64_4.0.30319.42000_framework.json",
+            "length": 196,
+            "after": 237
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "portable2",
+          "gb": 0.01,
+          "globalGB": 0.01,
+          "files": 280,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T16:10:22.301Z",
+          "longestFile": {
+            "path": "C:\\b\\trial-install\\portable2\\extensions\\dotenv.dotenv-vscode-1.5.8\\node_modules\\yaml\\browser\\dist\\compose\\util-empty-scalar-position.js",
+            "length": 135,
+            "after": 176
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "userdata",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 2,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T15:21:04.710Z",
+          "longestFile": {
+            "path": "C:\\b\\trial-install\\userdata\\User\\snippets\\trial.json",
+            "length": 52,
+            "after": 93
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        }
+      ],
+      "gb": 4.91,
+      "globalGB": 4.91,
+      "files": 22497,
+      "overFile": 0,
+      "overDir": 0,
+      "longestFile": {
+        "path": "C:\\b\\trial-install\\portable\\extensions\\ms-vscode.powershell-2025.4.0\\modules\\PSScriptAnalyzer\\1.24.0\\compatibility_profiles\\win-48_x64_10.0.17763.0_5.1.17763.316_x64_4.0.30319.42000_framework.json",
+        "length": 196,
+        "after": 237
+      },
+      "linkCount": 1
+    }
+  ],
+  "seconds": 4.448
+}

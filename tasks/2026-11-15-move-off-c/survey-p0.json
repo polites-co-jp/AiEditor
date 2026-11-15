@@ -1,0 +1,1128 @@
+{
+  "countedAt": "2026-11-15T22:36:29.946Z",
+  "from": "C:\\b\\p0",
+  "to": {
+    "path": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b",
+    "length": 45,
+    "hasSpace": false,
+    "nonAscii": false,
+    "drive": "E:",
+    "freeGB": 4196.68
+  },
+  "delta": 38,
+  "limits": {
+    "file": 259,
+    "dir": 247
+  },
+  "localConfig": {
+    "configPath": "C:\\Users\\kou_z\\AppData\\Local\\Shuko\\local.json",
+    "configExists": false,
+    "buildRoot": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b",
+    "installRoot": "C:\\Users\\kou_z\\AppData\\Local\\Programs\\Shuko",
+    "builderRepo": null,
+    "sources": {
+      "installRoot": "default",
+      "keepVersions": "default",
+      "builderRepo": "default",
+      "buildRoot": "default"
+    }
+  },
+  "longPaths": {
+    "registry": {
+      "key": "HKLM\\SYSTEM\\CurrentControlSet\\Control\\FileSystem",
+      "name": "LongPathsEnabled",
+      "found": true,
+      "type": "REG_DWORD",
+      "value": "0x0"
+    },
+    "gitCoreLongpaths": {
+      "status": 1,
+      "stdout": "",
+      "stderr": "",
+      "error": null
+    },
+    "gitVersion": "git version 2.54.0.windows.1",
+    "nodeVersion": "v24.22.1"
+  },
+  "tools": {
+    "pnpmVersion": {
+      "status": 0,
+      "stdout": "12.16.0",
+      "stderr": "",
+      "error": null
+    },
+    "pnpmStorePathAtTo": {
+      "status": 0,
+      "stdout": "E:\\.pnpm-store\\v11",
+      "stderr": "",
+      "error": null
+    },
+    "pnpmStorePathAtFrom": {
+      "status": 0,
+      "stdout": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11",
+      "stderr": "",
+      "error": null
+    },
+    "npmCache": {
+      "status": 0,
+      "stdout": "C:\\Users\\kou_z\\AppData\\Local\\npm-cache",
+      "stderr": "",
+      "error": null
+    },
+    "pnpmGlobalConfig": {
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\config\\rc",
+      "exists": false
+    },
+    "userNpmrc": {
+      "path": "C:\\Users\\kou_z\\.npmrc",
+      "exists": false
+    }
+  },
+  "env": {
+    "APPDATA": "C:\\Users\\kou_z\\AppData\\Roaming",
+    "ELECTRON_RUN_AS_NODE": "1",
+    "HOME": "C:\\Users\\kou_z",
+    "LOCALAPPDATA": "C:\\Users\\kou_z\\AppData\\Local",
+    "TEMP": "C:\\Users\\kou_z\\AppData\\Local\\Temp",
+    "TMP": "C:\\Users\\kou_z\\AppData\\Local\\Temp",
+    "USERPROFILE": "C:\\Users\\kou_z"
+  },
+  "cFreeGB": 97.43,
+  "toExists": true,
+  "repoTmpExists": true,
+  "worktrees": {
+    "clone": null,
+    "builderRepo": {
+      "repo": "e:\\develop\\self\\Team\\projects\\ai-editor",
+      "items": [
+        {
+          "path": "E:/develop/self/Team/projects/ai-editor",
+          "head": "4f4a832c873eaf9d9300446512ccd92f82b75196",
+          "branch": "refs/heads/main",
+          "reachableFrom": {
+            "branches": 2,
+            "tags": 0,
+            "sampleBranches": [
+              "refs/heads/main",
+              "refs/remotes/origin/main"
+            ]
+          },
+          "reachable": true
+        }
+      ]
+    }
+  },
+  "tree": [
+    {
+      "name": "data",
+      "path": "C:\\b\\p0\\data",
+      "children": [
+        {
+          "name": "bp-probe-a",
+          "gb": 0.72,
+          "globalGB": 0.72,
+          "files": 9197,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-12T21:20:03.712Z",
+          "longestFile": {
+            "path": "C:\\b\\p0\\data\\bp-probe-a\\user\\user-data\\Code Cache\\electron-preload\\90DF5F738B679F796A0706EDFB9D418FA03D060423CF6F105FB3F5F696365AE0-67A64C46445250C0C0E1103FCA3290FE88811449B7F10FD5FBBE5AA8F3AC1EB2.cache",
+            "length": 202,
+            "after": 240
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "bp-probe-b",
+          "gb": 0.71,
+          "globalGB": 0.71,
+          "files": 9162,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-12T21:20:35.461Z",
+          "longestFile": {
+            "path": "C:\\b\\p0\\data\\bp-probe-b\\user\\user-data\\Code Cache\\electron-preload\\90DF5F738B679F796A0706EDFB9D418FA03D060423CF6F105FB3F5F696365AE0-67A64C46445250C0C0E1103FCA3290FE88811449B7F10FD5FBBE5AA8F3AC1EB2.cache",
+            "length": 202,
+            "after": 240
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "bp-probe-c",
+          "gb": 0.71,
+          "globalGB": 0.71,
+          "files": 9165,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-12T21:21:13.993Z",
+          "longestFile": {
+            "path": "C:\\b\\p0\\data\\bp-probe-c\\user\\user-data\\Code Cache\\electron-preload\\90DF5F738B679F796A0706EDFB9D418FA03D060423CF6F105FB3F5F696365AE0-67A64C46445250C0C0E1103FCA3290FE88811449B7F10FD5FBBE5AA8F3AC1EB2.cache",
+            "length": 202,
+            "after": 240
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "bp-probe-d",
+          "gb": 0.71,
+          "globalGB": 0.71,
+          "files": 9162,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-12T21:21:36.387Z",
+          "longestFile": {
+            "path": "C:\\b\\p0\\data\\bp-probe-d\\user\\user-data\\Code Cache\\electron-preload\\90DF5F738B679F796A0706EDFB9D418FA03D060423CF6F105FB3F5F696365AE0-67A64C46445250C0C0E1103FCA3290FE88811449B7F10FD5FBBE5AA8F3AC1EB2.cache",
+            "length": 202,
+            "after": 240
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "ext-allowed",
+          "gb": 0.34,
+          "globalGB": 0.34,
+          "files": 116,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-12T21:02:33.273Z",
+          "longestFile": {
+            "path": "C:\\b\\p0\\data\\ext-allowed\\ext\\anthropic.claude-code-2.1.322\\resources\\audio-capture\\x64-win32\\audio-capture.node",
+            "length": 111,
+            "after": 149
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "langpack-testbed",
+          "gb": 0.34,
+          "globalGB": 0.34,
+          "files": 156,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-12T21:02:13.397Z",
+          "longestFile": {
+            "path": "C:\\b\\p0\\data\\langpack-testbed\\ext\\ms-ceintl.vscode-language-pack-ja-1.131.0\\translations\\extensions\\vscode.typescript-language-features.i18n.json",
+            "length": 145,
+            "after": 183
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "langpack-upstream",
+          "gb": 0.34,
+          "globalGB": 0.34,
+          "files": 157,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-12T21:02:07.894Z",
+          "longestFile": {
+            "path": "C:\\b\\p0\\data\\langpack-upstream\\ext\\ms-ceintl.vscode-language-pack-ja-1.131.0\\translations\\extensions\\vscode.typescript-language-features.i18n.json",
+            "length": 146,
+            "after": 184
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "mydist",
+          "gb": 0.34,
+          "globalGB": 0.34,
+          "files": 128,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-12T21:02:44.894Z",
+          "longestFile": {
+            "path": "C:\\b\\p0\\data\\mydist\\ext\\ms-vscode.sublime-keybindings-4.1.10\\node_modules\\relaxed-json\\.nyc_output\\173a91e4-99ac-42eb-8466-660e39913baf.json",
+            "length": 140,
+            "after": 178
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "testbed",
+          "gb": 0.7,
+          "globalGB": 0.7,
+          "files": 8846,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-12T21:00:13.573Z",
+          "longestFile": {
+            "path": "C:\\b\\p0\\data\\testbed\\user\\user-data\\Code Cache\\electron-preload\\8E3FEF297AC8EF1C09CE44C2D581A2F250DAED60944BCBC55BCE0EDEACEBE537-67A64C46445250C0C0E1103FCA3290FE88811449B7F10FD5FBBE5AA8F3AC1EB2.cache",
+            "length": 199,
+            "after": 237
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "testbed-dotenv-a",
+          "gb": 0.68,
+          "globalGB": 0.68,
+          "files": 9039,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-12T21:00:42.931Z",
+          "longestFile": {
+            "path": "C:\\b\\p0\\data\\testbed-dotenv-a\\ext\\ms-vscode.powershell-2025.4.0\\modules\\PSScriptAnalyzer\\1.24.0\\compatibility_profiles\\win-48_x64_10.0.17763.0_5.1.17763.316_x64_4.0.30319.42000_framework.json",
+            "length": 191,
+            "after": 229
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "testbed-dotenv-b",
+          "gb": 0.68,
+          "globalGB": 0.68,
+          "files": 8775,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-12T21:01:26.556Z",
+          "longestFile": {
+            "path": "C:\\b\\p0\\data\\testbed-dotenv-b\\ext\\ms-vscode.powershell-2025.4.0\\modules\\PSScriptAnalyzer\\1.24.0\\compatibility_profiles\\win-48_x64_10.0.17763.0_5.1.17763.316_x64_4.0.30319.42000_framework.json",
+            "length": 191,
+            "after": 229
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "testbed-measure",
+          "gb": 0.68,
+          "globalGB": 0.68,
+          "files": 9051,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-12T22:37:01.228Z",
+          "longestFile": {
+            "path": "C:\\b\\p0\\data\\testbed-measure\\ext\\ms-vscode.powershell-2025.4.0\\modules\\PSScriptAnalyzer\\1.24.0\\compatibility_profiles\\win-48_x64_10.0.17763.0_5.1.17763.316_x64_4.0.30319.42000_framework.json",
+            "length": 190,
+            "after": 228
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "upstream-ai-disabled",
+          "gb": 0.34,
+          "globalGB": 0.34,
+          "files": 57,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-12T20:59:18.445Z",
+          "longestFile": {
+            "path": "C:\\b\\p0\\data\\upstream-ai-disabled\\ext\\anthropic.claude-code-2.1.322\\resources\\audio-capture\\x64-win32\\audio-capture.node",
+            "length": 120,
+            "after": 158
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "upstream-default",
+          "gb": 0.68,
+          "globalGB": 0.68,
+          "files": 9054,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-12T22:38:38.467Z",
+          "longestFile": {
+            "path": "C:\\b\\p0\\data\\upstream-default\\ext\\ms-vscode.powershell-2025.4.0\\modules\\PSScriptAnalyzer\\1.24.0\\compatibility_profiles\\win-48_x64_10.0.17763.0_5.1.17763.316_x64_4.0.30319.42000_framework.json",
+            "length": 191,
+            "after": 229
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        }
+      ],
+      "gb": 7.98,
+      "globalGB": 7.98,
+      "files": 82065,
+      "overFile": 0,
+      "overDir": 0,
+      "longestFile": {
+        "path": "C:\\b\\p0\\data\\bp-probe-a\\user\\user-data\\Code Cache\\electron-preload\\90DF5F738B679F796A0706EDFB9D418FA03D060423CF6F105FB3F5F696365AE0-67A64C46445250C0C0E1103FCA3290FE88811449B7F10FD5FBBE5AA8F3AC1EB2.cache",
+        "length": 202,
+        "after": 240
+      },
+      "linkCount": 0
+    },
+    {
+      "name": "downloads",
+      "path": "C:\\b\\p0\\downloads",
+      "children": [
+        {
+          "name": "VSCode-win32-x64-1.146.0.zip",
+          "file": true,
+          "bytes": 402750279,
+          "mtime": "2026-11-12T20:11:36.482Z"
+        },
+        {
+          "name": "VSCodium-win32-x64-1.143.17232.zip",
+          "file": true,
+          "bytes": 231406156,
+          "mtime": "2026-11-12T20:12:19.033Z"
+        }
+      ],
+      "gb": 0.59,
+      "globalGB": 0.59,
+      "files": 2,
+      "overFile": 0,
+      "overDir": 0,
+      "longestFile": null,
+      "linkCount": 0
+    },
+    {
+      "name": "logs",
+      "path": "C:\\b\\p0\\logs",
+      "children": [
+        {
+          "name": "ext-allowed-20261113-052950",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 8,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-12T20:29:56.593Z",
+          "longestFile": {
+            "path": "C:\\b\\p0\\logs\\ext-allowed-20261113-052950\\control-install-claude-code.txt",
+            "length": 72,
+            "after": 110
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        }
+      ],
+      "gb": 0,
+      "globalGB": 0,
+      "files": 8,
+      "overFile": 0,
+      "overDir": 0,
+      "longestFile": {
+        "path": "C:\\b\\p0\\logs\\ext-allowed-20261113-052950\\control-install-claude-code.txt",
+        "length": 72,
+        "after": 110
+      },
+      "linkCount": 0
+    },
+    {
+      "name": "netlog",
+      "path": "C:\\b\\p0\\netlog",
+      "children": [
+        {
+          "name": "hostname-trial-20261113-215018.netlog.json",
+          "file": true,
+          "bytes": 1906860,
+          "mtime": "2026-11-13T12:52:30.761Z"
+        },
+        {
+          "name": "hostname-trial-20261113-215355.netlog.json",
+          "file": true,
+          "bytes": 1874660,
+          "mtime": "2026-11-13T12:55:11.044Z"
+        },
+        {
+          "name": "hostname-trial-20261113-220007.netlog.json",
+          "file": true,
+          "bytes": 1889702,
+          "mtime": "2026-11-13T13:01:29.175Z"
+        },
+        {
+          "name": "hostname-trial-20261113-220007.node-stderr.txt",
+          "file": true,
+          "bytes": 814050,
+          "mtime": "2026-11-13T13:01:29.138Z"
+        },
+        {
+          "name": "hostname-trial-20261113-220007.node-stdout.txt",
+          "file": true,
+          "bytes": 1198,
+          "mtime": "2026-11-13T13:01:28.879Z"
+        },
+        {
+          "name": "hostname-trial-20261113-220346.netlog.json",
+          "file": true,
+          "bytes": 1852997,
+          "mtime": "2026-11-13T13:05:19.572Z"
+        },
+        {
+          "name": "hostname-trial-20261113-220346.node-stderr.txt",
+          "file": true,
+          "bytes": 841469,
+          "mtime": "2026-11-13T13:05:19.547Z"
+        },
+        {
+          "name": "hostname-trial-20261113-220346.node-stdout.txt",
+          "file": true,
+          "bytes": 1198,
+          "mtime": "2026-11-13T13:05:18.943Z"
+        },
+        {
+          "name": "nodedebug-err.txt",
+          "file": true,
+          "bytes": 549621,
+          "mtime": "2026-11-13T12:57:04.035Z"
+        },
+        {
+          "name": "nodedebug-out.txt",
+          "file": true,
+          "bytes": 1088,
+          "mtime": "2026-11-13T12:57:07.669Z"
+        },
+        {
+          "name": "p05-allowlist-check-20261113-224557.netlog.json",
+          "file": true,
+          "bytes": 1134611,
+          "mtime": "2026-11-13T13:46:28.377Z"
+        },
+        {
+          "name": "p05-allowlist-check-20261113-224557.node-stderr.txt",
+          "file": true,
+          "bytes": 25149,
+          "mtime": "2026-11-13T13:46:28.344Z"
+        },
+        {
+          "name": "p05-allowlist-check-20261113-224557.node-stdout.txt",
+          "file": true,
+          "bytes": 1010,
+          "mtime": "2026-11-13T13:46:28.161Z"
+        },
+        {
+          "name": "p05-testbed-20261113-223346.netlog.json",
+          "file": true,
+          "bytes": 685273,
+          "mtime": "2026-11-13T13:44:17.573Z"
+        },
+        {
+          "name": "p05-testbed-20261113-223346.node-stderr.txt",
+          "file": true,
+          "bytes": 20896,
+          "mtime": "2026-11-13T13:44:17.489Z"
+        },
+        {
+          "name": "p05-testbed-20261113-223346.node-stdout.txt",
+          "file": true,
+          "bytes": 1936,
+          "mtime": "2026-11-13T13:44:17.150Z"
+        },
+        {
+          "name": "p05-upstream-ai-disabled-20261113-221303.netlog.json",
+          "file": true,
+          "bytes": 1753371,
+          "mtime": "2026-11-13T13:23:04.330Z"
+        },
+        {
+          "name": "p05-upstream-ai-disabled-20261113-221303.node-stderr.txt",
+          "file": true,
+          "bytes": 23483,
+          "mtime": "2026-11-13T13:23:04.308Z"
+        },
+        {
+          "name": "p05-upstream-ai-disabled-20261113-221303.node-stdout.txt",
+          "file": true,
+          "bytes": 1142,
+          "mtime": "2026-11-13T13:23:04.135Z"
+        },
+        {
+          "name": "p05-upstream-default-20261113-222318.netlog.json",
+          "file": true,
+          "bytes": 1988772,
+          "mtime": "2026-11-13T13:33:28.625Z"
+        },
+        {
+          "name": "p05-upstream-default-20261113-222318.node-stderr.txt",
+          "file": true,
+          "bytes": 792700,
+          "mtime": "2026-11-13T13:33:28.610Z"
+        },
+        {
+          "name": "p05-upstream-default-20261113-222318.node-stdout.txt",
+          "file": true,
+          "bytes": 1210,
+          "mtime": "2026-11-13T13:33:28.348Z"
+        },
+        {
+          "name": "p2-all-20261115-005416.netlog.json",
+          "file": true,
+          "bytes": 63492,
+          "mtime": "2026-11-14T16:04:17.873Z"
+        },
+        {
+          "name": "p2-all-20261115-005416.node-stderr.txt",
+          "file": true,
+          "bytes": 674279,
+          "mtime": "2026-11-14T16:04:17.858Z"
+        },
+        {
+          "name": "p2-all-20261115-005416.node-stdout.txt",
+          "file": true,
+          "bytes": 1089,
+          "mtime": "2026-11-14T16:04:17.586Z"
+        },
+        {
+          "name": "p2-all-ledger-20261115-005730.netlog.json",
+          "file": true,
+          "bytes": 63487,
+          "mtime": "2026-11-14T16:07:46.141Z"
+        },
+        {
+          "name": "p2-all-ledger-20261115-005730.node-stderr.txt",
+          "file": true,
+          "bytes": 709259,
+          "mtime": "2026-11-14T16:07:46.131Z"
+        },
+        {
+          "name": "p2-all-ledger-20261115-005730.node-stdout.txt",
+          "file": true,
+          "bytes": 1103,
+          "mtime": "2026-11-14T16:07:45.974Z"
+        },
+        {
+          "name": "p2gate-A-7-20261114-223940.netlog.json",
+          "file": true,
+          "bytes": 63795,
+          "mtime": "2026-11-14T13:49:42.025Z"
+        },
+        {
+          "name": "p2gate-A-7-20261114-223940.node-stderr.txt",
+          "file": true,
+          "bytes": 877852,
+          "mtime": "2026-11-14T13:49:42.004Z"
+        },
+        {
+          "name": "p2gate-A-7-20261114-223940.node-stdout.txt",
+          "file": true,
+          "bytes": 1097,
+          "mtime": "2026-11-14T13:49:41.612Z"
+        },
+        {
+          "name": "p2gate-B-1-20261114-225004.netlog.json",
+          "file": true,
+          "bytes": 63492,
+          "mtime": "2026-11-14T14:00:05.585Z"
+        },
+        {
+          "name": "p2gate-B-1-20261114-225004.node-stderr.txt",
+          "file": true,
+          "bytes": 649443,
+          "mtime": "2026-11-14T14:00:05.560Z"
+        },
+        {
+          "name": "p2gate-B-1-20261114-225004.node-stdout.txt",
+          "file": true,
+          "bytes": 1097,
+          "mtime": "2026-11-14T14:00:05.283Z"
+        },
+        {
+          "name": "p2gate-B-1-r2-20261115-000907.netlog.json",
+          "file": true,
+          "bytes": 63487,
+          "mtime": "2026-11-14T15:19:09.038Z"
+        },
+        {
+          "name": "p2gate-B-1-r2-20261115-000907.node-stderr.txt",
+          "file": true,
+          "bytes": 887565,
+          "mtime": "2026-11-14T15:19:09.024Z"
+        },
+        {
+          "name": "p2gate-B-1-r2-20261115-000907.node-stdout.txt",
+          "file": true,
+          "bytes": 1109,
+          "mtime": "2026-11-14T15:19:08.666Z"
+        },
+        {
+          "name": "p2gate-B-2-20261114-230034.netlog.json",
+          "file": true,
+          "bytes": 63506,
+          "mtime": "2026-11-14T14:10:35.900Z"
+        },
+        {
+          "name": "p2gate-B-2-20261114-230034.node-stderr.txt",
+          "file": true,
+          "bytes": 634918,
+          "mtime": "2026-11-14T14:10:35.882Z"
+        },
+        {
+          "name": "p2gate-B-2-20261114-230034.node-stdout.txt",
+          "file": true,
+          "bytes": 1097,
+          "mtime": "2026-11-14T14:10:35.652Z"
+        },
+        {
+          "name": "p2gate-B-2-r2-20261115-001952.netlog.json",
+          "file": true,
+          "bytes": 63488,
+          "mtime": "2026-11-14T15:29:53.084Z"
+        },
+        {
+          "name": "p2gate-B-2-r2-20261115-001952.node-stderr.txt",
+          "file": true,
+          "bytes": 674326,
+          "mtime": "2026-11-14T15:29:53.071Z"
+        },
+        {
+          "name": "p2gate-B-2-r2-20261115-001952.node-stdout.txt",
+          "file": true,
+          "bytes": 1109,
+          "mtime": "2026-11-14T15:29:52.800Z"
+        },
+        {
+          "name": "p2gate-B-6-20261114-230421.netlog.json",
+          "file": true,
+          "bytes": 63487,
+          "mtime": "2026-11-14T14:14:22.548Z"
+        },
+        {
+          "name": "p2gate-B-6-20261114-230421.node-stderr.txt",
+          "file": true,
+          "bytes": 666937,
+          "mtime": "2026-11-14T14:14:22.540Z"
+        },
+        {
+          "name": "p2gate-B-6-20261114-230421.node-stdout.txt",
+          "file": true,
+          "bytes": 1097,
+          "mtime": "2026-11-14T14:14:22.271Z"
+        },
+        {
+          "name": "p2gate-B-6-r2-20261115-001952.netlog.json",
+          "file": true,
+          "bytes": 63487,
+          "mtime": "2026-11-14T15:29:53.371Z"
+        },
+        {
+          "name": "p2gate-B-6-r2-20261115-001952.node-stderr.txt",
+          "file": true,
+          "bytes": 669989,
+          "mtime": "2026-11-14T15:29:53.348Z"
+        },
+        {
+          "name": "p2gate-B-6-r2-20261115-001952.node-stdout.txt",
+          "file": true,
+          "bytes": 1109,
+          "mtime": "2026-11-14T15:29:53.075Z"
+        },
+        {
+          "name": "probe1-20261113-214419.netlog.json",
+          "file": true,
+          "bytes": 1871212,
+          "mtime": "2026-11-13T12:45:55.991Z"
+        }
+      ],
+      "gb": 0.02,
+      "globalGB": 0.02,
+      "files": 50,
+      "overFile": 0,
+      "overDir": 0,
+      "longestFile": null,
+      "linkCount": 0
+    },
+    {
+      "name": "probe",
+      "path": "C:\\b\\p0\\probe",
+      "children": [
+        {
+          "name": "openvsx",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 27,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-12T21:20:58.405Z",
+          "longestFile": {
+            "path": "C:\\b\\p0\\probe\\openvsx\\ms-python.vscode-python-envs\\package.json",
+            "length": 63,
+            "after": 101
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        }
+      ],
+      "gb": 0,
+      "globalGB": 0,
+      "files": 27,
+      "overFile": 0,
+      "overDir": 0,
+      "longestFile": {
+        "path": "C:\\b\\p0\\probe\\openvsx\\ms-python.vscode-python-envs\\package.json",
+        "length": 63,
+        "after": 101
+      },
+      "linkCount": 0
+    },
+    {
+      "name": "run",
+      "path": "C:\\b\\p0\\run",
+      "children": [
+        {
+          "name": ".p0-run-root",
+          "file": true,
+          "bytes": 79,
+          "mtime": "2026-11-12T22:50:48.265Z"
+        }
+      ],
+      "gb": 0,
+      "globalGB": 0,
+      "files": 1,
+      "overFile": 0,
+      "overDir": 0,
+      "longestFile": null,
+      "linkCount": 0
+    },
+    {
+      "name": "sublime",
+      "path": "C:\\b\\p0\\sublime",
+      "children": [
+        {
+          "name": "claude-code-keybindings.json",
+          "file": true,
+          "bytes": 2012,
+          "mtime": "2026-11-12T20:37:47.998Z"
+        },
+        {
+          "name": "conflicts.json",
+          "file": true,
+          "bytes": 3,
+          "mtime": "2026-11-12T20:37:47.998Z"
+        },
+        {
+          "name": "conversion.md",
+          "file": true,
+          "bytes": 7332,
+          "mtime": "2026-11-12T20:37:47.999Z"
+        },
+        {
+          "name": "convert-meta.json",
+          "file": true,
+          "bytes": 1002,
+          "mtime": "2026-11-12T20:37:47.999Z"
+        },
+        {
+          "name": "converted-keybindings.json",
+          "file": true,
+          "bytes": 6764,
+          "mtime": "2026-11-12T20:37:47.996Z"
+        },
+        {
+          "name": "dropped.json",
+          "file": true,
+          "bytes": 369,
+          "mtime": "2026-11-12T20:37:47.998Z"
+        },
+        {
+          "name": "ms-vscode.sublime-keybindings-4.1.10.sha256",
+          "file": true,
+          "bytes": 64,
+          "mtime": "2026-11-12T20:13:39.635Z"
+        },
+        {
+          "name": "ms-vscode.sublime-keybindings-4.1.10.vsix",
+          "file": true,
+          "bytes": 358805,
+          "mtime": "2026-11-12T20:13:40.289Z"
+        },
+        {
+          "name": "same-key-different-when.json",
+          "file": true,
+          "bytes": 3,
+          "mtime": "2026-11-12T20:37:47.999Z"
+        },
+        {
+          "name": "sublime-4.1.10.package.json",
+          "file": true,
+          "bytes": 15923,
+          "mtime": "2026-11-12T20:37:47.896Z"
+        }
+      ],
+      "gb": 0,
+      "globalGB": 0,
+      "files": 10,
+      "overFile": 0,
+      "overDir": 0,
+      "longestFile": null,
+      "linkCount": 0
+    },
+    {
+      "name": "trial",
+      "path": "C:\\b\\p0\\trial",
+      "children": [
+        {
+          "name": "lock.json",
+          "file": true,
+          "bytes": 1478,
+          "mtime": "2026-11-12T20:43:41.713Z"
+        },
+        {
+          "name": "verify-result.json",
+          "file": true,
+          "bytes": 9185,
+          "mtime": "2026-11-13T03:33:37.311Z"
+        }
+      ],
+      "gb": 0,
+      "globalGB": 0,
+      "files": 2,
+      "overFile": 0,
+      "overDir": 0,
+      "longestFile": null,
+      "linkCount": 0
+    },
+    {
+      "name": "vsix",
+      "path": "C:\\b\\p0\\vsix",
+      "children": [
+        {
+          "name": "anthropic.claude-code-2.1.322@win32-x64",
+          "gb": 0.48,
+          "globalGB": 0.48,
+          "files": 15,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T03:25:44.742Z",
+          "longestFile": {
+            "path": "C:\\b\\p0\\vsix\\anthropic.claude-code-2.1.322@win32-x64\\Anthropic.claude-code-2.1.322@win32-x64.sha256",
+            "length": 99,
+            "after": 137
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "detachhead.basedpyright-1.40.2",
+          "gb": 0.01,
+          "globalGB": 0.01,
+          "files": 12,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-12T20:19:26.836Z",
+          "longestFile": {
+            "path": "C:\\b\\p0\\vsix\\detachhead.basedpyright-1.40.2\\detachhead.basedpyright-1.40.2.sha256",
+            "length": 81,
+            "after": 119
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "dotenv.dotenv-vscode-1.5.8",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 12,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-12T20:20:25.960Z",
+          "longestFile": {
+            "path": "C:\\b\\p0\\vsix\\dotenv.dotenv-vscode-1.5.8\\dotenv.dotenv-vscode-1.5.8.sha256",
+            "length": 73,
+            "after": 111
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "fetch-result.json",
+          "file": true,
+          "bytes": 33548,
+          "mtime": "2026-11-12T20:18:09.109Z"
+        },
+        {
+          "name": "mads-hartmann.bash-ide-vscode-1.43.2",
+          "gb": 0.01,
+          "globalGB": 0.01,
+          "files": 11,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-12T20:20:04.332Z",
+          "longestFile": {
+            "path": "C:\\b\\p0\\vsix\\mads-hartmann.bash-ide-vscode-1.43.2\\mads-hartmann.bash-ide-vscode-1.43.2.sha256",
+            "length": 93,
+            "after": 131
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "mechatroner.rainbow-csv-3.24.1",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 12,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-12T20:20:23.125Z",
+          "longestFile": {
+            "path": "C:\\b\\p0\\vsix\\mechatroner.rainbow-csv-3.24.1\\mechatroner.rainbow-csv-3.24.1.sha256",
+            "length": 81,
+            "after": 119
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "MS-CEINTL.vscode-language-pack-ja-1.131.0",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 11,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-12T20:20:38.189Z",
+          "longestFile": {
+            "path": "C:\\b\\p0\\vsix\\MS-CEINTL.vscode-language-pack-ja-1.131.0\\MS-CEINTL.vscode-language-pack-ja-1.131.0.sha256",
+            "length": 103,
+            "after": 141
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "ms-vscode.powershell-2025.4.0",
+          "gb": 0.02,
+          "globalGB": 0.02,
+          "files": 12,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-12T20:19:52.174Z",
+          "longestFile": {
+            "path": "C:\\b\\p0\\vsix\\ms-vscode.powershell-2025.4.0\\ms-vscode.powershell-2025.4.0.sha256",
+            "length": 79,
+            "after": 117
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "tomoki1207.pdf-1.2.2",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 11,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-12T20:20:34.577Z",
+          "longestFile": {
+            "path": "C:\\b\\p0\\vsix\\tomoki1207.pdf-1.2.2\\tomoki1207.pdf-1.2.2.sha256",
+            "length": 61,
+            "after": 99
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "verify-result.json",
+          "file": true,
+          "bytes": 83682,
+          "mtime": "2026-11-13T03:26:03.290Z"
+        },
+        {
+          "name": "weixu.wx-vsce-dotenv-0.2.3",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 12,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-12T20:20:32.140Z",
+          "longestFile": {
+            "path": "C:\\b\\p0\\vsix\\weixu.wx-vsce-dotenv-0.2.3\\weixu.wx-vsce-dotenv-0.2.3.sha256",
+            "length": 73,
+            "after": 111
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        }
+      ],
+      "gb": 0.52,
+      "globalGB": 0.52,
+      "files": 110,
+      "overFile": 0,
+      "overDir": 0,
+      "longestFile": {
+        "path": "C:\\b\\p0\\vsix\\MS-CEINTL.vscode-language-pack-ja-1.131.0\\MS-CEINTL.vscode-language-pack-ja-1.131.0.sha256",
+        "length": 103,
+        "after": 141
+      },
+      "linkCount": 0
+    }
+  ],
+  "seconds": 69.74
+}
