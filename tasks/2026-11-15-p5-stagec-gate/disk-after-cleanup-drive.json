@@ -1,0 +1,26 @@
+{
+  "countedAt": "2026-11-15T13:12:02.711Z",
+  "seconds": 0.001,
+  "drive": {
+    "root": "C:\\",
+    "freeBytes": 99625209856,
+    "freeGB": 92.78
+  },
+  "entries": [
+    {
+      "name": "dist",
+      "path": "C:\\b\\dist",
+      "exists": true,
+      "bytes": 779942040,
+      "gb": 0.73,
+      "files": 2,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 779942040,
+      "uniqueGB": 0.73
+    }
+  ],
+  "uniqueTotal": {
+    "bytes": 779942040,
+    "gb": 0.73
+  }
+}

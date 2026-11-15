@@ -1,0 +1,64 @@
+{
+  "countedAt": "2026-11-15T13:13:54.524Z",
+  "seconds": 375.398,
+  "drive": {
+    "root": "C:\\",
+    "freeBytes": 99586072576,
+    "freeGB": 92.75
+  },
+  "entries": [
+    {
+      "name": "p2",
+      "path": "C:\\b\\p2",
+      "exists": true,
+      "bytes": 1155051584,
+      "gb": 1.08,
+      "files": 1974,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 1155051584,
+      "uniqueGB": 1.08
+    },
+    {
+      "name": "dist",
+      "path": "C:\\b\\dist",
+      "exists": true,
+      "bytes": 779942040,
+      "gb": 0.73,
+      "files": 2,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 779942040,
+      "uniqueGB": 0.73
+    },
+    {
+      "name": "smokeext",
+      "path": "C:\\b\\smoke\\ext",
+      "exists": true,
+      "bytes": 2918588996,
+      "gb": 2.72,
+      "files": 35060,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 2918588996,
+      "uniqueGB": 2.72
+    },
+    {
+      "name": "trialinstalldoc",
+      "path": "C:\\b\\trial-install-doc",
+      "exists": false
+    },
+    {
+      "name": "wt",
+      "path": "C:\\b\\wt",
+      "exists": true,
+      "bytes": 19143219911,
+      "gb": 17.83,
+      "files": 593222,
+      "hardlinkedFiles": 365459,
+      "uniqueBytes": 12430275077,
+      "uniqueGB": 11.58
+    }
+  ],
+  "uniqueTotal": {
+    "bytes": 17283857697,
+    "gb": 16.1
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "countedAt": "2026-11-15T12:59:47.323Z",
+  "seconds": 146.135,
+  "drive": {
+    "root": "C:\\",
+    "freeBytes": 29779271680,
+    "freeGB": 27.73
+  },
+  "entries": [
+    {
+      "name": "p2",
+      "path": "C:\\b\\p2",
+      "exists": true,
+      "bytes": 26145949117,
+      "gb": 24.35,
+      "files": 46965,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 26145949117,
+      "uniqueGB": 24.35
+    },
+    {
+      "name": "dist",
+      "path": "C:\\b\\dist",
+      "exists": true,
+      "bytes": 9213129758,
+      "gb": 8.58,
+      "files": 24,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 9213129758,
+      "uniqueGB": 8.58
+    },
+    {
+      "name": "smokeext",
+      "path": "C:\\b\\smoke\\ext",
+      "exists": true,
+      "bytes": 31382743608,
+      "gb": 29.23,
+      "files": 377423,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 31382743608,
+      "uniqueGB": 29.23
+    }
+  ],
+  "uniqueTotal": {
+    "bytes": 66741822483,
+    "gb": 62.16
+  }
+}
