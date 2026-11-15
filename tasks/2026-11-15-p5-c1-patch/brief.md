@@ -43,6 +43,18 @@
 
 このディレクトリに `handoff-notes.md`（直した点、残した部品と理由、Claude Code の API への影響、テストの入口）、`typecheck-log.md`。
 
+## 追加の依頼（2026-11-15、1回目の後）
+
+1回目の判断を仰ぐ点の1〜4は、リーダーが認めた（`docs/user-decisions.md` の「C-1 の edits.patch を作るときに出た点」）。docs/03 も直した。パッケージ化の前に要る直しを、同じ edits.patch に足す。
+
+1. `build/gulpfile.vscode.ts`: `@github/copilot-sdk` が無いと誤りを投げる所（46〜48行）、foundry・`copilotVersions`・Copilot のランタイムの梱包・shim・`compileCopilotExtensionBuildTask` を、C-1 で消した依存に合わせて直す。
+2. `build/next/index.ts` のデスクトップの束ねに残る `agentHostCrypto` の入口を外す。
+3. Agents の窓へのリンク（`app.ts` の `openAgentsWindow`、`windowImpl`・`protocolMainService`）を、開く先が無くても誤りにならない形にする（消すか、何もしない）。
+4. `preferencesRenderers.ts` の MCP の設定の警告が、無くなったコマンドを指さないようにする（出ない見込みでも、コマンドの参照を残さない）。
+5. `package.json` から C-1 で消した依存（`@github/copilot-sdk` など）が外れているかを確かめる。外すときはロックファイルの扱い（`pnpm install --lockfile-only` が許可にあるか）を書く。許可に無ければ走らせずに書く。
+6. `build/` の側の型検査が走らせられるなら走らせる（たとえば本家の `build/tsconfig.json`）。走らせられなければ、その理由を書く。
+7. 直したら、1回目と同じく、タグからの当て直し（15単位、衝突なし）と型検査（誤り 0）を確かめ、`handoff-notes.md` に「2回目」の節を足す。作業ツリーとディスクの守りは上と同じ。
+
 ## 結果
 
 <完了後にリーダーが記入する>

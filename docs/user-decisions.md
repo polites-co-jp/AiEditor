@@ -273,3 +273,15 @@
 |---|---|
 | 関門が済んだ古い版（`C:\b\p2\`・`C:\b\dist\`・`C:\b\smoke\ext\`）の片づけ。C: の空きが約 21 GB | 蒙恬に消す許可を足して任せる（ユーザーの答え「許可を足して任せる」）。権限の変更は Team の開発部が行う。依頼は `tasks/2026-11-15-permission-requests/requests.md`。許可が入るまで段階 C は始めない |
 | 片づけの許可を待つ間の段階 C | 下ごしらえを始める（ユーザーの答え、2026-11-15）。使い終わった作業ツリー `C:\b\wt\p2` を使い回し、C-1 から1単位ずつ、型検査の誤りを手がかりに edits.patch を作る。ビルド・起動の確かめ・関門は、片づけの許可が入ってから |
+
+## 記録（2026-11-15、C-1 の edits.patch を作るときに出た点。リーダーの判断）
+
+根拠: `tasks/2026-11-15-p5-c1-patch/handoff-notes.md`。どれも 2026-11-14 の規則（消す AI の部品だけが使うものは消す、残る部品が使うものは使い手を書いて残す）の当てはめで、裁定を変えるものではない。
+
+| 論点 | 扱い |
+|---|---|
+| MCP の認証の3つのサービス（`services/authentication/browser/authenticationMcp{,Access,Usage}Service.ts`）。docs/03 の表は消すと書く | 残す（`kept`）。残る認証の照会 `authenticationQueryService.ts` が注入し、保存だけで通信しない。docs/03 の表を直す |
+| AI の検索の分岐（`searchView.ts`・`searchModel.ts`） | 分岐は残し、隠れた空の見出しを置く形を認める。`contrib/search/browser/AISearch/` と登録の入口は消える。パッチを小さくして毎週の衝突を減らす |
+| ターミナルの案内 `terminalContrib/inlineHint`（設定 `terminal.integrated.initialHint`） | 消す。チャットのエージェントにだけ使う AI の部品 |
+| `chat.tools.terminal.*` とサンドボックスのファイルシステムの設定の登録が消え、読む側では `undefined` になる | 認める。関門の設定の画面とターミナルの組で、誤りが出ないかを見る |
+| `build/gulpfile.vscode.ts` の Copilot の梱包・`agentHostCrypto` の入口・Agents の窓へのリンクが残っている | パッケージ化の前に C-1 の edits.patch へ足す（関門の前に蒙恬が直す） |

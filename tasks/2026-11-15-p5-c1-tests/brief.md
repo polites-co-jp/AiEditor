@@ -1,0 +1,49 @@
+# Phase 5 の下ごしらえ: C-1（本家の AI）の単位の検査とテスト
+
+- 担当: cao-shen（曹参）
+- 依頼日: 2026-11-15
+- 状態: 依頼中
+
+## 目的
+
+蒙恬が C-1 の `edits.patch` を作った（`tasks/2026-11-15-p5-c1-patch/`）。蒙恬は、パッケージ化の前に要る直し（`build/gulpfile.vscode.ts` など）を同じ edits.patch に足しているところ。C-1 の単位のファイルが壊れていないことを、ビルドリポジトリの中だけで確かめるテストを、同じ仕様から並行して書く。関門のスモークは片づけの許可の後に行う。
+
+## 入力
+
+- docs/03 の3節（unit.json の形）・4節の段階 C の表と末尾の箇条書き（2026-11-15 の C-1 の変更を含む）・5.1・5.3・9節
+- `docs/user-decisions.md` の 2026-11-14 の C-1 の範囲と、2026-11-15 の「C-1 の edits.patch を作るときに出た点」
+- `removals/C-1-ai/`（unit.json、README、edits.patch）
+- `tasks/2026-11-15-p5-c1-patch/handoff-notes.md` の「テストの入口（曹参へ）」の1〜4
+- 既にあるテスト: `tests/removals.test.mjs`、`tests/apply*.test.mjs`、`tests/removals/`
+
+## やること
+
+1. **単位のファイルの静的な検査**（入口の3）: `unit.json` の `patch` が `edits.patch` でファイルがある、edits.patch の Subject が `[PATCH] unit C-1-ai: edits`、`kept` に MCP の認証の3つのサービスがある、`delete` と `kept` に同じパスが無い、`removeLines` の各行が `delete` したファイルの import か登録の1行であること、新しいファイル `api/common/extHostRemovedApi.ai.ts` と `services/chat/common/nullChatEntitlementService.ts` を edits.patch が作ること。既に `tests/removals.test.mjs` に全単位にかかる検査があれば、C-1 で足りない分だけを足す。
+2. **何もしない実装の検査**（入口の4）: 本物の作業ツリーで VS Code のテストの仕組みを走らせずに書ける範囲（たとえば edits.patch の中の新しいファイルの本文を読み、`selectChatModels` が `[]` を返す、`invokeTool` が reject する、イベントが `Event.None`、提案中の API の門 `checkProposedApiEnabled` が残る、を文字列や構文で確かめる）で書く。走らせる形が要るなら、その形と何が要るかを書く（実行は大岡越前守）。
+3. **当て直しと型検査の台本**（入口の1・2）: 大岡越前守が `C:\b\wt\p2` で走らせる、期待の値を照らす手順（`apply.mjs --only` の15単位、`build.mjs --from typecheck --to typecheck`、`checks` の期待）を、`tests/removals/` などに置く（自分では走らせない）。
+4. `node tests/run-all.mjs --save <ファイル>` の件数を記録する。蒙恬の2回目の直しで edits.patch が変わっても通る書き方にする（行数や sha に頼らない）。
+
+## 守ること
+
+- 書き込みは `tests/` と `tasks/` だけ。`removals/`・`scripts/`・`C:\b\` には書かない。
+- 普段使いのエディタのデータと秘密の場所に触れない。
+
+## 完了条件
+
+- 1〜3のテストか台本があり、`run-all` の fail が 0。
+
+## 成果物
+
+このディレクトリに `handoff-notes.md`（足したテスト、件数、大岡越前守が走らせる台本の入口）。
+
+## 結果
+
+<完了後にリーダーが記入する>
+
+## 未解決
+
+<無ければ「なし」>
+
+## 次の担当
+
+ooka-echizen（大岡越前守）: 蒙恬の2回目の直しと、このテストの検証。
