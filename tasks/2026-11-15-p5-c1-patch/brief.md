@@ -2,7 +2,7 @@
 
 - 担当: meng-tian（蒙恬）
 - 依頼日: 2026-11-15
-- 状態: 完了
+- 状態: 差し戻し
 
 ## 目的
 
@@ -90,3 +90,12 @@
 ## 次の担当
 
 cao-shen（曹参）: C-1 の検査（`tests/removals.test.mjs` など）。ooka-echizen（大岡越前守）: edits.patch の検証。片づけの許可の後、ビルドと関門。
+
+## 追加の依頼（2026-11-15、C-4 のテストの直しで見つかった門の抜け）
+
+曹参が門の検査の期待を本家から読む形に直したところ、C-1 の何もしない実装に門の抜けが1つ見つかった（`tasks/2026-11-15-p5-c4-tests/handoff-notes.md` の「2回目」の「C-1 の抜け」）。判断は `docs/user-decisions.md` の「C-6 の edits.patch と、C-4 のテストの直しで出た点」。
+
+1. `extHostRemovedApi.ai.ts` の `lm.registerToolDefinition` の最初の文に、本家（`extHostLanguageModelTools.ts`）と同じ `checkProposedApiEnabled(extension, 'languageModelToolSupportsModel')` を足す。README の門の一覧にも足す。
+2. 本家の C-1 が消す拡張ホストのファイルの `checkProposedApiEnabled`・`isProposedApiEnabled` を全部、何もしない実装と突き合わせる（C-4 の2回目の表の形）。呼べない所の門（`languageModelSystem`・`mcpToolDefinitions`）は、なぜ要らないかを書く。
+3. 作業ツリーをタグに戻し、A・B の14と C-1 を当てて edits.patch を作り直す。タグからの当て直し（15単位）と型検査（誤り 0）、`--lockfile-check` を確かめる。あわせて C-1〜C-6 の20単位の組でも当て直しと型検査を確かめる（C-1 の直しが後の単位の文脈を崩さないこと）。
+4. 終わったら作業ツリーをタグ 1.146.0 に戻す。handoff-notes に「6回目」の節を足す。
