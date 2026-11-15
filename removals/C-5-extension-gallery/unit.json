@@ -24,6 +24,7 @@
     "src/vs/workbench/services/extensionManagement/electron-browser/extensionGalleryAccountService.ts",
     "src/vs/workbench/services/extensionManagement/electron-browser/extensionTipsService.ts",
     "src/vs/workbench/services/extensionManagement/test/electron-browser/extensionGalleryAccountService.test.ts",
+    "src/vs/workbench/services/extensionManagement/test/electron-browser/extensionGalleryManifestService.test.ts",
     "src/vs/platform/extensionManagement/node/extensionTipsService.ts"
   ],
   "removeDependencies": {},
@@ -38,12 +39,14 @@
     { "file": "src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts", "line": "this.server.registerChannel('extensionTipsService', extensionTipsChannel);" }
   ],
   "productRemove": [],
+  "patch": "edits.patch",
   "kept": [
-    { "path": "src/vs/workbench/services/extensionRecommendations/common/extensionRecommendations.ts", "reason": "IExtensionRecommendationsService・IExtensionIgnoredRecommendationsService の ID と型。残す拡張の画面（extensionsWidgets.ts・extensionsViews.ts・extensionEditor.ts・extensionsActions.ts・extensionsUtils.ts）が注入している。edits.patch で何もしない実装を登録する見込み" },
-    { "path": "src/vs/workbench/services/extensionManagement/electron-browser/extensionGalleryManifestService.ts", "reason": "docs/03 の表では消す側。ワークベンチがこのサービスから共有プロセスの ExtensionGalleryManifestIPCService（platform/extensionManagement/common/extensionGalleryManifestServiceIpc.ts）へ setExtensionGalleryManifest を送るまで、共有プロセスは Barrier で待ち続ける。消すと共有プロセスでの拡張の導入（VSIX を含む）が止まる恐れがある（型検査では見つからない）。拡張の資源の読み込み（extensionResourceLoaderService）も注入している。edits.patch でアカウントの部分だけを外す見込み" },
-    { "path": "src/vs/platform/extensionManagement/common/extensionGalleryService.ts", "reason": "共有プロセスと CLI（--install-extension）の拡張の管理が使うギャラリーの基底。product.json に extensionsGallery が無いので通信しない（isEnabled が偽）" },
-    { "path": "src/vs/platform/extensionManagement/common/extensionTipsService.ts", "reason": "Web の入口（workbench.web.main.ts の81・82・123行）が登録している。デスクトップでは使わない" },
-    { "path": "src/vs/platform/extensionRecommendations", "reason": "IExtensionRecommendationNotificationService の型と IPC。共有プロセスの登録（sharedProcessMain.ts の330〜332行）と、edits.patch で足す何もしない実装が使う" }
+    { "path": "src/vs/workbench/services/extensionRecommendations/common/extensionRecommendations.ts", "reason": "IExtensionRecommendationsService・IExtensionIgnoredRecommendationsService の ID と型。残す拡張の画面（extensionsWidgets.ts・extensionsViews.ts・extensionEditor.ts・extensionsActions.ts・extensionsUtils.ts）が注入している。edits.patch で、同じフォルダの新しいファイル nullExtensionRecommendations.ts の何もしない実装を extensions.contribution.ts（browser）で登録した" },
+    { "path": "src/vs/workbench/services/extensionManagement/electron-browser/extensionGalleryManifestService.ts", "reason": "docs/03 の表では消す側。ワークベンチがこのサービスから共有プロセスの ExtensionGalleryManifestIPCService（platform/extensionManagement/common/extensionGalleryManifestServiceIpc.ts）へ setExtensionGalleryManifest を送るまで、共有プロセスは Barrier で待ち続ける。消すと共有プロセスでの拡張の導入（VSIX を含む）が止まる恐れがある（型検査では見つからない）。拡張の資源の読み込み（extensionResourceLoaderService）も注入している。edits.patch でアカウントと私設のマーケットプレイス（extensions.gallery.serviceUrl）の取得を外し、product.json の既定（extensionsGallery が無いので null）を送るだけにした" },
+    { "path": "src/vs/platform/extensionManagement/common/extensionGalleryService.ts", "reason": "共有プロセスと CLI（--install-extension）の拡張の管理が使うギャラリーの基底。product.json に extensionsGallery が無いので通信しない（isEnabled が偽）。ワークベンチ側（services/extensionManagement/common/extensionGalleryService.ts）は edits.patch で何もしない NoopExtensionGalleryService の登録に替えたので、ワークベンチはこの基底を使わない" },
+    { "path": "src/vs/platform/extensionManagement/common/extensionTipsService.ts", "reason": "Web の入口（workbench.web.main.ts）が登録し、テストの部品（workbench/test/electron-browser/workbenchTestServices.ts の TestExtensionTipsService）が継承している。デスクトップでは使わない" },
+    { "path": "src/vs/platform/extensionRecommendations", "reason": "IExtensionRecommendationNotificationService の型と IPC。共有プロセスの登録（sharedProcessMain.ts の ExtensionRecommendationNotificationServiceChannelClient）と、edits.patch で足した何もしない実装が使う。ワークベンチ側のチャンネルの登録（contrib/extensions/electron-browser/extensions.contribution.ts）は、送り手の tips を消したので外した" },
+    { "path": "src/vs/workbench/contrib/extensions/common/extensionsFileTemplate.ts", "reason": ".vscode/extensions.json の JSON の検査の定義（ExtensionsConfigurationSchema）。extensions.contribution.ts が登録する。編集の手伝いだけで通信しないので残した（消すか迷ったもの。README の「判断を仰ぐ点」）" }
   ],
   "checks": {
     "absentCommands": [
@@ -52,13 +55,25 @@
       "workbench.extensions.action.showPopularExtensions",
       "workbench.extensions.action.showRecommendedKeymapExtensions",
       "workbench.extensions.action.showLanguageExtensions",
-      "workbench.extensions.action.configureWorkspaceRecommendedExtensions"
+      "workbench.extensions.action.configureWorkspaceRecommendedExtensions",
+      "workbench.extensions.action.configureWorkspaceFolderRecommendedExtensions",
+      "workbench.extensions.action.installWorkspaceRecommendedExtensions",
+      "workbench.extensions.action.ignoreRecommendation",
+      "workbench.extensions.action.undoIgnoredRecommendation",
+      "workbench.extensions.action.addExtensionToWorkspaceRecommendations",
+      "workbench.extensions.action.removeExtensionFromWorkspaceRecommendations",
+      "workbench.extensions.action.addToWorkspaceRecommendations",
+      "workbench.extensions.action.addToWorkspaceFolderRecommendations",
+      "workbench.extensions.action.addToWorkspaceIgnoredRecommendations",
+      "workbench.extensions.action.addToWorkspaceFolderIgnoredRecommendations",
+      "workbench.extensions.actions.gallery.signIn"
     ],
     "absentViews": [
       "workbench.views.extensions.marketplace",
       "workbench.views.extensions.popular",
       "extensions.recommendedList",
       "workbench.views.extensions.otherRecommendations",
+      "workbench.views.extensions.workspaceRecommendations",
       "workbench.views.extensions.marketplaceAccess"
     ],
     "absentSettings": [
@@ -75,7 +90,16 @@
       { "in": ["src/vs"], "text": "/extensionGalleryAccount.js'" },
       { "in": ["src/vs"], "text": "/extensionGalleryAccountService.js'" },
       { "in": ["src/vs"], "text": "electron-browser/extensionTipsService.js'" },
-      { "in": ["src/vs"], "text": "node/extensionTipsService.js'" }
+      { "in": ["src/vs"], "text": "node/extensionTipsService.js'" },
+      { "in": ["src/vs/workbench/contrib/extensions"], "text": "SearchMarketplaceExtensionsView" },
+      { "in": ["src/vs/workbench/contrib/extensions"], "text": "ExtensionMarketplaceStatusUpdater" },
+      { "in": ["src/vs/workbench/contrib/extensions"], "text": "AbstractConfigureRecommendedExtensionsAction" },
+      { "in": ["src/vs/workbench/contrib/extensions"], "text": "new ExtensionRecommendationNotificationServiceChannel(" },
+      { "in": ["src/vs/workbench"], "text": "class WorkbenchExtensionGalleryService " },
+      { "in": ["src/vs/workbench/contrib/extensions"], "text": "InstallExtensionQuickAccessProvider" },
+      { "in": ["src/vs/workbench/contrib/extensions"], "text": "'ext install '" },
+      { "in": ["src/vs/workbench/contrib/extensions"], "text": "isEqualTo('.vsix')" },
+      { "in": ["src/vs/workbench/contrib/extensions"], "text": "extractEditorsAndFilesDropData" }
     ],
     "absentProcesses": [],
     "absentHosts": []

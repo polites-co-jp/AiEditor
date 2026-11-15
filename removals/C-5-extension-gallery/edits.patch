@@ -1,0 +1,1887 @@
+From cd9cf41db57b7aa96929cf3cf811d25b19d149f7 Mon Sep 17 00:00:00 2001
+From: shuko-apply <apply@shuko.invalid>
+Date: Sun, 15 Nov 2026 12:58:37 +0900
+Subject: [PATCH] unit C-5-extension-gallery: edits
+
+---
+ .../sharedProcess/sharedProcessMain.ts        |   4 +-
+ .../browser/extensions.contribution.ts        | 341 ++----------------
+ .../extensions/browser/extensionsActions.ts   | 213 +----------
+ .../browser/extensionsQuickAccess.ts          |  78 +---
+ .../extensions/browser/extensionsViewlet.ts   | 204 +----------
+ .../extensions/browser/extensionsViews.ts     | 125 +------
+ .../extensions.contribution.ts                |  11 +-
+ .../common/extensionGalleryService.ts         |  33 +-
+ .../common/noopExtensionGalleryService.ts     |  87 +++++
+ .../extensionGalleryManifestService.ts        | 221 +-----------
+ .../common/nullExtensionRecommendations.ts    |  98 +++++
+ 11 files changed, 245 insertions(+), 1170 deletions(-)
+ create mode 100644 src/vs/workbench/services/extensionManagement/common/noopExtensionGalleryService.ts
+ create mode 100644 src/vs/workbench/services/extensionRecommendations/common/nullExtensionRecommendations.ts
+
+diff --git a/src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts b/src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts
+index 89cc7389e4a..62b185526e2 100644
+--- a/src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts
++++ b/src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts
+@@ -29,9 +29,9 @@ import { DownloadService } from '../../../platform/download/common/downloadServi
+ import { INativeEnvironmentService } from '../../../platform/environment/common/environment.js';
+ import { GlobalExtensionEnablementService } from '../../../platform/extensionManagement/common/extensionEnablementService.js';
+ import { ExtensionGalleryService } from '../../../platform/extensionManagement/common/extensionGalleryService.js';
+-import { IAllowedExtensionsService, IExtensionGalleryService, IExtensionManagementService, IExtensionTipsService, IGlobalExtensionEnablementService } from '../../../platform/extensionManagement/common/extensionManagement.js';
++import { IAllowedExtensionsService, IExtensionGalleryService, IExtensionManagementService, IGlobalExtensionEnablementService } from '../../../platform/extensionManagement/common/extensionManagement.js';
+ import { ExtensionSignatureVerificationService, IExtensionSignatureVerificationService } from '../../../platform/extensionManagement/node/extensionSignatureVerificationService.js';
+-import { ExtensionManagementChannel, ExtensionTipsChannel } from '../../../platform/extensionManagement/common/extensionManagementIpc.js';
++import { ExtensionManagementChannel } from '../../../platform/extensionManagement/common/extensionManagementIpc.js';
+ import { ExtensionManagementService, INativeServerExtensionManagementService } from '../../../platform/extensionManagement/node/extensionManagementService.js';
+ import { IExtensionRecommendationNotificationService } from '../../../platform/extensionRecommendations/common/extensionRecommendations.js';
+ import { IFileService } from '../../../platform/files/common/files.js';
+diff --git a/src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts b/src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts
+index 3a548831a6e..ada565bc17f 100644
+--- a/src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts
++++ b/src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts
+@@ -8,9 +8,7 @@ import { CancellationToken } from '../../../../base/common/cancellation.js';
+ import { onUnexpectedError } from '../../../../base/common/errors.js';
+ import { Event } from '../../../../base/common/event.js';
+ import { KeyCode, KeyMod } from '../../../../base/common/keyCodes.js';
+-import { mnemonicButtonLabel } from '../../../../base/common/labels.js';
+ import { Disposable, DisposableStore, IDisposable, isDisposable } from '../../../../base/common/lifecycle.js';
+-import { Schemas } from '../../../../base/common/network.js';
+ import { isNative, isWeb } from '../../../../base/common/platform.js';
+ import { PolicyCategory } from '../../../../base/common/policy.js';
+ import { URI, UriComponents } from '../../../../base/common/uri.js';
+@@ -25,8 +23,7 @@ import { Extensions as ConfigurationExtensions, ConfigurationScope, IConfigurati
+ import { ContextKeyExpr, IContextKeyService, RawContextKey } from '../../../../platform/contextkey/common/contextkey.js';
+ import { IDialogService, IFileDialogService } from '../../../../platform/dialogs/common/dialogs.js';
+ import { ExtensionGalleryManifestStatus, ExtensionGalleryResourceType, ExtensionGalleryAuthProviderConfigKey, ExtensionGalleryServiceUrlConfigKey, getExtensionGalleryManifestResourceUri, IExtensionGalleryManifest, IExtensionGalleryManifestService } from '../../../../platform/extensionManagement/common/extensionGalleryManifest.js';
+-import { IExtensionGalleryAccountService } from '../../../services/extensionManagement/common/extensionGalleryAccount.js';
+-import { EXTENSION_INSTALL_SOURCE_CONTEXT, ExtensionInstallSource, ExtensionRequestsTimeoutConfigKey, ExtensionsLocalizedLabel, FilterType, IExtensionGalleryService, IExtensionManagementService, PreferencesLocalizedLabel, SortBy, VerifyExtensionSignatureConfigKey } from '../../../../platform/extensionManagement/common/extensionManagement.js';
++import { EXTENSION_INSTALL_SOURCE_CONTEXT, ExtensionInstallSource, ExtensionRequestsTimeoutConfigKey, ExtensionsLocalizedLabel, FilterType, IExtensionGalleryService, IExtensionManagementService, SortBy, VerifyExtensionSignatureConfigKey } from '../../../../platform/extensionManagement/common/extensionManagement.js';
+ import { areSameExtensions, getIdAndVersion } from '../../../../platform/extensionManagement/common/extensionManagementUtil.js';
+ import { ExtensionStorageService } from '../../../../platform/extensionManagement/common/extensionStorage.js';
+ import { IExtensionRecommendationNotificationService } from '../../../../platform/extensionRecommendations/common/extensionRecommendations.js';
+@@ -47,47 +44,46 @@ import { IUriIdentityService } from '../../../../platform/uriIdentity/common/uri
+ import { IUserDataProfilesService } from '../../../../platform/userDataProfile/common/userDataProfile.js';
+ import { EditorPaneDescriptor, IEditorPaneRegistry } from '../../../browser/editor.js';
+ import { Extensions as ConfigurationMigrationExtensions, IConfigurationMigrationRegistry } from '../../../common/configuration.js';
+-import { IsSessionsWindowContext, ResourceContextKey, WorkbenchStateContext } from '../../../common/contextkeys.js';
++import { IsSessionsWindowContext, WorkbenchStateContext } from '../../../common/contextkeys.js';
+ import { IWorkbenchContribution, IWorkbenchContributionsRegistry, Extensions as WorkbenchExtensions } from '../../../common/contributions.js';
+ import { EditorExtensions } from '../../../common/editor.js';
+ import { IViewContainersRegistry, Extensions as ViewContainerExtensions, ViewContainerLocation } from '../../../common/views.js';
+ import { IEditorService } from '../../../services/editor/common/editorService.js';
+ import { EnablementState, IExtensionManagementServerService, IPublisherInfo, IWorkbenchExtensionEnablementService, IWorkbenchExtensionManagementService } from '../../../services/extensionManagement/common/extensionManagement.js';
+ import { IExtensionIgnoredRecommendationsService, IExtensionRecommendationsService } from '../../../services/extensionRecommendations/common/extensionRecommendations.js';
+-import { IWorkspaceExtensionsConfigService } from '../../../services/extensionRecommendations/common/workspaceExtensionsConfig.js';
++import { NullExtensionIgnoredRecommendationsService, NullExtensionRecommendationNotificationService, NullExtensionRecommendationsService } from '../../../services/extensionRecommendations/common/nullExtensionRecommendations.js';
+ import { IHostService } from '../../../services/host/browser/host.js';
+ import { LifecyclePhase } from '../../../services/lifecycle/common/lifecycle.js';
+ import { IPreferencesService } from '../../../services/preferences/common/preferences.js';
+ import { CONTEXT_SYNC_ENABLEMENT } from '../../../services/userDataSync/common/userDataSync.js';
+ import { IViewsService } from '../../../services/views/common/viewsService.js';
+ import { WORKSPACE_TRUST_EXTENSION_SUPPORT } from '../../../services/workspaces/common/workspaceTrust.js';
+-import { CONTEXT_KEYBINDINGS_EDITOR } from '../../preferences/common/preferences.js';
+ import { IWebview } from '../../webview/browser/webview.js';
+ import { Query } from '../common/extensionQuery.js';
+-import { AutoRestartConfigurationKey, AutoUpdateConfigurationKey, CONTEXT_EXTENSIONS_GALLERY_STATUS, CONTEXT_HAS_GALLERY, DefaultViewsContext, ExtensionEditorTab, ExtensionRuntimeActionType, EXTENSIONS_CATEGORY, extensionsFilterSubMenu, extensionsSearchActionsMenu, HasOutdatedExtensionsContext, IExtensionArg, IExtensionsViewPaneContainer, IExtensionsWorkbenchService, INSTALL_ACTIONS_GROUP, INSTALL_EXTENSION_FROM_VSIX_COMMAND_ID, IWorkspaceRecommendedExtensionsView, LIST_WORKSPACE_UNSUPPORTED_EXTENSIONS_COMMAND_ID, OUTDATED_EXTENSIONS_VIEW_ID, SELECT_INSTALL_VSIX_EXTENSION_COMMAND_ID, THEME_ACTIONS_GROUP, TOGGLE_IGNORE_EXTENSION_ACTION_ID, UPDATE_ACTIONS_GROUP, VIEWLET_ID, WORKSPACE_RECOMMENDATIONS_VIEW_ID } from '../common/extensions.js';
++import { AutoRestartConfigurationKey, AutoUpdateConfigurationKey, CONTEXT_EXTENSIONS_GALLERY_STATUS, CONTEXT_HAS_GALLERY, DefaultViewsContext, ExtensionEditorTab, ExtensionRuntimeActionType, EXTENSIONS_CATEGORY, extensionsFilterSubMenu, extensionsSearchActionsMenu, HasOutdatedExtensionsContext, IExtensionArg, IExtensionsViewPaneContainer, IExtensionsWorkbenchService, INSTALL_ACTIONS_GROUP, INSTALL_EXTENSION_FROM_VSIX_COMMAND_ID, LIST_WORKSPACE_UNSUPPORTED_EXTENSIONS_COMMAND_ID, OUTDATED_EXTENSIONS_VIEW_ID, THEME_ACTIONS_GROUP, TOGGLE_IGNORE_EXTENSION_ACTION_ID, UPDATE_ACTIONS_GROUP, VIEWLET_ID } from '../common/extensions.js';
+ import { ExtensionsConfigurationSchema, ExtensionsConfigurationSchemaId } from '../common/extensionsFileTemplate.js';
+ import { ExtensionsInput } from '../common/extensionsInput.js';
+ import { KeymapExtensions } from '../common/extensionsUtils.js';
+ import { ExtensionEditor } from './extensionEditor.js';
+ import { ExtensionEnablementWorkspaceTrustTransitionParticipant } from './extensionEnablementWorkspaceTrustTransitionParticipant.js';
+-import { ExtensionRecommendationNotificationService } from './extensionRecommendationNotificationService.js';
+-import { ExtensionRecommendationsService } from './extensionRecommendationsService.js';
+-import { ClearLanguageAction, ConfigureWorkspaceFolderRecommendedExtensionsAction, ConfigureWorkspaceRecommendedExtensionsAction, InstallAction, InstallAnotherVersionAction, InstallSpecificVersionOfExtensionAction, SetColorThemeAction, SetFileIconThemeAction, SetProductIconThemeAction, ToggleAutoUpdateForExtensionAction, ToggleAutoUpdatesForPublisherAction, TogglePreReleaseExtensionAction } from './extensionsActions.js';
++import { ClearLanguageAction, InstallAction, InstallAnotherVersionAction, InstallSpecificVersionOfExtensionAction, SetColorThemeAction, SetFileIconThemeAction, SetProductIconThemeAction, ToggleAutoUpdateForExtensionAction, ToggleAutoUpdatesForPublisherAction, TogglePreReleaseExtensionAction } from './extensionsActions.js';
+ import { ExtensionActivationProgress } from './extensionsActivationProgress.js';
+ import { ExtensionsCompletionItemsProvider } from './extensionsCompletionItemsProvider.js';
+ import { ExtensionEnablementContextKeysContribution } from './extensionEnablementContext.js';
+ import { ExtensionDependencyChecker } from './extensionsDependencyChecker.js';
+-import { clearSearchResultsIcon, configureRecommendedIcon, extensionsViewIcon, filterIcon, installWorkspaceRecommendedIcon, refreshIcon } from './extensionsIcons.js';
+-import { InstallExtensionQuickAccessProvider, ManageExtensionsQuickAccessProvider } from './extensionsQuickAccess.js';
+-import { BuiltInExtensionsContext, ExtensionMarketplaceStatusUpdater, ExtensionsSearchValueContext, ExtensionsSortByContext, ExtensionsViewletViewsContribution, ExtensionsViewPaneContainer, MaliciousExtensionChecker, RecommendedExtensionsContext, SearchHasTextContext, SearchMarketplaceExtensionsContext, StatusUpdater } from './extensionsViewlet.js';
++import { clearSearchResultsIcon, extensionsViewIcon, filterIcon, installWorkspaceRecommendedIcon, refreshIcon } from './extensionsIcons.js';
++import { ManageExtensionsQuickAccessProvider } from './extensionsQuickAccess.js';
++import { BuiltInExtensionsContext, ExtensionsSearchValueContext, ExtensionsSortByContext, ExtensionsViewletViewsContribution, ExtensionsViewPaneContainer, MaliciousExtensionChecker, RecommendedExtensionsContext, SearchHasTextContext, SearchMarketplaceExtensionsContext, StatusUpdater } from './extensionsViewlet.js';
+ import { ExtensionsWorkbenchService } from './extensionsWorkbenchService.js';
+ import './media/extensionManagement.css';
+ import { UnsupportedExtensionsMigrationContrib } from './unsupportedExtensionsMigrationContribution.js';
+ 
+ // Singletons
+ registerSingleton(IExtensionsWorkbenchService, ExtensionsWorkbenchService, InstantiationType.Eager /* Auto updates extensions */);
+-registerSingleton(IExtensionRecommendationNotificationService, ExtensionRecommendationNotificationService, InstantiationType.Delayed);
+-registerSingleton(IExtensionRecommendationsService, ExtensionRecommendationsService, InstantiationType.Eager /* Prompts recommendations in the background */);
++// Shuko (C-5-extension-gallery): recommendations are removed; the remaining extension views inject these services.
++registerSingleton(IExtensionRecommendationNotificationService, NullExtensionRecommendationNotificationService, InstantiationType.Delayed);
++registerSingleton(IExtensionRecommendationsService, NullExtensionRecommendationsService, InstantiationType.Delayed);
++registerSingleton(IExtensionIgnoredRecommendationsService, NullExtensionIgnoredRecommendationsService, InstantiationType.Delayed);
+ 
+ // Quick Access
+ Registry.as<IQuickAccessRegistry>(Extensions.Quickaccess).registerQuickAccessProvider({
+@@ -190,18 +186,6 @@ Registry.as<IConfigurationRegistry>(ConfigurationExtensions.Configuration)
+ 				scope: ConfigurationScope.APPLICATION,
+ 				tags: ['usesOnlineServices']
+ 			},
+-			'extensions.ignoreRecommendations': {
+-				type: 'boolean',
+-				description: localize('extensionsIgnoreRecommendations', "When enabled, the notifications for extension recommendations will not be shown."),
+-				default: false,
+-				agentsWindow: { default: true, readOnly: true },
+-			},
+-			'extensions.showRecommendationsOnlyOnDemand': {
+-				type: 'boolean',
+-				deprecationMessage: localize('extensionsShowRecommendationsOnlyOnDemand_Deprecated', "This setting is deprecated. Use extensions.ignoreRecommendations setting to control recommendation notifications. Use Extensions view's visibility actions to hide Recommended view by default."),
+-				default: false,
+-				tags: ['usesOnlineServices']
+-			},
+ 			'extensions.closeExtensionDetailsOnViewChange': {
+ 				type: 'boolean',
+ 				description: localize('extensionsCloseExtensionDetailsOnViewChange', "When enabled, editors with extension details will be automatically closed upon navigating away from the Extensions View."),
+@@ -615,7 +599,6 @@ class ExtensionsContributions extends Disposable implements IWorkbenchContributi
+ 		@IWorkbenchExtensionEnablementService private readonly extensionEnablementService: IWorkbenchExtensionEnablementService,
+ 		@IInstantiationService private readonly instantiationService: IInstantiationService,
+ 		@IDialogService private readonly dialogService: IDialogService,
+-		@ICommandService private readonly commandService: ICommandService,
+ 		@IProductService private readonly productService: IProductService,
+ 	) {
+ 		super();
+@@ -643,7 +626,7 @@ class ExtensionsContributions extends Disposable implements IWorkbenchContributi
+ 			});
+ 		this.registerGlobalActions();
+ 		this.registerContextMenuActions();
+-		this.registerQuickAccessProvider();
++		// Shuko (C-5-extension-gallery): the `ext install ` quick access (install or search the gallery) is removed.
+ 	}
+ 
+ 	private async updateExtensionGalleryStatusContexts(): Promise<void> {
+@@ -659,20 +642,6 @@ class ExtensionsContributions extends Disposable implements IWorkbenchContributi
+ 		CONTEXT_GALLERY_HAS_EXTENSION_LINK.bindTo(this.contextKeyService).set(!!(extensionGalleryManifest && getExtensionGalleryManifestResourceUri(extensionGalleryManifest, ExtensionGalleryResourceType.ExtensionDetailsViewUri)));
+ 	}
+ 
+-	private registerQuickAccessProvider(): void {
+-		if (this.extensionManagementServerService.localExtensionManagementServer
+-			|| this.extensionManagementServerService.remoteExtensionManagementServer
+-			|| this.extensionManagementServerService.webExtensionManagementServer
+-		) {
+-			Registry.as<IQuickAccessRegistry>(Extensions.Quickaccess).registerQuickAccessProvider({
+-				ctor: InstallExtensionQuickAccessProvider,
+-				prefix: InstallExtensionQuickAccessProvider.PREFIX,
+-				placeholder: localize('installExtensionQuickAccessPlaceholder', "Type the name of an extension to install or search."),
+-				helpEntries: [{ description: localize('installExtensionQuickAccessHelp', "Install or Search Extensions") }]
+-			});
+-		}
+-	}
+-
+ 	// Global actions
+ 	private registerGlobalActions(): void {
+ 		this._register(MenuRegistry.appendMenuItem(MenuId.MenubarPreferencesMenu, {
+@@ -716,34 +685,7 @@ class ExtensionsContributions extends Disposable implements IWorkbenchContributi
+ 			}
+ 		});
+ 
+-		this.registerExtensionAction({
+-			id: 'workbench.extensions.action.showRecommendedKeymapExtensions',
+-			title: localize2('showRecommendedKeymapExtensionsShort', 'Keymaps'),
+-			category: PreferencesLocalizedLabel,
+-			menu: [{
+-				id: MenuId.CommandPalette,
+-				when: CONTEXT_HAS_GALLERY
+-			}, {
+-				id: MenuId.EditorTitle,
+-				when: ContextKeyExpr.and(CONTEXT_KEYBINDINGS_EDITOR, CONTEXT_HAS_GALLERY),
+-				group: '2_keyboard_discover_actions'
+-			}],
+-			menuTitles: {
+-				[MenuId.EditorTitle.id]: localize('importKeyboardShortcutsFroms', "Migrate Keyboard Shortcuts from...")
+-			},
+-			run: () => this.extensionsWorkbenchService.openSearch('@recommended:keymaps ')
+-		});
+-
+-		this.registerExtensionAction({
+-			id: 'workbench.extensions.action.showLanguageExtensions',
+-			title: localize2('showLanguageExtensionsShort', 'Language Extensions'),
+-			category: PreferencesLocalizedLabel,
+-			menu: {
+-				id: MenuId.CommandPalette,
+-				when: CONTEXT_HAS_GALLERY
+-			},
+-			run: () => this.extensionsWorkbenchService.openSearch('@recommended:languages ')
+-		});
++		// Shuko (C-5-extension-gallery): the recommended keymap and language extensions commands are removed with recommendations.
+ 
+ 		this.registerExtensionAction({
+ 			id: 'workbench.extensions.action.checkForUpdates',
+@@ -905,43 +847,13 @@ class ExtensionsContributions extends Disposable implements IWorkbenchContributi
+ 			}
+ 		});
+ 
+-		this.registerExtensionAction({
+-			id: SELECT_INSTALL_VSIX_EXTENSION_COMMAND_ID,
+-			title: localize2('InstallFromVSIX', 'Install from VSIX...'),
+-			category: ExtensionsLocalizedLabel,
+-			menu: [{
+-				id: MenuId.CommandPalette,
+-				when: ContextKeyExpr.or(CONTEXT_HAS_LOCAL_SERVER, CONTEXT_HAS_REMOTE_SERVER)
+-			}, {
+-				id: MenuId.ViewContainerTitle,
+-				when: ContextKeyExpr.and(ContextKeyExpr.equals('viewContainer', VIEWLET_ID), ContextKeyExpr.or(CONTEXT_HAS_LOCAL_SERVER, CONTEXT_HAS_REMOTE_SERVER)),
+-				group: '3_install',
+-				order: 1
+-			}],
+-			run: async (accessor: ServicesAccessor) => {
+-				const fileDialogService = accessor.get(IFileDialogService);
+-				const commandService = accessor.get(ICommandService);
+-				const vsixPaths = await fileDialogService.showOpenDialog({
+-					title: localize('installFromVSIX', "Install from VSIX"),
+-					filters: [{ name: 'VSIX Extensions', extensions: ['vsix'] }],
+-					canSelectFiles: true,
+-					canSelectMany: true,
+-					openLabel: mnemonicButtonLabel(localize({ key: 'installButton', comment: ['&& denotes a mnemonic'] }, "&&Install"))
+-				});
+-				if (vsixPaths) {
+-					await commandService.executeCommand(INSTALL_EXTENSION_FROM_VSIX_COMMAND_ID, vsixPaths);
+-				}
+-			}
+-		});
++		// Shuko (C-5-extension-gallery): installing extensions from the UI is removed ("Install from VSIX..." and the
++		// Explorer context menu). Extensions are installed with the `--install-extension` command line; the command
++		// below that installs given VSIX resources stays, without a menu.
+ 
+ 		this.registerExtensionAction({
+ 			id: INSTALL_EXTENSION_FROM_VSIX_COMMAND_ID,
+ 			title: localize('installVSIX', "Install Extension VSIX"),
+-			menu: [{
+-				id: MenuId.ExplorerContext,
+-				group: 'extensions',
+-				when: ContextKeyExpr.and(ResourceContextKey.Extension.isEqualTo('.vsix'), ContextKeyExpr.or(CONTEXT_HAS_LOCAL_SERVER, CONTEXT_HAS_REMOTE_SERVER)),
+-			}],
+ 			run: async (accessor: ServicesAccessor, resources: URI[] | URI) => {
+ 				const extensionsWorkbenchService = accessor.get(IExtensionsWorkbenchService);
+ 				const hostService = accessor.get(IHostService);
+@@ -1072,43 +984,7 @@ class ExtensionsContributions extends Disposable implements IWorkbenchContributi
+ 			run: () => this.extensionsWorkbenchService.openSearch('@featured ')
+ 		});
+ 
+-		this.registerExtensionAction({
+-			id: 'workbench.extensions.action.showPopularExtensions',
+-			title: localize2('showPopularExtensions', 'Show Popular Extensions'),
+-			category: ExtensionsLocalizedLabel,
+-			menu: [{
+-				id: MenuId.CommandPalette,
+-				when: CONTEXT_HAS_GALLERY
+-			}, {
+-				id: extensionsFilterSubMenu,
+-				when: CONTEXT_HAS_GALLERY,
+-				group: '1_predefined',
+-				order: 2,
+-			}],
+-			menuTitles: {
+-				[extensionsFilterSubMenu.id]: localize('most popular filter', "Most Popular")
+-			},
+-			run: () => this.extensionsWorkbenchService.openSearch('@popular ')
+-		});
+-
+-		this.registerExtensionAction({
+-			id: 'workbench.extensions.action.showRecommendedExtensions',
+-			title: localize2('showRecommendedExtensions', 'Show Recommended Extensions'),
+-			category: ExtensionsLocalizedLabel,
+-			menu: [{
+-				id: MenuId.CommandPalette,
+-				when: CONTEXT_HAS_GALLERY
+-			}, {
+-				id: extensionsFilterSubMenu,
+-				when: CONTEXT_HAS_GALLERY,
+-				group: '1_predefined',
+-				order: 2,
+-			}],
+-			menuTitles: {
+-				[extensionsFilterSubMenu.id]: localize('most popular recommended', "Recommended")
+-			},
+-			run: () => this.extensionsWorkbenchService.openSearch('@recommended ')
+-		});
++		// Shuko (C-5-extension-gallery): the popular and recommended extensions commands are removed with the gallery.
+ 
+ 		this.registerExtensionAction({
+ 			id: 'workbench.extensions.action.recentlyPublishedExtensions',
+@@ -1336,37 +1212,7 @@ class ExtensionsContributions extends Disposable implements IWorkbenchContributi
+ 			}
+ 		});
+ 
+-		this.registerExtensionAction({
+-			id: 'workbench.extensions.action.installWorkspaceRecommendedExtensions',
+-			title: localize('installWorkspaceRecommendedExtensions', "Install Workspace Recommended Extensions"),
+-			icon: installWorkspaceRecommendedIcon,
+-			menu: {
+-				id: MenuId.ViewTitle,
+-				when: ContextKeyExpr.equals('view', WORKSPACE_RECOMMENDATIONS_VIEW_ID),
+-				group: 'navigation',
+-				order: 1
+-			},
+-			run: async (accessor: ServicesAccessor) => {
+-				const view = accessor.get(IViewsService).getActiveViewWithId(WORKSPACE_RECOMMENDATIONS_VIEW_ID) as IWorkspaceRecommendedExtensionsView;
+-				return view.installWorkspaceRecommendations();
+-			}
+-		});
+-
+-		this.registerExtensionAction({
+-			id: ConfigureWorkspaceFolderRecommendedExtensionsAction.ID,
+-			title: ConfigureWorkspaceFolderRecommendedExtensionsAction.LABEL,
+-			icon: configureRecommendedIcon,
+-			menu: [{
+-				id: MenuId.CommandPalette,
+-				when: WorkbenchStateContext.notEqualsTo('empty'),
+-			}, {
+-				id: MenuId.ViewTitle,
+-				when: ContextKeyExpr.equals('view', WORKSPACE_RECOMMENDATIONS_VIEW_ID),
+-				group: 'navigation',
+-				order: 2
+-			}],
+-			run: () => runAction(this.instantiationService.createInstance(ConfigureWorkspaceFolderRecommendedExtensionsAction, ConfigureWorkspaceFolderRecommendedExtensionsAction.ID, ConfigureWorkspaceFolderRecommendedExtensionsAction.LABEL))
+-		});
++		// Shuko (C-5-extension-gallery): installing and configuring the workspace recommendations (.vscode/extensions.json) is removed.
+ 
+ 		this.registerExtensionAction({
+ 			id: InstallSpecificVersionOfExtensionAction.ID,
+@@ -1841,132 +1687,7 @@ class ExtensionsContributions extends Disposable implements IWorkbenchContributi
+ 			}
+ 		});
+ 
+-		this.registerExtensionAction({
+-			id: 'workbench.extensions.action.ignoreRecommendation',
+-			title: localize2('workbench.extensions.action.ignoreRecommendation', "Ignore Recommendation"),
+-			menu: {
+-				id: MenuId.ExtensionContext,
+-				group: '3_recommendations',
+-				when: ContextKeyExpr.has('isExtensionRecommended'),
+-				order: 1
+-			},
+-			run: async (accessor: ServicesAccessor, id: string) => accessor.get(IExtensionIgnoredRecommendationsService).toggleGlobalIgnoredRecommendation(id, true)
+-		});
+-
+-		this.registerExtensionAction({
+-			id: 'workbench.extensions.action.undoIgnoredRecommendation',
+-			title: localize2('workbench.extensions.action.undoIgnoredRecommendation', "Undo Ignored Recommendation"),
+-			menu: {
+-				id: MenuId.ExtensionContext,
+-				group: '3_recommendations',
+-				when: ContextKeyExpr.has('isUserIgnoredRecommendation'),
+-				order: 1
+-			},
+-			run: async (accessor: ServicesAccessor, id: string) => accessor.get(IExtensionIgnoredRecommendationsService).toggleGlobalIgnoredRecommendation(id, false)
+-		});
+-
+-		this.registerExtensionAction({
+-			id: 'workbench.extensions.action.addExtensionToWorkspaceRecommendations',
+-			title: localize2('workbench.extensions.action.addExtensionToWorkspaceRecommendations', "Add to Workspace Recommendations"),
+-			menu: {
+-				id: MenuId.ExtensionContext,
+-				group: '3_recommendations',
+-				when: ContextKeyExpr.and(WorkbenchStateContext.notEqualsTo('empty'), ContextKeyExpr.has('isBuiltinExtension').negate(), ContextKeyExpr.has('isExtensionWorkspaceRecommended').negate(), ContextKeyExpr.has('isUserIgnoredRecommendation').negate(), ContextKeyExpr.notEquals('extensionSource', 'resource')),
+-				order: 2
+-			},
+-			run: (accessor: ServicesAccessor, id: string) => accessor.get(IWorkspaceExtensionsConfigService).toggleRecommendation(id)
+-		});
+-
+-		this.registerExtensionAction({
+-			id: 'workbench.extensions.action.removeExtensionFromWorkspaceRecommendations',
+-			title: localize2('workbench.extensions.action.removeExtensionFromWorkspaceRecommendations', "Remove from Workspace Recommendations"),
+-			menu: {
+-				id: MenuId.ExtensionContext,
+-				group: '3_recommendations',
+-				when: ContextKeyExpr.and(WorkbenchStateContext.notEqualsTo('empty'), ContextKeyExpr.has('isBuiltinExtension').negate(), ContextKeyExpr.has('isExtensionWorkspaceRecommended')),
+-				order: 2
+-			},
+-			run: (accessor: ServicesAccessor, id: string) => accessor.get(IWorkspaceExtensionsConfigService).toggleRecommendation(id)
+-		});
+-
+-		this.registerExtensionAction({
+-			id: 'workbench.extensions.action.addToWorkspaceRecommendations',
+-			title: localize2('workbench.extensions.action.addToWorkspaceRecommendations', "Add Extension to Workspace Recommendations"),
+-			category: EXTENSIONS_CATEGORY,
+-			menu: {
+-				id: MenuId.CommandPalette,
+-				when: ContextKeyExpr.and(WorkbenchStateContext.isEqualTo('workspace'), ContextKeyExpr.equals('resourceScheme', Schemas.extension)),
+-			},
+-			async run(accessor: ServicesAccessor): Promise<any> {
+-				const editorService = accessor.get(IEditorService);
+-				const workspaceExtensionsConfigService = accessor.get(IWorkspaceExtensionsConfigService);
+-				if (!(editorService.activeEditor instanceof ExtensionsInput)) {
+-					return;
+-				}
+-				const extensionId = editorService.activeEditor.extension.identifier.id.toLowerCase();
+-				const recommendations = await workspaceExtensionsConfigService.getRecommendations();
+-				if (recommendations.includes(extensionId)) {
+-					return;
+-				}
+-				await workspaceExtensionsConfigService.toggleRecommendation(extensionId);
+-			}
+-		});
+-
+-		this.registerExtensionAction({
+-			id: 'workbench.extensions.action.addToWorkspaceFolderRecommendations',
+-			title: localize2('workbench.extensions.action.addToWorkspaceFolderRecommendations', "Add Extension to Workspace Folder Recommendations"),
+-			category: EXTENSIONS_CATEGORY,
+-			menu: {
+-				id: MenuId.CommandPalette,
+-				when: ContextKeyExpr.and(WorkbenchStateContext.isEqualTo('folder'), ContextKeyExpr.equals('resourceScheme', Schemas.extension)),
+-			},
+-			run: () => this.commandService.executeCommand('workbench.extensions.action.addToWorkspaceRecommendations')
+-		});
+-
+-		this.registerExtensionAction({
+-			id: 'workbench.extensions.action.addToWorkspaceIgnoredRecommendations',
+-			title: localize2('workbench.extensions.action.addToWorkspaceIgnoredRecommendations', "Add Extension to Workspace Ignored Recommendations"),
+-			category: EXTENSIONS_CATEGORY,
+-			menu: {
+-				id: MenuId.CommandPalette,
+-				when: ContextKeyExpr.and(WorkbenchStateContext.isEqualTo('workspace'), ContextKeyExpr.equals('resourceScheme', Schemas.extension)),
+-			},
+-			async run(accessor: ServicesAccessor): Promise<any> {
+-				const editorService = accessor.get(IEditorService);
+-				const workspaceExtensionsConfigService = accessor.get(IWorkspaceExtensionsConfigService);
+-				if (!(editorService.activeEditor instanceof ExtensionsInput)) {
+-					return;
+-				}
+-				const extensionId = editorService.activeEditor.extension.identifier.id.toLowerCase();
+-				const unwantedRecommendations = await workspaceExtensionsConfigService.getUnwantedRecommendations();
+-				if (unwantedRecommendations.includes(extensionId)) {
+-					return;
+-				}
+-				await workspaceExtensionsConfigService.toggleUnwantedRecommendation(extensionId);
+-			}
+-		});
+-
+-		this.registerExtensionAction({
+-			id: 'workbench.extensions.action.addToWorkspaceFolderIgnoredRecommendations',
+-			title: localize2('workbench.extensions.action.addToWorkspaceFolderIgnoredRecommendations', "Add Extension to Workspace Folder Ignored Recommendations"),
+-			category: EXTENSIONS_CATEGORY,
+-			menu: {
+-				id: MenuId.CommandPalette,
+-				when: ContextKeyExpr.and(WorkbenchStateContext.isEqualTo('folder'), ContextKeyExpr.equals('resourceScheme', Schemas.extension)),
+-			},
+-			run: () => this.commandService.executeCommand('workbench.extensions.action.addToWorkspaceIgnoredRecommendations')
+-		});
+-
+-		this.registerExtensionAction({
+-			id: ConfigureWorkspaceRecommendedExtensionsAction.ID,
+-			title: { value: ConfigureWorkspaceRecommendedExtensionsAction.LABEL, original: 'Configure Recommended Extensions (Workspace)' },
+-			category: EXTENSIONS_CATEGORY,
+-			menu: {
+-				id: MenuId.CommandPalette,
+-				when: WorkbenchStateContext.isEqualTo('workspace'),
+-			},
+-			run: () => runAction(this.instantiationService.createInstance(ConfigureWorkspaceRecommendedExtensionsAction, ConfigureWorkspaceRecommendedExtensionsAction.ID, ConfigureWorkspaceRecommendedExtensionsAction.LABEL))
+-		});
++		// Shuko (C-5-extension-gallery): ignoring recommendations and editing the workspace recommendations are removed.
+ 
+ 		this.registerExtensionAction({
+ 			id: 'workbench.extensions.action.manageTrustedPublishers',
+@@ -2099,31 +1820,11 @@ workbenchRegistry.registerWorkbenchContribution(ExtensionsCompletionItemsProvide
+ workbenchRegistry.registerWorkbenchContribution(ExtensionEnablementContextKeysContribution, LifecyclePhase.Restored);
+ workbenchRegistry.registerWorkbenchContribution(UnsupportedExtensionsMigrationContrib, LifecyclePhase.Eventually);
+ workbenchRegistry.registerWorkbenchContribution(TrustedPublishersInitializer, LifecyclePhase.Eventually);
+-workbenchRegistry.registerWorkbenchContribution(ExtensionMarketplaceStatusUpdater, LifecyclePhase.Eventually);
++// Shuko (C-5-extension-gallery): the Marketplace account (sign in, access badge) is removed.
+ if (isWeb) {
+ 	workbenchRegistry.registerWorkbenchContribution(ExtensionStorageCleaner, LifecyclePhase.Eventually);
+ }
+ 
+-
+-registerAction2(class ExtensionsGallerySignInAction extends Action2 {
+-	constructor() {
+-		super({
+-			id: 'workbench.extensions.actions.gallery.signIn',
+-			title: localize2('signInToMarketplace', 'Sign in to access Extensions Marketplace'),
+-			menu: {
+-				id: MenuId.AccountsContext,
+-				when: ContextKeyExpr.or(
+-					CONTEXT_EXTENSIONS_GALLERY_STATUS.isEqualTo(ExtensionGalleryManifestStatus.RequiresSignIn),
+-					CONTEXT_EXTENSIONS_GALLERY_STATUS.isEqualTo(ExtensionGalleryManifestStatus.AccessDenied),
+-				)
+-			},
+-		});
+-	}
+-	async run(accessor: ServicesAccessor): Promise<void> {
+-		await accessor.get(IExtensionGalleryAccountService).signIn();
+-	}
+-});
+-
+ Registry.as<IConfigurationMigrationRegistry>(ConfigurationMigrationExtensions.ConfigurationMigration)
+ 	.registerConfigurationMigrations([{
+ 		key: AutoUpdateConfigurationKey,
+diff --git a/src/vs/workbench/contrib/extensions/browser/extensionsActions.ts b/src/vs/workbench/contrib/extensions/browser/extensionsActions.ts
+index 26a2aa64129..f4af5c9d5c6 100644
+--- a/src/vs/workbench/contrib/extensions/browser/extensionsActions.ts
++++ b/src/vs/workbench/contrib/extensions/browser/extensionsActions.ts
+@@ -8,20 +8,18 @@ import { localize, localize2 } from '../../../../nls.js';
+ import { IAction, Action, Separator, SubmenuAction, IActionChangeEvent } from '../../../../base/common/actions.js';
+ import { Delayer, Promises, Throttler } from '../../../../base/common/async.js';
+ import { Emitter, Event } from '../../../../base/common/event.js';
+-import * as json from '../../../../base/common/json.js';
+ import { IContextMenuService } from '../../../../platform/contextview/browser/contextView.js';
+ import { disposeIfDisposable } from '../../../../base/common/lifecycle.js';
+ import { NotificationText } from '../../../../platform/notification/common/notificationMessage.js';
+ import { IExtension, ExtensionState, IExtensionsWorkbenchService, IExtensionContainer, TOGGLE_IGNORE_EXTENSION_ACTION_ID, SELECT_INSTALL_VSIX_EXTENSION_COMMAND_ID, THEME_ACTIONS_GROUP, INSTALL_ACTIONS_GROUP, UPDATE_ACTIONS_GROUP, ExtensionEditorTab, ExtensionRuntimeActionType, IExtensionArg, AutoUpdateConfigurationKey } from '../common/extensions.js';
+-import { ExtensionsConfigurationInitialContent } from '../common/extensionsFileTemplate.js';
+ import { IGalleryExtension, IExtensionGalleryService, ILocalExtension, InstallOptions, InstallOperation, ExtensionManagementErrorCode, IAllowedExtensionsService, shouldRequireRepositorySignatureFor, ExtensionBlockingOrigin } from '../../../../platform/extensionManagement/common/extensionManagement.js';
+ import { IWorkbenchExtensionEnablementService, EnablementState, IExtensionManagementServerService, IExtensionManagementServer, IWorkbenchExtensionManagementService } from '../../../services/extensionManagement/common/extensionManagement.js';
+ import { ExtensionRecommendationReason, IExtensionIgnoredRecommendationsService, IExtensionRecommendationsService } from '../../../services/extensionRecommendations/common/extensionRecommendations.js';
+ import { areSameExtensions, getExtensionBlockedMessage, getExtensionId } from '../../../../platform/extensionManagement/common/extensionManagementUtil.js';
+ import { ExtensionType, ExtensionIdentifier, IExtensionDescription, IExtensionManifest, isLanguagePackExtension, getWorkspaceSupportTypeMessage, TargetPlatform, isApplicationScopedExtension } from '../../../../platform/extensions/common/extensions.js';
+ import { IInstantiationService, ServicesAccessor } from '../../../../platform/instantiation/common/instantiation.js';
+-import { IFileService, IFileContent } from '../../../../platform/files/common/files.js';
+-import { IWorkspaceContextService, WorkbenchState, IWorkspaceFolder } from '../../../../platform/workspace/common/workspace.js';
++import { IFileService } from '../../../../platform/files/common/files.js';
++import { IWorkspaceContextService, WorkbenchState } from '../../../../platform/workspace/common/workspace.js';
+ import { IHostService } from '../../../services/host/browser/host.js';
+ import { IExtensionService, toExtension, toExtensionDescription } from '../../../services/extensions/common/extensions.js';
+ import { URI } from '../../../../base/common/uri.js';
+@@ -31,26 +29,19 @@ import { ChatAIDisabledSettingId } from '../../../../platform/chat/common/chatSe
+ import { registerThemingParticipant, IColorTheme, ICssStyleCollector } from '../../../../platform/theme/common/themeService.js';
+ import { ThemeIcon } from '../../../../base/common/themables.js';
+ import { buttonBackground, buttonForeground, buttonHoverBackground, buttonSecondaryBackground, buttonSecondaryForeground, buttonSecondaryHoverBackground, registerColor, editorWarningForeground, editorInfoForeground, editorErrorForeground, buttonSeparator, buttonSecondaryBorder } from '../../../../platform/theme/common/colorRegistry.js';
+-import { IJSONEditingService } from '../../../services/configuration/common/jsonEditing.js';
+-import { ITextEditorSelection } from '../../../../platform/editor/common/editor.js';
+-import { ITextModelService } from '../../../../editor/common/services/resolverService.js';
+ import { IContextKeyService } from '../../../../platform/contextkey/common/contextkey.js';
+ import { MenuId, IMenuService, MenuItemAction, SubmenuItemAction } from '../../../../platform/actions/common/actions.js';
+-import { PICK_WORKSPACE_FOLDER_COMMAND_ID } from '../../../browser/actions/workspaceCommands.js';
+ import { INotificationService, IPromptChoice, Severity } from '../../../../platform/notification/common/notification.js';
+ import { IOpenerService } from '../../../../platform/opener/common/opener.js';
+-import { IEditorService } from '../../../services/editor/common/editorService.js';
+ import { IQuickPickItem, IQuickInputService, QuickPickItem } from '../../../../platform/quickinput/common/quickInput.js';
+ import { CancellationToken } from '../../../../base/common/cancellation.js';
+ import { alert } from '../../../../base/browser/ui/aria/aria.js';
+ import { IWorkbenchThemeService, IWorkbenchTheme, IWorkbenchColorTheme, IWorkbenchFileIconTheme, IWorkbenchProductIconTheme } from '../../../services/themes/common/workbenchThemeService.js';
+ import { ILabelService } from '../../../../platform/label/common/label.js';
+-import { ITextFileService } from '../../../services/textfile/common/textfiles.js';
+ import { IProductService } from '../../../../platform/product/common/productService.js';
+ import { IDialogService, IPromptButton } from '../../../../platform/dialogs/common/dialogs.js';
+ import { IProgressService, ProgressLocation } from '../../../../platform/progress/common/progress.js';
+ import { IActionViewItemOptions, ActionViewItem } from '../../../../base/browser/ui/actionbar/actionViewItems.js';
+-import { EXTENSIONS_CONFIG, IExtensionsConfigContent } from '../../../services/extensionRecommendations/common/workspaceExtensionsConfig.js';
+ import { getErrorMessage, isCancellationError } from '../../../../base/common/errors.js';
+ import { IUserDataSyncEnablementService } from '../../../../platform/userDataSync/common/userDataSync.js';
+ import { IContextMenuProvider } from '../../../../base/browser/contextmenu.js';
+@@ -2447,204 +2438,8 @@ export class InstallRecommendedExtensionAction extends Action {
+ 	}
+ }
+ 
+-export class IgnoreExtensionRecommendationAction extends Action {
+-
+-	static readonly ID = 'extensions.ignore';
+-
+-	private static readonly Class = `${ExtensionAction.LABEL_ACTION_CLASS} ignore`;
+-
+-	constructor(
+-		private readonly extension: IExtension,
+-		@IExtensionIgnoredRecommendationsService private readonly extensionRecommendationsManagementService: IExtensionIgnoredRecommendationsService,
+-	) {
+-		super(IgnoreExtensionRecommendationAction.ID, 'Ignore Recommendation');
+-
+-		this.class = IgnoreExtensionRecommendationAction.Class;
+-		this.tooltip = localize('ignoreExtensionRecommendation', "Do not recommend this extension again");
+-		this.enabled = true;
+-	}
+-
+-	public override run(): Promise<any> {
+-		this.extensionRecommendationsManagementService.toggleGlobalIgnoredRecommendation(this.extension.identifier.id, true);
+-		return Promise.resolve();
+-	}
+-}
+-
+-export class UndoIgnoreExtensionRecommendationAction extends Action {
+-
+-	static readonly ID = 'extensions.ignore';
+-
+-	private static readonly Class = `${ExtensionAction.LABEL_ACTION_CLASS} undo-ignore`;
+-
+-	constructor(
+-		private readonly extension: IExtension,
+-		@IExtensionIgnoredRecommendationsService private readonly extensionRecommendationsManagementService: IExtensionIgnoredRecommendationsService,
+-	) {
+-		super(UndoIgnoreExtensionRecommendationAction.ID, 'Undo');
+-
+-		this.class = UndoIgnoreExtensionRecommendationAction.Class;
+-		this.tooltip = localize('undo', "Undo");
+-		this.enabled = true;
+-	}
+-
+-	public override run(): Promise<any> {
+-		this.extensionRecommendationsManagementService.toggleGlobalIgnoredRecommendation(this.extension.identifier.id, false);
+-		return Promise.resolve();
+-	}
+-}
+-
+-export abstract class AbstractConfigureRecommendedExtensionsAction extends Action {
+-
+-	constructor(
+-		id: string,
+-		label: string,
+-		@IWorkspaceContextService protected contextService: IWorkspaceContextService,
+-		@IFileService private readonly fileService: IFileService,
+-		@ITextFileService private readonly textFileService: ITextFileService,
+-		@IEditorService protected editorService: IEditorService,
+-		@IJSONEditingService private readonly jsonEditingService: IJSONEditingService,
+-		@ITextModelService private readonly textModelResolverService: ITextModelService
+-	) {
+-		super(id, label);
+-	}
+-
+-	protected openExtensionsFile(extensionsFileResource: URI): Promise<any> {
+-		return this.getOrCreateExtensionsFile(extensionsFileResource)
+-			.then(({ created, content }) =>
+-				this.getSelectionPosition(content, extensionsFileResource, ['recommendations'])
+-					.then(selection => this.editorService.openEditor({
+-						resource: extensionsFileResource,
+-						options: {
+-							pinned: created,
+-							selection
+-						}
+-					})),
+-				error => Promise.reject(new Error(localize('OpenExtensionsFile.failed', "Unable to create 'extensions.json' file inside the '.vscode' folder ({0}).", error))));
+-	}
+-
+-	protected openWorkspaceConfigurationFile(workspaceConfigurationFile: URI): Promise<any> {
+-		return this.getOrUpdateWorkspaceConfigurationFile(workspaceConfigurationFile)
+-			.then(content => this.getSelectionPosition(content.value.toString(), content.resource, ['extensions', 'recommendations']))
+-			.then(selection => this.editorService.openEditor({
+-				resource: workspaceConfigurationFile,
+-				options: {
+-					selection,
+-					forceReload: true // because content has changed
+-				}
+-			}));
+-	}
+-
+-	private getOrUpdateWorkspaceConfigurationFile(workspaceConfigurationFile: URI): Promise<IFileContent> {
+-		return Promise.resolve(this.fileService.readFile(workspaceConfigurationFile))
+-			.then(content => {
+-				const workspaceRecommendations = <IExtensionsConfigContent>json.parse(content.value.toString())['extensions'];
+-				if (!workspaceRecommendations || !workspaceRecommendations.recommendations) {
+-					return this.jsonEditingService.write(workspaceConfigurationFile, [{ path: ['extensions'], value: { recommendations: [] } }], true)
+-						.then(() => this.fileService.readFile(workspaceConfigurationFile));
+-				}
+-				return content;
+-			});
+-	}
+-
+-	private getSelectionPosition(content: string, resource: URI, path: json.JSONPath): Promise<ITextEditorSelection | undefined> {
+-		const tree = json.parseTree(content);
+-		const node = json.findNodeAtLocation(tree, path);
+-		if (node && node.parent && node.parent.children) {
+-			const recommendationsValueNode = node.parent.children[1];
+-			const lastExtensionNode = recommendationsValueNode.children && recommendationsValueNode.children.length ? recommendationsValueNode.children[recommendationsValueNode.children.length - 1] : null;
+-			const offset = lastExtensionNode ? lastExtensionNode.offset + lastExtensionNode.length : recommendationsValueNode.offset + 1;
+-			return Promise.resolve(this.textModelResolverService.createModelReference(resource))
+-				.then(reference => {
+-					const position = reference.object.textEditorModel.getPositionAt(offset);
+-					reference.dispose();
+-					return {
+-						startLineNumber: position.lineNumber,
+-						startColumn: position.column,
+-						endLineNumber: position.lineNumber,
+-						endColumn: position.column,
+-					};
+-				});
+-		}
+-		return Promise.resolve(undefined);
+-	}
+-
+-	private getOrCreateExtensionsFile(extensionsFileResource: URI): Promise<{ created: boolean; extensionsFileResource: URI; content: string }> {
+-		return Promise.resolve(this.fileService.readFile(extensionsFileResource)).then(content => {
+-			return { created: false, extensionsFileResource, content: content.value.toString() };
+-		}, err => {
+-			return this.textFileService.write(extensionsFileResource, ExtensionsConfigurationInitialContent).then(() => {
+-				return { created: true, extensionsFileResource, content: ExtensionsConfigurationInitialContent };
+-			});
+-		});
+-	}
+-}
+-
+-export class ConfigureWorkspaceRecommendedExtensionsAction extends AbstractConfigureRecommendedExtensionsAction {
+-
+-	static readonly ID = 'workbench.extensions.action.configureWorkspaceRecommendedExtensions';
+-	static readonly LABEL = localize('configureWorkspaceRecommendedExtensions', "Configure Recommended Extensions (Workspace)");
+-
+-	constructor(
+-		id: string,
+-		label: string,
+-		@IFileService fileService: IFileService,
+-		@ITextFileService textFileService: ITextFileService,
+-		@IWorkspaceContextService contextService: IWorkspaceContextService,
+-		@IEditorService editorService: IEditorService,
+-		@IJSONEditingService jsonEditingService: IJSONEditingService,
+-		@ITextModelService textModelResolverService: ITextModelService
+-	) {
+-		super(id, label, contextService, fileService, textFileService, editorService, jsonEditingService, textModelResolverService);
+-		this._register(this.contextService.onDidChangeWorkbenchState(() => this.update(), this));
+-		this.update();
+-	}
+-
+-	private update(): void {
+-		this.enabled = this.contextService.getWorkbenchState() !== WorkbenchState.EMPTY;
+-	}
+-
+-	public override run(): Promise<void> {
+-		switch (this.contextService.getWorkbenchState()) {
+-			case WorkbenchState.FOLDER:
+-				return this.openExtensionsFile(this.contextService.getWorkspace().folders[0].toResource(EXTENSIONS_CONFIG));
+-			case WorkbenchState.WORKSPACE:
+-				return this.openWorkspaceConfigurationFile(this.contextService.getWorkspace().configuration!);
+-		}
+-		return Promise.resolve();
+-	}
+-}
+-
+-export class ConfigureWorkspaceFolderRecommendedExtensionsAction extends AbstractConfigureRecommendedExtensionsAction {
+-
+-	static readonly ID = 'workbench.extensions.action.configureWorkspaceFolderRecommendedExtensions';
+-	static readonly LABEL = localize('configureWorkspaceFolderRecommendedExtensions', "Configure Recommended Extensions (Workspace Folder)");
+-
+-	constructor(
+-		id: string,
+-		label: string,
+-		@IFileService fileService: IFileService,
+-		@ITextFileService textFileService: ITextFileService,
+-		@IWorkspaceContextService contextService: IWorkspaceContextService,
+-		@IEditorService editorService: IEditorService,
+-		@IJSONEditingService jsonEditingService: IJSONEditingService,
+-		@ITextModelService textModelResolverService: ITextModelService,
+-		@ICommandService private readonly commandService: ICommandService
+-	) {
+-		super(id, label, contextService, fileService, textFileService, editorService, jsonEditingService, textModelResolverService);
+-	}
+-
+-	public override run(): Promise<any> {
+-		const folderCount = this.contextService.getWorkspace().folders.length;
+-		const pickFolderPromise = folderCount === 1 ? Promise.resolve(this.contextService.getWorkspace().folders[0]) : this.commandService.executeCommand<IWorkspaceFolder>(PICK_WORKSPACE_FOLDER_COMMAND_ID);
+-		return Promise.resolve(pickFolderPromise)
+-			.then(workspaceFolder => {
+-				if (workspaceFolder) {
+-					return this.openExtensionsFile(workspaceFolder.toResource(EXTENSIONS_CONFIG));
+-				}
+-				return null;
+-			});
+-	}
+-}
++// Shuko (C-5-extension-gallery): ignoring recommendations and configuring the workspace recommendations
++// (.vscode/extensions.json) are removed with recommendations.
+ 
+ export class ExtensionStatusLabelAction extends Action implements IExtensionContainer {
+ 
+diff --git a/src/vs/workbench/contrib/extensions/browser/extensionsQuickAccess.ts b/src/vs/workbench/contrib/extensions/browser/extensionsQuickAccess.ts
+index 05166b41268..6fd3b3d4e77 100644
+--- a/src/vs/workbench/contrib/extensions/browser/extensionsQuickAccess.ts
++++ b/src/vs/workbench/contrib/extensions/browser/extensionsQuickAccess.ts
+@@ -5,86 +5,10 @@
+ 
+ import { IQuickPickSeparator } from '../../../../platform/quickinput/common/quickInput.js';
+ import { IPickerQuickAccessItem, PickerQuickAccessProvider } from '../../../../platform/quickinput/browser/pickerQuickAccess.js';
+-import { CancellationToken } from '../../../../base/common/cancellation.js';
+ import { localize } from '../../../../nls.js';
+-import { IExtensionGalleryService, IExtensionManagementService, IGalleryExtension } from '../../../../platform/extensionManagement/common/extensionManagement.js';
+-import { INotificationService } from '../../../../platform/notification/common/notification.js';
+-import { ILogService } from '../../../../platform/log/common/log.js';
+-import { DisposableStore } from '../../../../base/common/lifecycle.js';
+ import { IExtensionsWorkbenchService } from '../common/extensions.js';
+ 
+-export class InstallExtensionQuickAccessProvider extends PickerQuickAccessProvider<IPickerQuickAccessItem> {
+-
+-	static PREFIX = 'ext install ';
+-
+-	constructor(
+-		@IExtensionsWorkbenchService private readonly extensionsWorkbenchService: IExtensionsWorkbenchService,
+-		@IExtensionGalleryService private readonly galleryService: IExtensionGalleryService,
+-		@IExtensionManagementService private readonly extensionsService: IExtensionManagementService,
+-		@INotificationService private readonly notificationService: INotificationService,
+-		@ILogService private readonly logService: ILogService
+-	) {
+-		super(InstallExtensionQuickAccessProvider.PREFIX);
+-	}
+-
+-	protected _getPicks(filter: string, disposables: DisposableStore, token: CancellationToken): Array<IPickerQuickAccessItem | IQuickPickSeparator> | Promise<Array<IPickerQuickAccessItem | IQuickPickSeparator>> {
+-
+-		// Nothing typed
+-		if (!filter) {
+-			return [{
+-				label: localize('type', "Type an extension name to install or search.")
+-			}];
+-		}
+-
+-		const genericSearchPickItem: IPickerQuickAccessItem = {
+-			label: localize('searchFor', "Press Enter to search for extension '{0}'.", filter),
+-			accept: () => this.extensionsWorkbenchService.openSearch(filter)
+-		};
+-
+-		// Extension ID typed: try to find it
+-		if (/\./.test(filter)) {
+-			return this.getPicksForExtensionId(filter, genericSearchPickItem, token);
+-		}
+-
+-		// Extension name typed: offer to search it
+-		return [genericSearchPickItem];
+-	}
+-
+-	private async getPicksForExtensionId(filter: string, fallback: IPickerQuickAccessItem, token: CancellationToken): Promise<Array<IPickerQuickAccessItem | IQuickPickSeparator>> {
+-		try {
+-			const [galleryExtension] = await this.galleryService.getExtensions([{ id: filter }], token);
+-			if (token.isCancellationRequested) {
+-				return []; // return early if canceled
+-			}
+-
+-			if (!galleryExtension) {
+-				return [fallback];
+-			}
+-
+-			return [{
+-				label: localize('install', "Press Enter to install extension '{0}'.", filter),
+-				accept: () => this.installExtension(galleryExtension, filter)
+-			}];
+-		} catch (error) {
+-			if (token.isCancellationRequested) {
+-				return []; // expected error
+-			}
+-
+-			this.logService.error(error);
+-
+-			return [fallback];
+-		}
+-	}
+-
+-	private async installExtension(extension: IGalleryExtension, name: string): Promise<void> {
+-		try {
+-			await this.extensionsWorkbenchService.openSearch(`@id:${name}`);
+-			await this.extensionsService.installFromGallery(extension);
+-		} catch (error) {
+-			this.notificationService.error(error);
+-		}
+-	}
+-}
++// Shuko (C-5-extension-gallery): the `ext install ` quick access (install or search the gallery) is removed.
+ 
+ export class ManageExtensionsQuickAccessProvider extends PickerQuickAccessProvider<IPickerQuickAccessItem> {
+ 
+diff --git a/src/vs/workbench/contrib/extensions/browser/extensionsViewlet.ts b/src/vs/workbench/contrib/extensions/browser/extensionsViewlet.ts
+index a58e047cc6f..f076c5a5722 100644
+--- a/src/vs/workbench/contrib/extensions/browser/extensionsViewlet.ts
++++ b/src/vs/workbench/contrib/extensions/browser/extensionsViewlet.ts
+@@ -12,19 +12,19 @@ import { IWorkbenchContribution } from '../../../common/contributions.js';
+ import { Disposable, DisposableStore, MutableDisposable } from '../../../../base/common/lifecycle.js';
+ import { Event } from '../../../../base/common/event.js';
+ import { Action } from '../../../../base/common/actions.js';
+-import { append, $, Dimension, hide, show, DragAndDropObserver, trackFocus, addDisposableListener, EventType, clearNode } from '../../../../base/browser/dom.js';
++import { append, $, Dimension, trackFocus, addDisposableListener, EventType, clearNode } from '../../../../base/browser/dom.js';
+ import { renderMarkdown, renderAsPlaintext } from '../../../../base/browser/markdownRenderer.js';
+ import { isMarkdownString } from '../../../../base/common/htmlContent.js';
+ import { IOpenerService } from '../../../../platform/opener/common/opener.js';
+ import { ITelemetryService } from '../../../../platform/telemetry/common/telemetry.js';
+ import { IInstantiationService, ServicesAccessor } from '../../../../platform/instantiation/common/instantiation.js';
+ import { IExtensionService } from '../../../services/extensions/common/extensions.js';
+-import { IExtensionsNotification, IExtensionsWorkbenchService, IExtensionsViewPaneContainer, VIEWLET_ID, CloseExtensionDetailsOnViewChangeKey, INSTALL_EXTENSION_FROM_VSIX_COMMAND_ID, WORKSPACE_RECOMMENDATIONS_VIEW_ID, AutoCheckUpdatesConfigurationKey, OUTDATED_EXTENSIONS_VIEW_ID, CONTEXT_HAS_GALLERY, extensionsSearchActionsMenu, AutoRestartConfigurationKey, ExtensionRuntimeActionType, SearchMcpServersContext, SearchAgentPluginsContext, DefaultViewsContext, CONTEXT_EXTENSIONS_GALLERY_STATUS } from '../common/extensions.js';
++import { IExtensionsNotification, IExtensionsWorkbenchService, IExtensionsViewPaneContainer, VIEWLET_ID, CloseExtensionDetailsOnViewChangeKey, AutoCheckUpdatesConfigurationKey, OUTDATED_EXTENSIONS_VIEW_ID, extensionsSearchActionsMenu, AutoRestartConfigurationKey, ExtensionRuntimeActionType, SearchMcpServersContext, SearchAgentPluginsContext, DefaultViewsContext } from '../common/extensions.js';
+ import { InstallLocalExtensionsInRemoteAction, InstallRemoteExtensionsInLocalAction } from './extensionsActions.js';
+ import { IExtensionManagementService, ILocalExtension } from '../../../../platform/extensionManagement/common/extensionManagement.js';
+ import { IWorkbenchExtensionEnablementService, IExtensionManagementServerService, IExtensionManagementServer } from '../../../services/extensionManagement/common/extensionManagement.js';
+ import { ExtensionsInput } from '../common/extensionsInput.js';
+-import { ExtensionsListView, EnabledExtensionsView, DisabledExtensionsView, RecommendedExtensionsView, WorkspaceRecommendedExtensionsView, ServerInstalledExtensionsView, DefaultRecommendedExtensionsView, UntrustedWorkspaceUnsupportedExtensionsView, UntrustedWorkspacePartiallySupportedExtensionsView, VirtualWorkspaceUnsupportedExtensionsView, VirtualWorkspacePartiallySupportedExtensionsView, DefaultPopularExtensionsView, DeprecatedExtensionsView, SearchMarketplaceExtensionsView, RecentlyUpdatedExtensionsView, OutdatedExtensionsView, StaticQueryExtensionsView, NONE_CATEGORY, AbstractExtensionsListView } from './extensionsViews.js';
++import { ExtensionsListView, EnabledExtensionsView, DisabledExtensionsView, ServerInstalledExtensionsView, UntrustedWorkspaceUnsupportedExtensionsView, UntrustedWorkspacePartiallySupportedExtensionsView, VirtualWorkspaceUnsupportedExtensionsView, VirtualWorkspacePartiallySupportedExtensionsView, DeprecatedExtensionsView, RecentlyUpdatedExtensionsView, OutdatedExtensionsView, StaticQueryExtensionsView, NONE_CATEGORY, AbstractExtensionsListView } from './extensionsViews.js';
+ import { IProgressService, ProgressLocation } from '../../../../platform/progress/common/progress.js';
+ import { IEditorGroupsService } from '../../../services/editor/common/editorGroupsService.js';
+ import Severity from '../../../../base/common/severity.js';
+@@ -50,16 +50,12 @@ import { Registry } from '../../../../platform/registry/common/platform.js';
+ import { ILabelService } from '../../../../platform/label/common/label.js';
+ import { SyncDescriptor } from '../../../../platform/instantiation/common/descriptors.js';
+ import { IPreferencesService } from '../../../services/preferences/common/preferences.js';
+-import { SIDE_BAR_DRAG_AND_DROP_BACKGROUND } from '../../../common/theme.js';
+-import { VirtualWorkspaceContext, WorkbenchStateContext } from '../../../common/contextkeys.js';
++import { VirtualWorkspaceContext } from '../../../common/contextkeys.js';
+ import { ICommandService } from '../../../../platform/commands/common/commands.js';
+ import { installLocalInRemoteIcon } from './extensionsIcons.js';
+ import { registerAction2, Action2, MenuId } from '../../../../platform/actions/common/actions.js';
+ import { IPaneComposite } from '../../../common/panecomposite.js';
+ import { IPaneCompositePartService } from '../../../services/panecomposite/browser/panecomposite.js';
+-import { coalesce } from '../../../../base/common/arrays.js';
+-import { extractEditorsAndFilesDropData } from '../../../../platform/dnd/browser/dnd.js';
+-import { extname } from '../../../../base/common/resources.js';
+ import { ILocalizedString } from '../../../../platform/action/common/action.js';
+ import { registerNavigableContainer } from '../../../browser/actions/widgetNavigationCommands.js';
+ import { MenuWorkbenchToolBar } from '../../../../platform/actions/browser/toolbar.js';
+@@ -69,7 +65,7 @@ import { Button } from '../../../../base/browser/ui/button/button.js';
+ import { defaultButtonStyles } from '../../../../platform/theme/browser/defaultStyles.js';
+ import { StandardKeyboardEvent } from '../../../../base/browser/keyboardEvent.js';
+ import { KeyCode } from '../../../../base/common/keyCodes.js';
+-import { IExtensionGalleryManifest, IExtensionGalleryManifestService, ExtensionGalleryManifestStatus } from '../../../../platform/extensionManagement/common/extensionGalleryManifest.js';
++import { IExtensionGalleryManifest, IExtensionGalleryManifestService } from '../../../../platform/extensionManagement/common/extensionGalleryManifest.js';
+ import { URI } from '../../../../base/common/uri.js';
+ import { IChatEntitlementService } from '../../../services/chat/common/chatEntitlementService.js';
+ 
+@@ -123,8 +119,7 @@ export class ExtensionsViewletViewsContribution extends Disposable implements IW
+ 		/* Search views */
+ 		viewDescriptors.push(...this.createSearchExtensionsViewDescriptors());
+ 
+-		/* Recommendations views */
+-		viewDescriptors.push(...this.createRecommendedExtensionsViewDescriptors());
++		/* Shuko (C-5-extension-gallery): the recommendations views are removed with recommendations. */
+ 
+ 		/* Built-in extensions views */
+ 		viewDescriptors.push(...this.createBuiltinExtensionsViewDescriptors());
+@@ -135,40 +130,10 @@ export class ExtensionsViewletViewsContribution extends Disposable implements IW
+ 		/* Other Local Filtered extensions views */
+ 		viewDescriptors.push(...this.createOtherLocalFilteredExtensionsViewDescriptors());
+ 
+-
+-		viewDescriptors.push({
+-			id: 'workbench.views.extensions.marketplaceAccess',
+-			name: localize2('marketPlace', "Marketplace"),
+-			ctorDescriptor: new SyncDescriptor(class extends ViewPane {
+-				public override shouldShowWelcome() {
+-					return true;
+-				}
+-			}),
+-			when: ContextKeyExpr.and(
+-				ContextKeyExpr.or(
+-					ContextKeyExpr.has('searchMarketplaceExtensions'), ContextKeyExpr.and(DefaultViewsContext)
+-				),
+-				ContextKeyExpr.or(
+-					CONTEXT_EXTENSIONS_GALLERY_STATUS.isEqualTo(ExtensionGalleryManifestStatus.RequiresSignIn),
+-					CONTEXT_EXTENSIONS_GALLERY_STATUS.isEqualTo(ExtensionGalleryManifestStatus.AccessDenied)
+-				)
+-			),
+-			order: -1,
+-		});
++		// Shuko (C-5-extension-gallery): the Marketplace access view (sign in to a private Marketplace) is removed.
+ 
+ 		const viewRegistry = Registry.as<IViewsRegistry>(Extensions.ViewsRegistry);
+ 		viewRegistry.registerViews(viewDescriptors, this.container);
+-
+-		viewRegistry.registerViewWelcomeContent('workbench.views.extensions.marketplaceAccess', {
+-			content: localize('sign in', "[Sign in to access Extensions Marketplace]({0})", `command:workbench.extensions.actions.gallery.signIn`),
+-			when: CONTEXT_EXTENSIONS_GALLERY_STATUS.isEqualTo(ExtensionGalleryManifestStatus.RequiresSignIn)
+-		});
+-
+-		// Access denied applies to every provider (microsoft/github/default), so gate on status alone.
+-		viewRegistry.registerViewWelcomeContent('workbench.views.extensions.marketplaceAccess', {
+-			content: localize('access denied', "Your account does not have access to the Extensions Marketplace. Please contact your administrator."),
+-			when: CONTEXT_EXTENSIONS_GALLERY_STATUS.isEqualTo(ExtensionGalleryManifestStatus.AccessDenied)
+-		});
+ 	}
+ 
+ 	private createDefaultExtensionsViewDescriptors(): IViewDescriptor[] {
+@@ -259,35 +224,7 @@ export class ExtensionsViewletViewsContribution extends Disposable implements IW
+ 			}));
+ 		}
+ 
+-		/*
+-		 * Default popular extensions view
+-		 * Separate view for popular extensions required as we need to show popular and recommended sections
+-		 * in the default view when there is no search text, and user has no installed extensions.
+-		 */
+-		viewDescriptors.push({
+-			id: 'workbench.views.extensions.popular',
+-			name: localize2('popularExtensions', "Popular"),
+-			ctorDescriptor: new SyncDescriptor(DefaultPopularExtensionsView, [{ hideBadge: true }]),
+-			when: ContextKeyExpr.and(DefaultViewsContext, ContextKeyExpr.not('hasInstalledExtensions'), CONTEXT_HAS_GALLERY),
+-			weight: 60,
+-			order: 2,
+-			canToggleVisibility: false
+-		});
+-
+-		/*
+-		 * Default recommended extensions view
+-		 * When user has installed extensions, this is shown along with the views for enabled & disabled extensions
+-		 * When user has no installed extensions, this is shown along with the view for popular extensions
+-		 */
+-		viewDescriptors.push({
+-			id: 'extensions.recommendedList',
+-			name: localize2('recommendedExtensions', "Recommended"),
+-			ctorDescriptor: new SyncDescriptor(DefaultRecommendedExtensionsView, [{ flexibleHeight: true }]),
+-			when: ContextKeyExpr.and(DefaultViewsContext, SortByUpdateDateContext.negate(), ContextKeyExpr.not('config.extensions.showRecommendationsOnlyOnDemand'), CONTEXT_HAS_GALLERY),
+-			weight: 40,
+-			order: 3,
+-			canToggleVisibility: true
+-		});
++		/* Shuko (C-5-extension-gallery): the default popular and recommended views are removed with the gallery. */
+ 
+ 		/* Installed views shall be default in multi server window  */
+ 		if (servers.length === 1) {
+@@ -329,15 +266,7 @@ export class ExtensionsViewletViewsContribution extends Disposable implements IW
+ 	private createSearchExtensionsViewDescriptors(): IViewDescriptor[] {
+ 		const viewDescriptors: IViewDescriptor[] = [];
+ 
+-		/*
+-		 * View used for searching Marketplace
+-		 */
+-		viewDescriptors.push({
+-			id: 'workbench.views.extensions.marketplace',
+-			name: localize2('marketPlace', "Marketplace"),
+-			ctorDescriptor: new SyncDescriptor(SearchMarketplaceExtensionsView, [{}]),
+-			when: ContextKeyExpr.and(ContextKeyExpr.has('searchMarketplaceExtensions'), CONTEXT_HAS_GALLERY)
+-		});
++		/* Shuko (C-5-extension-gallery): the view used for searching the Marketplace is removed with the gallery. */
+ 
+ 		/*
+ 		 * View used for searching all installed extensions
+@@ -414,28 +343,6 @@ export class ExtensionsViewletViewsContribution extends Disposable implements IW
+ 		return viewDescriptors;
+ 	}
+ 
+-	private createRecommendedExtensionsViewDescriptors(): IViewDescriptor[] {
+-		const viewDescriptors: IViewDescriptor[] = [];
+-
+-		viewDescriptors.push({
+-			id: WORKSPACE_RECOMMENDATIONS_VIEW_ID,
+-			name: localize2('workspaceRecommendedExtensions', "Workspace Recommendations"),
+-			ctorDescriptor: new SyncDescriptor(WorkspaceRecommendedExtensionsView, [{}]),
+-			when: ContextKeyExpr.and(ContextKeyExpr.has('recommendedExtensions'), WorkbenchStateContext.notEqualsTo('empty')),
+-			order: 1
+-		});
+-
+-		viewDescriptors.push({
+-			id: 'workbench.views.extensions.otherRecommendations',
+-			name: localize2('otherRecommendedExtensions', "Other Recommendations"),
+-			ctorDescriptor: new SyncDescriptor(RecommendedExtensionsView, [{}]),
+-			when: ContextKeyExpr.has('recommendedExtensions'),
+-			order: 2
+-		});
+-
+-		return viewDescriptors;
+-	}
+-
+ 	private createBuiltinExtensionsViewDescriptors(): IViewDescriptor[] {
+ 		const viewDescriptors: IViewDescriptor[] = [];
+ 
+@@ -576,7 +483,6 @@ export class ExtensionsViewPaneContainer extends ViewPaneContainer<IExtensionsVi
+ 		@IExtensionService extensionService: IExtensionService,
+ 		@IViewDescriptorService viewDescriptorService: IViewDescriptorService,
+ 		@IPreferencesService private readonly preferencesService: IPreferencesService,
+-		@ICommandService private readonly commandService: ICommandService,
+ 		@ILogService logService: ILogService,
+ 		@IOpenerService private readonly openerService: IOpenerService,
+ 		@IChatEntitlementService private readonly chatEntitlementService: IChatEntitlementService,
+@@ -629,11 +535,6 @@ export class ExtensionsViewPaneContainer extends ViewPaneContainer<IExtensionsVi
+ 		parent.classList.add('extensions-viewlet');
+ 		this.root = parent;
+ 
+-		const overlay = append(this.root, $('.overlay'));
+-		const overlayBackgroundColor = this.getColor(SIDE_BAR_DRAG_AND_DROP_BACKGROUND) ?? '';
+-		overlay.style.backgroundColor = overlayBackgroundColor;
+-		hide(overlay);
+-
+ 		this.header = append(this.root, $('.header'));
+ 		const placeholder = localize('searchExtensions', "Search Extensions in Marketplace");
+ 
+@@ -676,42 +577,7 @@ export class ExtensionsViewPaneContainer extends ViewPaneContainer<IExtensionsVi
+ 			actionViewItemProvider: (action, options) => createActionViewItem(this.instantiationService, action, options)
+ 		}));
+ 
+-		// Register DragAndDrop support
+-		this._register(new DragAndDropObserver(this.root, {
+-			onDragEnter: (e: DragEvent) => {
+-				if (this.isSupportedDragElement(e)) {
+-					show(overlay);
+-				}
+-			},
+-			onDragLeave: (e: DragEvent) => {
+-				if (this.isSupportedDragElement(e)) {
+-					hide(overlay);
+-				}
+-			},
+-			onDragOver: (e: DragEvent) => {
+-				if (this.isSupportedDragElement(e)) {
+-					e.dataTransfer!.dropEffect = 'copy';
+-				}
+-			},
+-			onDrop: async (e: DragEvent) => {
+-				if (this.isSupportedDragElement(e)) {
+-					hide(overlay);
+-
+-					const vsixs = coalesce((await this.instantiationService.invokeFunction(accessor => extractEditorsAndFilesDropData(accessor, e)))
+-						.map(editor => editor.resource && extname(editor.resource) === '.vsix' ? editor.resource : undefined));
+-
+-					if (vsixs.length > 0) {
+-						try {
+-							// Attempt to install the extension(s)
+-							await this.commandService.executeCommand(INSTALL_EXTENSION_FROM_VSIX_COMMAND_ID, vsixs);
+-						}
+-						catch (err) {
+-							this.notificationService.error(err);
+-						}
+-					}
+-				}
+-			}
+-		}));
++		// Shuko (C-5-extension-gallery): installing extensions by dropping VSIX files on the view is removed.
+ 
+ 		super.create(append(this.root, $('.extensions')));
+ 
+@@ -1024,15 +890,6 @@ export class ExtensionsViewPaneContainer extends ViewPaneContainer<IExtensionsVi
+ 
+ 		this.notificationService.error(err);
+ 	}
+-
+-	private isSupportedDragElement(e: DragEvent): boolean {
+-		if (e.dataTransfer) {
+-			const typesLowerCase = e.dataTransfer.types.map(t => t.toLocaleLowerCase());
+-			return typesLowerCase.indexOf('files') !== -1;
+-		}
+-
+-		return false;
+-	}
+ }
+ 
+ export class StatusUpdater extends Disposable implements IWorkbenchContribution {
+@@ -1149,43 +1006,4 @@ export class MaliciousExtensionChecker implements IWorkbenchContribution {
+ 	}
+ }
+ 
+-export class ExtensionMarketplaceStatusUpdater extends Disposable implements IWorkbenchContribution {
+-
+-	private readonly badgeHandle = this._register(new MutableDisposable());
+-	private readonly accountBadgeDisposable = this._register(new MutableDisposable());
+-
+-	constructor(
+-		@IActivityService private readonly activityService: IActivityService,
+-		@IExtensionGalleryManifestService private readonly extensionGalleryManifestService: IExtensionGalleryManifestService
+-	) {
+-		super();
+-		this.updateBadge();
+-		this._register(this.extensionGalleryManifestService.onDidChangeExtensionGalleryManifestStatus(() => this.updateBadge()));
+-	}
+-
+-	private async updateBadge(): Promise<void> {
+-		this.badgeHandle.clear();
+-
+-		const status = this.extensionGalleryManifestService.extensionGalleryManifestStatus;
+-		let badge: IBadge | undefined;
+-
+-		switch (status) {
+-			case ExtensionGalleryManifestStatus.RequiresSignIn:
+-				badge = new NumberBadge(1, () => localize('signInRequired', "Sign in required to access marketplace"));
+-				break;
+-			case ExtensionGalleryManifestStatus.AccessDenied:
+-				badge = new WarningBadge(() => localize('accessDenied', "Access denied to marketplace"));
+-				break;
+-		}
+-
+-		if (badge) {
+-			this.badgeHandle.value = this.activityService.showViewContainerActivity(VIEWLET_ID, { badge });
+-		}
+-
+-		this.accountBadgeDisposable.clear();
+-		if (status === ExtensionGalleryManifestStatus.RequiresSignIn) {
+-			const badge = new NumberBadge(1, () => localize('sign in enterprise marketplace', "Sign in to access Marketplace"));
+-			this.accountBadgeDisposable.value = this.activityService.showAccountsActivity({ badge });
+-		}
+-	}
+-}
++// Shuko (C-5-extension-gallery): the Marketplace access badge (sign in to a private Marketplace) is removed.
+diff --git a/src/vs/workbench/contrib/extensions/browser/extensionsViews.ts b/src/vs/workbench/contrib/extensions/browser/extensionsViews.ts
+index f97859a2d68..c29ea5496d8 100644
+--- a/src/vs/workbench/contrib/extensions/browser/extensionsViews.ts
++++ b/src/vs/workbench/contrib/extensions/browser/extensionsViews.ts
+@@ -8,7 +8,7 @@ import { Disposable, DisposableStore, toDisposable } from '../../../../base/comm
+ import { Event, Emitter } from '../../../../base/common/event.js';
+ import { isCancellationError, getErrorMessage, CancellationError } from '../../../../base/common/errors.js';
+ import { PagedModel, IPagedModel, DelayedPagedModel, IPager } from '../../../../base/common/paging.js';
+-import { SortOrder, IQueryOptions as IGalleryQueryOptions, SortBy as GallerySortBy, InstallExtensionInfo, ExtensionGalleryErrorCode, ExtensionGalleryError } from '../../../../platform/extensionManagement/common/extensionManagement.js';
++import { SortOrder, IQueryOptions as IGalleryQueryOptions, SortBy as GallerySortBy, ExtensionGalleryErrorCode, ExtensionGalleryError } from '../../../../platform/extensionManagement/common/extensionManagement.js';
+ import { IExtensionManagementServer, IExtensionManagementServerService, EnablementState, IWorkbenchExtensionManagementService, IWorkbenchExtensionEnablementService } from '../../../services/extensionManagement/common/extensionManagement.js';
+ import { IExtensionRecommendationsService } from '../../../services/extensionRecommendations/common/extensionRecommendations.js';
+ import { areSameExtensions, getExtensionDependencies } from '../../../../platform/extensionManagement/common/extensionManagementUtil.js';
+@@ -16,7 +16,7 @@ import { IKeybindingService } from '../../../../platform/keybinding/common/keybi
+ import { IContextMenuService } from '../../../../platform/contextview/browser/contextView.js';
+ import { append, $ } from '../../../../base/browser/dom.js';
+ import { IInstantiationService } from '../../../../platform/instantiation/common/instantiation.js';
+-import { ExtensionResultsListFocused, ExtensionState, IExtension, IExtensionsViewState, IExtensionsWorkbenchService, IWorkspaceRecommendedExtensionsView } from '../common/extensions.js';
++import { ExtensionResultsListFocused, ExtensionState, IExtension, IExtensionsViewState, IExtensionsWorkbenchService } from '../common/extensions.js';
+ import { Query } from '../common/extensionQuery.js';
+ import { IExtensionService, toExtension } from '../../../services/extensions/common/extensions.js';
+ import { IThemeService } from '../../../../platform/theme/common/themeService.js';
+@@ -33,7 +33,7 @@ import { alert } from '../../../../base/browser/ui/aria/aria.js';
+ import { CancellationToken, CancellationTokenSource } from '../../../../base/common/cancellation.js';
+ import { ActionRunner } from '../../../../base/common/actions.js';
+ import { ExtensionIdentifier, ExtensionIdentifierMap, ExtensionUntrustedWorkspaceSupportType, ExtensionVirtualWorkspaceSupportType, IExtensionDescription, IExtensionIdentifier, isLanguagePackExtension } from '../../../../platform/extensions/common/extensions.js';
+-import { CancelablePromise, createCancelablePromise, ThrottledDelayer } from '../../../../base/common/async.js';
++import { CancelablePromise, createCancelablePromise } from '../../../../base/common/async.js';
+ import { IProductService } from '../../../../platform/product/common/productService.js';
+ import { SeverityIcon } from '../../../../base/browser/ui/severityIcon/severityIcon.js';
+ import { IContextKeyService } from '../../../../platform/contextkey/common/contextkey.js';
+@@ -1296,14 +1296,7 @@ export class ExtensionsListView extends AbstractExtensionsListView<IExtension> {
+ 	}
+ }
+ 
+-export class DefaultPopularExtensionsView extends ExtensionsListView {
+-
+-	override async show(): Promise<IPagedModel<IExtension>> {
+-		const query = this.extensionManagementServerService.webExtensionManagementServer && !this.extensionManagementServerService.localExtensionManagementServer && !this.extensionManagementServerService.remoteExtensionManagementServer ? '@web' : '';
+-		return super.show(query);
+-	}
+-
+-}
++// Shuko (C-5-extension-gallery): the default popular extensions view is removed with the gallery.
+ 
+ export class ServerInstalledExtensionsView extends ExtensionsListView {
+ 
+@@ -1461,115 +1454,7 @@ export class DeprecatedExtensionsView extends ExtensionsListView {
+ 	}
+ }
+ 
+-export class SearchMarketplaceExtensionsView extends ExtensionsListView {
+-
+-	private readonly reportSearchFinishedDelayer = this._register(new ThrottledDelayer(2000));
+-	private searchWaitPromise: Promise<void> = Promise.resolve();
+-
+-	override async show(query: string): Promise<IPagedModel<IExtension>> {
+-		const queryPromise = super.show(query);
+-		this.reportSearchFinishedDelayer.trigger(() => this.reportSearchFinished());
+-		this.searchWaitPromise = queryPromise.then(null, null);
+-		return queryPromise;
+-	}
+-
+-	private async reportSearchFinished(): Promise<void> {
+-		await this.searchWaitPromise;
+-		this.telemetryService.publicLog2('extensionsView:MarketplaceSearchFinished');
+-	}
+-}
+-
+-export class DefaultRecommendedExtensionsView extends ExtensionsListView {
+-	private readonly recommendedExtensionsQuery = '@recommended:all';
+-
+-	protected override renderBody(container: HTMLElement): void {
+-		super.renderBody(container);
+-
+-		this._register(this.extensionRecommendationsService.onDidChangeRecommendations(() => {
+-			this.show('');
+-		}));
+-	}
+-
+-	override async show(query: string): Promise<IPagedModel<IExtension>> {
+-		if (query && query.trim() !== this.recommendedExtensionsQuery) {
+-			return this.showEmptyModel();
+-		}
+-		const model = await super.show(this.recommendedExtensionsQuery);
+-		if (!this.extensionsWorkbenchService.local.some(e => !e.isBuiltin)) {
+-			// This is part of popular extensions view. Collapse if no installed extensions.
+-			this.setExpanded(model.length > 0);
+-		}
+-		return model;
+-	}
+-
+-}
+-
+-export class RecommendedExtensionsView extends ExtensionsListView {
+-	private readonly recommendedExtensionsQuery = '@recommended';
+-
+-	protected override renderBody(container: HTMLElement): void {
+-		super.renderBody(container);
+-
+-		this._register(this.extensionRecommendationsService.onDidChangeRecommendations(() => {
+-			this.show('');
+-		}));
+-	}
+-
+-	override async show(query: string): Promise<IPagedModel<IExtension>> {
+-		return (query && query.trim() !== this.recommendedExtensionsQuery) ? this.showEmptyModel() : super.show(this.recommendedExtensionsQuery);
+-	}
+-}
+-
+-export class WorkspaceRecommendedExtensionsView extends ExtensionsListView implements IWorkspaceRecommendedExtensionsView {
+-	private readonly recommendedExtensionsQuery = '@recommended:workspace';
+-
+-	protected override renderBody(container: HTMLElement): void {
+-		super.renderBody(container);
+-
+-		this._register(this.extensionRecommendationsService.onDidChangeRecommendations(() => this.show(this.recommendedExtensionsQuery)));
+-		this._register(this.contextService.onDidChangeWorkbenchState(() => this.show(this.recommendedExtensionsQuery)));
+-	}
+-
+-	override async show(query: string): Promise<IPagedModel<IExtension>> {
+-		const shouldShowEmptyView = query && query.trim() !== '@recommended' && query.trim() !== '@recommended:workspace';
+-		const model = await (shouldShowEmptyView ? this.showEmptyModel() : super.show(this.recommendedExtensionsQuery));
+-		this.setExpanded(model.length > 0);
+-		return model;
+-	}
+-
+-	private async getInstallableWorkspaceRecommendations(): Promise<IExtension[]> {
+-		const installed = (await this.extensionsWorkbenchService.queryLocal())
+-			.filter(l => l.enablementState !== EnablementState.DisabledByExtensionKind); // Filter extensions disabled by kind
+-		const recommendations = (await this.getWorkspaceRecommendations())
+-			.filter(recommendation => installed.every(local => isString(recommendation) ? !areSameExtensions({ id: recommendation }, local.identifier) : !this.uriIdentityService.extUri.isEqual(recommendation, local.local?.location)));
+-		return this.getInstallableRecommendations(recommendations, { source: 'install-all-workspace-recommendations' }, CancellationToken.None);
+-	}
+-
+-	async installWorkspaceRecommendations(): Promise<void> {
+-		const installableRecommendations = await this.getInstallableWorkspaceRecommendations();
+-		if (installableRecommendations.length) {
+-			const galleryExtensions: InstallExtensionInfo[] = [];
+-			const resourceExtensions: IExtension[] = [];
+-			for (const recommendation of installableRecommendations) {
+-				if (recommendation.gallery) {
+-					galleryExtensions.push({ extension: recommendation.gallery, options: {} });
+-				} else {
+-					resourceExtensions.push(recommendation);
+-				}
+-			}
+-			await Promise.all([
+-				this.extensionManagementService.installGalleryExtensions(galleryExtensions),
+-				...resourceExtensions.map(extension => this.extensionsWorkbenchService.install(extension))
+-			]);
+-		} else {
+-			this.notificationService.notify({
+-				severity: Severity.Info,
+-				message: localize('no local extensions', "There are no extensions to install.")
+-			});
+-		}
+-	}
+-
+-}
++// Shuko (C-5-extension-gallery): the Marketplace search view and the recommended extensions views are removed.
+ 
+ export class PreferredExtensionsPagedModel implements IPagedModel<IExtension> {
+ 
+diff --git a/src/vs/workbench/contrib/extensions/electron-browser/extensions.contribution.ts b/src/vs/workbench/contrib/extensions/electron-browser/extensions.contribution.ts
+index 3c84a6ef243..1b3f2391f21 100644
+--- a/src/vs/workbench/contrib/extensions/electron-browser/extensions.contribution.ts
++++ b/src/vs/workbench/contrib/extensions/electron-browser/extensions.contribution.ts
+@@ -6,12 +6,9 @@
+ import { Disposable } from '../../../../base/common/lifecycle.js';
+ import { localize } from '../../../../nls.js';
+ import { registerAction2 } from '../../../../platform/actions/common/actions.js';
+-import { IExtensionRecommendationNotificationService } from '../../../../platform/extensionRecommendations/common/extensionRecommendations.js';
+-import { ExtensionRecommendationNotificationServiceChannel } from '../../../../platform/extensionRecommendations/common/extensionRecommendationsIpc.js';
+ import { SyncDescriptor } from '../../../../platform/instantiation/common/descriptors.js';
+ import { InstantiationType, registerSingleton } from '../../../../platform/instantiation/common/extensions.js';
+ import { IInstantiationService } from '../../../../platform/instantiation/common/instantiation.js';
+-import { ISharedProcessService } from '../../../../platform/ipc/electron-browser/services.js';
+ import { Registry } from '../../../../platform/registry/common/platform.js';
+ import { EditorPaneDescriptor, IEditorPaneRegistry } from '../../../browser/editor.js';
+ import { IWorkbenchContribution, IWorkbenchContributionsRegistry, Extensions as WorkbenchExtensions } from '../../../common/contributions.js';
+@@ -55,13 +52,11 @@ Registry.as<IEditorFactoryRegistry>(EditorExtensions.EditorFactory).registerEdit
+ 
+ class ExtensionsContributions extends Disposable implements IWorkbenchContribution {
+ 
+-	constructor(
+-		@IExtensionRecommendationNotificationService extensionRecommendationNotificationService: IExtensionRecommendationNotificationService,
+-		@ISharedProcessService sharedProcessService: ISharedProcessService,
+-	) {
++	constructor() {
+ 		super();
+ 
+-		sharedProcessService.registerChannel('extensionRecommendationNotification', new ExtensionRecommendationNotificationServiceChannel(extensionRecommendationNotificationService));
++		// Shuko (C-5-extension-gallery): the executable based tips of the shared process are removed, so the
++		// recommendation notification channel they sent to is not registered.
+ 
+ 		this._register(registerAction2(OpenExtensionsFolderAction));
+ 		this._register(registerAction2(CleanUpExtensionsFolderAction));
+diff --git a/src/vs/workbench/services/extensionManagement/common/extensionGalleryService.ts b/src/vs/workbench/services/extensionManagement/common/extensionGalleryService.ts
+index 5b4ece05a57..e90789cdd59 100644
+--- a/src/vs/workbench/services/extensionManagement/common/extensionGalleryService.ts
++++ b/src/vs/workbench/services/extensionManagement/common/extensionGalleryService.ts
+@@ -3,34 +3,9 @@
+  *  Licensed under the MIT License. See License.txt in the project root for license information.
+  *--------------------------------------------------------------------------------------------*/
+ 
+-import { IAllowedExtensionsService, IExtensionGalleryService } from '../../../../platform/extensionManagement/common/extensionManagement.js';
+-import { IConfigurationService } from '../../../../platform/configuration/common/configuration.js';
+-import { IProductService } from '../../../../platform/product/common/productService.js';
+-import { IFileService } from '../../../../platform/files/common/files.js';
+-import { ILogService } from '../../../../platform/log/common/log.js';
+-import { IStorageService } from '../../../../platform/storage/common/storage.js';
+-import { ITelemetryService } from '../../../../platform/telemetry/common/telemetry.js';
+-import { IRequestService } from '../../../../platform/request/common/request.js';
+-import { IEnvironmentService } from '../../../../platform/environment/common/environment.js';
+-import { AbstractExtensionGalleryService } from '../../../../platform/extensionManagement/common/extensionGalleryService.js';
++import { IExtensionGalleryService } from '../../../../platform/extensionManagement/common/extensionManagement.js';
+ import { InstantiationType, registerSingleton } from '../../../../platform/instantiation/common/extensions.js';
+-import { IExtensionGalleryManifestService } from '../../../../platform/extensionManagement/common/extensionGalleryManifest.js';
++import { NoopExtensionGalleryService } from './noopExtensionGalleryService.js';
+ 
+-export class WorkbenchExtensionGalleryService extends AbstractExtensionGalleryService {
+-	constructor(
+-		@IStorageService storageService: IStorageService,
+-		@IRequestService requestService: IRequestService,
+-		@ILogService logService: ILogService,
+-		@IEnvironmentService environmentService: IEnvironmentService,
+-		@ITelemetryService telemetryService: ITelemetryService,
+-		@IFileService fileService: IFileService,
+-		@IProductService productService: IProductService,
+-		@IConfigurationService configurationService: IConfigurationService,
+-		@IAllowedExtensionsService allowedExtensionsService: IAllowedExtensionsService,
+-		@IExtensionGalleryManifestService extensionGalleryManifestService: IExtensionGalleryManifestService,
+-	) {
+-		super(storageService, requestService, logService, environmentService, telemetryService, fileService, productService, configurationService, allowedExtensionsService, extensionGalleryManifestService);
+-	}
+-}
+-
+-registerSingleton(IExtensionGalleryService, WorkbenchExtensionGalleryService, InstantiationType.Delayed);
++// Shuko (C-5-extension-gallery): the workbench gallery service is replaced by one that never makes a request.
++registerSingleton(IExtensionGalleryService, NoopExtensionGalleryService, InstantiationType.Delayed);
+diff --git a/src/vs/workbench/services/extensionManagement/common/noopExtensionGalleryService.ts b/src/vs/workbench/services/extensionManagement/common/noopExtensionGalleryService.ts
+new file mode 100644
+index 00000000000..8a09162018a
+--- /dev/null
++++ b/src/vs/workbench/services/extensionManagement/common/noopExtensionGalleryService.ts
+@@ -0,0 +1,87 @@
++/*---------------------------------------------------------------------------------------------
++ *  Copyright (c) Microsoft Corporation. All rights reserved.
++ *  Licensed under the MIT License. See License.txt in the project root for license information.
++ *--------------------------------------------------------------------------------------------*/
++
++import { CancellationToken } from '../../../../base/common/cancellation.js';
++import { IPager, singlePagePager } from '../../../../base/common/paging.js';
++import { URI } from '../../../../base/common/uri.js';
++import { IExtensionGalleryService, IExtensionIdentifier, IExtensionInfo, IExtensionQueryOptions, IExtensionsControlManifest, IGalleryExtension, IGalleryExtensionVersion, InstallOperation, IProductVersion, IQueryOptions, ITranslation, StatisticType } from '../../../../platform/extensionManagement/common/extensionManagement.js';
++import { IExtensionManifest, TargetPlatform } from '../../../../platform/extensions/common/extensions.js';
++
++/**
++ * Shuko (C-5-extension-gallery): the extension gallery (Marketplace search, popular and
++ * recommended extensions, updates from the Marketplace) is removed from the workbench. This
++ * gallery service never makes a request: it is never enabled, queries and lookups are empty,
++ * and downloading is refused. Extensions are installed from VSIX files (the `--install-extension`
++ * command line and the shared process do not use this service).
++ */
++
++const galleryUnavailable = 'The extension gallery is not available in this build';
++
++export class NoopExtensionGalleryService implements IExtensionGalleryService {
++
++	declare readonly _serviceBrand: undefined;
++
++	isEnabled(): boolean {
++		return false;
++	}
++
++	async query(options: IQueryOptions, token: CancellationToken): Promise<IPager<IGalleryExtension>> {
++		return singlePagePager<IGalleryExtension>([]);
++	}
++
++	getExtensions(extensionInfos: ReadonlyArray<IExtensionInfo>, token: CancellationToken): Promise<IGalleryExtension[]>;
++	getExtensions(extensionInfos: ReadonlyArray<IExtensionInfo>, options: IExtensionQueryOptions, token: CancellationToken): Promise<IGalleryExtension[]>;
++	async getExtensions(): Promise<IGalleryExtension[]> {
++		return [];
++	}
++
++	async isExtensionCompatible(extension: IGalleryExtension, includePreRelease: boolean, targetPlatform: TargetPlatform, productVersion?: IProductVersion): Promise<boolean> {
++		return false;
++	}
++
++	async getCompatibleExtension(extension: IGalleryExtension, includePreRelease: boolean, targetPlatform: TargetPlatform, productVersion?: IProductVersion): Promise<IGalleryExtension | null> {
++		return null;
++	}
++
++	async getAllCompatibleVersions(extensionIdentifier: IExtensionIdentifier, includePreRelease: boolean, targetPlatform: TargetPlatform): Promise<IGalleryExtensionVersion[]> {
++		return [];
++	}
++
++	async getAllVersions(extensionIdentifier: IExtensionIdentifier): Promise<IGalleryExtensionVersion[]> {
++		return [];
++	}
++
++	async download(extension: IGalleryExtension, location: URI, operation: InstallOperation): Promise<void> {
++		throw new Error(galleryUnavailable);
++	}
++
++	async downloadSignatureArchive(extension: IGalleryExtension, location: URI): Promise<void> {
++		throw new Error(galleryUnavailable);
++	}
++
++	async reportStatistic(publisher: string, name: string, version: string, type: StatisticType): Promise<void> {
++		// nothing is reported
++	}
++
++	async getReadme(extension: IGalleryExtension, token: CancellationToken): Promise<string> {
++		throw new Error(galleryUnavailable);
++	}
++
++	async getManifest(extension: IGalleryExtension, token: CancellationToken): Promise<IExtensionManifest | null> {
++		return null;
++	}
++
++	async getChangelog(extension: IGalleryExtension, token: CancellationToken): Promise<string> {
++		throw new Error(galleryUnavailable);
++	}
++
++	async getCoreTranslation(extension: IGalleryExtension, languageId: string): Promise<ITranslation | null> {
++		return null;
++	}
++
++	async getExtensionsControlManifest(): Promise<IExtensionsControlManifest> {
++		return { malicious: [], deprecated: {}, search: [], autoUpdate: {} };
++	}
++}
+diff --git a/src/vs/workbench/services/extensionManagement/electron-browser/extensionGalleryManifestService.ts b/src/vs/workbench/services/extensionManagement/electron-browser/extensionGalleryManifestService.ts
+index 89dc830698b..15b9cdef13b 100644
+--- a/src/vs/workbench/services/extensionManagement/electron-browser/extensionGalleryManifestService.ts
++++ b/src/vs/workbench/services/extensionManagement/electron-browser/extensionGalleryManifestService.ts
+@@ -3,68 +3,23 @@
+  *  Licensed under the MIT License. See License.txt in the project root for license information.
+  *--------------------------------------------------------------------------------------------*/
+ 
+-import { CancellationToken, CancellationTokenSource } from '../../../../base/common/cancellation.js';
+ import { Emitter } from '../../../../base/common/event.js';
+-import { MutableDisposable } from '../../../../base/common/lifecycle.js';
+-import { IHeaders } from '../../../../base/parts/request/common/request.js';
+-import { localize } from '../../../../nls.js';
+-import { IConfigurationService } from '../../../../platform/configuration/common/configuration.js';
+-import { IEnvironmentService } from '../../../../platform/environment/common/environment.js';
+-import { IExtensionGalleryManifestService, IExtensionGalleryManifest, ExtensionGalleryServiceUrlConfigKey, ExtensionGalleryAuthProviderConfigKey, ExtensionGalleryManifestStatus } from '../../../../platform/extensionManagement/common/extensionGalleryManifest.js';
++import { IExtensionGalleryManifestService, IExtensionGalleryManifest, ExtensionGalleryManifestStatus } from '../../../../platform/extensionManagement/common/extensionGalleryManifest.js';
+ import { ExtensionGalleryManifestService } from '../../../../platform/extensionManagement/common/extensionGalleryManifestService.js';
+-import { resolveMarketplaceHeaders } from '../../../../platform/externalServices/common/marketplace.js';
+-import { IFileService } from '../../../../platform/files/common/files.js';
+ import { InstantiationType, registerSingleton } from '../../../../platform/instantiation/common/extensions.js';
+ import { ISharedProcessService } from '../../../../platform/ipc/electron-browser/services.js';
+ import { ILogService } from '../../../../platform/log/common/log.js';
+ import { IProductService } from '../../../../platform/product/common/productService.js';
+-import { asJson, IRequestService } from '../../../../platform/request/common/request.js';
+-import { IStorageService } from '../../../../platform/storage/common/storage.js';
+-import { ITelemetryService } from '../../../../platform/telemetry/common/telemetry.js';
+ import { IRemoteAgentService } from '../../remote/common/remoteAgentService.js';
+-import { IDialogService } from '../../../../platform/dialogs/common/dialogs.js';
+-import { IHostService } from '../../host/browser/host.js';
+-import { ExtensionGalleryAccountStatus, IExtensionGalleryAccountService } from '../common/extensionGalleryAccount.js';
+-
+-type ExtensionGalleryManifestResponse = Omit<IExtensionGalleryManifest, 'version' | 'capabilities'> & {
+-	readonly version?: string;
+-	readonly capabilities: Pick<IExtensionGalleryManifest['capabilities'], 'extensionQuery'>;
+-};
+-
+-type ExtensionQueryCapabilityValue = NonNullable<IExtensionGalleryManifest['capabilities']['extensionQuery']['filtering']>[number];
+-
+-function isExtensionQueryCapabilityValue(candidate: unknown): candidate is ExtensionQueryCapabilityValue {
+-	const value = candidate as Partial<ExtensionQueryCapabilityValue> | null;
+-	return typeof value?.name === 'string' && typeof value.value === 'number';
+-}
+-
+-function isExtensionQueryCapabilityValues(candidate: unknown): candidate is readonly ExtensionQueryCapabilityValue[] | undefined {
+-	return candidate === undefined || (Array.isArray(candidate) && candidate.every(isExtensionQueryCapabilityValue));
+-}
+-
+-function isExtensionGalleryManifestResponse(candidate: unknown): candidate is ExtensionGalleryManifestResponse {
+-	const manifest = candidate as Partial<ExtensionGalleryManifestResponse> | null;
+-	const extensionQuery = manifest?.capabilities?.extensionQuery;
+-
+-	return (manifest?.version === undefined || typeof manifest.version === 'string')
+-		&& Array.isArray(manifest?.resources)
+-		&& manifest.resources.every(resource => resource && typeof resource.id === 'string' && typeof resource.type === 'string')
+-		&& typeof extensionQuery === 'object'
+-		&& extensionQuery !== null
+-		&& isExtensionQueryCapabilityValues(extensionQuery.filtering)
+-		&& isExtensionQueryCapabilityValues(extensionQuery.sorting)
+-		&& isExtensionQueryCapabilityValues(extensionQuery.flags);
+-}
+-
+-class MarketplaceAuthRequiredError extends Error {
+-	constructor() {
+-		super('Marketplace requires authentication.');
+-	}
+-}
+ 
++/**
++ * Shuko (C-5-extension-gallery): the Marketplace account (signing in to a private Marketplace configured with
++ * `extensions.gallery.serviceUrl`) is removed. The manifest only comes from product.json, which has no
++ * `extensionsGallery`, so it is `null`. It is still sent to the shared process and the remote server, which
++ * wait for it before installing extensions (VSIX included).
++ */
+ export class WorkbenchExtensionGalleryManifestService extends ExtensionGalleryManifestService implements IExtensionGalleryManifestService {
+ 
+-	private readonly commonHeadersPromise: Promise<IHeaders>;
+ 	private extensionGalleryManifest: IExtensionGalleryManifest | null = null;
+ 
+ 	private _onDidChangeExtensionGalleryManifest = this._register(new Emitter<IExtensionGalleryManifest | null>());
+@@ -77,28 +32,11 @@ export class WorkbenchExtensionGalleryManifestService extends ExtensionGalleryMa
+ 
+ 	constructor(
+ 		@IProductService productService: IProductService,
+-		@IEnvironmentService environmentService: IEnvironmentService,
+-		@IFileService fileService: IFileService,
+-		@ITelemetryService private readonly telemetryService: ITelemetryService,
+-		@IStorageService storageService: IStorageService,
+ 		@IRemoteAgentService remoteAgentService: IRemoteAgentService,
+ 		@ISharedProcessService sharedProcessService: ISharedProcessService,
+-		@IConfigurationService private readonly configurationService: IConfigurationService,
+-		@IRequestService private readonly requestService: IRequestService,
+-		@IExtensionGalleryAccountService private readonly galleryAccountService: IExtensionGalleryAccountService,
+ 		@ILogService private readonly logService: ILogService,
+-		@IDialogService private readonly dialogService: IDialogService,
+-		@IHostService private readonly hostService: IHostService,
+ 	) {
+ 		super(productService);
+-		this.commonHeadersPromise = resolveMarketplaceHeaders(
+-			productService.version,
+-			productService,
+-			environmentService,
+-			configurationService,
+-			fileService,
+-			storageService,
+-			telemetryService);
+ 
+ 		const channels = [{ name: 'shared process', channel: sharedProcessService.getChannel('extensionGalleryManifest') }];
+ 		const remoteConnection = remoteAgentService.getConnection();
+@@ -143,93 +81,8 @@ export class WorkbenchExtensionGalleryManifestService extends ExtensionGalleryMa
+ 			return;
+ 		}
+ 
+-		const configuredServiceUrl = this.configurationService.getValue<string>(ExtensionGalleryServiceUrlConfigKey);
+-		if (configuredServiceUrl) {
+-			this.logService.trace('[Marketplace] Private marketplace configured, checking access and fetching manifest', configuredServiceUrl);
+-			this._register(this.galleryAccountService.onDidChangeAccount(() => this.handleMarketplaceAccountAccess(configuredServiceUrl)));
+-			await this.handleMarketplaceAccountAccess(configuredServiceUrl);
+-		} else {
+-			const defaultExtensionGalleryManifest = await super.getExtensionGalleryManifest();
+-			this.update(defaultExtensionGalleryManifest);
+-		}
+-
+-		this._register(this.configurationService.onDidChangeConfiguration(e => {
+-			if (e.affectsConfiguration(ExtensionGalleryServiceUrlConfigKey)) {
+-				this.requestRestart(localize('extensionGalleryManifestService.accountChange', "{0} is now configured to a different Marketplace. Please restart to apply the changes.", this.productService.nameLong));
+-			} else if (e.affectsConfiguration(ExtensionGalleryAuthProviderConfigKey)) {
+-				this.requestRestart(localize('extensionGalleryManifestService.configurationChange', "The Extensions Marketplace configuration has changed. Please restart to apply the changes."));
+-			}
+-		}));
+-	}
+-
+-	private readonly resolutionTokenSource = this._register(new MutableDisposable<CancellationTokenSource>());
+-	private beginResolution(): CancellationToken {
+-		this.resolutionTokenSource.value?.cancel();
+-		const source = new CancellationTokenSource();
+-		this.resolutionTokenSource.value = source;
+-		return source.token;
+-	}
+-
+-	private async handleMarketplaceAccountAccess(configuredServiceUrl: string): Promise<void> {
+-		const token = this.beginResolution();
+-		try {
+-			const account = await this.galleryAccountService.getAccount(configuredServiceUrl);
+-			if (token.isCancellationRequested) {
+-				return;
+-			}
+-			const accountStatus = this.galleryAccountService.accountStatus;
+-			if (accountStatus === ExtensionGalleryAccountStatus.Unknown
+-				&& this.currentStatus === ExtensionGalleryManifestStatus.Available) {
+-				return;
+-			}
+-
+-			switch (accountStatus) {
+-				case ExtensionGalleryAccountStatus.Unknown:
+-					this.logService.debug('[Marketplace] User signed in but account status is unknown');
+-					this.update(null, ExtensionGalleryManifestStatus.RequiresSignIn);
+-					return;
+-				case ExtensionGalleryAccountStatus.Ineligible:
+-					this.logService.debug('[Marketplace] User signed in but lacks access to private marketplace');
+-					this.update(null, ExtensionGalleryManifestStatus.AccessDenied);
+-					return;
+-				case ExtensionGalleryAccountStatus.SignedOut:
+-					this.logService.debug('[Marketplace] User signed out');
+-					this.update(null, ExtensionGalleryManifestStatus.RequiresSignIn);
+-					return;
+-				case ExtensionGalleryAccountStatus.Eligible:
+-					try {
+-						const manifest = await this.getExtensionGalleryManifestFromServiceUrl(configuredServiceUrl, account?.accessToken, token);
+-						if (token.isCancellationRequested) {
+-							return;
+-						}
+-						this.update(manifest, undefined, account?.accessToken, configuredServiceUrl);
+-						this.telemetryService.publicLog2<
+-							{},
+-							{
+-								owner: 'sandy081';
+-								comment: 'Reports when a user successfully accesses a custom marketplace';
+-							}>('galleryservice:custom:marketplace');
+-					} catch (error) {
+-						if (token.isCancellationRequested) {
+-							return;
+-						}
+-						if (error instanceof MarketplaceAuthRequiredError) {
+-							this.logService.debug('[Marketplace] Marketplace still requires authentication for the resolved account');
+-							this.update(null, ExtensionGalleryManifestStatus.RequiresSignIn);
+-							return;
+-						}
+-						this.logService.error('[Marketplace] Error fetching manifest from custom marketplace', error);
+-						this.update(null, ExtensionGalleryManifestStatus.AccessDenied);
+-					}
+-					return;
+-			}
+-		} catch (error) {
+-			if (token.isCancellationRequested) {
+-				return;
+-			}
+-			this.logService.error('[Marketplace] Error handling marketplace account access', error);
+-			this.update(null, ExtensionGalleryManifestStatus.RequiresSignIn);
+-		}
++		const defaultExtensionGalleryManifest = await super.getExtensionGalleryManifest();
++		this.update(defaultExtensionGalleryManifest);
+ 	}
+ 
+ 	private update(manifest: IExtensionGalleryManifest | null, status?: ExtensionGalleryManifestStatus, accessToken?: string, serviceIndexUrl?: string): void {
+@@ -248,62 +101,6 @@ export class WorkbenchExtensionGalleryManifestService extends ExtensionGalleryMa
+ 			this._onDidChangeExtensionGalleryManifestStatus.fire(status);
+ 		}
+ 	}
+-
+-	private async requestRestart(message: string): Promise<void> {
+-		const confirmation = await this.dialogService.confirm({
+-			message,
+-			primaryButton: localize({ key: 'restart', comment: ['&& denotes a mnemonic'] }, "&&Restart")
+-		});
+-		if (confirmation.confirmed) {
+-			return this.hostService.restart();
+-		}
+-	}
+-
+-	private async getExtensionGalleryManifestFromServiceUrl(url: string, accessToken: string | undefined, token: CancellationToken): Promise<IExtensionGalleryManifest> {
+-		const commonHeaders = await this.commonHeadersPromise;
+-		const headers: IHeaders = {
+-			...commonHeaders,
+-			...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+-			'Content-Type': 'application/json',
+-			'Accept-Encoding': 'gzip',
+-		};
+-
+-		try {
+-			const context = await this.requestService.request({
+-				type: 'GET',
+-				url,
+-				headers,
+-				callSite: 'extensionGalleryManifestService.fetchManifest'
+-			}, token);
+-
+-			// A 401 requests authentication; a 403 denies access even if a bearer was sent.
+-			const statusCode = context.res.statusCode;
+-			if (statusCode === 401) {
+-				throw new MarketplaceAuthRequiredError();
+-			}
+-
+-			const extensionGalleryManifest = await asJson<unknown>(context);
+-
+-			if (!extensionGalleryManifest) {
+-				throw new Error('Unable to retrieve extension gallery manifest.');
+-			}
+-
+-			if (!isExtensionGalleryManifestResponse(extensionGalleryManifest)) {
+-				throw new Error('Service index response is not a valid extension gallery manifest.');
+-			}
+-
+-			return {
+-				...extensionGalleryManifest,
+-				version: extensionGalleryManifest.version ?? '',
+-			};
+-		} catch (error) {
+-			if (error instanceof MarketplaceAuthRequiredError) {
+-				throw error;
+-			}
+-			this.logService.error('[Marketplace] Error retrieving extension gallery manifest', error);
+-			throw error;
+-		}
+-	}
+ }
+ 
+ registerSingleton(IExtensionGalleryManifestService, WorkbenchExtensionGalleryManifestService, InstantiationType.Eager);
+diff --git a/src/vs/workbench/services/extensionRecommendations/common/nullExtensionRecommendations.ts b/src/vs/workbench/services/extensionRecommendations/common/nullExtensionRecommendations.ts
+new file mode 100644
+index 00000000000..4d02aca2061
+--- /dev/null
++++ b/src/vs/workbench/services/extensionRecommendations/common/nullExtensionRecommendations.ts
+@@ -0,0 +1,98 @@
++/*---------------------------------------------------------------------------------------------
++ *  Copyright (c) Microsoft Corporation. All rights reserved.
++ *  Licensed under the MIT License. See License.txt in the project root for license information.
++ *--------------------------------------------------------------------------------------------*/
++
++import { IStringDictionary } from '../../../../base/common/collections.js';
++import { Event } from '../../../../base/common/event.js';
++import { URI } from '../../../../base/common/uri.js';
++import { IExtensionRecommendationNotificationService, RecommendationsNotificationResult } from '../../../../platform/extensionRecommendations/common/extensionRecommendations.js';
++import { IExtensionIgnoredRecommendationsService, IExtensionRecommendationReason, IExtensionRecommendationsService, IgnoredRecommendationChangeNotification } from './extensionRecommendations.js';
++
++/**
++ * Shuko (C-5-extension-gallery): extension recommendations (workspace, file, executable, keymap,
++ * language and remote based), their notifications and the ignored recommendations are removed.
++ * The services stay registered because the remaining extension views inject them; there are
++ * never any recommendations, nothing is ignored and nothing is prompted.
++ */
++
++export class NullExtensionRecommendationsService implements IExtensionRecommendationsService {
++
++	declare readonly _serviceBrand: undefined;
++
++	readonly onDidChangeRecommendations = Event.None;
++
++	getAllRecommendationsWithReason(): IStringDictionary<IExtensionRecommendationReason> {
++		return {};
++	}
++
++	async getImportantRecommendations(): Promise<string[]> {
++		return [];
++	}
++
++	async getOtherRecommendations(): Promise<string[]> {
++		return [];
++	}
++
++	getFileBasedRecommendations(): string[] {
++		return [];
++	}
++
++	async getExeBasedRecommendations(exe?: string): Promise<{ important: string[]; others: string[] }> {
++		return { important: [], others: [] };
++	}
++
++	async getConfigBasedRecommendations(): Promise<{ important: string[]; others: string[] }> {
++		return { important: [], others: [] };
++	}
++
++	async getWorkspaceRecommendations(): Promise<Array<string | URI>> {
++		return [];
++	}
++
++	getKeymapRecommendations(): string[] {
++		return [];
++	}
++
++	getLanguageRecommendations(): string[] {
++		return [];
++	}
++
++	getRemoteRecommendations(): string[] {
++		return [];
++	}
++}
++
++export class NullExtensionIgnoredRecommendationsService implements IExtensionIgnoredRecommendationsService {
++
++	declare readonly _serviceBrand: undefined;
++
++	readonly onDidChangeIgnoredRecommendations = Event.None;
++	readonly ignoredRecommendations: string[] = [];
++
++	readonly onDidChangeGlobalIgnoredRecommendation: Event<IgnoredRecommendationChangeNotification> = Event.None;
++	readonly globalIgnoredRecommendations: string[] = [];
++
++	toggleGlobalIgnoredRecommendation(extensionId: string, ignore: boolean): void {
++		// there are no recommendations to ignore
++	}
++}
++
++export class NullExtensionRecommendationNotificationService implements IExtensionRecommendationNotificationService {
++
++	declare readonly _serviceBrand: undefined;
++
++	readonly ignoredRecommendations: string[] = [];
++
++	hasToIgnoreRecommendationNotifications(): boolean {
++		return true;
++	}
++
++	async promptImportantExtensionsInstallNotification(): Promise<RecommendationsNotificationResult> {
++		return RecommendationsNotificationResult.Ignored;
++	}
++
++	async promptWorkspaceRecommendations(): Promise<void> {
++		// nothing is prompted
++	}
++}
+-- 
+2.54.0.windows.1
+

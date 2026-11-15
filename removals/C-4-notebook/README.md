@@ -1,95 +1,180 @@
 # C-4-notebook ノートブック・対話ウィンドウ・REPL
 
-裁定（2026-11-12）: 削る候補に Jupyter ノートブック。裁定（同日）: 拡張 API の入口（`vscode.notebooks` など）は何もしない実装にして残し、中身のコードは消す。
+裁定（2026-11-12）: 削る候補に Jupyter ノートブック。裁定（同日）: 拡張 API の入口（`vscode.notebooks` など）は何もしない実装にして残し、中身のコードは消す。全文検索は裁定で残す。
 
-> 状態: 下準備（2026-11-14）。`unit.json` の ops だけを作った。`edits.patch` は型検査を走らせられるようになってから作り、そのときに `unit.json` に `"patch": "edits.patch"` を足す。
+> 状態: edits.patch あり、関門の前（2026-11-15）。`enabled` は `false` のまま。ビルド・起動の確かめ・関門は、片づけの許可の後。
 
 ## 消すもの
 
-- `src/vs/workbench/contrib/notebook/browser`: ノートブックのエディタ（セルの一覧・セルのエディタ・出力の Webview の描画・差分・カーネルの選択・変数のビュー・ノートブックのアウトライン・検索の置換の UI）、拡張の宣言 `notebooks`・`notebookRenderer` の受け手、`notebook.*` の設定とコマンド。`contrib/notebook/test` も消す。
+- `src/vs/workbench/contrib/notebook/browser`: ノートブックのエディタ（セルの一覧・セルのエディタ・出力の Webview の描画・差分・カーネルの選択・変数のビュー・ノートブックのアウトライン・検索の置換の UI）、拡張の宣言 `notebooks`・`notebookRenderer`・`notebookPreload` の受け手（`notebookExtensionPoint.ts`）、`notebook.*` の設定とコマンド。`contrib/notebook/test` も消す。
 - `src/vs/workbench/contrib/interactive`: 対話ウィンドウ（Interactive Window）。
 - `src/vs/workbench/contrib/replNotebook`: ノートブックの形の REPL。
-- `src/vs/workbench/contrib/outline`: B-4 が「ノートブックのアウトラインが import しているので C-4 まで残す」と残した `outline.ts`（ビューの ID の定数だけ）。ノートブックのアウトラインと一緒に消す（B-4 が有効なら残りはこのファイルだけ。`after` に B-4 を挙げた）。
-- `src/vs/workbench/contrib/search/browser/notebookSearch`: 検索のうち、開いているノートブックのエディタの中を探す部品（`NotebookEditorWidget` と検索の装飾を使う）。
-- 拡張 API の main thread 側: `mainThreadNotebook.ts`・`mainThreadNotebookDocuments.ts`・`mainThreadNotebookDocumentsAndEditors.ts`・`mainThreadNotebookEditors.ts`・`mainThreadNotebookKernels.ts`・`mainThreadNotebookRenderers.ts`・`mainThreadNotebookSaveParticipant.ts`・`mainThreadInteractive.ts`。拡張ホスト側: `extHostNotebook*.ts`（8つ）・`extHostInteractive.ts`。対応するテスト7つ。
-- import の行（`removeLines`）: `workbench.common.main.ts` 3行、`api/browser/extensionHost.contribution.ts` の main thread の一覧 6行。`sessions.common.main.ts` の3行は直さない（C-1 が `src/vs/sessions` を消す。下の「前提の単位」）。
+- `src/vs/workbench/contrib/outline`: B-4 が「ノートブックのアウトラインが import しているので C-4 まで残す」と残した `outline.ts`（ビューの ID の定数だけ）。
+- `src/vs/workbench/contrib/search/browser/notebookSearch`: 検索のうち、ノートブックのセルと出力の中を探す部品（`NotebookCompatibleFileMatch`・`CellMatch`・`MatchInNotebook`・`NotebookSearchService`）。
+- 検索の common のうち、ノートブックの検索だけが使っていたもの（2026-11-15 に足した）: `contrib/search/common/notebookSearch.ts`（`INotebookSearchService` の ID）、`contrib/search/common/cellSearchModel.ts`。
+- 拡張 API の main thread 側: `mainThreadNotebook.ts`・`mainThreadNotebookDocuments.ts`・`mainThreadNotebookDocumentsAndEditors.ts`・`mainThreadNotebookEditors.ts`・`mainThreadNotebookKernels.ts`・`mainThreadNotebookRenderers.ts`・`mainThreadNotebookSaveParticipant.ts`・`mainThreadInteractive.ts`、`mainThreadNotebookDto.ts`（2026-11-15 に足した。下の「edits.patch で直した点」）。拡張ホスト側: `extHostNotebook*.ts`（8つ）・`extHostInteractive.ts`。
+- テスト: 拡張 API のノートブックのテスト7つ、`contrib/search/test/browser/searchNotebookHelpers.test.ts`、`contrib/bulkEdit/test/browser/bulkCellEdits.test.ts`（2026-11-15 に足した。ノートブックのセルの編集だけを試すテスト）。
+- import の行と一覧の要素（`removeLines`、22行）
+  - `workbench.common.main.ts` 3行
+  - `api/browser/extensionHost.contribution.ts` の main thread の一覧 6行
+  - `api/common/extHost.protocol.ts` の `MainContext` の ID 6行と `ExtHostContext` の ID 7行（2026-11-15 に足した。2026-11-14 の判断「消した API の Shape と ID を消す」。C-2 と同じく一覧の1要素なのでパッチに入れない）
+  - `sessions.common.main.ts` の3行は直さない（C-1 が `src/vs/sessions` を消す。下の「前提の単位」）
+- 設定: `search.experimental.closedNotebookRichContentResults`（読み手は消したノートブックの検索だけ。2026-11-15 に足した）。
 
 ## 前提の単位
 
 - `after`: `A-4-notebook-extensions`、`B-4-outline-view`、`C-1-ai`、`C-2-debug`。
-- `C-1-ai`: `src/vs/sessions` を消す（sessions の入口の行をこの単位で直さない）。チャット・インラインチャットのノートブックの部品（約40ファイル）も消える。
-- `C-2-debug`: `contrib/debug/browser/debug.contribution.ts`（ノートブックの変数のコマンドを import）を消す。C-2 は `notebook/browser/notebook.contribution.ts` の4行を `removeLines` で消すので、C-4（`notebook/browser` を消す）より先に当たる必要もある（order 320 < 340）。
+- `C-1-ai`: `src/vs/sessions` を消す（sessions の入口の行をこの単位で直さない）。チャット・インラインチャットのノートブックの部品（約40ファイル）も消える。C-1 の edits.patch は、この単位も直す `extHost.api.impl.ts`・`extHost.protocol.ts`・`mainThreadEditorTabs.ts`・`searchView.ts`・`searchResult.ts`・`searchCompare.ts`・`searchActionsRemoveReplace.ts`・`search.contribution.ts` を先に直す。この単位の edits.patch は C-1 の後の木の上で作った。
+- `C-2-debug`: `contrib/debug/browser/debug.contribution.ts`（ノートブックの変数のコマンドを import）を消す。C-2 は `notebook/browser/notebook.contribution.ts` の行を `removeLines` で消すので、C-4（`notebook/browser` を消す）より先に当たる必要もある（order 320 < 340）。C-2 の edits.patch も `extHost.api.impl.ts`・`extHost.protocol.ts` を直す。
 - `B-4-outline-view`: B-4 が残した `contrib/outline/browser/outline.ts` をこの単位で消す。
+- `C-3-remote` は前提にしない。C-3 の edits.patch が触る `viewsExtensionPoint.ts` に、この単位は触れない（C-3 の有無で当て方が変わらない。下の「確かめたこと」）。
 
 ## 残すもの
 
-- `src/vs/workbench/contrib/notebook/common`: ノートブックの型とモデル。拡張 API の中心（`extHost.protocol.ts`・`extHostTypeConverters.ts`・`extHostTypes/workspaceEdit.ts`・`extHostApiCommands.ts`）、一括編集、検索の置換、コメント（`contrib/comments`。Claude Code の受け手）、言語の判定、エディタの入力の復元が import している。`browser` への import は無い（`grep` で確かめた）。動いて何かをする部品の登録は `browser` 側にあるので、残しても型とモデルのコードとして読み込まれるだけ。
+- `src/vs/workbench/contrib/notebook/common`: ノートブックの型とモデル。拡張 API の中心（`extHost.protocol.ts`・`extHostTypeConverters.ts`・`extHostTypes/workspaceEdit.ts`・`extHostApiCommands.ts`）、一括編集（`bulkCellEdits.ts` の `ResourceNotebookCellEdit`）、コメント（`contrib/comments`。Claude Code の受け手）、言語の判定、エディタのタブ（`mainThreadEditorTabs.ts` の `NotebookEditorInput` の判定）が import している。`browser` への import は無い（型検査で確かめた）。中のサービスの実装（`notebookEditorModelResolverServiceImpl.ts` など）は、登録が `browser` 側にあるので作られない。
 - `src/vs/workbench/services/notebook`: `INotebookDocumentService`（セルの URI の解釈）。`workbench/browser/labels.ts` が注入している。
-- `src/vs/workbench/api/browser/mainThreadNotebookDto.ts`: common の型だけを使う変換。チャットの main thread（C-1）も使うので、単位を独立に保つために残した。C-1 を `after` に挙げたので、型検査で使い手が無いと分かれば `delete` に足してよい。
 - `src/vs/workbench/api/common/extHostTypes/notebooks.ts`: `vscode.NotebookCellData` などの公開のクラス。
-- `src/vs/workbench/contrib/search/common/notebookSearch.ts`・`searchNotebookHelpers.ts`: 検索のサービスが使う型と ID。
-- docs/03 の表は `contrib/notebook` を丸ごと消す側に挙げているが、common を消すと拡張 API の中心を書き換えることになるので、`browser` だけを消した（docs との食い違い。下の別案）。
+- `src/vs/workbench/contrib/search/common/searchNotebookHelpers.ts`: 残す `notebook/common/notebookService.ts` が型（`INotebookFileMatchNoModel`）を import している。
+- `contrib/notebook/common/services/notebookWebWorkerMain.ts`: `build/next/index.ts` の90行がワーカーの入口として名前を挙げている。
+- `extHost.protocol.ts` のノートブックの DTO（`NotebookCellDataDto`・`NotebookDataDto`・`INotebookKernelDto2`・`VariablesResult`・`ICellExecute*Dto`・`INotebookDocumentsAndEditorsDelta` など）: Shape を消すと使い手が無くなるものもあるが、`extHostTypeConverters.ts`（`NotebookDto`）と `extHostApiCommands.ts` が一部を使う。どれが使われなくなるかの切り分けは型検査に掛からない（export の型は未使用でも誤りにならない）ので、消さずに残した（判断を仰ぐ点。handoff-notes の「判断を仰ぐ点」）。
+- docs/03 の表は `contrib/notebook` と `services/notebook` を丸ごと消す側に挙げているが、common を消すと拡張 API の中心を書き換えることになるので、`browser` だけを消した（docs/03 の4節の末尾に書いてある）。
 
-## 拡張 API の空の実装（edits.patch の見込み）
+## edits.patch で直した点（2026-11-15）
 
-新しいファイル `src/vs/workbench/api/common/extHostRemovedApi.notebook.ts`（docs/03 の5.3）に置き、`extHost.api.impl.ts` はノートブックの行だけを直す。
+edits.patch は25ファイル（新規1）、211行の追加、907行の削除（2026-11-15 の2回目の後）。件名は `unit C-4-notebook: edits`、作者は `shuko-apply <apply@shuko.invalid>`。
 
-- `vscode.notebooks`: `createNotebookController`（ダミーのコントローラーを返す。`dispose`・`onDidChangeSelectedNotebooks`＝`Event.None`、`createNotebookCellExecution` は誤りを投げる）、`registerNotebookCellStatusBarItemProvider`・`registerKernelSourceActionProvider`（何もしない `Disposable`）、`createRendererMessaging`（`onDidReceiveMessage`＝`Event.None`、`postMessage` は `false`）、`createNotebookControllerDetectionTask`（`dispose` だけ）。
-- `vscode.workspace`: `notebookDocuments`＝`[]`、`onDidOpenNotebookDocument`・`onDidCloseNotebookDocument`・`onDidChangeNotebookDocument`・`onDidSaveNotebookDocument`・`onWillSaveNotebookDocument`＝`Event.None`、`registerNotebookSerializer`＝何もしない `Disposable`、`openNotebookDocument` は「ノートブックは使えない」で reject。
-- `vscode.window`: `activeNotebookEditor`＝`undefined`、`visibleNotebookEditors`＝`[]`、`onDidChangeActiveNotebookEditor`・`onDidChangeVisibleNotebookEditors`・`onDidChangeNotebookEditorSelection`・`onDidChangeNotebookEditorVisibleRanges`＝`Event.None`、`showNotebookDocument` は reject。
-- 言語の `match`（`extHost.api.impl.ts` の678行。セルの文書からノートブックを探す）は `undefined` にする。
-- 同梱の拡張のうち、言語クライアントを使うもの（basedpyright・PowerShell）と TypeScript の拡張は、起動時にノートブックのイベントと一覧を購読する見込み（推定）。誤りを投げずに空を返すことが要る。
+### 拡張 API
 
-## 型検査で直す点（edits.patch の見込み）
+| ファイル | 直し方 |
+|---|---|
+| `api/common/extHostRemovedApi.notebook.ts`（新規） | `createRemovedNotebookApi(extension)` が `{ notebooks, window, workspace }` を返す。何もしない実装（下の「拡張 API の振る舞い」） |
+| `api/common/extHost.api.impl.ts` | import を `./extHostRemovedApi.notebook.js` の1行に替えた（`extHostNotebook*`・`extHostInteractive` の7行を消した）。拡張ホスト側のノートブックの部品を作る7行を消した。`window` の名前空間のノートブックの7つは `...removedNotebookApi.window`、`workspace` の8つは `...removedNotebookApi.workspace`、`notebooks` は `removedNotebookApi.notebooks` にした。`languages.match` はセルの文書からノートブックを探すのをやめ、`score(..., undefined, undefined)` にした（`targetsNotebooks` の import を外した） |
+| `api/common/extHost.protocol.ts` | `MainThreadNotebook{,Editors,Documents,Kernels,Renderers}Shape`・`MainThreadInteractiveShape`・`ExtHostNotebook{,DocumentSaveParticipant,Renderers,DocumentsAndEditors,Documents,Editors,Kernels}Shape`・`ExtHostInteractiveShape` を消した。使われなくなった import（`NotebookPriorityInfo`・`IRawClosedNotebookFileMatch`）を外した。ID の13行は `removeLines` |
+| `api/browser/mainThreadEditorTabs.ts` | 対話ウィンドウのタブ（`InteractiveEditorInput`）の分岐と import を消した。`NotebookEditorInput`（common）の分岐は残る |
 
-1.146.0 の作業ツリーで `grep` した結果。行は 1.146.0 のもの。AI（`contrib/chat`・`contrib/inlineChat`）は C-1 で消える前提で除いた（C-1 より前に当てるなら、そちらにも同じ形の直しが要る）。
+### 一括編集
 
-| ファイル | 行 | 中身 | 直し方の見込み |
-|---|---|---|---|
-| `src/vs/workbench/api/common/extHost.api.impl.ts` | 72・83〜88（import）、225〜230・259（作成）、678、1041〜1059、1346〜1376、1674〜1688 | 拡張ホスト側のノートブックの部品を作り、名前空間に出す | 上の「空の実装」に置き換える |
-| `src/vs/workbench/api/browser/mainThreadEditorTabs.ts` | 22（使う所は `InteractiveEditorInput` の判定） | 対話ウィンドウのタブの種類を見分ける | 対話ウィンドウの分岐を消す。`NotebookEditorInput`（common）の分岐は残る |
-| `src/vs/workbench/contrib/bulkEdit/browser/bulkCellEdits.ts` | 15〜17・56 | ノートブックのエディタ（browser）と `INotebookEditorModelResolverService` を使ってセルを編集する | `ResourceNotebookCellEdit`（データのクラス。mainThreadBulkEdits・conflicts が使う）は残し、`BulkCellEdits` の適用は「ノートブックは使えない」で止める形にする。注入をやめる |
-| `src/vs/workbench/contrib/search/browser/searchTreeModel/folderMatch.ts` | 21〜25、333〜345、368〜375、401〜412、490、554 | 一致したファイルを `NotebookCompatibleFileMatch`（消すフォルダのクラス）で作り、開いたノートブックのエディタと結びつける | `FileMatchImpl`（`fileMatch.ts`）で作る。ノートブックの結びつけと分岐を消す |
-| `src/vs/workbench/contrib/search/browser/searchTreeModel/fileMatch.ts` | 19・63 | ノートブックの検索の装飾 `FindMatchDecorationModel` を持つ | フィールドと import を消す |
-| `src/vs/workbench/contrib/search/browser/searchTreeModel/searchResult.ts` | 13・14・38・51・52・158〜197 | `INotebookEditorService` を注入し、ノートブックのエディタの出入りを見る | 注入と監視を消す（**注入は型検査に掛からない**。残すと起動時に検索のビューが作れない） |
-| `src/vs/workbench/contrib/search/browser/searchTreeModel/searchTreeCommon.ts` | 14・206〜208 | インターフェイスの `bind/unbindNotebookEditorWidget` | メソッドを消す |
-| `src/vs/workbench/contrib/search/browser/searchTreeModel/searchModel.ts` | 18・60 | `INotebookSearchService` を注入し、ノートブックを先に探す | ノートブックの検索をやめ、テキストの検索だけにする（**注入**） |
-| `src/vs/workbench/contrib/search/browser/searchTreeModel/textSearchHeading.ts` | 19・231 | `isNotebookFileMatch` | 分岐を消す |
-| `src/vs/workbench/contrib/search/browser/searchView.ts` | 58・76・84・237・2285 | `NotebookEditor`・`INotebookService`（**注入**）、ノートブックの一致の扱い | 注入と分岐を消す |
-| `src/vs/workbench/contrib/search/browser/searchWidget.ts` | 39・42・47 | ノートブックの検索の絞り込み（`NotebookFindFilters`）とボタン | 絞り込みのボタンと設定を消す |
-| `src/vs/workbench/contrib/search/browser/searchFindInput.ts` | 12・13 | `NotebookFindInputFilterButton` | 同上 |
-| `src/vs/workbench/contrib/search/browser/replaceService.ts` | 30〜33・109 | ノートブックのセルの置換（`INotebookEditorModelResolverService` を**注入**） | セルの置換の分岐と注入を消す |
-| `src/vs/workbench/contrib/search/browser/searchActionsRemoveReplace.ts`・`searchCompare.ts` | 26・6 | `MatchInNotebook`・`isIMatchInNotebook` | 分岐を消す |
-| `src/vs/workbench/contrib/search/browser/search.common.contribution.ts` | 14（呼ぶ所も） | `notebookSearchContributions()` で `INotebookSearchService` を登録 | 呼び出しと import を消す（`searchModel.ts` の注入を消すので登録は要らない） |
-| `src/vs/workbench/contrib/search/browser/AISearch/aiSearchModel.ts` | 17・294・297 | `NotebookEditorWidget` | 2026-11-14 時点の C-1 の `unit.json` は `AISearch` を消さない（C-1 の ops の後の試しでも残った）。上のインターフェイスに合わせて `bind/unbindNotebookEditorWidget` を消す |
-| `src/vs/workbench/contrib/searchEditor/browser/searchEditorSerialization.ts` | 18 | `ICellMatch`・`isNotebookFileMatch` | ノートブックの分岐を消す |
-| `src/vs/workbench/contrib/debug/browser/debug.contribution.ts` | 29 | ノートブックの変数のコマンドの ID | C-2 が消す（`after` に挙げた）。直さない |
-| テスト: `contrib/search/test/browser/searchViewlet.test.ts`（22・26・27）・`searchTestCommon.ts`（18・19）・`searchResult.test.ts`（27・30・31・34・39・40）・`searchModel.test.ts`（28・31・33・35・44）・`searchActions.test.ts`（19・24・25）、`contrib/bulkEdit/test/browser/bulkCellEdits.test.ts` | — | `INotebookEditorService`・`NotebookEditorWidgetService`・`NotebookCompatibleFileMatch` などを使う | テストの注入の行と、ノートブックの一致を作る部分を消す。ノートブック専用のテストは `delete` に足す |
-| C-1 の範囲: `contrib/chat`（chatEditing/notebook など約40ファイル）、`contrib/inlineChat`（inlineChatNotebook.ts など）、`src/vs/sessions` のテスト | — | ノートブックの browser を import | C-1 で消える（`after` に挙げた。C-1 の ops の後の試しで消えたことを確かめた） |
+| ファイル | 直し方 |
+|---|---|
+| `contrib/bulkEdit/browser/bulkCellEdits.ts` | `ResourceNotebookCellEdit`（データのクラス。`bulkEditService.ts`・`mainThreadBulkEdits` が使う）は残した。`BulkCellEdits` は注入（`IEditorService`・`INotebookEditorModelResolverService`）をやめ、`apply()` は「Notebooks are not available in this build」で reject する。作る側（`bulkEditService.ts` の `createInstance(BulkCellEdits, ...)`）の引数は変えていない |
 
-- **型検査に掛からない点**（起動時に注入で失敗する）: 上の表で「注入」と書いた5か所（`searchResult.ts`・`searchModel.ts`・`searchView.ts`・`replaceService.ts`・`bulkCellEdits.ts`）。`INotebookService`・`INotebookEditorService`・`INotebookEditorModelResolverService`・`INotebookSearchService` の登録は消えるので、残る部品が注入していないことを `grep '@INotebook'` で確かめる。
-- lint の一覧（`eslint.config.js` の422・434〜438・810〜838・2632〜2652行、`.eslint-allowed-bracket-notation-files` の405〜409行）に消したファイルの名前が残る（関門の外）。
-- `build/next/index.ts` の90行がワーカーの入口 `contrib/notebook/common/services/notebookWebWorkerMain` を挙げる。common を残すのでそのまま。
+### 全文検索（裁定で残す）
+
+ノートブックへの参照を外すだけにした。テキスト検索・ファイル検索・置換・検索エディタの流れは変えていない。
+
+| ファイル | 直し方 |
+|---|---|
+| `searchTreeModel/folderMatch.ts` | 一致したファイルを `NotebookCompatibleFileMatch` でなく `FileMatchImpl` で作る（2か所）。ノートブックのエディタとの結びつけ（`bind/unbindNotebookEditorWidget`）とセルの一致を足す分岐を消した |
+| `searchTreeModel/fileMatch.ts` | ノートブックの検索の装飾 `FindMatchDecorationModel` のフィールドと import、それを消す1行を外した。開いていないファイルの一致で前後の行（context）を足す1行を `createMatches` に足した（消した `NotebookCompatibleFileMatch` がしていたこと。検索エディタの前後の行が消えないように） |
+| `searchTreeModel/searchResult.ts` | `INotebookEditorService` の注入、ノートブックのエディタの出入りの監視、使われなくなった `MutableDisposable` の2つのフィールドと import を消した（**注入**） |
+| `searchTreeModel/searchModel.ts` | `INotebookSearchService` の注入をやめ、`textSearchSplitSyncAsync` をノートブックの除外の引数なしで呼ぶ。結果の合成からノートブックの分を外した（**注入**） |
+| `searchTreeModel/searchTreeCommon.ts` | インターフェイスの `bind/unbindNotebookEditorWidget`（3行）と import を消した |
+| `searchTreeModel/textSearchHeading.ts` | `isNotebookFileMatch` の分岐と import を消した |
+| `searchView.ts` | `INotebookService` の注入（**注入**）、`shouldOpenInNotebookEditor`、`open()` のノートブックのエディタの分岐、使われなくなった `network` の import を消した |
+| `searchWidget.ts` | ノートブックの検索の絞り込み（`NotebookFindFilters`）を、既定値（すべて真）のまま変わらない定数の値（`onDidChange` は `Event.None`）に替えた。`IEditorService` の注入と、ノートブックのエディタの出入りでボタンを出し入れする監視を消した。`getNotebookFilters()` は残した（検索のビューと検索エディタが読む。下の判断を仰ぐ点） |
+| `searchFindInput.ts` | 絞り込みのボタン（`NotebookFindInputFilterButton`）を消した。入力欄の右の余白は基底の `FindInput` が計算する |
+| `replaceService.ts` | セルの置換の分岐（`isIMatchInNotebook`）とセルを保存する分岐、`INotebookEditorModelResolverService` の注入を消した（**注入**） |
+| `searchActionsRemoveReplace.ts`・`searchCompare.ts` | `MatchInNotebook`・`isIMatchInNotebook` の分岐と import、`compareNotebookPos` を消した |
+| `search.common.contribution.ts` | `notebookSearchContributions()` の呼び出しと import を消した（`INotebookSearchService` の登録） |
+| `search.contribution.ts` | 設定 `search.experimental.closedNotebookRichContentResults` の登録を消した |
+| `searchEditor/browser/searchEditorSerialization.ts` | セルの一致を書き出す部分と import を消した |
+| テスト5つ（`searchActions.test.ts`・`searchModel.test.ts`・`searchResult.test.ts`・`searchTestCommon.ts`・`searchViewlet.test.ts`） | `INotebookEditorService`・`INotebookSearchService`・`INotebookService` の差し替えの行を消した。ファイルの一致を `FileMatchImpl` で作る。ノートブック専用のテスト2つ（「Search can return notebook results」「Test that notebook matches get added correctly」）を消した |
+
+### unit.json
+
+- `"patch": "edits.patch"` を足した。
+- `delete` に4つ足した: `contrib/search/common/notebookSearch.ts`・`contrib/search/common/cellSearchModel.ts`・`contrib/bulkEdit/test/browser/bulkCellEdits.test.ts`・`api/browser/mainThreadNotebookDto.ts`。
+- `removeLines` に `extHost.protocol.ts` の ID の13行を足した。
+- `kept` から2つ外して `delete` に移し、1つの理由を直した（`searchNotebookHelpers.ts`。前の理由の「services/search が使う」は、1.146.0 で `grep` すると当たらなかった）。
+  - `mainThreadNotebookDto.ts`: 使い手のチャットの main thread は C-1 で消え、この単位で消す main thread のノートブックの部品のほかに使い手が無い。
+  - `notebookSearch.ts`: 注入していた `searchModel.ts` を直したので使い手が無い。
+- `checks.absentSettings` に `search.experimental.closedNotebookRichContentResults` を足した。
+- `checks.absentStrings` に4つ足した: `INotebookSearchService`（`src/vs`）、`notebook/browser/`（`contrib/search` と `contrib/searchEditor`）、`MainThreadNotebookShape`・`ExtHostNotebookShape`（`extHost.protocol.ts`）。
+
+## 拡張 API の振る舞い
+
+| API | 振る舞い |
+|---|---|
+| `workspace.notebookDocuments` | `[]` |
+| `workspace.onDidOpenNotebookDocument`・`onDidCloseNotebookDocument`・`onDidChangeNotebookDocument`・`onDidSaveNotebookDocument`・`onWillSaveNotebookDocument` | `Event.None` |
+| `workspace.registerNotebookSerializer` | 何もしない Disposable |
+| `workspace.openNotebookDocument` | 「Notebooks are not available in this build」で reject |
+| `window.activeNotebookEditor` | `undefined` |
+| `window.visibleNotebookEditors` | `[]` |
+| `window.onDidChangeActiveNotebookEditor`・`onDidChangeVisibleNotebookEditors`・`onDidChangeNotebookEditorSelection`・`onDidChangeNotebookEditorVisibleRanges` | `Event.None` |
+| `window.showNotebookDocument` | reject |
+| `notebooks.createNotebookController` | 何もしないコントローラー。`id`・`notebookType`・`label` は渡した値、`onDidChangeSelectedNotebooks`・`onDidReceiveMessage` は `Event.None`、`executeHandler`・`interruptHandler` は読み書きできる、`updateNotebookAffinity`・`dispose` は何もしない、`createNotebookCellExecution` は誤りを投げる。`rendererScripts` は、本家と同じく提案 notebookMessaging が有効なときだけ渡した値を持つ（無効なら `[]`） |
+| `notebooks.registerNotebookCellStatusBarItemProvider` | 何もしない Disposable |
+| `notebooks.createRendererMessaging` | `onDidReceiveMessage` は `Event.None`、`postMessage` は `false` |
+| `notebooks.createNotebookControllerDetectionTask`・`registerKernelSourceActionProvider` | 提案中（notebookKernelSource）の門を残し、何もしない Disposable |
+| `languages.match` | セルの文書をノートブックに結びつけない（ノートブックの文書が無いので、本家と同じ値） |
+
+提案中の API の門（`checkProposedApiEnabled`）は、本家と同じ条件で7つすべてを残した（2026-11-15 の2回目に、抜けていた1つを足した）。本家の出どころは、消す `extHostNotebookKernels.ts` の5つと、`extHost.api.impl.ts` の `notebooks` の名前空間の2つ。ほかの消す拡張ホストのファイル（`extHostNotebook.ts`・`extHostNotebookDocument(s).ts`・`extHostNotebookDocumentSaveParticipant.ts`・`extHostNotebookEditor(s).ts`・`extHostNotebookRenderers.ts`・`extHostInteractive.ts`）には門が無い（1.146.0 を `Grep` で確かめた）。
+
+| 門（提案の名前） | 本家の場所（1.146.0） | 何もしない実装での条件 |
+|---|---|---|
+| `notebookVariableProvider` | `extHostNotebookKernels.ts` 237行 | コントローラーの `variableProvider` に書き込んだとき |
+| `notebookExecution` | 同 258行 | `createNotebookExecution` を呼んだとき（門の後に誤りを投げる） |
+| `notebookControllerAffinityHidden` | 同 281〜285行 | `updateNotebookAffinity` に `NotebookControllerAffinity2.Hidden`（-1）を渡したときだけ |
+| `notebookMessaging` | 同 291行 | コントローラーの `postMessage` |
+| `notebookMessaging` | 同 295行 | コントローラーの `asWebviewUri` |
+| `notebookKernelSource` | `extHost.api.impl.ts`（`notebooks` の名前空間） | `createNotebookControllerDetectionTask` |
+| `notebookKernelSource` | 同 | `registerKernelSourceActionProvider` |
+
+投げない判定（`isProposedApiEnabled`）は2つ。`notebookMessaging`（`createNotebookController` の `rendererScripts`）は本家と同じに残した。`notebookLiveShare`（`registerNotebookSerializer` の `registration`）は、何もしない実装では引数を使わないので要らない。
+
+- 消したもの: 拡張ホスト側のノートブックの API のコマンド（`vscode.executeDataToNotebook`・`vscode.executeNotebookToData`・カーネルの選択・変数の取得・対話ウィンドウを開く）。呼ぶと「コマンドが無い」になる。受け手の main thread も無い。
+- 公開のクラス（`vscode.NotebookCellData`・`NotebookEdit`・`NotebookRange` など）は残る。
+- ノートブックのセルの編集を含む `workspace.applyEdit` は、`BulkCellEdits` の reject で失敗する（拡張には `false` が返る見込み。推定）。
+
+## 検索への影響
+
+- テキスト検索は ripgrep の検索だけになる。前は、開いているノートブックと、ノートブックの種類が登録された閉じたファイルを先にノートブックの検索で探し、ripgrep から外していた。今は `.ipynb` も ripgrep がテキスト（JSON）として探し、普通のファイルの一致として出る。
+- `.ipynb` の一致を開くと、テキスト（JSON）のエディタで開く（ノートブックのエディタが無い）。置換もテキストとして行う。
+- 検索の入力欄のノートブックの絞り込みのボタンは出ない（前もノートブックを開いたときだけ出た）。クエリの `notebookInfo` は前と同じ既定値（すべて真）で作られ、読み手は無い。
+- 検索エディタ（`.code-search`）の書き出しは、セルの一致が無くなるだけ。前後の行（context）は `fileMatch.ts` の1行で前と同じに出る。
+- ファイル検索（Quick Open）・シンボル検索・AI の検索の跡（C-1 の隠れた見出し）には触れていない。
+
+## Claude Code と台帳の拡張への影響
+
+- Claude Code（2.1.322）の manifest（`C:\b\cache\vsix\anthropic.claude-code-2.1.322@win32-x64\package.json`）に、`notebook` の語（`notebooks`・`notebookRenderer`・`onNotebook`・`enabledApiProposals`）は無い（`Grep` で確かめた）。
+  - 圧縮されたコードの中でノートブックの API を呼んでいても、上の何もしない実装が受け、誤りは投げない（`openNotebookDocument`・`showNotebookDocument`・`createNotebookCellExecution` を除く）。
+  - 受け手（Webview・セカンダリサイドバー・JSON の検査・ワークスペースの信頼・コメント・差分エディタ・拡張のファイルシステム）には触れていない。コメントが使う `notebookRange.ts`（common）は残る。
+- 台帳のほかの7つ（basedpyright・PowerShell・bash-ide・rainbow-csv・dotenv・pdf・日本語の言語パック）の package.json にも、ノートブックの contributes・起動の条件は無い。日本語の言語パックに `vscode.builtin-notebook-renderers` の訳の1項目がある（A-4 で拡張は消えている。読み手が無いだけ）。
+- 残す組み込み拡張のうち、ノートブックの API を読むもの（1.146.0 のソースで確かめた）:
+  - `typescript-language-features`: `workspace.notebookDocuments` をたどる（`bufferSyncSupport.ts`・`typescriptServiceClient.ts`）→ `[]` なので何もしない
+  - `markdown-language-features`: 同じ（`util/file.ts`・`util/document.ts`）。manifest の `notebookRenderer` は受け手が無くなる
+  - `git`: `window.activeNotebookEditor?.notebook.uri`（`commands.ts`）→ `undefined`
+- 言語クライアントを使う拡張（basedpyright・PowerShell）が起動時にノートブックのイベントを購読しても、`Event.None` が受ける（vscode-languageclient のノートブックの同期。推定。関門のスモークで見る）。
+
+## 型検査に掛からない点（起動の確かめで見る）
+
+- 注入: `INotebookService`・`INotebookEditorService`・`INotebookEditorModelResolverService`・`INotebookSearchService` の登録は消える。edits.patch の後、残る部品のうち `@INotebook...` で注入しているのは、`labels.ts` の `INotebookDocumentService`（`services/notebook` が登録する）と、`notebook/common` の中の作られないクラスだけ（`grep '@INotebook'` で確かめた）。`accessor.get(INotebook...)` は無い。
+- 拡張の宣言 `notebooks`・`notebookRenderer`・`notebookPreload` の受け手（`notebookExtensionPoint.ts`）が無くなる。拡張ホストのログに警告が出るかは未確認。
+- lint とビルドの一覧に消したフォルダの名前が残る（関門の外）: `eslint.config.js`・`.eslint-allowed-bracket-notation-files`、`src/tsec.exemptions.json` の `notebook/browser/view/renderers/webviewPreloads.ts` の2行、`build/lib/i18n.resources.json` の `vs/workbench/contrib/interactive`・`vs/workbench/contrib/replNotebook`（訳の書き出し用。手元のパッケージ化では使わない。C-2 の `contrib/debug` と同じ扱い）。
 
 ## 影響しうるもの
 
-- 全文検索（裁定で残す）: docs/03 の表が恐れていたとおり、検索の木のモデルがノートブックの部品と結びついている（上の表）。直したあと、検索・置換・検索エディタが動くことをスモークで確かめる。
-- `.ipynb` を開くと、ノートブックのエディタが無いのでテキスト（JSON）として開く見込み。
-- 拡張の宣言 `notebooks`・`notebookRenderer`（例: `markdown-language-features` が `notebookRenderer` を持つ）は受け手が無くなる。拡張ホストのログに警告が出るかをスモークで見る。
+- 全文検索（裁定で残す）: 上の「検索への影響」。直したあと、検索・置換・検索エディタが動くことをスモークで確かめる。
+- `.ipynb` を開くと、テキスト（JSON）として開く。
+- 拡張の宣言 `notebooks`・`notebookRenderer`（例: `markdown-language-features`・`markdown-math`）は受け手が無くなる。
 - コメント（`contrib/comments`）は `notebookRange.ts`（common）の型だけを使うので影響しない見込み。
 
 ## 壊れたときの症状と戻し方
 
 - 検索のビューが開かない、または検索で誤りが出る: 上の「注入」の直しが漏れている。`enabled: false` に戻す。
-- 拡張の起動時に `vscode.notebooks` などで誤りが出る: 空の実装に足りない項目がある。拡張ホストのログから名前を特定して足す。
+- 拡張の起動時に `vscode.notebooks` などで誤りが出る: 空の実装に足りない項目がある。拡張ホストのログから名前を特定して `extHostRemovedApi.notebook.ts` に足す。
 
 ## 別案（リーダーの判断を仰ぐ）
 
-1. docs/03 の表どおり `contrib/notebook` を丸ごと消す。`common` の型を拡張 API の中心（`extHost.protocol.ts`・`extHostTypeConverters.ts`）から外すことになり、本家の変更と衝突しやすい大きなパッチになる。
-2. 検索のノートブックの部品（`notebookSearch/`）を残し、そこから `notebook/browser` への参照だけを切る。検索の木のモデルへのパッチは小さくなるが、残したフォルダの中の書き換えが大きくなる。今の案（フォルダを消し、`FileMatchImpl` で作る）を推す。
+1. docs/03 の表どおり `contrib/notebook` を丸ごと消す。`common` の型を拡張 API の中心（`extHost.protocol.ts`・`extHostTypeConverters.ts`）から外すことになり、本家の変更と衝突しやすい大きなパッチになる。採らない（依頼どおり）。
+2. 検索のノートブックの部品（`notebookSearch/`）を残し、そこから `notebook/browser` への参照だけを切る。採らない（依頼どおり）。
 
-## 未確認（型検査とビルドで確かめる）
+edits.patch を作るときに出た判断を仰ぐ点は `tasks/2026-11-15-p5-c4-patch/handoff-notes.md` の「判断を仰ぐ点」。
 
-- 型検査が通るか。とくに `extHost.protocol.ts` の `MainThreadNotebook*Shape`・`ExtHostNotebook*Shape` は残るので、`ExtHostContext`・`MainContext` の ID に実装が無い状態になる（RPC は使われないので問題ない見込み）。
+## 未確認（ビルドと起動で確かめる）
+
+- `extHost.protocol.ts` から消した Shape と ID のほかに、RPC でノートブックの actor を呼ぶ残りの部品が無いこと（`ExtHostContext.*Notebook*`・`MainContext.*Notebook*` を `grep` して、使い手が無いことは確かめた）。
 - `notebookCommon.ts` などの common が、消した browser 側の副作用（登録）に頼っていないか。
 - 拡張ホストで `vscode.workspace.notebookDocuments` などを呼ぶ拡張（TypeScript・basedpyright・PowerShell）が誤りを出さないか（スモーク）。
+- 検索のテスト（`contrib/search/test/browser`）が通るか（型検査は通る。単体テストは走らせていない）。

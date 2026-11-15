@@ -1,0 +1,86 @@
+{
+  "label": "c5r2tc-1",
+  "upstream": {
+    "tag": "1.146.0",
+    "commit": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+  },
+  "units": [],
+  "patches": [],
+  "lockfileDiff": "tasks/2026-11-15-p5-c5-patch/trial/take-in/lockfile.diff",
+  "toolchain": null,
+  "durations": {
+    "typecheck": 5.727
+  },
+  "zip": null,
+  "extensionsLockSha256": "6b4c3ceae7d6cb407f62bbcbd57ca50267e998975887884cc325fd26a85cce10",
+  "result": "error",
+  "stoppedAt": "typecheck",
+  "dryRun": false,
+  "startedAt": "2026-11-15T03:57:22.655Z",
+  "finishedAt": "2026-11-15T03:57:28.510Z",
+  "paths": {
+    "buildRoot": "C:\\b",
+    "worktree": "C:\\b\\wt\\p2",
+    "packageDir": "C:\\b\\wt\\VSCode-win32-x64",
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-15-p5-c5-patch\\trial\\take-in\\checks.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\removals",
+    "dist": "C:\\b\\dist",
+    "logs": "C:\\b\\logs\\c5r2tc-1"
+  },
+  "config": {
+    "path": "C:\\Users\\kou_z\\AppData\\Local\\Shuko\\local.json",
+    "exists": false,
+    "buildRootFrom": "default"
+  },
+  "stepsSelected": [
+    "typecheck"
+  ],
+  "envRemovedForChildren": [
+    "ELECTRON_RUN_AS_NODE",
+    "VSCODE_CODE_CACHE_PATH",
+    "VSCODE_CRASH_REPORTER_PROCESS_TYPE",
+    "VSCODE_CWD",
+    "VSCODE_ESM_ENTRYPOINT",
+    "VSCODE_HANDLES_UNCAUGHT_ERRORS",
+    "VSCODE_IPC_HOOK",
+    "VSCODE_NLS_CONFIG",
+    "VSCODE_PID",
+    "VSCODE_PROCESS_TITLE"
+  ],
+  "sourceVersion": {
+    "name": "BUILD_SOURCEVERSION",
+    "value": "b147094a6c93644254cd25515bdc105e2e607b71",
+    "source": "worktree HEAD",
+    "worktree": "C:\\b\\wt\\p2",
+    "readAt": "typecheck",
+    "steps": [
+      "typecheck",
+      "package"
+    ],
+    "error": null,
+    "uncommittedEntries": 3,
+    "checksHeadCommit": null,
+    "matchesChecksHead": null
+  },
+  "branch": null,
+  "steps": [
+    {
+      "name": "typecheck",
+      "status": "error",
+      "startedAt": "2026-11-15T03:57:22.661Z",
+      "env": {
+        "BUILD_SOURCEVERSION": "b147094a6c93644254cd25515bdc105e2e607b71"
+      },
+      "command": "pnpm run typecheck-client",
+      "cwd": "C:\\b\\wt\\p2",
+      "log": "C:\\b\\logs\\c5r2tc-1\\typecheck.log",
+      "seconds": 5.727,
+      "exitCode": 1,
+      "tail": "$ tsc --project ./src/tsconfig.json --noEmit --skipLibCheck\nsrc/vs/workbench/contrib/extensions/browser/extensions.contribution.ts(47,35): error TS6133: 'ResourceContextKey' is declared but its value is never read.\nsrc/vs/workbench/contrib/extensions/browser/extensionsQuickAccess.ts(8,10): error TS6133: 'CancellationToken' is declared but its value is never read.\nsrc/vs/workbench/contrib/extensions/browser/extensionsQuickAccess.ts(10,1): error TS6192: All imports in import declaration are unused.\nsrc/vs/workbench/contrib/extensions/browser/extensionsQuickAccess.ts(11,10): error TS6133: 'INotificationService' is declared but its value is never read.\nsrc/vs/workbench/contrib/extensions/browser/extensionsQuickAccess.ts(12,10): error TS6133: 'ILogService' is declared but its value is never read.\nsrc/vs/workbench/contrib/extensions/browser/extensionsQuickAccess.ts(13,10): error TS6133: 'DisposableStore' is declared but its value is never read.\nsrc/vs/workbench/contrib/extensions/browser/extensionsViewlet.ts(15,32): error TS6133: 'hide' is declared but its value is never read.\nsrc/vs/workbench/contrib/extensions/browser/extensionsViewlet.ts(15,38): error TS6133: 'show' is declared but its value is never read.\nsrc/vs/workbench/contrib/extensions/browser/extensionsViewlet.ts(15,44): error TS6133: 'DragAndDropObserver' is declared but its value is never read.\nsrc/vs/workbench/contrib/extensions/browser/extensionsViewlet.ts(22,144): error TS6133: 'INSTALL_EXTENSION_FROM_VSIX_COMMAND_ID' is declared but its value is never read.\nsrc/vs/workbench/contrib/extensions/browser/extensionsViewlet.ts(53,10): error TS6133: 'SIDE_BAR_DRAG_AND_DROP_BACKGROUND' is declared but its value is never read.\nsrc/vs/workbench/contrib/extensions/browser/extensionsViewlet.ts(60,10): error TS6133: 'coalesce' is declared but its value is never read.\nsrc/vs/workbench/contrib/extensions/browser/extensionsViewlet.ts(61,10): error TS6133: 'extractEditorsAndFilesDropData' is declared but its value is never read.\nsrc/vs/workbench/contrib/extensions/browser/extensionsViewlet.ts(62,10): error TS6133: 'extname' is declared but its value is never read.\nsrc/vs/workbench/contrib/extensions/browser/extensionsViewlet.ts(490,37): error TS6138: Property 'commandService' is declared but its value is never read.\n[ELIFECYCLE] Command failed with exit code 1.\n",
+      "message": "型検査が 1 で終わった"
+    }
+  ],
+  "warnings": [],
+  "message": "typecheck で止まった: 型検査が 1 で終わった"
+}

@@ -36,7 +36,12 @@ export function checkWorktree(root, unit) {
   const bad = [];
   const at = (p) => join(root, ...p.split('/'));
   const text = (p) => (existsSync(at(p)) ? readFileSync(at(p), 'utf8').replace(/\r\n/g, '\n') : null);
-  const withText = (p, fn) => { const t = text(p); if (t === null) bad.push(`ファイルが無い: ${p}`); else fn(t); };
+  // C-4 が当たっている木(新しいファイル extHostRemovedApi.notebook.ts がある)では、C-4 の delete の中のパス(ノートブックの notebook.contribution.ts ほか)は見ない
+  // (C-4 を含む組 b でも、1回で照らせるようにする。大岡越前守の検証 2026-11-15 の軽微な指摘)
+  const c4Marker = existsSync(at(`${W}api/common/extHostRemovedApi.notebook.ts`));
+  const c4Del = c4Marker && existsSync(join(REPO, 'removals', 'C-4-notebook', 'unit.json')) ? (readJson(join(REPO, 'removals', 'C-4-notebook', 'unit.json')).delete ?? []) : [];
+  const inC4 = (p) => c4Del.some((d) => p === d.replace(/\/+$/, '') || p.startsWith(d.replace(/\/+$/, '') + '/'));
+  const withText = (p, fn) => { if (inC4(p)) return; const t = text(p); if (t === null) bad.push(`ファイルが無い: ${p}`); else fn(t); };
 
   // 新しいファイル
   withText(NEW_API, (t) => {
@@ -88,10 +93,10 @@ export function checkWorktree(root, unit) {
   if (existsSync(at('build/next/index.ts')) && text('build/next/index.ts').includes('debug/node/telemetryApp')) bad.push('build/next/index.ts にまだ debug/node/telemetryApp がある');
   // 消えるはず・残るはず
   for (const d of [...new Set([...(unit.delete ?? []), ...MUST_BE_DELETED])]) if (existsSync(at(d.replace(/\/+$/, '')))) bad.push(`消えているはずのパスが残っている: ${d}`);
-  for (const k of new Set([...(unit.kept ?? []).map((x) => x.path), ...MUST_STAY])) if (!existsSync(at(k))) bad.push(`残るはずのパスが無い: ${k}`);
+  for (const k of new Set([...(unit.kept ?? []).map((x) => x.path), ...MUST_STAY])) if (!inC4(k) && !existsSync(at(k))) bad.push(`残るはずのパスが無い: ${k}`);
   // removeLines の行が、各ファイルに残っていない(ファイルが無ければ飛ばす。ファイルが消えたものは delete の検査)
   for (const r of unit.removeLines ?? []) {
-    const t = text(r.file);
+    const t = inC4(r.file) ? null : text(r.file);
     if (t !== null && t.split('\n').some((l) => l.trim() === r.line.trim())) bad.push(`${r.file} にまだ消すはずの行がある: ${r.line.trim().slice(0, 100)}`);
   }
   return bad;

@@ -196,7 +196,7 @@ test('c2-check: 元の記録は壊さない（読むだけ）', () => {
   assert.deepEqual(j, before);
 });
 
-test('c2-check: コマンドとして走らせると、実際の記録で 0、壊した引数で 2 を返す', { skip: existsSync(A) && existsSync(TA) ? false : '記録が無い' }, () => {
+test('c2-check: コマンドとして走らせると、今の unit.json と合う実際の記録は 0、古い記録(absentStrings を替える前)は 1 と「検査の記録が無いもの」を返す。壊した引数は 2、別の組の型検査は 1', { skip: existsSync(A) && existsSync(TA) ? false : '記録が無い' }, () => {
   const run = (...args) => spawnSync(process.execPath, [join('tests', 'c2-check-json.mjs'), ...args], { cwd: REPO, encoding: 'utf8' });
   const ok = run(A, TA);
   if (JSON.stringify(unitFor(readJson(A))) === JSON.stringify(unitJson)) {

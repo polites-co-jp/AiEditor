@@ -1,0 +1,96 @@
+{
+  "label": "c4r2tc-verify-b",
+  "upstream": {
+    "tag": "1.146.0",
+    "commit": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+  },
+  "units": [],
+  "patches": [],
+  "lockfileDiff": "tasks/2026-11-15-p5-c4-patch/trial/take-in/lockfile.diff",
+  "toolchain": null,
+  "durations": {
+    "typecheck": 5.881
+  },
+  "zip": null,
+  "extensionsLockSha256": "6b4c3ceae7d6cb407f62bbcbd57ca50267e998975887884cc325fd26a85cce10",
+  "result": "ok",
+  "stoppedAt": null,
+  "dryRun": false,
+  "startedAt": "2026-11-15T04:37:49.060Z",
+  "finishedAt": "2026-11-15T04:38:02.473Z",
+  "paths": {
+    "buildRoot": "C:\\b",
+    "worktree": "C:\\b\\wt\\p2",
+    "packageDir": "C:\\b\\wt\\VSCode-win32-x64",
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-15-p5-c4-patch\\trial\\take-in\\checks.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\removals",
+    "dist": "C:\\b\\dist",
+    "logs": "C:\\b\\logs\\c4r2tc-verify-b"
+  },
+  "config": {
+    "path": "C:\\Users\\kou_z\\AppData\\Local\\Shuko\\local.json",
+    "exists": false,
+    "buildRootFrom": "default"
+  },
+  "stepsSelected": [
+    "typecheck"
+  ],
+  "envRemovedForChildren": [
+    "ELECTRON_RUN_AS_NODE",
+    "VSCODE_CODE_CACHE_PATH",
+    "VSCODE_CRASH_REPORTER_PROCESS_TYPE",
+    "VSCODE_CWD",
+    "VSCODE_ESM_ENTRYPOINT",
+    "VSCODE_HANDLES_UNCAUGHT_ERRORS",
+    "VSCODE_IPC_HOOK",
+    "VSCODE_NLS_CONFIG",
+    "VSCODE_PID",
+    "VSCODE_PROCESS_TITLE"
+  ],
+  "sourceVersion": {
+    "name": "BUILD_SOURCEVERSION",
+    "value": "3a80a832c5896690cc9802a4b4d5f1391be1f05e",
+    "source": "worktree HEAD",
+    "worktree": "C:\\b\\wt\\p2",
+    "readAt": "typecheck",
+    "steps": [
+      "typecheck",
+      "package"
+    ],
+    "error": null,
+    "uncommittedEntries": 0,
+    "checksHeadCommit": null,
+    "matchesChecksHead": null
+  },
+  "branch": null,
+  "steps": [
+    {
+      "name": "typecheck",
+      "status": "ok",
+      "startedAt": "2026-11-15T04:37:49.068Z",
+      "env": {
+        "BUILD_SOURCEVERSION": "3a80a832c5896690cc9802a4b4d5f1391be1f05e"
+      },
+      "command": "pnpm run typecheck-client",
+      "cwd": "C:\\b\\wt\\p2",
+      "log": "C:\\b\\logs\\c4r2tc-verify-b\\typecheck.log",
+      "seconds": 5.881,
+      "exitCode": 0
+    }
+  ],
+  "warnings": [],
+  "disk": {
+    "worktree": {
+      "bytes": 4074964657,
+      "gb": 3.8,
+      "files": 95732
+    },
+    "package": {
+      "bytes": 1137741406,
+      "gb": 1.06,
+      "files": 1889
+    },
+    "countedSeconds": 7.382
+  }
+}

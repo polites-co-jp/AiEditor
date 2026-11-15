@@ -2,7 +2,7 @@
 
 - 担当: cao-shen（曹参）
 - 依頼日: 2026-11-15
-- 状態: 依頼中
+- 状態: 完了
 
 ## 目的
 
@@ -40,11 +40,13 @@
 
 ## 結果
 
-<完了後にリーダーが記入する>
+採用。`tests/c4-*`（unit・mutation・check-json・worktree）、照らし役、台本 `tests/removals/c4-gate-script.md`、共通の部品 `tests/gate-members.mjs`。2回目で門の期待を本家から読む形にし、C-1・C-2 にもそろえた（C-1 の門の抜けを見つけた）。大岡越前守の検証で「パッケージ化の前まで」合格（`tasks/2026-11-15-p5-c4-c5-verify/verification-ooka.md`）。`enabled` は `false` のまま。
 
 ## 未解決
 
-<無ければ「なし」>
+- ビルド（パッケージ化）・起動・関門は、古い版の片づけの許可の後。
+- 検証役が自分で走らせていない組、ロックファイルの作り直し、`git apply --check` は、許可の追加（`tasks/2026-11-15-permission-requests/requests.md` の2）か関門のビルドで確かめる。
+- 軽微な指摘: `rendererScripts` の直しを見る検査と壊し方が無い。検査の名前が古い。
 
 ## 次の担当
 

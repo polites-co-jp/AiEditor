@@ -1,0 +1,86 @@
+{
+  "label": "c4tc-3",
+  "upstream": {
+    "tag": "1.146.0",
+    "commit": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+  },
+  "units": [],
+  "patches": [],
+  "lockfileDiff": "tasks/2026-11-15-p5-c4-patch/trial/take-in/lockfile.diff",
+  "toolchain": null,
+  "durations": {
+    "typecheck": 5.69
+  },
+  "zip": null,
+  "extensionsLockSha256": "6b4c3ceae7d6cb407f62bbcbd57ca50267e998975887884cc325fd26a85cce10",
+  "result": "error",
+  "stoppedAt": "typecheck",
+  "dryRun": false,
+  "startedAt": "2026-11-15T03:07:50.806Z",
+  "finishedAt": "2026-11-15T03:07:56.635Z",
+  "paths": {
+    "buildRoot": "C:\\b",
+    "worktree": "C:\\b\\wt\\p2",
+    "packageDir": "C:\\b\\wt\\VSCode-win32-x64",
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-15-p5-c4-patch\\trial\\take-in\\checks.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\removals",
+    "dist": "C:\\b\\dist",
+    "logs": "C:\\b\\logs\\c4tc-3"
+  },
+  "config": {
+    "path": "C:\\Users\\kou_z\\AppData\\Local\\Shuko\\local.json",
+    "exists": false,
+    "buildRootFrom": "default"
+  },
+  "stepsSelected": [
+    "typecheck"
+  ],
+  "envRemovedForChildren": [
+    "ELECTRON_RUN_AS_NODE",
+    "VSCODE_CODE_CACHE_PATH",
+    "VSCODE_CRASH_REPORTER_PROCESS_TYPE",
+    "VSCODE_CWD",
+    "VSCODE_ESM_ENTRYPOINT",
+    "VSCODE_HANDLES_UNCAUGHT_ERRORS",
+    "VSCODE_IPC_HOOK",
+    "VSCODE_NLS_CONFIG",
+    "VSCODE_PID",
+    "VSCODE_PROCESS_TITLE"
+  ],
+  "sourceVersion": {
+    "name": "BUILD_SOURCEVERSION",
+    "value": "3c423f6d0ab75a6238747e22b295a519ebc3ca5a",
+    "source": "worktree HEAD",
+    "worktree": "C:\\b\\wt\\p2",
+    "readAt": "typecheck",
+    "steps": [
+      "typecheck",
+      "package"
+    ],
+    "error": null,
+    "uncommittedEntries": 24,
+    "checksHeadCommit": null,
+    "matchesChecksHead": null
+  },
+  "branch": null,
+  "steps": [
+    {
+      "name": "typecheck",
+      "status": "error",
+      "startedAt": "2026-11-15T03:07:50.813Z",
+      "env": {
+        "BUILD_SOURCEVERSION": "3c423f6d0ab75a6238747e22b295a519ebc3ca5a"
+      },
+      "command": "pnpm run typecheck-client",
+      "cwd": "C:\\b\\wt\\p2",
+      "log": "C:\\b\\logs\\c4tc-3\\typecheck.log",
+      "seconds": 5.69,
+      "exitCode": 1,
+      "tail": "$ tsc --project ./src/tsconfig.json --noEmit --skipLibCheck\nsrc/vs/workbench/api/common/extHost.protocol.ts(66,28): error TS6133: 'NotebookPriorityInfo' is declared but its value is never read.\nsrc/vs/workbench/api/common/extHost.protocol.ts(67,10): error TS6133: 'IRawClosedNotebookFileMatch' is declared but its value is never read.\nsrc/vs/workbench/contrib/bulkEdit/test/browser/bulkCellEdits.test.ts(40,117): error TS2554: Expected 5 arguments, but got 7.\nsrc/vs/workbench/contrib/search/test/browser/searchModel.test.ts(7,13): error TS6133: 'arrays' is declared but its value is never read.\n[ELIFECYCLE] Command failed with exit code 1.\n",
+      "message": "型検査が 1 で終わった"
+    }
+  ],
+  "warnings": [],
+  "message": "typecheck で止まった: 型検査が 1 で終わった"
+}

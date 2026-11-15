@@ -92,6 +92,27 @@ test('c2-check-worktree: 本家に removeLines と edits.patch を当てた木�
   try { assert.deepEqual(checkWorktree(root, unit), []); } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
+test('c2-check-worktree: C-4 を含む組 b の木(C-4 の delete の中のノートブックのファイルが無い)でも食い違いが無い。C-4 が当たっていない木では、同じファイルが無いのは食い違い', { skip: skipUp }, () => {
+  const root = makeAppliedTree();
+  try {
+    const c4 = JSON.parse(readFileSync(join(resolve(dirname(fileURLToPath(import.meta.url)), '..'), 'removals', 'C-4-notebook', 'unit.json'), 'utf8'));
+    const gone = [`${W}contrib/notebook/browser/notebook.contribution.ts`, `${W}contrib/notebook/browser/controller/editActions.ts`, `${W}contrib/replNotebook/browser/repl.contribution.ts`];
+    // 先に C-4 が当たっていない木の形(ファイルがあり C-2 の直しが入っている)から、C-4 が消した形にする
+    for (const p of gone) assert.ok(existsSync(join(root, ...p.split('/'))), `前提: ${p} が木にある`);
+    assert.ok(gone.every((p) => c4.delete.some((d) => p === d || p.startsWith(`${d}/`))), '前提: この3つは C-4 の delete の中');
+    for (const d of c4.delete) rmSync(join(root, ...d.split('/')), { recursive: true, force: true });
+    // C-4 のしるし(新しいファイル)が無い木では、無いのは食い違い
+    const noMark = checkWorktree(root, unit);
+    assert.ok(gone.every((p) => noMark.some((x) => x.includes(p.split('/').pop()))), JSON.stringify(noMark));
+    const f = join(root, ...`${W}api/common/extHostRemovedApi.notebook.ts`.split('/'));
+    mkdirSync(dirname(f), { recursive: true }); writeFileSync(f, 'x');
+    assert.deepEqual(checkWorktree(root, unit), []);
+    // C-4 のしるしがあっても、C-2 の期待(例: debug.service.contribution.ts)は見る
+    rmSync(join(root, ...`${W}contrib/debug/browser/debug.service.contribution.ts`.split('/')));
+    assert.ok(checkWorktree(root, unit).some((x) => /debug\.service\.contribution\.ts/.test(x)));
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
 test('c2-check-worktree: 当てていない木(本家のまま)は、食い違いが多数出る', { skip: skipUp }, () => {
   const root = mkdtempSync(join(tmpdir(), 'c2wt-'));
   try {

@@ -15,6 +15,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { dirname, join, posix, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { compareMemberGates, memberGatesOf } from './gate-members.mjs';
 
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 // AIED_C2_UNIT_DIR: 単位のフォルダの代わり(tests/c2-mutation.test.mjs が、壊した写しでこのテストが落ちることを確かめるのに使う)
@@ -581,6 +582,24 @@ test('C-2 何もしない実装: register* の3つは何もしない Disposable 
   }
 });
 
+// 提案中の API の門の期待は、手で並べず、本家のタグの、C-2 が消す extHost のファイル(api/common の extHost*.ts)の
+// `checkProposedApiEnabled(extension, '<名前>')` と、edits.patch が extHost.api.impl.ts から消す塊の同じ呼び出しから読む
+// (C-4 で、手で並べた期待が実装の門の抜けを通した。大岡越前守の検証 2026-11-15。同じ見逃しが無いかを C-2 でも確かめた)。
+test('C-2 何もしない実装: 提案中の API の門が、本家の消すファイルと edits.patch が消す塊の門と過不足なく残る(本家から読む。debugVisualization の2つ)', { skip: skipUpPatch || noApi }, () => {
+  const names = [];
+  const gate = /checkProposedApiEnabled\(extension, '(\w+)'\)/g;
+  for (const d of unit.delete ?? []) {
+    if (!/^src\/vs\/workbench\/api\/(common|node|browser)\/extHost[^/]*\.ts$/.test(d)) continue;
+    const t = upShow(d);
+    assert.ok(t !== null, `本家に無い: ${d}`);
+    for (const m of t.matchAll(gate)) names.push(m[1]);
+  }
+  for (const l of section('api/common/extHost.api.impl.ts')?.removed ?? []) for (const m of l.matchAll(gate)) names.push(m[1]);
+  const have = [...apiText.matchAll(gate)].map((m) => m[1]).sort();
+  assert.ok(names.length >= 1, '本家の門が読めない');
+  assert.deepEqual(have, names.sort(), '何もしない実装の門が、本家の消す側の門と違う(抜け・増え)');
+});
+
 test('C-2 何もしない実装: 提案中の API debugVisualization の2つは、門が最初の文に残り、通れば何もしない Disposable を返す（門）', { skip: noApi }, () => {
   assert.match(apiText, /import \{ checkProposedApiEnabled \} from '\.\.\/\.\.\/services\/extensions\/common\/extensions\.js';/);
   for (const n of GATED) {
@@ -673,6 +692,25 @@ function load() {
 }
 const plain = { name: 'x.plain' };
 const withProposal = { name: 'x.proposed', enabledApiProposals: ['debugVisualization'] };
+
+// 所(メンバー)ごとの門(C-1 の 5回目と同じ形)。期待は本家の消す extHost のファイルのメンバーごとの checkProposedApiEnabled から読む。
+test('C-2 何もしない実装(走らせる): 本家の消すファイルでメンバーごとに門があるものは、提案を有効にしていない拡張で門の誤りになる。有効にした拡張では誤りにならない。誤りの出方が本家と同じ', { skip: noRun || (upOk ? false : '本家のソースが読めない') }, async () => {
+  const files = (unit.delete ?? []).filter((d) => /^src\/vs\/workbench\/api\/common\/extHost[^/]*\.ts$/.test(d)).map((d) => ({ path: d, text: upShow(d) })).filter((f) => f.text !== null);
+  // C-2 の門(debugVisualization の2つ)は、消す extHost のファイルではなく、extHost.api.impl.ts の const debug の宣言(edits.patch が消す塊)にある。
+  // その塊の消す行も、本家のメンバーの宣言として読む
+  const implRemoved = (section('api/common/extHost.api.impl.ts')?.removed ?? []).join('\n');
+  assert.ok(implRemoved.length > 0, 'extHost.api.impl.ts の消す塊が無い');
+  files.push({ path: API_IMPL, text: implRemoved });
+  const map = memberGatesOf(files);
+  const { create } = load();
+  const surfacesFor = (proposals) => ({ debug: create({ name: 'x.ext', identifier: { value: 'x.ext' }, enabledApiProposals: proposals }) });
+  const { checked, bad, asyncBad } = await compareMemberGates({ map, surfacesFor });
+  // 本家で門のあるメンバーが、実装の面(vscode.debug)に出るものは少ない。出るものはすべて合うこと。読み方が外れて 0 件になるのは誤り（名前の集まりの検査は別にある）
+  const gated = [...map.values()].filter((v) => v.gates.size).map((v) => `${v.kind}:${v.name}:${[...v.gates].join('/')}`);
+  assert.ok(checked.includes('debug.registerDebugVisualizationProvider') && checked.includes('debug.registerDebugVisualizationTreeProvider'), `debugVisualization の2つが本家と突き合わせられていない: ${checked.join(', ')} / 本家の門のあるメンバー: ${gated.join(', ')}`);
+  assert.deepEqual(bad, [], `突き合わせたメンバー: ${checked.join(', ')} / 本家の門のあるメンバー: ${gated.join(', ')}`);
+  assert.deepEqual(asyncBad, []);
+});
 
 test('C-2 何もしない実装(走らせる): startDebugging(undefined, "x") は false で resolve する。設定の形・親セッションの形でも同じ', { skip: noRun }, async () => {
   const { create } = load();

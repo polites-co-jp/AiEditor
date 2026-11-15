@@ -46,9 +46,14 @@ export function checkWorktree(root, unit) {
     if (pj.scripts && 'bundle-dev-tunnels-web' in pj.scripts) bad.push('package.json の scripts にまだ bundle-dev-tunnels-web がある');
   }
   for (const d of [...new Set([...(unit.delete ?? []), ...MUST_BE_DELETED])]) if (existsSync(at(d.replace(/\/+$/, '')))) bad.push(`消えているはずのパスが残っている: ${d}`);
+  // C-4 が当たっている木(新しいファイル extHostRemovedApi.notebook.ts がある)では、C-4 の delete の中のパス(contrib/notebook/browser など)は見ない
+  // (C-4 を含む組 b でも、1回で照らせるようにする。大岡越前守の検証 2026-11-15 の軽微な指摘)
+  const c4Marker = existsSync(at('src/vs/workbench/api/common/extHostRemovedApi.notebook.ts'));
+  const c4Del = c4Marker && existsSync(join(REPO, 'removals', 'C-4-notebook', 'unit.json')) ? (readJson(join(REPO, 'removals', 'C-4-notebook', 'unit.json')).delete ?? []) : [];
+  const inC4 = (p) => c4Del.some((d) => p === d.replace(/\/+$/, '') || p.startsWith(d.replace(/\/+$/, '') + '/'));
   for (const k of unit.kept ?? []) {
     // absentStrings の除外のための kept は、本家のままのファイル。当てた後も残る
-    if (!existsSync(at(k.path))) bad.push(`残るはずのパスが無い: ${k.path}`);
+    if (!inC4(k.path) && !existsSync(at(k.path))) bad.push(`残るはずのパスが無い: ${k.path}`);
   }
   for (const p of MUST_STAY) if (!existsSync(at(p))) bad.push(`新しいファイルが無い: ${p}`);
   for (const p of MUST_NOT_EXIST) if (existsSync(at(p))) bad.push(`別のファイルが残っている(5回目で chatEntitlementService.ts の末尾へ移した): ${p}`);

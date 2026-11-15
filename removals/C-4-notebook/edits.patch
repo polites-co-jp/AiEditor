@@ -1,0 +1,2084 @@
+From 21079a103f9006607e95336713d2eb57e15dfcc4 Mon Sep 17 00:00:00 2001
+From: shuko-apply <apply@shuko.invalid>
+Date: Sun, 15 Nov 2026 12:13:31 +0900
+Subject: [PATCH] unit C-4-notebook: edits
+
+---
+ .../api/browser/mainThreadEditorTabs.ts       |   9 -
+ .../workbench/api/common/extHost.api.impl.ts  | 103 +--------
+ .../workbench/api/common/extHost.protocol.ts  | 104 +---------
+ .../api/common/extHostRemovedApi.notebook.ts  | 151 ++++++++++++++
+ .../contrib/bulkEdit/browser/bulkCellEdits.ts |  69 +-----
+ .../contrib/search/browser/replaceService.ts  |  34 +--
+ .../browser/search.common.contribution.ts     |   2 -
+ .../search/browser/search.contribution.ts     |   5 -
+ .../browser/searchActionsRemoveReplace.ts     |   3 +-
+ .../contrib/search/browser/searchCompare.ts   |  27 ---
+ .../contrib/search/browser/searchFindInput.ts |  60 +-----
+ .../browser/searchTreeModel/fileMatch.ts      |   6 +-
+ .../browser/searchTreeModel/folderMatch.ts    |  59 +-----
+ .../browser/searchTreeModel/searchModel.ts    |  12 +-
+ .../browser/searchTreeModel/searchResult.ts   |  44 +---
+ .../searchTreeModel/searchTreeCommon.ts       |   4 -
+ .../searchTreeModel/textSearchHeading.ts      |   4 -
+ .../contrib/search/browser/searchView.ts      |  43 +---
+ .../contrib/search/browser/searchWidget.ts    |  49 +----
+ .../search/test/browser/searchActions.test.ts |  13 +-
+ .../search/test/browser/searchModel.test.ts   | 196 +-----------------
+ .../search/test/browser/searchResult.test.ts  |  80 +------
+ .../search/test/browser/searchTestCommon.ts   |  18 --
+ .../search/test/browser/searchViewlet.test.ts |  15 +-
+ .../browser/searchEditorSerialization.ts      |   8 +-
+ 25 files changed, 211 insertions(+), 907 deletions(-)
+ create mode 100644 src/vs/workbench/api/common/extHostRemovedApi.notebook.ts
+
+diff --git a/src/vs/workbench/api/browser/mainThreadEditorTabs.ts b/src/vs/workbench/api/browser/mainThreadEditorTabs.ts
+index f96edebfce9..d52a3b11c7d 100644
+--- a/src/vs/workbench/api/browser/mainThreadEditorTabs.ts
++++ b/src/vs/workbench/api/browser/mainThreadEditorTabs.ts
+@@ -18,7 +18,6 @@ import { SideBySideEditorInput } from '../../common/editor/sideBySideEditorInput
+ import { AbstractTextResourceEditorInput } from '../../common/editor/textResourceEditorInput.js';
+ import { CustomEditorInput } from '../../contrib/customEditor/browser/customEditorInput.js';
+ import { isCustomEditorCompatibleInput } from '../../contrib/customEditor/common/customEditor.js';
+-import { InteractiveEditorInput } from '../../contrib/interactive/browser/interactiveEditorInput.js';
+ import { MergeEditorInput } from '../../contrib/mergeEditor/browser/mergeEditorInput.js';
+ import { MultiDiffEditorInput } from '../../contrib/multiDiffEditor/browser/multiDiffEditorInput.js';
+ import { NotebookEditorInput } from '../../contrib/notebook/common/notebookEditorInput.js';
+@@ -209,14 +208,6 @@ export class MainThreadEditorTabs implements MainThreadEditorTabsShape {
+ 			}
+ 		}
+ 
+-		if (editor instanceof InteractiveEditorInput) {
+-			return {
+-				kind: TabInputKind.InteractiveEditorInput,
+-				uri: editor.resource,
+-				inputBoxUri: editor.inputResource
+-			};
+-		}
+-
+ 		if (editor instanceof MultiDiffEditorInput) {
+ 			const diffEditors: TextDiffInputDto[] = [];
+ 			for (const resource of (editor?.resources.get() ?? [])) {
+diff --git a/src/vs/workbench/api/common/extHost.api.impl.ts b/src/vs/workbench/api/common/extHost.api.impl.ts
+index b6233a36300..a6f1100baa2 100644
+--- a/src/vs/workbench/api/common/extHost.api.impl.ts
++++ b/src/vs/workbench/api/common/extHost.api.impl.ts
+@@ -13,7 +13,7 @@ import { Schemas, matchesScheme } from '../../../base/common/network.js';
+ import Severity from '../../../base/common/severity.js';
+ import { URI } from '../../../base/common/uri.js';
+ import { TextEditorCursorStyle } from '../../../editor/common/config/editorOptions.js';
+-import { score, targetsNotebooks } from '../../../editor/common/languageSelector.js';
++import { score } from '../../../editor/common/languageSelector.js';
+ import * as languageConfiguration from '../../../editor/common/languages/languageConfiguration.js';
+ import { OverviewRulerLane } from '../../../editor/common/model.js';
+ import { ExtensionError, ExtensionIdentifierSet, IExtensionDescription } from '../../../platform/extensions/common/extensions.js';
+@@ -60,7 +60,6 @@ import { IExtHostConsumerFileSystem } from './extHostFileSystemConsumer.js';
+ import { ExtHostFileSystemEventService, FileSystemWatcherCreateOptions } from './extHostFileSystemEventService.js';
+ import { IExtHostFileSystemInfo } from './extHostFileSystemInfo.js';
+ import { IExtHostInitDataService } from './extHostInitDataService.js';
+-import { ExtHostInteractive } from './extHostInteractive.js';
+ import { ExtHostLabelService } from './extHostLabelService.js';
+ import { ExtHostLanguageFeatures } from './extHostLanguageFeatures.js';
+ import { ExtHostLanguages } from './extHostLanguages.js';
+@@ -68,12 +67,7 @@ import { IExtHostLocalizationService } from './extHostLocalizationService.js';
+ import { IExtHostManagedSockets } from './extHostManagedSockets.js';
+ import { IExtHostBrowserTunnelProxy } from './extHostBrowserTunnelProxy.js';
+ import { ExtHostMessageService } from './extHostMessageService.js';
+-import { ExtHostNotebookController } from './extHostNotebook.js';
+-import { ExtHostNotebookDocumentSaveParticipant } from './extHostNotebookDocumentSaveParticipant.js';
+-import { ExtHostNotebookDocuments } from './extHostNotebookDocuments.js';
+-import { ExtHostNotebookEditors } from './extHostNotebookEditors.js';
+-import { ExtHostNotebookKernels } from './extHostNotebookKernels.js';
+-import { ExtHostNotebookRenderers } from './extHostNotebookRenderers.js';
++import { createRemovedNotebookApi } from './extHostRemovedApi.notebook.js';
+ import { IExtHostOutputService } from './extHostOutput.js';
+ import { ExtHostProfileContentHandlers } from './extHostProfileContentHandler.js';
+ import { IExtHostProgress } from './extHostProgress.js';
+@@ -204,12 +198,6 @@ export function createApiFactoryAndRegisterActors(accessor: ServicesAccessor): I
+ 	const extHostDocuments = rpcProtocol.set(ExtHostContext.ExtHostDocuments, new ExtHostDocuments(rpcProtocol, extHostDocumentsAndEditors));
+ 	const extHostDocumentContentProviders = rpcProtocol.set(ExtHostContext.ExtHostDocumentContentProviders, new ExtHostDocumentContentProvider(rpcProtocol, extHostDocumentsAndEditors, extHostLogService));
+ 	const extHostDocumentSaveParticipant = rpcProtocol.set(ExtHostContext.ExtHostDocumentSaveParticipant, new ExtHostDocumentSaveParticipant(extHostLogService, extHostDocuments, rpcProtocol.getProxy(MainContext.MainThreadBulkEdits)));
+-	const extHostNotebook = rpcProtocol.set(ExtHostContext.ExtHostNotebook, new ExtHostNotebookController(rpcProtocol, extHostCommands, extHostDocumentsAndEditors, extHostDocuments, extHostConsumerFileSystem, extHostSearch, extHostLogService));
+-	const extHostNotebookDocuments = rpcProtocol.set(ExtHostContext.ExtHostNotebookDocuments, new ExtHostNotebookDocuments(extHostNotebook));
+-	const extHostNotebookEditors = rpcProtocol.set(ExtHostContext.ExtHostNotebookEditors, new ExtHostNotebookEditors(extHostLogService, extHostNotebook));
+-	const extHostNotebookKernels = rpcProtocol.set(ExtHostContext.ExtHostNotebookKernels, new ExtHostNotebookKernels(rpcProtocol, initData, extHostNotebook, extHostCommands, extHostLogService));
+-	const extHostNotebookRenderers = rpcProtocol.set(ExtHostContext.ExtHostNotebookRenderers, new ExtHostNotebookRenderers(rpcProtocol, extHostNotebook));
+-	const extHostNotebookDocumentSaveParticipant = rpcProtocol.set(ExtHostContext.ExtHostNotebookDocumentSaveParticipant, new ExtHostNotebookDocumentSaveParticipant(extHostLogService, extHostNotebook, rpcProtocol.getProxy(MainContext.MainThreadBulkEdits)));
+ 	const extHostEditors = rpcProtocol.set(ExtHostContext.ExtHostEditors, new ExtHostEditors(rpcProtocol, extHostDocumentsAndEditors));
+ 	const extHostTreeViews = rpcProtocol.set(ExtHostContext.ExtHostTreeViews, new ExtHostTreeViews(rpcProtocol.getProxy(MainContext.MainThreadTreeViews), extHostCommands, extHostLogService));
+ 	const extHostEditorInsets = rpcProtocol.set(ExtHostContext.ExtHostEditorInsets, new ExtHostEditorInsets(rpcProtocol.getProxy(MainContext.MainThreadEditorInsets), extHostEditors, initData.remote));
+@@ -234,7 +222,6 @@ export function createApiFactoryAndRegisterActors(accessor: ServicesAccessor): I
+ 	const extHostUriOpeners = rpcProtocol.set(ExtHostContext.ExtHostUriOpeners, new ExtHostUriOpeners(rpcProtocol));
+ 	const extHostProfileContentHandlers = rpcProtocol.set(ExtHostContext.ExtHostProfileContentHandlers, new ExtHostProfileContentHandlers(rpcProtocol));
+ 	const extHostGitHub = new ExtHostGitHub(rpcProtocol.getProxy(MainContext.MainThreadGitHub));
+-	rpcProtocol.set(ExtHostContext.ExtHostInteractive, new ExtHostInteractive(rpcProtocol, extHostNotebook, extHostDocumentsAndEditors, extHostCommands, extHostLogService));
+ 	const extHostAiRelatedInformation = rpcProtocol.set(ExtHostContext.ExtHostAiRelatedInformation, new ExtHostRelatedInformation(rpcProtocol));
+ 	const extHostAiEmbeddingVector = rpcProtocol.set(ExtHostContext.ExtHostAiEmbeddingVector, new ExtHostAiEmbeddingVector(rpcProtocol));
+ 	const extHostAiSettingsSearch = rpcProtocol.set(ExtHostContext.ExtHostAiSettingsSearch, new ExtHostAiSettingsSearch(rpcProtocol));
+@@ -641,11 +628,8 @@ export function createApiFactoryAndRegisterActors(accessor: ServicesAccessor): I
+ 			},
+ 			match(selector: vscode.DocumentSelector, document: vscode.TextDocument): number {
+ 				const interalSelector = typeConverters.LanguageSelector.from(selector);
+-				let notebook: vscode.NotebookDocument | undefined;
+-				if (targetsNotebooks(interalSelector)) {
+-					notebook = extHostNotebook.notebookDocuments.find(value => value.apiNotebook.getCells().find(c => c.document === document))?.apiNotebook;
+-				}
+-				return score(interalSelector, document.uri, document.languageId, true, notebook?.uri, notebook?.notebookType);
++				// Shuko (C-4-notebook): there are no notebook documents, so a text document is never a notebook cell
++				return score(interalSelector, document.uri, document.languageId, true, undefined, undefined);
+ 			},
+ 			registerCodeActionsProvider(selector: vscode.DocumentSelector, provider: vscode.CodeActionProvider, metadata?: vscode.CodeActionProviderMetadata): vscode.Disposable {
+ 				return extHostLanguageFeatures.registerCodeActionProvider(extension, checkSelector(selector), provider, metadata);
+@@ -790,6 +774,9 @@ export function createApiFactoryAndRegisterActors(accessor: ServicesAccessor): I
+ 			}
+ 		};
+ 
++		// Shuko (C-4-notebook): the notebook parts of the window, workspace and notebooks namespaces do nothing
++		const removedNotebookApi = createRemovedNotebookApi(extension);
++
+ 		// namespace: window
+ 		const window: typeof vscode.window = {
+ 			get activeTextEditor() {
+@@ -1005,27 +992,7 @@ export function createApiFactoryAndRegisterActors(accessor: ServicesAccessor): I
+ 			}) {
+ 				return extHostWebviewViews.registerWebviewViewProvider(extension, viewId, provider, options?.webviewOptions);
+ 			},
+-			get activeNotebookEditor(): vscode.NotebookEditor | undefined {
+-				return extHostNotebook.activeNotebookEditor;
+-			},
+-			onDidChangeActiveNotebookEditor(listener, thisArgs?, disposables?) {
+-				return _asExtensionEvent(extHostNotebook.onDidChangeActiveNotebookEditor)(listener, thisArgs, disposables);
+-			},
+-			get visibleNotebookEditors() {
+-				return extHostNotebook.visibleNotebookEditors;
+-			},
+-			get onDidChangeVisibleNotebookEditors() {
+-				return _asExtensionEvent(extHostNotebook.onDidChangeVisibleNotebookEditors);
+-			},
+-			onDidChangeNotebookEditorSelection(listener, thisArgs?, disposables?) {
+-				return _asExtensionEvent(extHostNotebookEditors.onDidChangeNotebookEditorSelection)(listener, thisArgs, disposables);
+-			},
+-			onDidChangeNotebookEditorVisibleRanges(listener, thisArgs?, disposables?) {
+-				return _asExtensionEvent(extHostNotebookEditors.onDidChangeNotebookEditorVisibleRanges)(listener, thisArgs, disposables);
+-			},
+-			showNotebookDocument(document, options?) {
+-				return extHostNotebook.showNotebookDocument(document, options);
+-			},
++			...removedNotebookApi.window,
+ 			registerExternalUriOpener(id: string, opener: vscode.ExternalUriOpener, metadata: vscode.ExternalUriOpenerMetadata) {
+ 				checkProposedApiEnabled(extension, 'externalUriOpener');
+ 				return extHostUriOpeners.registerExternalUriOpener(extension.identifier, id, opener, metadata);
+@@ -1310,39 +1277,7 @@ export function createApiFactoryAndRegisterActors(accessor: ServicesAccessor): I
+ 			onWillSaveTextDocument: (listener, thisArgs?, disposables?) => {
+ 				return _asExtensionEvent(extHostDocumentSaveParticipant.getOnWillSaveTextDocumentEvent(extension))(listener, thisArgs, disposables);
+ 			},
+-			get notebookDocuments(): vscode.NotebookDocument[] {
+-				return extHostNotebook.notebookDocuments.map(d => d.apiNotebook);
+-			},
+-			async openNotebookDocument(uriOrType?: URI | string, content?: vscode.NotebookData) {
+-				let uri: URI;
+-				if (URI.isUri(uriOrType)) {
+-					uri = uriOrType;
+-					await extHostNotebook.openNotebookDocument(uriOrType);
+-				} else if (typeof uriOrType === 'string') {
+-					uri = URI.revive(await extHostNotebook.createNotebookDocument({ viewType: uriOrType, content }));
+-				} else {
+-					throw new Error('Invalid arguments');
+-				}
+-				return extHostNotebook.getNotebookDocument(uri).apiNotebook;
+-			},
+-			onDidSaveNotebookDocument(listener, thisArg, disposables) {
+-				return _asExtensionEvent(extHostNotebookDocuments.onDidSaveNotebookDocument)(listener, thisArg, disposables);
+-			},
+-			onDidChangeNotebookDocument(listener, thisArg, disposables) {
+-				return _asExtensionEvent(extHostNotebookDocuments.onDidChangeNotebookDocument)(listener, thisArg, disposables);
+-			},
+-			onWillSaveNotebookDocument(listener, thisArg, disposables) {
+-				return _asExtensionEvent(extHostNotebookDocumentSaveParticipant.getOnWillSaveNotebookDocumentEvent(extension))(listener, thisArg, disposables);
+-			},
+-			get onDidOpenNotebookDocument() {
+-				return _asExtensionEvent(extHostNotebook.onDidOpenNotebookDocument);
+-			},
+-			get onDidCloseNotebookDocument() {
+-				return _asExtensionEvent(extHostNotebook.onDidCloseNotebookDocument);
+-			},
+-			registerNotebookSerializer(viewType: string, serializer: vscode.NotebookSerializer, options?: vscode.NotebookDocumentContentOptions, registration?: vscode.NotebookRegistrationData) {
+-				return extHostNotebook.registerNotebookSerializer(extension, viewType, serializer, options, isProposedApiEnabled(extension, 'notebookLiveShare') ? registration : undefined);
+-			},
++			...removedNotebookApi.workspace,
+ 			onDidChangeConfiguration: (listener: (_: any) => any, thisArgs?: any, disposables?: extHostTypes.Disposable[]) => {
+ 				return _asExtensionEvent(configProvider.onDidChangeConfiguration)(listener, thisArgs, disposables);
+ 			},
+@@ -1571,25 +1506,7 @@ export function createApiFactoryAndRegisterActors(accessor: ServicesAccessor): I
+ 		};
+ 
+ 		// namespace: notebook
+-		const notebooks: typeof vscode.notebooks = {
+-			createNotebookController(id: string, notebookType: string, label: string, handler?, rendererScripts?: vscode.NotebookRendererScript[]) {
+-				return extHostNotebookKernels.createNotebookController(extension, id, notebookType, label, handler, isProposedApiEnabled(extension, 'notebookMessaging') ? rendererScripts : undefined);
+-			},
+-			registerNotebookCellStatusBarItemProvider: (notebookType: string, provider: vscode.NotebookCellStatusBarItemProvider) => {
+-				return extHostNotebook.registerNotebookCellStatusBarItemProvider(extension, notebookType, provider);
+-			},
+-			createRendererMessaging(rendererId) {
+-				return extHostNotebookRenderers.createRendererMessaging(extension, rendererId);
+-			},
+-			createNotebookControllerDetectionTask(notebookType: string) {
+-				checkProposedApiEnabled(extension, 'notebookKernelSource');
+-				return extHostNotebookKernels.createNotebookControllerDetectionTask(extension, notebookType);
+-			},
+-			registerKernelSourceActionProvider(notebookType: string, provider: vscode.NotebookKernelSourceActionProvider) {
+-				checkProposedApiEnabled(extension, 'notebookKernelSource');
+-				return extHostNotebookKernels.registerKernelSourceActionProvider(extension, notebookType, provider);
+-			},
+-		};
++		const notebooks: typeof vscode.notebooks = removedNotebookApi.notebooks;
+ 
+ 		// namespace: l10n
+ 		const l10n: typeof vscode.l10n = {
+diff --git a/src/vs/workbench/api/common/extHost.protocol.ts b/src/vs/workbench/api/common/extHost.protocol.ts
+index 6274a567aa5..26336ad1e51 100644
+--- a/src/vs/workbench/api/common/extHost.protocol.ts
++++ b/src/vs/workbench/api/common/extHost.protocol.ts
+@@ -63,8 +63,7 @@ import { ICellExecutionComplete, ICellExecutionStateUpdate } from '../../contrib
+ import { ICellRange } from '../../contrib/notebook/common/notebookRange.js';
+ import { ISCMHistoryOptions } from '../../contrib/scm/common/history.js';
+ import { InputValidationType } from '../../contrib/scm/common/scm.js';
+-import { IWorkspaceSymbol, NotebookPriorityInfo } from '../../contrib/search/common/search.js';
+-import { IRawClosedNotebookFileMatch } from '../../contrib/search/common/searchNotebookHelpers.js';
++import { IWorkspaceSymbol } from '../../contrib/search/common/search.js';
+ import { IKeywordRecognitionEvent, ISpeechProviderMetadata, ISpeechToTextEvent, ITextToSpeechEvent, IVoiceLiveSessionResult } from '../../contrib/speech/common/speechService.js';
+ import { CoverageDetails, ExtensionRunTestsRequest, ICallProfileRunHandler, IFileCoverage, ISerializedTestResults, IStartControllerTests, ITestItem, ITestMessage, ITestRunProfile, ITestRunTask, ResolvedTestRunRequest, TestControllerCapability, TestMessageFollowupRequest, TestMessageFollowupResponse, TestResultState, TestsDiffOp } from '../../contrib/testing/common/testTypes.js';
+ import { Timeline, TimelineOptions, TimelineProviderDescriptor, WorkspaceTimelineProviderDescriptor } from '../../contrib/timeline/common/timeline.js';
+@@ -1310,27 +1309,6 @@ export interface INotebookCellStatusBarListDto {
+ 	cacheId: number;
+ }
+ 
+-export interface MainThreadNotebookShape extends IDisposable {
+-	$registerNotebookSerializer(handle: number, extension: notebookCommon.NotebookExtensionDescription, viewType: string, options: notebookCommon.TransientOptions, registration: notebookCommon.INotebookContributionData | undefined): void;
+-	$unregisterNotebookSerializer(handle: number): void;
+-
+-	$registerNotebookCellStatusBarItemProvider(handle: number, eventHandle: number | undefined, viewType: string): Promise<void>;
+-	$unregisterNotebookCellStatusBarItemProvider(handle: number, eventHandle: number | undefined): Promise<void>;
+-	$emitCellStatusBarEvent(eventHandle: number): void;
+-}
+-
+-export interface MainThreadNotebookEditorsShape extends IDisposable {
+-	$tryShowNotebookDocument(uriComponents: UriComponents, viewType: string, options: INotebookDocumentShowOptions): Promise<string>;
+-	$tryRevealRange(id: string, range: ICellRange, revealType: NotebookEditorRevealType): Promise<void>;
+-	$trySetSelections(id: string, range: ICellRange[]): void;
+-}
+-
+-export interface MainThreadNotebookDocumentsShape extends IDisposable {
+-	$tryCreateNotebook(options: { viewType: string; content?: NotebookDataDto }): Promise<UriComponents>;
+-	$tryOpenNotebook(uriComponents: UriComponents): Promise<UriComponents>;
+-	$trySaveNotebook(uri: UriComponents): Promise<boolean>;
+-}
+-
+ export interface INotebookKernelDto2 {
+ 	id: string;
+ 	notebookType: string;
+@@ -1391,38 +1369,6 @@ export interface VariablesResult {
+ 	extensionId: string;
+ }
+ 
+-export interface MainThreadNotebookKernelsShape extends IDisposable {
+-	$postMessage(handle: number, editorId: string | undefined, message: any): Promise<boolean>;
+-	$addKernel(handle: number, data: INotebookKernelDto2): Promise<void>;
+-	$updateKernel(handle: number, data: Partial<INotebookKernelDto2>): void;
+-	$removeKernel(handle: number): void;
+-	$updateNotebookPriority(handle: number, uri: UriComponents, value: number | undefined): void;
+-
+-	$createExecution(handle: number, controllerId: string, uri: UriComponents, cellHandle: number): void;
+-	$updateExecution(handle: number, data: SerializableObjectWithBuffers<ICellExecuteUpdateDto[]>): void;
+-	$completeExecution(handle: number, data: SerializableObjectWithBuffers<ICellExecutionCompleteDto>): void;
+-
+-	$createNotebookExecution(handle: number, controllerId: string, uri: UriComponents): void;
+-	$beginNotebookExecution(handle: number,): void;
+-	$completeNotebookExecution(handle: number): void;
+-
+-	$addKernelDetectionTask(handle: number, notebookType: string): Promise<void>;
+-	$removeKernelDetectionTask(handle: number): void;
+-
+-	$addKernelSourceActionProvider(handle: number, eventHandle: number, notebookType: string): Promise<void>;
+-	$removeKernelSourceActionProvider(handle: number, eventHandle: number): void;
+-	$emitNotebookKernelSourceActionsChangeEvent(eventHandle: number): void;
+-	$receiveVariable(requestId: string, variable: VariablesResult): void;
+-	$variablesUpdated(notebookUri: UriComponents): void;
+-}
+-
+-export interface MainThreadNotebookRenderersShape extends IDisposable {
+-	$postMessage(editorId: string | undefined, rendererId: string, message: unknown): Promise<boolean>;
+-}
+-
+-export interface MainThreadInteractiveShape extends IDisposable {
+-}
+-
+ export interface MainThreadSpeechShape extends IDisposable {
+ 	$registerProvider(handle: number, identifier: string, metadata: ISpeechProviderMetadata): void;
+ 	$registerVoiceLiveSessionProvider(handle: number, identifier: string, metadata: ISpeechProviderMetadata): void;
+@@ -2859,29 +2805,6 @@ export interface NotebookCellDto {
+ 
+ export type INotebookPartialFileStatsWithMetadata = Omit<files.IFileStatWithMetadata, 'resource' | 'children'>;
+ 
+-export interface ExtHostNotebookShape extends ExtHostNotebookDocumentsAndEditorsShape {
+-	$provideNotebookCellStatusBarItems(handle: number, uri: UriComponents, index: number, token: CancellationToken): Promise<INotebookCellStatusBarListDto | undefined>;
+-	$releaseNotebookCellStatusBarItems(id: number): void;
+-
+-	$dataToNotebook(handle: number, data: VSBuffer, token: CancellationToken): Promise<SerializableObjectWithBuffers<NotebookDataDto>>;
+-	$notebookToData(handle: number, data: SerializableObjectWithBuffers<NotebookDataDto>, token: CancellationToken): Promise<VSBuffer>;
+-	$saveNotebook(handle: number, uri: UriComponents, versionId: number, options: files.IWriteFileOptions, token: CancellationToken): Promise<INotebookPartialFileStatsWithMetadata | files.FileOperationError>;
+-
+-	$searchInNotebooks(handle: number, textQuery: search.ITextQuery, viewTypeFileTargets: NotebookPriorityInfo[], otherViewTypeFileTargets: NotebookPriorityInfo[], token: CancellationToken): Promise<{ results: IRawClosedNotebookFileMatch[]; limitHit: boolean }>;
+-}
+-
+-export interface ExtHostNotebookDocumentSaveParticipantShape {
+-	$participateInSave(resource: UriComponents, reason: SaveReason, token: CancellationToken): Promise<boolean>;
+-}
+-
+-export interface ExtHostNotebookRenderersShape {
+-	$postRendererMessage(editorId: string, rendererId: string, message: unknown): void;
+-}
+-
+-export interface ExtHostNotebookDocumentsAndEditorsShape {
+-	$acceptDocumentAndEditorsDelta(delta: SerializableObjectWithBuffers<INotebookDocumentsAndEditorsDelta>): void;
+-}
+-
+ export type NotebookRawContentEventDto =
+ 	// notebookCommon.NotebookCellsInitializeEvent<NotebookCellDto>
+ 	| {
+@@ -2921,33 +2844,8 @@ export type NotebookCellsChangedEventDto = {
+ 	readonly versionId: number;
+ };
+ 
+-export interface ExtHostNotebookDocumentsShape {
+-	$acceptModelChanged(uriComponents: UriComponents, event: SerializableObjectWithBuffers<NotebookCellsChangedEventDto>, isDirty: boolean, newMetadata?: notebookCommon.NotebookDocumentMetadata): void;
+-	$acceptDirtyStateChanged(uriComponents: UriComponents, isDirty: boolean): void;
+-	$acceptModelSaved(uriComponents: UriComponents): void;
+-}
+-
+ export type INotebookEditorViewColumnInfo = Record<string, number>;
+ 
+-export interface ExtHostNotebookEditorsShape {
+-	$acceptEditorPropertiesChanged(id: string, data: INotebookEditorPropertiesChangeData): void;
+-	$acceptEditorViewColumns(data: INotebookEditorViewColumnInfo): void;
+-}
+-
+-export interface ExtHostNotebookKernelsShape {
+-	$acceptNotebookAssociation(handle: number, uri: UriComponents, value: boolean): void;
+-	$executeCells(handle: number, uri: UriComponents, handles: number[]): Promise<void>;
+-	$cancelCells(handle: number, uri: UriComponents, handles: number[]): Promise<void>;
+-	$acceptKernelMessageFromRenderer(handle: number, editorId: string, message: any): void;
+-	$provideKernelSourceActions(handle: number, token: CancellationToken): Promise<notebookCommon.INotebookKernelSourceAction[]>;
+-	$provideVariables(handle: number, requestId: string, notebookUri: UriComponents, parentId: number | undefined, kind: 'named' | 'indexed', start: number, token: CancellationToken): Promise<void>;
+-}
+-
+-export interface ExtHostInteractiveShape {
+-	$willAddInteractiveDocument(uri: UriComponents, eol: string, languageId: string, notebookUri: UriComponents): void;
+-	$willRemoveInteractiveDocument(uri: UriComponents, notebookUri: UriComponents): void;
+-}
+-
+ export interface ExtHostStorageShape {
+ 	$acceptValue(shared: boolean, extensionId: string, value: string): void;
+ }
+diff --git a/src/vs/workbench/api/common/extHostRemovedApi.notebook.ts b/src/vs/workbench/api/common/extHostRemovedApi.notebook.ts
+new file mode 100644
+index 00000000000..73fa6d42261
+--- /dev/null
++++ b/src/vs/workbench/api/common/extHostRemovedApi.notebook.ts
+@@ -0,0 +1,151 @@
++/*---------------------------------------------------------------------------------------------
++ *  Copyright (c) Microsoft Corporation. All rights reserved.
++ *  Licensed under the MIT License. See License.txt in the project root for license information.
++ *--------------------------------------------------------------------------------------------*/
++
++import type * as vscode from 'vscode';
++import { Event } from '../../../base/common/event.js';
++import { URI } from '../../../base/common/uri.js';
++import { IExtensionDescription } from '../../../platform/extensions/common/extensions.js';
++import { checkProposedApiEnabled, isProposedApiEnabled } from '../../services/extensions/common/extensions.js';
++import { asWebviewUri } from '../../contrib/webview/common/webview.js';
++import { NotebookControllerAffinity2 } from './extHostTypes.js';
++
++/**
++ * Shuko (C-4-notebook): notebooks (the notebook editor, cell execution, kernels, output renderers),
++ * the interactive window and the notebook REPL are removed. The extension API entry points stay,
++ * but do nothing: there are never notebook documents or notebook editors, registrations return a
++ * disposable that does nothing, events never fire, and opening or showing a notebook is refused.
++ * Proposed API checks are kept so that the gating is the same as before.
++ */
++
++const notebooksUnavailable = 'Notebooks are not available in this build';
++
++function noopDisposable(): vscode.Disposable {
++	return { dispose() { } };
++}
++
++function createNoopNotebookController(extension: IExtensionDescription, id: string, notebookType: string, label: string, handler: ((cells: vscode.NotebookCell[], notebook: vscode.NotebookDocument, controller: vscode.NotebookController) => void | Thenable<void>) | undefined, rendererScripts: vscode.NotebookRendererScript[] | undefined): vscode.NotebookController {
++	let _executeHandler = handler ?? (() => { });
++	let _interruptHandler: ((notebook: vscode.NotebookDocument) => void | Thenable<void>) | undefined;
++	let _variableProvider: vscode.NotebookVariableProvider | undefined;
++	const _rendererScripts = rendererScripts ?? [];
++	return {
++		id,
++		notebookType,
++		label: label || extension.identifier.value,
++		description: '',
++		detail: '',
++		supportedLanguages: undefined,
++		supportsExecutionOrder: false,
++		get rendererScripts() {
++			return _rendererScripts;
++		},
++		get executeHandler() {
++			return _executeHandler;
++		},
++		set executeHandler(value) {
++			_executeHandler = value ?? (() => { });
++		},
++		get interruptHandler() {
++			return _interruptHandler;
++		},
++		set interruptHandler(value) {
++			_interruptHandler = value;
++		},
++		get variableProvider() {
++			return _variableProvider;
++		},
++		set variableProvider(value) {
++			checkProposedApiEnabled(extension, 'notebookVariableProvider');
++			_variableProvider = value;
++		},
++		onDidChangeSelectedNotebooks: Event.None,
++		onDidReceiveMessage: Event.None,
++		createNotebookCellExecution(_cell: vscode.NotebookCell): vscode.NotebookCellExecution {
++			throw new Error(notebooksUnavailable);
++		},
++		createNotebookExecution(_notebook: vscode.NotebookDocument): vscode.NotebookExecution {
++			checkProposedApiEnabled(extension, 'notebookExecution');
++			throw new Error(notebooksUnavailable);
++		},
++		updateNotebookAffinity(_notebook: vscode.NotebookDocument, affinity: vscode.NotebookControllerAffinity | vscode.NotebookControllerAffinity2): void {
++			// Same gate as the removed extHostNotebookKernels.ts: the proposal only adds the Hidden value
++			if (affinity === NotebookControllerAffinity2.Hidden) {
++				checkProposedApiEnabled(extension, 'notebookControllerAffinityHidden');
++			}
++		},
++		postMessage(_message: any, _editor?: vscode.NotebookEditor): Thenable<boolean> {
++			checkProposedApiEnabled(extension, 'notebookMessaging');
++			return Promise.resolve(false);
++		},
++		asWebviewUri(localResource: vscode.Uri): vscode.Uri {
++			checkProposedApiEnabled(extension, 'notebookMessaging');
++			return asWebviewUri(URI.from(localResource));
++		},
++		dispose(): void {
++		}
++	};
++}
++
++export interface IRemovedNotebookApi {
++	readonly notebooks: typeof vscode.notebooks;
++	readonly window: Pick<typeof vscode.window, 'activeNotebookEditor' | 'onDidChangeActiveNotebookEditor' | 'visibleNotebookEditors' | 'onDidChangeVisibleNotebookEditors' | 'onDidChangeNotebookEditorSelection' | 'onDidChangeNotebookEditorVisibleRanges' | 'showNotebookDocument'>;
++	readonly workspace: Pick<typeof vscode.workspace, 'notebookDocuments' | 'openNotebookDocument' | 'onDidSaveNotebookDocument' | 'onDidChangeNotebookDocument' | 'onWillSaveNotebookDocument' | 'onDidOpenNotebookDocument' | 'onDidCloseNotebookDocument' | 'registerNotebookSerializer'>;
++}
++
++export function createRemovedNotebookApi(extension: IExtensionDescription): IRemovedNotebookApi {
++	const notebooks: typeof vscode.notebooks = {
++		createNotebookController(id: string, notebookType: string, label: string, handler?, rendererScripts?: vscode.NotebookRendererScript[]) {
++			return createNoopNotebookController(extension, id, notebookType, label, handler, isProposedApiEnabled(extension, 'notebookMessaging') ? rendererScripts : undefined);
++		},
++		registerNotebookCellStatusBarItemProvider(_notebookType: string, _provider: vscode.NotebookCellStatusBarItemProvider) {
++			return noopDisposable();
++		},
++		createRendererMessaging(_rendererId: string): vscode.NotebookRendererMessaging {
++			return {
++				onDidReceiveMessage: Event.None,
++				postMessage(_message: any, _editor?: vscode.NotebookEditor): Thenable<boolean> {
++					return Promise.resolve(false);
++				}
++			};
++		},
++		createNotebookControllerDetectionTask(_notebookType: string): vscode.NotebookControllerDetectionTask {
++			checkProposedApiEnabled(extension, 'notebookKernelSource');
++			return noopDisposable();
++		},
++		registerKernelSourceActionProvider(_notebookType: string, _provider: vscode.NotebookKernelSourceActionProvider) {
++			checkProposedApiEnabled(extension, 'notebookKernelSource');
++			return noopDisposable();
++		},
++	};
++
++	const window: IRemovedNotebookApi['window'] = {
++		activeNotebookEditor: undefined,
++		onDidChangeActiveNotebookEditor: Event.None,
++		visibleNotebookEditors: [],
++		onDidChangeVisibleNotebookEditors: Event.None,
++		onDidChangeNotebookEditorSelection: Event.None,
++		onDidChangeNotebookEditorVisibleRanges: Event.None,
++		showNotebookDocument(_document: vscode.NotebookDocument, _options?: vscode.NotebookDocumentShowOptions): Thenable<vscode.NotebookEditor> {
++			return Promise.reject(new Error(notebooksUnavailable));
++		},
++	};
++
++	const workspace: IRemovedNotebookApi['workspace'] = {
++		notebookDocuments: [],
++		openNotebookDocument(_uriOrType?: vscode.Uri | string, _content?: vscode.NotebookData): Thenable<vscode.NotebookDocument> {
++			return Promise.reject(new Error(notebooksUnavailable));
++		},
++		onDidSaveNotebookDocument: Event.None,
++		onDidChangeNotebookDocument: Event.None,
++		onWillSaveNotebookDocument: Event.None,
++		onDidOpenNotebookDocument: Event.None,
++		onDidCloseNotebookDocument: Event.None,
++		registerNotebookSerializer(_notebookType: string, _serializer: vscode.NotebookSerializer, _options?: vscode.NotebookDocumentContentOptions, _registration?: vscode.NotebookRegistrationData) {
++			return noopDisposable();
++		},
++	};
++
++	return { notebooks, window, workspace };
++}
+diff --git a/src/vs/workbench/contrib/bulkEdit/browser/bulkCellEdits.ts b/src/vs/workbench/contrib/bulkEdit/browser/bulkCellEdits.ts
+index e4e4e3b936d..df56fcaceb1 100644
+--- a/src/vs/workbench/contrib/bulkEdit/browser/bulkCellEdits.ts
++++ b/src/vs/workbench/contrib/bulkEdit/browser/bulkCellEdits.ts
+@@ -3,19 +3,14 @@
+  *  Licensed under the MIT License. See License.txt in the project root for license information.
+  *--------------------------------------------------------------------------------------------*/
+ 
+-import { groupBy } from '../../../../base/common/arrays.js';
+ import { CancellationToken } from '../../../../base/common/cancellation.js';
+-import { compare } from '../../../../base/common/strings.js';
+ import { isObject } from '../../../../base/common/types.js';
+ import { URI } from '../../../../base/common/uri.js';
+ import { ResourceEdit } from '../../../../editor/browser/services/bulkEditService.js';
+ import { WorkspaceEditMetadata } from '../../../../editor/common/languages.js';
+ import { IProgress } from '../../../../platform/progress/common/progress.js';
+ import { UndoRedoGroup, UndoRedoSource } from '../../../../platform/undoRedo/common/undoRedo.js';
+-import { getNotebookEditorFromEditorPane } from '../../notebook/browser/notebookBrowser.js';
+-import { CellUri, ICellPartialMetadataEdit, ICellReplaceEdit, IDocumentMetadataEdit, ISelectionState, IWorkspaceNotebookCellEdit, SelectionStateType } from '../../notebook/common/notebookCommon.js';
+-import { INotebookEditorModelResolverService } from '../../notebook/common/notebookEditorModelResolverService.js';
+-import { IEditorService } from '../../../services/editor/common/editorService.js';
++import { ICellPartialMetadataEdit, ICellReplaceEdit, IDocumentMetadataEdit, IWorkspaceNotebookCellEdit } from '../../notebook/common/notebookCommon.js';
+ 
+ export class ResourceNotebookCellEdit extends ResourceEdit implements IWorkspaceNotebookCellEdit {
+ 
+@@ -44,65 +39,21 @@ export class ResourceNotebookCellEdit extends ResourceEdit implements IWorkspace
+ 	}
+ }
+ 
++/**
++ * Shuko (C-4-notebook): notebooks are removed (contrib/notebook/browser and the notebook model resolver).
++ * Workspace edits that contain notebook cell edits are refused instead of applied.
++ */
+ export class BulkCellEdits {
+ 
+ 	constructor(
+-		private readonly _undoRedoGroup: UndoRedoGroup,
++		_undoRedoGroup: UndoRedoGroup,
+ 		undoRedoSource: UndoRedoSource | undefined,
+-		private readonly _progress: IProgress<void>,
+-		private readonly _token: CancellationToken,
++		_progress: IProgress<void>,
++		_token: CancellationToken,
+ 		private readonly _edits: ResourceNotebookCellEdit[],
+-		@IEditorService private readonly _editorService: IEditorService,
+-		@INotebookEditorModelResolverService private readonly _notebookModelService: INotebookEditorModelResolverService,
+-	) {
+-		this._edits = this._edits.map(e => {
+-			if (e.resource.scheme === CellUri.scheme) {
+-				const uri = CellUri.parse(e.resource)?.notebook;
+-				if (!uri) {
+-					throw new Error(`Invalid notebook URI: ${e.resource}`);
+-				}
+-
+-				return new ResourceNotebookCellEdit(uri, e.cellEdit, e.notebookVersionId, e.metadata);
+-			} else {
+-				return e;
+-			}
+-		});
+-	}
++	) { }
+ 
+ 	async apply(): Promise<readonly URI[]> {
+-		const resources: URI[] = [];
+-		const editsByNotebook = groupBy(this._edits, (a, b) => compare(a.resource.toString(), b.resource.toString()));
+-
+-		for (const group of editsByNotebook) {
+-			if (this._token.isCancellationRequested) {
+-				break;
+-			}
+-			const [first] = group;
+-			const ref = await this._notebookModelService.resolve(first.resource);
+-
+-			// check state
+-			if (typeof first.notebookVersionId === 'number' && ref.object.notebook.versionId !== first.notebookVersionId) {
+-				ref.dispose();
+-				throw new Error(`Notebook '${first.resource}' has changed in the meantime`);
+-			}
+-
+-			// apply edits
+-			const edits = group.map(entry => entry.cellEdit);
+-			const computeUndo = !ref.object.isReadonly();
+-			const editor = getNotebookEditorFromEditorPane(this._editorService.activeEditorPane);
+-			const initialSelectionState: ISelectionState | undefined = editor?.textModel?.uri.toString() === ref.object.notebook.uri.toString() ? {
+-				kind: SelectionStateType.Index,
+-				focus: editor.getFocus(),
+-				selections: editor.getSelections()
+-			} : undefined;
+-			ref.object.notebook.applyEdits(edits, true, initialSelectionState, () => undefined, this._undoRedoGroup, computeUndo);
+-			ref.dispose();
+-
+-			this._progress.report(undefined);
+-
+-			resources.push(first.resource);
+-		}
+-
+-		return resources;
++		throw new Error(`Notebooks are not available in this build: ${this._edits.length} notebook cell edit(s) were not applied`);
+ 	}
+ }
+diff --git a/src/vs/workbench/contrib/search/browser/replaceService.ts b/src/vs/workbench/contrib/search/browser/replaceService.ts
+index 463b1ef506d..ea776ad1835 100644
+--- a/src/vs/workbench/contrib/search/browser/replaceService.ts
++++ b/src/vs/workbench/contrib/search/browser/replaceService.ts
+@@ -6,7 +6,7 @@
+ import * as nls from '../../../../nls.js';
+ import { URI } from '../../../../base/common/uri.js';
+ import * as network from '../../../../base/common/network.js';
+-import { Disposable, IReference } from '../../../../base/common/lifecycle.js';
++import { Disposable } from '../../../../base/common/lifecycle.js';
+ import { IReplaceService } from './replace.js';
+ import { IEditorService } from '../../../services/editor/common/editorService.js';
+ import { IModelService } from '../../../../editor/common/services/model.js';
+@@ -27,10 +27,7 @@ import { ILabelService } from '../../../../platform/label/common/label.js';
+ import { dirname } from '../../../../base/common/resources.js';
+ import { Promises } from '../../../../base/common/async.js';
+ import { SaveSourceRegistry } from '../../../common/editor.js';
+-import { CellUri, IResolvedNotebookEditorModel } from '../../notebook/common/notebookCommon.js';
+-import { INotebookEditorModelResolverService } from '../../notebook/common/notebookEditorModelResolverService.js';
+ import { ISearchTreeFileMatch, isSearchTreeFileMatch, ISearchTreeMatch, FileMatchOrMatch, isSearchTreeMatch } from './searchTreeModel/searchTreeCommon.js';
+-import { isIMatchInNotebook } from './notebookSearch/notebookSearchModelBase.js';
+ 
+ const REPLACE_PREVIEW = 'replacePreview';
+ 
+@@ -105,8 +102,7 @@ export class ReplaceService implements IReplaceService {
+ 		@IEditorService private readonly editorService: IEditorService,
+ 		@ITextModelService private readonly textModelResolverService: ITextModelService,
+ 		@IBulkEditService private readonly bulkEditorService: IBulkEditService,
+-		@ILabelService private readonly labelService: ILabelService,
+-		@INotebookEditorModelResolverService private readonly notebookEditorModelResolverService: INotebookEditorModelResolverService
++		@ILabelService private readonly labelService: ILabelService
+ 	) { }
+ 
+ 	replace(match: ISearchTreeMatch): Promise<any>;
+@@ -117,21 +113,7 @@ export class ReplaceService implements IReplaceService {
+ 		await this.bulkEditorService.apply(edits, { progress });
+ 
+ 		const rawTextPromises = edits.map(async e => {
+-			if (e.resource.scheme === network.Schemas.vscodeNotebookCell) {
+-				const notebookResource = CellUri.parse(e.resource)?.notebook;
+-				if (notebookResource) {
+-					let ref: IReference<IResolvedNotebookEditorModel> | undefined;
+-					try {
+-						ref = await this.notebookEditorModelResolverService.resolve(notebookResource);
+-						await ref.object.save({ source: ReplaceService.REPLACE_SAVE_SOURCE });
+-					} finally {
+-						ref?.dispose();
+-					}
+-				}
+-				return;
+-			} else {
+-				return this.textFileService.files.get(e.resource)?.save({ source: ReplaceService.REPLACE_SAVE_SOURCE });
+-			}
++			return this.textFileService.files.get(e.resource)?.save({ source: ReplaceService.REPLACE_SAVE_SOURCE });
+ 		});
+ 
+ 		return Promises.settled(rawTextPromises);
+@@ -203,14 +185,8 @@ export class ReplaceService implements IReplaceService {
+ 
+ 		if (isSearchTreeMatch(arg)) {
+ 			if (!arg.isReadonly) {
+-				if (isIMatchInNotebook(arg)) {
+-					// only apply edits if it's not a webview match, since webview matches are read-only
+-					const match = arg;
+-					edits.push(this.createEdit(match, match.replaceString, match.cell?.uri));
+-				} else {
+-					const match = <ISearchTreeMatch>arg;
+-					edits.push(this.createEdit(match, match.replaceString, resource));
+-				}
++				const match = <ISearchTreeMatch>arg;
++				edits.push(this.createEdit(match, match.replaceString, resource));
+ 			}
+ 		}
+ 
+diff --git a/src/vs/workbench/contrib/search/browser/search.common.contribution.ts b/src/vs/workbench/contrib/search/browser/search.common.contribution.ts
+index 74550971ffe..faf07dfeb77 100644
+--- a/src/vs/workbench/contrib/search/browser/search.common.contribution.ts
++++ b/src/vs/workbench/contrib/search/browser/search.common.contribution.ts
+@@ -11,13 +11,11 @@ import { InstantiationType, registerSingleton } from '../../../../platform/insta
+ import { ConfigurationScope, Extensions as ConfigurationExtensions, IConfigurationRegistry } from '../../../../platform/configuration/common/configurationRegistry.js';
+ import { Registry } from '../../../../platform/registry/common/platform.js';
+ import { registerContributions as replaceContributions } from './replaceContributions.js';
+-import { registerContributions as notebookSearchContributions } from './notebookSearch/notebookSearchContributions.js';
+ import { ISearchHistoryService, SearchHistoryService } from '../common/searchHistoryService.js';
+ import { searchConfigurationNode } from '../common/search.js';
+ import { DEFAULT_MAX_SEARCH_RESULTS, SEARCH_EXCLUDE_CONFIG, SearchSortOrder } from '../../../services/search/common/search.js';
+ 
+ replaceContributions();
+-notebookSearchContributions();
+ registerSingleton(ISearchHistoryService, SearchHistoryService, InstantiationType.Delayed);
+ 
+ Registry.as<IConfigurationRegistry>(ConfigurationExtensions.Configuration).registerConfiguration({
+diff --git a/src/vs/workbench/contrib/search/browser/search.contribution.ts b/src/vs/workbench/contrib/search/browser/search.contribution.ts
+index bf220c896cf..ccea25c8d01 100644
+--- a/src/vs/workbench/contrib/search/browser/search.contribution.ts
++++ b/src/vs/workbench/contrib/search/browser/search.contribution.ts
+@@ -204,11 +204,6 @@ configurationRegistry.registerConfiguration({
+ 			description: nls.localize('search.quickAccess.preserveInput', "Controls whether the last typed input to Quick Search should be restored when opening it the next time."),
+ 			default: false
+ 		},
+-		'search.experimental.closedNotebookRichContentResults': {
+-			type: 'boolean',
+-			description: nls.localize('search.experimental.closedNotebookResults', "Show notebook editor rich content results for closed notebooks. Please refresh your search results after changing this setting."),
+-			default: false
+-		},
+ 		'search.experimental.useIgnoreFilesInFindFiles': {
+ 			type: 'boolean',
+ 			default: false,
+diff --git a/src/vs/workbench/contrib/search/browser/searchActionsRemoveReplace.ts b/src/vs/workbench/contrib/search/browser/searchActionsRemoveReplace.ts
+index b373dfa1890..cdd0844d3f1 100644
+--- a/src/vs/workbench/contrib/search/browser/searchActionsRemoveReplace.ts
++++ b/src/vs/workbench/contrib/search/browser/searchActionsRemoveReplace.ts
+@@ -23,7 +23,6 @@ import { KeyCode, KeyMod } from '../../../../base/common/keyCodes.js';
+ import { category, getElementsToOperateOn, getSearchView, shouldRefocus } from './searchActionsBase.js';
+ import { equals } from '../../../../base/common/arrays.js';
+ import { arrayContainsElementOrParent, RenderableMatch, ISearchResult, isSearchTreeFileMatch, isSearchTreeFolderMatch, isSearchTreeMatch, isSearchResult, isTextSearchHeading } from './searchTreeModel/searchTreeCommon.js';
+-import { MatchInNotebook } from './notebookSearch/notebookSearchModel.js';
+ 
+ 
+ //#region Interfaces
+@@ -308,7 +307,7 @@ async function performReplace(accessor: ServicesAccessor,
+ 
+ 			if (isSearchTreeMatch(nextFocusElement)) {
+ 				const useReplacePreview = configurationService.getValue<ISearchConfiguration>().search?.useReplacePreview;
+-				if (!useReplacePreview || instantiationService.invokeFunction(accessor => hasToOpenFile(accessor, nextFocusElement!)) || nextFocusElement instanceof MatchInNotebook) {
++				if (!useReplacePreview || instantiationService.invokeFunction(accessor => hasToOpenFile(accessor, nextFocusElement!))) {
+ 					viewlet?.open(nextFocusElement, true);
+ 				} else {
+ 					instantiationService.invokeFunction(accessor => accessor.get(IReplaceService)).openReplacePreview(nextFocusElement, true);
+diff --git a/src/vs/workbench/contrib/search/browser/searchCompare.ts b/src/vs/workbench/contrib/search/browser/searchCompare.ts
+index 25ad68ccc9f..0cdcc6a6003 100644
+--- a/src/vs/workbench/contrib/search/browser/searchCompare.ts
++++ b/src/vs/workbench/contrib/search/browser/searchCompare.ts
+@@ -3,7 +3,6 @@
+  *  Licensed under the MIT License. See License.txt in the project root for license information.
+  *--------------------------------------------------------------------------------------------*/
+ 
+-import { IMatchInNotebook, isIMatchInNotebook } from './notebookSearch/notebookSearchModelBase.js';
+ import { compareFileExtensions, compareFileNames, comparePaths } from '../../../../base/common/comparers.js';
+ import { SearchSortOrder } from '../../../services/search/common/search.js';
+ import { Range } from '../../../../editor/common/core/range.js';
+@@ -76,10 +75,6 @@ export function searchMatchComparer(elementA: RenderableMatch, elementB: Rendera
+ 		}
+ 	}
+ 
+-	if (isIMatchInNotebook(elementA) && isIMatchInNotebook(elementB)) {
+-		return compareNotebookPos(elementA, elementB);
+-	}
+-
+ 	if (isSearchTreeMatch(elementA) && isSearchTreeMatch(elementB)) {
+ 		return Range.compareRangesUsingStarts(elementA.range(), elementB.range());
+ 	}
+@@ -87,28 +82,6 @@ export function searchMatchComparer(elementA: RenderableMatch, elementB: Rendera
+ 	return 0;
+ }
+ 
+-function compareNotebookPos(match1: IMatchInNotebook, match2: IMatchInNotebook): number {
+-	if (match1.cellIndex === match2.cellIndex) {
+-
+-		if (match1.webviewIndex !== undefined && match2.webviewIndex !== undefined) {
+-			return match1.webviewIndex - match2.webviewIndex;
+-		} else if (match1.webviewIndex === undefined && match2.webviewIndex === undefined) {
+-			return Range.compareRangesUsingStarts(match1.range(), match2.range());
+-		} else {
+-			// webview matches should always be after content matches
+-			if (match1.webviewIndex !== undefined) {
+-				return 1;
+-			} else {
+-				return -1;
+-			}
+-		}
+-	} else if (match1.cellIndex < match2.cellIndex) {
+-		return -1;
+-	} else {
+-		return 1;
+-	}
+-}
+-
+ export function searchComparer(elementA: RenderableMatch, elementB: RenderableMatch, sortOrder: SearchSortOrder = SearchSortOrder.Default): number {
+ 	const elemAParents = createParentList(elementA);
+ 	const elemBParents = createParentList(elementB);
+diff --git a/src/vs/workbench/contrib/search/browser/searchFindInput.ts b/src/vs/workbench/contrib/search/browser/searchFindInput.ts
+index a823eacea8a..c712e8f185c 100644
+--- a/src/vs/workbench/contrib/search/browser/searchFindInput.ts
++++ b/src/vs/workbench/contrib/search/browser/searchFindInput.ts
+@@ -9,15 +9,11 @@ import { IContextKeyService } from '../../../../platform/contextkey/common/conte
+ import { IContextMenuService } from '../../../../platform/contextview/browser/contextView.js';
+ import { ContextScopedFindInput } from '../../../../platform/history/browser/contextScopedHistoryWidget.js';
+ import { IInstantiationService } from '../../../../platform/instantiation/common/instantiation.js';
+-import { NotebookFindFilters } from '../../notebook/browser/contrib/find/findFilters.js';
+-import { NotebookFindInputFilterButton } from '../../notebook/browser/contrib/find/notebookFindReplaceWidget.js';
+-import * as nls from '../../../../nls.js';
+ import { Emitter } from '../../../../base/common/event.js';
+ 
+ 
++// Shuko (C-4-notebook): the notebook find filter button (contrib/notebook/browser) is removed with the notebooks.
+ export class SearchFindInput extends ContextScopedFindInput {
+-	private _findFilter: NotebookFindInputFilterButton;
+-	private _filterChecked: boolean = false;
+ 	private readonly _onDidChangeAIToggle = this._register(new Emitter<boolean>());
+ 	public readonly onDidChangeAIToggle = this._onDidChangeAIToggle.event;
+ 
+@@ -27,60 +23,8 @@ export class SearchFindInput extends ContextScopedFindInput {
+ 		options: IFindInputOptions,
+ 		contextKeyService: IContextKeyService,
+ 		readonly contextMenuService: IContextMenuService,
+-		readonly instantiationService: IInstantiationService,
+-		readonly filters: NotebookFindFilters,
+-		filterStartVisiblitity: boolean
++		readonly instantiationService: IInstantiationService
+ 	) {
+ 		super(container, contextViewProvider, options, contextKeyService);
+-		this._findFilter = this._register(
+-			new NotebookFindInputFilterButton(
+-				filters,
+-				contextMenuService,
+-				instantiationService,
+-				options,
+-				nls.localize('searchFindInputNotebookFilter.label', "Notebook Find Filters")
+-			));
+-
+-
+-		this._updatePadding();
+-
+-		this.controls.appendChild(this._findFilter.container);
+-		this._findFilter.container.classList.add('monaco-custom-toggle');
+-		this.filterVisible = filterStartVisiblitity;
+-	}
+-
+-	private _updatePadding() {
+-		this.inputBox.paddingRight =
+-			(this.caseSensitive?.visible ? this.caseSensitive.width() : 0) +
+-			(this.wholeWords?.visible ? this.wholeWords.width() : 0) +
+-			(this.regex?.visible ? this.regex.width() : 0) +
+-			(this._findFilter.visible ? this._findFilter.width() : 0);
+-	}
+-
+-	set filterVisible(visible: boolean) {
+-		this._findFilter.visible = visible;
+-		this.updateFilterStyles();
+-		this._updatePadding();
+-	}
+-
+-	override setEnabled(enabled: boolean) {
+-		super.setEnabled(enabled);
+-		if (enabled && (!this._filterChecked || !this._findFilter.visible)) {
+-			this.regex?.enable();
+-		} else {
+-			this.regex?.disable();
+-		}
+-	}
+-
+-	updateFilterStyles() {
+-		// filter is checked if it's in a non-default state
+-		this._filterChecked =
+-			!this.filters.markupInput ||
+-			!this.filters.markupPreview ||
+-			!this.filters.codeInput ||
+-			!this.filters.codeOutput;
+-
+-		// TODO: find a way to express that searching notebook output and markdown preview don't support regex.
+-		this._findFilter.applyStyles(this._filterChecked);
+ 	}
+ }
+diff --git a/src/vs/workbench/contrib/search/browser/searchTreeModel/fileMatch.ts b/src/vs/workbench/contrib/search/browser/searchTreeModel/fileMatch.ts
+index 7ac7a45def6..2599e0c5814 100644
+--- a/src/vs/workbench/contrib/search/browser/searchTreeModel/fileMatch.ts
++++ b/src/vs/workbench/contrib/search/browser/searchTreeModel/fileMatch.ts
+@@ -16,7 +16,6 @@ import { ILabelService } from '../../../../../platform/label/common/label.js';
+ import { overviewRulerFindMatchForeground, minimapFindMatch } from '../../../../../platform/theme/common/colorRegistry.js';
+ import { IFileMatch, IPatternInfo, ITextSearchPreviewOptions, resultIsMatch, DEFAULT_MAX_SEARCH_RESULTS, ITextSearchResult, ITextSearchContext } from '../../../../services/search/common/search.js';
+ import { editorMatchesToTextSearchResults, getTextSearchMatchWithModelContext } from '../../../../services/search/common/searchHelpers.js';
+-import { FindMatchDecorationModel } from '../../../notebook/browser/contrib/find/findMatchDecorationModel.js';
+ import { IReplaceService } from '../replace.js';
+ import { FILE_MATCH_PREFIX, ISearchTreeFileMatch, ISearchTreeFolderMatch, ISearchTreeFolderMatchWorkspaceRoot, ISearchTreeMatch } from './searchTreeCommon.js';
+ import { Emitter, Event } from '../../../../../base/common/event.js';
+@@ -60,8 +59,6 @@ export class FileMatchImpl extends Disposable implements ISearchTreeFileMatch {
+ 		return (selected ? FileMatchImpl._CURRENT_FIND_MATCH : FileMatchImpl._FIND_MATCH);
+ 	}
+ 
+-	protected _findMatchDecorationModel: FindMatchDecorationModel | undefined;
+-
+ 	protected _onChange = this._register(new Emitter<{ didRemove?: boolean; forceUpdateModel?: boolean }>());
+ 	readonly onChange: Event<{ didRemove?: boolean; forceUpdateModel?: boolean }> = this._onChange.event;
+ 
+@@ -130,6 +127,8 @@ export class FileMatchImpl extends Disposable implements ISearchTreeFileMatch {
+ 							.forEach(m => this.add(m));
+ 					});
+ 			}
++			// Shuko (C-4-notebook): the removed NotebookCompatibleFileMatch added the context lines here
++			this.addContext(this.rawMatch.results);
+ 		}
+ 	}
+ 	bindModel(model: ITextModel): void {
+@@ -330,7 +329,6 @@ export class FileMatchImpl extends Disposable implements ISearchTreeFileMatch {
+ 		this._textMatches.delete(match.id());
+ 		if (this.isMatchSelected(match)) {
+ 			this.setSelectedMatch(null);
+-			this._findMatchDecorationModel?.clearCurrentFindMatchDecoration();
+ 		} else {
+ 			this.updateHighlights();
+ 		}
+diff --git a/src/vs/workbench/contrib/search/browser/searchTreeModel/folderMatch.ts b/src/vs/workbench/contrib/search/browser/searchTreeModel/folderMatch.ts
+index 7e0db52044e..bb9a1e4eac9 100644
+--- a/src/vs/workbench/contrib/search/browser/searchTreeModel/folderMatch.ts
++++ b/src/vs/workbench/contrib/search/browser/searchTreeModel/folderMatch.ts
+@@ -18,11 +18,6 @@ import { IFileMatch, IPatternInfo, ITextQuery, ITextSearchPreviewOptions, result
+ 
+ import { FileMatchImpl } from './fileMatch.js';
+ import { IChangeEvent, ISearchTreeFileMatch, ISearchTreeFolderMatch, ISearchTreeFolderMatchWithResource, ISearchTreeFolderMatchNoRoot, ISearchTreeFolderMatchWorkspaceRoot, ISearchModel, ISearchResult, isSearchTreeFolderMatchWorkspaceRoot, ITextSearchHeading, isSearchTreeFolderMatchNoRoot, FOLDER_MATCH_PREFIX, getFileMatches } from './searchTreeCommon.js';
+-import { NotebookEditorWidget } from '../../../notebook/browser/notebookEditorWidget.js';
+-import { isINotebookFileMatchNoModel } from '../../common/searchNotebookHelpers.js';
+-import { NotebookCompatibleFileMatch } from '../notebookSearch/notebookSearchModel.js';
+-import { isINotebookFileMatchWithModel, getIDFromINotebookCellMatch } from '../notebookSearch/searchNotebookHelpers.js';
+-import { isNotebookFileMatch } from '../notebookSearch/notebookSearchModelBase.js';
+ import { textSearchResultToMatches } from './match.js';
+ 
+ export class FolderMatchImpl extends Disposable implements ISearchTreeFolderMatch {
+@@ -330,21 +325,6 @@ export class FolderMatchImpl extends Disposable implements ISearchTreeFolderMatc
+ 		}
+ 	}
+ 
+-	async bindNotebookEditorWidget(editor: NotebookEditorWidget, resource: URI) {
+-		const fileMatch = this._fileMatches.get(resource);
+-		if (isNotebookFileMatch(fileMatch)) {
+-			if (fileMatch) {
+-				fileMatch.bindNotebookEditorWidget(editor);
+-				await fileMatch.updateMatchesForEditorWidget();
+-			} else {
+-				const folderMatches = this.folderMatchesIterator();
+-				for (const elem of folderMatches) {
+-					await elem.bindNotebookEditorWidget(editor, resource);
+-				}
+-			}
+-		}
+-	}
+-
+ 	addFileMatch(raw: IFileMatch[], silent: boolean, searchInstanceID: string): void {
+ 		// when adding a fileMatch that has intermediate directories
+ 		const added: ISearchTreeFileMatch[] = [];
+@@ -364,21 +344,6 @@ export class FolderMatchImpl extends Disposable implements ISearchTreeFolderMatc
+ 						});
+ 				}
+ 
+-				// add cell matches
+-				if (isINotebookFileMatchWithModel(rawFileMatch) || isINotebookFileMatchNoModel(rawFileMatch)) {
+-					rawFileMatch.cellResults?.forEach(rawCellMatch => {
+-						if (isNotebookFileMatch(existingFileMatch)) {
+-							const existingCellMatch = existingFileMatch.getCellMatch(getIDFromINotebookCellMatch(rawCellMatch));
+-							if (existingCellMatch) {
+-								existingCellMatch.addContentMatches(rawCellMatch.contentResults);
+-								existingCellMatch.addWebviewMatches(rawCellMatch.webviewResults);
+-							} else {
+-								existingFileMatch.addCellMatch(rawCellMatch);
+-							}
+-						}
+-					});
+-				}
+-
+ 				updated.push(existingFileMatch);
+ 
+ 				if (rawFileMatch.results && rawFileMatch.results.length > 0) {
+@@ -398,22 +363,6 @@ export class FolderMatchImpl extends Disposable implements ISearchTreeFolderMatc
+ 		}
+ 	}
+ 
+-	unbindNotebookEditorWidget(editor: NotebookEditorWidget, resource: URI) {
+-		const fileMatch = this._fileMatches.get(resource);
+-
+-		if (isNotebookFileMatch(fileMatch)) {
+-			if (fileMatch) {
+-				fileMatch.unbindNotebookEditorWidget(editor);
+-			} else {
+-				const folderMatches = this.folderMatchesIterator();
+-				for (const elem of folderMatches) {
+-					elem.unbindNotebookEditorWidget(editor, resource);
+-				}
+-			}
+-		}
+-
+-	}
+-
+ 	disposeMatches(): void {
+ 		[...this._fileMatches.values()].forEach((fileMatch: ISearchTreeFileMatch) => fileMatch.dispose());
+ 		[...this._folderMatches.values()].forEach((folderMatch: FolderMatchImpl) => folderMatch.disposeMatches());
+@@ -484,17 +433,15 @@ export class FolderMatchWorkspaceRootImpl extends FolderMatchWithResourceImpl im
+ 	}
+ 
+ 	private createFileMatch(query: IPatternInfo, previewOptions: ITextSearchPreviewOptions | undefined, maxResults: number | undefined, parent: FolderMatchImpl, rawFileMatch: IFileMatch, closestRoot: ISearchTreeFolderMatchWorkspaceRoot | null, searchInstanceID: string): FileMatchImpl {
+-		// TODO: can probably just create FileMatchImpl if we don't expect cell results from the file.
+ 		const fileMatch =
+ 			this.instantiationService.createInstance(
+-				NotebookCompatibleFileMatch,
++				FileMatchImpl,
+ 				query,
+ 				previewOptions,
+ 				maxResults,
+ 				parent,
+ 				rawFileMatch,
+ 				closestRoot,
+-				searchInstanceID,
+ 			);
+ 		fileMatch.createMatches();
+ 		parent.doAddFile(fileMatch);
+@@ -549,15 +496,13 @@ export class FolderMatchNoRootImpl extends FolderMatchImpl implements ISearchTre
+ 
+ 	createAndConfigureFileMatch(rawFileMatch: IFileMatch, searchInstanceID: string): ISearchTreeFileMatch {
+ 		const contentPatternToUse = typeof (this._query.contentPattern) === 'string' ? { pattern: this._query.contentPattern } : this._query.contentPattern;
+-		// TODO: can probably just create FileMatchImpl if we don't expect cell results from the file.
+ 		const fileMatch = this._register(this.instantiationService.createInstance(
+-			NotebookCompatibleFileMatch,
++			FileMatchImpl,
+ 			contentPatternToUse,
+ 			this._query.previewOptions,
+ 			this._query.maxResults,
+ 			this, rawFileMatch,
+ 			null,
+-			searchInstanceID,
+ 		));
+ 		fileMatch.createMatches();
+ 		this.doAddFile(fileMatch);
+diff --git a/src/vs/workbench/contrib/search/browser/searchTreeModel/searchModel.ts b/src/vs/workbench/contrib/search/browser/searchTreeModel/searchModel.ts
+index b14e2732a1d..3186fed8000 100644
+--- a/src/vs/workbench/contrib/search/browser/searchTreeModel/searchModel.ts
++++ b/src/vs/workbench/contrib/search/browser/searchTreeModel/searchModel.ts
+@@ -15,7 +15,6 @@ import { IConfigurationService } from '../../../../../platform/configuration/com
+ import { IInstantiationService } from '../../../../../platform/instantiation/common/instantiation.js';
+ import { ILogService } from '../../../../../platform/log/common/log.js';
+ import { ITelemetryService } from '../../../../../platform/telemetry/common/telemetry.js';
+-import { INotebookSearchService } from '../../common/notebookSearch.js';
+ import { ReplacePattern } from '../../../../services/search/common/replace.js';
+ import { IFileMatch, IPatternInfo, ISearchComplete, ISearchConfigurationProperties, ISearchProgressItem, ISearchService, ITextQuery, ITextSearchStats, QueryType, SearchCompletionExitCode } from '../../../../services/search/common/search.js';
+ import { IChangeEvent, mergeSearchResultEvents, SearchModelLocation, ISearchModel, ISearchResult, SEARCH_MODEL_PREFIX } from './searchTreeCommon.js';
+@@ -57,7 +56,6 @@ export class SearchModelImpl extends Disposable implements ISearchModel {
+ 		@IConfigurationService private readonly configurationService: IConfigurationService,
+ 		@IInstantiationService private readonly instantiationService: IInstantiationService,
+ 		@ILogService private readonly logService: ILogService,
+-		@INotebookSearchService private readonly notebookSearchService: INotebookSearchService,
+ 	) {
+ 		super();
+ 		this._searchResult = this.instantiationService.createInstance(SearchResultImpl, this);
+@@ -169,12 +167,9 @@ export class SearchModelImpl extends Disposable implements ISearchModel {
+ 		};
+ 		const tokenSource = this.currentCancelTokenSource = new CancellationTokenSource(callerToken);
+ 
+-		const notebookResult = this.notebookSearchService.notebookSearch(query, tokenSource.token, searchInstanceID, asyncGenerateOnProgress);
+ 		const textResult = this.searchService.textSearchSplitSyncAsync(
+ 			searchQuery,
+ 			tokenSource.token, asyncGenerateOnProgress,
+-			notebookResult.openFilesToScan,
+-			notebookResult.allScannedFiles,
+ 		);
+ 
+ 		const syncResults = textResult.syncResults.results;
+@@ -185,12 +180,11 @@ export class SearchModelImpl extends Disposable implements ISearchModel {
+ 
+ 			// resolve async parts of search
+ 			const allClosedEditorResults = await textResult.asyncResults;
+-			const resolvedNotebookResults = await notebookResult.completeData;
+ 			const searchLength = Date.now() - searchStart;
+ 			const resolvedResult: ISearchComplete = {
+-				results: [...allClosedEditorResults.results, ...resolvedNotebookResults.results],
+-				messages: [...allClosedEditorResults.messages, ...resolvedNotebookResults.messages],
+-				limitHit: allClosedEditorResults.limitHit || resolvedNotebookResults.limitHit,
++				results: [...allClosedEditorResults.results],
++				messages: [...allClosedEditorResults.messages],
++				limitHit: allClosedEditorResults.limitHit,
+ 				exit: allClosedEditorResults.exit,
+ 				stats: allClosedEditorResults.stats,
+ 			};
+diff --git a/src/vs/workbench/contrib/search/browser/searchTreeModel/searchResult.ts b/src/vs/workbench/contrib/search/browser/searchTreeModel/searchResult.ts
+index d9394df8c72..1695f05f7c8 100644
+--- a/src/vs/workbench/contrib/search/browser/searchTreeModel/searchResult.ts
++++ b/src/vs/workbench/contrib/search/browser/searchTreeModel/searchResult.ts
+@@ -4,14 +4,11 @@
+  *--------------------------------------------------------------------------------------------*/
+ 
+ import { Event, PauseableEmitter } from '../../../../../base/common/event.js';
+-import { Disposable, MutableDisposable } from '../../../../../base/common/lifecycle.js';
+-import { URI } from '../../../../../base/common/uri.js';
++import { Disposable } from '../../../../../base/common/lifecycle.js';
+ import { ITextModel } from '../../../../../editor/common/model.js';
+ import { IModelService } from '../../../../../editor/common/services/model.js';
+ import { IInstantiationService } from '../../../../../platform/instantiation/common/instantiation.js';
+ import { IProgress, IProgressStep } from '../../../../../platform/progress/common/progress.js';
+-import { NotebookEditorWidget } from '../../../notebook/browser/notebookEditorWidget.js';
+-import { INotebookEditorService } from '../../../notebook/browser/services/notebookEditorService.js';
+ import { IAITextQuery, IFileMatch, ISearchComplete, ITextQuery, QueryType } from '../../../../services/search/common/search.js';
+ import { AI_TEXT_SEARCH_RESULT_ID, arrayContainsElementOrParent, IChangeEvent, ISearchTreeFileMatch, ISearchTreeFolderMatch, IPlainTextSearchHeading, ISearchModel, ISearchResult, isSearchTreeFileMatch, isSearchTreeFolderMatch, isSearchTreeFolderMatchNoRoot, isSearchTreeFolderMatchWithResource, isSearchTreeMatch, isTextSearchHeading, ITextSearchHeading, mergeSearchResultEvents, RenderableMatch, SEARCH_RESULT_PREFIX, TEXT_SEARCH_HEADING_PREFIX } from './searchTreeCommon.js';
+ 
+@@ -63,8 +60,6 @@ export class SearchResultImpl extends Disposable implements ISearchResult {
+ 		merge: mergeSearchResultEvents
+ 	}));
+ 	readonly onChange: Event<IChangeEvent> = this._onChange.event;
+-	private readonly _onWillChangeModelListener = this._register(new MutableDisposable());
+-	private readonly _onDidChangeModelListener = this._register(new MutableDisposable());
+ 	private _plainTextSearchResult: PlainTextSearchHeadingImpl;
+ 	private _aiTextSearchResult: RemovedAITextSearchHeadingImpl;
+ 
+@@ -73,7 +68,6 @@ export class SearchResultImpl extends Disposable implements ISearchResult {
+ 		public readonly searchModel: ISearchModel,
+ 		@IInstantiationService private readonly instantiationService: IInstantiationService,
+ 		@IModelService private readonly modelService: IModelService,
+-		@INotebookEditorService private readonly notebookEditorService: INotebookEditorService,
+ 	) {
+ 		super();
+ 		this._plainTextSearchResult = this._register(this.instantiationService.createInstance(PlainTextSearchHeadingImpl, this));
+@@ -85,12 +79,6 @@ export class SearchResultImpl extends Disposable implements ISearchResult {
+ 		this.modelService.getModels().forEach(model => this.onModelAdded(model));
+ 		this._register(this.modelService.onModelAdded(model => this.onModelAdded(model)));
+ 
+-		this._register(this.notebookEditorService.onDidAddNotebookEditor(widget => {
+-			if (widget instanceof NotebookEditorWidget) {
+-				this.onDidAddNotebookEditorWidget(<NotebookEditorWidget>widget);
+-			}
+-		}));
+-
+ 		this._id = SEARCH_RESULT_PREFIX + Date.now().toString();
+ 	}
+ 
+@@ -193,26 +181,6 @@ export class SearchResultImpl extends Disposable implements ISearchResult {
+ 		this.aiTextSearchResult.query = aiTextQueryFromTextQuery(query);
+ 	}
+ 
+-	private onDidAddNotebookEditorWidget(widget: NotebookEditorWidget): void {
+-
+-		this._onWillChangeModelListener.value = widget.onWillChangeModel(
+-			(model) => {
+-				if (model) {
+-					this.onNotebookEditorWidgetRemoved(widget, model?.uri);
+-				}
+-			}
+-		);
+-
+-		// listen to view model change as we are searching on both inputs and outputs
+-		this._onDidChangeModelListener.value = widget.onDidAttachViewModel(
+-			() => {
+-				if (widget.hasModel()) {
+-					this.onNotebookEditorWidgetAdded(widget, widget.textModel.uri);
+-				}
+-			}
+-		);
+-	}
+-
+ 	folderMatches(ai: boolean = false): ISearchTreeFolderMatch[] {
+ 		if (ai) {
+ 			return this._aiTextSearchResult.folderMatches();
+@@ -225,16 +193,6 @@ export class SearchResultImpl extends Disposable implements ISearchResult {
+ 		folderMatch?.bindModel(model);
+ 	}
+ 
+-	private async onNotebookEditorWidgetAdded(editor: NotebookEditorWidget, resource: URI): Promise<void> {
+-		const folderMatch = this._plainTextSearchResult.findFolderSubstr(resource);
+-		await folderMatch?.bindNotebookEditorWidget(editor, resource);
+-	}
+-
+-	private onNotebookEditorWidgetRemoved(editor: NotebookEditorWidget, resource: URI): void {
+-		const folderMatch = this._plainTextSearchResult.findFolderSubstr(resource);
+-		folderMatch?.unbindNotebookEditorWidget(editor, resource);
+-	}
+-
+ 
+ 	add(allRaw: IFileMatch[], searchInstanceID: string, ai: boolean, silent: boolean = false): void {
+ 		this._plainTextSearchResult.hidden = false;
+diff --git a/src/vs/workbench/contrib/search/browser/searchTreeModel/searchTreeCommon.ts b/src/vs/workbench/contrib/search/browser/searchTreeModel/searchTreeCommon.ts
+index 67138618aa8..aa8a1074af9 100644
+--- a/src/vs/workbench/contrib/search/browser/searchTreeModel/searchTreeCommon.ts
++++ b/src/vs/workbench/contrib/search/browser/searchTreeModel/searchTreeCommon.ts
+@@ -11,7 +11,6 @@ import { ITextModel } from '../../../../../editor/common/model.js';
+ import { IFileStatWithPartialMetadata, IFileService } from '../../../../../platform/files/common/files.js';
+ import { IProgress, IProgressStep } from '../../../../../platform/progress/common/progress.js';
+ import { ReplacePattern } from '../../../../services/search/common/replace.js';
+-import { NotebookEditorWidget } from '../../../notebook/browser/notebookEditorWidget.js';
+ import { RangeHighlightDecorations } from './rangeDecorations.js';
+ import { Event } from '../../../../../base/common/event.js';
+ 
+@@ -203,9 +202,6 @@ export interface ISearchTreeFolderMatch {
+ 	replaceAll(): Promise<any>;
+ 	recursiveFileCount(): number;
+ 	doRemoveFile(fileMatches: ISearchTreeFileMatch[], dispose?: boolean, trigger?: boolean, keepReadonly?: boolean): void;
+-	unbindNotebookEditorWidget(editor: NotebookEditorWidget, resource: URI): void;
+-	bindNotebookEditorWidget(editor: NotebookEditorWidget, resource: URI): Promise<void>;
+-	unbindNotebookEditorWidget(editor: NotebookEditorWidget, resource: URI): void;
+ 	hasOnlyReadOnlyMatches(): boolean;
+ 	fileMatchesIterator(): IterableIterator<ISearchTreeFileMatch>;
+ 	folderMatchesIterator(): IterableIterator<ISearchTreeFolderMatchWithResource>;
+diff --git a/src/vs/workbench/contrib/search/browser/searchTreeModel/textSearchHeading.ts b/src/vs/workbench/contrib/search/browser/searchTreeModel/textSearchHeading.ts
+index b2a5e1ad1dc..567d0f3266c 100644
+--- a/src/vs/workbench/contrib/search/browser/searchTreeModel/textSearchHeading.ts
++++ b/src/vs/workbench/contrib/search/browser/searchTreeModel/textSearchHeading.ts
+@@ -16,7 +16,6 @@ import { IFileMatch, ISearchComplete, ITextQuery, ITextSearchQuery } from '../..
+ import { RangeHighlightDecorations } from './rangeDecorations.js';
+ import { FolderMatchNoRootImpl, FolderMatchWorkspaceRootImpl } from './folderMatch.js';
+ import { IChangeEvent, ISearchTreeFileMatch, ISearchTreeFolderMatch, ISearchTreeFolderMatchWithResource, ISearchTreeFolderMatchWorkspaceRoot, IPlainTextSearchHeading, ISearchResult, isSearchTreeFileMatch, isSearchTreeFolderMatch, ITextSearchHeading, ISearchTreeMatch, TEXT_SEARCH_HEADING_PREFIX, PLAIN_TEXT_SEARCH__RESULT_ID, ISearchTreeFolderMatchNoRoot } from './searchTreeCommon.js';
+-import { isNotebookFileMatch } from '../notebookSearch/notebookSearchModelBase.js';
+ 
+ 
+ export abstract class TextSearchHeadingImpl<QueryType extends ITextSearchQuery> extends Disposable implements ITextSearchHeading {
+@@ -228,9 +227,6 @@ export abstract class TextSearchHeadingImpl<QueryType extends ITextSearchQuery>
+ 		let selectedMatch: ISearchTreeMatch | null = null;
+ 		this.matches().forEach((fileMatch: ISearchTreeFileMatch) => {
+ 			fileMatch.updateHighlights();
+-			if (isNotebookFileMatch(fileMatch)) {
+-				fileMatch.updateNotebookHighlights();
+-			}
+ 			if (!selectedMatch) {
+ 				selectedMatch = fileMatch.getSelectedMatch();
+ 			}
+diff --git a/src/vs/workbench/contrib/search/browser/searchView.ts b/src/vs/workbench/contrib/search/browser/searchView.ts
+index 3a6b33fa40c..f3133d06941 100644
+--- a/src/vs/workbench/contrib/search/browser/searchView.ts
++++ b/src/vs/workbench/contrib/search/browser/searchView.ts
+@@ -17,7 +17,6 @@ import { Disposable, DisposableMap, DisposableStore, IDisposable, MutableDisposa
+ import { isLinux } from '../../../../base/common/platform.js';
+ import * as strings from '../../../../base/common/strings.js';
+ import { URI } from '../../../../base/common/uri.js';
+-import * as network from '../../../../base/common/network.js';
+ import './media/searchview.css';
+ import { getCodeEditor, isCodeEditor, isDiffEditor } from '../../../../editor/browser/editorBrowser.js';
+ import { ICodeEditorService } from '../../../../editor/browser/services/codeEditorService.js';
+@@ -55,7 +54,6 @@ import { IViewPaneOptions, ViewPane } from '../../../browser/parts/views/viewPan
+ import { IEditorPane } from '../../../common/editor.js';
+ import { Memento } from '../../../common/memento.js';
+ import { IViewDescriptorService } from '../../../common/views.js';
+-import { NotebookEditor } from '../../notebook/browser/notebookEditor.js';
+ import { ExcludePatternInputWidget, IncludePatternInputWidget } from './patternInputWidget.js';
+ import { IFindInFilesArgs } from './searchActionsBase.js';
+ import { searchDetailsIcon } from './searchIcons.js';
+@@ -73,7 +71,6 @@ import { ITextQueryBuilderOptions, QueryBuilder } from '../../../services/search
+ import { SemanticSearchBehavior, IPatternInfo, ISearchComplete, ISearchConfiguration, ISearchConfigurationProperties, ITextQuery, SearchCompletionExitCode, SearchSortOrder, TextSearchCompleteMessageType, ViewMode, isAIKeyword } from '../../../services/search/common/search.js';
+ import { AISearchKeyword, TextSearchCompleteMessage } from '../../../services/search/common/searchExtTypes.js';
+ import { ITextFileService } from '../../../services/textfile/common/textfiles.js';
+-import { INotebookService } from '../../notebook/common/notebookService.js';
+ import { ISCMRepository, ISCMService } from '../../scm/common/scm.js';
+ import { ILogService } from '../../../../platform/log/common/log.js';
+ import { AccessibilitySignal, IAccessibilitySignalService } from '../../../../platform/accessibilitySignal/browser/accessibilitySignalService.js';
+@@ -81,7 +78,6 @@ import { getDefaultHoverDelegate } from '../../../../base/browser/ui/hover/hover
+ import { IHoverService } from '../../../../platform/hover/browser/hover.js';
+ import { ISearchViewModelWorkbenchService } from './searchTreeModel/searchViewModelWorkbenchService.js';
+ import { ISearchTreeMatch, isSearchTreeMatch, RenderableMatch, SearchModelLocation, IChangeEvent, FileMatchOrMatch, ISearchTreeFileMatch, ISearchTreeFolderMatch, ISearchModel, ISearchResult, isSearchTreeFileMatch, isSearchTreeFolderMatch, isSearchTreeFolderMatchNoRoot, isSearchTreeFolderMatchWithResource, isSearchTreeFolderMatchWorkspaceRoot, isSearchResult, isTextSearchHeading, ITextSearchHeading, isSearchHeader } from './searchTreeModel/searchTreeCommon.js';
+-import { INotebookFileInstanceMatch, isIMatchInNotebook } from './notebookSearch/notebookSearchModelBase.js';
+ import { searchMatchComparer } from './searchCompare.js';
+ import { ITelemetryService } from '../../../../platform/telemetry/common/telemetry.js';
+ import { forcedExpandRecursively } from './searchActionsTopBar.js';
+@@ -233,7 +229,6 @@ export class SearchView extends ViewPane {
+ 		@IStorageService private readonly storageService: IStorageService,
+ 		@IOpenerService openerService: IOpenerService,
+ 		@IHoverService hoverService: IHoverService,
+-		@INotebookService private readonly notebookService: INotebookService,
+ 		@ILogService private readonly logService: ILogService,
+ 		@IAccessibilitySignalService private readonly accessibilitySignalService: IAccessibilitySignalService,
+ 		@ITelemetryService private readonly telemetryService: ITelemetryService,
+@@ -2223,24 +2218,17 @@ export class SearchView extends ViewPane {
+ 		this.currentSelectedFileMatch = undefined;
+ 	}
+ 
+-	private shouldOpenInNotebookEditor(match: ISearchTreeMatch, uri: URI): boolean {
+-		// Untitled files will return a false positive for getContributedNotebookTypes.
+-		// Since untitled files are already open, then untitled notebooks should return NotebookMatch results.
+-		return isIMatchInNotebook(match) || (uri.scheme !== network.Schemas.untitled && this.notebookService.getContributedNotebookTypes(uri).length > 0);
+-	}
+-
+ 	private onFocus(lineMatch: ISearchTreeMatch, preserveFocus?: boolean, sideBySide?: boolean, pinned?: boolean): Promise<any> {
+ 		const useReplacePreview = this.configurationService.getValue<ISearchConfiguration>().search?.useReplacePreview;
+ 
+ 		const resource = isSearchTreeMatch(lineMatch) ? lineMatch.parent().resource : (<ISearchTreeFileMatch>lineMatch).resource;
+-		return (useReplacePreview && this.viewModel.isReplaceActive() && !!this.viewModel.replaceString && !(this.shouldOpenInNotebookEditor(lineMatch, resource))) ?
++		return (useReplacePreview && this.viewModel.isReplaceActive() && !!this.viewModel.replaceString) ?
+ 			this.replaceService.openReplacePreview(lineMatch, preserveFocus, sideBySide, pinned) :
+ 			this.open(lineMatch, preserveFocus, sideBySide, pinned, resource);
+ 	}
+ 
+ 	async open(element: FileMatchOrMatch, preserveFocus?: boolean, sideBySide?: boolean, pinned?: boolean, resourceInput?: URI): Promise<void> {
+ 		const selection = getEditorSelectionFromMatch(element, this.viewModel);
+-		const oldParentMatches = isSearchTreeMatch(element) ? element.parent().matches() : [];
+ 		const resource = resourceInput ?? (isSearchTreeMatch(element) ? element.parent().resource : (<ISearchTreeFileMatch>element).resource);
+ 		let editor: IEditorPane | undefined;
+ 
+@@ -2270,35 +2258,6 @@ export class SearchView extends ViewPane {
+ 			errors.onUnexpectedError(err);
+ 			return;
+ 		}
+-
+-		if (editor instanceof NotebookEditor) {
+-			const elemParent = element.parent() as INotebookFileInstanceMatch;
+-			if (isSearchTreeMatch(element)) {
+-				if (isIMatchInNotebook(element)) {
+-					element.parent().showMatch(element);
+-				} else {
+-					const editorWidget = editor.getControl();
+-					if (editorWidget) {
+-						// Ensure that the editor widget is binded. If if is, then this should return immediately.
+-						// Otherwise, it will bind the widget.
+-						elemParent.bindNotebookEditorWidget(editorWidget);
+-						await elemParent.updateMatchesForEditorWidget();
+-
+-						const matchIndex = oldParentMatches.findIndex(e => e.id() === element.id());
+-						const matches = elemParent.matches();
+-						const match = matchIndex >= matches.length ? matches[matches.length - 1] : matches[matchIndex];
+-
+-						if (isIMatchInNotebook(match)) {
+-							elemParent.showMatch(match);
+-							if (!this.tree.getFocus().includes(match) || !this.tree.getSelection().includes(match)) {
+-								this.tree.setSelection([match], getSelectionKeyboardEvent());
+-								this.tree.setFocus([match]);
+-							}
+-						}
+-					}
+-				}
+-			}
+-		}
+ 	}
+ 
+ 	openEditorWithMultiCursor(element: FileMatchOrMatch): Promise<void> {
+diff --git a/src/vs/workbench/contrib/search/browser/searchWidget.ts b/src/vs/workbench/contrib/search/browser/searchWidget.ts
+index 8c6b39875db..5607970dea7 100644
+--- a/src/vs/workbench/contrib/search/browser/searchWidget.ts
++++ b/src/vs/workbench/contrib/search/browser/searchWidget.ts
+@@ -36,15 +36,10 @@ import { searchReplaceAllIcon, searchHideReplaceIcon, searchShowContextIcon, sea
+ import { ToggleSearchEditorContextLinesCommandId } from '../../searchEditor/browser/constants.js';
+ import { showHistoryKeybindingHint } from '../../../../platform/history/browser/historyWidgetKeybindingHint.js';
+ import { defaultInputBoxStyles, defaultToggleStyles } from '../../../../platform/theme/browser/defaultStyles.js';
+-import { NotebookFindFilters } from '../../notebook/browser/contrib/find/findFilters.js';
+ import { IInstantiationService } from '../../../../platform/instantiation/common/instantiation.js';
+-import { IEditorService } from '../../../services/editor/common/editorService.js';
+-import { NotebookEditorInput } from '../../notebook/common/notebookEditorInput.js';
+-import { GroupModelChangeKind } from '../../../common/editor.js';
+ import { SearchFindInput } from './searchFindInput.js';
+ import { getDefaultHoverDelegate } from '../../../../base/browser/ui/hover/hoverDelegateFactory.js';
+ import { IDisposable, MutableDisposable } from '../../../../base/common/lifecycle.js';
+-import { NotebookFindScopeType } from '../../notebook/common/notebookCommon.js';
+ 
+ /** Specified in searchview.css */
+ const SingleLineInputHeight = 26;
+@@ -180,7 +175,9 @@ export class SearchWidget extends Widget {
+ 	private hideSearchOptions = false;
+ 	public contextLinesInput!: InputBox;
+ 
+-	private _notebookFilters: NotebookFindFilters;
++	// Shuko (C-4-notebook): the notebook find filters (contrib/notebook/browser) are removed with the notebooks.
++	// The search view and the search editor still read them, so they stay at their defaults (all on) and never change.
++	private readonly _notebookFilters = { markupInput: true, markupPreview: true, codeInput: true, codeOutput: true, onDidChange: Event.None };
+ 	private readonly _toggleReplaceButtonListener: MutableDisposable<IDisposable>;
+ 
+ 	constructor(
+@@ -194,43 +191,12 @@ export class SearchWidget extends Widget {
+ 		@IAccessibilityService private readonly accessibilityService: IAccessibilityService,
+ 		@IContextMenuService private readonly contextMenuService: IContextMenuService,
+ 		@IInstantiationService private readonly instantiationService: IInstantiationService,
+-		@IEditorService private readonly editorService: IEditorService,
+ 	) {
+ 		super();
+ 		this.replaceActive = Constants.SearchContext.ReplaceActiveKey.bindTo(this.contextKeyService);
+ 		this.searchInputBoxFocused = Constants.SearchContext.SearchInputBoxFocusedKey.bindTo(this.contextKeyService);
+ 		this.replaceInputBoxFocused = Constants.SearchContext.ReplaceInputBoxFocusedKey.bindTo(this.contextKeyService);
+ 
+-		const notebookOptions = options.notebookOptions ??
+-		{
+-			isInNotebookMarkdownInput: true,
+-			isInNotebookMarkdownPreview: true,
+-			isInNotebookCellInput: true,
+-			isInNotebookCellOutput: true
+-		};
+-		this._notebookFilters = this._register(
+-			new NotebookFindFilters(
+-				notebookOptions.isInNotebookMarkdownInput,
+-				notebookOptions.isInNotebookMarkdownPreview,
+-				notebookOptions.isInNotebookCellInput,
+-				notebookOptions.isInNotebookCellOutput,
+-				{ findScopeType: NotebookFindScopeType.None }
+-			));
+-
+-		this._register(
+-			this._notebookFilters.onDidChange(() => {
+-				if (this.searchInput) {
+-					this.searchInput.updateFilterStyles();
+-				}
+-			}));
+-		this._register(this.editorService.onDidEditorsChange((e) => {
+-			if (this.searchInput &&
+-				e.event.editor instanceof NotebookEditorInput &&
+-				(e.event.kind === GroupModelChangeKind.EDITOR_OPEN || e.event.kind === GroupModelChangeKind.EDITOR_CLOSE)) {
+-				this.searchInput.filterVisible = this._hasNotebookOpen();
+-			}
+-		}));
+-
+ 		this._replaceHistoryDelayer = new Delayer<void>(500);
+ 		this._toggleReplaceButtonListener = this._register(new MutableDisposable<IDisposable>());
+ 
+@@ -246,11 +212,6 @@ export class SearchWidget extends Widget {
+ 		this.updateAccessibilitySupport();
+ 	}
+ 
+-	private _hasNotebookOpen(): boolean {
+-		const editors = this.editorService.editors;
+-		return editors.some(editor => editor instanceof NotebookEditorInput);
+-	}
+-
+ 	getNotebookFilters() {
+ 		return this._notebookFilters;
+ 	}
+@@ -472,9 +433,7 @@ export class SearchWidget extends Widget {
+ 				inputOptions,
+ 				this.contextKeyService,
+ 				this.contextMenuService,
+-				this.instantiationService,
+-				this._notebookFilters,
+-				this._hasNotebookOpen()
++				this.instantiationService
+ 			)
+ 		);
+ 
+diff --git a/src/vs/workbench/contrib/search/test/browser/searchActions.test.ts b/src/vs/workbench/contrib/search/test/browser/searchActions.test.ts
+index 6116a1004c9..9dd6ab682b9 100644
+--- a/src/vs/workbench/contrib/search/test/browser/searchActions.test.ts
++++ b/src/vs/workbench/contrib/search/test/browser/searchActions.test.ts
+@@ -16,13 +16,11 @@ import { getElementToFocusAfterRemoved, getLastNodeFromSameType } from '../../br
+ import { SearchModelImpl } from '../../browser/searchTreeModel/searchModel.js';
+ import { MockObjectTree } from './mockSearchTree.js';
+ import { ILabelService } from '../../../../../platform/label/common/label.js';
+-import { INotebookEditorService } from '../../../notebook/browser/services/notebookEditorService.js';
+-import { createFileUriFromPathFromRoot, stubModelService, stubNotebookEditorService } from './searchTestCommon.js';
++import { createFileUriFromPathFromRoot, stubModelService } from './searchTestCommon.js';
+ import { ensureNoDisposablesAreLeakedInTestSuite } from '../../../../../base/test/common/utils.js';
+ import { FolderMatchImpl } from '../../browser/searchTreeModel/folderMatch.js';
+ import { ISearchTreeFileMatch, ISearchTreeMatch, FileMatchOrMatch } from '../../browser/searchTreeModel/searchTreeCommon.js';
+-import { NotebookCompatibleFileMatch } from '../../browser/notebookSearch/notebookSearchModel.js';
+-import { INotebookFileInstanceMatch } from '../../browser/notebookSearch/notebookSearchModelBase.js';
++import { FileMatchImpl } from '../../browser/searchTreeModel/fileMatch.js';
+ import { MatchImpl } from '../../browser/searchTreeModel/match.js';
+ 
+ suite('Search Actions', () => {
+@@ -34,7 +32,6 @@ suite('Search Actions', () => {
+ 	setup(() => {
+ 		instantiationService = new TestInstantiationService();
+ 		instantiationService.stub(IModelService, stubModelService(instantiationService, (e) => store.add(e)));
+-		instantiationService.stub(INotebookEditorService, stubNotebookEditorService(instantiationService, (e) => store.add(e)));
+ 		instantiationService.stub(IKeybindingService, {});
+ 		instantiationService.stub(ILabelService, { getUriBasenameLabel: (uri: URI) => '' });
+ 		instantiationService.stub(IKeybindingService, 'resolveKeybinding', (keybinding: Keybinding) => USLayoutResolvedKeybinding.resolveKeybinding(keybinding, OS));
+@@ -113,7 +110,7 @@ suite('Search Actions', () => {
+ 		assert.strictEqual(undefined, actual);
+ 	});
+ 
+-	function aFileMatch(): INotebookFileInstanceMatch {
++	function aFileMatch(): ISearchTreeFileMatch {
+ 		const uri = URI.file('somepath' + ++counter);
+ 		const rawMatch: IFileMatch = {
+ 			resource: uri,
+@@ -128,9 +125,9 @@ suite('Search Actions', () => {
+ 			}
+ 		}, searchModel.searchResult.plainTextSearchResult, searchModel.searchResult, null);
+ 		store.add(folderMatch);
+-		const fileMatch = instantiationService.createInstance(NotebookCompatibleFileMatch, {
++		const fileMatch = instantiationService.createInstance(FileMatchImpl, {
+ 			pattern: ''
+-		}, undefined, undefined, folderMatch, rawMatch, null, '');
++		}, undefined, undefined, folderMatch, rawMatch, null);
+ 		fileMatch.createMatches();
+ 		store.add(fileMatch);
+ 		return fileMatch;
+diff --git a/src/vs/workbench/contrib/search/test/browser/searchModel.test.ts b/src/vs/workbench/contrib/search/test/browser/searchModel.test.ts
+index f56401635a6..5f6c693a77c 100644
+--- a/src/vs/workbench/contrib/search/test/browser/searchModel.test.ts
++++ b/src/vs/workbench/contrib/search/test/browser/searchModel.test.ts
+@@ -4,7 +4,6 @@
+  *--------------------------------------------------------------------------------------------*/
+ import assert from 'assert';
+ import * as sinon from 'sinon';
+-import * as arrays from '../../../../../base/common/arrays.js';
+ import { DeferredPromise, timeout } from '../../../../../base/common/async.js';
+ import { CancellationToken, CancellationTokenSource } from '../../../../../base/common/cancellation.js';
+ import { URI } from '../../../../../base/common/uri.js';
+@@ -25,23 +24,9 @@ import { ILogService, NullLogService } from '../../../../../platform/log/common/
+ import { IUriIdentityService } from '../../../../../platform/uriIdentity/common/uriIdentity.js';
+ import { UriIdentityService } from '../../../../../platform/uriIdentity/common/uriIdentityService.js';
+ import { ILabelService } from '../../../../../platform/label/common/label.js';
+-import { INotebookEditorService } from '../../../notebook/browser/services/notebookEditorService.js';
+-import { IEditorGroupsService } from '../../../../services/editor/common/editorGroupsService.js';
+-import { TestEditorGroupsService, TestEditorService } from '../../../../test/browser/workbenchTestServices.js';
+-import { NotebookEditorWidgetService } from '../../../notebook/browser/services/notebookEditorServiceImpl.js';
+ import { createFileUriFromPathFromRoot, getRootName } from './searchTestCommon.js';
+-import { INotebookCellMatchWithModel, INotebookFileMatchWithModel, contentMatchesToTextSearchMatches, webviewMatchesToTextSearchMatches } from '../../browser/notebookSearch/searchNotebookHelpers.js';
+-import { CellKind } from '../../../notebook/common/notebookCommon.js';
+-import { ICellViewModel } from '../../../notebook/browser/notebookBrowser.js';
+-import { FindMatch, IReadonlyTextBuffer } from '../../../../../editor/common/model.js';
+-import { ResourceMap, ResourceSet } from '../../../../../base/common/map.js';
+-import { INotebookService } from '../../../notebook/common/notebookService.js';
+-import { INotebookSearchService } from '../../common/notebookSearch.js';
+-import { IContextKeyService } from '../../../../../platform/contextkey/common/contextkey.js';
+-import { MockContextKeyService } from '../../../../../platform/keybinding/test/common/mockKeybindingService.js';
+-import { IEditorService } from '../../../../services/editor/common/editorService.js';
++import { ResourceSet } from '../../../../../base/common/map.js';
+ import { ensureNoDisposablesAreLeakedInTestSuite } from '../../../../../base/test/common/utils.js';
+-import { CellMatch, MatchInNotebook } from '../../browser/notebookSearch/notebookSearchModel.js';
+ 
+ const nullEvent = new class {
+ 	id: number = -1;
+@@ -90,9 +75,7 @@ suite('SearchModel', () => {
+ 		instantiationService = new TestInstantiationService();
+ 		instantiationService.stub(ITelemetryService, NullTelemetryService);
+ 		instantiationService.stub(ILabelService, { getUriBasenameLabel: (uri: URI) => '' });
+-		instantiationService.stub(INotebookService, { getNotebookTextModels: () => [] });
+ 		instantiationService.stub(IModelService, stubModelService(instantiationService));
+-		instantiationService.stub(INotebookEditorService, stubNotebookEditorService(instantiationService));
+ 		instantiationService.stub(ISearchService, {});
+ 		instantiationService.stub(ISearchService, 'textSearch', Promise.resolve({ results: [] }));
+ 		const fileService = new FileService(new NullLogService());
+@@ -253,40 +236,6 @@ suite('SearchModel', () => {
+ 	}
+ 
+ 
+-	function notebookSearchServiceWithInfo(results: INotebookFileMatchWithModel[], tokenSource: CancellationTokenSource | undefined): INotebookSearchService {
+-		return <INotebookSearchService>{
+-			_serviceBrand: undefined,
+-			notebookSearch(query: ITextQuery, token: CancellationToken | undefined, searchInstanceID: string, onProgress?: (result: ISearchProgressItem) => void): {
+-				openFilesToScan: ResourceSet;
+-				completeData: Promise<ISearchComplete>;
+-				allScannedFiles: Promise<ResourceSet>;
+-			} {
+-				const disposable = token?.onCancellationRequested(() => tokenSource?.cancel());
+-				if (disposable) {
+-					store.add(disposable);
+-				}
+-				const localResults = new ResourceMap<INotebookFileMatchWithModel | null>(uri => uri.path);
+-
+-				results.forEach(r => {
+-					localResults.set(r.resource, r);
+-				});
+-
+-				if (onProgress) {
+-					arrays.coalesce([...localResults.values()]).forEach(onProgress);
+-				}
+-				return {
+-					openFilesToScan: new ResourceSet([...localResults.keys()]),
+-					completeData: Promise.resolve({
+-						messages: [],
+-						results: arrays.coalesce([...localResults.values()]),
+-						limitHit: false
+-					}),
+-					allScannedFiles: Promise.resolve(new ResourceSet()),
+-				};
+-			}
+-		};
+-	}
+-
+ 	test('Search Model: cleared AI folder roots are not disposed again with the model', () => {
+ 		const model = store.add(instantiationService.createInstance(SearchModelImpl));
+ 		const heading = model.searchResult.aiTextSearchResult;
+@@ -345,7 +294,6 @@ suite('SearchModel', () => {
+ 				new TextSearchMatch('preview 1', new OneLineRange(1, 4, 11))),
+ 			aRawMatch('/2', new TextSearchMatch('preview 2', lineOneRange))];
+ 		instantiationService.stub(ISearchService, searchServiceWithResults(results, { limitHit: false, messages: [], results }));
+-		instantiationService.stub(INotebookSearchService, notebookSearchServiceWithInfo([], undefined));
+ 
+ 		const testObject: SearchModelImpl = instantiationService.createInstance(SearchModelImpl);
+ 		store.add(testObject);
+@@ -370,125 +318,6 @@ suite('SearchModel', () => {
+ 	});
+ 
+ 
+-	test('Search Model: Search can return notebook results', async () => {
+-		const results = [
+-			aRawMatch('/2',
+-				new TextSearchMatch('test', new OneLineRange(1, 1, 5)),
+-				new TextSearchMatch('this is a test', new OneLineRange(1, 11, 15))),
+-			aRawMatch('/3', new TextSearchMatch('test', lineOneRange))];
+-		instantiationService.stub(ISearchService, searchServiceWithResults(results, { limitHit: false, messages: [], results }));
+-		sinon.stub(CellMatch.prototype, 'addContext');
+-
+-		const mdInputCell = {
+-			cellKind: CellKind.Markup, textBuffer: <IReadonlyTextBuffer>{
+-				getLineContent(lineNumber: number): string {
+-					if (lineNumber === 1) {
+-						return '# Test';
+-					} else {
+-						return '';
+-					}
+-				}
+-			},
+-			id: 'mdInputCell'
+-		} as ICellViewModel;
+-
+-		const findMatchMds = [new FindMatch(new Range(1, 3, 1, 7), ['Test'])];
+-
+-		const codeCell = {
+-			cellKind: CellKind.Code, textBuffer: <IReadonlyTextBuffer>{
+-				getLineContent(lineNumber: number): string {
+-					if (lineNumber === 1) {
+-						return 'print("test! testing!!")';
+-					} else {
+-						return '';
+-					}
+-				}
+-			},
+-			id: 'codeCell'
+-		} as ICellViewModel;
+-
+-		const findMatchCodeCells =
+-			[new FindMatch(new Range(1, 8, 1, 12), ['test']),
+-			new FindMatch(new Range(1, 14, 1, 18), ['test']),
+-			];
+-		const webviewMatches = [{
+-			index: 0,
+-			searchPreviewInfo: {
+-				line: 'test! testing!!',
+-				range: {
+-					start: 1,
+-					end: 5
+-				}
+-			}
+-		},
+-		{
+-			index: 1,
+-			searchPreviewInfo: {
+-				line: 'test! testing!!',
+-				range: {
+-					start: 7,
+-					end: 11
+-				}
+-			}
+-		}
+-		];
+-		const cellMatchMd: INotebookCellMatchWithModel = {
+-			cell: mdInputCell,
+-			index: 0,
+-			contentResults: contentMatchesToTextSearchMatches(findMatchMds, mdInputCell),
+-			webviewResults: []
+-		};
+-
+-		const cellMatchCode: INotebookCellMatchWithModel = {
+-			cell: codeCell,
+-			index: 1,
+-			contentResults: contentMatchesToTextSearchMatches(findMatchCodeCells, codeCell),
+-			webviewResults: webviewMatchesToTextSearchMatches(webviewMatches),
+-		};
+-
+-		const notebookSearchService = instantiationService.stub(INotebookSearchService, notebookSearchServiceWithInfo([aRawMatchWithCells('/1', cellMatchMd, cellMatchCode)], undefined));
+-		const notebookSearch = sinon.spy(notebookSearchService, 'notebookSearch');
+-		const model: SearchModelImpl = instantiationService.createInstance(SearchModelImpl);
+-		store.add(model);
+-		await model.search({ contentPattern: { pattern: 'test' }, type: QueryType.Text, folderQueries }).asyncResults;
+-		const actual = model.searchResult.matches();
+-
+-		assert(notebookSearch.calledOnce);
+-
+-		assert.strictEqual(3, actual.length);
+-		assert.strictEqual(URI.file(`${getRootName()}/1`).toString(), actual[0].resource.toString());
+-		const notebookFileMatches = actual[0].matches();
+-
+-		assert.ok(notebookFileMatches[0].range().equalsRange(new Range(1, 3, 1, 7)));
+-		assert.ok(notebookFileMatches[1].range().equalsRange(new Range(1, 8, 1, 12)));
+-		assert.ok(notebookFileMatches[2].range().equalsRange(new Range(1, 14, 1, 18)));
+-		assert.ok(notebookFileMatches[3].range().equalsRange(new Range(1, 2, 1, 6)));
+-		assert.ok(notebookFileMatches[4].range().equalsRange(new Range(1, 8, 1, 12)));
+-
+-		notebookFileMatches.forEach(match => match instanceof MatchInNotebook);
+-		assert((notebookFileMatches[0] as MatchInNotebook).cell?.id === 'mdInputCell');
+-		assert((notebookFileMatches[1] as MatchInNotebook).cell?.id === 'codeCell');
+-		assert((notebookFileMatches[2] as MatchInNotebook).cell?.id === 'codeCell');
+-		assert((notebookFileMatches[3] as MatchInNotebook).cell?.id === 'codeCell');
+-		assert((notebookFileMatches[4] as MatchInNotebook).cell?.id === 'codeCell');
+-
+-		const mdCellMatchProcessed = (notebookFileMatches[0] as MatchInNotebook).cellParent;
+-		const codeCellMatchProcessed = (notebookFileMatches[1] as MatchInNotebook).cellParent;
+-
+-		assert(mdCellMatchProcessed.contentMatches.length === 1);
+-		assert(codeCellMatchProcessed.contentMatches.length === 2);
+-		assert(codeCellMatchProcessed.webviewMatches.length === 2);
+-
+-		assert(mdCellMatchProcessed.contentMatches[0] === notebookFileMatches[0]);
+-		assert(codeCellMatchProcessed.contentMatches[0] === notebookFileMatches[1]);
+-		assert(codeCellMatchProcessed.contentMatches[1] === notebookFileMatches[2]);
+-		assert(codeCellMatchProcessed.webviewMatches[0] === notebookFileMatches[3]);
+-		assert(codeCellMatchProcessed.webviewMatches[1] === notebookFileMatches[4]);
+-
+-		assert.strictEqual(URI.file(`${getRootName()}/2`).toString(), actual[1].resource.toString());
+-		assert.strictEqual(URI.file(`${getRootName()}/3`).toString(), actual[2].resource.toString());
+-	});
+-
+ 	test('Search Model: Search reports telemetry on search completed', async () => {
+ 		const target = instantiationService.spy(ITelemetryService, 'publicLog');
+ 		const results = [
+@@ -498,7 +327,6 @@ suite('SearchModel', () => {
+ 			aRawMatch('/2',
+ 				new TextSearchMatch('preview 2', lineOneRange))];
+ 		instantiationService.stub(ISearchService, searchServiceWithResults(results, { limitHit: false, messages: [], results }));
+-		instantiationService.stub(INotebookSearchService, notebookSearchServiceWithInfo([], undefined));
+ 
+ 		const testObject: SearchModelImpl = instantiationService.createInstance(SearchModelImpl);
+ 		store.add(testObject);
+@@ -521,7 +349,6 @@ suite('SearchModel', () => {
+ 			const searchService = searchServiceWithDeferredPromise(completion.p);
+ 			const search = sinon.spy(searchService, 'textSearchSplitSyncAsync');
+ 			instantiationService.stub(ISearchService, searchService);
+-			instantiationService.stub(INotebookSearchService, notebookSearchServiceWithInfo([], undefined));
+ 
+ 			const model = store.add(instantiationService.createInstance(SearchModelImpl));
+ 			const disposables = Reflect.get(Reflect.get(model, '_store'), '_toDispose') as ReadonlySet<unknown>;
+@@ -554,7 +381,6 @@ suite('SearchModel', () => {
+ 		instantiationService.stub(ITelemetryService, 'publicLog', target1);
+ 
+ 		instantiationService.stub(ISearchService, searchServiceWithResults([], { limitHit: false, messages: [], results: [] }));
+-		instantiationService.stub(INotebookSearchService, notebookSearchServiceWithInfo([], undefined));
+ 
+ 		const testObject = instantiationService.createInstance(SearchModelImpl);
+ 		store.add(testObject);
+@@ -577,7 +403,6 @@ suite('SearchModel', () => {
+ 		instantiationService.stub(ISearchService, searchServiceWithResults(
+ 			[aRawMatch('/1', new TextSearchMatch('some preview', lineOneRange))],
+ 			{ results: [], stats: testSearchStats, messages: [] }));
+-		instantiationService.stub(INotebookSearchService, notebookSearchServiceWithInfo([], undefined));
+ 
+ 		const testObject = instantiationService.createInstance(SearchModelImpl);
+ 		store.add(testObject);
+@@ -601,7 +426,6 @@ suite('SearchModel', () => {
+ 		instantiationService.stub(ITelemetryService, 'publicLog', target1);
+ 
+ 		instantiationService.stub(ISearchService, searchServiceWithError(new Error('This error should be thrown by this test.')));
+-		instantiationService.stub(INotebookSearchService, notebookSearchServiceWithInfo([], undefined));
+ 
+ 		const testObject = instantiationService.createInstance(SearchModelImpl);
+ 		store.add(testObject);
+@@ -624,7 +448,6 @@ suite('SearchModel', () => {
+ 		const deferredPromise = new DeferredPromise<ISearchComplete>();
+ 
+ 		instantiationService.stub(ISearchService, searchServiceWithDeferredPromise(deferredPromise.p));
+-		instantiationService.stub(INotebookSearchService, notebookSearchServiceWithInfo([], undefined));
+ 
+ 		const testObject = instantiationService.createInstance(SearchModelImpl);
+ 		store.add(testObject);
+@@ -649,7 +472,6 @@ suite('SearchModel', () => {
+ 			aRawMatch('/2',
+ 				new TextSearchMatch('preview 2', lineOneRange))];
+ 		instantiationService.stub(ISearchService, searchServiceWithResults(results, { limitHit: false, messages: [], results: [] }));
+-		instantiationService.stub(INotebookSearchService, notebookSearchServiceWithInfo([], undefined));
+ 		const testObject: SearchModelImpl = instantiationService.createInstance(SearchModelImpl);
+ 		store.add(testObject);
+ 		await testObject.search({ contentPattern: { pattern: 'somestring' }, type: QueryType.Text, folderQueries }).asyncResults;
+@@ -665,12 +487,10 @@ suite('SearchModel', () => {
+ 		const tokenSource = new CancellationTokenSource();
+ 		store.add(tokenSource);
+ 		instantiationService.stub(ISearchService, canceleableSearchService(tokenSource));
+-		instantiationService.stub(INotebookSearchService, notebookSearchServiceWithInfo([], tokenSource));
+ 		const testObject: SearchModelImpl = instantiationService.createInstance(SearchModelImpl);
+ 		store.add(testObject);
+ 		testObject.search({ contentPattern: { pattern: 'somestring' }, type: QueryType.Text, folderQueries });
+ 		instantiationService.stub(ISearchService, searchServiceWithResults([]));
+-		instantiationService.stub(INotebookSearchService, notebookSearchServiceWithInfo([], undefined));
+ 		testObject.search({ contentPattern: { pattern: 'somestring' }, type: QueryType.Text, folderQueries });
+ 
+ 		assert.ok(tokenSource.token.isCancellationRequested);
+@@ -682,7 +502,6 @@ suite('SearchModel', () => {
+ 				new TextSearchMatch('preview 1', new OneLineRange(1, 1, 4)),
+ 				new TextSearchMatch('preview 1', new OneLineRange(1, 4, 11)))];
+ 		instantiationService.stub(ISearchService, searchServiceWithResults(results, { limitHit: false, messages: [], results }));
+-		instantiationService.stub(INotebookSearchService, notebookSearchServiceWithInfo([], undefined));
+ 
+ 		const testObject: SearchModelImpl = instantiationService.createInstance(SearchModelImpl);
+ 		store.add(testObject);
+@@ -713,10 +532,6 @@ suite('SearchModel', () => {
+ 		return { resource: createFileUriFromPathFromRoot(resource), results };
+ 	}
+ 
+-	function aRawMatchWithCells(resource: string, ...cells: INotebookCellMatchWithModel[]) {
+-		return { resource: createFileUriFromPathFromRoot(resource), cellResults: cells };
+-	}
+-
+ 	function stubModelService(instantiationService: TestInstantiationService): IModelService {
+ 		instantiationService.stub(IThemeService, new TestThemeService());
+ 		const config = new TestConfigurationService();
+@@ -726,13 +541,4 @@ suite('SearchModel', () => {
+ 		store.add(modelService);
+ 		return modelService;
+ 	}
+-
+-	function stubNotebookEditorService(instantiationService: TestInstantiationService): INotebookEditorService {
+-		instantiationService.stub(IEditorGroupsService, new TestEditorGroupsService());
+-		instantiationService.stub(IContextKeyService, new MockContextKeyService());
+-		instantiationService.stub(IEditorService, store.add(new TestEditorService()));
+-		const notebookEditorWidgetService = instantiationService.createInstance(NotebookEditorWidgetService);
+-		store.add(notebookEditorWidgetService);
+-		return notebookEditorWidgetService;
+-	}
+ });
+diff --git a/src/vs/workbench/contrib/search/test/browser/searchResult.test.ts b/src/vs/workbench/contrib/search/test/browser/searchResult.test.ts
+index 03ebee97890..aed0dc5a0df 100644
+--- a/src/vs/workbench/contrib/search/test/browser/searchResult.test.ts
++++ b/src/vs/workbench/contrib/search/test/browser/searchResult.test.ts
+@@ -24,21 +24,10 @@ import { FileService } from '../../../../../platform/files/common/fileService.js
+ import { ILogService, NullLogService } from '../../../../../platform/log/common/log.js';
+ import { ILabelService } from '../../../../../platform/label/common/label.js';
+ import { MockLabelService } from '../../../../services/label/test/common/mockLabelService.js';
+-import { INotebookEditorService } from '../../../notebook/browser/services/notebookEditorService.js';
+-import { IEditorGroupsService } from '../../../../services/editor/common/editorGroupsService.js';
+-import { TestEditorGroupsService, TestEditorService } from '../../../../test/browser/workbenchTestServices.js';
+-import { NotebookEditorWidgetService } from '../../../notebook/browser/services/notebookEditorServiceImpl.js';
+-import { ICellViewModel } from '../../../notebook/browser/notebookBrowser.js';
+-import { CellKind } from '../../../notebook/common/notebookCommon.js';
+ import { addToSearchResult, createFileUriFromPathFromRoot, getRootName } from './searchTestCommon.js';
+-import { INotebookCellMatchWithModel, INotebookFileMatchWithModel } from '../../browser/notebookSearch/searchNotebookHelpers.js';
+-import { IContextKeyService } from '../../../../../platform/contextkey/common/contextkey.js';
+-import { MockContextKeyService } from '../../../../../platform/keybinding/test/common/mockKeybindingService.js';
+-import { IEditorService } from '../../../../services/editor/common/editorService.js';
+ import { ensureNoDisposablesAreLeakedInTestSuite } from '../../../../../base/test/common/utils.js';
+-import { CellMatch, NotebookCompatibleFileMatch } from '../../browser/notebookSearch/notebookSearchModel.js';
+-import { INotebookFileInstanceMatch } from '../../browser/notebookSearch/notebookSearchModelBase.js';
+-import { ISearchResult, ISearchTreeFolderMatch, isSearchTreeFolderMatchNoRoot, MATCH_PREFIX } from '../../browser/searchTreeModel/searchTreeCommon.js';
++import { FileMatchImpl } from '../../browser/searchTreeModel/fileMatch.js';
++import { ISearchResult, ISearchTreeFileMatch, ISearchTreeFolderMatch, isSearchTreeFolderMatchNoRoot, MATCH_PREFIX } from '../../browser/searchTreeModel/searchTreeCommon.js';
+ import { FolderMatchImpl } from '../../browser/searchTreeModel/folderMatch.js';
+ import { SearchResultImpl } from '../../browser/searchTreeModel/searchResult.js';
+ import { MatchImpl } from '../../browser/searchTreeModel/match.js';
+@@ -54,7 +43,6 @@ suite('SearchResult', () => {
+ 		instantiationService = new TestInstantiationService();
+ 		instantiationService.stub(ITelemetryService, NullTelemetryService);
+ 		instantiationService.stub(IModelService, stubModelService(instantiationService));
+-		instantiationService.stub(INotebookEditorService, stubNotebookEditorService(instantiationService));
+ 		const fileService = new FileService(new NullLogService());
+ 		store.add(fileService);
+ 		const uriIdentityService = new UriIdentityService(fileService);
+@@ -244,48 +232,6 @@ suite('SearchResult', () => {
+ 		assert.ok(new Range(2, 1, 2, 2).equalsRange(actuaMatches[0].range()));
+ 	});
+ 
+-	test('Test that notebook matches get added correctly', function () {
+-		const testObject = aSearchResult();
+-		const cell1 = { cellKind: CellKind.Code } as ICellViewModel;
+-		const cell2 = { cellKind: CellKind.Code } as ICellViewModel;
+-
+-		sinon.stub(CellMatch.prototype, 'addContext');
+-
+-		const addFileMatch = sinon.spy(FolderMatchImpl.prototype, 'addFileMatch');
+-		const fileMatch1 = aRawFileMatchWithCells('/1',
+-			{
+-				cell: cell1,
+-				index: 0,
+-				contentResults: [
+-					new TextSearchMatch('preview 1', new OneLineRange(1, 1, 4)),
+-				],
+-				webviewResults: [
+-					new TextSearchMatch('preview 1', new OneLineRange(1, 4, 11)),
+-					new TextSearchMatch('preview 2', lineOneRange)
+-				]
+-			},);
+-		const fileMatch2 = aRawFileMatchWithCells('/2',
+-			{
+-				cell: cell2,
+-				index: 0,
+-				contentResults: [
+-					new TextSearchMatch('preview 1', new OneLineRange(1, 1, 4)),
+-				],
+-				webviewResults: [
+-					new TextSearchMatch('preview 1', new OneLineRange(1, 4, 11)),
+-					new TextSearchMatch('preview 2', lineOneRange)
+-				]
+-			});
+-		const target = [fileMatch1, fileMatch2];
+-
+-		addToSearchResult(testObject, target);
+-		assert.strictEqual(6, testObject.count());
+-		assert.deepStrictEqual(fileMatch1.cellResults[0].contentResults, (addFileMatch.getCall(0).args[0][0] as INotebookFileMatchWithModel).cellResults[0].contentResults);
+-		assert.deepStrictEqual(fileMatch1.cellResults[0].webviewResults, (addFileMatch.getCall(0).args[0][0] as INotebookFileMatchWithModel).cellResults[0].webviewResults);
+-		assert.deepStrictEqual(fileMatch2.cellResults[0].contentResults, (addFileMatch.getCall(0).args[0][1] as INotebookFileMatchWithModel).cellResults[0].contentResults);
+-		assert.deepStrictEqual(fileMatch2.cellResults[0].webviewResults, (addFileMatch.getCall(0).args[0][1] as INotebookFileMatchWithModel).cellResults[0].webviewResults);
+-	});
+-
+ 	test('Dispose disposes matches', function () {
+ 		const target1 = sinon.spy();
+ 		const target2 = sinon.spy();
+@@ -585,7 +531,7 @@ suite('SearchResult', () => {
+ 
+ 	});
+ 
+-	function aFileMatch(path: string, searchResult: ISearchResult | undefined, ...lineMatches: ITextSearchMatch[]): INotebookFileInstanceMatch {
++	function aFileMatch(path: string, searchResult: ISearchResult | undefined, ...lineMatches: ITextSearchMatch[]): ISearchTreeFileMatch {
+ 		if (!searchResult) {
+ 			searchResult = aSearchResult();
+ 		}
+@@ -594,9 +540,9 @@ suite('SearchResult', () => {
+ 			results: lineMatches
+ 		};
+ 		const root = searchResult?.folderMatches()[0];
+-		const fileMatch = instantiationService.createInstance(NotebookCompatibleFileMatch, {
++		const fileMatch = instantiationService.createInstance(FileMatchImpl, {
+ 			pattern: ''
+-		}, undefined, undefined, root, rawMatch, null, '');
++		}, undefined, undefined, root, rawMatch, null);
+ 		fileMatch.createMatches();
+ 
+ 		store.add(fileMatch);
+@@ -618,13 +564,6 @@ suite('SearchResult', () => {
+ 		return { resource: createFileUriFromPathFromRoot(resource), results };
+ 	}
+ 
+-	function aRawFileMatchWithCells(resource: string, ...cellMatches: INotebookCellMatchWithModel[]): INotebookFileMatchWithModel {
+-		return {
+-			resource: createFileUriFromPathFromRoot(resource),
+-			cellResults: cellMatches
+-		};
+-	}
+-
+ 	function stubModelService(instantiationService: TestInstantiationService): IModelService {
+ 		instantiationService.stub(IThemeService, new TestThemeService());
+ 		const config = new TestConfigurationService();
+@@ -635,15 +574,6 @@ suite('SearchResult', () => {
+ 		return modelService;
+ 	}
+ 
+-	function stubNotebookEditorService(instantiationService: TestInstantiationService): INotebookEditorService {
+-		instantiationService.stub(IEditorGroupsService, new TestEditorGroupsService());
+-		instantiationService.stub(IContextKeyService, new MockContextKeyService());
+-		instantiationService.stub(IEditorService, store.add(new TestEditorService()));
+-		const notebookEditorWidgetService = instantiationService.createInstance(NotebookEditorWidgetService);
+-		store.add(notebookEditorWidgetService);
+-		return notebookEditorWidgetService;
+-	}
+-
+ 	function getPopulatedSearchResult() {
+ 		const testObject = aSearchResult();
+ 
+diff --git a/src/vs/workbench/contrib/search/test/browser/searchTestCommon.ts b/src/vs/workbench/contrib/search/test/browser/searchTestCommon.ts
+index 603fb62c66b..c0e9fcf9f95 100644
+--- a/src/vs/workbench/contrib/search/test/browser/searchTestCommon.ts
++++ b/src/vs/workbench/contrib/search/test/browser/searchTestCommon.ts
+@@ -10,17 +10,10 @@ import { IModelService } from '../../../../../editor/common/services/model.js';
+ import { ModelService } from '../../../../../editor/common/services/modelService.js';
+ import { IConfigurationService } from '../../../../../platform/configuration/common/configuration.js';
+ import { TestConfigurationService } from '../../../../../platform/configuration/test/common/testConfigurationService.js';
+-import { IContextKeyService } from '../../../../../platform/contextkey/common/contextkey.js';
+ import { TestInstantiationService } from '../../../../../platform/instantiation/test/common/instantiationServiceMock.js';
+-import { MockContextKeyService } from '../../../../../platform/keybinding/test/common/mockKeybindingService.js';
+ import { IThemeService } from '../../../../../platform/theme/common/themeService.js';
+ import { TestThemeService } from '../../../../../platform/theme/test/common/testThemeService.js';
+-import { INotebookEditorService } from '../../../notebook/browser/services/notebookEditorService.js';
+-import { NotebookEditorWidgetService } from '../../../notebook/browser/services/notebookEditorServiceImpl.js';
+-import { IEditorGroupsService } from '../../../../services/editor/common/editorGroupsService.js';
+-import { IEditorService } from '../../../../services/editor/common/editorService.js';
+ import { IFileMatch } from '../../../../services/search/common/search.js';
+-import { TestEditorGroupsService, TestEditorService } from '../../../../test/browser/workbenchTestServices.js';
+ import { ISearchResult } from '../../browser/searchTreeModel/searchTreeCommon.js';
+ 
+ export function createFileUriFromPathFromRoot(path?: string): URI {
+@@ -54,17 +47,6 @@ export function stubModelService(instantiationService: TestInstantiationService,
+ 	return modelService;
+ }
+ 
+-export function stubNotebookEditorService(instantiationService: TestInstantiationService, addDisposable: (e: IDisposable) => void): INotebookEditorService {
+-	instantiationService.stub(IEditorGroupsService, new TestEditorGroupsService());
+-	instantiationService.stub(IContextKeyService, new MockContextKeyService());
+-	const es = new TestEditorService();
+-	addDisposable(es);
+-	instantiationService.stub(IEditorService, es);
+-	const notebookEditorWidgetService = instantiationService.createInstance(NotebookEditorWidgetService);
+-	addDisposable(notebookEditorWidgetService);
+-	return notebookEditorWidgetService;
+-}
+-
+ export function addToSearchResult(searchResult: ISearchResult, allRaw: IFileMatch[], searchInstanceID = '') {
+ 	searchResult.add(allRaw, searchInstanceID, false);
+ }
+diff --git a/src/vs/workbench/contrib/search/test/browser/searchViewlet.test.ts b/src/vs/workbench/contrib/search/test/browser/searchViewlet.test.ts
+index b51e7ced098..b01778e3838 100644
+--- a/src/vs/workbench/contrib/search/test/browser/searchViewlet.test.ts
++++ b/src/vs/workbench/contrib/search/test/browser/searchViewlet.test.ts
+@@ -19,12 +19,10 @@ import { SearchModelImpl } from '../../browser/searchTreeModel/searchModel.js';
+ import { MockLabelService } from '../../../../services/label/test/common/mockLabelService.js';
+ import { IFileMatch, ITextSearchMatch, OneLineRange, QueryType, SearchSortOrder } from '../../../../services/search/common/search.js';
+ import { TestContextService } from '../../../../test/common/workbenchTestServices.js';
+-import { INotebookEditorService } from '../../../notebook/browser/services/notebookEditorService.js';
+-import { createFileUriFromPathFromRoot, getRootName, stubModelService, stubNotebookEditorService } from './searchTestCommon.js';
++import { createFileUriFromPathFromRoot, getRootName, stubModelService } from './searchTestCommon.js';
+ import { ensureNoDisposablesAreLeakedInTestSuite } from '../../../../../base/test/common/utils.js';
+-import { ISearchTreeFolderMatch, ISearchResult, ITextSearchHeading, FILE_MATCH_PREFIX, MATCH_PREFIX } from '../../browser/searchTreeModel/searchTreeCommon.js';
+-import { NotebookCompatibleFileMatch } from '../../browser/notebookSearch/notebookSearchModel.js';
+-import { INotebookFileInstanceMatch } from '../../browser/notebookSearch/notebookSearchModelBase.js';
++import { ISearchTreeFolderMatch, ISearchResult, ITextSearchHeading, FILE_MATCH_PREFIX, MATCH_PREFIX, ISearchTreeFileMatch } from '../../browser/searchTreeModel/searchTreeCommon.js';
++import { FileMatchImpl } from '../../browser/searchTreeModel/fileMatch.js';
+ import { FolderMatchImpl } from '../../browser/searchTreeModel/folderMatch.js';
+ import { searchComparer, searchMatchComparer } from '../../browser/searchCompare.js';
+ import { MatchImpl } from '../../browser/searchTreeModel/match.js';
+@@ -37,7 +35,6 @@ suite('Search - Viewlet', () => {
+ 		instantiation = new TestInstantiationService();
+ 		instantiation.stub(ILanguageConfigurationService, TestLanguageConfigurationService);
+ 		instantiation.stub(IModelService, stubModelService(instantiation, (e) => store.add(e)));
+-		instantiation.stub(INotebookEditorService, stubNotebookEditorService(instantiation, (e) => store.add(e)));
+ 
+ 		instantiation.set(IWorkspaceContextService, new TestContextService(TestWorkspace));
+ 		const fileService = new FileService(new NullLogService());
+@@ -181,14 +178,14 @@ suite('Search - Viewlet', () => {
+ 		assert(searchComparer(fileMatch3, lineMatch4, SearchSortOrder.Type) < 0);
+ 	});
+ 
+-	function aFileMatch(path: string, parentFolder?: ISearchTreeFolderMatch, ...lineMatches: ITextSearchMatch[]): INotebookFileInstanceMatch {
++	function aFileMatch(path: string, parentFolder?: ISearchTreeFolderMatch, ...lineMatches: ITextSearchMatch[]): ISearchTreeFileMatch {
+ 		const rawMatch: IFileMatch = {
+ 			resource: URI.file('/' + path),
+ 			results: lineMatches
+ 		};
+-		const fileMatch = instantiation.createInstance(NotebookCompatibleFileMatch, {
++		const fileMatch = instantiation.createInstance(FileMatchImpl, {
+ 			pattern: ''
+-		}, undefined, undefined, parentFolder ?? aFolderMatch('', 0), rawMatch, null, '');
++		}, undefined, undefined, parentFolder ?? aFolderMatch('', 0), rawMatch, null);
+ 		fileMatch.createMatches();
+ 		store.add(fileMatch);
+ 		return fileMatch;
+diff --git a/src/vs/workbench/contrib/searchEditor/browser/searchEditorSerialization.ts b/src/vs/workbench/contrib/searchEditor/browser/searchEditorSerialization.ts
+index 605389b0fcf..30176ebc5a0 100644
+--- a/src/vs/workbench/contrib/searchEditor/browser/searchEditorSerialization.ts
++++ b/src/vs/workbench/contrib/searchEditor/browser/searchEditorSerialization.ts
+@@ -15,7 +15,6 @@ import { ITextQuery, SearchSortOrder } from '../../../services/search/common/sea
+ import { ITextFileService } from '../../../services/textfile/common/textfiles.js';
+ import { ISearchTreeMatch, ISearchTreeFileMatch, ISearchResult, ISearchTreeFolderMatch } from '../../search/browser/searchTreeModel/searchTreeCommon.js';
+ import { searchMatchComparer } from '../../search/browser/searchCompare.js';
+-import { ICellMatch, isNotebookFileMatch } from '../../search/browser/notebookSearch/notebookSearchModelBase.js';
+ 
+ // Using \r\n on Windows inserts an extra newline between results.
+ const lineDelimiter = '\n';
+@@ -65,9 +64,8 @@ type SearchResultSerialization = { text: string[]; matchRanges: Range[] };
+ function fileMatchToSearchResultFormat(fileMatch: ISearchTreeFileMatch, labelFormatter: (x: URI) => string): SearchResultSerialization[] {
+ 
+ 	const textSerializations = fileMatch.textMatches().length > 0 ? matchesToSearchResultFormat(fileMatch.resource, fileMatch.textMatches().sort(searchMatchComparer), fileMatch.context, labelFormatter) : undefined;
+-	const cellSerializations = (isNotebookFileMatch(fileMatch)) ? fileMatch.cellMatches().sort((a, b) => a.cellIndex - b.cellIndex).sort().filter(cellMatch => cellMatch.contentMatches.length > 0).map((cellMatch, index) => cellMatchToSearchResultFormat(cellMatch, labelFormatter, index === 0)) : [];
+ 
+-	return [textSerializations, ...cellSerializations].filter(x => !!x) as SearchResultSerialization[];
++	return [textSerializations].filter(x => !!x) as SearchResultSerialization[];
+ }
+ function matchesToSearchResultFormat(resource: URI, sortedMatches: ISearchTreeMatch[], matchContext: Map<number, string>, labelFormatter: (x: URI) => string, shouldUseHeader = true): SearchResultSerialization {
+ 	const longestLineNumber = sortedMatches[sortedMatches.length - 1].range().endLineNumber.toString().length;
+@@ -114,10 +112,6 @@ function matchesToSearchResultFormat(resource: URI, sortedMatches: ISearchTreeMa
+ 	return { text, matchRanges };
+ }
+ 
+-function cellMatchToSearchResultFormat(cellMatch: ICellMatch, labelFormatter: (x: URI) => string, shouldUseHeader: boolean): SearchResultSerialization {
+-	return matchesToSearchResultFormat(cellMatch.cell?.uri ?? cellMatch.parent.resource, cellMatch.contentMatches.sort(searchMatchComparer), cellMatch.context, labelFormatter, shouldUseHeader);
+-}
+-
+ const contentPatternToSearchConfiguration = (pattern: ITextQuery, includes: string, excludes: string, contextLines: number): SearchConfiguration => {
+ 	return {
+ 		query: pattern.contentPattern.pattern,
+-- 
+2.54.0.windows.1
+

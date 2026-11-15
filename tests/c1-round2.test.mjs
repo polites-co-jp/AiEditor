@@ -192,6 +192,25 @@ test('c1-check-worktree: 期待どおりの木は食い違いが無い', { skip:
   try { assert.deepEqual(checkWorktree(root, unit), []); } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
+test('c1-check-worktree: C-4 を含む組 b の木(C-4 の delete の中の kept のファイルが無い)でも食い違いが無い。C-4 が当たっていない木では、同じファイルが無いのは食い違い', { skip: noUnit }, () => {
+  const root = makeTree({ rootDeps: { lodash: '1' } });
+  try {
+    const c4 = readJson(join(REPO, 'removals', 'C-4-notebook', 'unit.json'));
+    const inC4 = (p) => c4.delete.some((d) => p === d || p.startsWith(`${d}/`));
+    const keptInC4 = unit.kept.map((k) => k.path).filter(inC4);
+    assert.ok(keptInC4.length >= 1, '前提: C-1 の kept に C-4 の delete の中のパスがある');
+    for (const p of keptInC4) rmSync(join(root, ...p.split('/')), { recursive: true, force: true });
+    const noMark = checkWorktree(root, unit);
+    assert.ok(keptInC4.every((p) => noMark.some((x) => x.includes(p))), JSON.stringify(noMark));
+    const f = join(root, ...'src/vs/workbench/api/common/extHostRemovedApi.notebook.ts'.split('/'));
+    mkdirSync(dirname(f), { recursive: true }); writeFileSync(f, 'x');
+    assert.deepEqual(checkWorktree(root, unit), []);
+    // C-4 のしるしがあっても、C-1 の期待は見る(C-4 の delete の外の kept が無いのは食い違い)
+    rmSync(join(root, ...'src/vs/workbench/contrib/comments'.split('/')), { recursive: true, force: true });
+    assert.ok(checkWorktree(root, unit).some((x) => /残るはずのパスが無い: src\/vs\/workbench\/contrib\/comments/.test(x)));
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
 test('c1-check-worktree: 依存が残る・patchedDependencies が残る・scripts が残る・消えるはずのファイルが残る・残るはずが無い、を見つける', { skip: noUnit }, () => {
   const cases = [
     ['ルートの依存', { rootDeps: { '@hpke/core': '1' } }, /package\.json: dependencies にまだ @hpke\/core/],

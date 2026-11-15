@@ -13,6 +13,10 @@
     "src/vs/workbench/contrib/outline",
     "src/vs/workbench/contrib/search/browser/notebookSearch",
     "src/vs/workbench/contrib/search/test/browser/searchNotebookHelpers.test.ts",
+    "src/vs/workbench/contrib/search/common/notebookSearch.ts",
+    "src/vs/workbench/contrib/search/common/cellSearchModel.ts",
+    "src/vs/workbench/contrib/bulkEdit/test/browser/bulkCellEdits.test.ts",
+    "src/vs/workbench/api/browser/mainThreadNotebookDto.ts",
     "src/vs/workbench/api/browser/mainThreadNotebook.ts",
     "src/vs/workbench/api/browser/mainThreadNotebookDocuments.ts",
     "src/vs/workbench/api/browser/mainThreadNotebookDocumentsAndEditors.ts",
@@ -48,16 +52,28 @@
     { "file": "src/vs/workbench/api/browser/extensionHost.contribution.ts", "line": "import './mainThreadNotebookDocumentsAndEditors.js';" },
     { "file": "src/vs/workbench/api/browser/extensionHost.contribution.ts", "line": "import './mainThreadNotebookRenderers.js';" },
     { "file": "src/vs/workbench/api/browser/extensionHost.contribution.ts", "line": "import './mainThreadNotebookSaveParticipant.js';" },
-    { "file": "src/vs/workbench/api/browser/extensionHost.contribution.ts", "line": "import './mainThreadInteractive.js';" }
+    { "file": "src/vs/workbench/api/browser/extensionHost.contribution.ts", "line": "import './mainThreadInteractive.js';" },
+    { "file": "src/vs/workbench/api/common/extHost.protocol.ts", "line": "MainThreadNotebook: createProxyIdentifier<MainThreadNotebookShape>('MainThreadNotebook')," },
+    { "file": "src/vs/workbench/api/common/extHost.protocol.ts", "line": "MainThreadNotebookDocuments: createProxyIdentifier<MainThreadNotebookDocumentsShape>('MainThreadNotebookDocumentsShape')," },
+    { "file": "src/vs/workbench/api/common/extHost.protocol.ts", "line": "MainThreadNotebookEditors: createProxyIdentifier<MainThreadNotebookEditorsShape>('MainThreadNotebookEditorsShape')," },
+    { "file": "src/vs/workbench/api/common/extHost.protocol.ts", "line": "MainThreadNotebookKernels: createProxyIdentifier<MainThreadNotebookKernelsShape>('MainThreadNotebookKernels')," },
+    { "file": "src/vs/workbench/api/common/extHost.protocol.ts", "line": "MainThreadNotebookRenderers: createProxyIdentifier<MainThreadNotebookRenderersShape>('MainThreadNotebookRenderers')," },
+    { "file": "src/vs/workbench/api/common/extHost.protocol.ts", "line": "MainThreadInteractive: createProxyIdentifier<MainThreadInteractiveShape>('MainThreadInteractive')," },
+    { "file": "src/vs/workbench/api/common/extHost.protocol.ts", "line": "ExtHostNotebook: createProxyIdentifier<ExtHostNotebookShape>('ExtHostNotebook')," },
+    { "file": "src/vs/workbench/api/common/extHost.protocol.ts", "line": "ExtHostNotebookDocuments: createProxyIdentifier<ExtHostNotebookDocumentsShape>('ExtHostNotebookDocuments')," },
+    { "file": "src/vs/workbench/api/common/extHost.protocol.ts", "line": "ExtHostNotebookEditors: createProxyIdentifier<ExtHostNotebookEditorsShape>('ExtHostNotebookEditors')," },
+    { "file": "src/vs/workbench/api/common/extHost.protocol.ts", "line": "ExtHostNotebookKernels: createProxyIdentifier<ExtHostNotebookKernelsShape>('ExtHostNotebookKernels')," },
+    { "file": "src/vs/workbench/api/common/extHost.protocol.ts", "line": "ExtHostNotebookRenderers: createProxyIdentifier<ExtHostNotebookRenderersShape>('ExtHostNotebookRenderers')," },
+    { "file": "src/vs/workbench/api/common/extHost.protocol.ts", "line": "ExtHostNotebookDocumentSaveParticipant: createProxyIdentifier<ExtHostNotebookDocumentSaveParticipantShape>('ExtHostNotebookDocumentSaveParticipant')," },
+    { "file": "src/vs/workbench/api/common/extHost.protocol.ts", "line": "ExtHostInteractive: createProxyIdentifier<ExtHostInteractiveShape>('ExtHostInteractive')," }
   ],
   "productRemove": [],
+  "patch": "edits.patch",
   "kept": [
-    { "path": "src/vs/workbench/contrib/notebook/common", "reason": "ノートブックの型とモデル。拡張 API の中心（api/common/extHost.protocol.ts の76〜79行、extHostTypeConverters.ts の59〜61行、extHostTypes/workspaceEdit.ts、extHostApiCommands.ts）、一括編集（contrib/bulkEdit/browser/bulkCellEdits.ts）、検索の置換（contrib/search/browser/replaceService.ts）、コメント（contrib/comments。Claude Code の受け手）、言語の判定、エディタの入力の復元が import している。browser への import は無い（grep で確かめた）。消すと拡張 API の中心を書き換えることになる" },
+    { "path": "src/vs/workbench/contrib/notebook/common", "reason": "ノートブックの型とモデル。拡張 API の中心（api/common/extHost.protocol.ts の76〜79行、extHostTypeConverters.ts の59〜61行、extHostTypes/workspaceEdit.ts、extHostApiCommands.ts）、一括編集（contrib/bulkEdit/browser/bulkCellEdits.ts の ResourceNotebookCellEdit）、エディタのタブ（api/browser/mainThreadEditorTabs.ts の NotebookEditorInput）、コメント（contrib/comments。Claude Code の受け手）、言語の判定が import している。中のサービスの実装は登録が browser 側にあるので作られない。browser への import は無い（grep で確かめた）。消すと拡張 API の中心を書き換えることになる" },
     { "path": "src/vs/workbench/services/notebook", "reason": "INotebookDocumentService（セルの URI の解釈）。workbench/browser/labels.ts の331行が注入し、残す notebookCommon.ts が import している" },
-    { "path": "src/vs/workbench/api/browser/mainThreadNotebookDto.ts", "reason": "ノートブックの DTO の変換。common の型だけを使う。チャットの main thread（mainThreadChatAgents2.ts・mainThreadChatCodeMapper.ts。C-1）も import しているので、単位どうしを独立に保つために残す" },
     { "path": "src/vs/workbench/api/common/extHostTypes/notebooks.ts", "reason": "vscode.NotebookCellData などの公開のクラス。拡張が import 時に参照しうるので、型の入口として残す（docs/03 の2節の4）" },
-    { "path": "src/vs/workbench/contrib/search/common/notebookSearch.ts", "reason": "INotebookSearchService の ID。検索の部品（searchModel.ts）が注入している。edits.patch で何もしない実装を登録する見込み" },
-    { "path": "src/vs/workbench/contrib/search/common/searchNotebookHelpers.ts", "reason": "検索のサービス（services/search）がノートブックの生の一致を表す型として使う。browser への import は無い" },
+    { "path": "src/vs/workbench/contrib/search/common/searchNotebookHelpers.ts", "reason": "残す notebook/common/notebookService.ts が INotebookFileMatchNoModel の型を import している。browser への import は無い" },
     { "path": "src/vs/workbench/contrib/notebook/common/services/notebookWebWorkerMain.ts", "reason": "build/next/index.ts の90行がワーカーの入口として名前を挙げている。消すとビルドの道具の一覧を直すことになる" }
   ],
   "checks": {
@@ -70,7 +86,8 @@
     "absentSettings": [
       "notebook.lineNumbers",
       "notebook.formatOnSave.enabled",
-      "interactiveWindow.collapseCellInputCode"
+      "interactiveWindow.collapseCellInputCode",
+      "search.experimental.closedNotebookRichContentResults"
     ],
     "absentStrings": [
       { "in": ["src/vs"], "text": "notebook/browser/notebook.contribution.js'" },
@@ -84,7 +101,11 @@
       { "in": ["src/vs"], "text": "/notebookSearch/notebookSearchModel.js'" },
       { "in": ["src/vs"], "text": "'../../../../outline/browser/outline.js'" },
       { "in": ["src/vs"], "text": "./extHostNotebook.js'" },
-      { "in": ["src/vs"], "text": "./mainThreadNotebook.js'" }
+      { "in": ["src/vs"], "text": "./mainThreadNotebook.js'" },
+      { "in": ["src/vs"], "text": "INotebookSearchService" },
+      { "in": ["src/vs/workbench/contrib/search", "src/vs/workbench/contrib/searchEditor"], "text": "notebook/browser/" },
+      { "in": ["src/vs/workbench/api/common/extHost.protocol.ts"], "text": "MainThreadNotebookShape" },
+      { "in": ["src/vs/workbench/api/common/extHost.protocol.ts"], "text": "ExtHostNotebookShape" }
     ],
     "absentProcesses": [],
     "absentHosts": []
