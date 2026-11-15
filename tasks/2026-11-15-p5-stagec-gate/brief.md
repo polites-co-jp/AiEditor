@@ -2,7 +2,7 @@
 
 - 担当: meng-tian（蒙恬。片づけとビルド）→ ooka-echizen（大岡越前守。関門）。テストの足しは cao-shen（曹参）
 - 依頼日: 2026-11-15（用意だけ。**古い版の片づけの許可が入ってから始める**）
-- 状態: 待ち（片づけの許可）
+- 状態: 依頼中（片づけの許可は 2026-11-15 20:27 に入った。`tasks/2026-11-15-permission-requests/response.md`）
 
 ## 目的
 
@@ -48,6 +48,12 @@ docs/03 の7節の1〜4を、21単位の版で行う。各単位の台本 `tests
 ### 5. ユーザーへ渡すもの
 
 - 合格した版の zip と、手で確かめる項目（`records/phase2/manual-checks-p2-all.md` の形）。入れ替えはユーザーが行う（裁定）。
+
+## 許可の形（2026-11-15 に入ったもの）
+
+- 蒙恬の削除は `rm -rf <パス>` の形だけ（`delete_paths`・`delete_keep`）。丸ごとの削除、別のコマンドを繋いだ形は止まる。初めは少数の版で試し、残す版が残っていることを確かめる。
+- 大岡越前守は `bash_exact` の完全一致で `git -C C:/b/wt/* checkout <タグ>`・`git -C C:/b/wt/* checkout -- pnpm-lock.yaml`・`pnpm --dir C:/b/wt/* install --lockfile-only --ignore-scripts`・`node scripts/disk-usage.mjs records=records` を走らせられる。`git -C C:/b/wt/* status`・`diff` も使える。
+- 報告は `SubagentHandback` で返せるようになった（ファイルにも残す）。
 
 ## 守ること
 
