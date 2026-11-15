@@ -45,6 +45,14 @@
 3. `compareLockfile` の単体テスト: 単位が消したパッチの名前の分だけ `patchedDependencies` の節が減るのは許す。ほかの名前が減る・増える、ほかの節が変わるのは止める（docs/03 の5.4、`docs/user-decisions.md` の 2026-11-15 の項）。
 4. `node tests/run-all.mjs --save <ファイル>` の件数。handoff-notes に「2回目」の節を足す。
 
+## 追加の依頼（2026-11-15、大岡越前守の検証の後）
+
+大岡越前守の許可 `node tests/*.mjs` は `tests/removals/` の下に一致しないため、照らし役を走らせられなかった（`tasks/2026-11-15-p5-c1-verify/verification-ooka.md` の2）。
+
+1. `tests/removals/c1-check-json.mjs`・`c1-check-worktree.mjs` を `tests/` の直下（`tests/c1-check-json.mjs`・`tests/c1-check-worktree.mjs`）へ移す。テストの import と台本 `c1-gate-script.md` のコマンドも直す。台本は、`git status` の代わりに `build.mjs` の記録の `uncommittedEntries` で未コミットを見る形にする。
+2. 軽微な指摘の5（任意）: `c1-unit.test.mjs` が、壊した edits.patch で落ちることを確かめる。`tests/` の下の一時のフォルダに写しを作って確かめる形でよい。
+3. `node tests/run-all.mjs --save <ファイル>` の件数。handoff-notes に「4回目」の節を足す。
+
 ## 結果
 
 <完了後にリーダーが記入する>

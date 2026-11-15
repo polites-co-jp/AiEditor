@@ -65,6 +65,18 @@
 4. 「バージョン情報」の Copilot の2行を消す（`platform/dialogs/electron-browser/dialog.ts` を edits.patch に足す）。
 5. 当て直し（15単位、衝突なし）と型検査（誤り 0）を確かめ直し、handoff-notes に「3回目」の節を足す。曹参が `compareLockfile` のテストと C-1 のテストの更新を並行して書く。
 
+## 追加の依頼（2026-11-15、大岡越前守の検証の後）
+
+大岡越前守の検証（`tasks/2026-11-15-p5-c1-verify/verification-ooka.md`）は、レビュー・型検査・run-all に不合格の点が無かった。ただ、タグへ戻す操作が許可に無く、当て直しが判定できなかった。軽微な指摘の1〜3を直し、作業ツリーをタグに戻して渡す。
+
+1. 指摘1: `unit.json` の `kept` の理由（「リーダーの判断を仰ぐ」）と、README の古い記述（19行の依存、194行の「`scripts/` の変更が要る」）を、今の状態に合わせる。
+2. 指摘2: `chatEntitlementService.ts` と `nullChatEntitlementService.ts` が互いに import し合う形をやめる。docs/03 の5.3（`workbench.*.main.ts` を edits.patch で直さない）を守る置き方にする。
+3. 指摘3: `pnpm-workspace.yaml` の `allowBuilds` に残る、外した依存の項目（`foundry-local-sdk@2.2.1`・`ssh2` など）を `removeLines` で外す。ほかの単位が使う名前は残す。
+4. 指摘4（build/ の残り）は、手元のパッケージ化から呼ばれないので直さない。README の「残すもの」か「未確認」に書く。
+5. edits.patch を作り直し、タグからの当て直し（15単位）と型検査（誤り 0）を確かめる。
+6. **確かめた後、`C:\b\wt\p2` をタグ 1.146.0 に戻して渡す**（`git -C C:/b/wt/p2 checkout 1.146.0`。未コミットの変更 0。git の管理外の `build/lib/policies/policyDto.ts` はそのままでよい。`node_modules` は消さない）。大岡越前守が自分で15単位を当てる。
+7. handoff-notes に「5回目」の節を足す。
+
 ## 結果
 
 <完了後にリーダーが記入する>

@@ -21,6 +21,8 @@
 | `git -C C:/b/wt/* status`、`git -C C:/b/wt/* diff` | 版の作業ツリーで、当てた単位の範囲の外の変更が無いことと、版どうしのソースの差を、記録によらず直接確かめる |
 | `node scripts/disk-usage.mjs` | 「C: の空きが 15 GB を切りそうなら止める」の指示を守るため、空きを測る |
 | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/p1-ci-events.ps1`・`scripts/check-env.ps1`・`scripts/p1-launch-check.ps1` | Code Integrity のイベント（ネイティブのモジュールが止められていないか）と環境の状態を読む。zip を新しく展開して関門を始める |
+| `git -C C:/b/wt/* checkout 1.146.0`（タグの名前の形）、`git -C C:/b/wt/* checkout -- pnpm-lock.yaml`、`git -C C:/b/wt/* status --porcelain` | 単位の当て直しを、検証役が自分でタグから行う（`apply.mjs` は今の HEAD の上に当てる）。ロックファイルの検査の後に戻す。2026-11-15 の C-1 の検証で止まった（`tasks/2026-11-15-p5-c1-verify/verification-ooka.md` の2） |
+| `pnpm --dir C:/b/wt/* install --lockfile-only --ignore-scripts` | 単位を当てた後のロックファイルの検査（docs/03 の5.4）を、ビルドの前に検証役が行う |
 | 読める場所: `%APPDATA%\Code`・`%APPDATA%\Code - OSS`・`%USERPROFILE%\.vscode`・`%USERPROFILE%\.vscode-oss` の**有無と更新時刻だけ** | 普段使いのエディタのデータに触れていないことを、記録によらず確かめる（中身は読まない） |
 
 ## 3. 作った人の自己確認（蒙恬）
