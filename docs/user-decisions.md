@@ -320,3 +320,16 @@
 |---|---|
 | C-1 と C-2 の `delete` が `debugChatIntegration.ts` で重なり、両方を当てると C-2 の側が「本家に無い」の警告を出す | 重なりを残す。C-2 は C-1 なしでも当たらなければならず（`after` は A-3 だけ）、そのとき `debugChatIntegration.ts` は消したデバッガの部品を読むので、C-2 の `delete` に要る。照らし役はこの1件の警告だけを許す |
 | C-2 の `checks.absentStrings` の2つ（`debug/browser/debugService.js'`・`debug/browser/linkDetector.js'`）が本家に無い文字列で、消し損ねても当たらない | 本家にある形に替える（蒙恬） |
+
+## 記録（2026-11-15、C-4 の edits.patch を作るときに出た点。リーダーの判断）
+
+根拠: `tasks/2026-11-15-p5-c4-patch/handoff-notes.md`。どれも 2026-11-14 の規則の当てはめ。
+
+| 論点 | 扱い |
+|---|---|
+| 検索の入力欄のノートブックの絞り込み（`searchWidget.getNotebookFilters()`） | 既定値の定数で残す（検索のビューと検索エディタは読むだけ。パッチが小さく、毎週の衝突が減る） |
+| 設定 `search.experimental.closedNotebookRichContentResults` | 消す（読み手は消したノートブックの検索だけ） |
+| `mainThreadNotebookDto.ts`・`contrib/search/common/notebookSearch.ts`・`cellSearchModel.ts` | `kept` から `delete` へ移す（使い手が無くなった） |
+| `extHost.protocol.ts` のノートブックの DTO | 残す（一部は残る変換が使い、使われないものの切り分けは型検査に掛からない） |
+| セルの編集を含む `workspace.applyEdit` | reject で失敗させる（黙って捨てて成功に見せない） |
+| `.ipynb` の全文検索 | ripgrep がテキスト（JSON）として探す形になる。関門の検索の組で見る |
