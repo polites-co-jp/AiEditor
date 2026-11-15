@@ -204,7 +204,7 @@ Claude Code の項目は、裁定の「実機の動作で判断する」に当�
 - 判定の形（7.3）に `kind`・`reasons`・`materialsRead`・`missingMaterials`・`userChecksBeforeSwitch`・`markdown` を足す。判定に要る材料（ビルド・スモーク・通信の監査の記録など）が足りないときは、合格にしない。
 - 記録 `records/take-in/<label>/` は判定役が読めるよう main の作業ツリーに書き、`adopt.mjs` がマージの後に記録のコミットを作る。プッシュはしない（ユーザーかリーダーが行う）。
 - 通信の監査の環境: 取り込みのたびに、新しい版の CLI で `install-extensions.mjs --portable` を使い、台帳の拡張を入れた一時の環境を作って `netaudit.ps1 -EnvDir` に渡す。
-- スモークの基準: 取り込みの手順 6 で、今の版の基準と比べたうえで、`--prime` の3回の和を `C:\b\smoke\baseline-<新しい版のラベル>.json` として残す。採った後は、それが次の基準になる。
+- スモークの基準: 取り込みの手順 6 で、今の版の基準と比べたうえで、`--prime` の3回の和を `<buildRoot>\smoke\baseline-<新しい版のラベル>.json` として残す。採った後は、それが次の基準になる。
 - ロックファイルの検査は、取り込みのブランチの `removals/` を読む（`build.mjs` から `apply.mjs --lockfile-check` に `--removals` を渡す）。
 - 衝突の解決の記録（rerere）は常設の clone で作業ツリーの間で共有する。
 - 検知（2節）の事実: 本家のリリースの `body` はリリースノートの URL だけで、security の記述はリリースノートのページで見る。Windows の既定の実行ポリシーでは `-File` の台本が動かないので、`read-secret.ps1` は `-ExecutionPolicy Bypass` を付けて呼ぶ。アドバイザリの「前回以降」は、公開の日時でなく、まだ見ていない ID で数える（`state.json` の `seenAdvisories`）。Notion の部品は `scripts/lib/notion-client.mjs`・`notion-todo.mjs` に置き、取り込みの書き戻しと共有する。

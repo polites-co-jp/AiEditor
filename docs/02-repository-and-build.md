@@ -105,7 +105,7 @@
 
 `scripts/build.mjs <tag>` が次を順に行い、どこで止まったかを `records/builds/<label>.json` に書く。
 
-1. 作業ツリーの用意（`prepare.mjs`）: 常設の clone で `git fetch --tags`、`git worktree add C:\b\wt\<tag> <tag>`。`upstream.json` の SHA と一致するかを確かめる。
+1. 作業ツリーの用意（`prepare.mjs`）: 常設の clone で `git fetch --tags`、`git worktree add <buildRoot>\wt\<tag> <tag>`。`upstream.json` の SHA と一致するかを確かめる。
 2. 適用（`apply.mjs`）: product.json の上書き → 削除の単位を番号の順に（[03](03-removal-design.md) の5節） → `patches/` → `assets/` の写し → 自前の組み込み拡張を `extensions/mydist`・`extensions/notion-sync` に写す。単位ごとに、作業ツリーで `ops` と `edits` の2つのコミットにする（戻す・調べるときの区切り。[03](03-removal-design.md) の5.1）。
 3. 適用後の検査: [03](03-removal-design.md) の6節と [06](06-update-watch-and-take-in.md) の4節。結果は `records/take-in/<label>/checks.json`。
 4. 依存の導入: 本家のタグの手順に従う。1.146.0 は pnpm 12.16.0（`packageManager`）で、Phase 1 で確かめた（How-to-Contribute の wiki はまだ `npm install` と書く）。消した拡張の分だけロックファイルが変わる。ロックファイルはパッチにせず、ここで作り直し、差分を記録に残す（[03](03-removal-design.md) の5.4）。
