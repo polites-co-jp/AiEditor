@@ -1,7 +1,9 @@
 <#
 .SYNOPSIS
   Read-only check of the Windows build environment for an upstream VS Code tag (docs/02 section 5).
-  Installs nothing and changes nothing. Prints one JSON object to stdout.
+  Installs nothing and changes no settings. Prints one JSON object to stdout.
+  The children it starts get TEMP/TMP and the pnpm/npm cache folders under <buildRoot> (scripts\lib\child-cache-env.ps1),
+  so whatever they write goes there and not to C:. It creates <buildRoot>\tmp when missing. The JSON has "childEnv".
 
 .DESCRIPTION
   Checks: Git, Node.js (version and arch against the tag's .nvmrc), pnpm (against the tag's
@@ -37,6 +39,15 @@ if (-not $BuildRoot) {
     . (Join-Path $PSScriptRoot 'lib\local-config.ps1')
     $BuildRoot = (Resolve-ShukoLocalConfig).buildRoot
 }
+$buildRootExistedAtStart = (Test-Path -LiteralPath $BuildRoot)
+
+# The children started below (pnpm --version, npm --version, corepack, python, ...) inherit this process's
+# environment. Point their temp files and caches at <buildRoot> (same folders as scripts/lib/build-env.mjs
+# cacheEnvVars) so that they do not write %LOCALAPPDATA%\pnpm-cache, npm-cache or %TEMP% on C:
+# (decision 2026-11-15; tasks/2026-11-16-small-fixes/). Only this process changes; the user's settings do not.
+# <buildRoot>\tmp is created when missing (a TEMP that does not exist breaks some tools).
+. (Join-Path $PSScriptRoot 'lib\child-cache-env.ps1')
+$childEnv = Set-ShukoChildCacheEnv -BuildRoot $BuildRoot -CreateTemp
 
 function Invoke-Capture([string]$exe, [string[]]$argv) {
     # Runs a command and returns @{ ok; exit; out }. Never throws.
@@ -234,7 +245,9 @@ $result.signtool = [ordered]@{
 # Disk and long paths
 $drive = (Split-Path -Qualifier $BuildRoot).TrimEnd(':')
 $d = Get-PSDrive -Name $drive -ErrorAction SilentlyContinue
-$result.disk = [ordered]@{ buildRoot = $BuildRoot; drive = $drive; freeGB = $(if ($d) { [math]::Round($d.Free / 1GB, 1) } else { $null }); buildRootExists = (Test-Path -LiteralPath $BuildRoot) }
+# buildRootExists: as it was before this script created <buildRoot>\tmp for the children's TEMP.
+$result.disk = [ordered]@{ buildRoot = $BuildRoot; drive = $drive; freeGB = $(if ($d) { [math]::Round($d.Free / 1GB, 1) } else { $null }); buildRootExists = $buildRootExistedAtStart }
+$result.childEnv = [ordered]@{ vars = $childEnv.vars; replaced = $childEnv.replaced; createdTemp = $childEnv.createdTemp }
 $lp = $null
 try { $lp = (Get-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem' -Name LongPathsEnabled -ErrorAction Stop).LongPathsEnabled } catch { }
 $result.longPathsEnabled = $lp

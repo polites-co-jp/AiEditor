@@ -31,7 +31,7 @@ import { fetchUpstreamInfo, parseLsRemote } from "./lib/take-in/upstream-info.mj
 import { findPrevFetchDir, prevFetchCandidates, pickFetchedItem, seedFor, decideExtVersion, setLedgerVerdict } from "./lib/take-in/ext.mjs";
 import { writeBack, readWatchStatus } from "./lib/take-in/writeback.mjs";
 import { smokeRunArgs, newBaselinePath, summarizeSmoke, NETAUDIT_SETTINGS, netEnvLayout, netEnvInstallArgs, netauditArgs, netauditPathCheck } from "./lib/take-in/smoke-net.mjs";
-import { listMaterials, buildJudgeRequest, JUDGE_PROMPT, listIssues, composeBuildRecord, factsFrom, auditHosts } from "./lib/take-in/records.mjs";
+import { listMaterials, buildJudgeRequest, JUDGE_PROMPT, listIssues, composeBuildRecord, factsFrom, auditHosts, recordsDirProblem } from "./lib/take-in/records.mjs";
 
 const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(SCRIPT_DIR, "..");
@@ -615,9 +615,6 @@ async function runCore(a) {
   ctx.branch = branchFor(ctx.label);
   ctx.bwt = a.builderWorktree ? path.resolve(a.builderWorktree) : path.join(ctx.buildRoot, "take-in", ctx.label, "repo");
   ctx.wt = path.join(ctx.buildRoot, "wt", a.tag);
-  if (a.recordsDir && !path.resolve(a.recordsDir).toLowerCase().startsWith(REPO.toLowerCase()) && !a.skipJudge) {
-    ctx.rec.warnings.push("--records-dir がビルドリポジトリの外。判定役は読めない");
-  }
   ctx.commit = a.commit ? a.commit.toLowerCase() : null;
   ctx.currentLabel = currentLabel(ctx.installRoot);
   ctx.claudePath = resolveClaudePath(a) || "claude";
@@ -1063,6 +1060,14 @@ export async function main(argv = process.argv.slice(2)) {
       return 2;
     }
     throw err;
+  }
+  // --records-dir は records/take-in/ の下に限る（Team の R22。前は外でも警告だけで続けた）。何かを作る前に止める
+  if (a.recordsDir) {
+    const why = recordsDirProblem(a.recordsDir, { repoRoot: REPO });
+    if (why) {
+      console.error(`[take-in] 引数の誤り: ${why}\n${USAGE}`);
+      return 2;
+    }
   }
   try {
     if (a.command === "core") return await runCore(a);

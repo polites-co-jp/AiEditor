@@ -14,8 +14,8 @@ export const USAGE = `使い方:
 共通のオプション:
   --dry-run  --config <local.json>  --build-root <dir>  --install-root <dir>  --claude <path>
   --no-repair  --max-repair <n>  --skip-judge  --no-writeback  --watch-state <path>
-試しのためのオプション（build.mjs の --take-in-dir と同じ考え。判定役はビルドリポジトリの外を読めないので、判定まで走らせるときは使わない）:
-  --records-dir <dir>  記録の置き場所（既定 records/take-in/<label>）
+試しのためのオプション:
+  --records-dir <dir>  記録の置き場所（既定 records/take-in/<label>）。records/take-in/ の下に限る（外を指すと止める。判定役は records/take-in/ しか読めない）
   --builder-worktree <dir>  取り込みのブランチの作業ツリー（既定 <buildRoot>\\take-in\\<label>\\repo。渡したときは作らない）
   --editor-dir <dir>  手順 6・7 で試すエディタ（既定 展開した版のフォルダ、無ければ gulp の出力）
   --net-env <dir>  通信の監査の環境を作らずにこれを使う（既定は新しい版の CLI と台帳で作る。docs/06 の9節）

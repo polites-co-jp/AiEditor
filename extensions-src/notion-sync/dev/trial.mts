@@ -6,6 +6,7 @@ import { FakeNotion, fakeResponse } from "./fake-notion.mts";
 import { createNotionClient, NotionApiError } from "../src/notion-client.mts";
 import { promises as fsp } from "node:fs";
 import * as path from "node:path";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { fileBaseStore, memoryBaseStore, memoryFileStore, userDirFileStore, userDirFromGlobalStorage, type BaseStore, type FileStore } from "../src/stores.mts";
 import { runSync, readDiffs, type SyncDeps, type SyncResult } from "../src/sync.mts";
 import { splitText, toRichText, hashText } from "../src/text.mts";
@@ -15,6 +16,35 @@ import { decide } from "../src/decide.mts";
 const TOKEN = "ntn_TRIAL_TOKEN_DO_NOT_LOG_0123456789abcdef";
 const PAGE = "0123abcd-0123-4abc-8def-0123456789ab";
 const IGNORED = ["terminal.integrated.defaultProfile.windows"];
+
+// 流れ16（本物のファイル）の置き場所（裁定 2026-11-15「C: に置かない」。tasks/2026-11-16-small-fixes/）。
+//   既定: <buildRoot>\trial-notion-sync（buildRoot は scripts/lib/local-config.mjs の resolveLocalConfig。local.json が無ければ
+//         <このリポジトリ>\tmp\b）。前の既定は C:\b\notion-sync-trial で、C:\b を消した後に走らせると C: に作り直していた。
+//   NOTION_SYNC_TRIAL_DIR があればそれを使う（前と同じ）。
+//   流れ16 は、この下に毎回新しいフォルダ（run-XXXXXX。mkdtemp）を作って使う。前は置き場所を丸ごと消してから作っていたが、
+//   台本で消すことはやめた（消す許可の外を台本で消さないため）。古い run-* は残るので、要らなければ人が消す。
+// 書き出している関数（テストの入口）: REPO_ROOT, TRIAL_DIR_NAME, defaultTrialRoot({ env, configPath }), makeTrialRunDir(root)
+export const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
+export const TRIAL_DIR_NAME = "trial-notion-sync";
+
+type LocalConfigModule = {
+  resolveLocalConfig: (o?: { configPath?: string; env?: NodeJS.ProcessEnv }) => { buildRoot: string };
+};
+
+export async function defaultTrialRoot({ env = process.env, configPath }: { env?: NodeJS.ProcessEnv; configPath?: string } = {}): Promise<string> {
+  const given = env.NOTION_SYNC_TRIAL_DIR;
+  if (given) return path.resolve(given);
+  const href = pathToFileURL(path.join(REPO_ROOT, "scripts", "lib", "local-config.mjs")).href;
+  const lc = (await import(href)) as LocalConfigModule;
+  const { buildRoot } = lc.resolveLocalConfig({ env, ...(configPath ? { configPath } : {}) });
+  return path.join(buildRoot, TRIAL_DIR_NAME);
+}
+
+// root の下に新しい空のフォルダ（run-XXXXXX）を作って返す。何も消さない。
+export async function makeTrialRunDir(root: string): Promise<string> {
+  await fsp.mkdir(root, { recursive: true });
+  return fsp.mkdtemp(path.join(root, "run-"));
+}
 
 let failures = 0;
 function check(label: string, cond: boolean, detail = ""): void {
@@ -251,10 +281,9 @@ export async function main(): Promise<boolean> {
   const gaps = sleeps.filter((ms) => ms > 0 && ms <= 350);
   check("350ms の間隔を空けた", gaps.length > 0, `間隔の待ち ${gaps.length} 回`);
 
-  console.log("流れ16: 本物のファイル（C:\\b\\notion-sync-trial\\User）で取り込み・書き出し");
   {
-    const root = process.env.NOTION_SYNC_TRIAL_DIR ?? "C:\\b\\notion-sync-trial";
-    await fsp.rm(root, { recursive: true, force: true });
+    const root = await makeTrialRunDir(await defaultTrialRoot());
+    console.log(`流れ16: 本物のファイル（${path.join(root, "User")}）で取り込み・書き出し`);
     const userDir = path.join(root, "User");
     const globalStorage = path.join(userDir, "globalStorage", "shuko.notion-sync");
     await fsp.mkdir(path.join(userDir, "snippets"), { recursive: true });

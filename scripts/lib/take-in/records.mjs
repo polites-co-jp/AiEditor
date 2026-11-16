@@ -6,6 +6,47 @@ import path from "node:path";
 
 const toPosix = (p) => String(p).replace(/\\/g, "/");
 
+// --records-dir の守り（Team の R22。docs/user-decisions.md「Team の返答で課に求められた点」。tasks/2026-11-16-small-fixes/）。
+// 判定役の狄仁傑は records/take-in/ しか読めないので、記録の置き場所は <repoRoot>\records\take-in\ の下に限る
+// （records/take-in そのものは不可。--skip-judge でも同じ）。問題が無ければ null、あれば理由の文を返す（読むだけ）。
+//   - dir は cwd からの相対か絶対。正規化してから、大文字小文字を区別せずに照らす（.. で抜ける形・前方一致の偽装は外）
+//   - records/take-in から dir までの途中の、在るフォルダにリンク（ジャンクションを含む）があれば外とみなす。
+//     在るもののうちいちばん深いフォルダの実体（realpath）が records/take-in の実体の下でなければ外
+export function recordsDirProblem(dir, { repoRoot, cwd = process.cwd() } = {}) {
+  if (typeof dir !== "string" || dir === "") return "--records-dir が空";
+  if (!repoRoot) throw new Error("recordsDirProblem: repoRoot が無い");
+  const root = path.resolve(repoRoot, "records", "take-in");
+  const abs = path.resolve(cwd, dir);
+  const lc = (p) => p.toLowerCase();
+  const inside = lc(abs).startsWith(lc(root) + path.sep);
+  if (!inside) return `--records-dir が records/take-in/ の下でない（判定役は records/take-in/ しか読めない）: ${dir} → ${abs}`;
+  const parts = path.relative(root, abs).split(path.sep).filter(Boolean);
+  let cur = root;
+  let deepest = null;
+  for (let i = -1; i < parts.length; i++) {
+    if (i >= 0) cur = path.join(cur, parts[i]);
+    let st;
+    try {
+      st = fs.lstatSync(cur);
+    } catch {
+      break;
+    }
+    if (st.isSymbolicLink()) return `--records-dir の途中のフォルダがリンクかジャンクション: ${cur}`;
+    if (!st.isDirectory()) return `--records-dir の途中がフォルダでない: ${cur}`;
+    deepest = cur;
+  }
+  if (deepest) {
+    try {
+      const rr = fs.realpathSync.native(root);
+      const rd = fs.realpathSync.native(deepest);
+      if (lc(rd) !== lc(rr) && !lc(rd).startsWith(lc(rr) + path.sep)) return `--records-dir の実体が records/take-in/ の外: ${deepest} → ${rd}`;
+    } catch (err) {
+      return `--records-dir の実体を確かめられない: ${deepest}（${err.message}）`;
+    }
+  }
+  return null;
+}
+
 // dir の下のファイルを、repoRoot からの相対パス（/ 区切り）で並べる（判定役の Read のため）。大きな物は大きさを添える。
 export function listMaterials(dir, repoRoot, { skip = [/^judge-output\.json$/, /^verdict\.(json|md)$/] } = {}) {
   const out = [];
