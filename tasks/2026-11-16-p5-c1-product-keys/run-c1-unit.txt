@@ -1,0 +1,5 @@
+c1-unit.test.mjs                   tests   57  pass   56  fail   1  skip   0
+TOTAL                              tests   57  pass   56  fail   1  skip   0
+
+Failing:
+  c1-unit.test.mjs: C-1 消した部品の使い手: サービスの注入・設定のキーの鎖の読み・コマンドの呼び手(組み込み拡張を含む)が、残るコードに残っていない(edits.patch が直しているか、登録・定義を足している)

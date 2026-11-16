@@ -1,0 +1,9 @@
+bare: services 31 settings 3 commands 7
+  src/vs/workbench/contrib/search/browser/searchView.ts:701 [setting: search.searchView.semanticSearchBehavior] const shouldRenderAIResults = this.configurationService.getValue<ISearchConfigurationProperties>('search').searchView.semanticSearchBehavior
+  src/vs/workbench/contrib/search/browser/searchView.ts:2014 [setting: search.searchView.semanticSearchBehavior] const config = this.configurationService.getValue<ISearchConfigurationProperties>('search').searchView.semanticSearchBehavior;
+  src/vs/workbench/contrib/search/browser/searchView.ts:2008 [setting: search.searchView.keywordSuggestions] if (this.configurationService.getValue<ISearchConfigurationProperties>('search').searchView.keywordSuggestions) {
+行を消す: 0
+登録を足す: 0
+定義を足す: 0
+型の網: 0
+呼び手の行を消す: 0

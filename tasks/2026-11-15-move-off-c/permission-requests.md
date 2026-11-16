@@ -22,6 +22,7 @@
 | read_paths | `C:/b/` | 移した後に外す（`./` で足りる） |
 | delete_paths | `C:/b/p2/`・`C:/b/dist/`・`C:/b/smoke/ext/`・`C:/b/trial-*` | `tmp/b/p2/`・`tmp/b/dist/`・`tmp/b/smoke/ext/`・`tmp/b/trial-*` |
 | delete_keep | `C:/b/p2/1.146.0-p2-all` ほか7行 | 同じ7行の `C:/b/` を `tmp/b/` に（新しい段階 C の版の名前は、関門の後に改めて依頼する） |
+| delete_paths（2026-11-16 追記） | — | `tmp/b/wt-*`（版を作り直すたびに台本 `build.mjs --worktree` で作る使い捨ての作業ツリー。いま `wt-r2`・`wt-r3`・`wt-r3b`・`wt-r3c` の4つ、1つ約 2.5 GB と出力 0.7 GB）。関門が済んだ版の作業ツリーだけを消す。常設の作業場所 `tmp/b/wt` は git の `worktree remove` の形で外す |
 
 ### 曹参（cao-shen）
 

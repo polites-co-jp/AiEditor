@@ -1,0 +1,45 @@
+{
+    "checkedAt":  "2026-11-16T12:23:03.2342264+09:00",
+    "logsFolder":  "e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\smoke\\runs\\p5-c-82f-261116T024952\\logs",
+    "workbench":  {
+                      "logsFolder":  "e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\smoke\\runs\\p5-c-82f-261116T024952\\logs",
+                      "rendererLog":  {
+                                          "path":  "e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\smoke\\runs\\p5-c-82f-261116T024952\\logs\\window1\\renderer.log",
+                                          "exists":  true,
+                                          "bytes":  0
+                                      },
+                      "exthostLog":  {
+                                         "path":  "e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\smoke\\runs\\p5-c-82f-261116T024952\\logs\\window1\\exthost\\exthost.log",
+                                         "exists":  false,
+                                         "bytes":  null
+                                     },
+                      "chromiumLog":  {
+                                          "path":  "e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\smoke\\runs\\p5-c-82f-261116T024952\\chromium.log",
+                                          "exists":  true,
+                                          "bytes":  338
+                                      },
+                      "markers":  {
+                                      "rendererStartedExtHost":  false,
+                                      "extHostStarted":  false,
+                                      "eagerExtensionsActivated":  false
+                                  },
+                      "missing":  [
+                                      "rendererStartedExtHost",
+                                      "extHostStarted",
+                                      "eagerExtensionsActivated"
+                                  ],
+                      "consoleUncaught":  {
+                                              "workbenchCount":  1,
+                                              "othersCount":  0,
+                                              "workbench":  [
+                                                                "[59188:1116/115143.357:INFO:CONSOLE:1847] \"Uncaught (in promise) TypeError: Cannot read properties of undefined (reading \u0027chatExtensionId\u0027)\", source: vscode-file://vscode-app/e:/develop/self/Team/projects/ai-editor/tmp/b/p2/1.146.0-p5-c-all/Shuko-win32-x64-1.146.0-p5-c-all/resources/app/out/vs/workbench/workbench.desktop.main.js (1847)"
+                                                            ],
+                                              "others":  [
+
+                                                         ]
+                                          },
+                      "ready":  false
+                  },
+    "result":  "error",
+    "message":  "the workbench did not come up (missing: rendererStartedExtHost, extHostStarted, eagerExtensionsActivated; uncaught workbench console errors: 1)"
+}

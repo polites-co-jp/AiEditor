@@ -1,0 +1,43 @@
+{
+    "checkedAt":  "2026-11-16T12:23:15.5788012+09:00",
+    "logsFolder":  "C:\\b\\smoke\\runs\\p2-B-6-r2-20261114T152608\\logs",
+    "workbench":  {
+                      "logsFolder":  "C:\\b\\smoke\\runs\\p2-B-6-r2-20261114T152608\\logs",
+                      "rendererLog":  {
+                                          "path":  "C:\\b\\smoke\\runs\\p2-B-6-r2-20261114T152608\\logs\\window1\\renderer.log",
+                                          "exists":  true,
+                                          "bytes":  6533
+                                      },
+                      "exthostLog":  {
+                                         "path":  "C:\\b\\smoke\\runs\\p2-B-6-r2-20261114T152608\\logs\\window1\\exthost\\exthost.log",
+                                         "exists":  true,
+                                         "bytes":  26532
+                                     },
+                      "chromiumLog":  {
+                                          "path":  "C:\\b\\smoke\\runs\\p2-B-6-r2-20261114T152608\\chromium.log",
+                                          "exists":  true,
+                                          "bytes":  16048
+                                      },
+                      "markers":  {
+                                      "rendererStartedExtHost":  true,
+                                      "extHostStarted":  true,
+                                      "eagerExtensionsActivated":  true
+                                  },
+                      "missing":  [
+
+                                  ],
+                      "consoleUncaught":  {
+                                              "workbenchCount":  0,
+                                              "othersCount":  1,
+                                              "workbench":  [
+
+                                                            ],
+                                              "others":  [
+                                                             "[37344:1115/002706.915:INFO:CONSOLE:66] \"Uncaught TypeError: Cannot read properties of null (reading \u0027classList\u0027)\", source: vscode-webview://03gnopk179c1i92h8n0ce69aeckflkp4j93ensd7jl88kpp1s87d/index.html?id=1d9bd17e-9528-485c-bd15-bd80e740b146\u0026parentId=1\u0026origin=a915f552-505d-4120-bd07-d6a4388127ca\u0026swVersion=6\u0026extensionId=tomoki1207.pdf\u0026platform=electron\u0026vscode-resource-base-authority=vscode-resou..."
+                                                         ]
+                                          },
+                      "ready":  true
+                  },
+    "result":  "ok",
+    "message":  "the workbench came up (logs only)"
+}

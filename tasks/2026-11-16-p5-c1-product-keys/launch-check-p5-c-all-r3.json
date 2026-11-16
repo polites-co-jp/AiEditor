@@ -1,0 +1,248 @@
+{
+    "checkedAt":  "2026-11-16T14:26:06.9660170+09:00",
+    "zip":  "e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\dist\\1.146.0-p5-c-all-r3.zip",
+    "root":  "",
+    "dest":  "e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p2\\1.146.0-p5-c-all-r3",
+    "unpack":  {
+                   "done":  true,
+                   "seconds":  6.8
+               },
+    "editor":  {
+                   "root":  "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p2\\1.146.0-p5-c-all-r3\\Shuko-win32-x64-1.146.0-p5-c-all-r3",
+                   "exe":  "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p2\\1.146.0-p5-c-all-r3\\Shuko-win32-x64-1.146.0-p5-c-all-r3\\Shuko.exe",
+                   "cli":  "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p2\\1.146.0-p5-c-all-r3\\Shuko-win32-x64-1.146.0-p5-c-all-r3\\bin\\shuko.cmd",
+                   "productJson":  "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p2\\1.146.0-p5-c-all-r3\\Shuko-win32-x64-1.146.0-p5-c-all-r3\\resources\\app\\product.json",
+                   "appDirRelative":  "resources\\app",
+                   "nameShort":  "Shuko",
+                   "nameLong":  "Shuko",
+                   "applicationName":  "shuko",
+                   "dataFolderName":  ".shuko",
+                   "version":  "1.146.0",
+                   "commit":  "44aa2e0bbb84e477d4995446318be3abaa2cf936",
+                   "portableOk":  true
+               },
+    "cliVersion":  {
+                       "exitCode":  0,
+                       "output":  [
+                                      "1.146.0",
+                                      "44aa2e0bbb84e477d4995446318be3abaa2cf936",
+                                      "x64"
+                                  ]
+                   },
+    "installs":  [
+                     {
+                         "vsix":  "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\vsix\\detachhead.basedpyright-1.40.2\\detachhead.basedpyright-1.40.2.vsix",
+                         "exitCode":  0,
+                         "ok":  true,
+                         "errors":  [
+
+                                    ],
+                         "output":  [
+                                        "Installing extensions...",
+                                        "Extension \u0027detachhead.basedpyright-1.40.2.vsix\u0027 was successfully installed."
+                                    ]
+                     },
+                     {
+                         "vsix":  "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\vsix\\ms-vscode.powershell-2025.4.0\\ms-vscode.powershell-2025.4.0.vsix",
+                         "exitCode":  0,
+                         "ok":  true,
+                         "errors":  [
+
+                                    ],
+                         "output":  [
+                                        "Installing extensions...",
+                                        "Extension \u0027ms-vscode.powershell-2025.4.0.vsix\u0027 was successfully installed."
+                                    ]
+                     },
+                     {
+                         "vsix":  "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\vsix\\mads-hartmann.bash-ide-vscode-1.43.2\\mads-hartmann.bash-ide-vscode-1.43.2.vsix",
+                         "exitCode":  0,
+                         "ok":  true,
+                         "errors":  [
+
+                                    ],
+                         "output":  [
+                                        "Installing extensions...",
+                                        "Extension \u0027mads-hartmann.bash-ide-vscode-1.43.2.vsix\u0027 was successfully installed."
+                                    ]
+                     },
+                     {
+                         "vsix":  "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\vsix\\mechatroner.rainbow-csv-3.24.1\\mechatroner.rainbow-csv-3.24.1.vsix",
+                         "exitCode":  0,
+                         "ok":  true,
+                         "errors":  [
+
+                                    ],
+                         "output":  [
+                                        "Installing extensions...",
+                                        "Extension \u0027mechatroner.rainbow-csv-3.24.1.vsix\u0027 was successfully installed."
+                                    ]
+                     },
+                     {
+                         "vsix":  "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\vsix\\weixu.wx-vsce-dotenv-0.2.3\\weixu.wx-vsce-dotenv-0.2.3.vsix",
+                         "exitCode":  0,
+                         "ok":  true,
+                         "errors":  [
+
+                                    ],
+                         "output":  [
+                                        "Installing extensions...",
+                                        "Extension \u0027weixu.wx-vsce-dotenv-0.2.3.vsix\u0027 was successfully installed."
+                                    ]
+                     },
+                     {
+                         "vsix":  "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\vsix\\tomoki1207.pdf-1.2.2\\tomoki1207.pdf-1.2.2.vsix",
+                         "exitCode":  0,
+                         "ok":  true,
+                         "errors":  [
+
+                                    ],
+                         "output":  [
+                                        "Installing extensions...",
+                                        "Extension \u0027tomoki1207.pdf-1.2.2.vsix\u0027 was successfully installed."
+                                    ]
+                     },
+                     {
+                         "vsix":  "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\vsix\\MS-CEINTL.vscode-language-pack-ja-1.131.0\\MS-CEINTL.vscode-language-pack-ja-1.131.0.vsix",
+                         "exitCode":  0,
+                         "ok":  true,
+                         "errors":  [
+
+                                    ],
+                         "output":  [
+                                        "Installing extensions...",
+                                        "Extension \u0027MS-CEINTL.vscode-language-pack-ja-1.131.0.vsix\u0027 was successfully installed."
+                                    ]
+                     }
+                 ],
+    "portable":  {
+                     "path":  "e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p2\\1.146.0-p5-c-all-r3\\portable",
+                     "entries":  [
+                                     "extensions\\",
+                                     "shared-data\\",
+                                     "user-data\\",
+                                     "argv.json"
+                                 ],
+                     "userData":  "e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p2\\1.146.0-p5-c-all-r3\\portable\\user-data",
+                     "userSettingsDir":  "e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p2\\1.146.0-p5-c-all-r3\\portable\\user-data\\User",
+                     "extensions":  "e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p2\\1.146.0-p5-c-all-r3\\portable\\extensions",
+                     "argvJson":  "e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p2\\1.146.0-p5-c-all-r3\\portable\\argv.json"
+                 },
+    "started":  {
+                    "pid":  70016,
+                    "aliveAfterCheck":  true,
+                    "exitCode":  null,
+                    "checkSeconds":  10,
+                    "smokeSeconds":  15,
+                    "tree":  "Shuko.exe x7",
+                    "stoppedProcesses":  7
+                },
+    "workbench":  {
+                      "logsFolder":  "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p2\\1.146.0-p5-c-all-r3\\portable\\user-data\\logs\\20261116T142702",
+                      "rendererLog":  {
+                                          "path":  "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p2\\1.146.0-p5-c-all-r3\\portable\\user-data\\logs\\20261116T142702\\window1\\renderer.log",
+                                          "exists":  true,
+                                          "bytes":  376
+                                      },
+                      "exthostLog":  {
+                                         "path":  "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p2\\1.146.0-p5-c-all-r3\\portable\\user-data\\logs\\20261116T142702\\window1\\exthost\\exthost.log",
+                                         "exists":  true,
+                                         "bytes":  973
+                                     },
+                      "chromiumLog":  {
+                                          "path":  "e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p2\\1.146.0-p5-c-all-r3\\chromium-20261116T142702.log",
+                                          "exists":  true,
+                                          "bytes":  1300
+                                      },
+                      "markers":  {
+                                      "rendererStartedExtHost":  true,
+                                      "extHostStarted":  true,
+                                      "eagerExtensionsActivated":  true
+                                  },
+                      "missing":  [
+
+                                  ],
+                      "consoleUncaught":  {
+                                              "workbenchCount":  0,
+                                              "othersCount":  0,
+                                              "workbench":  [
+
+                                                            ],
+                                              "others":  [
+
+                                                         ]
+                                          },
+                      "ready":  true
+                  },
+    "dailyData":  {
+                      "before":  [
+                                     {
+                                         "path":  "C:\\Users\\kou_z\\AppData\\Roaming\\Code",
+                                         "exists":  false,
+                                         "lastWriteTime":  null
+                                     },
+                                     {
+                                         "path":  "C:\\Users\\kou_z\\AppData\\Roaming\\Code - OSS",
+                                         "exists":  false,
+                                         "lastWriteTime":  null
+                                     },
+                                     {
+                                         "path":  "C:\\Users\\kou_z\\.vscode",
+                                         "exists":  false,
+                                         "lastWriteTime":  null
+                                     },
+                                     {
+                                         "path":  "C:\\Users\\kou_z\\.vscode-oss",
+                                         "exists":  false,
+                                         "lastWriteTime":  null
+                                     },
+                                     {
+                                         "path":  "C:\\Users\\kou_z\\AppData\\Roaming\\Shuko",
+                                         "exists":  true,
+                                         "lastWriteTime":  "2026-11-14T16:33:57.6946105Z"
+                                     },
+                                     {
+                                         "path":  "C:\\Users\\kou_z\\.shuko",
+                                         "exists":  true,
+                                         "lastWriteTime":  "2026-11-14T16:33:57.6170451Z"
+                                     }
+                                 ],
+                      "after":  [
+                                    {
+                                        "path":  "C:\\Users\\kou_z\\AppData\\Roaming\\Code",
+                                        "exists":  false,
+                                        "lastWriteTime":  null
+                                    },
+                                    {
+                                        "path":  "C:\\Users\\kou_z\\AppData\\Roaming\\Code - OSS",
+                                        "exists":  false,
+                                        "lastWriteTime":  null
+                                    },
+                                    {
+                                        "path":  "C:\\Users\\kou_z\\.vscode",
+                                        "exists":  false,
+                                        "lastWriteTime":  null
+                                    },
+                                    {
+                                        "path":  "C:\\Users\\kou_z\\.vscode-oss",
+                                        "exists":  false,
+                                        "lastWriteTime":  null
+                                    },
+                                    {
+                                        "path":  "C:\\Users\\kou_z\\AppData\\Roaming\\Shuko",
+                                        "exists":  true,
+                                        "lastWriteTime":  "2026-11-14T16:33:57.6946105Z"
+                                    },
+                                    {
+                                        "path":  "C:\\Users\\kou_z\\.shuko",
+                                        "exists":  true,
+                                        "lastWriteTime":  "2026-11-14T16:33:57.6170451Z"
+                                    }
+                                ],
+                      "changed":  [
+
+                                  ]
+                  },
+    "result":  "ok",
+    "message":  "started, stayed alive, the workbench came up, stopped; daily editor data folders unchanged"
+}

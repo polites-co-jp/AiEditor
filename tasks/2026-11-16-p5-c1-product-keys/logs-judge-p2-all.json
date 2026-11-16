@@ -1,0 +1,43 @@
+{
+    "checkedAt":  "2026-11-16T12:23:09.0840138+09:00",
+    "logsFolder":  "C:\\b\\smoke\\runs\\p2-all-1-20261114T155300\\logs",
+    "workbench":  {
+                      "logsFolder":  "C:\\b\\smoke\\runs\\p2-all-1-20261114T155300\\logs",
+                      "rendererLog":  {
+                                          "path":  "C:\\b\\smoke\\runs\\p2-all-1-20261114T155300\\logs\\window1\\renderer.log",
+                                          "exists":  true,
+                                          "bytes":  6359
+                                      },
+                      "exthostLog":  {
+                                         "path":  "C:\\b\\smoke\\runs\\p2-all-1-20261114T155300\\logs\\window1\\exthost\\exthost.log",
+                                         "exists":  true,
+                                         "bytes":  26081
+                                     },
+                      "chromiumLog":  {
+                                          "path":  "C:\\b\\smoke\\runs\\p2-all-1-20261114T155300\\chromium.log",
+                                          "exists":  true,
+                                          "bytes":  12822
+                                      },
+                      "markers":  {
+                                      "rendererStartedExtHost":  true,
+                                      "extHostStarted":  true,
+                                      "eagerExtensionsActivated":  true
+                                  },
+                      "missing":  [
+
+                                  ],
+                      "consoleUncaught":  {
+                                              "workbenchCount":  0,
+                                              "othersCount":  0,
+                                              "workbench":  [
+
+                                                            ],
+                                              "others":  [
+
+                                                         ]
+                                          },
+                      "ready":  true
+                  },
+    "result":  "ok",
+    "message":  "the workbench came up (logs only)"
+}
