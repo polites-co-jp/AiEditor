@@ -35,14 +35,14 @@
 
 ## 結果
 
-済み。蒙恬が手順書の1・2・4を打った（`local.json` を新しく作り、`switch.ps1 1.146.0-1` は `result: ok`・SHA-256 一致、台帳の拡張8件は `compare.ok: true`）。リーダーが読むだけの確かめで、入れた版の `currentin\shuko.cmd --version` が `1.146.0`・`7fac30e886f79ebe44e1bac93acd7a86fbbafed8`・`x64` を出し、`current` が `versions.146.0-1` を指し、`history.txt` が1行であることを確かめた。同じ zip のポータブルの起動の確かめ（`launch-check-r4.json`）はワークベンチ `ready: true`。
+済み。蒙恬が手順書の1・2・4を打った（`local.json` を新しく作り、`switch.ps1 1.146.0-1` は `result: ok`・SHA-256 一致、台帳の拡張8件は `compare.ok: true`）。リーダーが読むだけの確かめで、入れた版の `current\bin\shuko.cmd --version` が `1.146.0`・`7fac30e886f79ebe44e1bac93acd7a86fbbafed8`・`x64` を出し、`current` が `versions\1.146.0-1` を指し、`history.txt` が1行であることを確かめた。同じ zip のポータブルの起動の確かめ（`launch-check-r4.json`）はワークベンチ `ready: true`。
 
 ## 未解決
 
 - ユーザーが行うもの: 手順書の3（スタートメニューと PATH）・5（外部ツール）・6（Notion のトークン）・7（タスクスケジューラ）、画面を見る確かめ（C1〜C22）。
 - 本家の VS Code のデータ（`%APPDATA%\Code` など）がこの PC に無い。手順書の「本家に戻る」の前提を、ユーザーに知らせる。
 - `%APPDATA%\Shuko` に前の試しの残り（2026-11-14）がある。消すかはユーザーが決める。
-- 試しの展開 `tmp\p1.146.0-p5-c-all-r4-install-check\` は削除の許可の外にある。
+- 試しの展開 `tmp\b\p1\1.146.0-p5-c-all-r4-install-check\` は削除の許可の外にある。
 
 ## 次の担当
 
