@@ -485,3 +485,15 @@
 | C-7 の「2回続けて通らなければ諮る」 | r2 では C-7 の自動の関門で落ちた所は無い |
 | r3 の作り直しの途中で残りが2か所見つかり、`r3b`・`r3c` と作り直した（同じラベルで作り直すには zip の上書きと作業ツリーの削除が要り、許可の外） | 関門は `1.146.0-p5-c-all-r3c`（今の edits.patch と合う唯一の版）で行う。`r3`・`r3b` の版と使い捨ての作業ツリーは、削除の許可（依頼に `tmp/b/wt-*` を足した）が入ったら消す |
 | `workbench.action.unifiedQuickAccess`（`quickAccessActions.ts`。消した部品のコマンドを呼ぶが `try/catch` でふつうのクイックアクセスに戻る） | 直さない。何もしないコマンドにすると戻らずに何も開かなくなる。網の例外（`ORPHAN_ALLOW`）に理由つきで入れる |
+
+## 記録（2026-11-16、段階 C の版 r3c の関門で出た点。リーダーの判断）
+
+根拠: `records/take-in/1.146.0-p5-c-all-r3c/gate-p5-c-all-r3c.md`・`gate-C-1-ai.md`
+
+| 論点 | 扱い |
+|---|---|
+| r3c の判定 | C-2〜C-7 は合格（docs/03 の7節の1〜4。スモーク3回とも PASS 49 / FAIL 0、UNKNOWN service 0、通信の監査は許可の外 0）。C-1 は振る舞いは合格、静的なテスト（c1-unit）の2件が落ちるので保留 |
+| c1-unit の網の誤検出（`IInstantiationService` の16件、共有プロセスに登録が残る `IGitHubService`、`unifiedQuickAccess`） | 網を直す（曹参）。`IInstantiationService` は数えない、edits.patch が直すファイルや別のプロセスに残る登録も「残る登録」と数える、`unifiedQuickAccess` は理由つきの例外 |
+| C-1 の edits.patch の書式の傷（手で足した区画の空の文脈の行の先頭の空白が落ちている、`index` の行が無い） | 直す（蒙恬）。空の文脈の行は1文字の空白に戻す。`index` の行は、タグの木と当てた木のファイルの中身から blob の SHA-1 を台本で計算して入れる（git の許可が `tmp/b` に当たらないため。`git hash-object` と同じ計算）。直したら版 r4 を作り、大岡越前守は照らし役・c1-unit・スモーク1回で振る舞いが r3c と同じことを見る |
+| C-1〜C-7 の `enabled: true` のコミット | C-3〜C-7 は `after` に C-1 を持つので、C-1 の保留が片づいてから全部まとめてコミットする |
+| 次の比べの基準 | `baseline-p5-c-all-r3c.json` を使ってよい |

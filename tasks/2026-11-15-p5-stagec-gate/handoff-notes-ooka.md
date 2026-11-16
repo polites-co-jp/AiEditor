@@ -4,7 +4,7 @@
 - 依頼: brief の「3. 関門」「3'.」。相手は蒙恬の `1.146.0-p5-c-all`（R2-7）
 - 結果: **不合格**。原因は C-1-ai。C-2〜C-7 は 1・2 が合格で、3・4 は C-1 の誤りのせいで判定できない
 - 記録: `records/take-in/1.146.0-p5-c-all/`（`gate-p5-c-all.md` が全体。単位ごとに `gate-C-1-ai.md`〜`gate-C-7-breadcrumbs-outline.md`）
-- 直した版（r2）の関門は、このファイルの末尾の「r2」の節
+- 直した版の関門は、このファイルの末尾の「r2」「r3c」の節
 
 ## 1. 要点
 
@@ -118,3 +118,68 @@
 - `C:\b` は読むだけ（監査の環境の写しの元 `C:\b\p0\data\upstream-default`）。書いていない。
 - 普段使いのデータは、起動の確かめで6つのフォルダが変わらないこと、スモークの `safety.daily-argv` が3回とも PASS であることで確かめた。local.json・スタートメニュー・PATH・タスクスケジューラ・Notion は変えていない。秘密の場所には触れていない。ネットのログは台本が読んだ直後に消した（`tmp\b\netlog\` は空）。
 - C: の空きは 96.33 GB から 95.60 GB に減った。何が増えたかは、私の読める場所の外で分からない（Claude Code を入れたスモーク・監査の間。推定）。
+
+---
+
+# r3c（2026-11-16。r2 の C-1 の3種を直した版 `1.146.0-p5-c-all-r3c`）
+
+- 依頼: リーダー（タスクの名称「段階 C の版の関門（r3c）」）。相手は蒙恬の `1.146.0-p5-c-all-r3c`（HEAD `827a712b`。書き付けの「r3」）。r3・r3b は使っていない
+- 結果:
+  - **起動した版の振る舞い（7節の1〜4、21単位）: 合格**。r2 の3種の誤りは、同じ道を通しても出ない
+  - **網: c1-unit の2件が落ちる**（ほかの静的なテストは全部通る）
+  - **総合: C-2〜C-7 は合格。C-1 は保留**（振る舞いは合格。検証が落ちたままなので合格にしない）
+- 記録: `records/take-in/1.146.0-p5-c-all-r3c/`（`gate-p5-c-all-r3c.md` が全体、単位ごとに `gate-C-1-ai.md`〜`gate-C-7-breadcrumbs-outline.md`、手の項目の追加 `manual-checks-p5-c-all-r3c.md`）
+
+## R3C-1. 要点
+
+1. 1・2 は合格。照らし役 c1〜c7（当て直し・作業ツリー）は全部期待どおり。型検査の誤り 0。ロックファイルの差は r2 と同じ。C-1 の直しは、リーダーの判断どおりの形（何もしない `NullTerminalChatService`、`searchView?.` と型 `searchView?:`、何もしない `_chat.editSessions.accept`）に加え、蒙恬が見つけた3つ（`AgentNetworkFilterService` のワークベンチへの登録、何もしない `viewHiddenChatTerminals`、アカウントのメニューの MCP の項目の削除）。
+2. 3 は合格。absent の19単位で fail 0・unknown 0。監査2通り（関門の環境、台帳の拡張と Claude Code を含む）×600秒で、エディタの宛先 0・claude の宛先 0・許可の外 0・r2 に無い宛先 0。続きの編集の通信も無い。
+3. 4 は合格。スモーク3回とも PASS 49 / FAIL 0。3回の和の新しい基準 `baseline-p5-c-all-r3c.json` は鍵2個（DEP0169・DiffEditorWidget。公式と p2-all の基準にある既知のもの）。**`baseline-p5-c-all-r2.json` は使っていない**（依頼の2）。r2 で各回8件あった `UNKNOWN service` は0件。`Missing proxy instance` も無い。Claude Code の組は3回とも PASS。r2 の3回目の `base.ui-language` の揺れは、今回は3回とも出なかった。
+4. **r2 の3種の道を通した（依頼の1）**。スモークの probe の道を、r2 の誤りの呼び出し履歴と照らした。
+   - ターミナルのタブのビュー: `base.terminal`（`createTerminal` → `createGroup` → `_createTabsView`）
+   - 検索の欄に打つ検索: `base.search`・`base.replace`（`findInFiles` → `setSearchParameters` → `onValueChange` → `onSearchInputChanged` → `submitSearch`。欄に打ったときも `onValueChange` 以降は同じ）
+   - git のステージとコミット: `base.git`（Git.log に `git add -A -- tracked.txt` と `git … commit …` がある）
+   - 3つとも3回 PASS し、誤りは出なかった。
+5. **網（依頼の3）**: c1-unit は 59件中 57 pass・2 fail。
+   - 「消した部品の使い手」の網は18件を数えた。1件ずつ見て、どれも実害が無い。`IInstantiationService` の注入16件は網の誤検出（`instantiationService.ts` 46行で集まりが自分を登録する）。`IGitHubService` は共有プロセスに登録が残る（`sharedProcessMain.ts` 341行）。`workbench.action.unifiedQuickAccess` は `try/catch` で守られた、直さないと決めた呼び出し。→ 曹参の網の直しで片づく。
+   - 「edits.patch の形」は、どこが合わないかを私の読める形で取り出せなかった（c1-unit は3分を超えて背景に回り、背景の出力は読めない。run-all のまとめは名前だけ）。版は正しく当たっているが、本家が同じ所を変えた週の取り込みで当たらない恐れがある。→ 蒙恬が format-patch し直すか、曹参が落ちた場所を出す。
+6. 統合ブラウザ（`AgentNetworkFilterService`）は、スモークも absent も開かない。手の項目 C22 に足した。
+
+## R3C-2. 流したもの
+
+| 何 | コマンド（パスは絶対パスで渡した） | 結果 |
+|---|---|---|
+| zip の SHA-256 | `sha256sum E:/develop/self/Team/projects/ai-editor/tmp/b/dist/1.146.0-p5-c-all-r3c.zip` | 一致 |
+| 照らし役（当て直し） | `node tests/c1-check-json.mjs tasks/2026-11-16-p5-c1-product-keys/1.146.0-p5-c-all-r3c/checks.json`（c1〜c7） | 7つとも期待どおり |
+| 照らし役（作業ツリー） | `node tests/c1-check-worktree.mjs E:/develop/self/Team/projects/ai-editor/tmp/b/wt-r3c/1.146.0`（c1〜c7） | 7つとも期待どおり |
+| ロックファイルの差 | `sha256sum` で r2 と r3c の `lockfile.diff` | 同じ |
+| c1-unit | `node tests/run-all.mjs --no-ps --only c1-unit --save tasks/2026-11-15-p5-stagec-gate/c1-unit-r3c.txt` | 59件、57 pass・2 fail |
+| 網の報告 | `node tests/orphans-report.mjs C-1-ai --out tasks/2026-11-15-p5-stagec-gate/orphans-C-1-r3c.txt` | サービス 17・設定 0・コマンド 1（上の5） |
+| ほかの静的なテスト | `node tests/run-all.mjs --no-ps --only c2-unit`〜`c7-unit`・`--only removals`・`--only smoke`・`--only p1-` | 58・28・55・42・30・26、229、80、50。全部 pass |
+| 展開と起動・CLI の導入 | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/p1-launch-check.ps1 -OutFile tasks/2026-11-15-p5-stagec-gate/launch-check-p5-c-all-r3c-ooka.json -Zip <zip> -Dest tmp/b/p2/1.146.0-p5-c-all-r3c-ooka -InstallExtension <7つの VSIX>` | `result: ok` |
+| スモーク3回 | `node tests/smoke-run.mjs --build <展開先> --label p5r3c-1/2/3 --mode built --prime --baseline <p2-all・公式・p2-all> --save-baseline tmp/b/smoke/baseline-p5-c-all-r3c.json [--merge-baseline] --timeout 300 --keep-runs 40` | 49/0、49/0、49/0。置き場所に `.keep` を置いた |
+| 消えている | `node tests/absent-run.mjs --build <展開先> --units <21単位> --expect absent --label p5r3c-21` | fail 0・unknown 0 |
+| 通信の監査 | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/netaudit.ps1 -Exe <展開先>/Shuko.exe -EnvDir tasks/2026-11-14-p2-gates/netaudit-env -Label p5r3c -DurationSeconds 600 -Previous records/network-audits/2026-11-16-p5r2` と、`-EnvDir C:/b/p0/data/upstream-default -Label p5r3c-ledger -Previous records/network-audits/2026-11-16-p5r2-ledger` | 2通りとも宛先 0。ネットのログは消えた |
+| C: の空き | `node scripts/disk-usage.mjs records=records` | 98.67 GB（07:11） |
+
+許可の外で止まったものは無い。飛ばしたものも無い。読めなかったもの: c1-unit の落ちた検査の中身（3分を超えて背景に回った出力は、私の読める場所の外になる）。
+
+## R3C-3. 直す必要があるところ
+
+| 誰 | どこ | 何を |
+|---|---|---|
+| 曹参 | `tests/gate-orphans.mjs`（c1-unit の使い手の網） | `IInstantiationService`（集まりが自分を登録する）を数えない。`sharedProcessMain.ts` の `services.set(IGitHubService, …)` のような、edits.patch が直すファイルの中に残る登録を「残る登録」と数える。`workbench.action.unifiedQuickAccess` を理由つきの例外にする（`try/catch` で守られている） |
+| 蒙恬（または曹参） | `removals/C-1-ai/edits.patch` の形（c1-unit の2件目） | ハンクの行数と2通りの読み手が合わない所がある。蒙恬が許可のある作業ツリーで format-patch し直す（空の文脈の行と `index` の行が入る）か、曹参が落ちたハンクの場所を出力に出す。どちらにするかはリーダーが決める |
+
+## R3C-4. 次の担当への注意
+
+- C-1 の保留が片づいたら、C-1 も合格にできる。edits.patch の書き方だけを直して作り直した版なら、照らし役 c1〜c7 とスモーク1回で振る舞いが同じことを見れば足りる見込み（推定。中身が変わるなら全部流し直す）。
+- 比べの相手: 次の版のスモークは、`baseline-p5-c-all-r3c.json`（鍵2個。C-1 の誤りを含まない）を前の段階の基準に使ってよい。
+- 手の項目: `records/take-in/1.146.0-p5-c-all-r2/manual-checks-p5-c-all-r2.md`（C1〜C21。版の名前を r3c に読み替える）と、`records/take-in/1.146.0-p5-c-all-r3c/manual-checks-p5-c-all-r3c.md`（C22 の統合ブラウザ）。
+- C-7 の「2回続けて通らなければ諮る」: r2・r3c とも、C-7 の自動の関門で落ちた所は無い。
+- 残してあるもの: `tmp\b\p2\1.146.0-p5-c-all-r3c-ooka\`、`tmp\b\smoke\runs\p5r3c-{1,2,3}-*`、`tmp\b\smoke\ext\1.146.0-p5r3c-{1,2,3}\`、`tmp\b\smoke\absent\p5rc63-*`。
+
+## R3C-5. 守ったこと
+
+- コード・テスト・台本・docs/ は直していない。`C:\b` は読むだけ（監査の環境の写しの元）。
+- 普段使いのデータは、起動の確かめで6つのフォルダが変わらないこと、スモークの `safety.daily-argv` が3回とも PASS であることで確かめた。local.json・スタートメニュー・PATH・タスクスケジューラ・Notion は変えていない。秘密の場所には触れていない。ネットのログは台本が読んだ直後に消した（`tmp\b\netlog\` は空）。

@@ -1,0 +1,32 @@
+﻿{
+    "Meta":  {
+                 "Label":  "p5r3c",
+                 "Exe":  "E:/develop/self/Team/projects/ai-editor/tmp/b/p2/1.146.0-p5-c-all-r3c/Shuko-win32-x64-1.146.0-p5-c-all-r3c/Shuko.exe",
+                 "ExeVersion":  "1.146.0",
+                 "EnvDir":  "tasks/2026-11-14-p2-gates/netaudit-env",
+                 "DurationSeconds":  600,
+                 "IntervalSeconds":  2,
+                 "Samples":  300,
+                 "StartedAt":  "2026-11-16T15:47:16.9511763+09:00",
+                 "DnsEntries":  0,
+                 "DailyArgvTouched":  [
+
+                                      ],
+                 "RunDataLeftOver":  [
+
+                                     ],
+                 "Allowlist":  "E:\\develop\\self\\Team\\projects\\ai-editor\\records\\network-allowlist.json",
+                 "AllowlistMissing":  false,
+                 "Previous":  "records/network-audits/2026-11-16-p5r2",
+                 "NetLogPath":  "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\netlog\\p5r3c-20261116-154716.netlog.json",
+                 "NetLogEvents":  76,
+                 "NetLogComplete":  true,
+                 "NetLogFilesRemoved":  true,
+                 "NetLogFilesStuck":  [
+
+                                      ]
+             },
+    "Destinations":  [
+
+                     ]
+}

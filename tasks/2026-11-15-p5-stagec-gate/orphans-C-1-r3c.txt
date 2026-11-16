@@ -1,0 +1,19 @@
+C-1-ai: サービス 17・設定 0・コマンド 1
+  src/vs/code/electron-main/app.ts:231 [service: IInstantiationService] @IInstantiationService private readonly mainInstantiationService: IInstantiationService,
+  src/vs/code/electron-main/app.ts:1479 [service: IInstantiationService] const tryoutHandoff = disposables.add(accessor.get(IInstantiationService).createInstance(OnboardingTryoutHandoff));
+  src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts:498 [service: IInstantiationService] const userDataAutoSync = this._register(accessor.get(IInstantiationService).createInstance(UserDataAutoSyncService));
+  src/vs/platform/auxiliaryWindow/electron-main/auxiliaryWindowsMainService.ts:42 [service: IInstantiationService] @IInstantiationService private readonly instantiationService: IInstantiationService,
+  src/vs/platform/browserView/electron-main/browserViewGroup.ts:55 [service: IInstantiationService] @IInstantiationService private readonly instantiationService: IInstantiationService,
+  src/vs/platform/browserView/electron-main/browserViewGroupMainService.ts:35 [service: IInstantiationService] @IInstantiationService private readonly instantiationService: IInstantiationService,
+  src/vs/platform/browserView/electron-main/browserViewMainService.ts:80 [service: IInstantiationService] @IInstantiationService private readonly instantiationService: IInstantiationService,
+  src/vs/platform/extensionManagement/node/extensionManagementService.ts:88 [service: IInstantiationService] @IInstantiationService private readonly instantiationService: IInstantiationService,
+  src/vs/platform/extensionManagement/node/extensionsScannerService.ts:27 [service: IInstantiationService] @IInstantiationService instantiationService: IInstantiationService,
+  src/vs/platform/github/common/remote/ipcServer.ts:48 [service: IGitHubService] @IGitHubService private readonly service: IGitHubService,
+  src/vs/platform/menubar/electron-main/menubarMainService.ts:26 [service: IInstantiationService] @IInstantiationService private readonly instantiationService: IInstantiationService,
+  src/vs/platform/native/electron-main/nativeHostMainService.ts:81 [service: IInstantiationService] @IInstantiationService private readonly instantiationService: IInstantiationService,
+  src/vs/platform/webview/electron-main/webviewMainService.ts:24 [service: IInstantiationService] @IInstantiationService instantiationService: IInstantiationService,
+  src/vs/platform/windows/electron-main/windowImpl.ts:820 [service: IInstantiationService] @IInstantiationService instantiationService: IInstantiationService
+  src/vs/platform/windows/electron-main/windowsMainService.ts:233 [service: IInstantiationService] @IInstantiationService private readonly instantiationService: IInstantiationService,
+  src/vs/server/node/extensionsScannerService.ts:29 [service: IInstantiationService] @IInstantiationService instantiationService: IInstantiationService,
+  src/vs/server/node/remoteExtensionHostAgentServer.ts:91 [service: IInstantiationService] @IInstantiationService private readonly _instantiationService: IInstantiationService,
+  src/vs/workbench/browser/actions/quickAccessActions.ts:187 [command: workbench.action.unifiedQuickAccess] await commandService.executeCommand('workbench.action.unifiedQuickAccess');
