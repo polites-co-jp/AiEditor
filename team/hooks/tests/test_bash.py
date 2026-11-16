@@ -2,6 +2,12 @@
 本物の許可では書けない形（node --check のオプション）は、一時のプロジェクトの仮のメンバーで確かめる
 （hookrun.bare_node_check_project）。
 
+2026-11-16 にビルドの置き場所が C:/b から tmp/b に移った（Team の tasks/2026-11-16-ai-editor-move-off-c-perms の
+v2-1）。tmp/b の行を使う固定の入力は tmp/b/vscode・tmp/b/wt/x から tmp/b/vscode・tmp/b/wt/x に直し、その判定は
+tmp/b の偽の木を持つ写しのプロジェクト（hookrun.BuildTreeTestCase・build_project）で行う。フックの 3c（git -C の先に
+.git が要る）・3d（pnpm --dir の先に package.json が要る）が、プロジェクトの中の先を lstat するため。直した入力の
+期待（通る・止まる）は変えていない。理由の文が変わったものは、その場所に書いた。
+
 実行: python -m unittest discover -s projects/ai-editor/team/hooks/tests
 """
 
@@ -13,51 +19,54 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from hookrun import BARE_NODE_CHECK, NODE, PROJECT, HookTestCase, bare_node_check_project, event, make_project, run
+from hookrun import (
+    BARE_NODE_CHECK, NODE, PROJECT, BuildTreeTestCase, HookTestCase, bare_node_check_project, build_project, event, fwd,
+    make_build_project, run,
+)
 
 
-class MemberCommandsTest(HookTestCase):
+class MemberCommandsTest(BuildTreeTestCase):
     # 第2段で書き換えた後の permissions.json に合わせた、許可するコマンドの代表。
-    # 4人の bash の行それぞれに1つ以上（止めすぎていないかを見る）。
+    # 4人の bash の行それぞれに1つ以上（止めすぎていないかを見る）。2026-11-16 に C:/b を tmp/b に直した（v2-1）
     ALLOWED = {
         "meng-tian": [
             "git status",
             "git diff --stat",
             "git log --oneline -5",
             "git worktree list",
-            "git -C C:/b/vscode fetch --tags",
-            "git -C C:/b/vscode worktree add C:/b/wt/release-1.96",
-            "git -C C:/b/vscode worktree remove C:/b/wt/1.96",
-            "git -C C:/b/vscode worktree prune",
-            "git -C C:/b/vscode tag --list",
-            "git -C C:/b/wt/1.96 status",
-            "git -C C:/b/wt/x diff HEAD~1",
-            "git -C C:/b/wt/x apply patches/0001-remove.patch",
-            "git -C C:/b/wt/x am -3",
-            "git -C C:/b/wt/x am --abort",
-            "git -C C:/b/wt/x am --continue",
-            "git -C C:/b/wt/x format-patch --stdout HEAD~1",
-            "git -C C:/b/wt/x format-patch HEAD~1",            # 第2段: -o 無しは作業場所（C:/b/wt/x、書き込み先の中）に書くので通す
-            "git -C C:/b/wt/x format-patch -o patches HEAD~1",  # 第2段: -o の値は -C の先から解く（C:/b/wt/x/patches）
-            "git -C C:/b/wt/x checkout",
-            "git -C C:/b/wt/x clean -xfd",
-            "git -C C:/b/wt/x rerere",
-            "git -C C:/b/wt/x add",
-            "git -C C:/b/wt/x commit -m x",
-            "git clone https://github.com/microsoft/vscode.git C:/b/vscode",
+            "git -C tmp/b/vscode fetch --tags",
+            "git -C tmp/b/vscode worktree add tmp/b/wt/release-1.96",
+            "git -C tmp/b/vscode worktree remove tmp/b/wt/1.96",   # v2-1 から bash_exact（後ろに --force を足せない）
+            "git -C tmp/b/vscode worktree prune",
+            "git -C tmp/b/vscode tag --list",
+            "git -C tmp/b/wt/1.96 status",
+            "git -C tmp/b/wt/x diff HEAD~1",
+            "git -C tmp/b/wt/x apply patches/0001-remove.patch",
+            "git -C tmp/b/wt/x am -3",
+            "git -C tmp/b/wt/x am --abort",
+            "git -C tmp/b/wt/x am --continue",
+            "git -C tmp/b/wt/x format-patch --stdout HEAD~1",
+            "git -C tmp/b/wt/x format-patch HEAD~1",            # 第2段: -o 無しは作業場所（tmp/b/wt/x、書き込み先 tmp/ の中）に書くので通す
+            "git -C tmp/b/wt/x format-patch -o patches HEAD~1",  # 第2段: -o の値は -C の先から解く（tmp/b/wt/x/patches）
+            "git -C tmp/b/wt/x checkout",
+            "git -C tmp/b/wt/x clean -xfd",
+            "git -C tmp/b/wt/x rerere",
+            "git -C tmp/b/wt/x add",
+            "git -C tmp/b/wt/x commit -m x",
+            "git clone https://github.com/microsoft/vscode.git tmp/b/vscode",
             "node scripts/build.mjs",
             "node scripts/apply.mjs --dry-run",
             "node tools/watch/watch.mjs",
             "node --check scripts/build.mjs",
             "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/switch.ps1",
             "powershell -NoProfile -ExecutionPolicy Bypass -File tools/watch/register.ps1",
-            "pnpm --dir C:/b/wt/x install",
-            "pnpm --dir C:/b/wt/x run gulp",
-            "pnpm --dir C:/b/wt/x run compile",
-            "pnpm --dir C:/b/wt/x run smoketest",
+            "pnpm --dir tmp/b/wt/x install",
+            "pnpm --dir tmp/b/wt/x run gulp",
+            "pnpm --dir tmp/b/wt/x run compile",
+            "pnpm --dir tmp/b/wt/x run smoketest",
             "pnpm --dir extensions-src/mydist install",
             "pnpm --dir extensions-src/mydist run build",
-            "npx --prefix C:/b/wt/x tsc --noEmit",
+            "npx --prefix tmp/b/wt/x tsc --noEmit",
             "npx ovsx verify-signature x.vsix",
             "pwsh --version",
             "node --version",
@@ -78,7 +87,7 @@ class MemberCommandsTest(HookTestCase):
             "powershell -NoProfile -ExecutionPolicy Bypass -File tests/smoke.ps1",
             "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/measure.ps1",
             "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/netaudit.ps1",
-            "pnpm --dir C:/b/wt/x run smoketest",
+            "pnpm --dir tmp/b/wt/x run smoketest",
         ],
         "ooka-echizen": [
             "git show HEAD",
@@ -89,34 +98,37 @@ class MemberCommandsTest(HookTestCase):
             "node scripts/build.mjs",
             "node scripts/lock-verify.mjs",
             "pnpm --dir extensions-src/mydist run test",
-            "pnpm --dir C:/b/wt/x run smoketest",
-            "npx --prefix C:/b/wt/x tsc --noEmit",
+            "pnpm --dir tmp/b/wt/x run smoketest",
+            "npx --prefix tmp/b/wt/x tsc --noEmit",
             "powershell -NoProfile -ExecutionPolicy Bypass -File tests/smoke.ps1",
             "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/measure.ps1",
-            "sha256sum C:/b/out/Shuko.zip",
+            "sha256sum tmp/b/out/Shuko.zip",
         ],
     }
 
     BLOCKED = {
         "meng-tian": [
-            "rm -rf C:/b/wt/x",
-            "git commit -m x",                            # -C C:/b/wt/* の外では commit できない
+            "rm -rf tmp/b/wt/x",                          # tmp/b/wt は delete_paths の外
+            "git commit -m x",                            # -C tmp/b/wt/* の外では commit できない
             "git push",
-            "git -C C:/b/vscode checkout main",          # checkout は wt/* だけ
-            "git -C C:/b/vscode fetch origin",           # 第2段: fetch は --tags だけ
-            "git -C C:/b/wt/x/y status",                  # * は1区切り
-            "git -C C:/b/wt/.. status",                   # * は .. に一致しない
-            "git -C C:/b/wt/. status",
-            "git -C C:/b/wt/... status",
-            "git -C C:/b/wt/x. status",                   # 末尾の点
-            "git -C C:/b/wt/ status",                     # * は空に一致しない
-            "git -C C:/b/wt/* status",                    # * そのもの（シェルの展開）
-            "git -C C:/b/wt/a?c status",
-            "git -C C:/b/wt/$HOME status",
-            "git -C C:/b/wt/~1 status",
-            "git -C C:/b/wt/x:y status",
-            "git -C C:\\b\\wt\\x status",                 # \ は許可の / と一致しない
-            "git -C \"C:/b/wt/x\" status",                # 引用符は * に含まれない
+            "git -C tmp/b/vscode checkout main",          # checkout は wt/* だけ
+            "git -C tmp/b/vscode fetch origin",           # 第2段: fetch は --tags だけ
+            "git -C tmp/b/wt/x/y status",                  # * は1区切り
+            "git -C tmp/b/wt/.. status",                   # * は .. に一致しない（tmp/b/wt には .git が無いので 3c も止める）
+            "git -C tmp/b/wt/x/../1.96 status",            # .. で別の作業ツリーを指す（3c は通る。* は / を含まない）
+            "git -C tmp/b/wt/. status",
+            "git -C tmp/b/wt/... status",
+            "git -C tmp/b/wt/x. status",                   # 末尾の点
+            "git -C tmp/b/wt/ status",                     # * は空に一致しない
+            "git -C tmp/b/wt/* status",                    # * そのもの（シェルの展開）
+            "git -C tmp/b/wt/a?c status",
+            "git -C tmp/b/wt/$HOME status",
+            "git -C tmp/b/wt/~1 status",
+            "git -C tmp/b/wt/x:y status",
+            "git -C tmp\\b\\wt\\x status",                 # \ は許可の / と一致しない
+            "git -C \"tmp/b/wt/x\" status",                # 引用符は * に含まれない
+            "git -C ./tmp/b/wt/x status",                  # 許可は書かれた形（tmp/b/…）だけ
+            "git -C TMP/B/WT/x status",                    # 大文字小文字を区別する
             "pnpm --dir extensions-src/mydist build",     # 第2段: run build が要る
             "pnpm --dir extensions-src/.. install",
             "pnpm --dir extensions-src/ install",
@@ -136,7 +148,7 @@ class MemberCommandsTest(HookTestCase):
             "git log --output=x.txt",
             "git log --output x.txt",
             "git diff -o x",
-            "git -C C:/b/wt/x format-patch -o C:/Windows/Temp HEAD~1",  # 第2段: 書き込み先の外
+            "git -C tmp/b/wt/x format-patch -o C:/Windows/Temp HEAD~1",  # 第2段: 書き込み先の外
             "git diff > x.txt",
             "git diff $(rm x)",
             "git diff `rm x`",
@@ -153,19 +165,19 @@ class MemberCommandsTest(HookTestCase):
             "pnpm --dir extensions-src/mydist build",     # run test が要る
             "pnpm --dir extensions-src/.. run test",
             "pnpm --dir extensions-src/mydist/x run test",
-            "pnpm --dir C:/b/wt/.. run smoketest",
+            "pnpm --dir tmp/b/wt/.. run smoketest",
             "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/switch.ps1",
             "powershell -NoProfile -ExecutionPolicy Bypass -File tests/../scripts/x.ps1",
-            "git -C C:/b/vscode fetch",
+            "git -C tmp/b/vscode fetch",
             "sha256sum x",
         ],
         "ooka-echizen": [
             "node --check x.mjs",
             "node scripts/switch.mjs",
             "node --test records/x.mjs",                  # #12: 自分が書ける records/ を実行できない
-            "git -C C:/b/vscode fetch",
-            "pnpm --dir C:/b/wt/x install",
-            "npx --prefix C:/b/wt/.. tsc --noEmit",
+            "git -C tmp/b/vscode fetch",
+            "pnpm --dir tmp/b/wt/x install",
+            "npx --prefix tmp/b/wt/.. tsc --noEmit",
             "rm records/x.md",
         ],
     }
@@ -184,11 +196,15 @@ class MemberCommandsTest(HookTestCase):
 
     def test_block_reasons(self):
         reasons = {
-            "git -C C:/b/wt/.. status": "ホワイトリストに無い",
+            # 2026-11-16（v2-1）: tmp/b/wt/.. を tmp/b/wt/.. に直した。tmp/b/wt はプロジェクトの中で .git が無いので、
+            # 許可の照合より前に 3c（.git が無い）が止める（理由の文が変わった）。* が .. を含む形に一致しないことは、
+            # 3c を通る形（.. の先が別の作業ツリー）で、前と同じ「ホワイトリストに無い」を確かめる
+            "git -C tmp/b/wt/.. status": ".git が無い",
+            "git -C tmp/b/wt/x/../1.96 status": "ホワイトリストに無い",
             "pnpm --dir extensions-src/.. install": "ホワイトリストに無い",
             "git status; rm x": "ホワイトリストに無いコマンドです: rm x",
             "git log --output=x.txt": "git のファイルへ書き出す",
-            "git -C C:/b/wt/x format-patch -o C:/Windows/Temp HEAD~1": "format-patch の書き出し",
+            "git -C tmp/b/wt/x format-patch -o C:/Windows/Temp HEAD~1": "format-patch の書き出し",
             "node --check (Remove-Item x)": "括弧",
             "git diff > x.txt": "リダイレクト",
         }
@@ -201,8 +217,9 @@ class MemberCommandsTest(HookTestCase):
         self.assertBlock(self.bash("meng-tian", "rm x", agent_id="a0123456789abcdef"))
 
 
-class SecondStageForkRulesTest(HookTestCase):
-    """第2段でフックに足した、全員に効く固定の決まり（permissions.json の bash とは別）。"""
+class SecondStageForkRulesTest(BuildTreeTestCase):
+    """第2段でフックに足した、全員に効く固定の決まり（permissions.json の bash とは別）。
+    2026-11-16 に C:/b の入力を tmp/b に直した（v2-1。写しのプロジェクトの偽の木で判定する）。"""
 
     def test_node_dangerous_options(self):
         # 1.1 node のオプション。スクリプトの前でも後ろでも止める
@@ -247,9 +264,9 @@ class SecondStageForkRulesTest(HookTestCase):
     def test_pnpm_npx_exec_dlx_yes(self):
         # 1.3 pnpm・npx の exec・dlx・--yes・-y
         for command, reason in {
-            "pnpm --dir C:/b/wt/x exec calc.exe": "exec",
+            "pnpm --dir tmp/b/wt/x exec calc.exe": "exec",
             "pnpm --dir extensions-src/x dlx cowsay": "dlx",
-            "pnpm --dir C:/b/wt/x install --yes": "yes",
+            "pnpm --dir tmp/b/wt/x install --yes": "yes",
             "npx -y create-foo": "未確認",
         }.items():
             with self.subTest(command=command):
@@ -258,14 +275,14 @@ class SecondStageForkRulesTest(HookTestCase):
     def test_git_dangerous_options(self):
         # 1.4 git の -c・--config・--upload-pack・--receive-pack・--template・--exec・--unsafe-paths・--directory・--no-index
         for command in (
-            "git -c core.hooksPath=C:/b/h status",
-            "git -C C:/b/vscode -c core.pager=calc fetch --tags",   # グローバルの位置
-            "git -C C:/b/vscode fetch --tags --upload-pack=calc.exe",
-            "git clone https://github.com/microsoft/vscode.git C:/b/vscode --template=C:/b/t",
-            "git clone https://github.com/microsoft/vscode.git C:/b/vscode --config core.hooksPath=C:/b/h",
-            "git -C C:/b/wt/x apply --unsafe-paths patches/p.patch",
-            "git -C C:/b/wt/x am --directory=C:/x patches/p.patch",
-            "git -C C:/b/wt/x fetch --receive-pack=calc",
+            "git -c core.hooksPath=tmp/b/h status",
+            "git -C tmp/b/vscode -c core.pager=calc fetch --tags",   # グローバルの位置
+            "git -C tmp/b/vscode fetch --tags --upload-pack=calc.exe",
+            "git clone https://github.com/microsoft/vscode.git tmp/b/vscode --template=tmp/b/t",
+            "git clone https://github.com/microsoft/vscode.git tmp/b/vscode --config core.hooksPath=tmp/b/h",
+            "git -C tmp/b/wt/x apply --unsafe-paths patches/p.patch",
+            "git -C tmp/b/wt/x am --directory=C:/x patches/p.patch",
+            "git -C tmp/b/wt/x fetch --receive-pack=calc",
             "git diff --no-index C:/Windows/win.ini x",
         ):
             with self.subTest(command=command):
@@ -273,31 +290,32 @@ class SecondStageForkRulesTest(HookTestCase):
 
     def test_upper_c_is_not_confused_with_lower_c(self):
         # -C（大文字。作業ディレクトリ）は -c（設定の上書き）と取り違えない
-        self.assertPass(self.bash("meng-tian", "git -C C:/b/wt/x status"))
+        self.assertPass(self.bash("meng-tian", "git -C tmp/b/wt/x status"))
 
     def test_tsc_output_options(self):
         # 1.5 tsc の --outDir などは書き込み先と照合する
         for member in ("meng-tian", "ooka-echizen"):
             for command in (
-                "npx --prefix C:/b/wt/x tsc --noEmit --outDir .claude",
-                "npx --prefix C:/b/wt/x tsc --outDir E:/develop/self/Team/projects/ai-editor/.claude",
-                "npx --prefix C:/b/wt/x tsc --build",
-                "npx --prefix C:/b/wt/x tsc -b",
+                "npx --prefix tmp/b/wt/x tsc --noEmit --outDir .claude",
+                f"npx --prefix tmp/b/wt/x tsc --outDir {self.P_SLASH}/.claude",
+                "npx --prefix tmp/b/wt/x tsc --build",
+                "npx --prefix tmp/b/wt/x tsc -b",
             ):
                 with self.subTest(member=member, command=command):
                     self.assertBlock(self.bash(member, command))
 
     def test_tsc_output_to_writable_place_passes(self):
-        # 止めすぎない: 書き込み先の中への出力は通る（meng-tian は C:/b/ が書ける）。
+        # 止めすぎない: 書き込み先の中への出力は通る（meng-tian は tmp/ が書ける。v2-1 で C:/b/ は外れた）。
         # bash の許可は tsc --noEmit まで。その後ろに --outDir を足した形でフックの照合を見る
-        self.assertPass(self.bash("meng-tian", "npx --prefix C:/b/wt/x tsc --noEmit --outDir C:/b/wt/x/out"))
+        self.assertPass(self.bash("meng-tian", "npx --prefix tmp/b/wt/x tsc --noEmit --outDir tmp/b/wt/x/out"))
 
 
-P_SLASH = str(PROJECT).replace("\\", "/")
+# tmp/b の偽の木を持つ写しのプロジェクト（BuildTreeTestCase が使うものと同じ。モジュールを読み込むときに1つ作る）
+P_SLASH = fwd(build_project())
 CLAUDE_DIR = f"{P_SLASH}/.claude/"
 
 
-class Stage2RecheckTest(HookTestCase):
+class Stage2RecheckTest(BuildTreeTestCase):
     """第2段の差し戻し（verification-stage2.md の H1・H2・H4・H5・P1）。同じ危険なオプションを別の書き方にした形。"""
 
     def blocks(self, member, commands, contains=None):
@@ -346,12 +364,12 @@ class Stage2RecheckTest(HookTestCase):
 
     def test_h4_inputs_from_verification(self):
         self.blocks("meng-tian", [
-            "git -C C:/b/wt/x apply --unsafe p.patch",
-            "git -C C:/b/wt/x apply --direct=.claude p.patch",
-            "git -C C:/b/vscode fetch --tags --upload=calc",
-            "git clone https://github.com/microsoft/vscode.git C:/b/vscode -ccore.hooksPath=C:/b/h",
-            "git clone https://github.com/microsoft/vscode.git C:/b/vscode --conf core.hooksPath=C:/b/h",
-            "git clone https://github.com/microsoft/vscode.git C:/b/vscode --templ=C:/b/t",
+            "git -C tmp/b/wt/x apply --unsafe p.patch",
+            "git -C tmp/b/wt/x apply --direct=.claude p.patch",
+            "git -C tmp/b/vscode fetch --tags --upload=calc",
+            "git clone https://github.com/microsoft/vscode.git tmp/b/vscode -ccore.hooksPath=C:/b/h",
+            "git clone https://github.com/microsoft/vscode.git tmp/b/vscode --conf core.hooksPath=C:/b/h",
+            "git clone https://github.com/microsoft/vscode.git tmp/b/vscode --templ=C:/b/t",
         ], "git の危険なオプション")
         self.blocks("cao-shen", ["git diff --no-ind a b"], "git の危険なオプション")
 
@@ -362,8 +380,8 @@ class Stage2RecheckTest(HookTestCase):
         for name, shortest in table.items():
             for n in range(shortest, len(name) + 1):
                 opt = "--" + name[:n]
-                for command in (f"git -C C:/b/wt/x apply {opt} p.patch", f"git -C C:/b/wt/x apply {opt}=x p.patch",
-                                f"git -C C:/b/vscode fetch --tags {opt.upper()}=x"):
+                for command in (f"git -C tmp/b/wt/x apply {opt} p.patch", f"git -C tmp/b/wt/x apply {opt}=x p.patch",
+                                f"git -C tmp/b/vscode fetch --tags {opt.upper()}=x"):
                     with self.subTest(command=command):
                         self.assertBlock(self.bash("meng-tian", command), "git の危険なオプション")
         # 最短より短い --n・--no・--no- は no-index としては止めない（否定の接頭辞。ここではホワイトリストの照合だけ）
@@ -381,81 +399,81 @@ class Stage2RecheckTest(HookTestCase):
 
     def test_h4_short_c_bundles(self):
         self.blocks("meng-tian", [
-            "git clone https://github.com/microsoft/vscode.git C:/b/vscode -cfoo",
-            "git clone https://github.com/microsoft/vscode.git C:/b/vscode -qccore.hooksPath=C:/b/h",
-            "git clone https://github.com/microsoft/vscode.git C:/b/vscode -qc core.hooksPath=C:/b/h",
+            "git clone https://github.com/microsoft/vscode.git tmp/b/vscode -cfoo",
+            "git clone https://github.com/microsoft/vscode.git tmp/b/vscode -qccore.hooksPath=C:/b/h",
+            "git clone https://github.com/microsoft/vscode.git tmp/b/vscode -qc core.hooksPath=C:/b/h",
         ], "git の危険なオプション")
         # 12.12: clone 以外のサブコマンドの後ろの -c は設定を与えない（status は -c を拒み、commit の -c は
         # <commit> の再利用）。止めない（O2）
         self.passes("meng-tian", [
-            "git -C C:/b/wt/x status -ccore.pager=calc",
-            "git -C C:/b/wt/x commit -m x -ccore.hooksPath=C:/b/h",
+            "git -C tmp/b/wt/x status -ccore.pager=calc",
+            "git -C tmp/b/wt/x commit -m x -ccore.hooksPath=C:/b/h",
         ])
 
     def test_h4_not_overblocked(self):
         # 書き換え後の meng-tian の git の行の、ふつうの使い方（省略しない名前・-C の大文字）は通る
         self.passes("meng-tian", [
-            "git -C C:/b/wt/x am -3",
-            "git -C C:/b/wt/x am -3 patches/0001-x.patch",
-            "git -C C:/b/wt/x am --abort",
-            "git -C C:/b/wt/x am --continue",
-            "git -C C:/b/wt/x commit -m x",
-            "git -C C:/b/wt/x commit -m \"fix: update the list\"",
-            "git -C C:/b/wt/x clean -xfd",
-            "git -C C:/b/vscode fetch --tags",
-            "git -C C:/b/vscode fetch --tags --prune",
-            "git -C C:/b/vscode fetch --tags --update-head-ok",
-            "git -C C:/b/vscode worktree add C:/b/wt/x release/1.96",
-            "git -C C:/b/vscode worktree remove C:/b/wt/x",
-            "git -C C:/b/vscode worktree prune",
-            "git -C C:/b/vscode tag --list",
-            "git -C C:/b/wt/x apply --check patches/p.patch",
-            "git -C C:/b/wt/x apply --3way --reject --exclude=x --include=y patches/p.patch",
-            "git -C C:/b/wt/x diff --stat --name-only --no-color --unified=3 --diff-filter=M",
-            "git -C C:/b/wt/x checkout -- src/a.ts",
+            "git -C tmp/b/wt/x am -3",
+            "git -C tmp/b/wt/x am -3 patches/0001-x.patch",
+            "git -C tmp/b/wt/x am --abort",
+            "git -C tmp/b/wt/x am --continue",
+            "git -C tmp/b/wt/x commit -m x",
+            "git -C tmp/b/wt/x commit -m \"fix: update the list\"",
+            "git -C tmp/b/wt/x clean -xfd",
+            "git -C tmp/b/vscode fetch --tags",
+            "git -C tmp/b/vscode fetch --tags --prune",
+            "git -C tmp/b/vscode fetch --tags --update-head-ok",
+            "git -C tmp/b/vscode worktree add tmp/b/wt/x release/1.96",
+            "git -C tmp/b/vscode worktree remove tmp/b/wt/x",
+            "git -C tmp/b/vscode worktree prune",
+            "git -C tmp/b/vscode tag --list",
+            "git -C tmp/b/wt/x apply --check patches/p.patch",
+            "git -C tmp/b/wt/x apply --3way --reject --exclude=x --include=y patches/p.patch",
+            "git -C tmp/b/wt/x diff --stat --name-only --no-color --unified=3 --diff-filter=M",
+            "git -C tmp/b/wt/x checkout -- src/a.ts",
             "git log --oneline --decorate --date=iso --topo-order --reverse --no-merges -n 5",
             "git diff --cached --no-ext-diff",
             "git show --name-status HEAD",
-            "git clone https://github.com/microsoft/vscode.git C:/b/vscode",
+            "git clone https://github.com/microsoft/vscode.git tmp/b/vscode",
         ])
 
     # ---- H5: format-patch の書き出し先 ----
 
     def test_h5_inputs_from_verification(self):
         self.blocks("meng-tian", [
-            f"git -C C:/b/wt/x format-patch -o patches/ -o {CLAUDE_DIR} main",
-            f"git -C C:/b/wt/x format-patch -o patches/ --output-directory={CLAUDE_DIR} main",
-            f"git -C C:/b/wt/x format-patch --output-dir={CLAUDE_DIR} main",
-            f"git -C C:/b/wt/x format-patch --stdout -o {CLAUDE_DIR} main",
+            f"git -C tmp/b/wt/x format-patch -o patches/ -o {CLAUDE_DIR} main",
+            f"git -C tmp/b/wt/x format-patch -o patches/ --output-directory={CLAUDE_DIR} main",
+            f"git -C tmp/b/wt/x format-patch --output-dir={CLAUDE_DIR} main",
+            f"git -C tmp/b/wt/x format-patch --stdout -o {CLAUDE_DIR} main",
         ], ".claude/・team/・.git はメンバーが書けない場所")
 
     def test_h5_every_output_is_checked(self):
         self.blocks("meng-tian", [
-            f"git -C C:/b/wt/x format-patch -o {CLAUDE_DIR} -o patches/ main",     # 最初のものが外
-            f"git -C C:/b/wt/x format-patch -o patches/ -o C:/b/wt/x/p -o {CLAUDE_DIR} main",
-            f"git -C C:/b/wt/x format-patch --output {CLAUDE_DIR} main",
-            f"git -C C:/b/wt/x format-patch --o={CLAUDE_DIR} main",
-            f"git -C C:/b/wt/x format-patch --output-d {CLAUDE_DIR} main",
-            f"git -C C:/b/wt/x format-patch -ko {CLAUDE_DIR} main",                # まとめ書きの -o
-            f"git -C C:/b/wt/x format-patch -3o {CLAUDE_DIR} main",
-            f"git -C C:/b/wt/x format-patch main --stdout --output-directory {CLAUDE_DIR}",
-            "git -C C:/b/wt/x format-patch -o patches -o C:/Windows/Temp HEAD~1",       # 書き込み先の外
+            f"git -C tmp/b/wt/x format-patch -o {CLAUDE_DIR} -o patches/ main",     # 最初のものが外
+            f"git -C tmp/b/wt/x format-patch -o patches/ -o tmp/b/wt/x/p -o {CLAUDE_DIR} main",
+            f"git -C tmp/b/wt/x format-patch --output {CLAUDE_DIR} main",
+            f"git -C tmp/b/wt/x format-patch --o={CLAUDE_DIR} main",
+            f"git -C tmp/b/wt/x format-patch --output-d {CLAUDE_DIR} main",
+            f"git -C tmp/b/wt/x format-patch -ko {CLAUDE_DIR} main",                # まとめ書きの -o
+            f"git -C tmp/b/wt/x format-patch -3o {CLAUDE_DIR} main",
+            f"git -C tmp/b/wt/x format-patch main --stdout --output-directory {CLAUDE_DIR}",
+            "git -C tmp/b/wt/x format-patch -o patches -o C:/Windows/Temp HEAD~1",       # 書き込み先の外
         ])
         # 値の前に値を取る文字がある o は、-o かどうか決められないので止める
-        self.blocks("meng-tian", ["git -C C:/b/wt/x format-patch -Sfoo main"], "決められない")
+        self.blocks("meng-tian", ["git -C tmp/b/wt/x format-patch -Sfoo main"], "決められない")
         # -o の値が無い・$ がある
-        self.blocks("meng-tian", ["git -C C:/b/wt/x format-patch main -o", "git -C C:/b/wt/x format-patch -o $HOME main"])
+        self.blocks("meng-tian", ["git -C tmp/b/wt/x format-patch main -o", "git -C tmp/b/wt/x format-patch -o $HOME main"])
 
     def test_h5_not_overblocked(self):
         self.passes("meng-tian", [
-            "git -C C:/b/wt/x format-patch --stdout HEAD~1",
-            "git -C C:/b/wt/x format-patch HEAD~1",
-            "git -C C:/b/wt/x format-patch -o patches HEAD~1",
-            "git -C C:/b/wt/x format-patch -o patches -o C:/b/wt/x/out HEAD~1",
-            "git -C C:/b/wt/x format-patch --stdout -o patches HEAD~1",
-            "git -C C:/b/wt/x format-patch -ko patches HEAD~1",
-            "git -C C:/b/wt/x format-patch --output-dir=patches -1 HEAD",
-            f"git -C C:/b/wt/x format-patch -o {P_SLASH}/patches/ HEAD~1",
+            "git -C tmp/b/wt/x format-patch --stdout HEAD~1",
+            "git -C tmp/b/wt/x format-patch HEAD~1",
+            "git -C tmp/b/wt/x format-patch -o patches HEAD~1",
+            "git -C tmp/b/wt/x format-patch -o patches -o tmp/b/wt/x/out HEAD~1",
+            "git -C tmp/b/wt/x format-patch --stdout -o patches HEAD~1",
+            "git -C tmp/b/wt/x format-patch -ko patches HEAD~1",
+            "git -C tmp/b/wt/x format-patch --output-dir=patches -1 HEAD",
+            f"git -C tmp/b/wt/x format-patch -o {P_SLASH}/patches/ HEAD~1",
         ])
 
     # ---- P1: tsc ----
@@ -463,37 +481,37 @@ class Stage2RecheckTest(HookTestCase):
     def test_p1_noemit_with_value(self):
         for member in ("ooka-echizen", "meng-tian"):
             self.blocks(member, [
-                "npx --prefix C:/b/wt/x tsc --noEmit false -p records/tsconfig.json",   # verification-stage2 P1 の入力
-                "npx --prefix C:/b/wt/x tsc --noEmit=false -p records/tsconfig.json",
-                "npx --prefix C:/b/wt/x tsc --noEmit FALSE",
-                "npx --prefix C:/b/wt/x tsc --noEmit -noEmit false",
-                "npx --prefix C:/b/wt/x tsc --noEmit --noemit false",
+                "npx --prefix tmp/b/wt/x tsc --noEmit false -p records/tsconfig.json",   # verification-stage2 P1 の入力
+                "npx --prefix tmp/b/wt/x tsc --noEmit=false -p records/tsconfig.json",
+                "npx --prefix tmp/b/wt/x tsc --noEmit FALSE",
+                "npx --prefix tmp/b/wt/x tsc --noEmit -noEmit false",
+                "npx --prefix tmp/b/wt/x tsc --noEmit --noemit false",
             ], "--noEmit に値を続けた形")
 
     def test_p1_other_uncheckable_tsc_forms(self):
         for member in ("ooka-echizen", "meng-tian"):
             self.blocks(member, [
-                "npx --prefix C:/b/wt/x tsc --noEmit --incremental -p records/tsconfig.json",
-                "npx --prefix C:/b/wt/x tsc --noEmit -i",
-                "npx --prefix C:/b/wt/x tsc --noEmit --composite",
-                "npx --prefix C:/b/wt/x tsc --noEmit --init",
-                "npx --prefix C:/b/wt/x tsc --noEmit -build",
-                "npx --prefix C:/b/wt/x tsc --noEmit @records/args.txt",
-                "npx --prefix C:/b/wt/x tsc --noEmit -outDir .claude",                     # - 1 つの長い形
-                "npx --prefix C:/b/wt/x tsc --noEmit -OUTFILE=.claude/x.js",
+                "npx --prefix tmp/b/wt/x tsc --noEmit --incremental -p records/tsconfig.json",
+                "npx --prefix tmp/b/wt/x tsc --noEmit -i",
+                "npx --prefix tmp/b/wt/x tsc --noEmit --composite",
+                "npx --prefix tmp/b/wt/x tsc --noEmit --init",
+                "npx --prefix tmp/b/wt/x tsc --noEmit -build",
+                "npx --prefix tmp/b/wt/x tsc --noEmit @records/args.txt",
+                "npx --prefix tmp/b/wt/x tsc --noEmit -outDir .claude",                     # - 1 つの長い形
+                "npx --prefix tmp/b/wt/x tsc --noEmit -OUTFILE=.claude/x.js",
             ])
 
     def test_p1_not_overblocked(self):
         self.passes("ooka-echizen", [
-            "npx --prefix C:/b/wt/x tsc --noEmit",
-            "npx --prefix C:/b/wt/x tsc --noEmit -p C:/b/wt/x/src/tsconfig.json",
-            "npx --prefix C:/b/wt/x tsc --noEmit --project C:/b/wt/x/src/tsconfig.json --pretty false",
-            "npx --prefix C:/b/wt/x tsc --noEmit true",
-            "npx --prefix C:/b/wt/x tsc --noEmit --outDir records/o",
+            "npx --prefix tmp/b/wt/x tsc --noEmit",
+            "npx --prefix tmp/b/wt/x tsc --noEmit -p tmp/b/wt/x/src/tsconfig.json",
+            "npx --prefix tmp/b/wt/x tsc --noEmit --project tmp/b/wt/x/src/tsconfig.json --pretty false",
+            "npx --prefix tmp/b/wt/x tsc --noEmit true",
+            "npx --prefix tmp/b/wt/x tsc --noEmit --outDir records/o",
         ])
 
 
-class GitWriteArgsTest(HookTestCase):
+class GitWriteArgsTest(BuildTreeTestCase):
     """git のファイルの名前を値に取って書き出す引数（build-notes 12.11）。--build-fake-ancestor・--separate-git-dir と、
     format-patch の --output をファイルとして照合すること。"""
 
@@ -511,11 +529,11 @@ class GitWriteArgsTest(HookTestCase):
 
     def test_build_fake_ancestor_inputs(self):
         self.blocks("meng-tian", [
-            "git -C C:/b/wt/x apply --build-fake-ancestor=C:/b/x.idx patches/p.patch",   # 前回の報告の形
-            f"git -C C:/b/wt/x apply --build-fake-ancestor={CLAUDE_DIR}x.idx patches/p.patch",
-            "git -C C:/b/wt/x apply --build-fake-ancestor .claude/x.idx patches/p.patch",
-            "git -C C:/b/wt/x apply --check patches/p.patch --build-fake-ancestor=x.idx",  # 後ろの位置
-            "git -C C:/b/wt/x apply --BUILD-FAKE-ANCESTOR=x.idx patches/p.patch",
+            "git -C tmp/b/wt/x apply --build-fake-ancestor=C:/b/x.idx patches/p.patch",   # 前回の報告の形
+            f"git -C tmp/b/wt/x apply --build-fake-ancestor={CLAUDE_DIR}x.idx patches/p.patch",
+            "git -C tmp/b/wt/x apply --build-fake-ancestor .claude/x.idx patches/p.patch",
+            "git -C tmp/b/wt/x apply --check patches/p.patch --build-fake-ancestor=x.idx",  # 後ろの位置
+            "git -C tmp/b/wt/x apply --BUILD-FAKE-ANCESTOR=x.idx patches/p.patch",
         ], self.WRITE)
 
     def test_build_fake_ancestor_every_abbreviation_any_subcommand(self):
@@ -523,15 +541,15 @@ class GitWriteArgsTest(HookTestCase):
         name = "build-fake-ancestor"
         for n in range(1, len(name) + 1):
             opt = "--" + name[:n]
-            for command in (f"git -C C:/b/wt/x apply {opt}=x.idx p.patch",
-                            f"git -C C:/b/wt/x apply {opt} x.idx p.patch",
-                            f"git -C C:/b/wt/x am -3 {opt}=x.idx",
-                            f"git -C C:/b/wt/x format-patch {opt.upper()}=x.idx HEAD~1"):
+            for command in (f"git -C tmp/b/wt/x apply {opt}=x.idx p.patch",
+                            f"git -C tmp/b/wt/x apply {opt} x.idx p.patch",
+                            f"git -C tmp/b/wt/x am -3 {opt}=x.idx",
+                            f"git -C tmp/b/wt/x format-patch {opt.upper()}=x.idx HEAD~1"):
                 with self.subTest(command=command):
                     self.assertBlock(self.bash("meng-tian", command), self.WRITE)
 
     def test_separate_git_dir_inputs(self):
-        clone = "git clone https://github.com/microsoft/vscode.git C:/b/vscode"
+        clone = "git clone https://github.com/microsoft/vscode.git tmp/b/vscode"
         self.blocks("meng-tian", [
             f"{clone} --separate-git-dir={CLAUDE_DIR}g",
             f"{clone} --separate-git-dir C:/b/g",
@@ -541,11 +559,11 @@ class GitWriteArgsTest(HookTestCase):
 
     def test_separate_git_dir_every_abbreviation_any_subcommand(self):
         name = "separate-git-dir"
-        clone = "git clone https://github.com/microsoft/vscode.git C:/b/vscode"
+        clone = "git clone https://github.com/microsoft/vscode.git tmp/b/vscode"
         for n in range(1, len(name) + 1):
             opt = "--" + name[:n]
             for command in (f"{clone} {opt}=C:/b/g", f"{clone} {opt} C:/b/g",
-                            f"git -C C:/b/wt/x status {opt.upper()}=x"):
+                            f"git -C tmp/b/wt/x status {opt.upper()}=x"):
                 with self.subTest(command=command):
                     self.assertBlock(self.bash("meng-tian", command), self.WRITE)
 
@@ -553,13 +571,13 @@ class GitWriteArgsTest(HookTestCase):
         # --output=<ファイル> は 1 つのファイルに書く。ディレクトリの下としてだけ照合すると、write_paths_deny の
         # ファイルの規則（tasks/*/brief.md・scripts/measure.ps1）に当たらなかった
         self.blocks("meng-tian", [
-            f"git -C C:/b/wt/x format-patch --output={P_SLASH}/tasks/a/brief.md HEAD~1",
-            f"git -C C:/b/wt/x format-patch --output {P_SLASH}/scripts/measure.ps1 HEAD~1",
-            f"git -C C:/b/wt/x format-patch --stdout --output={P_SLASH}/TASKS/a/BRIEF.md HEAD~1",
+            f"git -C tmp/b/wt/x format-patch --output={P_SLASH}/tasks/a/brief.md HEAD~1",
+            f"git -C tmp/b/wt/x format-patch --output {P_SLASH}/scripts/measure.ps1 HEAD~1",
+            f"git -C tmp/b/wt/x format-patch --stdout --output={P_SLASH}/TASKS/a/BRIEF.md HEAD~1",
         ], "write_paths_deny")
         self.blocks("meng-tian", [
-            "git -C C:/b/wt/x format-patch --output=C:/Windows/Temp/x.patch HEAD~1",
-            f"git -C C:/b/wt/x format-patch --output={P_SLASH}/.claude/settings.json HEAD~1",
+            "git -C tmp/b/wt/x format-patch --output=C:/Windows/Temp/x.patch HEAD~1",
+            f"git -C tmp/b/wt/x format-patch --output={P_SLASH}/.claude/settings.json HEAD~1",
         ])
 
     def test_meng_tian_git_lines_not_overblocked(self):
@@ -571,43 +589,43 @@ class GitWriteArgsTest(HookTestCase):
             "git diff --stat --summary",
             "git log --oneline --branches -n 3",
             "git show --stat HEAD",
-            "git -C C:/b/vscode fetch --tags --shallow-since=2025-01-01",
-            "git -C C:/b/vscode worktree add C:/b/wt/x release/1.96",
-            "git -C C:/b/vscode worktree add C:/b/wt/x -b work/x release/1.96",
-            "git -C C:/b/vscode worktree remove C:/b/wt/x",
-            "git -C C:/b/vscode worktree prune",
-            "git -C C:/b/vscode tag --list",
-            "git -C C:/b/wt/x status --short --branch",
-            "git -C C:/b/wt/x diff --stat",
-            "git -C C:/b/wt/x apply --check --stat --summary --binary patches/p.patch",
-            "git -C C:/b/wt/x apply --3way --index patches/p.patch",
-            "git -C C:/b/wt/x am -3 --signoff patches/0001-x.patch",
-            "git -C C:/b/wt/x am --abort",
-            "git -C C:/b/wt/x am --continue",
-            "git -C C:/b/wt/x format-patch -o patches HEAD~1",
-            "git -C C:/b/wt/x format-patch --output-directory patches --cover-letter HEAD~3",
-            "git -C C:/b/wt/x format-patch --output=C:/b/wt/x/all.patch HEAD~3",
-            "git -C C:/b/wt/x format-patch --output=patches/all.patch HEAD~3",
-            f"git -C C:/b/wt/x format-patch --output={P_SLASH}/patches/all.patch HEAD~3",
-            "git -C C:/b/wt/x checkout -- src/a.ts",
-            "git -C C:/b/wt/x checkout -b work/x",
-            "git -C C:/b/wt/x clean -xfd",
-            "git -C C:/b/wt/x rerere status",
-            "git -C C:/b/wt/x rerere diff",
-            "git -C C:/b/wt/x add -A",
-            "git -C C:/b/wt/x add src/a.ts",
-            "git -C C:/b/wt/x commit -m x --signoff",
-            "git clone https://github.com/microsoft/vscode.git C:/b/vscode",
-            "git clone https://github.com/microsoft/vscode.git C:/b/vscode --single-branch --shallow-submodules --depth 1",
+            "git -C tmp/b/vscode fetch --tags --shallow-since=2025-01-01",
+            "git -C tmp/b/vscode worktree add tmp/b/wt/x release/1.96",
+            "git -C tmp/b/vscode worktree add tmp/b/wt/x -b work/x release/1.96",
+            "git -C tmp/b/vscode worktree remove tmp/b/wt/x",
+            "git -C tmp/b/vscode worktree prune",
+            "git -C tmp/b/vscode tag --list",
+            "git -C tmp/b/wt/x status --short --branch",
+            "git -C tmp/b/wt/x diff --stat",
+            "git -C tmp/b/wt/x apply --check --stat --summary --binary patches/p.patch",
+            "git -C tmp/b/wt/x apply --3way --index patches/p.patch",
+            "git -C tmp/b/wt/x am -3 --signoff patches/0001-x.patch",
+            "git -C tmp/b/wt/x am --abort",
+            "git -C tmp/b/wt/x am --continue",
+            "git -C tmp/b/wt/x format-patch -o patches HEAD~1",
+            "git -C tmp/b/wt/x format-patch --output-directory patches --cover-letter HEAD~3",
+            "git -C tmp/b/wt/x format-patch --output=tmp/b/wt/x/all.patch HEAD~3",
+            "git -C tmp/b/wt/x format-patch --output=patches/all.patch HEAD~3",
+            f"git -C tmp/b/wt/x format-patch --output={P_SLASH}/patches/all.patch HEAD~3",
+            "git -C tmp/b/wt/x checkout -- src/a.ts",
+            "git -C tmp/b/wt/x checkout -b work/x",
+            "git -C tmp/b/wt/x clean -xfd",
+            "git -C tmp/b/wt/x rerere status",
+            "git -C tmp/b/wt/x rerere diff",
+            "git -C tmp/b/wt/x add -A",
+            "git -C tmp/b/wt/x add src/a.ts",
+            "git -C tmp/b/wt/x commit -m x --signoff",
+            "git clone https://github.com/microsoft/vscode.git tmp/b/vscode",
+            "git clone https://github.com/microsoft/vscode.git tmp/b/vscode --single-branch --shallow-submodules --depth 1",
         ])
 
 
-class Stage2bRecheckTest(HookTestCase):
+class Stage2bRecheckTest(BuildTreeTestCase):
     """差し戻し2回目（verification-stage2b.md の O2・N5。build-notes 12.12）。"""
 
     DANGER = "git の危険なオプション"
     NODE = "node の危険なオプション"
-    CLONE = "git clone https://github.com/microsoft/vscode.git C:/b/vscode"
+    CLONE = "git clone https://github.com/microsoft/vscode.git tmp/b/vscode"
 
     def blocks(self, member, commands, contains=None):
         for command in commands:
@@ -633,8 +651,8 @@ class Stage2bRecheckTest(HookTestCase):
                 "git diff -c",
             ])
         self.passes("meng-tian", [
-            "git -C C:/b/wt/x commit -m x -c HEAD",              # commit の -c <commit>（メッセージの再利用）
-            "git -C C:/b/wt/x diff -c",
+            "git -C tmp/b/wt/x commit -m x -c HEAD",              # commit の -c <commit>（メッセージの再利用）
+            "git -C tmp/b/wt/x diff -c",
         ])
 
     def test_o2_global_position_c_is_blocked(self):
@@ -642,8 +660,8 @@ class Stage2bRecheckTest(HookTestCase):
             "git -c x=y status",
             "git -ccore.x=y status",                             # くっつけ書き
             "git -ccore.hooksPath=C:/b/h status",
-            "git -C C:/b/wt/x -c core.pager=calc status",       # -C の後ろもグローバルの位置
-            "git -C C:/b/wt/x -ccore.pager=calc status",
+            "git -C tmp/b/wt/x -c core.pager=calc status",       # -C の後ろもグローバルの位置
+            "git -C tmp/b/wt/x -ccore.pager=calc status",
             "git --git-dir C:/b/x -c x=y status",                # 値を取るグローバルオプションの後ろ
             "git --shallow-file status -c x=y log",             # --shallow-file は status を値に取る（12.12 で足した）
             "git -c x=y",                                        # サブコマンドが無ければ全部がグローバルの位置
@@ -652,18 +670,18 @@ class Stage2bRecheckTest(HookTestCase):
 
     def test_o2_clone_c_is_blocked(self):
         self.blocks("meng-tian", [
-            "git clone -c x=y https://github.com/microsoft/vscode.git C:/b/vscode",
+            "git clone -c x=y https://github.com/microsoft/vscode.git tmp/b/vscode",
             f"{self.CLONE} -c x=y",
             f"{self.CLONE} -ccore.hooksPath=C:/b/h",
             f"{self.CLONE} -qc core.hooksPath=C:/b/h",
             f"{self.CLONE} --config=core.hooksPath=C:/b/h",
             f"git -C C:/b clone -c x=y {self.CLONE[10:]}",
-            "git Clone -c x=y https://github.com/microsoft/vscode.git C:/b/vscode",   # 名前の大文字小文字を問わない
+            "git Clone -c x=y https://github.com/microsoft/vscode.git tmp/b/vscode",   # 名前の大文字小文字を問わない
         ], self.DANGER)
 
     def test_o2_long_config_still_blocked_everywhere(self):
         # 長い --config（省略形を含む）はこれまでどおりどの位置でも止める
-        self.blocks("meng-tian", ["git -C C:/b/wt/x apply --config=x p.patch", "git log --conf x"], self.DANGER)
+        self.blocks("meng-tian", ["git -C tmp/b/wt/x apply --config=x p.patch", "git log --conf x"], self.DANGER)
 
     # ---- N5: node の短いオプションのくっつけ書き ----
 
@@ -764,7 +782,7 @@ class NodeCheckScopedTest(HookTestCase):
                              project=project)
 
 
-class RegressionTest(HookTestCase):
+class RegressionTest(BuildTreeTestCase):
     """build-notes 7節の穴（#1〜#3・#9〜#12）が、permissions.json の書き換えと第2段の実装で塞がったこと。
     番号ごとに、前回通った入力が今は止まる。"""
 
@@ -773,7 +791,7 @@ class RegressionTest(HookTestCase):
             self.assertBlock(self.bash(member, command))
 
     def test_hole_1_pnpm_exec_dlx(self):
-        self.block("meng-tian", "pnpm --dir C:/b/wt/x exec calc.exe")
+        self.block("meng-tian", "pnpm --dir tmp/b/wt/x exec calc.exe")
         self.block("meng-tian", "pnpm --dir extensions-src/x dlx cowsay")
 
     def test_hole_2_node_preload_and_reporter(self):
@@ -782,20 +800,20 @@ class RegressionTest(HookTestCase):
         self.block("ooka-echizen", "node --test --test-reporter-destination=.claude/settings.json tests/")
 
     def test_hole_3_worktree_add_anywhere(self):
-        self.block("meng-tian", "git -C C:/b/vscode worktree add E:/develop/self/Team/projects/ai-editor/.claude/x")
+        self.block("meng-tian", "git -C tmp/b/vscode worktree add E:/develop/self/Team/projects/ai-editor/.claude/x")
 
     def test_hole_9_fetch_upload_pack_and_clone_template(self):
-        self.block("meng-tian", "git -C C:/b/vscode fetch --upload-pack=calc.exe file:///C:/x")
-        self.block("meng-tian", "git clone https://github.com/microsoft/vscode.git C:/b/vscode --template=C:/b/t")
-        self.block("meng-tian", "git clone https://github.com/microsoft/vscode.git C:/b/vscode --config core.hooksPath=C:/b/h")
+        self.block("meng-tian", "git -C tmp/b/vscode fetch --upload-pack=calc.exe file:///C:/x")
+        self.block("meng-tian", "git clone https://github.com/microsoft/vscode.git tmp/b/vscode --template=C:/b/t")
+        self.block("meng-tian", "git clone https://github.com/microsoft/vscode.git tmp/b/vscode --config core.hooksPath=C:/b/h")
 
     def test_hole_10_apply_unsafe_paths(self):
-        self.block("meng-tian", "git -C C:/b/wt/x apply --unsafe-paths patches/p.patch")
-        self.block("meng-tian", "git -C C:/b/wt/x am --directory=C:/x patches/p.patch")
+        self.block("meng-tian", "git -C tmp/b/wt/x apply --unsafe-paths patches/p.patch")
+        self.block("meng-tian", "git -C tmp/b/wt/x am --directory=C:/x patches/p.patch")
 
     def test_hole_11_tsc_outdir(self):
-        self.block("meng-tian", "npx --prefix C:/b/wt/x tsc --outDir .claude")
-        self.block("ooka-echizen", "npx --prefix C:/b/wt/x tsc --outDir .claude")
+        self.block("meng-tian", "npx --prefix tmp/b/wt/x tsc --outDir .claude")
+        self.block("ooka-echizen", "npx --prefix tmp/b/wt/x tsc --outDir .claude")
 
     def test_hole_12_ooka_runs_records(self):
         # 1語目に records/ を置く形は今も止まる。後ろに足す形は 2026-11-13 の書き換えで通るようになった
@@ -981,7 +999,8 @@ class PowerShellTest(HookTestCase):
 
     def test_powershell_uses_bash_rules(self):
         with tempfile.TemporaryDirectory() as tmp:
-            project = make_project(tmp)
+            # 2026-11-16（v2-1）: tmp/b/wt/x の作業ツリーの役（.git）を持つ写しにした（3c のため）
+            project = make_build_project(tmp)
             definition = project / ".claude" / "agents" / "meng-tian.md"
             text = definition.read_text(encoding="utf-8").replace("tools: Read,", "tools: PowerShell, Read,", 1)
             definition.write_text(text, encoding="utf-8")
@@ -989,7 +1008,7 @@ class PowerShellTest(HookTestCase):
             def ps(command):
                 return event("PowerShell", {"command": command}, agent_type="meng-tian", cwd=str(project))
 
-            for command in ("git status", "node scripts/build.mjs", "git -C C:/b/wt/x status"):
+            for command in ("git status", "node scripts/build.mjs", "git -C tmp/b/wt/x status"):
                 with self.subTest(command=command):
                     code, err = run(ps(command), project=project)
                     self.assertEqual(code, 0, err)
@@ -998,7 +1017,7 @@ class PowerShellTest(HookTestCase):
                 "git status; Remove-Item x",
                 "node --check (Remove-Item x)",
                 "node scripts/build.mjs $(Remove-Item x)",
-                "git -C C:/b/wt/.. status",
+                "git -C tmp/b/wt/.. status",
                 "git diff --no-index $env:LOCALAPPDATA/Shuko/secrets/t x",
                 "git diff --output=x",
                 "git status > x",

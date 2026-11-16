@@ -1,5 +1,14 @@
 """permcheck.py と hookcheck.py のテスト。本物の permissions.json・定義・settings.json と、書き換えた一時のプロジェクトで確かめる。
 
+2026-11-16（Team の tasks/2026-11-16-ai-editor-move-off-c-perms の v2-1）:
+- permcheck.py の直し f2（delete_paths・delete_keep の相対パスの要素）の判定を PermcheckRelativeDeleteTest に取り込んだ
+  （出典: 同じタスクの perm-tests/test_g_permcheck.py）。
+- 蒙恬の delete_keep は C:/b の7行から tmp/b の9行になった（U7 で1行を外し、U8 で3行を足した）。
+  test_real_meng_tian_keeps_the_seven_entries を test_real_meng_tian_keeps_the_nine_entries に置き換えた。
+- 狄仁傑の read_paths の絞り込み（U3）で、PermcheckJudgeTest の --read CLAUDE.md は通る（0）から止まる（1）に変えた。
+- PermcheckJudgeDeleteTest は、tmp/b の偽の木を持つ写しのプロジェクトを --root にして tmp/b の形で判定する
+  （本物の tmp/b に頼らない）。
+
 実行: python -m unittest discover -s projects/ai-editor/team/hooks/tests
 """
 
@@ -13,7 +22,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from hookrun import FAKE_LOCALAPPDATA, HOOKS, NODE, PROJECT, make_project
+from hookrun import FAKE_LOCALAPPDATA, HOOKS, NODE, PROJECT, build_project, make_project
 
 sys.path.insert(0, str(HOOKS))
 import hookcheck  # noqa: E402
@@ -153,7 +162,9 @@ class PermcheckJudgeTest(unittest.TestCase):
         self.assertEqual(self.judge("--member", "meng-tian", "--write", "scripts/x.mjs")[0], 0)
         self.assertEqual(self.judge("--member", "meng-tian", "--write", "tests/x.mjs")[0], 1)
         self.assertEqual(self.judge("--member", "di-renjie", "--read", "docs/README.md")[0], 0)
-        self.assertEqual(self.judge("--member", "di-renjie", "--read", "CLAUDE.md")[0], 0)  # 第2段: read_paths は ./
+        self.assertEqual(self.judge("--member", "di-renjie", "--read", "TAKE-IN.md")[0], 0)
+        # 第2段で read_paths は ./ になり（このときは 0）、2026-11-16 の U3 で TAKE-IN.md・docs/・records/take-in/ に絞った
+        self.assertEqual(self.judge("--member", "di-renjie", "--read", "CLAUDE.md")[0], 1)
         self.assertEqual(self.judge("--member", "di-renjie", "--read", "C:/b/vscode/x")[0], 1)
         self.assertEqual(self.judge("--member", "meng-tian", "--tool", "WebFetch")[0], 0)
         self.assertEqual(self.judge("--member", "ooka-echizen", "--tool", "Edit")[0], 1)
@@ -193,14 +204,22 @@ class PermcheckNewKeysTest(unittest.TestCase):
                 issues = permcheck.check_text(self.real(member), member, PROJECT)
                 self.assertEqual(issues, [])
 
-    def test_real_meng_tian_keeps_the_seven_entries(self):
+    def test_real_meng_tian_keeps_the_nine_entries(self):
+        # 2026-11-16（v2-1）: C:/b の7行を tmp/b に移し、何も無い場所を指していた p2/1.146.0-p1-a1-r3 を外し（U7）、
+        # 新しい段階 C の版の3行を足した（U8）。前の名前は test_real_meng_tian_keeps_the_seven_entries（C:/b の7行）
         keep = json.loads(self.real("meng-tian"))["delete_keep"]
-        self.assertEqual(len(keep), 7)
-        for entry in ("C:/b/p2/1.146.0-p2-all", "C:/b/dist/1.146.0-p2-all.zip", "C:/b/dist/1.146.0-p1-a1-r3.zip",
-                      "C:/b/smoke/ext/1.146.0-p1-a1-r3", "C:/b/smoke/ext/1.146.0-p1-a1-r3.marker.json",
-                      "C:/b/smoke/ext/1.146.0-p2-all*"):
-            with self.subTest(entry=entry):
-                self.assertIn(entry, keep)
+        expected = ["tmp/b/p2/1.146.0-p2-all", "tmp/b/dist/1.146.0-p2-all.zip", "tmp/b/dist/1.146.0-p1-a1-r3.zip",
+                    "tmp/b/smoke/ext/1.146.0-p1-a1-r3", "tmp/b/smoke/ext/1.146.0-p1-a1-r3.marker.json",
+                    "tmp/b/smoke/ext/1.146.0-p2-all*", "tmp/b/p2/1.146.0-p5*", "tmp/b/dist/1.146.0-p5*",
+                    "tmp/b/smoke/ext/1.146.0-p5*"]
+        self.assertEqual(sorted(keep), sorted(expected))
+        self.assertNotIn("tmp/b/p2/1.146.0-p1-a1-r3", keep)  # U7
+        self.assertFalse([k for k in keep if k.startswith("C:/b")])
+
+    def test_real_meng_tian_delete_paths(self):
+        # v2-1 の delete_paths は tmp/b の4行。【v2-2 を当てたときに直す】v2-2 は C:/b の直下の15個を一時に足す
+        paths = json.loads(self.real("meng-tian"))["delete_paths"]
+        self.assertEqual(sorted(paths), sorted(["tmp/b/p2/", "tmp/b/dist/", "tmp/b/smoke/ext/", "tmp/b/trial-*"]))
 
     def test_bad_delete_entries(self):
         for entry in ("", " C:/b/p2/", "C:/", "C:/b/", "C:/b", "C:/b/*", "C:/*/x/", "C:/b*/x/", "b/p2/", "/c/b/p2/",
@@ -273,26 +292,82 @@ class ReadPathsEnvHookTest(unittest.TestCase):
             self.assertIn("読むことを許可していない", err)
 
 
+class PermcheckRelativeDeleteTest(unittest.TestCase):
+    """f2（2026-11-16）: delete_paths・delete_keep の相対パスの要素（プロジェクト直下から）。直下の下の区切りが3つ以上
+    （tmp/・tmp/b は誤り）、最初の区切りに * が無い、.claude・team・.git にかからない、./・../・/・- で始まらない。
+    出典: Team の tasks/2026-11-16-ai-editor-move-off-c-perms/perm-tests/test_g_permcheck.py（test_relative_delete_entry_rules・
+    test_bash_entries_rm_and_rmdir・test_keep_outside_delete_paths_warns）。"""
+
+    BAD = ["tmp/", "tmp", "./tmp/b/x", "../x", "/tmp/b/x", "tmp/../x", "tmp/b/../x", ".claude/x", "team/hooks",
+           "tmp/b/.git/x", "*/b", "t*/b/x", "tmp\\b\\x", "-x/y", "tmp//b", "tmp/b/x:y", "tmp/b/*", "tmp/b/x y",
+           "~/tmp/b", "%TEMP%/b", "C:/b", "C:/b/", "C:/*/x", "C:/b/*", "tmp/b/x.", "tmp/b/PROGRA~1",
+           "tmp/b", "tmp/b/", "TMP/B", "docs/x", "b/p2/"]
+    GOOD = ["tmp/b/p2/", "tmp/b/trial-*", "tmp/b/p2/1.146.0-p2-all", "tmp/b/smoke/ext/1.146.0-p2-all*",
+            "tmp/b/p2/1.146.0-p5*", "C:/b/wt", "C:/b/tests-ac-*", "E:/develop/self/Team/projects/ai-editor/tmp/b/p2/",
+            "tmp/b/vscode", "tmp/b/logs", "tmp/b/work-b", "tmp/b/official/", "tmp/b/cache/", "tmp/b/smoke/"]
+
+    def test_relative_delete_entry_rules(self):
+        for entry in self.BAD:
+            with self.subTest(entry=entry):
+                self.assertTrue(any(level == permcheck.ERROR for level, _ in permcheck.delete_entry_issues(entry)), entry)
+        for entry in self.GOOD:
+            with self.subTest(entry=entry):
+                self.assertEqual(permcheck.delete_entry_issues(entry), [], entry)
+
+    def test_whole_files_with_relative_entries(self):
+        for key in ("delete_paths", "delete_keep"):
+            with self.subTest(key=key, entry="tmp/b"):
+                data = {"read_paths": [], "delete_paths": ["tmp/b/p2/"], key: ["tmp/b"]}
+                errors = [m for level, m in permcheck.check_text(json.dumps(data), "meng-tian", PROJECT)
+                          if level == permcheck.ERROR]
+                self.assertTrue(errors)
+        data = {"read_paths": [], "delete_paths": ["tmp/b/p2/", "tmp/b/trial-*"],
+                "delete_keep": ["tmp/b/p2/1.146.0-p2-all", "tmp/b/p2/1.146.0-p5*"]}
+        self.assertEqual(permcheck.check_text(json.dumps(data), "meng-tian", PROJECT), [])
+
+    def test_keep_outside_delete_paths_warns(self):
+        # U7: 残す版の本当の置き場所 tmp/b/p1/… は、どの delete_paths の下にも無いので警告になる（守る行は要らない）
+        data = {"read_paths": [], "delete_paths": ["tmp/b/p2/"], "delete_keep": ["tmp/b/p1/1.146.0-p1-a1-r3"]}
+        found = permcheck.check_text(json.dumps(data), "meng-tian", PROJECT)
+        self.assertEqual([level for level, _ in found], [permcheck.WARN], found)
+
+    def test_bash_entries_rm_and_rmdir(self):
+        self.assertTrue(any(level == permcheck.ERROR for level, _ in permcheck.bash_entry_issues("rm -rf C:/b", exact=True)))
+        self.assertTrue(any(level == permcheck.ERROR for level, _ in permcheck.bash_entry_issues("rm -rf tmp/b/p2/*")))
+        self.assertEqual(permcheck.bash_entry_issues("rmdir C:/b", exact=True), [])  # v2-2 の一時の行の形
+
+    def test_real_files_of_all_members_clean(self):
+        for member in ("meng-tian", "cao-shen", "ooka-echizen", "di-renjie"):
+            path = next((PROJECT / "team" / "departments").glob(f"*/{member}/permissions.json"))
+            with self.subTest(member=member):
+                self.assertEqual(permcheck.check_text(path.read_text(encoding="utf-8"), member, PROJECT), [])
+
+
 @unittest.skipIf(NODE is None, "node が見つからない")
 class PermcheckJudgeDeleteTest(unittest.TestCase):
-    """permcheck.py --member の判定でも、削除の規則が効く（本物の permissions.json）。"""
+    """permcheck.py --member の判定でも、削除の規則が効く（本物の permissions.json）。2026-11-16（v2-1）から削除の
+    規則は tmp/b の相対パスなので、tmp/b の偽の木を持つ写しのプロジェクト（build_project）を --root にして判定する。"""
 
     def judge(self, *args):
         old = os.environ.get("LOCALAPPDATA")
         os.environ["LOCALAPPDATA"] = FAKE_LOCALAPPDATA
         try:
-            return quiet(permcheck.main, ["--root", str(PROJECT), *args])
+            return quiet(permcheck.main, ["--root", str(build_project()), *args])
         finally:
             if old is not None:
                 os.environ["LOCALAPPDATA"] = old
 
     def test_judge(self):
-        self.assertEqual(self.judge("--member", "meng-tian", "--bash", "rm -rf C:/b/p2/foo")[0], 0)
-        self.assertEqual(self.judge("--member", "meng-tian", "--bash", "rm -rf C:/b/p2/1.146.0-p2-all")[0], 1)
-        self.assertEqual(self.judge("--member", "meng-tian", "--bash", "rm -rf C:/b/p2/foo C:/b")[0], 1)
-        self.assertEqual(self.judge("--member", "ooka-echizen", "--bash", "rm -rf C:/b/p2/foo")[0], 1)
-        self.assertEqual(self.judge("--member", "ooka-echizen", "--bash", "git -C C:/b/wt/x checkout 1.146.0")[0], 0)
-        self.assertEqual(self.judge("--member", "ooka-echizen", "--bash", "git -C C:/b/wt/x checkout 1.146.0 -f")[0], 1)
+        self.assertEqual(self.judge("--member", "meng-tian", "--bash", "rm -rf tmp/b/p2/foo")[0], 0)
+        self.assertEqual(self.judge("--member", "meng-tian", "--bash", "rm -rf tmp/b/p2/1.146.0-p2-all")[0], 1)
+        self.assertEqual(self.judge("--member", "meng-tian", "--bash", "rm -rf tmp/b/p2/foo tmp/b")[0], 1)
+        # v2-1 は C:/b を消せない。【v2-2 を当てたときに直す】v2-2 は C:/b/p2 を一時の delete_paths に足すので 0 になる
+        # （v2-3 で 1 に戻る）
+        self.assertEqual(self.judge("--member", "meng-tian", "--bash", "rm -rf C:/b/p2/foo")[0], 1)
+        self.assertEqual(self.judge("--member", "ooka-echizen", "--bash", "rm -rf tmp/b/p2/foo")[0], 1)
+        self.assertEqual(self.judge("--member", "ooka-echizen", "--bash", "git -C tmp/b/wt/x checkout 1.146.0")[0], 0)
+        self.assertEqual(self.judge("--member", "ooka-echizen", "--bash", "git -C tmp/b/wt/x checkout 1.146.0 -f")[0], 1)
+        self.assertEqual(self.judge("--member", "ooka-echizen", "--bash", "git -C tmp/b/wt/plain checkout 1.146.0")[0], 1)  # 3c
 
 
 class HookcheckTest(unittest.TestCase):

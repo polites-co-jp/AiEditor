@@ -16,7 +16,7 @@
     "powershell -NoProfile -ExecutionPolicy Bypass -File tests/*.ps1",
     "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/measure.ps1",
     "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/netaudit.ps1",
-    "pnpm --dir C:/b/wt/* run smoketest"
+    "pnpm --dir tmp/b/wt/* run smoketest"
   ],
   "write_paths": [
     "tests/",

@@ -2,7 +2,9 @@
   "bash": [],
   "write_paths": [],
   "read_paths": [
-    "./"
+    "TAKE-IN.md",
+    "docs/",
+    "records/take-in/"
   ],
   "secret_paths": [
     "%LOCALAPPDATA%/Shuko/watch/",

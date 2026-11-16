@@ -6,6 +6,9 @@
   tempfile の下でだけ走らせる。
 - 入力の出典: Team の tasks/2026-11-15-ai-editor-perm-requests/ の perm-tests/test_2_ooka.py（ダイクストラ）と
   bacon-tests/test_b3_ooka_tools.py（ベーコン）。
+- 2026-11-16（v2-1。Team の tasks/2026-11-16-ai-editor-move-off-c-perms）: 大岡越前守の C:/b/wt/* の行が tmp/b/wt/* に
+  なったので、固定の入力を tmp/b/wt/… に直し、tmp/b の偽の木を持つ写しのプロジェクト（BuildTreeTestCase）で判定する。
+  期待（通る・止まる）は変えていない。仮のメンバーの行（BashExactSemanticsTest）は C:/b のまま残した（後述）。
 
 実行: python -m unittest discover -s projects/ai-editor/team/hooks/tests
 """
@@ -18,28 +21,28 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from hookrun import NODE, PROJECT, HookTestCase, add_member, make_project
+from hookrun import NODE, PROJECT, BuildTreeTestCase, HookTestCase, add_member, make_build_project, make_project
 
 OE = "ooka-echizen"
 PS = "powershell -NoProfile -ExecutionPolicy Bypass -File"
-W = "C:/b/wt/1.146.0-p2-all"
+W = "tmp/b/wt/1.146.0-p2-all"
 
 
-class OokaNewLinesTest(HookTestCase):
-    """大岡越前守の確かめの行（2026-11-15）。"""
+class OokaNewLinesTest(BuildTreeTestCase):
+    """大岡越前守の確かめの行（2026-11-15。2026-11-16 に C:/b/wt/* から tmp/b/wt/* に移った）。"""
 
     ALLOWED = [
-        f"git -C {W} status", f"git -C {W} status --porcelain", "git -C C:/b/wt/1.146.0-p5-c1 status",
-        f"git -C {W} diff", f"git -C {W} diff 1.146.0 HEAD --stat", "git -C C:/b/wt/x diff --name-only",
+        f"git -C {W} status", f"git -C {W} status --porcelain", "git -C tmp/b/wt/1.146.0-p5-c1 status",
+        f"git -C {W} diff", f"git -C {W} diff 1.146.0 HEAD --stat", "git -C tmp/b/wt/x diff --name-only",
         f"git -C {W} checkout 1.146.0", f"git -C {W} checkout 1.147.1", f"git -C {W} checkout -- pnpm-lock.yaml",
         f"pnpm --dir {W} install --lockfile-only --ignore-scripts",
         "node scripts/disk-usage.mjs records=records",
         f"{PS} scripts/p1-ci-events.ps1 -OutFile tasks/2026-11-16-x/ci-events.json",
         f"{PS} scripts/p1-ci-events.ps1 -OutFile tasks/x/ci.json -Minutes 30",
         f"{PS} scripts/check-env.ps1 -OutFile tasks/2026-11-16-x/env-check.json",
-        f"{PS} scripts/check-env.ps1 -OutFile tasks/x/env-check.json -WorkTree C:/b/wt/x",
+        f"{PS} scripts/check-env.ps1 -OutFile tasks/x/env-check.json -WorkTree tmp/b/wt/x",
         f"{PS} scripts/p1-launch-check.ps1 -OutFile tasks/x/launch.json",
-        f"{PS} scripts/p1-launch-check.ps1 -OutFile tasks/x/launch-check.json -Zip C:/b/dist/1.146.0-p2-all.zip",
+        f"{PS} scripts/p1-launch-check.ps1 -OutFile tasks/x/launch-check.json -Zip tmp/b/dist/1.146.0-p2-all.zip",
     ]
 
     BLOCKED = [
@@ -50,12 +53,12 @@ class OokaNewLinesTest(HookTestCase):
         f"git -C {W} checkout -- pnpm-lock.yaml package.json", f"git -C {W} checkout -- pnpm-lock.yaml .",
         f"git -C {W} checkout 1.146.0 pnpm-lock.yaml", f"git -C {W} checkout -f", f"git -C {W} checkout --force 1.146.0",
         f"git -C {W} checkout 1.146.0 1.146.1", f"git -C {W} checkout", f"git -C {W} checkout .",
-        f"git -C {W} checkout ../1.146.0", "git -C C:/b/vscode checkout 1.146.0", "git -C C:/b/wt/x/y checkout 1.146.0",
-        "git -C C:/b/wt/.. checkout 1.146.0", f"git -C {W}/../x checkout 1.146.0", "git -C C:/b/wt/x/.. checkout 1.146.0",
+        f"git -C {W} checkout ../1.146.0", "git -C tmp/b/vscode checkout 1.146.0", "git -C tmp/b/wt/x/y checkout 1.146.0",
+        "git -C tmp/b/wt/.. checkout 1.146.0", f"git -C {W}/../x checkout 1.146.0", "git -C tmp/b/wt/x/.. checkout 1.146.0",
         f"git -C {W} checkout 1.146.0; git -C {W} clean -xfd",
         # status・diff は固定の検査が効く。ほかのサブコマンドは無い
         f"git -C {W} diff --output=C:/x.txt", f"git -C {W} diff --no-index a b", f"git -C {W} status --porcelain > x",
-        f"git -C {W} -c core.fsmonitor=x status", f"git -C {W} -c core.pager=x status", "git -C C:/b/vscode status",
+        f"git -C {W} -c core.fsmonitor=x status", f"git -C {W} -c core.pager=x status", "git -C tmp/b/vscode status",
         f"git -C {W} clean -xfd", f"git -C {W} reset --hard",
         # pnpm は完全一致だけ
         f"pnpm --dir {W} install --lockfile-only --ignore-scripts --dir C:/Users",
@@ -80,9 +83,10 @@ class OokaNewLinesTest(HookTestCase):
         f"{PS} scripts/check-env.ps1 -OutFile tasks/../team/x.json", f"{PS} scripts/check-env.ps1 -OutFile tasks/./x.json",
         f"{PS} scripts/check-env.ps1 -OutFile tasks/x/../../.claude/x.json", f"{PS} scripts/check-env.ps1 -OutFile C:/b/x.json",
         f"{PS} scripts/p1-ci-events.ps1 -OutFile C:/b/x.json", f"{PS} scripts/check-env.ps1 -OutFile tasks/*/*.json",
+        f"{PS} scripts/check-env.ps1 -OutFile tmp/b/x.json", f"{PS} scripts/p1-ci-events.ps1 -OutFile tmp/b/x.json",
         f"{PS} scripts/check-env.ps1 -OutFile tasks/x/y.json:stream", f"{PS} scripts/check-env.ps1 -OutFile tasks\\x\\y.json",
         f"{PS} scripts/check-env.ps1 -Out x -OutFile tasks/x/y.json", f"{PS} scripts/check-env.ps1 -WorkTree x -OutFile .claude/s.json",
-        f"{PS} scripts/check-env.ps1 -WorkTree C:/b/wt/x -OutFile tasks/x/env.json",
+        f"{PS} scripts/check-env.ps1 -WorkTree tmp/b/wt/x -OutFile tasks/x/env.json",
         f"{PS} scripts/check-env.ps1 -OutFile tasks/x/y.json; node x.mjs", f"{PS} scripts/check-env.ps1 -OutFile tasks/x/y.json | tee x",
         f"{PS} scripts/other.ps1 -OutFile tasks/x/y.json",
     ]
@@ -119,7 +123,11 @@ class OokaNewLinesTest(HookTestCase):
 
 
 class BashExactSemanticsTest(HookTestCase):
-    """同じ行を bash（前方一致）と bash_exact（完全一致）に置いたときの違いを、仮のメンバーで確かめる。"""
+    """同じ行を bash（前方一致）と bash_exact（完全一致）に置いたときの違いを、仮のメンバーで確かめる。
+
+    仮のメンバーの行は C:/b/wt/* のまま残した（2026-11-16）。プロジェクトの外の先なので 3c・3d が働かず、照合の違い
+    （前方一致と完全一致）だけを見られるため。本物のメンバーの行は v2-1 で tmp/b に移った。tmp/b の行では、前方一致でも
+    後ろに足した --dir・--lockfile-dir を 3d が止める（test_trailing_location_words_inside_project）。"""
 
     LINE = "pnpm --dir C:/b/wt/* install --lockfile-only --ignore-scripts"
     PREFIX, EXACT = "bash-prefix-probe", "bash-exact-probe"
@@ -169,6 +177,42 @@ class BashExactSemanticsTest(HookTestCase):
         self.assertPass(ev, **kw)
         ev, kw = self.judge(self.EXACT, "git -C C:/b/wt/x checkout 1.146.0 && git log")
         self.assertBlock(ev, **kw)
+
+    def test_outside_first_dir_then_inside(self):
+        # 3d（3回目の改訂 N2）: 1つ目の --dir が外（C:/b）でも、後ろに足した先がプロジェクトの直下かその中になりうれば止める。
+        # 出典: Team の tasks/2026-11-16-ai-editor-move-off-c-perms/perm-tests/test_m_round3.py（PnpmLocationGuardTest）
+        abs_ = str(self.project).replace("\\", "/")
+        head = "pnpm --dir C:/b/wt/x install --lockfile-only --ignore-scripts"
+        for extra in ("--dir .", f"--dir {abs_}", "--lockfile-dir ../../..", f"--lockfile-dir={abs_}"):
+            with self.subTest(extra=extra):
+                ev, kw = self.judge(self.PREFIX, f"{head} {extra}")
+                self.assertBlock(ev, "pnpm", **kw)
+
+
+class TrailingLocationInsideProjectTest(HookTestCase):
+    """tmp/b の行（プロジェクトの中の先）では、前方一致の行の後ろに足した --dir・--lockfile-dir を 3d が止める
+    （BashExactSemanticsTest.test_trailing_words の C:/b の形とは違う。2026-11-16。仮のメンバーで確かめる）。"""
+
+    LINE = "pnpm --dir tmp/b/wt/* install --lockfile-only --ignore-scripts"
+    PREFIX = "bash-prefix-probe-tmpb"
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls._tmp = tempfile.mkdtemp(prefix="ai-editor-hooks-exact-tmpb-")
+        cls.addClassCleanup(shutil.rmtree, cls._tmp, True)
+        cls.project = make_build_project(cls._tmp)
+        add_member(cls.project, cls.PREFIX, {"bash": [cls.LINE], "read_paths": ["./"]})
+
+    def test_trailing_location_words_inside_project(self):
+        ok = "pnpm --dir tmp/b/wt/x install --lockfile-only --ignore-scripts"
+        self.assertPass(self.bash(self.PREFIX, ok, cwd=str(self.project)), project=self.project)
+        for extra in ("--dir C:/Users", "--lockfile-dir C:/x", "--dir .", "--lockfile-dir ../../../.."):
+            with self.subTest(extra=extra):
+                self.assertBlock(self.bash(self.PREFIX, f"{ok} {extra}", cwd=str(self.project)), "pnpm",
+                                 project=self.project)
+        # 3d に当たらない語は、前方一致なので通る（--no-ignore-scripts。前と同じ前方一致の広さ。R3）
+        self.assertPass(self.bash(self.PREFIX, f"{ok} --no-ignore-scripts", cwd=str(self.project)), project=self.project)
 
 
 @unittest.skipUnless(shutil.which("powershell"), "powershell が見つからない")

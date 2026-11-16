@@ -1,5 +1,10 @@
 """書き込み（Write / Edit / MultiEdit / NotebookEdit）の検査のテスト。実際の permissions.json に対して allowlist.js を呼ぶ。
 
+2026-11-16（Team の tasks/2026-11-16-ai-editor-move-off-c-perms の v2-1）: 蒙恬の write_paths から C:/b/ が外れた
+（「C:\\b は書かない」方針）。前は通る側にあった蒙恬の C:/b/wt/x/src/main.ts の4形は、止まる側に移した（意図した期待の
+変更）。ビルドの置き場所 tmp/b（蒙恬の tmp/ の中）への書き込みと、LOCALAPPDATA を書き込み先の中に向けたときの秘密の
+守りは、tmp/b の偽の木を持つ写しのプロジェクト（BuildTreeWriteTest）で確かめる（本物の tmp/b に頼らない）。
+
 実行: python -m unittest discover -s projects/ai-editor/team/hooks/tests
 """
 
@@ -8,7 +13,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from hookrun import FAKE_LOCALAPPDATA, PROJECT, HookTestCase, event, make_project, run
+from hookrun import FAKE_LOCALAPPDATA, PROJECT, BuildTreeTestCase, HookTestCase, event, make_project, run
 
 P = str(PROJECT)
 P_SLASH = P.replace("\\", "/")
@@ -34,10 +39,6 @@ class MemberWriteTest(HookTestCase):
             "package.json",
             ".gitignore",
             "tasks/2026-11-20-x/notes.md",
-            "C:/b/wt/x/src/main.ts",
-            "C:\\b\\wt\\x\\src\\main.ts",
-            "c:/B/WT/x/src/main.ts",
-            "/c/b/wt/x/src/main.ts",
             f"{P}\\scripts\\build.mjs",
             f"{P_SLASH}/scripts/build.mjs",
             f"{P_MSYS}/scripts/build.mjs",
@@ -106,6 +107,11 @@ class MemberWriteTest(HookTestCase):
             "C:/b",
             "C:/b/../x",
             "C:/x",
+            # v2-1 で write_paths の C:/b/ が外れた（前は通る側。意図した期待の変更）
+            "C:/b/wt/x/src/main.ts",
+            "C:\\b\\wt\\x\\src\\main.ts",
+            "c:/B/WT/x/src/main.ts",
+            "/c/b/wt/x/src/main.ts",
             "E:/develop/self/Team/CLAUDE.md",
             # 自己防護（permissions.json に関係なく）
             ".claude/settings.json",
@@ -218,19 +224,43 @@ class MemberWriteTest(HookTestCase):
                     code, err = run(event(tool, tool_input, agent_type="meng-tian", cwd=str(project)), project=project)
                     self.assertEqual(code, want, err)
 
-    def test_secret_paths_override_write_paths(self):
-        # LOCALAPPDATA を C:/b/ の下に向けると、meng-tian の write_paths（C:/b/）の中に秘密が来る（ディスクには書かない）
-        local = "C:\\b\\fake-local"
-        self.assertPass(self.write("meng-tian", "C:/b/fake-local/Shuko/other.txt"), local=local)
-        for p in ("C:/b/fake-local/Shuko/secrets/token", "C:\\B\\FAKE-LOCAL\\shuko\\watch\\state.json",
-                  "/c/b/fake-local/Shuko/secrets/x", "C:/b/fake-local/Shuko/x/../secrets/y"):
-            with self.subTest(path=p):
-                self.assertBlock(self.write("meng-tian", p), "secret_paths", local=local)
-
     def test_relative_path_needs_project_cwd(self):
         self.assertBlock(self.write("meng-tian", "scripts/x.mjs", cwd="C:\\b\\wt\\x"), "相対パス")
         self.assertPass(self.write("meng-tian", f"{P}\\scripts\\x.mjs", cwd="C:\\b\\wt\\x"))
         self.assertPass(self.write("meng-tian", "scripts/x.mjs", cwd=P_SLASH.upper()))
+
+
+class BuildTreeWriteTest(BuildTreeTestCase):
+    """ビルドの置き場所 tmp/b への書き込み（2026-11-16。v2-1）。蒙恬は tmp/ に書け、ほかの3人は書けない。
+    .git の区切りは、どこであれ止まる（3c をすり抜ける空の .git を Write で作れない）。"""
+
+    def test_meng_tian_writes_build_root(self):
+        msys = "/" + self.P_SLASH[0].lower() + self.P_SLASH[2:]
+        for p in ("tmp/b/wt/x/src/main.ts", "tmp\\b\\wt\\x\\src\\main.ts", "TMP/B/WT/x/src/main.ts",
+                  f"{self.P_SLASH}/tmp/b/wt/x/src/main.ts", f"{msys}/tmp/b/wt/x/src/main.ts", "tmp/b/wt/new/package.json"):
+            with self.subTest(path=p):
+                self.assertPass(self.write("meng-tian", p))
+
+    def test_git_and_others_blocked(self):
+        for p in ("tmp/b/vscode/.git/hooks/post-checkout", "tmp/b/vscode/.git/config", "tmp/b/wt/x/.GIT/config",
+                  "tmp/b/wt/x/.git", "tmp/b/wt/plain/.git/HEAD"):
+            with self.subTest(path=p):
+                self.assertBlock(self.write("meng-tian", p), ".claude/・team/・.git")
+        for member in ("cao-shen", "ooka-echizen"):
+            for p in ("tmp/b/wt/x/src/main.ts", "tmp/b/wt/x/package.json"):
+                with self.subTest(member=member, path=p):
+                    self.assertBlock(self.write(member, p))
+
+    def test_secret_paths_override_write_paths(self):
+        # LOCALAPPDATA を tmp/b の下に向けると、meng-tian の write_paths（tmp/）の中に秘密が来る（ディスクには書かない）。
+        # 前は C:/b/ の下で確かめていた（v2-1 で write_paths の C:/b/ が外れたため、tmp/b に置き換えた）
+        local = f"{self.P}\\tmp\\b\\fake-local"
+        self.assertPass(self.write("meng-tian", "tmp/b/fake-local/Shuko/other.txt"), local=local)
+        msys = "/" + self.P_SLASH[0].lower() + self.P_SLASH[2:]
+        for p in ("tmp/b/fake-local/Shuko/secrets/token", "TMP\\B\\FAKE-LOCAL\\shuko\\watch\\state.json",
+                  f"{msys}/tmp/b/fake-local/Shuko/secrets/x", "tmp/b/fake-local/Shuko/x/../secrets/y"):
+            with self.subTest(path=p):
+                self.assertBlock(self.write("meng-tian", p), "secret_paths", local=local)
 
 
 @unittest.skipUnless(os.name == "nt", "ジャンクションは Windows だけ")

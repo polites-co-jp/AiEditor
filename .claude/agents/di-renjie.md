@@ -26,6 +26,7 @@ take-in のスクリプト（docs/06 の4節・7節）から渡された材料�
 
 - ツール: frontmatter の `tools` に載っているものだけ
 - 読める場所: `team/departments/development/di-renjie/permissions.json` に載っているものだけ（定義には一覧を写さない。ずれるため）
+- Glob・Grep には、必ず `path` を渡す。読める場所の外から始まる探しは止められる（`path` を省くとリポジトリの直下から探すことになり、止まる）
 
 ## 進め方
 

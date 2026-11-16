@@ -1,6 +1,17 @@
 """読み込み（Read / Glob / Grep）と secret_paths の検査のテスト。実際の permissions.json に対して allowlist.js を呼ぶ。
 LOCALAPPDATA はテストの一時ディレクトリ（hookrun.FAKE_LOCALAPPDATA）か、一時のプロジェクトの中にする。
 
+2026-11-16（Team の tasks/2026-11-16-ai-editor-move-off-c-perms の v2-1）:
+- ビルドの置き場所は tmp/b（./ の中）に移った。tmp/b の下を読む判定は、tmp/b の偽の木を持つ写しのプロジェクト
+  （BuildTreeReadTest。本物の tmp/b に頼らない）で行う。
+- 3人の read_paths の C:/b/ は v2-1 の間だけ残る一時の行。C:/b を読める判定は ReadCDriveV21Test に分けた
+  （v2-2・v2-3 を当てたときに直す。クラスの説明）。C:/b の下の名前は、実在に頼らない名前にした。
+- 狄仁傑の read_paths は ./ から TAKE-IN.md・docs/・records/take-in/ に絞られた（U3）。test_judge_read_paths の
+  通る側の8つ（.claude/settings.json・CLAUDE.md・extensions.lock.json・records/gate.md・removals/x/README.md・
+  scripts/x.mjs・upstream.json・upstream.json.bak）は止まる側に移した（意図した期待の変更）。
+- 5a（探す範囲）: 直下からの Glob の **/*.mjs は tmp/ の大きな木に入りうるので止まる。GlobGrepTest.test_allowed の
+  その入力を scripts/**/*.mjs に替え、**/*.mjs は止まる側の例に移した（意図した期待の変更。5a の判定は test_search_scope）。
+
 実行: python -m unittest discover -s projects/ai-editor/team/hooks/tests
 """
 
@@ -8,19 +19,19 @@ import os
 import tempfile
 import unittest
 
-from hookrun import FAKE_LOCALAPPDATA, PROJECT, HookTestCase, event, make_project, run
+from hookrun import FAKE_LOCALAPPDATA, PROJECT, BuildTreeTestCase, HookTestCase, event, make_project, run
 
 P = str(PROJECT)
 P_SLASH = P.replace("\\", "/")
-MEMBERS_WITH_ALL = ("meng-tian", "cao-shen", "ooka-echizen")  # read_paths が ./ と C:/b/
+MEMBERS_WITH_ALL = ("meng-tian", "cao-shen", "ooka-echizen")  # read_paths が ./（v2-1 の間は C:/b/ も）
+C_B_NAME = "no-such-hooktest"  # C:/b の下の、実在に頼らない名前（判定は lstat・realpath でしか触れない）
 
 
 class ReadTest(HookTestCase):
     def test_project_and_build_root(self):
         for member in MEMBERS_WITH_ALL:
             for p in ("docs/README.md", "CLAUDE.md", ".claude/agents/meng-tian.md", "team/hooks/allowlist.js",
-                      f"{P}\\docs\\README.md", "/" + P_SLASH[0].lower() + P_SLASH[2:] + "/CLAUDE.md",
-                      "C:/b/vscode/package.json", "c:\\B\\wt\\x\\src\\main.ts", "/c/b/wt/x/a.ts"):
+                      f"{P}\\docs\\README.md", "/" + P_SLASH[0].lower() + P_SLASH[2:] + "/CLAUDE.md"):
                 with self.subTest(member=member, path=p):
                     self.assertPass(self.read(member, p))
 
@@ -34,18 +45,59 @@ class ReadTest(HookTestCase):
                     self.assertBlock(self.read(member, p))
 
     def test_judge_read_paths(self):
-        # 第2段で di-renjie の read_paths は ./（プロジェクト全体）になった。中は読める、外と秘密と壊れた形は止まる
-        ok = ("records/take-in/x.md", "docs/a/b.md", "TAKE-IN.md", "take-in.md", "upstream.json",
-              "removals/x/README.md", "extensions.lock.json", "records/gate.md", "scripts/x.mjs",
-              "CLAUDE.md", "upstream.json.bak", ".claude/settings.json")
+        # 第2段で di-renjie の read_paths は ./（プロジェクト全体）になり、2026-11-16（U3）で判定に使う場所
+        # TAKE-IN.md・docs/・records/take-in/ に絞られた。その中は読める、外と秘密と壊れた形は止まる。
+        # 前は通る側にあった8つ（upstream.json から .claude/settings.json まで）は、U3 で止まる側に移した
+        ok = ("records/take-in/x.md", "records/take-in/1.146.0/upstream/releases.json", "docs/a/b.md", "TAKE-IN.md",
+              "take-in.md", "DOCS/A.md")
         ng = ("C:/b/x", "../CLAUDE.md", "E:/develop/self/Team/CLAUDE.md", "docs/../../x", "~/.claude.json",
-              "docs./x.md", "docs/x.md::$DATA")
+              "docs./x.md", "docs/x.md::$DATA",
+              # U3 で止まる側に移した8つ（前は ./ で読めた）
+              ".claude/settings.json", "CLAUDE.md", "extensions.lock.json", "records/gate.md", "removals/x/README.md",
+              "scripts/x.mjs", "upstream.json", "upstream.json.bak",
+              # U3 の絞り込みの境目
+              "records/builds/1.146.0.json", "records/take-inx/y.md", "records/x.md", "TAKE-IN.md.bak", "TAKE-IN.md/x",
+              "docsx/a.md", "tmp/b/wt/1.146.0/README.md", "builtin/keep.json", "docs/../CLAUDE.md")
         for p in ok:
             with self.subTest(path=p):
                 self.assertPass(self.read("di-renjie", p))
         for p in ng:
             with self.subTest(path=p):
                 self.assertBlock(self.read("di-renjie", p))
+
+
+class ReadCDriveV21Test(HookTestCase):
+    """v2-1（2026-11-16）の間だけ、3人の read_paths に C:/b/ が残る（古いログを読む用。perm-proposal.md の1節）。
+
+    【v2-2・v2-3 を当てたときに直す】v2-2 で曹参・大岡越前守の C:/b/ が、v2-3 で蒙恬の C:/b/ が外れる。そのとき
+    test_c_b_readable_in_v2_1 と GlobGrepTest.test_allowed_c_b_v2_1 の、その人の C:/b の入力は止まる側に移す
+    （perm-proposal.md の「本物のテストの直し（v2-1 を当てたとき）」の節）。狄仁傑はもともと読めない。"""
+
+    def test_c_b_readable_in_v2_1(self):
+        for member in MEMBERS_WITH_ALL:
+            for p in (f"C:/b/{C_B_NAME}/package.json", f"c:\\B\\{C_B_NAME}\\x\\src\\main.ts", f"/c/b/{C_B_NAME}/x/a.ts"):
+                with self.subTest(member=member, path=p):
+                    self.assertPass(self.read(member, p))
+
+    def test_judge_cannot_read_c_b(self):
+        self.assertBlock(self.read("di-renjie", f"C:/b/{C_B_NAME}/README.md"), "読むことを許可していない")
+
+
+class BuildTreeReadTest(BuildTreeTestCase):
+    """tmp/b（./ の中）を読む判定。tmp/b の偽の木を持つ写しのプロジェクトで確かめる（2026-11-16）。"""
+
+    def test_members_read_build_root(self):
+        for member in MEMBERS_WITH_ALL:
+            for p in ("tmp/b/vscode/package.json", "tmp\\b\\wt\\x\\src\\main.ts", f"{self.P_SLASH}/tmp/b/wt/x/a.ts",
+                      "tmp/b/netlog/x.json"):
+                with self.subTest(member=member, path=p):
+                    self.assertPass(self.read(member, p))
+
+    def test_judge_does_not_read_build_root(self):
+        # U3: 狄仁傑は tmp/ の下（作業ツリー・展開した版・ネットのログ）を読めない
+        for p in ("tmp/b/vscode/package.json", "tmp/b/wt/x/README.md", "tmp/b/netlog/x.json"):
+            with self.subTest(path=p):
+                self.assertBlock(self.read("di-renjie", p), "読むことを許可していない")
 
 
 class GlobGrepTest(HookTestCase):
@@ -64,13 +116,28 @@ class GlobGrepTest(HookTestCase):
         return event("Grep", tool_input, agent_type=member, **kw)
 
     def test_allowed(self):
+        # 2026-11-16: 直下からの **/*.mjs は 5a で止まるので scripts/**/*.mjs に替えた（**/*.mjs は test_root_recursive_glob）。
+        # C:/b を探す形は test_allowed_c_b_v2_1 に分けた
         for member in MEMBERS_WITH_ALL:
             with self.subTest(member=member):
-                self.assertPass(self.glob(member, "**/*.mjs"))
-                self.assertPass(self.glob(member, "src/**/*.ts", "C:/b/wt/x"))
+                self.assertPass(self.glob(member, "scripts/**/*.mjs"))
+                self.assertPass(self.glob(member, "*.md"))
                 self.assertPass(self.grep(member))
                 self.assertPass(self.grep(member, "scripts", "*.{mjs,ps1}"))
-                self.assertPass(self.grep(member, "C:\\b\\vscode"))
+                self.assertPass(self.grep(member, glob="**/*.md"))
+
+    def test_root_recursive_glob(self):
+        # 5a（2026-11-16）: 直下からの **/*.mjs は tmp/ の大きな木に入りうるので止まる（前は通る側の例だった）
+        for member in MEMBERS_WITH_ALL:
+            with self.subTest(member=member):
+                self.assertBlock(self.glob(member, "**/*.mjs"), "tmp/")
+
+    def test_allowed_c_b_v2_1(self):
+        # 【v2-2・v2-3 を当てたときに直す】v2-1 の間だけ、3人とも C:/b の下を探せる（ReadCDriveV21Test の説明）
+        for member in MEMBERS_WITH_ALL:
+            with self.subTest(member=member):
+                self.assertPass(self.glob(member, "src/**/*.ts", f"C:/b/{C_B_NAME}/x"))
+                self.assertPass(self.grep(member, f"C:\\b\\{C_B_NAME}"))
 
     def test_blocked(self):
         for member in MEMBERS_WITH_ALL:

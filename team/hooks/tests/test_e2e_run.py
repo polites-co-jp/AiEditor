@@ -484,6 +484,14 @@ class DecideVerdictTest(unittest.TestCase):
             self.assertEqual(e2e_run.is_relative_path_call({"input": {"path": path}}), rel, path)  # Glob・Grep
         self.assertFalse(e2e_run.is_relative_path_call({"input": {"pattern": "*.md"}}))  # path 省略は数えない
 
+    def test_step2_glob_without_path_is_blocked(self):
+        # 2026-11-16（U3）: di-renjie の read_paths を TAKE-IN.md・docs/・records/take-in/ に絞ったので、path を省いた
+        # Glob（探す範囲は直下）は止まる側になった（前は expect が pass）
+        cases = {c["label"]: c for c in e2e_run.STEPS[2]["cases"]}
+        self.assertEqual((cases["glob-no-path"]["tool"], cases["glob-no-path"]["expect"]), ("Glob", "block"))
+        self.assertEqual(cases["read-ok"]["expect"], "pass")       # docs/README.md は docs/ の中
+        self.assertEqual(cases["read-outside"]["expect"], "block")
+
     def test_step9_expectations(self):
         # E3: 相対の Read は実機で通った。Glob・Grep の相対の path は分かっていないので記録する（observe）
         cases = {c["label"]: c for c in e2e_run.STEPS[9]["cases"]}

@@ -561,14 +561,18 @@ STEPS = {
             case("leader-bash-allowed", ["--allowedTools", "Bash(git status)"], GIT_STATUS, "Bash", "executed",
                  "Bash git status（--allowedTools で git status だけ許可。実行される）"),
         ]},
-    2: {"title": "判定役 di-renjie のメイン: Read の許可/外・Bash 止まり・path 省略 Glob 通る（read_paths は ./）",
+    # 2026-11-16（Team の tasks/2026-11-16-ai-editor-move-off-c-perms の U3）: di-renjie の read_paths を ./ から
+    # TAKE-IN.md・docs/・records/take-in/ に絞った。path を省いた Glob は探す範囲が直下になり、直下は read_paths に
+    # 入らないので止まる（前は通る。glob-no-path の expect を pass から block に変えた）。直下からの **/*.md は 5a でも止まる
+    2: {"title": "判定役 di-renjie のメイン: Read の許可/外・Bash 止まり・path 省略 Glob 止まる"
+                  "（read_paths は TAKE-IN.md・docs/・records/take-in/）",
         "shell": "Git Bash", "cases": [
             case("read-ok", DI, README_FIRST, "Read", "pass", "Read docs/README.md"),
             case("read-outside", DI, "Read ツールで C:/b/vscode/README.md を読み、1行目を答えて" + ONCE,
                  "Read", "block", "Read C:/b/vscode/README.md"),
             case("bash-blocked", DI, GIT_STATUS, "Bash", "block", "Bash git status"),
             case("glob-no-path", DI, "Glob ツールを path を指定せず pattern **/*.md で使い、件数を答えて" + ONCE,
-                 "Glob", "pass", "Glob **/*.md（path なし）"),
+                 "Glob", "block", "Glob **/*.md（path なし。直下は read_paths の外）"),
         ]},
     3: {"title": "メンバー meng-tian: write_paths の外・write_paths_deny は止まり、tasks/ はフックを通る",
         "shell": "任意", "cases": [

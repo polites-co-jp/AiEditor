@@ -3,6 +3,9 @@
 
 土台は E:\\develop\\self\\Team の team/hooks/permcheck.py。書式を AiEditor の新書式に合わせた。
 案（2026-11-15。bash_exact・delete_paths・delete_keep を足した）: E:\\develop\\self\\Team\\tasks\\2026-11-15-ai-editor-perm-requests\\perm-proposal.md
+案（2026-11-16。delete_paths・delete_keep をプロジェクト直下からの相対パスでも書けるようにした）:
+  E:\\develop\\self\\Team\\tasks\\2026-11-16-ai-editor-move-off-c-perms\\perm-proposal.md
+  2回目の改訂（同じ日）: 相対の削除の要素は、直下の下の区切りを3つ以上にした（tmp/b を誤りにする。F5）。
 
 規則（ERROR は終了コード 1。WARN は終了コードに影響しない）:
   a. ERROR JSON として読めない（BOM・NaN・Infinity も読めないとする）。トップレベルがオブジェクトでない。
@@ -33,9 +36,14 @@
      ERROR write_paths の要素が自己防護の場所（.claude/・team/・.git）にかかる（allowlist.js が固定で止めるので効かない）。
      WARN  write_paths_deny の要素が、どの write_paths の下にも無い（効かない）。
   f2. 削除の要素（delete_paths / delete_keep）1つ:
-     ERROR 空・前後に空白・C:/ のドライブから始まる絶対パスでない（相対・/c/…・\\ は不可）・f の止める形。
+     ERROR 空・前後に空白・f の止める形。
+     ERROR C:/ のドライブから始まる絶対パスか、プロジェクト直下からの相対パス（tmp/b/… など）でない
+           （/ 始まり・/c/…・\\・./ や ../ で始まる形・- で始まる形は不可）。
      ERROR 英数字と . _ @ + = - / * 以外の文字（allowlist.js が rm -rf の語に許す文字と同じ。* は規則だけ）。
-     ERROR ドライブの下の区切りが2つ未満（C:/・C:/b/ は広すぎる）、* だけの区切り、ドライブのすぐ下の区切りに *。
+     ERROR 絶対パス: ドライブの下の区切りが2つ未満（C:/・C:/b/ は広すぎる）、ドライブのすぐ下の区切りに *。
+           相対パス: プロジェクト直下の下の区切りが3つ未満（tmp/・tmp/b は広すぎる。2回目の改訂）、最初の区切りに *、
+           自己防護の場所（.claude・team・.git）にかかる（allowlist.js が固定で止めるので効かない）。
+     ERROR * だけの区切り。
      WARN  delete_keep の要素が、どの delete_paths の下にも無い（消せない場所にあり、残すものとして効かない）。
   g. secret_paths の要素1つ:
      ERROR 空・前後に空白・* を含む・.. の区切り・%NAME% が先頭以外にある・NAME が英数字と _ でない。
@@ -95,6 +103,9 @@ EDGE_SPACE = re.compile(f"\\A[{JS_SPACE}]|[{JS_SPACE}]\\Z")
 ENV_REF = re.compile(r"%([^%]*)%")
 ENV_NAME = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
 DELETE_CHARS = re.compile(r"^[A-Za-z]:/[A-Za-z0-9._@+=/*-]*$")
+# 相対パスの削除の要素（プロジェクト直下から）。先頭は英数字か _ @ + = *（allowlist.js の DELETE_WORD_RELATIVE と同じ。
+# * は規則だけ。最初の区切りの * は別に誤りにする）
+DELETE_CHARS_RELATIVE = re.compile(r"^[A-Za-z0-9_@+=*][A-Za-z0-9._@+=/*-]*$")
 
 
 def q(value):
@@ -239,24 +250,32 @@ def path_entry_issues(entry, key):
 
 
 def delete_entry_issues(entry):
-    """delete_paths・delete_keep の要素1つの書き間違い。"""
+    """delete_paths・delete_keep の要素1つの書き間違い。絶対パス（C:/…）か、プロジェクト直下からの相対パス。"""
     if entry == "":
         return [(ERROR, "空文字。allowlist.js は使わない")]
     issues = []
     if EDGE_SPACE.search(entry):
         issues.append((ERROR, "前後に空白がある。allowlist.js は使わない"))
-    if not re.match(r"^[A-Za-z]:/", entry):
-        return issues + [(ERROR, "C:/… のドライブから始まる絶対パスで書く（相対パス・/c/… の形・\\ は使わない）")]
-    if not DELETE_CHARS.match(entry):
+    absolute = bool(re.match(r"^[A-Za-z]:/", entry))
+    if not absolute and (re.match(r"^[A-Za-z]:", entry) or entry.startswith(("/", ".", "-", "\\", "~"))):
+        return issues + [(ERROR, "C:/… のドライブから始まる絶対パスか、プロジェクト直下からの相対パス（tmp/b/… など）で書く"
+                                 "（/ 始まり・/c/… の形・\\・./ や ../ で始まる形・- で始まる形は使わない）")]
+    if not (DELETE_CHARS if absolute else DELETE_CHARS_RELATIVE).match(entry):
         issues.append((ERROR, "使える文字は英数字と . _ @ + = - / *（allowlist.js が rm -rf の語に許す文字と同じ。* は規則だけ）"))
     issues += [(ERROR, m) for m in path_shape_issues(entry)]
-    segs = [s for s in entry[3:].split("/") if s]
-    if len(segs) < 2:
+    segs = [s for s in (entry[3:] if absolute else entry).split("/") if s]
+    if absolute and len(segs) < 2:
         issues.append((ERROR, "ドライブの下の区切りが2つ未満（C:/・C:/b/ は広すぎる）"))
+    if not absolute and len(segs) < 3:
+        # 2回目の改訂 F5: tmp/b（ビルドの置き場所そのもの）は、絶対パスの C:/b と同じ広さなので誤りにする
+        issues.append((ERROR, "プロジェクト直下の下の区切りが3つ未満（tmp/・tmp/b はビルドの置き場所そのもので広すぎる。"
+                              "C:/b を誤りにするのと同じ考え）"))
     if any(s == "*" for s in segs):
         issues.append((ERROR, "* だけの区切りがある（その階層の全部に一致する）"))
     if segs and "*" in segs[0]:
-        issues.append((ERROR, "ドライブのすぐ下の区切りに * がある"))
+        issues.append((ERROR, "ドライブのすぐ下の区切りに * がある" if absolute else "最初の区切りに * がある"))
+    if not absolute and segs and (segs[0].lower() in SELF_PROTECTED or ".git" in [s.lower() for s in segs]):
+        issues.append((ERROR, ".claude/・team/・.git にかかる。allowlist.js が固定で止めるので効かない"))
     return list(dict.fromkeys(issues))
 
 

@@ -4,6 +4,10 @@
 // permissions.json に合わせた。ops-log・Notion・SendMessage の記録など Team 固有の仕組みは持ち込まない）。
 // 作成の記録: E:\develop\self\Team\tasks\2026-11-12-ai-editor-hooks\build-notes.md
 // 案（2026-11-15。bash_exact・delete_paths・delete_keep を足した）: E:\develop\self\Team\tasks\2026-11-15-ai-editor-perm-requests\perm-proposal.md
+// 案（2026-11-16。ビルドの置き場所を C:/b から tmp/b へ移す。相対パスの削除・git -C の先の .git・探す範囲・
+//   Explore の C:/b/ を外す）: E:\develop\self\Team\tasks\2026-11-16-ai-editor-move-off-c-perms\perm-proposal.md
+//   2回目の改訂（同じ日。ベーコンの検証 F1・F3・F6・F7 を受けて 3c を強め、3d・3e を足し、5a を直した）: 同じファイルの冒頭の節
+//   3回目の改訂（N1〜N3。3c・3d・5a）、4回目の改訂（N5。3d の続きと tsc に、シェルが語を変える書き方の検査）: 同じ
 //
 // 呼び方（.claude/settings.json の PreToolUse。matcher は "*"＝全ツール。起動役 guard.js を exec form で通す）:
 //   "command": "node", "args": ["${CLAUDE_PROJECT_DIR}/team/hooks/guard.js", "allowlist.js"], "onFailure": "block"
@@ -39,18 +43,44 @@
 //    形（--build・--incremental・--composite・--init・--noEmit false・@ファイル）は止める。
 // 3a. 削除（delete_paths・delete_keep）: rm で始まる断片が bash・bash_exact のどれにも一致せず、そのメンバーに
 //    delete_paths があるときは、断片を「rm -rf <パス> [<パス>…]」（半角空白1つずつ）の形に限って判定する（checkDelete。
-//    Bash ツールだけ。PowerShell では止める）。パスはどれも C:/… のドライブから始まる絶対パスで、英数字と . _ @ + = - /
-//    だけ（引用符・\・$・グロブ・~・%・コロンは不可）、. と .. と空の区切りを含まないこと。そろえた形と realpath で
+//    Bash ツールだけ。PowerShell では止める）。パスは C:/… のドライブから始まる絶対パスか、プロジェクト直下からの
+//    相対パス（tmp/b/… など。フック入力の cwd がプロジェクト直下のときだけ。cwd が無い・空なら不可。. ・- で始まるものは不可）で、
+//    英数字と . _ @ + = - / だけ（引用符・\・$・グロブ・~・%・コロンは不可）、. と .. と空の区切りを含まないこと。
+//    delete_paths・delete_keep の規則も、絶対パスかプロジェクト直下からの相対パスで書ける（2026-11-16）。
+//    そろえた形と realpath で
 //    たどった形の両方が、delete_paths の規則の下にあり（末尾が / の規則はそのディレクトリの下だけで、そのものは不可。
 //    末尾が / でない規則〔C:/b/trial-* など〕はその区切りそのものと下）、delete_keep（大文字小文字を問わない）そのもの・
 //    その下・その祖先でなく、secret_paths（その祖先も）と自己防護（プロジェクトの .claude/・team/・どこであれ .git、
 //    プロジェクトそのものとその祖先）に触れないときだけ通す。消す対象の中にあるジャンクションの先は確かめない。
+//    消す対象の中身（C:/b/vscode/.git など）も見に行かない（見るのは消す対象のパスの区切りだけ）。
 // 3b. 組み込みの Explore（agent_type＝Explore）は permissions.json を持たないが、固定の決まりで Read・Glob・Grep だけを
-//    通す（読める場所は ./ と C:/b/、secret_paths は止める）。general-purpose・Plan・plugin:x は止める。
+//    通す（読める場所は ./ だけ。2026-11-16 に C:/b/ を外した。secret_paths は止める）。general-purpose・Plan・plugin:x は止める。
+// 3c. git -C の先（第2段の続き）: -C で指した作業場所が、プロジェクトの中（プロジェクト直下そのものは除く）なのに、
+//    その場所に .git が無いときは止める。git が上へたどってこのプロジェクトのリポジトリを使い、
+//    tmp/b/wt/<x> の作業ツリーの代わりにこのリポジトリを checkout・clean・commit・am してしまうため（2026-11-16）。
+//    .git がディレクトリなら、git がリポジトリとして読む最低限（HEAD〔ref: refs/… か commit の id〕・objects/・refs/）
+//    がそろっていること（空の .git は git が読み飛ばして上へたどるため。2回目の改訂 F3）。.git がファイル（作業ツリー）なら
+//    中身は見ない（壊れていれば git が fatal で止まる）。
+// 3d. pnpm の --dir・-C の先（2回目の改訂 F1）: 先がプロジェクトの中（直下そのものは除く）なのに、そこに package.json が
+//    無いときは止める（無い先も止める）。pnpm は上へたどって外側（このプロジェクトの直下の package.json と
+//    pnpm-workspace.yaml）に対して install し、直下の pnpm-lock.yaml と node_modules を書き換えるため。--dir=… と、後ろに
+//    足した2つ目の --dir も見る。npx の --prefix は見ない（npx は --prefix ではなく cwd の node_modules/.bin を使う）。
+//    4回目の改訂（N5）: pnpm・npx の後ろの語と tsc の後ろの語に、シェルが語を変える書き方——単一引用符の外の $
+//    （$'…'・$"…"・変数・$IFS）と、引用符の外の { } * ? [ ] ~（ブレース・パス名・チルダの展開）——があれば、どの語でも
+//    止める（個々のオプション名を追わない。git の word.expands・BRACE_EXPANSION と同じ考え）。引用符の連結と \ は、
+//    シェルが外した後の語（word.text）でオプション名を照らすので、3d の照合に当たる。
+// 3e. cwd の無い入力（2回目の改訂 F7）: フック入力に cwd が無い・空のときは、cwd を起点にする Bash の相対パス（削除の語、
+//    git -C の相対の値と、-C の無い format-patch の書き出し先、pnpm の --dir、tsc の書き出し先）を止める。
 // 4. Write / Edit / MultiEdit / NotebookEdit: write_paths に一致し、write_paths_deny と固定の自己防護
 //    （プロジェクト直下の .claude/・team/・.git/ と、どこであれ .git の区切り）に一致しないときだけ通す。
 // 5. Read / Glob / Grep: read_paths に一致するときだけ通す（Glob・Grep は path。省略時は cwd かプロジェクト直下）。
 //    Glob の pattern と Grep の glob に .. ・絶対パス・コロンがあれば止める。
+// 5a. 探す範囲（Glob・Grep。速さのための決まりで、秘密の守りではない。2026-11-16）: 探す範囲が tmp/・tmp/b/・
+//    tmp/b/wt/・tmp/b/cache/（数十万のファイルを持つ木の親）そのものなら止める。プロジェクト直下からの Glob は、
+//    pattern の波括弧を展開した選択肢のどれかが、tmp で始まるか、最初の区切りが tmp に当たりうるワイルドカードで
+//    ** を含むとき（**/*.md・*/b/**・t?p/** など）に止める。d*/**・{docs,scripts}/**/*.md のように tmp に当たらない
+//    ものは通す（2回目の改訂 F6）。( ) ! + @ を含む最初の区切り（extglob）は当たりうるとみなす。
+//    docs/ などを path に渡すか、pattern の先頭に書けば通る。
 // 6. secret_paths（%NAME% を展開）: 4・5 の対象がその下（Glob・Grep は、探す範囲がその親でも）なら止める。
 //    展開できない環境変数があれば、ファイルと Bash / PowerShell の呼び出しを止める。
 // 7. Agent / Task は agents、Skill は skills、SendMessage は "main" か agents に限る（今は全員が空）。
@@ -74,20 +104,25 @@ const LIST_KEYS = [
 ];
 const WRITE_TOOLS = new Set(["Write", "Edit", "MultiEdit", "NotebookEdit"]);
 const SELF_PROTECTED = [".claude/", "team/", ".git/"];
-// 組み込みの Explore の固定の権限（permissions.json は持てない）。読める場所は ./ と C:/b/、秘密は止める。
+// 組み込みの Explore の固定の権限（permissions.json は持てない）。読める場所は ./ だけ、秘密は止める。
+// ビルドの置き場所はプロジェクトの tmp/b/ に移った（2026-11-15 の裁定）ので、C:/b/ は外した（./ に入る）。
 const EXPLORE_TOOLS = new Set(["Read", "Glob", "Grep"]);
 const EXPLORE_ALLOWLIST = {
   bash: [],
   bash_exact: [],
   write_paths: [],
   write_paths_deny: [],
-  read_paths: ["./", "C:/b/"],
+  read_paths: ["./"],
   secret_paths: ["%LOCALAPPDATA%/Shuko/watch/", "%LOCALAPPDATA%/Shuko/secrets/"],
   agents: [],
   skills: [],
   delete_paths: [],
   delete_keep: [],
 };
+// 5a. Glob・Grep の探す範囲として止める、数十万のファイルを持つ木の親（プロジェクト直下からの区切り。小文字）。
+const HEAVY_SEARCH_ROOTS = [["tmp"], ["tmp", "b"], ["tmp", "b", "wt"], ["tmp", "b", "cache"]];
+// 3e. cwd を起点にしない（ドライブか /c/ の Git Bash 形で始まる）パスの語。
+const ABS_PATH_WORD = /^(?:[A-Za-z]:[\\/]|\/[A-Za-z](?:\/|$))/;
 
 function block(message) {
   process.stderr.write(`[allowlist] ${message}\n`);
@@ -507,21 +542,113 @@ function baseName(text) {
 }
 
 // グローバルオプションを読み飛ばしてサブコマンドの位置を求める。-C <dir> は作業場所に積む（git は -C の先で動く）。
-function gitGlobals(args, cwdWin) {
+// hasC: -C が1つでもあったか（3c の検査に使う）。
+// anchored: 作業場所の起点が決まっているか。cwd が分かっているか、絶対パスの -C があれば真（3e。cwd の無い入力で、
+// 相対の -C や -C の無い format-patch を、プロジェクト直下から解いて許す側に倒さないため）。
+function gitGlobals(args, cwdWin, cwdKnown) {
   let k = 0;
   let workdir = cwdWin;
+  let hasC = false;
+  let anchored = cwdKnown !== false;
   while (k < args.length && args[k].text.startsWith("-")) {
     if (GIT_GLOBAL_WITH_VALUE.has(args[k].text)) {
+      if (args[k].text === "-C") hasC = true;
       if (args[k].text === "-C" && k + 1 < args.length && workdir !== null) {
-        const r = normalizePath(args[k + 1].text, true, workdir);
+        const value = args[k + 1].text;
+        const r = normalizePath(value, true, workdir);
         workdir = r.error ? null : r.win;
+        if (ABS_PATH_WORD.test(value)) anchored = true;
       }
       k += 2;
     } else {
       k += 1;
     }
   }
-  return { subIndex: k, workdir };
+  return { subIndex: k, workdir, hasC, anchored };
+}
+
+// プロジェクト直下の、そろえた形と realpath でたどった形。
+function projectForms() {
+  const real = realize(PROJECT_DIR);
+  return [keyOf(PROJECT_DIR)].concat(real.error ? [] : [keyOf(real.win)]);
+}
+
+// 区切りの列 segs が、プロジェクト直下（projects のどれか）の下にあれば、直下からの区切りの列を返す。外なら null。
+function relativeToProject(segs, projects) {
+  for (const p of projects) {
+    if (under(segs, p.segs)) return segs.slice(p.segs.length);
+  }
+  return null;
+}
+
+// winAbs（そろえた絶対パス）が、プロジェクトの中で直下そのものでないか（そろえた形か realpath の形のどちらかで）。
+function insideProjectBelowRoot(winAbs) {
+  const real = realize(winAbs);
+  const forms = [keyOf(winAbs)].concat(real.error ? [] : [keyOf(real.win)]);
+  const projects = projectForms();
+  return forms.some((f) => {
+    const rel = relativeToProject(f.segs, projects);
+    return rel !== null && rel.length > 0;
+  });
+}
+
+function isFile(p) {
+  try {
+    return fs.statSync(p).isFile();
+  } catch {
+    return false;
+  }
+}
+
+function isDir(p) {
+  try {
+    return fs.statSync(p).isDirectory();
+  } catch {
+    return false;
+  }
+}
+
+// dir に、git がリポジトリ（か作業ツリー）として読む .git があるか。
+// ファイルの .git（作業ツリー・submodule）は中身を見ない（壊れていれば git が fatal で止まり、上へたどらない）。
+// ディレクトリの .git は、git の is_git_directory と同じ最低限（HEAD が ref: refs/… か commit の id、objects/ と refs/
+// がある）を確かめる。足りなければ git は読み飛ばして上へたどるので、無いのと同じに扱う（F3）。
+// HEAD は git の validate_headref が受け付ける形のうち、git が書く形だけを通す（3回目の改訂 N1）。git は HEAD の
+// 先頭を落とさずに読む（先頭が "ref:" か16進でなければ HEAD と読まず、上へたどる）。だから trim() せず、バイトのまま
+// （latin1 で1バイト1文字にして。BOM・NBSP・全角空白は ASCII の外の文字になる）次の2つの形と照らす。
+//   ref: refs/<空白を含まない ASCII の印字文字>   か   40桁・64桁の小文字の16進
+// 末尾に許すのは改行1つ（\n か \r\n）だけ。git はこの外の形（末尾の空白、ref: の後の空白の数の違い、大文字の16進など）
+// も読むが、迷う形は止める側に倒す。HEAD がシンボリックリンク・ジャンクションなら止める（git は readlink の先の名前で
+// 判定するので、中身で照らせない）。
+const GIT_HEAD_FORMS = [/^ref: refs\/[\x21-\x7e]+(?:\r?\n)?$/, /^(?:[0-9a-f]{40}|[0-9a-f]{64})(?:\r?\n)?$/];
+function gitHeadIsValid(headPath) {
+  try {
+    if (!fs.lstatSync(headPath).isFile()) return false;
+    const head = fs.readFileSync(headPath).toString("latin1");
+    return GIT_HEAD_FORMS.some((re) => re.test(head));
+  } catch {
+    return false;
+  }
+}
+function hasGitMarker(dir) {
+  const g = pw.join(dir, ".git");
+  if (isFile(g)) return true;
+  if (!isDir(g)) return false;
+  if (!gitHeadIsValid(pw.join(g, "HEAD"))) return false;
+  return isDir(pw.join(g, "objects")) && isDir(pw.join(g, "refs"));
+}
+
+// 3c. git -C の先がプロジェクトの中（直下そのものは除く）なのに .git が無ければ止める。git は上へたどり、
+// このプロジェクトのリポジトリで動くため（tmp/b/wt/<作業ツリーでないフォルダ> の checkout・clean・commit・am が
+// このリポジトリに当たる）。解けない -C は照合しない（許可の * に一致しない形なので、bash の照合で止まる）。
+function checkGitWorkdir(workdir, agentId, rawCommand) {
+  if (workdir === null) return;
+  if (!insideProjectBelowRoot(workdir)) return;
+  if (!hasGitMarker(workdir)) {
+    block(
+      `${agentId}: git -C の先（${workdir}）はプロジェクトの中だが .git が無い（中身の無い .git を含む）ため止めました` +
+        `（git が上へたどり、このプロジェクトのリポジトリで動いてしまう）: ${rawCommand}`,
+    );
+  }
 }
 
 // format-patch 以外の、必ず・または任意にファイルへ書き出すサブコマンドと引数（従来の判定）。
@@ -676,6 +803,126 @@ function checkPnpmNpx(args, agentId, rawCommand) {
   }
 }
 
+// 3d の続き（4回目の改訂 N5）。シェルが語を変える書き方。フックは語をシェルの引用を外した形（word.text）で照らすが、
+// 次の書き方はシェルが展開してから pnpm・tsc に渡すので、フックの見た語と実際の引数が食い違う（ベーコンの再現:
+// $'--dir' .・$"--lockfile-dir" ../../../..・{--dir,.}・--dir$UNSET_X .・--dir$IFS. で直下に lock と node_modules ができた）。
+//   word.expands: 単一引用符の外の $（$'…' の ANSI-C 引用、$"…" のロケール引用、$VAR・${VAR}・$IFS。二重引用符の中の $ も）
+//   bare（引用符の外の文字）の { } * ? [ ] ~: ブレース展開・パス名展開・チルダ展開（, の無い {} も止める側に倒す）
+//   ` と $( は checkBash が先に止める。
+// 個々のオプション名を追わず、展開しうる語をまとめて止める（どのオプション名も、展開の後にしか現れないため）。
+// 引用符の連結（--'dir'・"--di"r）とバックスラッシュ（--\dir・-\C）は展開でなく、シェルが外した後の語が word.text なので、
+// 3d のオプション名の照合（checkPnpmDir）にそのまま当たる。
+const SHELL_CHANGES_BARE = /[$`{}*?[\]~]/;
+function shellChangesWord(word) {
+  return word.expands || SHELL_CHANGES_BARE.test(word.bare);
+}
+function checkNoShellExpansion(args, label, agentId, rawCommand) {
+  for (const w of args) {
+    if (shellChangesWord(w)) {
+      block(
+        `${agentId}: ${label} の語 ${w.text} に、シェルが語を変える書き方（単一引用符の外の $・$'…'・$"…"・変数・` +
+          `ブレース展開 {a,b}・* ? [ ]・~）があり、展開後の引数を確かめられないため止めました: ${rawCommand}`,
+      );
+    }
+  }
+}
+
+// 3d. pnpm の --dir・-C の先（2回目の改訂 F1）。先がプロジェクトの中（直下そのものは除く）なら、そこに package.json が
+// あること（無い先も止める）。package.json の無い先では、pnpm は上へたどって外側（直下の package.json と
+// pnpm-workspace.yaml）に対して install し、直下の pnpm-lock.yaml と node_modules を書き換える（ベーコンの再現と
+// perm-tests の test_i で確かめた。package.json がある先は、pnpm-workspace.yaml の有無を問わずその先に書く）。
+// --dir=… と、-C<値>・--di<値> のような書き方も先とみなす（止める側に倒す）。後ろに足した2つ目の --dir も見る。
+// 3d の続き（3回目の改訂 N2）。pnpm の置き場所を変えるオプション。名前（= の前。小文字にし、_ を - にそろえる）が
+// どれかの頭の部分（省略形）なら、そのオプションとみなす（止める側に倒す。--lockfile・--global・--store なども当たる）。
+// --config.<キー> は、どのキーでも置き場所を変えうるとみなす。
+const PNPM_LOCATION_OPTS = [
+  "lockfile-dir", "modules-dir", "virtual-store-dir", "store-dir", "global-dir", "global-bin-dir", "cache-dir",
+  "state-dir", "workspace-dir", "prefix",
+];
+function pnpmLocationOption(text) {
+  if (!text.startsWith("--") || text.length <= 2) return null;
+  const eq = text.indexOf("=");
+  const name = (eq >= 0 ? text.slice(2, eq) : text.slice(2)).toLowerCase().replace(/_/g, "-");
+  if (name === "") return null;
+  if (name.startsWith("config.")) return name;
+  return PNPM_LOCATION_OPTS.some((o) => o.startsWith(name)) ? name : null;
+}
+
+// winAbs（そろえた絶対パス）が、プロジェクトの直下そのものかその中か（そろえた形か realpath の形のどちらかで）。
+function insideProjectOrRoot(winAbs) {
+  const real = realize(winAbs);
+  const forms = [keyOf(winAbs)].concat(real.error ? [] : [keyOf(real.win)]);
+  const projects = projectForms();
+  return forms.some((f) => relativeToProject(f.segs, projects) !== null);
+}
+
+function checkPnpmDir(args, ctx, rawCommand) {
+  const { agentId } = ctx;
+  const values = [];
+  const locations = [];
+  for (let i = 0; i < args.length; i++) {
+    const t = args[i].text;
+    if (t === "--dir" || t === "-C" || t === "--di") {
+      values.push(i + 1 < args.length ? args[i + 1].text : null);
+      i += 1;
+    } else if (/^--dir?=/.test(t)) {
+      values.push(t.slice(t.indexOf("=") + 1));
+    } else if (/^-C./.test(t)) {
+      values.push(t.slice(2));
+    } else if (pnpmLocationOption(t) !== null) {
+      const eq = t.indexOf("=");
+      if (eq >= 0) {
+        locations.push({ word: t, value: t.slice(eq + 1) });
+      } else {
+        locations.push({ word: t, value: i + 1 < args.length ? args[i + 1].text : null });
+        i += 1;
+      }
+    }
+  }
+  // 先がプロジェクトの直下かその中になりうるか（相対パスは、pnpm がどこから解くか〔cwd か、前の --dir の先か〕を
+  // 決めずに、なりうるとみなす）。C:/b のような外の絶対パスだけのときは見ない（移す前の行の広さは今のまま。R3）
+  let touchesProject = false;
+  for (const value of values) {
+    if (value === null || value === "") block(`${agentId}: pnpm の --dir の先が無いため止めました: ${rawCommand}`);
+    const r = normalizePath(value, true, ctx.cwdWin);
+    if (r.error) block(`${agentId}: pnpm の --dir の先を解けないため止めました（${r.error}）: ${rawCommand}`);
+    const absolute = ABS_PATH_WORD.test(value);
+    if (!absolute && !ctx.cwdKnown) {
+      block(`${agentId}: フック入力に cwd が無く、pnpm の --dir の相対パスの起点が決まらないため止めました: ${rawCommand}`);
+    }
+    if (!absolute || insideProjectOrRoot(r.win)) touchesProject = true;
+    if (!insideProjectBelowRoot(r.win)) continue;
+    if (!isFile(pw.join(r.win, "package.json"))) {
+      block(
+        `${agentId}: pnpm の --dir の先（${r.win}）はプロジェクトの中だが package.json が無いため止めました` +
+          `（pnpm が上へたどり、このプロジェクトの直下に対して install してしまう）: ${rawCommand}`,
+      );
+    }
+  }
+  for (const loc of locations) {
+    if (loc.value === null || loc.value === "" || !ABS_PATH_WORD.test(loc.value)) {
+      touchesProject = true;
+      continue;
+    }
+    const r = normalizePath(loc.value, true, ctx.cwdWin);
+    if (r.error || insideProjectOrRoot(r.win)) touchesProject = true;
+  }
+  if (!touchesProject) return;
+  // 3回目の改訂 N2。許可の行の --dir の後ろに足した2つ目の --dir・-C（先が直下そのもの〔--dir .〕でも）と、
+  // 置き場所を変えるオプション（--lockfile-dir ../../../.. など）は、直下に pnpm-lock.yaml・node_modules を書かせうる
+  // （ベーコンの再現）。メンバーの用途の形はどれも使わないので、値を問わず止める
+  if (values.length > 1) {
+    block(`${agentId}: pnpm の --dir・-C が2つ以上あるため止めました（後ろに足した --dir で置き場所を変えられる）: ${rawCommand}`);
+  }
+  if (locations.length > 0) {
+    block(
+      `${agentId}: pnpm の置き場所を変えるオプション ${locations[0].word} は止めました` +
+        `（--lockfile-dir・--modules-dir・--virtual-store-dir・--store-dir・--global-dir・--cache-dir・--state-dir・` +
+        `--workspace-dir・--prefix・--config.<キー> と、その省略形・= 付き）: ${rawCommand}`,
+    );
+  }
+}
+
 // 1.5 tsc の書き出し先。--outDir などディレクトリの先はその下のファイルとして、--outFile などはファイルとして照合する。
 // 相対パスは cwd から解く。tsc はオプションの大文字小文字を区別せず、- 1 つの長い形（-outDir）も受け付けるので、
 // 名前は先頭の - か -- を外し、小文字にそろえて比べる。
@@ -696,6 +943,8 @@ function tscOptionName(text) {
 }
 function checkTsc(args, allowlist, secrets, ctx, rawCommand) {
   const agentId = ctx.agentId;
+  // 4回目の改訂 N5: $'--outDir' x・{--outDir,x}・--outDir$UNSET_X x などは、展開の後に --outDir になる
+  checkNoShellExpansion(args, "tsc", agentId, rawCommand);
   for (let i = 0; i < args.length; i++) {
     const w = args[i];
     if (w.text.startsWith("@")) {
@@ -728,13 +977,16 @@ function checkTsc(args, allowlist, secrets, ctx, rawCommand) {
     }
     const r = normalizePath(value, true, ctx.cwdWin);
     if (r.error) block(`${agentId}: tsc の ${w.text} の書き出し先を止めました（${r.error}）: ${rawCommand}`);
+    if (!ctx.cwdKnown && !ABS_PATH_WORD.test(value)) {
+      block(`${agentId}: フック入力に cwd が無く、tsc の ${w.text} の相対パスの起点が決まらないため止めました: ${rawCommand}`);
+    }
     const target = isDir ? pw.join(r.win, "out.tsbuild") : r.win;
     checkWriteWin(target, allowlist, secrets, agentId, rawCommand, `tsc の ${w.text} の書き出し`);
   }
 }
 
 // Bash / PowerShell のコマンド全体に対する、permissions.json の bash とは別の固定の検査（node・NODE_OPTIONS・
-// pnpm/npx・git の危険なオプション・git format-patch と tsc の書き出し先）。語に分けて判定する（git の書き出しと同じ作り）。
+// pnpm/npx・git の危険なオプション・git -C の先の .git・git format-patch と tsc の書き出し先）。語に分けて判定する。
 function checkCommandSafety(rawCommand, allowlist, secrets, ctx) {
   const agentId = ctx.agentId;
   // 1.2 NODE_OPTIONS はコマンドの文字列のどこに現れても止める（前置き・env・set・$env: すべて。大文字小文字を問わない）
@@ -751,7 +1003,14 @@ function checkCommandSafety(rawCommand, allowlist, secrets, ctx) {
         const base = baseName(words[j].text).toLowerCase();
         const rest = words.slice(j + 1);
         if (isGitWord(words[j].text)) {
-          const { subIndex, workdir } = gitGlobals(rest, ctx.cwdWin);
+          const { subIndex, workdir, hasC, anchored } = gitGlobals(rest, ctx.cwdWin, ctx.cwdKnown);
+          // 3e. cwd の無い入力では、相対の -C と、-C の無い format-patch（書き出し先を cwd から解く）の起点が決まらない
+          const isFormatPatch = subIndex < rest.length && rest[subIndex].text === "format-patch";
+          if (!anchored && (hasC || isFormatPatch)) {
+            block(`${agentId}: フック入力に cwd が無く、git の作業場所（相対の -C など）の起点が決まらないため止めました: ${rawCommand}`);
+          }
+          // 3c. -C の先がプロジェクトの中なら、そこに .git があること
+          if (hasC) checkGitWorkdir(workdir, agentId, rawCommand);
           // clone の名前は大文字小文字を問わない（Windows では git-Clone を探しうる。止める側に倒す）
           const isClone = subIndex < rest.length && rest[subIndex].text.toLowerCase() === "clone";
           for (let k = 0; k < rest.length; k++) {
@@ -784,6 +1043,10 @@ function checkCommandSafety(rawCommand, allowlist, secrets, ctx) {
           checkNode(rest, agentId, rawCommand);
         } else if (["pnpm", "pnpm.cmd", "pnpm.exe", "npx", "npx.cmd", "npx.exe"].includes(base)) {
           checkPnpmNpx(rest, agentId, rawCommand);
+          // 3d の続き（4回目の改訂 N5）。シェルが語を変える書き方（exec・dlx などの理由を先に出すため、その後に見る）
+          checkNoShellExpansion(rest, "pnpm・npx", agentId, rawCommand);
+          // 3d. pnpm の --dir の先の package.json（exec・dlx などの理由を先に出すため、その後に見る）
+          if (base.startsWith("pnpm")) checkPnpmDir(rest, ctx, rawCommand);
         }
       }
       // tsc は npx・pnpm の後ろなど、コマンドの位置でないところにも現れる。語をなめて tsc の後ろを照合する
@@ -848,8 +1111,10 @@ function checkBash(rawCommand, allowlist, secrets, ctx) {
 
 // 断片の形: rm -rf のあとに、半角空白1つずつで区切ったパスが1つ以上。
 const DELETE_SEGMENT = /^rm -rf((?: [^ ]+)+)$/;
-// パス1つの形: ドライブから始まる絶対パスで、英数字と . _ @ + = - / だけ（引用符・\・$・グロブ・~・%・コロンは不可）。
+// パス1つの形（絶対）: ドライブから始まる絶対パスで、英数字と . _ @ + = - / だけ（引用符・\・$・グロブ・~・%・コロンは不可）。
 const DELETE_WORD = /^[A-Za-z]:\/[A-Za-z0-9._@+=\/-]+$/;
+// パス1つの形（相対。プロジェクト直下から）: 使える文字は絶対と同じ。先頭は英数字か _ @ + =（. ・- ・/ で始まらない）。
+const DELETE_WORD_RELATIVE = /^[A-Za-z0-9_@+=][A-Za-z0-9._@+=\/-]*$/;
 
 // 規則の区切り（文字列か正規表現）の先頭 n 個が、対象の区切りの先頭 n 個に一致するか。
 function headMatches(ruleSegs, segs, n) {
@@ -883,30 +1148,37 @@ function checkDelete(segment, allowlist, secrets, ctx) {
         `（削除は「rm -rf <パス> [<パス>…]」〔半角空白1つずつ〕の形だけ許可します）`,
     );
   }
-  const rules = compileRules(allowlist.delete_paths.filter((entry) => /^[A-Za-z]:\//.test(entry)), false, false);
+  // 規則は絶対パス（C:/…）でも、プロジェクト直下からの相対パス（tmp/b/…）でも書ける（compileRule が直下から解く）
+  const rules = compileRules(allowlist.delete_paths, false, false);
   const keep = compileRules(allowlist.delete_keep, false, true);
   const selfRules = compileRules(SELF_PROTECTED, false, true);
   if (!keep || !selfRules) block(`${agentId}: 残すもの・自己防護の場所の実体をたどれないため削除を止めました: ${segment}`);
-  const projectReal = realize(PROJECT_DIR);
-  const projectForms = [keyOf(PROJECT_DIR)].concat(projectReal.error ? [] : [keyOf(projectReal.win)]);
+  const projects = projectForms();
   for (const word of m[1].trim().split(" ")) {
-    if (!DELETE_WORD.test(word)) {
+    const absolute = DELETE_WORD.test(word);
+    if (!absolute && !DELETE_WORD_RELATIVE.test(word)) {
       block(
-        `${agentId}: 削除するパスは C:/… の絶対パスで、英数字と . _ @ + = - / だけにしてください` +
-          `（引用符・\\・$・グロブ・~・%・/c/… の形は不可）: ${word}`,
+        `${agentId}: 削除するパスは C:/… の絶対パスか、プロジェクト直下からの相対パス（tmp/b/… など）で、` +
+          `英数字と . _ @ + = - / だけにしてください（引用符・\\・$・グロブ・~・%・/c/… の形、. ・- で始まる形は不可）: ${word}`,
       );
     }
-    const parts = word.slice(3).replace(/\/+$/, "").split("/");
+    if (!absolute && !(ctx.relativeOk && ctx.cwdKnown)) {
+      block(
+        `${agentId}: 相対パスの削除は、作業ディレクトリがプロジェクト直下のときだけ許可します` +
+          `（フック入力に cwd が無い・空のときも止めます）: ${word}`,
+      );
+    }
+    const parts = (absolute ? word.slice(3) : word).replace(/\/+$/, "").split("/");
     if (parts.some((s) => s === "" || s === "." || s === "..")) {
       block(`${agentId}: 削除するパスに . ・.. ・空の区切りを含めないでください: ${word}`);
     }
-    const forms = targetForms(word, { agentId, relativeOk: false }, "削除");
+    const forms = targetForms(word, { agentId, relativeOk: ctx.relativeOk }, "削除");
     checkSecretPath(forms, secrets, agentId, word, true);
     for (const t of forms) {
       if (
         t.segs.includes(".git") ||
         selfRules.some((rule) => ruleMatches(rule, t.segs)) ||
-        projectForms.some((p) => under(p.segs, t.segs))
+        projects.some((p) => under(p.segs, t.segs))
       ) {
         block(`${agentId}: プロジェクトそのもの・その祖先・.claude/・team/・.git は削除できません: ${word}`);
       }
@@ -1200,6 +1472,125 @@ function checkGlobPattern(pattern, label, secrets, agentId) {
   }
 }
 
+// 5a. 波括弧 {a,b} を展開した pattern の列。入れ子と、続けて現れる波括弧も展開する。対になっていない・, の無い
+// 波括弧があるときや、選択肢が limit を超えるときは null（決められない。呼び出し元が止める側に倒す）。
+const BRACE_LIMIT = 256;
+function expandBraces(p, out = []) {
+  const start = p.indexOf("{");
+  if (start < 0) {
+    out.push(p);
+    return out.length <= BRACE_LIMIT ? out : null;
+  }
+  let depth = 0;
+  let end = -1;
+  const commas = [];
+  for (let i = start; i < p.length; i++) {
+    const c = p[i];
+    if (c === "{") depth++;
+    else if (c === "}") {
+      depth--;
+      if (depth === 0) {
+        end = i;
+        break;
+      }
+    } else if (c === "," && depth === 1) commas.push(i);
+  }
+  if (end < 0 || commas.length === 0) return null;
+  const cuts = [start].concat(commas, [end]);
+  for (let k = 0; k + 1 < cuts.length; k++) {
+    const alt = p.slice(0, start) + p.slice(cuts[k] + 1, cuts[k + 1]) + p.slice(end + 1);
+    if (expandBraces(alt, out) === null) return null;
+  }
+  return out;
+}
+
+// 5a. glob の区切り1つ（波括弧は展開済み）が name に当たりうるか（大文字小文字を問わない）。* ? [...] [!...] を読む。
+// extglob（( ) ! + @ を含む）は読まず、当たりうるとみなす（止める側に倒す）。
+function globSegMayMatch(seg, name) {
+  if (/[()!+@]/.test(seg.replace(/\[[!^]/g, "["))) return true;
+  let re = "^";
+  for (let i = 0; i < seg.length; i++) {
+    const c = seg[i];
+    if (c === "*") re += ".*";
+    else if (c === "?") re += ".";
+    else if (c === "[") {
+      const j = seg.indexOf("]", i + 2);
+      if (j < 0) {
+        re += "\\[";
+        continue;
+      }
+      let body = seg.slice(i + 1, j);
+      const negate = body.startsWith("!") || body.startsWith("^");
+      if (negate) body = body.slice(1);
+      re += `[${negate ? "^" : ""}${body.replace(/[\\\]^]/g, "\\$&")}]`;
+      i = j;
+    } else re += escapeRegExp(c);
+  }
+  return new RegExp(`${re}$`, "i").test(name);
+}
+
+// 5a. プロジェクト直下からの Glob の pattern が、tmp/ の大きな木に入りうるか。波括弧を展開した選択肢ごとに、
+// 最初の区切りが tmp そのもの（tmp/**・tmp/b/wt/x/** など。path に渡す）か、tmp に当たりうるワイルドカードで ** を含む
+// （**/*.md・*/b/**・t?p/**・{docs,tmp}/** など）とき真。d*/**・{docs,scripts}/**/*.md・docs/**/*.md・*.md・
+// */package.json は偽（2回目の改訂 F6）。展開できない波括弧は、前の決まり（最初の区切りがワイルドカードで ** を含む）で見る。
+// 3回目の改訂 N3: \ は区切り（/）とも、次の文字のエスケープ（\ を外す）とも読みうるので、両方の読み方で見て、どちらかが
+// tmp に入りうれば真（t\mp/**・tm\p/** は、エスケープと読めば tmp/**）。先頭の空・.・空白だけの区切り（.//tmp/**・
+// ././/tmp/**・./ /tmp/** の、path と pattern の重なった / や ./）は飛ばして、その次を最初の区切りとする。
+const GLOB_WILD = /[*?[\]{}()!+@]/;
+function globSkipLead(p) {
+  const segs = p.split("/");
+  let i = 0;
+  while (i < segs.length - 1 && (segs[i].trim() === "" || segs[i].trim() === ".")) i++;
+  return segs.slice(i).join("/");
+}
+function globDescendsIntoTmp(pattern) {
+  const raw = String(pattern);
+  return [raw.replace(/\\/g, "/"), raw.replace(/\\/g, "")].some(globFormDescendsIntoTmp);
+}
+function globFormDescendsIntoTmp(p) {
+  const alts = expandBraces(p);
+  if (alts === null) {
+    const first = globSkipLead(p).split("/")[0];
+    return first.toLowerCase() === "tmp" || (p.includes("**") && GLOB_WILD.test(first));
+  }
+  for (const alt of alts) {
+    const a = globSkipLead(alt);
+    const first = a.split("/")[0];
+    if (!GLOB_WILD.test(first)) {
+      if (first.toLowerCase() === "tmp") return true;
+      continue;
+    }
+    if (a.includes("**") && globSegMayMatch(first, "tmp")) return true;
+  }
+  return false;
+}
+
+// 5a. 探す範囲の決まり（速さのため）。checkReadTarget の後に呼ぶ（そこで形の誤りは止まっている）。
+function checkSearchScope(toolName, where, pattern, ctx) {
+  const { agentId } = ctx;
+  const r = normalizePath(where, ctx.relativeOk);
+  if (r.error) return;
+  const real = realize(r.win);
+  const forms = [keyOf(r.win)].concat(real.error ? [] : [keyOf(real.win)]);
+  const projects = projectForms();
+  for (const f of forms) {
+    const rel = relativeToProject(f.segs, projects);
+    if (rel === null) continue;
+    if (HEAVY_SEARCH_ROOTS.some((h) => h.length === rel.length && h.every((s, i) => s === rel[i]))) {
+      block(
+        `${agentId}: ${toolName} の探す範囲 ${where} は tmp/ の大きな木（本家の clone・作業ツリー・キャッシュ）の親のため止めました` +
+          `（tmp/b/wt/<名前> などの1つのフォルダを path に渡してください）`,
+      );
+    }
+    if (rel.length === 0 && toolName === "Glob" && globDescendsIntoTmp(pattern)) {
+      block(
+        `${agentId}: プロジェクト直下からの Glob の pattern ${pattern} は tmp/ の大きな木に入るため止めました` +
+          `（path を docs/・scripts/ などに絞るか、pattern の先頭にフォルダの名前を書いてください）`,
+      );
+    }
+  }
+}
+
 // ---- Agent・Skill・SendMessage ----
 
 function checkAgent(subagentType, allowlist, agentId) {
@@ -1275,7 +1666,8 @@ function main() {
       cwd = normalized.win;
     }
     const relativeOk = cwd === null || keyOf(cwd).key === keyOf(PROJECT_DIR).key;
-    const ctx = { agentId, relativeOk, cwdWin: cwd || PROJECT_DIR, toolName };
+    // cwdKnown: フック入力に cwd があるか（3e。無いときは、Bash の cwd を起点にする相対パスを止める。ファイルのツールは今のまま）
+    const ctx = { agentId, relativeOk, cwdKnown: cwd !== null, cwdWin: cwd || PROJECT_DIR, toolName };
     const lazySecrets = () => compileSecrets(allowlist.secret_paths);
 
     if (toolName === "Bash" || toolName === "PowerShell") {
@@ -1292,6 +1684,7 @@ function main() {
       // path を省いた（未定義・空文字）ときだけ既定の範囲にする。null・配列などは normalizePath が止める
       const where = input.path === undefined || input.path === "" ? cwd || PROJECT_DIR : input.path;
       checkReadTarget(where, allowlist, secrets, ctx, true);
+      checkSearchScope(toolName, where, toolName === "Glob" ? input.pattern : null, ctx);
     } else if (toolName === "Agent" || toolName === "Task") {
       checkAgent(input.subagent_type, allowlist, agentId);
     } else if (toolName === "Skill") {

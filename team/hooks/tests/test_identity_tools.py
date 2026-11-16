@@ -1,5 +1,9 @@
 """呼び出し元の見分け（agent_type）と、定義の tools の強制のテスト。
 
+2026-11-16（Team の tasks/2026-11-16-ai-editor-move-off-c-perms）: 狄仁傑の read_paths の絞り込み（U3）と、Explore の
+C:/b/ を外したフックの直し（3b）・探す範囲の決まり（5a）に合わせて、JudgeSessionTest と ExploreTest の期待を変えた
+（それぞれのテストに理由を書いた）。
+
 実行: python -m unittest discover -s projects/ai-editor/team/hooks/tests
 """
 
@@ -110,19 +114,34 @@ class JudgeSessionTest(HookTestCase):
         return event(tool, tool_input, agent_type="di-renjie", **form)
 
     def test_allowed(self):
-        # 第2段で di-renjie の read_paths は ./ になった。プロジェクトの中は読め、path を省いた Glob・Grep も通る
+        # 第2段で di-renjie の read_paths は ./ になり、2026-11-16（U3。Team の tasks/2026-11-16-ai-editor-move-off-c-perms）で
+        # TAKE-IN.md・docs/・records/take-in/ に絞られた。その中は読め、path を渡した Glob・Grep は通る。
+        # 前は通る側にあった CLAUDE.md・scripts/build.mjs の Read、removals の Grep、path を省いた Glob・Grep は
+        # test_blocked_by_narrowed_read_paths に移した（意図した期待の変更）
         for form in self.FORMS:
             with self.subTest(form=form):
                 self.assertPass(self.ev("Read", {"file_path": "docs/06-update-watch-and-take-in.md"}, form))
                 self.assertPass(self.ev("Read", {"file_path": "records/take-in/2026-11-20.md"}, form))
                 self.assertPass(self.ev("Read", {"file_path": "TAKE-IN.md"}, form))
-                self.assertPass(self.ev("Read", {"file_path": "CLAUDE.md"}, form))
-                self.assertPass(self.ev("Read", {"file_path": "scripts/build.mjs"}, form))
-                self.assertPass(self.ev("Grep", {"pattern": "x", "path": "removals"}, form))
+                self.assertPass(self.ev("Grep", {"pattern": "x", "path": "records/take-in"}, form))
+                self.assertPass(self.ev("Grep", {"pattern": "x", "path": "docs", "glob": "*.md"}, form))
                 self.assertPass(self.ev("Glob", {"pattern": "**/*.md", "path": "docs"}, form))
-                self.assertPass(self.ev("Glob", {"pattern": "docs/**"}, form))   # path 省略（./）で通る
-                self.assertPass(self.ev("Grep", {"pattern": "x"}, form))
+                self.assertPass(self.ev("Glob", {"pattern": "*.json", "path": "records/take-in/1.146.0"}, form))
                 self.assertPass(self.ev("StructuredOutput", {"verdict": "accept"}, form))
+
+    def test_blocked_by_narrowed_read_paths(self):
+        # U3（2026-11-16）: 判定に使う場所の外は読めない。path を省いた Glob・Grep は探す範囲が直下になり止まる。
+        # 止めた文に read_paths の一覧が出る（判定役は path を付けて打ち直せる。R21。定義に「Glob・Grep には、必ず path
+        # を渡す」の1文がある）
+        for form in self.FORMS:
+            with self.subTest(form=form):
+                for tool, tool_input in (("Read", {"file_path": "CLAUDE.md"}), ("Read", {"file_path": "scripts/build.mjs"}),
+                                         ("Read", {"file_path": "removals/x/unit.json"}),
+                                         ("Grep", {"pattern": "x", "path": "removals"}),
+                                         ("Glob", {"pattern": "docs/**"}), ("Grep", {"pattern": "x"}),
+                                         ("Glob", {"pattern": "*.md", "path": "."})):
+                    err = self.assertBlock(self.ev(tool, tool_input, form), "読むことを許可していない")
+                    self.assertIn("read_paths: TAKE-IN.md, docs/, records/take-in/", err)
 
     def test_blocked(self):
         for form in self.FORMS:
@@ -139,7 +158,8 @@ class JudgeSessionTest(HookTestCase):
 
 class ExploreTest(HookTestCase):
     """第2段: 組み込みの Explore は permissions.json を持たないが、固定の決まりで Read・Glob・Grep だけを通す。
-    読める場所は ./ と C:/b/、secret_paths は止める。ほかのツールは止める。agent_id の有無は問わない。"""
+    読める場所は ./ だけ（2026-11-16 のフックの直し 3b で C:/b/ を外した）、secret_paths は止める。ほかのツールは止める。
+    agent_id の有無は問わない。"""
 
     FORMS = ({}, {"agent_id": "a0123456789abcdef"})
 
@@ -147,13 +167,23 @@ class ExploreTest(HookTestCase):
         return event(tool, tool_input, agent_type="Explore", **form)
 
     def test_read_glob_grep_pass(self):
+        # 2026-11-16: C:/b の Read と Glob（3b で外れた）、直下からの **/*.md（5a で止まる）は test_c_b_and_root_glob_blocked
+        # に移した（意図した期待の変更）。代わりに path 省略の docs/**/*.md と path を docs にした Glob を通る側に置いた
         for form in self.FORMS:
             with self.subTest(form=form):
                 self.assertPass(self.ev("Read", {"file_path": "docs/README.md"}, form))
-                self.assertPass(self.ev("Read", {"file_path": "C:/b/vscode/package.json"}, form))
-                self.assertPass(self.ev("Glob", {"pattern": "**/*.md"}, form))           # path 省略（./）
+                self.assertPass(self.ev("Glob", {"pattern": "docs/**/*.md"}, form))      # path 省略（./）
                 self.assertPass(self.ev("Grep", {"pattern": "TODO"}, form))
-                self.assertPass(self.ev("Glob", {"pattern": "*.ts", "path": "C:/b/wt/x"}, form))
+                self.assertPass(self.ev("Glob", {"pattern": "*.md", "path": "docs"}, form))
+
+    def test_c_b_and_root_glob_blocked(self):
+        for form in self.FORMS:
+            with self.subTest(form=form):
+                self.assertBlock(self.ev("Read", {"file_path": "C:/b/no-such-hooktest/package.json"}, form),
+                                 "読むことを許可していない")
+                self.assertBlock(self.ev("Glob", {"pattern": "*.ts", "path": "C:/b/no-such-hooktest/x"}, form),
+                                 "読むことを許可していない")
+                self.assertBlock(self.ev("Glob", {"pattern": "**/*.md"}, form), "tmp/")
 
     def test_other_tools_blocked(self):
         for form in self.FORMS:
