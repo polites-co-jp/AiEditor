@@ -176,7 +176,8 @@ test('VERDICT_SCHEMA: verdict の列挙が pass / conditional / fail', () => {
 
 // ---- claude -p の起動 (docs/06 の7.1、CLAUDE.md の注意) ----
 const ENV = { ANTHROPIC_API_KEY: 'sk-test-xxx', PATH: 'p', HOME: 'h' };
-const WT = 'C:\\b\\wt\\take-in-1.147.0-1';
+import { NEW_DEFAULT } from './build/root.mjs';
+const WT = join(NEW_DEFAULT,'wt', 'take-in-1.147.0-1');
 const invoke = (kind, env = ENV) => buildClaudeInvocation({ kind, repoRoot: REPO, worktree: WT, env, prompt: 'test', claudePath: 'claude' });
 
 for (const kind of ['verdict', 'repair']) {

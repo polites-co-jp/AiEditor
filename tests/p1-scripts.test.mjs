@@ -1,6 +1,6 @@
 // Phase 1 で足した台本のテスト: scripts/disk-usage.mjs、p1-launch-check.ps1、p1-ci-events.ps1、check-env.ps1 の smartAppControl。
 // 仕様: tasks/2026-11-13-p1-build-upstream/handoff-notes.md の「テストの入口（曹参へ）」。
-// 本物のエディタは起動しない（p1-launch-check は引数の誤りで断る所までだけ）。PC の設定は変えない。一時フォルダは C:\b\ の下（無ければ OS の temp）。
+// 本物のエディタは起動しない（p1-launch-check は引数の誤りで断る所までだけ）。PC の設定は変えない。一時フォルダは <リポジトリ>\tmp\tests\ の下（tests/build/helpers.mjs）。
 // Run: node --test tests/p1-scripts.test.mjs
 import test, { before, after } from 'node:test';
 import assert from 'node:assert/strict';
@@ -8,6 +8,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { parseArgs, expandEnv, countDir } from '../scripts/disk-usage.mjs';
 import { REPO, makeSandbox, removeSandbox, writeFile, runNode, runPs, parseJsonOut } from './build/helpers.mjs';
+import { NEW_DEFAULT } from './build/root.mjs';
 
 let sb;
 before(() => {
@@ -168,10 +169,15 @@ test('disk-usage.mjs: 引数の誤りは終了コード 2（形でない・場�
 });
 
 // ---- p1-launch-check.ps1（断る所だけ。起動はしない） -------------------------------------------
-const BASE_OK = fs.existsSync('C:\\b');
-const skipNoCb = BASE_OK ? false : 'C:\\b が無い';
+// 2026-11-15 の裁定: <buildRoot> は local.json、無ければ <リポジトリ>\tmp\b。実際の local.json を読まないよう、LOCALAPPDATA を一時の空の場所に向けて走らせる
+// （local.json が無い → 既定の <リポジトリ>\tmp\b）。<buildRoot> は作らなくてよい（台本が必要なら作る）。
+const skipNoCb = false;
+const BR = NEW_DEFAULT;
+const BR_RE = BR.replace(/[\\^$.*+?()[\]{}|]/g, '\\$&');
 function launch(args) {
-  const r = runPs(LAUNCH, args, { timeout: 60000 });
+  const la = path.join(sb, 'localappdata');
+  fs.mkdirSync(la, { recursive: true });
+  const r = runPs(LAUNCH, args, { timeout: 60000, env: { LOCALAPPDATA: la } });
   return r;
 }
 test('p1-launch-check.ps1: -Zip も -Root も無い → 2', () => {
@@ -194,77 +200,93 @@ test('p1-launch-check.ps1: -Root が無い場所 → 2', () => {
   const r = launch(['-Root', path.join(sb, 'missing-dir')]);
   assert.equal(r.status, 2, r.stderr);
 });
-test('p1-launch-check.ps1: -Root が C:\\b\\ の外 → 2（読むだけの C:\\Windows を使う）', () => {
+test('p1-launch-check.ps1: -Root が <buildRoot>\\ の外 → 2（読むだけの C:\\Windows を使う）', () => {
   const r = launch(['-Root', 'C:\\Windows']);
   assert.equal(r.status, 2, r.stderr);
-  assert.match(r.stderr, /outside C:\\b/i);
+  assert.match(r.stderr, new RegExp('outside ' + BR_RE, 'i'));
 });
-test('p1-launch-check.ps1: -Dest が C:\\b\\p1\\ の外（-Zip）→ 2。展開も起動もしない', () => {
+test('p1-launch-check.ps1: -Dest が <buildRoot>\\p1\\ の外（-Zip）→ 2。展開も起動もしない', () => {
   const zip = path.join(sb, 'b.zip');
   writeFile(zip, 'PK');
   const dest = path.join(sb, 'not-p1-dest');
   const r = launch(['-Zip', zip, '-Dest', dest]);
   assert.equal(r.status, 2, r.stderr);
-  assert.match(r.stderr, /outside C:\\b\\p1/i);
+  assert.match(r.stderr, new RegExp('outside ' + BR_RE + '\\\\p1', 'i'));
   assert.ok(!fs.existsSync(dest), '何も作らない');
 });
-test('p1-launch-check.ps1: -Dest が C:\\b\\p1\\ の外（-Root）→ 2', { skip: skipNoCb }, () => {
-  const root = path.join(sb, 'fake-root');
+test('p1-launch-check.ps1: -Dest が <buildRoot>\\p1\\ の外（-Root）→ 2', { skip: skipNoCb }, () => {
+  // -Root は <buildRoot> の下でなければならない（それは通る）。-Dest だけが p1・p2 の外。終わりに -Root の入れ物を消す。
+  const root = path.join(BR, 'tests-l10n-fake-root-' + process.pid);
   fs.mkdirSync(root, { recursive: true });
-  const dest = path.join(sb, 'not-p1-dest2');
-  const r = launch(['-Root', root, '-Dest', dest]);
-  assert.equal(r.status, 2, r.stderr);
-  assert.match(r.stderr, /outside C:\\b\\p1/i);
-  assert.ok(!fs.existsSync(dest));
+  try {
+    const dest = path.join(sb, 'not-p1-dest2');
+    const r = launch(['-Root', root, '-Dest', dest]);
+    assert.equal(r.status, 2, r.stderr);
+    assert.match(r.stderr, new RegExp('outside ' + BR_RE + '\\\\p1', 'i'));
+    assert.ok(!fs.existsSync(dest));
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
 });
-test('p1-launch-check.ps1: -Dest が C:\\b\\p1 そのもの（直下でない）も断る → 2', { skip: skipNoCb }, () => {
+test('p1-launch-check.ps1: -Dest が <buildRoot>\\p1 そのもの（直下でない）も断る → 2', { skip: skipNoCb }, () => {
   const zip = path.join(sb, 'c.zip');
   writeFile(zip, 'PK');
-  const r = launch(['-Zip', zip, '-Dest', 'C:\\b\\p1']);
+  const r = launch(['-Zip', zip, '-Dest', path.join(BR, 'p1')]);
   assert.equal(r.status, 2, r.stderr);
 });
-test('p1-launch-check.ps1: 断る文は C:\\b\\p1 と C:\\b\\p2 の両方を挙げる', () => {
+test('p1-launch-check.ps1: 断る文は <buildRoot>\\p1 と <buildRoot>\\p2 の両方を挙げる', () => {
   const zip = path.join(sb, 'd.zip');
   writeFile(zip, 'PK');
   const r = launch(['-Zip', zip, '-Dest', path.join(sb, 'not-p-dest')]);
   assert.equal(r.status, 2, r.stderr);
-  assert.match(r.stderr, /outside C:\\b\\p1 and C:\\b\\p2/i);
+  assert.match(r.stderr, new RegExp('outside ' + BR_RE + '\\\\p1 and ' + BR_RE + '\\\\p2', 'i'));
 });
-test('p1-launch-check.ps1: -Dest が C:\\b\\p2 そのもの → 2', { skip: skipNoCb }, () => {
+test('p1-launch-check.ps1: -Dest が <buildRoot>\\p2 そのもの → 2', { skip: skipNoCb }, () => {
   const zip = path.join(sb, 'e.zip');
   writeFile(zip, 'PK');
-  const r = launch(['-Zip', zip, '-Dest', 'C:\\b\\p2']);
+  const r = launch(['-Zip', zip, '-Dest', path.join(BR, 'p2')]);
   assert.equal(r.status, 2, r.stderr);
   assert.match(r.stderr, /outside/i);
 });
-test('p1-launch-check.ps1: -Dest が C:\\b\\p3\\<x>（p1・p2 の外）→ 2。何も作らない', { skip: skipNoCb }, () => {
+test('p1-launch-check.ps1: -Dest が <buildRoot>\\p3\\<x>（p1・p2 の外）→ 2。何も作らない', { skip: skipNoCb }, () => {
   const zip = path.join(sb, 'f.zip');
   writeFile(zip, 'PK');
-  const dest = 'C:\\b\\p3\\tests-l10n-launch-x';
+  const dest = path.join(BR, 'p3', 'tests-l10n-launch-x');
   const r = launch(['-Zip', zip, '-Dest', dest]);
   assert.equal(r.status, 2, r.stderr);
   assert.match(r.stderr, /outside/i);
   assert.ok(!fs.existsSync(dest), '何も作らない');
 });
-test('p1-launch-check.ps1: C:\\b\\p2xyz\\<x> のような前方一致の偽装も断る → 2', { skip: skipNoCb }, () => {
+test('p1-launch-check.ps1: <buildRoot>\\p2xyz\\<x> のような前方一致の偽装も断る → 2', { skip: skipNoCb }, () => {
   const zip = path.join(sb, 'g.zip');
   writeFile(zip, 'PK');
-  const r = launch(['-Zip', zip, '-Dest', 'C:\\b\\p2xyz\\x']);
+  const r = launch(['-Zip', zip, '-Dest', path.join(BR, 'p2xyz', 'x')]);
   assert.equal(r.status, 2, r.stderr);
 });
-test('p1-launch-check.ps1: C:\\b\\p2\\..\\p3\\<x> は正規化して p3 とみなし断る → 2', { skip: skipNoCb }, () => {
+test('p1-launch-check.ps1: <buildRoot>\\p2\\..\\p3\\<x> は正規化して p3 とみなし断る → 2', { skip: skipNoCb }, () => {
   const zip = path.join(sb, 'h.zip');
   writeFile(zip, 'PK');
-  const r = launch(['-Zip', zip, '-Dest', 'C:\\b\\p2\\..\\p3\\x']);
+  const r = launch(['-Zip', zip, '-Dest', BR + '\\p2\\..\\p3\\x']);
   assert.equal(r.status, 2, r.stderr);
 });
+test('p1-launch-check.ps1: local.json の buildRoot が <buildRoot> になる（C:\\b 決め打ちでない）', () => {
+  const la = path.join(sb, 'localappdata-cfg');
+  const other = path.join(sb, 'other-build-root');
+  writeFile(path.join(la, 'Shuko', 'local.json'), JSON.stringify({ buildRoot: other }));
+  const zip = path.join(sb, 'j.zip');
+  writeFile(zip, 'PK');
+  const r = runPs(LAUNCH, ['-Zip', zip, '-Dest', path.join(sb, 'elsewhere')], { timeout: 60000, env: { LOCALAPPDATA: la } });
+  assert.equal(r.status, 2, r.stderr);
+  assert.match(r.stderr, new RegExp('outside ' + other.replace(/[\\^$.*+?()[\]{}|]/g, '\\$&') + '\\\\p1', 'i'));
+  assert.doesNotMatch(r.stderr, /C:\\b\\p1/i);
+});
 // 引数の検査を通ったことの確かめ: 壊れた zip（PK だけ）を渡すと、検査のあと tar の展開で失敗する（終了コードは 2 でない、stderr に outside が無い）。
-// 展開に失敗するので、エディタの起動には進まない。作られた C:\b\p2\<一時名> は終わりに消す。
-test('p1-launch-check.ps1: -Dest C:\\b\\p2\\<x> は引数の検査を通る（壊れた zip で展開に失敗して止まる。起動しない）', { skip: skipNoCb }, () => {
+// 展開に失敗するので、エディタの起動には進まない。作られた <buildRoot>\p2\<一時名> は終わりに消す。
+test('p1-launch-check.ps1: -Dest <buildRoot>\\p2\\<x> は引数の検査を通る（壊れた zip で展開に失敗して止まる。起動しない）', { skip: skipNoCb }, () => {
   const zip = path.join(sb, 'i.zip');
   writeFile(zip, 'PK');
   const name = 'tests-l10n-launch-' + process.pid;
-  const dest = path.join('C:\\b\\p2', name);
+  const dest = path.join(BR, 'p2', name);
   const out = path.join(sb, 'p2-result.json');
   try {
     const r = launch(['-Zip', zip, '-Dest', dest, '-OutFile', out]);

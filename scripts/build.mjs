@@ -52,6 +52,10 @@
 //   版のソースが gc で消えない）。後処理から始めたときは、出力の product.json の commit が一致したときだけ付ける。
 //   結果は記録の branch。付けられなくても止めずに warnings に書く。同じラベルで作り直すと付け替える（warnings に書く）。
 //
+// 子の環境の向け先（2026-11-15、裁定「C: に置かない」。tasks/2026-11-15-move-off-c/handoff-notes-meng-tian.md）:
+//   どの手順も TEMP・TMP・pnpm と npm のキャッシュを <buildRoot> の下へ。install・typecheck・package は LOCALAPPDATA も。
+//   向けた値は記録の envRedirectedForChildren に書く。
+//
 // 書き出している関数（テストの入口。tasks/2026-11-13-p2-build-switch/build-switch-design.md の3節）:
 //   STEPS, parseArgs, selectSteps, nextLabel, findAppDir, resolveEditorLayout, childEnv, appliedUnitsFrom,
 //   checkBuiltinExtensions, parseExcludedExtensions, zipFolderName, quoteCmdArg, toolchainWarnings, applyPassThrough,
@@ -68,6 +72,7 @@ import { sha256File } from "./lib/http.mjs";
 import { keepNamesOf, extensionsCoveredByUnits } from "./lib/apply/classify.mjs";
 import { dirSize } from "./prepare.mjs";
 import { git, head as gitHead, statusPorcelain } from "./lib/apply/git.mjs";
+import { cacheEnvVars, toolchainEnvVars, applyEnvVars, ensureEnvDirs, TOOLCHAIN_STEPS, cacheLayout } from "./lib/build-env.mjs";
 // gitHead は git -C <dir> rev-parse HEAD（失敗すると例外）。git は git -C <dir> <args>（失敗しても例外にしない）
 
 const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
@@ -174,16 +179,27 @@ export function nextLabel(tag, existing) {
 // 子のプロセスに渡す環境変数。ELECTRON_RUN_AS_NODE・ELECTRON_NO_ATTACH_CONSOLE・VSCODE_* を外し（docs/07 の3.2 の1）、
 // 外から来た BUILD_SOURCEVERSION（名前の大文字小文字を問わない）も外す（prepare・apply・install・lockfile・zip に漏らさない。
 // 型検査・パッケージ化には stepEnv が作業ツリーの HEAD を足す。2026-11-14 検証の軽微な点、tasks/2026-11-14-fix-b1-and-build/）。
-// extra を足す（extra の BUILD_SOURCEVERSION は残る）。返り値 { env, removed }（removed は外した名前。値は持たない）。
-export function childEnv(base = process.env, extra = {}) {
-  const env = {};
+// extra を足す（extra の BUILD_SOURCEVERSION は残る）。返り値 { env, removed, redirected }（removed は外した名前。値は持たない）。
+// opts（2026-11-15、裁定「C: に置かない」。scripts/lib/build-env.mjs）:
+//   { buildRoot }                  TEMP・TMP を <buildRoot>\tmp に、pnpm の store とキャッシュ・npm のキャッシュを <buildRoot>\cache の下へ
+//                                  （base にあるときだけ ELECTRON_CACHE など IF_PRESENT_VARS も）。文字列だけを渡しても buildRoot と見なす
+//   { buildRoot, toolchain: true } さらに LOCALAPPDATA を <buildRoot>\cache\localappdata へ
+//   省くと前と同じ（何も向けない）。redirected は向けた名前と値（向けなければ {}）。extra は向け先にも勝つ。
+export function childEnv(base = process.env, extra = {}, opts = {}) {
+  const o = typeof opts === "string" ? { buildRoot: opts } : opts || {};
+  let env = {};
   const removed = [];
-  for (const [k, v] of Object.entries(base)) {
+  for (const [k, v] of Object.entries(base || {})) {
     if (/^(ELECTRON_RUN_AS_NODE|ELECTRON_NO_ATTACH_CONSOLE|BUILD_SOURCEVERSION)$/i.test(k) || /^VSCODE_/i.test(k)) removed.push(k);
     else env[k] = v;
   }
-  for (const [k, v] of Object.entries(extra)) if (v !== undefined && v !== null) env[k] = v;
-  return { env, removed: removed.sort() };
+  let redirected = {};
+  if (o.buildRoot) {
+    redirected = o.toolchain ? toolchainEnvVars(o.buildRoot, env) : cacheEnvVars(o.buildRoot, env);
+    env = applyEnvVars(env, redirected).env;
+  }
+  env = applyEnvVars(env, extra || {}).env;
+  return { env, removed: removed.sort(), redirected };
 }
 
 // checks.json（apply.mjs の出力）から当てた単位を返す。applied が "ok" の単位の id。
@@ -584,7 +600,12 @@ async function main() {
   const logDir = path.join(buildRoot, "logs", label);
   const tar = path.join(process.env.SystemRoot || "C:\\Windows", "System32", "tar.exe");
   const steps = selectSteps(args.from, args.to);
-  const { env, removed: envRemoved } = childEnv(process.env);
+  // 子の環境（2026-11-15、裁定「C: に置かない」）: どの手順も TEMP・TMP を <buildRoot>\tmp に、pnpm の store と
+  // キャッシュ・npm のキャッシュを <buildRoot>\cache の下へ向ける。道具の手順（install・typecheck・package）は、さらに
+  // LOCALAPPDATA を <buildRoot>\cache\localappdata へ向ける（scripts/lib/build-env.mjs）。利用者の全体の設定は変えない
+  const { env, removed: envRemoved, redirected: envRedirected } = childEnv(process.env, {}, { buildRoot });
+  const { env: toolEnv, redirected: toolRedirected } = childEnv(process.env, {}, { buildRoot, toolchain: true });
+  const envOf = (name) => (TOOLCHAIN_STEPS.includes(name) ? toolEnv : env);
   const signtool = findSignTool({ env });
   let upstream = {};
   try {
@@ -610,6 +631,8 @@ async function main() {
     config: { path: cfg.configPath, exists: cfg.configExists, buildRootFrom: cfg.sources.buildRoot },
     stepsSelected: steps,
     envRemovedForChildren: envRemoved,
+    // 子の環境で <buildRoot> の下へ向けた変数（値はパス。all はすべての手順、toolchain は toolchainSteps の手順）
+    envRedirectedForChildren: { all: envRedirected, toolchain: toolRedirected, toolchainSteps: [...TOOLCHAIN_STEPS], layout: cacheLayout(buildRoot) },
     // 型検査・パッケージ化の子に渡す BUILD_SOURCEVERSION（作業ツリーの HEAD）。読んだときに埋める
     sourceVersion: null,
     // 版の commit（sourceVersion の値）に付けた枝 builds/<label>（markBuildCommit の結果。--no-branch なら null）
@@ -792,7 +815,15 @@ async function main() {
     finish("dry-run");
   }
 
-  const runPlanned = async (name, s, stepEnv = env) => {
+  // 向け先のフォルダを作る（無いと TEMP を使う道具が落ちる）。dry-run では作らない（上で終わっている）
+  try {
+    const made = ensureEnvDirs({ ...envRedirected, ...toolRedirected });
+    if (made.length) rec.envRedirectedForChildren.created = made;
+  } catch (err) {
+    rec.warnings.push(`子の環境の向け先を作れない: ${err.message}`);
+  }
+
+  const runPlanned = async (name, s, stepEnv = envOf(name)) => {
     const p = plan[name];
     s.command = [p.cmd, ...p.args].join(" ");
     s.cwd = p.cwd;
@@ -812,7 +843,7 @@ async function main() {
   }
 
   // 型検査・パッケージ化の子の環境（BUILD_SOURCEVERSION を足す）。HEAD を読めなければその手順で止める
-  const envForStep = (name, s, base = env) => {
+  const envForStep = (name, s, base = envOf(name)) => {
     const v = readSourceVersion(name);
     if (!v) fail(s, `作業ツリーの HEAD を読めない（BUILD_SOURCEVERSION に渡す値が無い）: ${rec.sourceVersion && rec.sourceVersion.error}`);
     markBranch(name);
@@ -848,7 +879,7 @@ async function main() {
       if (r.exitCode !== 0) fail(s, `apply.mjs が ${r.exitCode} で終わった（checks.json の result: ${checks ? checks.result : "読めない"}）`);
       done(s);
     } else if (name === "install") {
-      rec.toolchain = toolchainOf(worktree, env);
+      rec.toolchain = toolchainOf(worktree, toolEnv);
       for (const w of toolchainWarnings(rec.toolchain)) rec.warnings.push(`道具の版: ${w}`);
       const r = await runPlanned(name, s);
       rec.durations.install = r.seconds;
@@ -875,7 +906,7 @@ async function main() {
       // この子のプロセスの PATH にだけ足す（ユーザーの PATH は書き換えない）
       s.signtool = { path: signtool.path, source: signtool.source, pathPrepended: signtool.source === "WindowsKits" ? signtool.dir : null };
       if (!signtool.found) fail(s, "signtool.exe が見つからない（PATH にも Windows Kits\\10\\bin\\<版>\\x64 にも無い）。Windows SDK を入れ、scripts/check-env.ps1 で確かめる");
-      const r = await runPlanned(name, s, envForStep(name, s, signtool.source === "WindowsKits" ? prependPath(env, signtool.dir) : env));
+      const r = await runPlanned(name, s, envForStep(name, s, signtool.source === "WindowsKits" ? prependPath(toolEnv, signtool.dir) : toolEnv));
       rec.durations.package = r.seconds;
       if (r.exitCode !== 0) fail(s, `パッケージ化が ${r.exitCode} で終わった`);
       if (!fs.existsSync(packageDir)) fail(s, `出力 ${packageDir} が無い`);

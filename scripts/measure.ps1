@@ -32,7 +32,7 @@ param(
     [int]$LaunchWaitSeconds = 30,
     [int]$SettleSeconds = 120,
     [int]$StopWaitSeconds = 10,
-    [string]$WorkRoot = 'C:\b\p0\run',
+    [string]$WorkRoot,    # default <buildRoot>\audit, decided in the body (Get-DefaultWorkRoot; decisions 2026-11-15, 2026-11-16)
     [string]$ProcessName,
     [string]$DefaultsNote,
     [switch]$KeepData,
@@ -366,9 +366,29 @@ function Get-DefaultWorkspace {
     return (Join-Path (Split-Path $root -Parent) 'tmp\ws')
 }
 
+function Get-DefaultBuildRoot {
+    <#
+      The build root <buildRoot> (docs/02 6.1): local.json, else the default <repo>\tmp\b. Read through
+      lib\local-config.ps1 (the shared reader; a broken local.json throws, it never falls back).
+      -ConfigPath is for trials and tests. Decided here, not in a param default.
+    #>
+    param([string]$ConfigPath)
+    $root = $PSScriptRoot
+    if (-not $root) { $root = Split-Path -Parent $PSCommandPath }
+    . (Join-Path $root 'lib\local-config.ps1')
+    return (Resolve-ShukoLocalConfig -ConfigPath $ConfigPath).buildRoot
+}
+
+function Get-DefaultWorkRoot {
+    <# <buildRoot>\audit: the work root of the run dirs (measure.ps1, netaudit.ps1, and take-in.mjs; decision 2026-11-16). #>
+    param([string]$ConfigPath)
+    return (Join-Path (Get-DefaultBuildRoot -ConfigPath $ConfigPath) 'audit')
+}
+
 function Get-DefaultOpenFiles {
-    <# The two files chosen by p0-ws.ps1 (openFilesFull in ws-info.json), or an empty array. #>
-    param([string]$InfoPath = 'C:\b\p0\ws-info.json')
+    <# The two files chosen by p0-ws.ps1 (openFilesFull in ws-info.json; default <buildRoot>\measure\ws-info.json), or an empty array. #>
+    param([string]$InfoPath)
+    if (-not $InfoPath) { $InfoPath = Join-Path (Get-DefaultBuildRoot) 'measure\ws-info.json' }
     if (-not (Test-Path -LiteralPath $InfoPath)) { return @() }
     try {
         $o = Get-Content -LiteralPath $InfoPath -Raw -Encoding UTF8 | ConvertFrom-Json
@@ -425,7 +445,6 @@ function Get-ProcessSnapshot {
         Select-Object ProcessId, ParentProcessId, Name, CommandLine, PrivatePageCount, WorkingSetSize, CreationDate
 }
 
-$script:P0DefaultRunRoot = 'C:\b\p0\run'
 $script:P0RunRootMarker = '.p0-run-root'
 
 function Test-RunDirName {
@@ -442,13 +461,15 @@ function Test-RunDirShape {
 
 function Test-CleanableRoot {
     <#
-      D-1: only a work root this script owns may be cleaned: C:\b\p0\run (or below it), or a
-      folder carrying the marker file .p0-run-root (written by New-RunDataDir into a work root
-      it created or found empty). C:\b\p0 itself, a drive root, etc. are refused.
+      D-1: only a work root this script owns may be cleaned: the default work root <buildRoot>\audit
+      (or below it), or a folder carrying the marker file .p0-run-root (written by New-RunDataDir into
+      a work root it created or found empty). <buildRoot> itself, a drive root, etc. are refused.
+      -DefaultRoot replaces the default work root (tests).
     #>
-    param([string]$WorkRoot)
+    param([string]$WorkRoot, [string]$DefaultRoot)
     $full = [IO.Path]::GetFullPath($WorkRoot).TrimEnd('\')
-    $def = $script:P0DefaultRunRoot
+    if (-not $DefaultRoot) { $DefaultRoot = Get-DefaultWorkRoot }
+    $def = [IO.Path]::GetFullPath($DefaultRoot).TrimEnd('\')
     if ($full -ieq $def -or $full.StartsWith($def + '\', [StringComparison]::OrdinalIgnoreCase)) { return $true }
     return (Test-Path -LiteralPath (Join-Path $full $script:P0RunRootMarker))
 }
@@ -503,7 +524,7 @@ function Clear-StaleRunDirs {
     <# Lists (Delete = $false) or removes (Delete = $true) the stale run dirs. Returns the paths found. #>
     param([string]$WorkRoot, [string]$Filter = '*', [bool]$Delete = $false)
     if ($Delete -and -not (Test-CleanableRoot $WorkRoot)) {
-        throw "refusing to delete under $WorkRoot : only C:\b\p0\run (or below it) or a work root with the marker file $($script:P0RunRootMarker) may be cleaned"
+        throw "refusing to delete under $WorkRoot : only the default work root $(Get-DefaultWorkRoot) (or below it) or a work root with the marker file $($script:P0RunRootMarker) may be cleaned"
     }
     $found = @(Find-StaleRunDirs -WorkRoot $WorkRoot -Processes @(Get-ProcessSnapshot) -Filter $Filter)
     foreach ($f in $found) {
@@ -525,7 +546,7 @@ function New-RunDataDir {
     $workFull = Assert-SafeDataPath $WorkRoot
     [void](Assert-SafeDataPath $EnvDir)
     if (-not (Test-RunDirName $Name)) { throw "run dir name must look like <label>-run-<n>, <label>-warmup-<n> or <label>-netaudit: $Name" }
-    # mark a work root that is new or empty as ours (never a non-empty folder such as C:\b\p0)
+    # mark a work root that is new or empty as ours (never a non-empty folder such as <buildRoot>)
     $existed = Test-Path -LiteralPath $workFull
     $isEmpty = $existed -and -not (Get-ChildItem -LiteralPath $workFull -Force -ErrorAction SilentlyContinue | Select-Object -First 1)
     if (-not $existed) { New-Item -ItemType Directory -Force -Path $workFull | Out-Null }
@@ -833,6 +854,7 @@ function Invoke-Measure {
     }
     if (-not $Exe -or -not (Test-Path -LiteralPath $Exe)) { throw "-Exe not found (and no p0-env.json with editor.exe): $Exe" }
     if (-not $Label) { throw '-Label is required' }
+    if (-not $WorkRoot) { $WorkRoot = Get-DefaultWorkRoot }
     if (-not $Workspace) { $Workspace = Get-DefaultWorkspace }
     if ($Runs -lt 1) { throw '-Runs must be 1 or more' }
     if (-not (Test-Path -LiteralPath $Workspace)) { throw "-Workspace not found: $Workspace" }
@@ -1007,6 +1029,8 @@ if ($Baseline -or $Candidate) {
     $v = Invoke-Compare -Baseline $Baseline -Candidate $Candidate -Metric $Metric -OutDir $OutDir
     if ($v.Pass) { exit 0 } else { exit 1 }
 }
+
+if (-not $WorkRoot) { $WorkRoot = Get-DefaultWorkRoot }
 
 if ($CleanStale -and -not $EnvDir) {
     # clean only: no editor is started

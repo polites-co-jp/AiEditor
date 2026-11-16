@@ -629,7 +629,7 @@ Test-Case 'markdown: has the "name from" column, the hint, the by-name table and
     $weak = [pscustomobject]@{ Method = 'rdns'; Map = @{ '198.51.100.99' = @('hint.example.net') }; Weak = $true }
     $rows = @(New-DestinationRows -State $st -DnsMap @{} -Previous $null -List $list -ExtraMaps @([pscustomobject]@{ Method = 'netlog'; Map = $nlMap; Weak = $false }, $weak))
     $named = @(New-NamedHostRows -Hosts $nl.Hosts -NodeHosts $null -Rows $rows -List $list -ProcessName 'Code.exe')
-    $meta = [pscustomobject]@{ Label = 't'; Exe = 'x'; DurationSeconds = 60; IntervalSeconds = 2; Samples = 1; NetLogEvents = 12; NetLogComplete = $true; NetLogPath = 'C:\b\p0\netlog\x.json'; DnsEntries = 0 }
+    $meta = [pscustomobject]@{ Label = 't'; Exe = 'x'; DurationSeconds = 60; IntervalSeconds = 2; Samples = 1; NetLogEvents = 12; NetLogComplete = $true; NetLogPath = 'D:\bt\p0\netlog\x.json'; DnsEntries = 0 }
     $md = (New-AuditMarkdown -Meta $meta -Rows $rows -HasPrevious $false -AllowlistInfo ([pscustomobject]@{ Missing = $false }) -NetLogHostRows $named) -join "`n"
     Assert-True ($md -match '\| name from \|') 'column'
     Assert-True ($md -match 'hint only: hint\.example\.net \[rdns\]') 'hint'
@@ -639,10 +639,133 @@ Test-Case 'markdown: has the "name from" column, the hint, the by-name table and
     Assert-True ($md -notmatch 'WARNING: Get-DnsClientCache') 'empty DNS cache is only a note when the net log is there'
 }
 Test-Case 'markdown: without a net log an empty DNS cache is still a warning; an unreadable net log is a warning' {
-    $meta = [pscustomobject]@{ Label = 't'; Exe = 'x'; DurationSeconds = 60; IntervalSeconds = 2; Samples = 1; DnsEntries = 0; NetLogPath = 'C:\b\p0\netlog\x.json'; NetLogEvents = 0 }
+    $meta = [pscustomobject]@{ Label = 't'; Exe = 'x'; DurationSeconds = 60; IntervalSeconds = 2; Samples = 1; DnsEntries = 0; NetLogPath = 'D:\bt\p0\netlog\x.json'; NetLogEvents = 0 }
     $md = (New-AuditMarkdown -Meta $meta -Rows @() -HasPrevious $false -AllowlistInfo ([pscustomobject]@{ Missing = $false })) -join "`n"
     Assert-True ($md -match 'WARNING: Get-DnsClientCache') ''
     Assert-True ($md -match 'WARNING: the net log is missing or empty') ''
+}
+
+# decision 2026-11-16: the net log and the Node debug files are removed right after they were read; a file that cannot be removed stops the run
+$tmpNl = Join-Path ([IO.Path]::GetTempPath()) ('netaudit-nl-' + [guid]::NewGuid().ToString('N'))
+New-Item -ItemType Directory -Path $tmpNl | Out-Null
+try {
+    Test-Case 'net log removal: existing files are removed, missing and empty entries count as gone' {
+        $a = Join-Path $tmpNl 'a.netlog.json'; $b = Join-Path $tmpNl 'b.node-stdout.txt'
+        Set-Content -LiteralPath $a -Value '{"events":[]}'; Set-Content -LiteralPath $b -Value 'x'
+        $left = @(Remove-AuditLogFiles -Paths @($a, $b, (Join-Path $tmpNl 'never-created.txt'), $null, ''))
+        Assert-Equal $left.Count 0 ($left -join ',')
+        Assert-True (-not (Test-Path -LiteralPath $a)) 'a removed'
+        Assert-True (-not (Test-Path -LiteralPath $b)) 'b removed'
+        Assert-Equal @(Remove-AuditLogFiles -Paths @()).Count 0 'no paths'
+    }
+    Test-Case 'net log removal: a file that cannot be removed (held open) is returned, the others are still removed' {
+        $held = Join-Path $tmpNl 'held.netlog.json'; $free = Join-Path $tmpNl 'free.netlog.json'
+        Set-Content -LiteralPath $held -Value 'x'; Set-Content -LiteralPath $free -Value 'y'
+        $fs = [IO.File]::Open($held, [IO.FileMode]::Open, [IO.FileAccess]::Read, [IO.FileShare]::None)
+        try {
+            $left = @(Remove-AuditLogFiles -Paths @($held, $free) -Tries 2 -WaitMilliseconds 50)
+            Assert-Equal $left.Count 1 ($left -join ',')
+            Assert-Equal $left[0] $held ''
+            Assert-True (-not (Test-Path -LiteralPath $free)) 'the free one is removed'
+            Assert-True (Test-Path -LiteralPath $held) 'the held one is still there'
+        } finally { $fs.Dispose() }
+        Assert-Equal @(Remove-AuditLogFiles -Paths @($held) -Tries 2 -WaitMilliseconds 50).Count 0 'removable once released'
+    }
+    Test-Case 'net log removal: Invoke-NetAudit removes after reading, records the result, and stops with an error when a file is left' {
+        $src = Get-Content -LiteralPath (Join-Path $repo 'scripts\netaudit.ps1') -Raw
+        $iRead = $src.IndexOf('Read-NetLogFile $netLogPath')
+        $iNode = $src.IndexOf('Read-NodeDebugFiles @($nodeOut, $nodeErr)')
+        $iRemove = $src.IndexOf('Remove-AuditLogFiles -Paths $logFiles')
+        $iThrow = $src.IndexOf('could not remove the net log files after reading them')
+        $iReturn = $src.IndexOf('return $outDir')
+        Assert-True ($iRead -ge 0 -and $iNode -ge 0 -and $iRemove -gt $iRead -and $iRemove -gt $iNode) 'removed after both files were read'
+        Assert-True ($src -match '\$logFiles = @\(@\(\$netLogPath, \$nodeOut, \$nodeErr\)') 'net log, Node stdout and stderr are all removed'
+        Assert-True ($iThrow -gt $iRemove -and $iThrow -lt $iReturn) 'a throw for leftovers comes before the normal return'
+        Assert-True ($src -match 'NetLogFilesRemoved') 'the result is in the records'
+        Assert-True ($src -match "(?s)throw ""could not remove the net log files.{0,200}\`$\(\`$logStuck") 'the message lists the files'
+    }
+} finally { Remove-Item -LiteralPath $tmpNl -Recurse -Force -ErrorAction SilentlyContinue }
+
+# decision 2026-11-16 (2nd): an exception while the editor is running must not leave the net log either (read or not).
+# Start-EditorProcess is replaced by a fake that writes the three log files (the net log from --log-net-log, the Node stdout/stderr) and fails.
+$tmpEx = Join-Path ([IO.Path]::GetTempPath()) ('netaudit-ex-' + [guid]::NewGuid().ToString('N'))
+New-Item -ItemType Directory -Path $tmpEx | Out-Null
+function New-ExceptionRun {
+    param([string]$Name)
+    $d = Join-Path $tmpEx $Name
+    New-Item -ItemType Directory -Force -Path (Join-Path $d 'env\user'), (Join-Path $d 'env\ext'), (Join-Path $d 'ws') | Out-Null
+    Set-Content -LiteralPath (Join-Path $d 'ws\a.ts') -Value 'x'; Set-Content -LiteralPath (Join-Path $d 'ws\b.py') -Value 'y'
+    return @{
+        Exe = (Join-Path $env:SystemRoot 'System32\cmd.exe'); EnvDir = (Join-Path $d 'env'); Workspace = (Join-Path $d 'ws')
+        OpenFiles = @('a.ts', 'b.py'); Label = 'ex'; DurationSeconds = 1; IntervalSeconds = 2; DnsIntervalSeconds = 30; LaunchWaitSeconds = 1
+        OutDir = (Join-Path $d 'out'); Allowlist = (Join-Path $d 'no-allowlist.json'); Previous = $null
+        NetLogDir = (Join-Path $d 'netlog'); NoNetLog = $false; NoNodeDebug = $false; NoHints = $true
+        WorkRoot = (Join-Path $d 'work'); ProcessName = $null; KeepData = $false; Force = $true; CleanStale = $false; StaleFilter = '*'
+        Dir = $d
+    }
+}
+try {
+    Test-Case 'exception path: the net log and Node files are removed, and the original error is the one that surfaces' {
+        $P = New-ExceptionRun 'a'
+        function Start-EditorProcess {
+            param($Exe, $Arguments, $Portable, $ExtraEnv, $StdoutFile, $StderrFile)
+            if ($Arguments -match '--log-net-log="([^"]+)"') { Set-Content -LiteralPath $Matches[1] -Value '{"events":["secret"]}' }
+            Set-Content -LiteralPath $StdoutFile -Value 'host'; Set-Content -LiteralPath $StderrFile -Value 'host'
+            throw 'boom: the editor could not start'
+        }
+        $msg = $null
+        try { Invoke-NetAudit -P $P | Out-Null } catch { $msg = "$_" }
+        Assert-True ($msg -and $msg -like '*boom: the editor could not start*') ("the original error: $msg")
+        Assert-True ($msg -notlike '*ALSO could not remove*') 'nothing was left over'
+        $left = @(Get-ChildItem -LiteralPath $P.NetLogDir -Force -ErrorAction SilentlyContinue)
+        Assert-Equal $left.Count 0 (($left | ForEach-Object { $_.Name }) -join ',')
+    }
+    Test-Case 'exception path: a file that cannot be removed is named together with the original error' {
+        $P = New-ExceptionRun 'b'
+        $script:heldStream = $null
+        function Start-EditorProcess {
+            param($Exe, $Arguments, $Portable, $ExtraEnv, $StdoutFile, $StderrFile)
+            if ($Arguments -match '--log-net-log="([^"]+)"') {
+                $script:heldPath = $Matches[1]
+                $script:heldStream = [IO.File]::Open($script:heldPath, [IO.FileMode]::Create, [IO.FileAccess]::ReadWrite, [IO.FileShare]::None)
+            }
+            Set-Content -LiteralPath $StdoutFile -Value 'host'; Set-Content -LiteralPath $StderrFile -Value 'host'
+            throw 'boom: the editor could not start'
+        }
+        $msg = $null
+        try { Invoke-NetAudit -P $P | Out-Null } catch { $msg = "$_" }
+        try {
+            Assert-True ($msg -and $msg -like '*boom: the editor could not start*') ("the original error is in the message: $msg")
+            Assert-True ($msg -like '*ALSO could not remove the net log files*') ("the leftovers are named: $msg")
+            Assert-True ($msg.Contains($script:heldPath)) 'the held file is listed'
+            $others = @(Get-ChildItem -LiteralPath $P.NetLogDir -Force | Where-Object { $_.FullName -ne $script:heldPath })
+            Assert-Equal $others.Count 0 'the files that could be removed are gone'
+        } finally { if ($script:heldStream) { $script:heldStream.Dispose() } }
+    }
+    Test-Case 'exception path: the success path still ends with the files removed (no double removal error)' {
+        $src = Get-Content -LiteralPath (Join-Path $repo 'scripts\netaudit.ps1') -Raw
+        Assert-True ($src -match "-like 'could not remove the net log files after reading them\*'") 'the leftover error of the normal path is rethrown as is'
+    }
+} finally { Remove-Item -LiteralPath $tmpEx -Recurse -Force -ErrorAction SilentlyContinue }
+Test-Case 'net log place: the default is <WorkRoot parent>\netlog and the default WorkRoot is <buildRoot>\audit, so the net log is <buildRoot>\netlog' {
+    $src = Get-Content -LiteralPath (Join-Path $repo 'scripts\netaudit.ps1') -Raw
+    Assert-True ($src -match "Join-Path \(Split-Path \`$P\.WorkRoot -Parent\) 'netlog'") 'netlog next to WorkRoot'
+    $w = Get-DefaultWorkRoot -ConfigPath (Join-Path ([IO.Path]::GetTempPath()) ('no-such-' + [guid]::NewGuid().ToString('N') + '.json'))
+    Assert-Equal ((Split-Path $w -Parent) + '\netlog') ((Join-Path $repo 'tmp\b') + '\netlog') ''
+    Assert-Equal (Split-Path $w -Leaf) 'audit' ''
+}
+
+# decision 2026-11-15: nothing on C: - -WorkRoot has no fixed default (decided in the body: <buildRoot>\p0\run)
+foreach ($s in @('scripts\netaudit.ps1', 'scripts\measure.ps1')) {
+    Test-Case "defaults: $s -WorkRoot has no fixed default and the file has no C:\b in code" {
+        $errs = $null; $tokens = $null
+        $ast = [System.Management.Automation.Language.Parser]::ParseFile((Join-Path $repo $s), [ref]$tokens, [ref]$errs)
+        $p = @($ast.ParamBlock.Parameters | Where-Object { $_.Name.VariablePath.UserPath -eq 'WorkRoot' })
+        Assert-True ($p.Count -eq 1) 'WorkRoot parameter'
+        Assert-True ($null -eq $p[0].DefaultValue) 'no default value in the param block'
+        $strings = @($ast.FindAll({ param($n) $n -is [System.Management.Automation.Language.StringConstantExpressionAst] -or $n -is [System.Management.Automation.Language.ExpandableStringExpressionAst] }, $true) | Where-Object { $_.Value -match '(?i)\bC:\\b\b' })
+        Assert-True ($strings.Count -eq 0) ('string literal with C:\b: ' + (($strings | ForEach-Object { $_.Value }) -join ' | '))
+    }
 }
 
 Write-Host ''

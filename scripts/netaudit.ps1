@@ -8,8 +8,9 @@
   (default 2) takes Get-NetTCPConnection -State Established, keeps only the
   connections of the editor process tree, and ties remote IPs to host names with
   (1) the Chromium net log (the editor is started with --log-net-log=<file>; the
-  file goes to <WorkRoot parent>\netlog, outside the repo, because it can hold secrets;
-  only host names and counts are copied into the output), (2) Get-DnsClientCache
+  file goes to <WorkRoot parent>\netlog = <buildRoot>\netlog (git-ignored), because it can hold secrets;
+  only host names and counts are copied into the output, and the net log and the Node debug files are
+  removed right after they were read - a file that cannot be removed stops the run with an error), (2) Get-DnsClientCache
   (at the start, at the end, and every -DnsIntervalSeconds; often empty, see
   hostname-design.md), (3) weak hints only (reverse lookup, forward lookup of the
   allowlist hosts) that never make a destination "allowed" (-NoHints skips them).
@@ -42,9 +43,9 @@ param(
     [string]$OutDir,
     [string]$Allowlist,
     [string]$Previous,
-    [string]$WorkRoot = 'C:\b\p0\run',
+    [string]$WorkRoot,         # default <buildRoot>\audit (Get-DefaultWorkRoot in measure.ps1; decisions 2026-11-15, 2026-11-16)
     [string]$ProcessName,
-    [string]$NetLogDir,        # default <WorkRoot parent>\netlog (C:\b\p0\netlog)
+    [string]$NetLogDir,        # default <WorkRoot parent>\netlog (<buildRoot>\netlog). The files are removed right after reading.
     [switch]$NoNetLog,
     [switch]$NoNodeDebug,      # do not set NODE_DEBUG=net / ELECTRON_ENABLE_LOGGING=1 (host names of Node code)
     [switch]$NoHints,          # skip the weak name hints (reverse lookup, forward lookup of allowlist hosts)
@@ -70,6 +71,28 @@ $naIsLibrary = ($MyInvocation.InvocationName -eq '.')
 # ---------------------------------------------------------------------------
 # Pure functions (tested by tests\netaudit.tests.ps1)
 # ---------------------------------------------------------------------------
+
+function Remove-AuditLogFiles {
+    <#
+      Removes the net log and the Node debug files right after they were read (decision 2026-11-16: they can hold
+      secrets, so they do not stay). A missing file counts as removed. Retries because a just-stopped process may
+      still hold the file. Returns the paths that could not be removed (empty = all gone).
+    #>
+    param([string[]]$Paths, [int]$Tries = 5, [int]$WaitMilliseconds = 500)
+    $left = @()
+    foreach ($p in @($Paths)) {
+        if (-not $p) { continue }
+        $gone = $false
+        for ($i = 1; $i -le $Tries; $i++) {
+            if (-not (Test-Path -LiteralPath $p)) { $gone = $true; break }
+            try { Remove-Item -LiteralPath $p -Force -ErrorAction Stop } catch { }
+            if (-not (Test-Path -LiteralPath $p)) { $gone = $true; break }
+            Start-Sleep -Milliseconds $WaitMilliseconds
+        }
+        if (-not $gone) { $left += $p }
+    }
+    return $left   # callers wrap the call in @(...)
+}
 
 function ConvertTo-NormalIp {
     <# Canonical IP string, or $null. Strips %scope; IPv4-mapped IPv6 becomes IPv4. #>
@@ -902,6 +925,7 @@ function Invoke-NetAudit {
     $P.OpenFiles = $of.Files
     $procName = $P.ProcessName
     if (-not $procName) { $procName = [IO.Path]::GetFileName($P.Exe) }
+    if (-not $P.WorkRoot) { $P.WorkRoot = Get-DefaultWorkRoot }
     $repoRoot = Split-Path $PSScriptRoot -Parent
     $outDir = $P.OutDir
     if (-not $outDir) { $outDir = Join-Path $repoRoot ("records\network-audits\{0}-{1}" -f (Get-Date -Format 'yyyy-MM-dd'), $P.Label) }
@@ -919,7 +943,7 @@ function Invoke-NetAudit {
     if ($stale.Count -gt 0 -and -not $P.CleanStale) {
         Write-Warning ("{0} stale run dir(s) under {1} (use -CleanStale to remove): {2}" -f $stale.Count, $P.WorkRoot, ($stale -join ', '))
     }
-    # Chromium net log (host names of the browser-side network stack). Kept outside the repo: it can hold secrets.
+    # Chromium net log (host names of the browser-side network stack). Kept under <buildRoot> (default <repo>\tmp\b, git-ignored; never in a tracked folder): it can hold secrets.
     $netLogPath = $null
     $nodeOut = $null
     $nodeErr = $null
@@ -933,6 +957,9 @@ function Invoke-NetAudit {
         $nodeOut = Join-Path $nlDir ("{0}-{1}.node-stdout.txt" -f $P.Label, $stamp)
         $nodeErr = Join-Path $nlDir ("{0}-{1}.node-stderr.txt" -f $P.Label, $stamp)
     }
+    # Decision 2026-11-16: whatever happens below, the net log files (they can hold secrets) do not stay, read or not.
+    # On an exception they are removed in the catch block; if that fails too, the stop names both the original error and the files.
+    try {
     $dailyBefore = @(Get-DailyArgvState)
     $data = New-RunDataDir -EnvDir $P.EnvDir -WorkRoot $P.WorkRoot -Name ("{0}-netaudit" -f $P.Label)
     $state = @{}
@@ -1039,6 +1066,10 @@ function Invoke-NetAudit {
     if ($nodeOut) {
         try { $nodeInfo = Read-NodeDebugFiles @($nodeOut, $nodeErr) } catch { Write-Warning "could not read the Node debug output: $_" }
     }
+    # Decision 2026-11-16: host names and counts are in memory now, so the net log and the Node debug files (they can hold
+    # secrets) are removed at once. Files that cannot be removed are an error: the records are written, then the run stops.
+    $logFiles = @(@($netLogPath, $nodeOut, $nodeErr) | Where-Object { $_ })
+    $logStuck = @(Remove-AuditLogFiles -Paths $logFiles)
     $extra = @()
     if ($nodeInfo -and $nodeInfo.Map.Count -gt 0) { $extra += [pscustomobject]@{ Method = 'node-debug'; Map = $nodeInfo.Map; Weak = $true } }
     if ($netLog -and $netLog.Map.Count -gt 0) { $extra += [pscustomobject]@{ Method = 'netlog'; Map = $netLog.Map; Weak = $false; OnlyRoles = @('utility-network', 'main') } }
@@ -1071,12 +1102,26 @@ function Invoke-NetAudit {
         Samples = $sampleIndex; StartedAt = $t0.ToString('o'); DnsEntries = @($dnsAll).Count; DailyArgvTouched = $dailyTouched; RunDataLeftOver = $leftovers
         Allowlist = $allowPath; AllowlistMissing = $allow.Missing; Previous = $P.Previous
         NetLogPath = $netLogPath; NetLogEvents = $(if ($netLog) { $netLog.Events } else { 0 }); NetLogComplete = $(if ($netLog) { $netLog.Complete } else { $false })
+        NetLogFilesRemoved = ($logStuck.Count -eq 0); NetLogFilesStuck = $logStuck
     }
     ([ordered]@{ Meta = $meta; Destinations = $rows }) | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath (Join-Path $outDir 'destinations.json') -Encoding UTF8
     $md = New-AuditMarkdown -Meta ([pscustomobject]$meta) -Rows $rows -HasPrevious ($null -ne $prev) -AllowlistInfo $allow -NetLogHostRows $nlRows
     Set-Content -LiteralPath (Join-Path $outDir 'audit.md') -Value $md -Encoding UTF8
     Write-Host ($md -join "`n")
+    if ($logStuck.Count -gt 0) {
+        throw "could not remove the net log files after reading them (they can hold secrets; remove them by hand): $($logStuck -join ', ')"
+    }
     return $outDir
+    }
+    catch {
+        $orig = $_
+        if ("$($orig.Exception.Message)" -like 'could not remove the net log files after reading them*') { throw }
+        $stuckOnError = @(Remove-AuditLogFiles -Paths @(@($netLogPath, $nodeOut, $nodeErr) | Where-Object { $_ }))
+        if ($stuckOnError.Count -gt 0) {
+            throw "$($orig.Exception.Message) -- ALSO could not remove the net log files (they can hold secrets; remove them by hand): $($stuckOnError -join ', ')"
+        }
+        throw
+    }
 }
 
 if ($naIsLibrary) { return }

@@ -1,3 +1,6 @@
+# RETIRED (2026-11-15): Phase 0 is closed. Do not run this script. If it has to run again, first change it
+# to use buildRoot (scripts\lib\local-config.ps1) instead of C:\b. Decision: docs/user-decisions.md,
+# 2026-11-15 "build location and the rest of Phase 0".
 # Expand a zip (Phase 0 materials; called from scripts/p0-fetch.mjs). Runs on Windows PowerShell 5.1.
 # This file is ASCII only: Windows PowerShell 5.1 reads BOM-less files in the ANSI code page.
 #

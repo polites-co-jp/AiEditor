@@ -21,7 +21,8 @@ const unit = noUnit ? null : readJson(join(UNIT_DIR, 'unit.json'));
 const patchPath = unit?.patch ? join(UNIT_DIR, unit.patch) : null;
 const noPatch = noUnit || (patchPath && existsSync(patchPath) ? false : '実装なし: edits.patch が無い');
 
-const UP_REPO = process.env.AIED_UPSTREAM_REPO || 'C:/b/vscode';
+import { UPSTREAM_REPO as UP_DEFAULT } from './build/root.mjs';
+const UP_REPO = UP_DEFAULT; // 常設の clone（<buildRoot>/vscode。tests/build/root.mjs）
 const UP_TAG = process.env.AIED_UPSTREAM_TAG || '1.146.0';
 const upOk = existsSync(UP_REPO) && spawnSync('git', ['-C', UP_REPO, 'rev-parse', '--verify', `${UP_TAG}^{commit}`]).status === 0;
 const upShow = (p) => { const r = spawnSync('git', ['-C', UP_REPO, 'show', `${UP_TAG}:${p}`], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 }); return r.status === 0 ? r.stdout : null; };

@@ -15,7 +15,8 @@ import { API_IMPL, checkWorktree, FOLDER_MATCH, MUST_STAY, NEW_API, PROTOCOL, SE
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const readJson = (p) => JSON.parse(readFileSync(p, 'utf8').replace(/^﻿/, ''));
 const unit = readJson(join(REPO, 'removals', 'C-4-notebook', 'unit.json'));
-const UP_REPO = process.env.AIED_UPSTREAM_REPO || 'C:/b/vscode';
+import { UPSTREAM_REPO as UP_DEFAULT } from './build/root.mjs';
+const UP_REPO = UP_DEFAULT; // 常設の clone（<buildRoot>/vscode。tests/build/root.mjs）
 const UP_TAG = process.env.AIED_UPSTREAM_TAG || '1.146.0';
 const upOk = existsSync(UP_REPO) && spawnSync('git', ['-C', UP_REPO, 'rev-parse', '--verify', `${UP_TAG}^{commit}`]).status === 0;
 const skipUp = upOk ? false : `本家のソースが読めない: ${UP_REPO} の ${UP_TAG}`;

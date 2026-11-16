@@ -256,8 +256,35 @@ Test-Case 'safe path: daily editor data is refused' {
         Assert-Throws { Assert-SafeDataPath (Join-Path $env:USERPROFILE '.vscode\extensions') } '.vscode\extensions'
     }
 }
+$noCfg = Join-Path ([IO.Path]::GetTempPath()) ('measure-no-such-local-' + [guid]::NewGuid().ToString('N') + '.json')
+$defRun = Join-Path $repo 'tmp\b\audit'
 Test-Case 'safe path: the p0 work dir is accepted' {
-    Assert-Equal (Assert-SafeDataPath 'C:\b\p0\run') 'C:\b\p0\run' ''
+    Assert-Equal (Assert-SafeDataPath $defRun) $defRun ''
+}
+# decision 2026-11-15: nothing on C: - the default work root is under <buildRoot> (default <repo>\tmp\b)
+Test-Case 'default work root: <repo>\tmp\b\audit when there is no local.json (not on C:)' {
+    $w = Get-DefaultWorkRoot -ConfigPath $noCfg
+    Assert-Equal $w.ToLowerInvariant() $defRun.ToLowerInvariant() ''
+    Assert-True ($w -match '^[A-Za-z]:\\') 'absolute'
+    Assert-True (-not ($w -match '^[cC]:\\b(\\|$)')) 'not C:\b'
+}
+Test-Case 'default work root: local.json buildRoot wins; a broken local.json throws (no fallback)' {
+    $d = Join-Path ([IO.Path]::GetTempPath()) ('measure-cfg-' + [guid]::NewGuid().ToString('N'))
+    New-Item -ItemType Directory -Path $d | Out-Null
+    try {
+        $c = Join-Path $d 'local.json'
+        Set-Content -LiteralPath $c -Value '{"buildRoot": "D:\\mybuild"}' -Encoding ASCII
+        Assert-Equal (Get-DefaultWorkRoot -ConfigPath $c) 'D:\mybuild\audit' ''
+        Assert-Equal (Get-DefaultBuildRoot -ConfigPath $c) 'D:\mybuild' ''
+        Set-Content -LiteralPath $c -Value '{"buildRoot": 5}' -Encoding ASCII
+        Assert-Throws { Get-DefaultWorkRoot -ConfigPath $c } 'broken local.json'
+    } finally { Remove-Item -LiteralPath $d -Recurse -Force -ErrorAction SilentlyContinue }
+}
+Test-Case 'default open files: ws-info.json is looked up under <buildRoot>\measure (explicit path still works)' {
+    Assert-Equal @(Get-DefaultOpenFiles -InfoPath $noCfg).Count 0 'missing file gives empty'
+    $src = Get-Content -LiteralPath (Join-Path $repo 'scripts\measure.ps1') -Raw
+    Assert-True ($src.Contains("'measure\ws-info.json'")) 'default ws-info.json is <buildRoot>\measure\ws-info.json'
+    Assert-True (-not $src.Contains("p0\ws-info.json'")) 'the old <buildRoot>\p0 place is gone'
 }
 
 # ---- folderOpen task check, run values, compare mode -------------------------
@@ -648,29 +675,29 @@ try {
     }
     $ms4 = Join-Path $repo 'scripts\measure.ps1'
     # D-1: where -CleanStale may delete
-    Test-Case 'cleanable root: C:\b\p0\run and below are allowed; C:\b\p0, C:\b, C:\, a look-alike are not' {
-        Assert-True (Test-CleanableRoot 'C:\b\p0\run') 'run'
-        Assert-True (Test-CleanableRoot 'C:\b\p0\run\sub') 'below run'
-        Assert-True (Test-CleanableRoot 'c:\B\P0\RUN') 'case'
-        Assert-True (-not (Test-CleanableRoot 'C:\b\p0')) 'C:\b\p0'
-        Assert-True (-not (Test-CleanableRoot 'C:\b\p0\')) 'C:\b\p0\'
-        Assert-True (-not (Test-CleanableRoot 'C:\b')) 'C:\b'
-        Assert-True (-not (Test-CleanableRoot 'C:\')) 'C:\'
-        Assert-True (-not (Test-CleanableRoot 'C:\b\p0\runner')) 'look-alike prefix'
-        Assert-True (-not (Test-CleanableRoot 'C:\b\p0\data')) 'data'
+    Test-Case 'cleanable root: <buildRoot>\p0\run and below are allowed; <buildRoot>\p0, <buildRoot>, a drive root, a look-alike are not' {
+        $dr = 'D:\bt\p0\run'
+        Assert-True (Test-CleanableRoot 'D:\bt\p0\run' -DefaultRoot $dr) 'run'
+        Assert-True (Test-CleanableRoot 'D:\bt\p0\run\sub' -DefaultRoot $dr) 'below run'
+        Assert-True (Test-CleanableRoot 'd:\BT\P0\RUN' -DefaultRoot $dr) 'case'
+        Assert-True (-not (Test-CleanableRoot 'D:\bt\p0' -DefaultRoot $dr)) 'D:\bt\p0'
+        Assert-True (-not (Test-CleanableRoot 'D:\bt\p0\' -DefaultRoot $dr)) 'D:\bt\p0\'
+        Assert-True (-not (Test-CleanableRoot 'D:\bt' -DefaultRoot $dr)) 'D:\bt'
+        Assert-True (-not (Test-CleanableRoot 'D:\' -DefaultRoot $dr)) 'D:\'
+        Assert-True (-not (Test-CleanableRoot 'D:\bt\p0\runner' -DefaultRoot $dr)) 'look-alike prefix'
+        Assert-True (-not (Test-CleanableRoot 'D:\bt\p0\data' -DefaultRoot $dr)) 'data'
     }
-    Test-Case 'cleanable root: an unmarked folder outside C:\b\p0\run is refused, the marker allows it' {
+    Test-Case 'cleanable root: an unmarked folder outside the default work root is refused, the marker allows it' {
         Assert-True (-not (Test-CleanableRoot $root4)) 'no marker'
         Assert-Throws { Clear-StaleRunDirs -WorkRoot $root4 -Filter 'trial-*' -Delete $true } 'delete refused'
         Assert-True (Test-Path -LiteralPath (Join-Path $root4 'trial-a-run-1')) 'nothing was deleted'
         Assert-Equal @(Clear-StaleRunDirs -WorkRoot $root4 -Filter 'trial-*' -Delete $false).Count 2 'listing is allowed'
     }
-    Test-Case 'cleanable root: -WorkRoot C:\b\p0 stops -CleanStale (a mistyped path), exit code non-zero' {
+    Test-Case 'cleanable root: -WorkRoot <buildRoot>\p0 stops -CleanStale (a mistyped path), exit code non-zero' {
         $ErrorActionPreference = 'Continue'
-        $o = (& powershell.exe -NoProfile -ExecutionPolicy Bypass -File $ms4 -CleanStale -WorkRoot 'C:\b\p0' 2>&1 | Out-String)
+        $o = (& powershell.exe -NoProfile -ExecutionPolicy Bypass -File $ms4 -CleanStale -WorkRoot (Join-Path $repo 'tmp\b') 2>&1 | Out-String)
         Assert-True ($LASTEXITCODE -ne 0) 'must fail'
         Assert-True ($o -match 'refusing') $o
-        if (Test-Path 'C:\b\p0\data') { Assert-True $true 'data still there' }
     }
     Test-Case '-File start: -CleanStale on an unmarked folder stops with exit code non-zero and deletes nothing' {
         $ErrorActionPreference = 'Continue'

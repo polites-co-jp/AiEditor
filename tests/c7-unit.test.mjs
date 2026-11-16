@@ -22,7 +22,8 @@ const patchFile = unit?.patch ? join(UNIT_DIR, unit.patch) : null;
 const noPatch = noUnit || (patchFile && existsSync(patchFile) ? false : '実装なし: edits.patch が無い');
 
 // 本家 1.146.0（常設の clone のタグ）。AIED_C7_NO_UPSTREAM=1: 本家を読む検査を飛ばす(c7-mutation が、本家を要さない壊し方を速く確かめるのに使う)
-const UP_REPO = process.env.AIED_UPSTREAM_REPO || 'C:/b/vscode';
+import { UPSTREAM_REPO as UP_DEFAULT } from './build/root.mjs';
+const UP_REPO = UP_DEFAULT; // 常設の clone（<buildRoot>/vscode。tests/build/root.mjs）
 const UP_TAG = process.env.AIED_UPSTREAM_TAG || '1.146.0';
 const upOk = !process.env.AIED_C7_NO_UPSTREAM && existsSync(UP_REPO) && spawnSync('git', ['-C', UP_REPO, 'rev-parse', '--verify', `${UP_TAG}^{commit}`]).status === 0;
 const skipUp = noUnit || (upOk ? false : `本家のソースが読めない: ${UP_REPO} の ${UP_TAG}`);

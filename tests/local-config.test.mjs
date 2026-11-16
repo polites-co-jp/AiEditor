@@ -15,6 +15,7 @@ import {
   validateLocalConfig,
   resolveLocalConfig,
 } from '../scripts/lib/local-config.mjs';
+import { NEW_DEFAULT } from './build/root.mjs';
 import { REPO, makeSandbox, removeSandbox, writeFile, runPs } from './build/helpers.mjs';
 
 let sb;
@@ -28,12 +29,14 @@ before(() => {
 after(() => removeSandbox(sb));
 
 const norm = (s) => (s == null ? s : String(s));
+// Windows のパスは大文字小文字を区別しない（ドライブ文字の e: と E: の違いで落とさない）。文字列でない値（数・null）はそのまま。
+const lc = (s) => (typeof s === 'string' ? s.toLowerCase() : s);
 
 // ---- Node.js-only pieces ----------------------------------------------------------------
 test('DEFAULTS and KNOWN_KEYS', () => {
   assert.deepEqual([...KNOWN_KEYS].sort(), ['buildRoot', 'builderRepo', 'installRoot', 'keepVersions']);
   assert.equal(DEFAULTS.keepVersions, 3);
-  assert.equal(DEFAULTS.buildRoot, 'C:\\b');
+  assert.equal(path.win32.normalize(DEFAULTS.buildRoot).toLowerCase(), NEW_DEFAULT.toLowerCase());
   assert.equal(DEFAULTS.installRoot, '%LOCALAPPDATA%\\Programs\\Shuko');
   assert.ok(DEFAULTS.builderRepo == null);
 });
@@ -72,7 +75,7 @@ test('resolveLocalConfig: missing file gives defaults, all sources "default"', (
   assert.equal(r.installRoot, 'C:\\Users\\tester\\AppData\\Local\\Programs\\Shuko');
   assert.equal(r.keepVersions, 3);
   assert.equal(r.builderRepo, null);
-  assert.equal(r.buildRoot, 'C:\\b');
+  assert.equal(r.buildRoot.toLowerCase(), NEW_DEFAULT.toLowerCase()); // 既定はプロジェクトの tmp\b（2026-11-15 の裁定）
   assert.equal(r.configExists, false);
   for (const k of ['installRoot', 'keepVersions', 'builderRepo', 'buildRoot']) assert.equal(r.sources[k], 'default', k);
 });
@@ -97,8 +100,8 @@ test('resolveLocalConfig: an invalid option value throws', () => {
 // ---- shared cases: Node.js and PowerShell must agree --------------------------------------
 // text: file content (null = no file). ok: expected accept. exp: expected resolved values (when ok).
 const CASES = [
-  { name: 'no file', text: null, ok: true, exp: { keepVersions: 3, builderRepo: null, buildRoot: 'C:\\b' } },
-  { name: 'empty object', text: '{}', ok: true, exp: { keepVersions: 3, buildRoot: 'C:\\b' } },
+  { name: 'no file', text: null, ok: true, exp: { keepVersions: 3, builderRepo: null, buildRoot: NEW_DEFAULT } },
+  { name: 'empty object', text: '{}', ok: true, exp: { keepVersions: 3, buildRoot: NEW_DEFAULT } },
   { name: 'BOM before object', text: '\uFEFF{"keepVersions": 4}', ok: true, exp: { keepVersions: 4 } },
   { name: 'wrong-case key InstallRoot', text: '{"InstallRoot": "C:\\\\x"}', ok: false },
   { name: 'unknown key', text: '{"foo": 1}', ok: false },
@@ -161,7 +164,7 @@ CASES.forEach((c, i) => {
     const r = nodeResolve(c, i);
     assert.equal(r.ok, c.ok, r.error);
     if (c.ok && c.exp) {
-      for (const [k, v] of Object.entries(c.exp)) assert.equal(r.value[k], v, k);
+      for (const [k, v] of Object.entries(c.exp)) assert.equal(lc(r.value[k]), lc(v), k);
     }
   });
 });
@@ -177,7 +180,7 @@ test('local.json rules (PowerShell): every case gives the expected accept/reject
     }
     if (c.ok && c.exp) {
       for (const [k, v] of Object.entries(c.exp)) {
-        if (norm(r.value[k]) !== norm(v)) failures.push(`${c.name}: ${k} expected ${JSON.stringify(v)} got ${JSON.stringify(r.value[k])}`);
+        if (lc(norm(r.value[k])) !== lc(norm(v))) failures.push(`${c.name}: ${k} expected ${JSON.stringify(v)} got ${JSON.stringify(r.value[k])}`);
       }
     }
   });

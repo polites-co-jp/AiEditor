@@ -18,7 +18,8 @@ const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const UNIT_DIR = join(REPO, 'removals', 'C-2-debug');
 const readJson = (p) => JSON.parse(readFileSync(p, 'utf8').replace(/^﻿/, ''));
 const unit = readJson(join(UNIT_DIR, 'unit.json'));
-const UP_REPO = process.env.AIED_UPSTREAM_REPO || 'C:/b/vscode';
+import { UPSTREAM_REPO as UP_DEFAULT } from './build/root.mjs';
+const UP_REPO = UP_DEFAULT; // 常設の clone（<buildRoot>/vscode。tests/build/root.mjs）
 const UP_TAG = process.env.AIED_UPSTREAM_TAG || '1.146.0';
 const upOk = existsSync(UP_REPO) && spawnSync('git', ['-C', UP_REPO, 'rev-parse', '--verify', `${UP_TAG}^{commit}`]).status === 0;
 const skipUp = upOk ? false : `本家のソースが読めない: ${UP_REPO} の ${UP_TAG}`;

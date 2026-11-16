@@ -7,14 +7,26 @@ import { spawnSync } from 'node:child_process';
 import { existsSync, readFileSync, readdirSync, statSync, unlinkSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve, sep } from 'node:path';
 import { homedir } from 'node:os';
+import { createHash } from 'node:crypto';
+import { fileURLToPath } from 'node:url';
 import { resolveLocalConfig } from '../../../scripts/lib/local-config.mjs';
 
-export const SMOKE_ROOT = 'C:\\b\\smoke';
-export const DEFAULT_BUILD = 'C:\\b\\p0\\vscode-1.146.0';
+// 置き場所は <buildRoot> の下（2026-11-15 の裁定で C:\b から移した）。buildRoot は resolveLocalConfig で読む
+// （local.json → 既定 <プロジェクト>\tmp\b）。local.json が読めない（壊れている）ときは既定にする。
+function currentBuildRoot() {
+  try {
+    return resolveLocalConfig().buildRoot;
+  } catch {
+    return resolveLocalConfig({ configPath: join(dirname(fileURLToPath(import.meta.url)), 'no-such-local.json'), env: { ...process.env, LOCALAPPDATA: process.env.LOCALAPPDATA || '.' } }).buildRoot;
+  }
+}
+export const BUILD_ROOT = currentBuildRoot();
+export const SMOKE_ROOT = join(BUILD_ROOT, 'smoke');
+export const DEFAULT_BUILD = join(BUILD_ROOT, 'official', 'vscode-1.146.0'); // 公式の 1.146.0（2026-11-16 の裁定。前は C:\b\p0\vscode-1.146.0）
 
 /**
- * VSIX のキャッシュの場所: <buildRoot>\cache\vsix（既定 C:\b\cache\vsix。docs/02 の8節）。
- * buildRoot は scripts/lib/local-config.mjs の resolveLocalConfig で読む（オプション → local.json → 既定 C:\b）。
+ * VSIX のキャッシュの場所: <buildRoot>\cache\vsix（docs/02 の8節）。
+ * buildRoot は scripts/lib/local-config.mjs の resolveLocalConfig で読む（オプション → local.json → 既定 <プロジェクト>\tmp\b）。
  * vsixRoot を渡せばそれを使う（--vsix-root）。以前は C:\b\p0\vsix に固定していた。
  */
 export function vsixRootFor(buildRoot) {
@@ -195,9 +207,45 @@ export function isRunDirPath(p, runsRoot) {
 /** 記録の根拠にする実行の置き場所に置く印のファイル名。ある置き場所は --keep-runs が消さない。 */
 export const KEEP_MARK = '.keep';
 
-/** 実行の置き場所の名前（<label>-<時刻>）か。パスの区切りや .. を含むものは false。 */
+/** 実行の置き場所の名前（<label>-<時刻>）か。パスの区切りや .. を含むものは false。
+ *  時刻は新しい形 YYMMDDThhmmss（13 文字）と、前の形 YYYYMMDDThhmmss（15 文字。C:\b の前の記録の名前）の両方を認める。 */
 export function isRunDirName(name) {
-  return typeof name === 'string' && /^[A-Za-z0-9._-]+-\d{8}T\d{6}$/.test(name) && !name.includes('..');
+  return typeof name === 'string' && /^[A-Za-z0-9._-]+-(\d{2})?\d{6}T\d{6}$/.test(name) && !name.includes('..');
+}
+
+// ---------------------------------------------------------------------------
+// 実行の置き場所の名前の長さ（2026-11-16、LongPathsEnabled=0 の PC で Electron の Code Cache が 260 文字を超えないように）
+// ---------------------------------------------------------------------------
+// 名前 = <短いラベル>-<YYMMDDThhmmss>。全体は runs で 22 文字以下、absent で 20 文字以下。
+//   ラベルは runs で 8 文字、absent で 6 文字まで。長いラベルは「先頭 (最大-3) 文字 + ラベル全体の sha1 の先頭 3 桁」に縮める（同じラベルは
+//   いつも同じ名前になり、前の 5 文字が同じ別のラベルとも普通は分かれる）。使える文字は A-Za-z0-9._-（ほかは _ にする）。
+//   完全なラベルは smoke-result.json の label と、置き場所のファイルに残る。名前から元のラベルを戻すことはしない。
+// 上限の根拠（<buildRoot>=45 文字の既定 <リポジトリ>\tmp\b のとき）: 最も長いファイルは
+//   <buildRoot>\smoke\runs\<名前>\user\user-data\Code Cache\electron-preload\<64>-<64>.cache = 45 + 12 + 名前 + 179 = 236 + 名前。
+//   259 文字以下にするには名前は 23 文字以下。1 文字の余裕を残して 22 文字（absent は \smoke\absent\ が 2 文字長いので 20 文字）にした。
+export const RUN_DIR_NAME_MAX = 22;
+export const ABSENT_DIR_NAME_MAX = 20;
+export const RUN_STAMP_LENGTH = 13; // YYMMDDThhmmss
+
+/** 名前に入れる時刻 YYMMDDThhmmss（UTC。前の形の YYYYMMDDThhmmss から先頭の 2 桁を落とした形）。 */
+export function runStamp(now = new Date()) {
+  return now.toISOString().replace(/[-:]/g, '').replace(/\..+$/, '').slice(2);
+}
+
+/** ラベルを max 文字以下にする。収まるときはそのまま（使えない文字だけ _ にする）。 */
+export function shortLabel(label, max) {
+  const clean = String(label ?? '').replace(/[^A-Za-z0-9._-]/g, '_') || 'x';
+  if (clean.length <= max) return clean;
+  const h = createHash('sha1').update(String(label)).digest('hex').slice(0, 3);
+  return clean.slice(0, Math.max(0, max - 3)) + h;
+}
+
+/** 実行の置き場所の名前 <短いラベル>-<YYMMDDThhmmss>。maxLength（既定 runs 用）以下になる。 */
+export function runDirName(label, now = new Date(), maxLength = RUN_DIR_NAME_MAX) {
+  const stamp = runStamp(now);
+  const name = `${shortLabel(label, maxLength - stamp.length - 1)}-${stamp}`;
+  if (name.length > maxLength) throw new Error(`置き場所の名前が長すぎる: ${name}`);
+  return name;
 }
 
 /**
@@ -229,7 +277,11 @@ export function rootMatches(tree, expectedExe) {
  */
 export function selectPrune(names, keep) {
   const parsed = names
-    .map((n) => ({ n, m: /-(\d{8}T\d{6})$/.exec(n) }))
+    .map((n) => {
+      const m = /-((?:\d{2})?\d{6}T\d{6})$/.exec(n);
+      // 前の形（YYYYMMDDThhmmss、15 文字）は新しい形（YYMMDDThhmmss）にそろえて比べる
+      return { n, m: m && [m[0], m[1].length === 15 ? m[1].slice(2) : m[1]] };
+    })
     .filter((x) => x.m)
     .sort((a, b) => (a.m[1] < b.m[1] ? 1 : a.m[1] > b.m[1] ? -1 : 0));
   return parsed.slice(Math.max(0, keep)).map((x) => x.n);

@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+// 引退（2026-11-15。Phase 0 は閉じた。走らせない。走らせるなら先に buildRoot を使う形に直す）。
+// 裁定: docs/user-decisions.md の 2026-11-15「ビルドの置き場所と Phase 0 の残り」。
 // Open VSX のメタデータと manifest（package.json）だけを取って保存する（VSIX は取らない）。調べ物用。
 //
 // 使い方: node scripts/p0-openvsx-meta.mjs [--out C:/b/p0/probe/openvsx] <namespace/name[/target][@version]> ...

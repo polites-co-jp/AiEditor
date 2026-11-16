@@ -34,11 +34,18 @@
 
 $script:ShukoLocalKeys = @('installRoot', 'keepVersions', 'builderRepo', 'buildRoot')
 $script:ShukoLocalPathKeys = @('installRoot', 'buildRoot', 'builderRepo')
+# The repository root (two levels above scripts\lib) with an upper-case drive letter, and the default
+# build root <repo>\tmp\b (decision 2026-11-15: nothing on C:; tmp/ is git-ignored). Same as
+# REPO_ROOT / DEFAULT_BUILD_ROOT in local-config.mjs. $PSCommandPath is this file even when dot-sourced.
+$script:ShukoRepoRoot = [IO.Path]::GetFullPath((Join-Path (Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSCommandPath))) '.'))
+$script:ShukoRepoRoot = $script:ShukoRepoRoot.TrimEnd('\')
+if ($script:ShukoRepoRoot -match '^[a-z]:') { $script:ShukoRepoRoot = $script:ShukoRepoRoot.Substring(0, 1).ToUpperInvariant() + $script:ShukoRepoRoot.Substring(1) }
+$script:ShukoDefaultBuildRoot = Join-Path (Join-Path $script:ShukoRepoRoot 'tmp') 'b'
 $script:ShukoLocalDefaults = [ordered]@{
     installRoot  = '%LOCALAPPDATA%\Programs\Shuko'
     keepVersions = 3
     builderRepo  = $null
-    buildRoot    = 'C:\b'
+    buildRoot    = $script:ShukoDefaultBuildRoot
 }
 
 function Get-ShukoLocalConfigPath {

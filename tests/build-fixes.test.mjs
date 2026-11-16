@@ -10,6 +10,7 @@ import path from 'node:path';
 import { toolchainWarnings } from '../scripts/build.mjs';
 import { resolveBuildRoot, resolveWorktree } from '../scripts/prepare.mjs';
 import { REPO, makeSandbox, removeSandbox, writeFile, runNode, runPs } from './build/helpers.mjs';
+import { NEW_DEFAULT } from './build/root.mjs';
 
 let sb;
 before(() => {
@@ -61,9 +62,9 @@ const cfgFile = (name, text) => {
   return p;
 };
 
-test('resolveBuildRoot: オプション → local.json → 既定 C:\\b', () => {
+test('resolveBuildRoot: オプション → local.json → 既定 <プロジェクト>\\tmp\\b', () => {
   const none = path.join(sb, 'nope.json');
-  assert.equal(resolveBuildRoot(undefined, { configPath: none }), 'C:\\b');
+  assert.equal(resolveBuildRoot(undefined, { configPath: none }).toLowerCase(), NEW_DEFAULT.toLowerCase());
   const c = cfgFile('rb1.json', JSON.stringify({ buildRoot: 'E:\\bb\\' }));
   assert.equal(resolveBuildRoot(undefined, { configPath: c }), 'E:\\bb', '末尾の \\ は外す');
   assert.equal(resolveBuildRoot('F:\\opt', { configPath: c }), 'F:\\opt', 'オプションが local.json に勝つ');
@@ -82,11 +83,12 @@ test('resolveBuildRoot: 共通の部品と同じ規則（知らないキー・�
   assert.throws(() => resolveBuildRoot('relative\\dir', { configPath: path.join(sb, 'nope.json') }), undefined, 'オプションの相対パス');
 });
 test('resolveWorktree: --worktree が無ければ <buildRoot>\\wt\\<tag>、あればその絶対パス', () => {
-  assert.equal(resolveWorktree('C:\\b', '1.146.0'), 'C:\\b\\wt\\1.146.0');
-  assert.equal(resolveWorktree('C:\\b', '1.146.0', undefined), 'C:\\b\\wt\\1.146.0');
-  assert.equal(resolveWorktree('C:\\b', '1.146.0', ''), 'C:\\b\\wt\\1.146.0');
-  assert.equal(resolveWorktree('C:\\b', '1.146.0', 'D:\\w\\x'), 'D:\\w\\x');
-  assert.equal(path.isAbsolute(resolveWorktree('C:\\b', '1.146.0', 'rel\\wt')), true);
+  const root = NEW_DEFAULT;
+  assert.equal(resolveWorktree(root, '1.146.0'), `${root}\\wt\\1.146.0`);
+  assert.equal(resolveWorktree(root, '1.146.0', undefined), `${root}\\wt\\1.146.0`);
+  assert.equal(resolveWorktree(root, '1.146.0', ''), `${root}\\wt\\1.146.0`);
+  assert.equal(resolveWorktree(root, '1.146.0', 'D:\\w\\x'), 'D:\\w\\x');
+  assert.equal(path.isAbsolute(resolveWorktree(root, '1.146.0', 'rel\\wt')), true);
 });
 test('prepare.mjs --config <誤りのある local.json> は終了コード 1（git に触れずに止まる）', () => {
   const bad = cfgFile('prep-bad.json', '{"InstallRoot": "C:\\\\x"}');

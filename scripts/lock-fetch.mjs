@@ -12,7 +12,7 @@
 //     --seed     基準の一覧（[{ id, version, targetPlatform?, note? }]）。省くと --lock の台帳を基準にする
 //     --lock     台帳（既定 extensions.lock.json）
 //     --out      置き場所（既定 <buildRoot>\cache\vsix。docs/02 の8節）。拡張ごとに <out>/<id>-<版>[@<target>]/ を作る
-//     --build-root  --out の既定を決める buildRoot（既定 local.json の buildRoot、無ければ C:\b）
+//     --build-root  --out の既定を決める buildRoot（既定 local.json の buildRoot、無ければ <リポジトリ>\tmp\b）
 //     --pin      基準の版をそのまま取る（新しい版を選ばない。台帳の版で VSIX のキャッシュを作るとき）
 //     --now      寝かせる期間の判定に使う今の時刻（既定は実行した時刻）
 //     --security セキュリティ修正として寝かせる期間を問わない拡張の ID

@@ -26,7 +26,7 @@
 //
 // 使い方:
 //   node scripts/lock-verify.mjs [--dir <dir>] [--build-root <dir>] [--vscode 1.146.0] [--write-lock extensions.lock.json]
-//     --dir        lock-fetch.mjs の置き場所（既定 <buildRoot>\cache\vsix。docs/02 の8節。buildRoot は --build-root → local.json → C:\b）
+//     --dir        lock-fetch.mjs の置き場所（既定 <buildRoot>\cache\vsix。docs/02 の8節。buildRoot は --build-root → local.json → <リポジトリ>\tmp\b）
 //                                [--prev-lock <前の台帳>] [--prev-dir <前の lock-fetch の置き場所>]
 //                                [--only <id>[,<id>...]] [--skip defender,ovsx] [--now <ISO 8601>] [--result <file>]
 //     --prev-lock  publishedBy が前の台帳から変わったかを見る

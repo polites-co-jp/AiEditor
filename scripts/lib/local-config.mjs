@@ -12,8 +12,8 @@
 //   - 優先の順は「オプション → local.json → 既定値」。
 //
 // 書き出している関数（テストの入口。tasks/2026-11-13-p2-build-switch/build-switch-design.md の2節）:
-//   DEFAULTS, KNOWN_KEYS
-//   localConfigPath(env)                         → 既定の local.json のパス
+//   DEFAULTS, KNOWN_KEYS, REPO_ROOT, DEFAULT_BUILD_ROOT（<このリポジトリ>\tmp\b。2026-11-15）
+//   localConfigPath(env)                       → 既定の local.json のパス
 //   expandEnv(value, env)                        → %NAME% を展開した文字列（知らない名前は例外）
 //   parseLocalConfig(text, source)               → オブジェクト（読めなければ例外）
 //   validateLocalConfig(obj)                     → 誤りの文字列の配列（正しければ空）
@@ -26,11 +26,21 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+// このビルドリポジトリの直下（scripts/lib の2つ上）。ドライブ文字は大文字にそろえる（cwd の書き方で e: と E: が混ざらないように）。
+export const REPO_ROOT = (() => {
+  const r = path.win32.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
+  return /^[a-z]:/.test(r) ? r[0].toUpperCase() + r.slice(1) : r;
+})();
+
+// buildRoot の既定: <このリポジトリ>\tmp\b（裁定 2026-11-15「C: に置かない」。tmp/ は .gitignore 済み）。
+// 前の既定は C:\b。local.json に buildRoot があればそれが勝つ。
+export const DEFAULT_BUILD_ROOT = path.win32.join(REPO_ROOT, "tmp", "b");
+
 export const DEFAULTS = Object.freeze({
   installRoot: "%LOCALAPPDATA%\\Programs\\Shuko",
   keepVersions: 3,
   builderRepo: null,
-  buildRoot: "C:\\b",
+  buildRoot: DEFAULT_BUILD_ROOT,
 });
 
 export const KNOWN_KEYS = Object.freeze(["installRoot", "keepVersions", "builderRepo", "buildRoot"]);

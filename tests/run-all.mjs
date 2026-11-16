@@ -14,6 +14,14 @@ const noPs = args.includes('--no-ps');
 const oi = args.indexOf('--only');
 const only = oi >= 0 ? args[oi + 1] : null;
 
+// 2026-11-15 の裁定（C: に一時のファイルを置かない）: 子のプロセスの TEMP・TMP を、プロジェクトの tmp\tests-temp\ に向ける
+// （os.tmpdir() やテストの一時フォルダがここに入る）。tmp/ は .gitignore 済み。利用者の全体の環境変数は変えない（子の環境だけ）。
+const tempDir = process.env.AIED_TEST_TEMP || path.join(root, 'tmp', 'tests-temp');
+fs.mkdirSync(tempDir, { recursive: true });
+// tmp\ is inside this repository's folder, so a "folder that is not a git repository" there would find <repo>\.git.
+// GIT_CEILING_DIRECTORIES stops git before it enters <repo> (git run in <repo> itself still works).
+const childEnv = { ...process.env, TEMP: tempDir, TMP: tempDir, GIT_CEILING_DIRECTORIES: process.env.GIT_CEILING_DIRECTORIES || root };
+
 const files = fs.readdirSync(here).filter((f) => f.endsWith('.test.mjs')).sort();
 const ps = fs.readdirSync(here).filter((f) => f.endsWith('.tests.ps1')).sort();
 const rows = [];
@@ -21,7 +29,7 @@ const failures = [];
 
 for (const f of files) {
   if (only && !f.includes(only)) continue;
-  const r = spawnSync(process.execPath, ['--test', '--test-reporter=tap', path.join('tests', f)], { cwd: root, encoding: 'utf8', maxBuffer: 256 * 1024 * 1024 });
+  const r = spawnSync(process.execPath, ['--test', '--test-reporter=tap', path.join('tests', f)], { cwd: root, env: childEnv, encoding: 'utf8', maxBuffer: 256 * 1024 * 1024 });
   const out = r.stdout || '';
   const num = (k) => {
     const m = out.match(new RegExp(`^# ${k} (\\d+)`, 'm'));
@@ -35,7 +43,7 @@ for (const f of files) {
 if (!noPs) {
   for (const f of ps) {
     if (only && !f.includes(only)) continue;
-    const r = spawnSync('powershell', ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', path.join('tests', f)], { cwd: root, encoding: 'utf8', maxBuffer: 256 * 1024 * 1024 });
+    const r = spawnSync('powershell', ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', path.join('tests', f)], { cwd: root, env: childEnv, encoding: 'utf8', maxBuffer: 256 * 1024 * 1024 });
     const out = (r.stdout || '') + (r.stderr || '');
     // The PowerShell test scripts print "PASS"/"FAIL" lines and a summary; count them and keep the exit code.
     const sm = out.match(/passed:\s*(\d+)\s+failed:\s*(\d+)/i);

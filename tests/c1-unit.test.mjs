@@ -24,7 +24,8 @@ const patchFile = unit?.patch ? join(UNIT_DIR, unit.patch) : null;
 const noPatch = noUnit || (patchFile && existsSync(patchFile) ? false : '実装なし: edits.patch が無い');
 
 // 本家 1.146.0（常設の clone のタグ）。読めなければ、本家の実在を見る検査だけ飛ばす。
-const UP_REPO = process.env.AIED_UPSTREAM_REPO || 'C:/b/vscode';
+import { UPSTREAM_REPO as UP_DEFAULT } from './build/root.mjs';
+const UP_REPO = UP_DEFAULT; // 常設の clone（<buildRoot>/vscode。tests/build/root.mjs）
 const UP_TAG = process.env.AIED_UPSTREAM_TAG || '1.146.0';
 const upOk = existsSync(UP_REPO) && spawnSync('git', ['-C', UP_REPO, 'rev-parse', '--verify', `${UP_TAG}^{commit}`]).status === 0;
 const upHas = (p) => spawnSync('git', ['-C', UP_REPO, 'cat-file', '-e', `${UP_TAG}:${p}`]).status === 0;

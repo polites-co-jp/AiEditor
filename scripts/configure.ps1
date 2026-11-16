@@ -28,7 +28,7 @@
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts/configure.ps1
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts/configure.ps1 -InstallRoot D:\Apps\Shuko
-  powershell -NoProfile -ExecutionPolicy Bypass -File scripts/configure.ps1 -ConfigPath C:\b\trial-install\local.json -InstallRoot C:\b\trial-install\B -NoShellIntegration
+  powershell -NoProfile -ExecutionPolicy Bypass -File scripts/configure.ps1 -ConfigPath <buildRoot>\trial-install\local.json -InstallRoot <buildRoot>\trial-install\B -NoShellIntegration
 
   NOTE: this file is ASCII only on purpose (Windows PowerShell 5.1 reads BOM-less scripts as ANSI).
 #>

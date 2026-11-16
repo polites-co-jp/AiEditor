@@ -21,7 +21,7 @@
   The file is written by tools/watch/set-token.ps1 (Read-Host -AsSecureString | ConvertFrom-SecureString).
 
 .EXAMPLE
-  powershell -NoProfile -NonInteractive -ExecutionPolicy Bypass -File scripts/lib/read-secret.ps1 -Path C:\b\p4-watch\trial\selfcheck.dpapi
+  powershell -NoProfile -NonInteractive -ExecutionPolicy Bypass -File scripts/lib/read-secret.ps1 -Path <buildRoot>\p4-watch\trial\selfcheck.dpapi
 
   NOTE: this file is ASCII only on purpose (Windows PowerShell 5.1 reads BOM-less scripts as ANSI).
 #>

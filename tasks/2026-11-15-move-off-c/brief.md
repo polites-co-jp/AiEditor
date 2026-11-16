@@ -2,7 +2,7 @@
 
 - 担当: meng-tian（蒙恬）。テストは cao-shen（曹参）
 - 依頼日: 2026-11-15
-- 状態: 依頼中
+- 状態: 完了
 
 ## 目的
 
@@ -57,7 +57,7 @@
 
 ## 結果
 
-<完了後にリーダーが記入する>
+採用。`buildRoot` の既定を `<リポジトリ>	mp` にし、ビルドの子の環境で TEMP・キャッシュを `<buildRoot>` の下へ向けた。写すだけの台本 `scripts/move-build-root.mjs`。スモーク・absent・監査の作業場所の名前を短くした（最長 258 文字）。`netaudit.ps1` はネットのログを読んだら消す。Phase 0 の道具は引退の注記。大岡越前守の検証で「移す前の直し」合格（`tasks/2026-11-15-move-off-c-verify/verification-ooka.md`。run-all 2604、fail 0）。
 
 ## 未解決
 

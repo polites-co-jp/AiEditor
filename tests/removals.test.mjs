@@ -12,7 +12,8 @@ import { fileURLToPath } from 'node:url';
 
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 // 本家のままのソースは、作業ツリー（ビルドで書き換わる）ではなく、常設の clone のタグから git で読む。
-const UPSTREAM_REPO = process.env.AIED_UPSTREAM_REPO || 'C:/b/vscode';
+import { UPSTREAM_REPO as UP_DEFAULT } from './build/root.mjs';
+const UPSTREAM_REPO = UP_DEFAULT; // 常設の clone（<buildRoot>/vscode。tests/build/root.mjs）
 const UPSTREAM_TAG = process.env.AIED_UPSTREAM_TAG || '1.146.0';
 const UPSTREAM = `${UPSTREAM_REPO} の ${UPSTREAM_TAG}`;
 const git = (...args) => spawnSync('git', ['-C', UPSTREAM_REPO, ...args], { encoding: 'utf8', maxBuffer: 256 * 1024 * 1024 });

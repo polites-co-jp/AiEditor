@@ -4,8 +4,9 @@
   (VSCODE_PORTABLE), to see that it starts and where the user data, the extensions and argv.json go.
 
 .DESCRIPTION
-  1. Unpacks -Zip with %SystemRoot%\System32\tar.exe into -Dest (default C:\b\p1\<zip name>), unless
-     -Dest already has the unpacked folder. -Dest must be under C:\b\p1 or C:\b\p2.
+  1. Unpacks -Zip with %SystemRoot%\System32\tar.exe into -Dest (default <buildRoot>\p1\<zip name>), unless
+     -Dest already has the unpacked folder. -Dest must be under <buildRoot>\p1 or <buildRoot>\p2
+     (<buildRoot>: local.json, default <repo>\tmp\b since 2026-11-15; before that C:\b).
   2. Finds exe / CLI / product.json (flat <top>\resources\app or versioned <top>\<commit10>\resources\app).
   3. Runs "<cli> --version" and starts "<exe> --new-window" with ELECTRON_RUN_AS_NODE,
      ELECTRON_NO_ATTACH_CONSOLE and every VSCODE_* removed and only VSCODE_PORTABLE=<Dest>\portable
@@ -23,8 +24,8 @@
   Exit code: 0 = started and stayed alive and no daily data folder changed, 1 = otherwise, 2 = bad arguments.
 
 .EXAMPLE
-  powershell -NoProfile -ExecutionPolicy Bypass -File scripts/p1-launch-check.ps1 -Zip C:\b\dist\1.146.0-upstream.zip -OutFile tasks\x\launch-check.json
-  powershell -NoProfile -ExecutionPolicy Bypass -File scripts/p1-launch-check.ps1 -Root C:\b\wt\VSCode-win32-x64 -OutFile tasks\x\launch-check.json
+  powershell -NoProfile -ExecutionPolicy Bypass -File scripts/p1-launch-check.ps1 -Zip <buildRoot>\dist\1.146.0-upstream.zip -OutFile tasks\x\launch-check.json
+  powershell -NoProfile -ExecutionPolicy Bypass -File scripts/p1-launch-check.ps1 -Root <buildRoot>\wt\VSCode-win32-x64 -OutFile tasks\x\launch-check.json
     (-Root: start an editor folder in place instead of unpacking a zip; exactly one of -Zip / -Root)
 
   NOTE: ASCII only on purpose (Windows PowerShell 5.1 reads BOM-less scripts as ANSI).
@@ -33,8 +34,8 @@
 param(
     [string]$Zip,
     # Instead of -Zip: an editor folder that is already there (for example the gulp output
-    # C:\b\wt\VSCode-win32-x64). It is started in place (read only); the portable folder goes to
-    # -Dest (default C:\b\p1\<folder name>), never next to the editor. Must be under C:\b.
+    # <buildRoot>\wt\VSCode-win32-x64). It is started in place (read only); the portable folder goes to
+    # -Dest (default <buildRoot>\p1\<folder name>), never next to the editor. Must be under <buildRoot>.
     [string]$Root,
     [string]$Dest,
     [int]$CheckSeconds = 10,
@@ -45,10 +46,13 @@ param(
 $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'lib\p0-common.ps1')
 
-$p1Root = 'C:\b\p1'
-# -Dest may be under C:\b\p1 (Phase 1) or C:\b\p2 (Phase 2 builds, unpacked for the gate checks;
-# tasks/2026-11-14-p2-builds). The default stays C:\b\p1.
-$destRoots = @('C:\b\p1', 'C:\b\p2')
+# <buildRoot> from local.json (default <repo>\tmp\b; decision 2026-11-15, nothing on C:). Before: C:\b.
+. (Join-Path $PSScriptRoot 'lib\local-config.ps1')
+$buildRoot = (Resolve-ShukoLocalConfig).buildRoot
+$p1Root = Join-Path $buildRoot 'p1'
+# -Dest may be under <buildRoot>\p1 (Phase 1) or <buildRoot>\p2 (Phase 2 builds, unpacked for the gate checks;
+# tasks/2026-11-14-p2-builds). The default stays <buildRoot>\p1.
+$destRoots = @($p1Root, (Join-Path $buildRoot 'p2'))
 $tar = Join-Path $env:SystemRoot 'System32\tar.exe'
 
 function Assert-P1Path {
@@ -77,7 +81,7 @@ if ($Zip) {
 } else {
     if (-not (Test-Path -LiteralPath $Root)) { [Console]::Error.WriteLine("folder not found: $Root"); exit 2 }
     $Root = [IO.Path]::GetFullPath($Root).TrimEnd('\')
-    if (-not $Root.StartsWith('C:\b\', [StringComparison]::OrdinalIgnoreCase)) { [Console]::Error.WriteLine("refusing a folder outside C:\b : $Root"); exit 2 }
+    if (-not $Root.StartsWith($buildRoot.TrimEnd('\') + '\', [StringComparison]::OrdinalIgnoreCase)) { [Console]::Error.WriteLine("refusing a folder outside $buildRoot : $Root"); exit 2 }
     if (-not $Dest) { $Dest = Join-Path $p1Root (Split-Path -Leaf $Root) }
 }
 try { $Dest = Assert-P1Path $Dest } catch { [Console]::Error.WriteLine($_.Exception.Message); exit 2 }

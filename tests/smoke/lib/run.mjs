@@ -13,7 +13,7 @@ import { homedir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 import {
   DEFAULT_BUILD, KEEP_MARK, SMOKE_ROOT, assertSafeWritePath, claudeIdeDir, cleanEditorEnv, collectLogErrors, resolveVsixRoot, errorKeys, extractChromiumErrors,
-  findOnPath, listProcesses, lockBelongsTo, newErrors, newLocks, normalizeError, readLock, resolveEditor, selectPrune, snapshotLocks, splitByCutoff, stopByRunDir, stopTree, treeFromProcesses,
+  shortLabel, findOnPath, listProcesses, lockBelongsTo, newErrors, newLocks, normalizeError, readLock, resolveEditor, selectPrune, snapshotLocks, splitByCutoff, stopByRunDir, stopTree, treeFromProcesses,
 } from './common.mjs';
 import { buildUserSettings, defaultExtensionIds, findVsix, prepareExtensions, prepareRunDir, readLedger } from './env.mjs';
 import { COMPLETION_POSITIONS, createWorkspace, diffFixtures } from './fixtures.mjs';
@@ -86,7 +86,7 @@ export const USAGE = `使い方: node tests/smoke-run.mjs [オプション]
   --no-second-window     2つめのウィンドウを試さない
   --keep-locks           増えた ~/.claude/ide/*.lock を消さない
   --locale <ja|none>     argv.json の locale（既定 ja。none で入れない）
-  置き場所は ${SMOKE_ROOT}\\runs\\<label>-<時刻>\\。結果は smoke-result.json / smoke-result.md。`;
+  置き場所は ${SMOKE_ROOT}\\runs\\<短いラベル>-<YYMMDDThhmmss>\\（22 文字以下。長いラベルは縮める）。結果は smoke-result.json / smoke-result.md。`;
 
 // ---------------------------------------------------------------------------
 // 結果の集計（純粋）
@@ -286,7 +286,8 @@ export async function runSmoke(opts, log = console.log) {
     const f = findVsix(id, want, vsixRoot);
     return { id, version: f.version, path: f.path };
   });
-  const profile = `${editor.version}-${opts.label.replace(/[^A-Za-z0-9._-]/g, '_')}${opts.ext ? '-custom' : ''}`;
+  // 拡張のフォルダ名（<SMOKE_ROOT>\ext\<profile>）。ラベルは 12 文字以下に縮める（260 文字の制限。置き場所の名前と同じ縮め方）
+  const profile = `${editor.version}-${shortLabel(opts.label, 12)}${opts.ext ? '-custom' : ''}`;
   const ext = prepareExtensions({ editor, vsix, profile, rebuild: opts.rebuildExt, reuse: opts.reuseExt, root: opts.root, log });
   const notInstalled = ext.installed.filter((i) => !i.ok);
 

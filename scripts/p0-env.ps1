@@ -1,3 +1,6 @@
+# RETIRED (2026-11-15): Phase 0 is closed. Do not run this script. If it has to run again, first change it
+# to use buildRoot (scripts\lib\local-config.ps1) instead of C:\b. Decision: docs/user-decisions.md,
+# 2026-11-15 "build location and the rest of Phase 0".
 <#
 .SYNOPSIS
   (Re)creates a Phase 0 test environment under C:\b\p0\data\<name>\ (docs/07 2.1).

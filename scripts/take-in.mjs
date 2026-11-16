@@ -19,6 +19,7 @@ import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
 
 import { resolveLocalConfig } from "./lib/local-config.mjs";
+import { tempEnvVars, applyEnvVars, ensureEnvDirs } from "./lib/build-env.mjs";
 import { nextLabel, resolveEditorLayout } from "./build.mjs";
 import * as G from "./lib/apply/git.mjs";
 import { ArgError, USAGE, parseTakeInArgs, extLabel, branchFor } from "./lib/take-in/args.mjs";
@@ -80,8 +81,21 @@ function gitOk(cwd, args, opts = {}) {
   return r.stdout;
 }
 
+// 子の環境の TEMP・TMP（2026-11-15、裁定「C: に置かない」）。buildRoot が決まったら setChildTemp で <buildRoot>\tmp に向ける。
+// 向けるのは runLogged で起こす子（build.mjs・apply.mjs・スモーク・監査・install-extensions・switch.ps1）だけ。
+// claude -p（判定と修理）は claudeChildEnv の環境のまま（Claude Code の一時のファイルはビルドのものでない）。
+// フォルダは、子を最初に起こすときに作る（途中で止まったときや dry-run では作らない）。
+let CHILD_ENV = null;
+let CHILD_TEMP_VARS = null;
+function setChildTemp(ctx) {
+  CHILD_TEMP_VARS = tempEnvVars(ctx.buildRoot);
+  CHILD_ENV = applyEnvVars(process.env, CHILD_TEMP_VARS).env;
+  ctx.rec.childTemp = CHILD_TEMP_VARS;
+}
+
 // 長い手順を走らせる。出力は画面とログに流し、末尾を返す。
-function runLogged({ cmd, args, cwd, logFile, env = process.env }) {
+function runLogged({ cmd, args, cwd, logFile, env = CHILD_ENV || process.env }) {
+  if (env === CHILD_ENV && CHILD_TEMP_VARS) ensureEnvDirs(CHILD_TEMP_VARS);
   return new Promise((resolve) => {
     fs.mkdirSync(path.dirname(logFile), { recursive: true });
     const out = fs.createWriteStream(logFile);
@@ -503,7 +517,7 @@ async function recordAndWriteBack(ctx, judged, target) {
 // 本体（core）
 // ---------------------------------------------------------------------------
 
-// スモークの実行の置き場所（C:\b\smoke\runs\...）から、判定に要る結果を records に写す（リーダーの判断 2026-11-14）。
+// スモークの実行の置き場所（<buildRoot>\smoke\runs\...）から、判定に要る結果を records に写す（リーダーの判断 2026-11-14）。
 function copySmokeResult(runDir, dest) {
   fs.mkdirSync(dest, { recursive: true });
   for (const f of ["smoke-result.json", "smoke-result.md"]) if (fs.existsSync(path.join(runDir, f))) fs.copyFileSync(path.join(runDir, f), path.join(dest, f));
@@ -527,6 +541,14 @@ async function buildNetEnv(ctx, layout) {
   writeJson(L.settings, NETAUDIT_SETTINGS);
   writeJson(L.record, { createdBy: "scripts/take-in.mjs", label: ctx.label, createdAt: new Date().toISOString(), editor: { root: layout.root, exe: layout.exe, cli: layout.cli, version: layout.version }, ledger: path.join(ctx.bwt, "extensions.lock.json"), settings: NETAUDIT_SETTINGS, installed: install ? install.installed : null });
   return { ok: true, envDir, message: null, install: install && { result: install.result, count: Array.isArray(install.installed) ? install.installed.length : null } };
+}
+
+// 通信の監査の作業場所（netaudit.ps1 の -WorkRoot）。<buildRoot>\audit を、計測・監査の台本と共有する（2026-11-15）。
+// 前は <buildRoot>\take-in\<label>\netaudit-run。tmp\b の下では、実行のフォルダの中の Electron の Code Cache が 260 文字を
+// 超えるため、浅い場所にした（handoff-notes-meng-tian.md の2回目）。netaudit.ps1 はネットのログを <WorkRoot の親>\netlog、
+// つまり <buildRoot>\netlog に書く。
+function netauditWorkRoot(ctx) {
+  return path.join(ctx.buildRoot, "audit");
 }
 
 function switchSupportsExpandOnly() {
@@ -576,7 +598,7 @@ function corePlan(ctx) {
     netEnv: a.netEnv
       ? { given: path.resolve(a.netEnv) }
       : { cmd: NODE, args: [path.join(SCRIPT_DIR, "install-extensions.mjs"), ...netEnvInstallArgs({ cli: "<新しい版の bin\\<applicationName>.cmd>", envDir: path.join(ctx.buildRoot, "take-in", ctx.label, "netaudit-env"), lock: path.join(ctx.bwt, "extensions.lock.json"), out: path.join(ctx.recDir, "netaudit-env", "install-extensions.json"), buildRoot: ctx.buildRoot, config: a.config })], cwd: REPO, thenWrites: { settings: NETAUDIT_SETTINGS } },
-    netaudit: { cmd: "powershell", args: netauditArgs({ script: path.join(SCRIPT_DIR, "netaudit.ps1"), exe: "<editor の exe>", envDir: a.netEnv ? path.resolve(a.netEnv) : path.join(ctx.buildRoot, "take-in", ctx.label, "netaudit-env"), label: ctx.label, duration: a.netDuration, outDir: path.join(ctx.recDir, "netaudit"), previous: netPreviousFor(ctx), workRoot: path.join(ctx.buildRoot, "take-in", ctx.label, "netaudit-run") }), cwd: REPO },
+    netaudit: { cmd: "powershell", args: netauditArgs({ script: path.join(SCRIPT_DIR, "netaudit.ps1"), exe: "<editor の exe>", envDir: a.netEnv ? path.resolve(a.netEnv) : path.join(ctx.buildRoot, "take-in", ctx.label, "netaudit-env"), label: ctx.label, duration: a.netDuration, outDir: path.join(ctx.recDir, "netaudit"), previous: netPreviousFor(ctx), workRoot: netauditWorkRoot(ctx) }), cwd: REPO },
   };
 }
 
@@ -585,6 +607,7 @@ async function runCore(a) {
   const up = mainUpstream();
   const ctx = { kind: "core", args: a, dryRun: a.dryRun, buildRoot: cfg.buildRoot, installRoot: cfg.installRoot, tag: a.tag, rec: newRecord("core", a) };
   CURRENT = ctx;
+  setChildTemp(ctx);
   ctx.prevTag = a.prevTag || up.tag || null;
   ctx.repository = up.repository || "https://github.com/microsoft/vscode.git";
   ctx.label = a.label || nextLabel(a.tag, existingLabels());
@@ -613,7 +636,7 @@ async function runCore(a) {
       repair: describeInvocation(buildClaudeInvocation({ kind: "repair", repoRoot: REPO, worktree: ctx.wt, builderWorktree: ctx.bwt, prompt: REPAIR_PROMPT, input: "(修理の依頼の本文)", claudePath: ctx.claudePath, model: a.repairModel, rulesFile: path.join(REPO, "TAKE-IN.md") })),
       verdict: describeInvocation(buildClaudeInvocation({ kind: "verdict", repoRoot: REPO, prompt: JUDGE_PROMPT(`records/take-in/${ctx.label}/judge-request.md`), claudePath: ctx.claudePath })),
     };
-    const out = { result: "dry-run", label: ctx.label, tag: a.tag, prevTag: ctx.prevTag, commit: ctx.commit || "(git ls-remote で取る)", branch: ctx.branch, steps: CORE_STEPS.filter((s) => run(s.n)), paths: ctx.rec.paths, currentLabel: ctx.currentLabel, watch, plan, claude: inv, recordDirExists: fs.existsSync(ctx.recDir), expandOnlySupported: plan.expand.supported };
+    const out = { result: "dry-run", label: ctx.label, tag: a.tag, prevTag: ctx.prevTag, commit: ctx.commit || "(git ls-remote で取る)", branch: ctx.branch, steps: CORE_STEPS.filter((s) => run(s.n)), paths: ctx.rec.paths, childTemp: ctx.rec.childTemp, currentLabel: ctx.currentLabel, watch, plan, claude: inv, recordDirExists: fs.existsSync(ctx.recDir), expandOnlySupported: plan.expand.supported };
     console.log(JSON.stringify(out, null, 2));
     return 0;
   }
@@ -813,7 +836,7 @@ async function runCore(a) {
     if (layout && envDir) {
       const args = netauditArgs({
         script: path.join(SCRIPT_DIR, "netaudit.ps1"), exe: layout.exe, envDir, label: ctx.label, duration: a.netDuration,
-        outDir: path.join(ctx.recDir, "netaudit"), previous: netPreviousFor(ctx), workRoot: path.join(ctx.buildRoot, "take-in", ctx.label, "netaudit-run"),
+        outDir: path.join(ctx.recDir, "netaudit"), previous: netPreviousFor(ctx), workRoot: netauditWorkRoot(ctx),
       });
       s.command = ["powershell", ...args].join(" ");
       const r = await runLogged({ cmd: "powershell", args, cwd: REPO, logFile: path.join(ctx.recDir, "logs", "netaudit.log") });
@@ -867,6 +890,7 @@ async function runExt(a) {
   const cfg = resolveLocalConfig({ configPath: a.config || undefined, overrides: { buildRoot: a.buildRoot || undefined, installRoot: a.installRoot || undefined } });
   const ctx = { kind: "ext", args: a, dryRun: a.dryRun, buildRoot: cfg.buildRoot, installRoot: cfg.installRoot, rec: newRecord("ext", a) };
   CURRENT = ctx;
+  setChildTemp(ctx);
   ctx.claudePath = resolveClaudePath(a) || "claude";
   ctx.currentLabel = currentLabel(ctx.installRoot);
   const ledgerPath = path.join(REPO, "extensions.lock.json");
@@ -888,7 +912,7 @@ async function runExt(a) {
   if (a.dryRun) {
     const label = a.version ? extLabel(a.id, a.version) : extLabel(a.id, "<lock-fetch が選ぶ版>");
     const out = {
-      result: "dry-run", id: a.id, ledgerVersion: entry.version, requested: a.version, label, branch: `take-in/${label}`, runDir, editorVersion, watch,
+      result: "dry-run", id: a.id, ledgerVersion: entry.version, requested: a.version, label, branch: `take-in/${label}`, runDir, editorVersion, watch, childTemp: ctx.rec.childTemp,
       plan: {
         fetch: { cmd: NODE, args: fetchArgs },
         verify: { cmd: NODE, args: [path.join(SCRIPT_DIR, "lock-verify.mjs"), "--dir", runDir, "--only", a.id, "--vscode", editorVersion || "?", "--prev-lock", ledgerPath, "--prev-dir", "<前の版の取得場所>", "--write-lock", path.join(ctx.buildRoot, "take-in", label, "repo", "extensions.lock.json"), "--result", path.join(REPO, "records", "take-in", label, "verify-result.json")] },

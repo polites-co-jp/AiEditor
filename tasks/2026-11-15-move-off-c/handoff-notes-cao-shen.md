@@ -124,12 +124,67 @@ Phase 0 の道具を直す範囲は brief に書かれていない。直さな�
 ### 実行結果
 
 - `tests/move-off-c.test.mjs` 25 件、通った 25。`tests/smoke.test.mjs` 75 件、通った 75。
-- run-all の件数（`--save tasks/2026-11-15-move-off-c/run-all-after3.txt`）: RUN_ALL_RESULT
+- run-all の件数（`--save tasks/2026-11-15-move-off-c/run-all-after3.txt`、名前の短縮を入れた時点。終了コード 0）: 2579件、通った 2572、落ちた 0、飛ばした 7（`removals.test.mjs` の元からの7件）。
 
 ### その他
 
 - `probe-*.ps1` は直さない（閉じた試し、git の管理外）。
 - 2回目の報告は SubagentHandback が先に出した報告で閉じていたため届いていなかった。内容は上の「2回目」の節にある。
+
+## 4回目（計測と監査の既定の置き場所、netlog の消去、移す台本のテスト）
+
+### 1. netaudit.ps1 のネットのログ（案2）
+
+- `Remove-AuditLogFiles -Paths <...> [-Tries 5] [-WaitMilliseconds 500]` を足した。ネットのログ（`--log-net-log`）と Node のデバッグ出力（stdout・stderr。宛先が載る）を、読み取った**直後**に消す。無いファイルは消えたことにする。消せなかったパスの配列を返す（呼ぶ側は `@(...)` で包む）。
+- `Invoke-NetAudit` は、ネットのログと Node のデバッグ出力を読み終えたあとで消し、`destinations.json` の Meta に `NetLogFilesRemoved`・`NetLogFilesStuck` を書く。記録（csv・json・audit.md）を書いた後、消し損ねがあれば `could not remove the net log files after reading them (...)` で**投げて止まる**。記録は残る。消し損ねたファイルの一覧が誤りの文に出る。
+- 置き場所: 作業場所の既定を `<buildRoot>\audit` にしたので、ネットのログの既定（`<WorkRoot の親>\netlog`）は `<buildRoot>\netlog` になる。`-NetLogDir` で変えられる（変えたときも消す）。
+- テスト（`tests/netaudit.tests.ps1`、4件足した）:
+  - 消えること、無い・空のパスは消えた扱い。
+  - 開いたままのファイル（`FileShare.None`）は返り、ほかのファイルは消え、離すと消せる。
+  - `Invoke-NetAudit` の本文で、消す呼び出しが両方の読み取りより後ろで、誤りの throw が正常な return より前にあり、3つのファイルが対象で、記録に結果が入ること（本物のエディタを起動せず、本文の並びで確かめた）。
+  - 既定の作業場所と、ネットのログの場所が `<buildRoot>\netlog` になること。
+- 見張れていない所: エディタを起動する本物の通しでは確かめていない（起動しない決まり）。実行の途中で例外になった（宛先を読む前に落ちた）ときは、ネットのログが残る。この経路は消さない（`finally` に消去を足していない）。残ったログは `<buildRoot>\netlog` にあり、次の実行では名前が違うので消えない。必要なら次の依頼で、`finally` でも消すかを決めてほしい。
+
+### 2. 蒙恬の頼み3点
+
+- `scripts/measure.ps1` の `Get-DefaultWorkRoot` = `<buildRoot>\audit`（取り込みと同じ）。印の名前 `.p0-run-root` は変えていない（片づけの安全の目印で、名前を変えると今ある印と合わなくなるため）。`Test-CleanableRoot` の説明も `<buildRoot>\audit` に直した。
+- `ws-info.json` の既定 = `<buildRoot>\measure\ws-info.json`（`Get-DefaultOpenFiles`）。本文に旧 `p0\ws-info.json` が残らないことも検査した。
+- `tests/smoke/lib/common.mjs` の `DEFAULT_BUILD` = `<buildRoot>\official\vscode-1.146.0`。`tests/smoke.test.mjs` の期待も直した。
+- `tests/measure.tests.ps1` の期待を直した（既定は `tmp\b\audit`、local.json の buildRoot が勝つと `D:\mybuild\audit`、`-WorkRoot <buildRoot>` が `-CleanStale` を拒む）。
+
+### 3. run-absent.mjs の説明文
+
+`C:\b\p0\vscode-1.146.0` を `<buildRoot>\official\vscode-1.146.0`（既定の説明、使い方の例2つ）に、`C:\b\smoke\absent\` を `<buildRoot>\smoke\absent\`（名前は `<短いラベル>-<YYMMDDThhmmss>` の20文字以下）に直した。例の `tests/absent-run.mjs` は存在しない名前だったので `tests/removals/run-absent.mjs` に直した。
+
+### 4. scripts/move-build-root.mjs のテスト
+
+`tests/move-build-root.test.mjs`（22件。通った 22）。偽の元と写し先は `tmp/tests` の下の一時の入れ物。`C:\b` にも `<リポジトリ>\tmp\b` にも触れない。
+
+| 蒙恬の書き付けの項目 | 確かめたこと |
+|---|---|
+| 上書きしない | 写し先に同じものがあれば `already`（終了コード 0）。2回走らせても写し先が変わらない。違う中身（同じ大きさで SHA-256 だけ違う、大きさが違う）は上書きされず、元のまま |
+| 違えば problem | file・dir ともに `problem`（`上書きしない`）、終了コード 1。`verifySame` が数・大きさ・SHA-256 の違いを見つける |
+| 259 文字を超えれば problem | 写し先を長くすると `長すぎる` で `problem`、写し先を作らない。ファイルは 259 ちょうどが通り 260 が落ちる。フォルダは 247 文字（`DIR_LIMIT`）まで |
+| 作業ツリーの付いた clone は problem | 作業ツリー2個（計3個）の clone は `problem`、写さない。main だけの clone は `copied`、refs が元と同じ、写し先の作業ツリーは1個 |
+| `--from` と `--to` が重なれば 2 | 同じ・`--to` が中・`--from` が中・大文字小文字違い・末尾の `\` 違い。名前が前方一致するだけの兄弟は重なりとしない |
+| 元を変えない | 写した後の元の全ファイルの相対パス・大きさ・SHA-256・更新時刻が同じ。clone でも同じ |
+
+足したこと: `PLAN` の形と、公式の版・`ws-info`・古いスモークの結果の写し先（`official/`・`measure/`・`smoke/archive/`）、`parseArgs` の誤り、dry-run は何も作らない、`results` は各実行の直下のファイルだけ（`user\`・`ws\` の下と `notes.txt` は写さない）、リンク（ジャンクション）は `problem`、`--to` の既定（local.json → `<リポジトリ>\tmp\b`）、`--out`、台本が何も消さない（`unlink`・`rm`・`rename` を呼ばない、`COPYFILE_EXCL` がある）。
+
+### 5. 実行結果
+
+- 個別: `netaudit.tests.ps1` 108件、`measure.tests.ps1` 141件、`move-build-root.test.mjs` 22件、すべて fail 0。
+- run-all の件数（`--save tasks/2026-11-15-move-off-c/run-all-after4.txt`）（終了コード 0）: **2601件、通った 2594、落ちた 0、飛ばした 7**（`removals.test.mjs` の元からの7件）。
+
+## 5回目（例外の経路でもネットのログを消す）
+
+- `scripts/netaudit.ps1` の `Invoke-NetAudit`: ネットのログのファイル名を決めた後ろ（エディタの起動から記録の書き出しまで）を `try { ... } catch { ... }` で包んだ。例外になったら、読めたかどうかに関わらず、ネットのログと Node のデバッグ出力（stdout・stderr）を `Remove-AuditLogFiles` で消してから、**元の例外をそのまま投げ直す**。
+- 消し損ねたときは、元の例外の文に `-- ALSO could not remove the net log files (they can hold secrets; remove them by hand): <パス>` を足して投げる（元の誤りと残ったファイルの両方が分かる）。正常な経路の「読んだ後に消せなかった」誤りは二重にせず、そのまま投げる。
+- テスト（`tests/netaudit.tests.ps1`、3件足した。111件）: `Start-EditorProcess` を、3つのログを書いてから失敗する偽物に差し替えて `Invoke-NetAudit` を走らせる（本物のエディタは起動しない）。
+  1. ログが全部消え、出てくる誤りは元の例外で、`ALSO` が付かない。
+  2. 開いたまま（`FileShare.None`）のログは残り、誤りの文に元の例外と残ったファイルの両方が出る。ほかのファイルは消えている。
+  3. 正常な経路の誤りを二重にしない（文の判定が本文にある）。
+- run-all の件数（`--save tasks/2026-11-15-move-off-c/run-all-after5.txt`）（終了コード 0）: **2604件、通った 2597、落ちた 0、飛ばした 7**（`removals.test.mjs` の元からの7件）。
 
 ## 権限について（リーダーへ）
 

@@ -5,7 +5,8 @@
 //   node scripts/convert-sublime-keys.mjs [--cache <dir>] [--vsix <sublime の VSIX>] [--claude <Claude Code の VSIX か package.json>]
 //                                         [--md <書き出す .md>] [--apply]
 //
-//   --cache   取ったものと結果の置き場所（既定 C:/b/p0/sublime）
+//   --cache   取ったものと結果の置き場所（既定 <buildRoot>\p0\sublime。buildRoot は local.json、無ければ <リポジトリ>\tmp\b。
+//             2026-11-15 までは C:/b/p0/sublime）
 //   --vsix    元の VSIX を指定する（既定: Open VSX から 4.1.10 を取り、.sha256 と照合する）
 //   --claude  Claude Code の manifest の出どころ。既定の順: <buildRoot>\cache\vsix の Claude Code の VSIX
 //             → extensions.lock.json の版を Open VSX の API で → Open VSX の最新
@@ -32,7 +33,7 @@ const OPENVSX = 'https://open-vsx.org/api';
 const USER_AGENT = 'p0-convert-sublime-keys';
 
 function parseArgs(argv) {
-  const opts = { cache: 'C:/b/p0/sublime', vsix: null, claude: null, md: null, apply: false };
+  const opts = { cache: null, vsix: null, claude: null, md: null, apply: false };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--apply') opts.apply = true;
@@ -241,6 +242,7 @@ function applyToMydist(r, sublime) {
 
 async function main() {
   const opts = parseArgs(process.argv.slice(2));
+  if (!opts.cache) opts.cache = join(resolveLocalConfig().buildRoot, 'p0', 'sublime');
   mkdirSync(opts.cache, { recursive: true });
 
   const sublime = await getSublime(opts);

@@ -14,7 +14,8 @@ import { fileURLToPath } from 'node:url';
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = join(REPO, 'removals', 'C-2-debug');
 const noSrc = existsSync(join(SRC, 'unit.json')) && existsSync(join(SRC, 'edits.patch')) ? false : '実装なし: removals/C-2-debug の unit.json か edits.patch が無い';
-const upOk = existsSync(process.env.AIED_UPSTREAM_REPO || 'C:/b/vscode') && spawnSync('git', ['-C', process.env.AIED_UPSTREAM_REPO || 'C:/b/vscode', 'rev-parse', '--verify', `${process.env.AIED_UPSTREAM_TAG || '1.146.0'}^{commit}`]).status === 0;
+import { UPSTREAM_REPO as UP_REPO_DEFAULT } from './build/root.mjs';
+const upOk = existsSync(UP_REPO_DEFAULT) && spawnSync('git', ['-C', UP_REPO_DEFAULT, 'rev-parse', '--verify', `${process.env.AIED_UPSTREAM_TAG || '1.146.0'}^{commit}`]).status === 0;
 
 /** 写しを作って c2-unit.test.mjs を走らせ、落ちたテストの名前の配列を返す。 */
 function run(mutate, { withUp = false } = {}) {

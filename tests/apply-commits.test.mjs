@@ -3,8 +3,8 @@
 // 仕様: docs/03 の5.1・5.2・6節、docs/06 の4節、tasks/2026-11-13-p2-apply/apply-design.md、
 //       tasks/2026-11-13-p2-units-b/handoff-notes.md（件名は `unit <id>: edits`、From: は shuko-apply <apply@shuko.invalid>）、
 //       tasks/2026-11-13-p2-apply/handoff-notes.md の追記3・4。
-// 本家のソースは常設の clone（C:/b/vscode）のタグから読む。通しの試し（apply.mjs を本当に当てる）は、そこから新しい作業ツリーを
-// C:\b\wt\ の下に作って行い、終わったら消す。clone が無ければ飛ぶ。
+// 本家のソースは常設の clone（<buildRoot>/vscode。tests/build/root.mjs）のタグから読む。通しの試し（apply.mjs を本当に当てる）は、そこから新しい作業ツリーを
+// <buildRoot>\wt\ の下に作って行い、終わったら消す。clone が無ければ飛ぶ。
 // Run: node --test tests/apply-commits.test.mjs
 import test, { before, after } from 'node:test';
 import assert from 'node:assert/strict';
@@ -15,7 +15,8 @@ import { MAIN_FILES, checkUpstreamAdditions } from '../scripts/lib/apply/checks.
 import { REPO, makeSandbox, removeSandbox, writeFile, runNode } from './build/helpers.mjs';
 
 const IDENT = 'shuko-apply <apply@shuko.invalid>';
-const UP_REPO = process.env.AIED_UPSTREAM_REPO || 'C:/b/vscode';
+import { UPSTREAM_REPO as UP_DEFAULT, WT_DIR } from './build/root.mjs';
+const UP_REPO = UP_DEFAULT; // 常設の clone（<buildRoot>/vscode。tests/build/root.mjs）
 const UP_TAG = process.env.AIED_UPSTREAM_TAG || '1.146.0';
 const git = (cwd, ...args) => spawnSync('git', ['-C', cwd, ...args], { encoding: 'utf8', maxBuffer: 256 * 1024 * 1024 });
 const gitOk = (cwd, ...args) => {
@@ -151,8 +152,8 @@ test('checkUpstreamAdditions: workbench と sessions の main に増えた impor
 });
 
 // ---- apply.mjs を本当に当てる通しの試し（commitIdentity と mydist の既定の外し方） ------------------
-const WT_BASE = 'C:\\b\\wt';
-const e2eSkip = upstreamOk && fs.existsSync('C:\\b') ? false : `本家の clone が読めない: ${UP_REPO}`;
+const WT_BASE = WT_DIR;
+const e2eSkip = upstreamOk ? false : `本家の clone が読めない: ${UP_REPO}`;
 let wt = null;
 const wtName = `tests-ac-${process.pid}`;
 

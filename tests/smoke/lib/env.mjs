@@ -11,7 +11,7 @@ import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { SMOKE_ROOT, assertSafeWritePath, cleanEditorEnv, readJson, resolveVsixRoot } from './common.mjs';
+import { SMOKE_ROOT, runDirName, assertSafeWritePath, cleanEditorEnv, readJson, resolveVsixRoot } from './common.mjs';
 
 /** 台帳（extensions.lock.json）の id と版。 */
 export function readLedger(lockPath) {
@@ -158,8 +158,8 @@ export function sha256File(p) {
 
 /** 1回の実行の置き場所を作る（portable・user-data・logs）。設定と argv を書く。 */
 export function prepareRunDir({ label, mode, argv, settings, root = SMOKE_ROOT, now = new Date() }) {
-  const stamp = now.toISOString().replace(/[-:]/g, '').replace(/\..+$/, '');
-  const runDir = assertSafeWritePath(join(root, 'runs', `${label}-${stamp}`), root);
+  // 名前は <短いラベル>-<YYMMDDThhmmss> の 22 文字以下（common.mjs の runDirName。260 文字の制限のため）
+  const runDir = assertSafeWritePath(join(root, 'runs', runDirName(label, now)), root);
   const portable = join(runDir, 'user');
   const userData = join(portable, 'user-data');
   mkdirSync(join(userData, 'User'), { recursive: true });

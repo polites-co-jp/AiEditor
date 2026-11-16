@@ -1,10 +1,10 @@
 // 「消えている」の検査の台本（docs/03 の7節の3）。ビルドを1回起動し、試験専用の拡張で取った snapshot を単位の checks と照らす。
 //
 // 使い方:
-//   node tests/removals/run-absent.mjs --build C:\b\p0\vscode-1.146.0 --expect present --cmd workbench.action.debug.start --setting debug.console.fontSize
+//   node tests/removals/run-absent.mjs --build <buildRoot>\official\vscode-1.146.0 --expect present --cmd workbench.action.debug.start --setting debug.console.fontSize
 //   node tests/removals/run-absent.mjs --build <自作のビルド> --units all --expect absent
 // 主なオプション:
-//   --build <root>     展開済みのビルド（既定 C:\b\p0\vscode-1.146.0 = 公式の zip）
+//   --build <root>     展開済みのビルド（既定 <buildRoot>\official\vscode-1.146.0 = 公式の zip を展開したもの。<buildRoot> は local.json、既定 <リポジトリ>\tmp\b）
 //   --units <ids|all>  removals/<id>/unit.json の checks を使う（カンマ区切り）。enabled に関係なく読む
 //   --cmd/--view/--setting/--proc <名前>  その場で足す項目（繰り返し可）
 //   --expect absent|present  absent=消えていること（既定）。present=まだ在ること（公式の zip で網が空振りしないかの確認）
@@ -13,14 +13,14 @@
 // 網は2つ。runtime（起動後の commands.getCommands と設定の登録簿）と manifest（出力の組み込み拡張の package.json の
 // contributes.commands・menus・keybindings・views・configuration）。どちらかに在れば「在る」。結果の net と absent-result.json の nets に出る。
 // checks が網になっている条件: 公式の zip に --units <id> --expect present を流して全項目が pass（= 公式には在る）。fail の項目は網にならない。
-//   例: node tests/absent-run.mjs --build C:\b\p0\vscode-1.146.0 --units A-1-copilot-extension --expect present
-// 書き込みは C:\b\smoke\absent\ の下だけ。起動した PID の木だけを止める。普段使いのデータには触れない（VSCODE_PORTABLE を使う）。
+//   例: node tests/removals/run-absent.mjs --build <buildRoot>\official\vscode-1.146.0 --units A-1-copilot-extension --expect present
+// 書き込みは <buildRoot>\smoke\absent\ の下だけ（実行のフォルダの名前は <短いラベル>-<YYMMDDThhmmss> の 20 文字以下）。起動した PID の木だけを止める。普段使いのデータには触れない（VSCODE_PORTABLE を使う）。
 import { spawn } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
-  DEFAULT_BUILD, SMOKE_ROOT, assertSafeWritePath, cleanEditorEnv, listProcesses, readJson, resolveEditor, stopTree, treeFromProcesses,
+  DEFAULT_BUILD, SMOKE_ROOT, ABSENT_DIR_NAME_MAX, runDirName, assertSafeWritePath, cleanEditorEnv, listProcesses, readJson, resolveEditor, stopTree, treeFromProcesses,
 } from '../smoke/lib/common.mjs';
 import { collectManifest, collectTargets, evaluateAbsent, summarize, NOT_HANDLED } from './lib/absent.mjs';
 
@@ -72,8 +72,8 @@ export async function main() {
   const total = Object.values(targets).reduce((n, a) => n + a.length, 0);
   if (total === 0) throw new Error('検査する項目が無い（--units か --cmd/--view/--setting/--proc を渡す）');
 
-  const stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\..+$/, '');
-  const runDir = assertSafeWritePath(join(SMOKE_ROOT, 'absent', `${o.label}-${stamp}`), SMOKE_ROOT);
+  // 名前は <短いラベル>-<YYMMDDThhmmss> の 20 文字以下（common.mjs の runDirName。260 文字の制限のため）
+  const runDir = assertSafeWritePath(join(SMOKE_ROOT, 'absent', runDirName(o.label, new Date(), ABSENT_DIR_NAME_MAX)), SMOKE_ROOT);
   const portable = join(runDir, 'user');
   const userData = join(portable, 'user-data');
   const extDir = join(runDir, 'extensions-dir');

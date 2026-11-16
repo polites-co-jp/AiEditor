@@ -1,6 +1,6 @@
 // Shared helpers for tests/build-*.test.mjs, tests/local-config.test.mjs, tests/install-ext.test.mjs,
 // tests/switch.test.mjs, tests/configure.test.mjs and tests/make-icons.test.mjs.
-// Test fixtures go under a fresh folder in C:\b\ (when it exists) or the OS temp folder.
+// Test fixtures go under a fresh folder in <repo>\tmp\tests\ (git-ignored; nothing goes to C: or the OS temp folder).
 // Nothing here touches %LOCALAPPDATA%\Shuko, the Start menu or PATH.
 import fs from 'node:fs';
 import os from 'node:os';
@@ -11,8 +11,17 @@ import { fileURLToPath } from 'node:url';
 export const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 export const SCRIPTS = path.join(REPO, 'scripts');
 
+// The sandbox (<repo>\tmp\tests\) is inside this repository's folder. A folder there that a test wants to be "not a git
+// repository" would otherwise find <repo>\.git by walking up. GIT_CEILING_DIRECTORIES stops git before it enters <repo>
+// (git run in <repo> itself is not affected). Child processes and in-process git calls inherit it.
+if (!process.env.GIT_CEILING_DIRECTORIES) process.env.GIT_CEILING_DIRECTORIES = REPO;
+
+// 試しの入れ物の置き場所: プロジェクトの tmp\tests\（.gitignore 済み。2026-11-15 の裁定で C: と OS の一時フォルダに置かない）。
+// 環境変数 AIED_TEST_TMP で変えられる。
 export function sandboxBase() {
-  return fs.existsSync('C:\\b') ? 'C:\\b' : os.tmpdir();
+  const base = process.env.AIED_TEST_TMP || path.join(REPO, 'tmp', 'tests');
+  fs.mkdirSync(base, { recursive: true });
+  return base;
 }
 
 export function makeSandbox(prefix = 'tests-build-') {

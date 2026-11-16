@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+// 引退（2026-11-15。Phase 0 は閉じた。走らせない。走らせるなら先に buildRoot を使う形に直す）。
+// 裁定: docs/user-decisions.md の 2026-11-15「ビルドの置き場所と Phase 0 の残り」。
 // Phase 0 の材料の取得（docs/07 の2.1）: 本家 VS Code の zip（Windows x64）と VSCodium の zip（Windows x64 の最新）。
 // 取って SHA-256 を公開の値と照らし、scripts/p0-expand.ps1 で展開する。
 //

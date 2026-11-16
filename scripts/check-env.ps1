@@ -16,7 +16,7 @@
 
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check-env.ps1
-  powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check-env.ps1 -WorkTree C:\b\wt\1.146.0
+  powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check-env.ps1 -WorkTree <buildRoot>\wt\1.146.0
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check-env.ps1 -OutFile tasks\<dir>\env-check.json
 
   Exit code: 0 when nothing is missing, 2 when "missing" is not empty.
@@ -26,11 +26,17 @@ param(
     [string]$WorkTree,
     [string]$NodeRequired = '24.22.1',
     [string]$PnpmRequired = '12.16.0',
-    [string]$BuildRoot = 'C:\b',
+    [string]$BuildRoot,
     [string]$OutFile
 )
 
 $ErrorActionPreference = 'Continue'
+# -BuildRoot default: local.json's buildRoot, else <repo>\tmp\b (scripts\lib\local-config.ps1; decision
+# 2026-11-15, nothing on C:; before that C:\b).
+if (-not $BuildRoot) {
+    . (Join-Path $PSScriptRoot 'lib\local-config.ps1')
+    $BuildRoot = (Resolve-ShukoLocalConfig).buildRoot
+}
 
 function Invoke-Capture([string]$exe, [string[]]$argv) {
     # Runs a command and returns @{ ok; exit; out }. Never throws.

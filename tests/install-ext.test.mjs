@@ -57,8 +57,8 @@ test('vsixCachePath: <cache>\\<id>-<version>[@target]\\<last name of the downloa
     targetPlatform: 'win32-x64',
     download: 'https://open-vsx.org/api/Anthropic/claude-code/win32-x64/2.1.322/file/Anthropic.claude-code-2.1.322@win32-x64.vsix',
   });
-  const p = vsixCachePath('C:\\b\\cache\\vsix', e);
-  assert.equal(path.normalize(p).toLowerCase(), path.normalize('C:\\b\\cache\\vsix\\anthropic.claude-code-2.1.322@win32-x64\\Anthropic.claude-code-2.1.322@win32-x64.vsix').toLowerCase());
+  const p = vsixCachePath('D:\\bt\\cache\\vsix', e);
+  assert.equal(path.normalize(p).toLowerCase(), path.normalize('D:\\bt\\cache\\vsix\\anthropic.claude-code-2.1.322@win32-x64\\Anthropic.claude-code-2.1.322@win32-x64.vsix').toLowerCase());
 });
 test('vsixCachePath: universal (or no target) gets no @target', () => {
   const e = E('ms.vscode-language-pack-ja', { version: '1.146.0', download: 'https://x/y/ms-ceintl.vscode-language-pack-ja-1.146.0.vsix' });

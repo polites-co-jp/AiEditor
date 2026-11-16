@@ -20,7 +20,8 @@ before(() => {
 after(() => removeSandbox(sb));
 
 // ---- T-2: 修理の claude -p の引数 (docs/06 の7.1・7.2) ----
-const repair = (extra = {}) => buildClaudeInvocation({ kind: 'repair', repoRoot: REPO, worktree: 'C:\\b\\wt\\1.147.0', prompt: 'p', claudePath: 'claude', env: {}, ...extra });
+import { NEW_DEFAULT } from './build/root.mjs';
+const repair = (extra = {}) => buildClaudeInvocation({ kind: 'repair', repoRoot: REPO, worktree: path.join(NEW_DEFAULT, 'wt', '1.147.0'), prompt: 'p', claudePath: 'claude', env: {}, ...extra });
 const valueOf = (args, flag) => args[args.indexOf(flag) + 1];
 
 test('修理の引数: --strict-mcp-config（本家の作業ツリーの .mcp.json を読ませない）と --disallowedTools mcp__*', () => {
@@ -36,12 +37,12 @@ test('修理の引数: --tools は Read・Glob・Grep・Edit・Write だけ。Ba
   assert.ok(!a.includes('--allowedTools') || !/Bash/.test(valueOf(a, '--allowedTools')));
 });
 test('修理の引数: --add-dir は builderWorktree があればそれ（取り込みのブランチの作業ツリー）、無ければ repoRoot', () => {
-  const bw = 'C:\\b\\take-in\\1.147.0-1\\repo';
+  const bw = path.join(NEW_DEFAULT, 'take-in', '1.147.0-1', 'repo');
   assert.equal(path.resolve(valueOf(repair({ builderWorktree: bw }).args, '--add-dir')).toLowerCase(), path.resolve(bw).toLowerCase());
   assert.equal(path.resolve(valueOf(repair().args, '--add-dir')).toLowerCase(), REPO.toLowerCase());
 });
 test('修理の引数: 規約 TAKE-IN.md を --append-system-prompt-file で渡す（既定は builderWorktree の TAKE-IN.md。rulesFile で変えられる）', () => {
-  const bw = 'C:\\b\\take-in\\x\\repo';
+  const bw = path.join(NEW_DEFAULT, 'take-in', 'x', 'repo');
   const a = repair({ builderWorktree: bw }).args;
   assert.equal(path.basename(valueOf(a, '--append-system-prompt-file')), 'TAKE-IN.md');
   assert.equal(path.dirname(path.resolve(valueOf(a, '--append-system-prompt-file'))).toLowerCase(), path.resolve(bw).toLowerCase());
@@ -143,7 +144,7 @@ test('smokeRunArgs: 現在の基準を --save-baseline に使わない（比べ�
 test('smokeRunArgs: editorDir・label・newBaseline が欠ければ例外', () => {
   for (const o of [{ label: 'L', newBaseline: 'N' }, { editorDir: 'E', newBaseline: 'N' }, { editorDir: 'E', label: 'L' }]) assert.throws(() => smokeRunArgs(o));
 });
-test('newBaselinePath: <smokeRoot>\\baseline-<label>.json', () => assert.equal(newBaselinePath('C:\\b\\smoke', '1.147.0-1'), path.join('C:\\b\\smoke', 'baseline-1.147.0-1.json')));
+test('newBaselinePath: <smokeRoot>\\baseline-<label>.json', () => assert.equal(newBaselinePath(path.join(NEW_DEFAULT, 'smoke'), '1.147.0-1'), path.join(NEW_DEFAULT, 'smoke', 'baseline-1.147.0-1.json')));
 test('summarizeSmoke: 全部の回が 0 なら ok、1（FAIL あり）が混ざれば failed、2・null（起動できない）は error、回が無ければ skipped', () => {
   const run = (...codes) => codes.map((c, i) => ({ n: i + 1, exitCode: c }));
   assert.equal(summarizeSmoke(run(0, 0, 0)).status, 'ok');

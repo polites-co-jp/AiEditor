@@ -20,8 +20,8 @@
   Do not delete the file afterwards.
 
 .EXAMPLE
-  powershell -NoProfile -ExecutionPolicy Bypass -File tools/watch/check-dpapi.ps1 -Dir C:\b\p4-watch\trial
-  powershell -NoProfile -ExecutionPolicy Bypass -File tools/watch/check-dpapi.ps1 -Dir C:\b\p4-watch\trial -Keep
+  powershell -NoProfile -ExecutionPolicy Bypass -File tools/watch/check-dpapi.ps1 -Dir <buildRoot>\p4-watch\trial
+  powershell -NoProfile -ExecutionPolicy Bypass -File tools/watch/check-dpapi.ps1 -Dir <buildRoot>\p4-watch\trial -Keep
 
   NOTE: this file is ASCII only on purpose (Windows PowerShell 5.1 reads BOM-less scripts as ANSI).
 #>

@@ -46,12 +46,12 @@
 
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts/switch.ps1 1.146.0-1
-  powershell -NoProfile -ExecutionPolicy Bypass -File scripts/switch.ps1 1.147.0-1 -Zip C:\b\dist\1.147.0-1.zip
+  powershell -NoProfile -ExecutionPolicy Bypass -File scripts/switch.ps1 1.147.0-1 -Zip <buildRoot>\dist\1.147.0-1.zip
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts/switch.ps1 -Previous
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts/switch.ps1 -List
-  powershell -NoProfile -ExecutionPolicy Bypass -File scripts/switch.ps1 1.147.0-1 -Zip C:\b\dist\1.147.0-1.zip -Sha256 <hex> -ExpandOnly
-  powershell -NoProfile -ExecutionPolicy Bypass -File scripts/switch.ps1 1.146.0-t1 -ConfigPath C:\b\trial-install\local.json -UserDataDir C:\b\trial-install\userdata
-  powershell -NoProfile -ExecutionPolicy Bypass -File scripts/switch.ps1 -List -ConfigPath C:\b\trial-install\local.json -WatchState C:\b\trial-install\watch\state.json
+  powershell -NoProfile -ExecutionPolicy Bypass -File scripts/switch.ps1 1.147.0-1 -Zip <buildRoot>\dist\1.147.0-1.zip -Sha256 <hex> -ExpandOnly
+  powershell -NoProfile -ExecutionPolicy Bypass -File scripts/switch.ps1 1.146.0-t1 -ConfigPath <buildRoot>\trial-install\local.json -UserDataDir <buildRoot>\trial-install\userdata
+  powershell -NoProfile -ExecutionPolicy Bypass -File scripts/switch.ps1 -List -ConfigPath <buildRoot>\trial-install\local.json -WatchState <buildRoot>\trial-install\watch\state.json
 
   NOTE: this file is ASCII only on purpose (Windows PowerShell 5.1 reads BOM-less scripts as ANSI).
 #>

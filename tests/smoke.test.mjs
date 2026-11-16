@@ -17,6 +17,9 @@ import {
   KEEP_MARK, sameProc, countStatuses, dailyArgvChanged, exitCodeFor, findRg, formatMarkdown, groupErrors, historyHas, mergeBaseline, parseArgs, pruneRuns, uniqueErrors,
 } from './smoke/lib/run.mjs';
 
+import { NEW_DEFAULT } from './build/root.mjs';
+import { BUILD_ROOT } from './smoke/lib/common.mjs';
+
 const tmp = () => mkdtempSync(join(tmpdir(), 'smoke-test-'));
 
 // ---- 環境変数（docs/07 の3.2 の1）------------------------------------------
@@ -408,7 +411,7 @@ test('minimalPdf: xref の位置が startxref と合う', () => {
 // ---- 引数・集計 ---------------------------------------------------------------
 test('parseArgs: 既定は公式の zip・upstream・全部の組', () => {
   const o = parseArgs([]);
-  assert.equal(o.build, 'C:\\b\\p0\\vscode-1.146.0');
+  assert.equal(o.build, join(BUILD_ROOT, 'official', 'vscode-1.146.0')); // <buildRoot> の下（2026-11-15 の裁定）
   assert.equal(o.mode, 'upstream');
   assert.deepEqual(o.groups, ['base', 'claude-code', 'languages']);
   assert.equal(o.secondWindow, true);
@@ -780,7 +783,7 @@ test('resolveVsixRoot: <buildRoot>\\cache\\vsix。buildRoot は local.json を�
   const dir = tmp();
   try {
     const none = join(dir, 'no-such-local.json');
-    assert.equal(resolveVsixRoot({ configPath: none }), 'C:\\b\\cache\\vsix'); // local.json が無ければ既定の buildRoot（C:\b）
+    assert.equal(resolveVsixRoot({ configPath: none }).toLowerCase(), join(NEW_DEFAULT, 'cache', 'vsix').toLowerCase()); // local.json が無ければ既定の buildRoot（<プロジェクト>\tmp\b）
     const cfg = join(dir, 'local.json');
     writeFileSync(cfg, JSON.stringify({ buildRoot: 'D:\\work\\b' }));
     assert.equal(resolveVsixRoot({ configPath: cfg }), 'D:\\work\\b\\cache\\vsix');
@@ -790,7 +793,7 @@ test('resolveVsixRoot: <buildRoot>\\cache\\vsix。buildRoot は local.json を�
     assert.equal(resolveVsixRoot({ configPath: cfg, env: { SMOKE_TEST_B: 'F:', LOCALAPPDATA: 'C:\\x' } }), 'F:\\x\\cache\\vsix'); // %NAME% を展開する
     writeFileSync(cfg, '{ "buildRoot": 5 }');
     assert.throws(() => resolveVsixRoot({ configPath: cfg }), /buildRoot/); // 壊れた local.json は既定に戻さず止める
-    assert.equal(vsixRootFor('C:\\b'), 'C:\\b\\cache\\vsix');
+    assert.equal(vsixRootFor(NEW_DEFAULT), join(NEW_DEFAULT, 'cache', 'vsix'));
   } finally { rmSync(dir, { recursive: true, force: true }); }
   const run = readFileSync(new URL('./smoke/lib/run.mjs', import.meta.url), 'utf8');
   assert.match(run, /resolveVsixRoot\(\{ vsixRoot: opts\.vsixRoot \}\)/);

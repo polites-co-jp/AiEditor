@@ -1,3 +1,6 @@
+# RETIRED (2026-11-15): Phase 0 is closed. Do not run this script. If it has to run again, first change it
+# to use buildRoot (scripts\lib\local-config.ps1) instead of C:\b. Decision: docs/user-decisions.md,
+# 2026-11-15 "build location and the rest of Phase 0".
 <#
 .SYNOPSIS
   0-8 automatic part (docs/07 2.9): how extensions.allowed acts on the CLI.

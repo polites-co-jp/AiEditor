@@ -1,3 +1,11 @@
+# RETIRED (2026-11-15) as a Phase 0 tool: Phase 0 is closed. Do not use the functions that work under
+# $script:P0Root (C:\b\p0): Get-P0EnvPaths, Assert-P0Path, Get-P0UpstreamRoot, Get-P0VscodiumRoot, Find-P0Vsix,
+# Get-P0TestbedRoot, Initialize-P0Testbed. If they have to run again, first
+# change them to use buildRoot (scripts\lib\local-config.ps1). Decision: docs/user-decisions.md, 2026-11-15
+# "build location and the rest of Phase 0".
+# Still dot-sourced by scripts\p1-launch-check.ps1, which uses only Invoke-P0Native, Resolve-P0Editor,
+# Read-P0Json, Invoke-P0WithEditorEnv, Get-P0ProcessTree and Stop-P0ProcessTree (none touch $script:P0Root;
+# dot-sourcing this file creates nothing).
 <#
   Shared parts of the Phase 0 test environments (docs/07 2.1, 2.3-2.4, 2.8-2.11, 3.1).
   Dot-sourced by scripts\p0-env.ps1, scripts\p0-launch.ps1, scripts\p0-ext-allowed.ps1.

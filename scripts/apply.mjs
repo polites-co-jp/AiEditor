@@ -61,7 +61,7 @@ export function parseArgs(argv) {
     overlay: path.join(REPO, "product.overlay.json"),
     keep: path.join(REPO, "builtin", "keep.json"),
     extensionsSrc: path.join(REPO, "extensions-src"),
-    manifests: null, // 既定は <buildRoot>\cache\vsix（docs/02 の8節）。buildRoot は --build-root → local.json → C:\b
+    manifests: null, // 既定は <buildRoot>\cache\vsix（docs/02 の8節）。buildRoot は --build-root → local.json → <リポジトリ>\tmp\b
     buildRoot: null,
     config: null, // local.json の場所（既定 %LOCALAPPDATA%\Shuko\local.json）。build.mjs は自分の --config を渡す
     lock: path.join(REPO, "extensions.lock.json"),

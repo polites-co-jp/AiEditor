@@ -64,7 +64,7 @@ test('no arguments and no file: creates local.json with defaults; builderRepo is
   const obj = JSON.parse(text);
   assert.equal(obj.installRoot, '%LOCALAPPDATA%\\Programs\\Shuko', 'written without expanding %LOCALAPPDATA%');
   assert.equal(obj.keepVersions, 3);
-  assert.equal(obj.buildRoot, 'C:\\b');
+  assert.equal(path.resolve(obj.buildRoot).toLowerCase(), path.join(REPO, 'tmp', 'b').toLowerCase(), 'buildRoot の既定はプロジェクトの tmp\\b（2026-11-15 の裁定）');
   assert.equal(path.resolve(obj.builderRepo).toLowerCase(), REPO.toLowerCase());
   assert.ok(r.json.values && r.json.resolved && Array.isArray(r.json.actions));
   assert.ok(!fs.existsSync(path.join(path.dirname(s.cfg), 'local.json.tmp')), 'no temp file left');

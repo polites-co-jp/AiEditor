@@ -73,7 +73,7 @@ test('zipFolderName', () => {
 
 // ---- quoteCmdArg ------------------------------------------------------------------------
 test('quoteCmdArg: safe characters stay as they are', () => {
-  for (const s of ['abc', 'C:\\a\\b.txt', 'a_b-c.d', 'x/y', 'k=v', 'a@b', 'C:/b/wt/1.146.0']) assert.equal(quoteCmdArg(s), s);
+  for (const s of ['abc', 'C:\\a\\b.txt', 'a_b-c.d', 'x/y', 'k=v', 'a@b', 'D:/bt/wt/1.146.0']) assert.equal(quoteCmdArg(s), s);
 });
 test('quoteCmdArg: others are wrapped in double quotes; a double quote throws', () => {
   assert.equal(quoteCmdArg('a b'), '"a b"');
@@ -229,7 +229,7 @@ test('resolveEditorLayout: the version comes from resources\\app\\package.json, 
 test('parseArgs: a plain tag is accepted; the options with values are accepted', () => {
   assert.doesNotThrow(() => parseArgs(['1.146.0']));
   assert.doesNotThrow(() => parseArgs(['1.146.0', '--label', '1.146.0-2', '--dry-run', '--from', 'apply', '--to', 'zip', '--fresh', '--force-zip', '--no-size']));
-  assert.doesNotThrow(() => parseArgs(['1.146.0', '--build-root', 'C:\\b', '--config', 'x.json', '--record', 'r.json', '--worktree', 'w', '--package-dir', 'p', '--keep', 'k.json', '--removals', 'r', '--take-in-dir', 't']));
+  assert.doesNotThrow(() => parseArgs(['1.146.0', '--build-root', 'D:\\bt', '--config', 'x.json', '--record', 'r.json', '--worktree', 'w', '--package-dir', 'p', '--keep', 'k.json', '--removals', 'r', '--take-in-dir', 't']));
 });
 test('parseArgs: errors are ArgError', () => {
   const bad = [
@@ -287,7 +287,7 @@ test('--dry-run: --build-root is the "option" source; a local.json value is "loc
   j = jsonOf(dryRun([], null).stdout);
   assert.equal(j.config.buildRootFrom, 'default');
   assert.equal(j.config.exists, false);
-  assert.equal(path.resolve(j.paths.buildRoot).toLowerCase(), 'c:\\b');
+  assert.equal(path.resolve(j.paths.buildRoot).toLowerCase(), path.join(REPO, 'tmp', 'b').toLowerCase()); // 既定は <リポジトリ>\tmp\b（2026-11-15 の裁定）
 });
 test('--dry-run: --from and --to select the steps; the plan has one entry per selected step', () => {
   const r = dryRun(['--build-root', path.join(sb, 'br2'), '--from', 'apply', '--to', 'lockfile'], null);
