@@ -328,6 +328,26 @@ test('guard: ファイル・フォルダを作ると増えた、消すと消え�
   assert.ok(d.some((l) => /変わった smoke\\baseline-1\.json/.test(l)), d.join('\n'));
 });
 
+test('guard: 根の直下に作って消しただけでも（根そのものの更新時刻が動くので）見つかる。中身が空の根でも', () => {
+  const root = makeRoot('g-top');
+  const t = new Date(Date.now() - 60000);
+  fs.utimesSync(root, t, t);
+  const s0 = snapshotAll([root]);
+  assert.ok('.' in s0[root], '根そのものを記録する');
+  fs.mkdirSync(path.join(root, 'tests-l10n-fake-root-1'));
+  fs.rmdirSync(path.join(root, 'tests-l10n-fake-root-1'));
+  const d = diffSnapshots(s0, snapshotAll([root]));
+  assert.ok(d.some((l) => /変わった \.$/.test(l)), d.join('\n'));
+  // 空の根（移した直後の tmp\b）
+  const empty = path.join(sb, 'g-top-empty');
+  fs.mkdirSync(empty);
+  fs.utimesSync(empty, t, t);
+  const e0 = snapshotAll([empty]);
+  fs.mkdirSync(path.join(empty, 'x'));
+  fs.rmdirSync(path.join(empty, 'x'));
+  assert.ok(diffSnapshots(e0, snapshotAll([empty])).length > 0);
+});
+
 test('guard: 根が無ければ null（差なし）。根が作られた・消えたも見つかる', () => {
   const root = path.join(sb, 'g-missing');
   const none = snapshotAll([root]);

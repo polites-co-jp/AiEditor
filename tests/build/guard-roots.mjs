@@ -66,6 +66,12 @@ export function snapshotRoot(root, maxDepth = 3, ignore = IGNORED) {
       if (isDir && !st.isSymbolicLink() && depth < maxDepth) walk(p, r, depth + 1);
     }
   };
+  // 根そのものの更新時刻（根の直下に作って消した跡を見つけるため）。キー '.' は相対パスと衝突しない。
+  try {
+    snap['.'] = `d 0 ${Math.round(fs.lstatSync(root).mtimeMs)}`;
+  } catch {
+    /* 根が消えた直後など */
+  }
   walk(root, '', 1);
   return snap;
 }

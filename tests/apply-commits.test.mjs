@@ -4,7 +4,7 @@
 //       tasks/2026-11-13-p2-units-b/handoff-notes.md（件名は `unit <id>: edits`、From: は shuko-apply <apply@shuko.invalid>）、
 //       tasks/2026-11-13-p2-apply/handoff-notes.md の追記3・4。
 // 本家のソースは常設の clone（<buildRoot>/vscode。tests/build/root.mjs）のタグから読む。通しの試し（apply.mjs を本当に当てる）は、そこから新しい作業ツリーを
-// <buildRoot>\wt\ の下に作って行い、終わったら消す。clone が無ければ飛ぶ。
+// 試しの入れ物（<リポジトリ>\tmp\tests\acw-<pid>。<buildRoot>\wt には作らない）に作って行い、終わったら消す。clone が無ければ飛ぶ。
 // Run: node --test tests/apply-commits.test.mjs
 import test, { before, after } from 'node:test';
 import assert from 'node:assert/strict';

@@ -71,6 +71,13 @@
 - run-all: `node tests/run-all.mjs --save tasks/2026-11-16-move-off-c-fixes/run-all-cao-shen-2.txt`（見張り有効、終了コード 0）: **2648件、通った 2641、落ちた 0、飛ばした 7**（`removals.test.mjs` の元からの7件）。前の 2646件から 2件増えた（上の見張り2件）。本物の `C:\b`・`tmp\b` の見張りも差なし。足した import を持つ23ファイルは、個別にも走らせて全部 fail 0。
 - 未解決の1（os.tmpdir を使う .test.mjs を直接走らせたときの C: への書き込み）は、これで解決。6節の1は無効。
 
+## 5c. 3回目: 見張りの穴と説明文（verification-ooka.md の直す点1・2）
+
+- `tests/build/guard-roots.mjs`: `snapshotRoot` が根そのものの更新時刻をキー `.` で記録するようにした。根の直下に作って消した跡も、`変わった .` として見つかる。
+- `tests/move-off-c-fixes.test.mjs`: 根の直下で作って消す試し（中身のある根と、空の根）を1件足した（31件→32件）。
+- `tests/apply-commits.test.mjs` の冒頭の説明を、作業ツリーは `<リポジトリ>\tmp\tests\acw-<pid>` に作る、に直した。
+- 確かめ: `node --test tests/move-off-c-fixes.test.mjs tests/apply-commits.test.mjs` で 57件、通った 57、落ちた 0。run-all は走らせていない（指示どおり）。
+
 ## 6. 未解決の点・知らせ
 
 1. `os.tmpdir()` を使う24ファイルを直接走らせたときの C: への書き込み（2節の見張れていない所）。直すかの判断を仰ぐ。
