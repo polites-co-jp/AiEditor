@@ -1,0 +1,4479 @@
+{
+  "tool": "tests/l10n-audit.mjs",
+  "inputs": {
+    "appDir": "C:\\Users\\kou_z\\AppData\\Local\\Programs\\Shuko\\versions\\1.146.0-1\\resources\\app",
+    "packDir": "C:\\Users\\kou_z\\.shuko\\extensions\\ms-ceintl.vscode-language-pack-ja-1.131.0",
+    "excludeFile": null,
+    "clpDir": "C:/Users/kou_z/AppData/Roaming/Shuko/clp/bf8a15d7e63e7a2c7731b6677a101075.ja",
+    "packVersion": "1.0.0"
+  },
+  "counting": "本家と同じ引き方: 本体は contents[moduleId][key]、拡張は contents.package[key]。空・無しは未訳（英語のまま）。",
+  "core": {
+    "total": 12355,
+    "translated": 11666,
+    "untranslated": 689,
+    "sameAsEnglish": 161,
+    "excluded": 0,
+    "untranslatedOutsideExclusions": 689,
+    "untranslatedKeys": [
+      {
+        "module": "vs/base/browser/ui/icons/iconSelectBox",
+        "key": "iconSelect.iconName",
+        "message": "Icon name: {0}"
+      },
+      {
+        "module": "vs/base/browser/ui/icons/iconSelectBox",
+        "key": "iconSelect.icons",
+        "message": "Icons"
+      },
+      {
+        "module": "vs/base/browser/ui/icons/iconSelectBox",
+        "key": "iconSelect.search",
+        "message": "Search icons"
+      },
+      {
+        "module": "vs/code/electron-main/main",
+        "key": "innoSetupActive",
+        "message": "{0} is currently being updated. Please wait for the update to complete before launching."
+      },
+      {
+        "module": "vs/editor/browser/widget/codeEditor/codeEditorWidget",
+        "key": "cursors.findAndReplaceLink",
+        "message": "find and replace"
+      },
+      {
+        "module": "vs/editor/browser/widget/codeEditor/codeEditorWidget",
+        "key": "cursors.maximumLinked",
+        "message": "The number of cursors has been limited to {0}. Consider using {1} for larger changes or increase the editor multi cursor limit setting."
+      },
+      {
+        "module": "vs/editor/browser/widget/diffEditor/features/hideUnchangedRegionsFeature",
+        "key": "diff.hiddenLines.breadcrumb",
+        "message": "Go to {0}"
+      },
+      {
+        "module": "vs/editor/browser/widget/diffEditor/features/hideUnchangedRegionsFeature",
+        "key": "diff.hiddenLines.collapse",
+        "message": "Collapse unchanged lines"
+      },
+      {
+        "module": "vs/editor/browser/widget/diffEditor/features/hideUnchangedRegionsFeature",
+        "key": "diff.hiddenLines.expand",
+        "message": "Show {0} hidden lines"
+      },
+      {
+        "module": "vs/editor/browser/widget/multiDiffEditor/diffEditorItemTemplate",
+        "key": "binaryFileChanged",
+        "message": "Binary file changed"
+      },
+      {
+        "module": "vs/editor/browser/widget/multiDiffEditor/diffEditorItemTemplate",
+        "key": "openBinaryDiff",
+        "message": "Open Diff"
+      },
+      {
+        "module": "vs/editor/common/config/editorConfigurationSchema",
+        "key": "diffEditor.experimental.verifyDiffSampleRate",
+        "message": "The probability (from 0 to 1) that a computed diff is checked for correctness and the result is reported in telemetry."
+      },
+      {
+        "module": "vs/editor/common/config/editorConfigurationSchema",
+        "key": "hideOriginalLineNumbers",
+        "message": "Controls whether original line numbers are hidden in inline diffs. When set to null, uses the editor's default: hidden in compact multi diff editors and visible in other diff editors."
+      },
+      {
+        "module": "vs/editor/common/config/editorOptions",
+        "key": "fullwidthCharacterWidth",
+        "message": "Controls the width used to render full-width characters."
+      },
+      {
+        "module": "vs/editor/common/config/editorOptions",
+        "key": "fullwidthCharacterWidth.font",
+        "message": "Render full-width characters using the width defined by the font."
+      },
+      {
+        "module": "vs/editor/common/config/editorOptions",
+        "key": "fullwidthCharacterWidth.twoCells",
+        "message": "Render full-width characters centered in exactly two character cells. Only applies to monospace fonts when font ligatures are disabled. Does not apply to multi codepoint full-width characters or to GPU rendering. This has a performance impact on line rendering."
+      },
+      {
+        "module": "vs/editor/common/config/editorOptions",
+        "key": "occurrencesHighlightFromAllProviders",
+        "message": "Controls whether single-document highlights from all matching providers are merged. When enabled, basic word-based highlighting is only used if no other provider matches."
+      },
+      {
+        "module": "vs/editor/common/config/editorOptions",
+        "key": "selectedTextMatchMode",
+        "message": "Controls how occurrences of selected text are matched when selecting the next, previous, or all occurrences and when highlighting selection matches. `caseSensitive` and `caseInsensitive` match substrings independently of the Find widget. An empty selection always starts a whole-word, case-sensitive search."
+      },
+      {
+        "module": "vs/editor/common/config/editorOptions",
+        "key": "selectedTextMatchMode.caseInsensitive",
+        "message": "Match occurrences case-insensitively and independently of the Find widget."
+      },
+      {
+        "module": "vs/editor/common/config/editorOptions",
+        "key": "selectedTextMatchMode.caseSensitive",
+        "message": "Match occurrences case-sensitively and independently of the Find widget."
+      },
+      {
+        "module": "vs/editor/common/config/editorOptions",
+        "key": "selectedTextMatchMode.findOptions",
+        "message": "Use the Find widget's match case and whole word settings."
+      },
+      {
+        "module": "vs/editor/common/config/editorOptions",
+        "key": "wordWrapIndicator",
+        "message": "Controls whether an indicator is rendered at the wrapping column of lines that wrap. Only has an effect when `#editor.wordWrap#` is enabled."
+      },
+      {
+        "module": "vs/editor/common/core/editorColorRegistry",
+        "key": "editorWordWrapIndicator",
+        "message": "Color of the indicator shown at the end of a soft wrapped line in the editor."
+      },
+      {
+        "module": "vs/editor/common/editorContextKeys",
+        "key": "diffEditorAutomaticRenderSideBySide",
+        "message": "Whether automatic diff editor layout would render side by side"
+      },
+      {
+        "module": "vs/editor/common/editorContextKeys",
+        "key": "diffEditorTemporaryInlineMode",
+        "message": "Whether inline mode is temporarily active after manually resizing the diff editor"
+      },
+      {
+        "module": "vs/editor/common/standaloneStrings",
+        "key": "editorDictation",
+        "message": "Start or stop dictation in the editor{0}."
+      },
+      {
+        "module": "vs/editor/contrib/hover/browser/markerHoverParticipant",
+        "key": "diagnosticMessage",
+        "message": "{0}: {1}"
+      },
+      {
+        "module": "vs/editor/contrib/hover/browser/markerHoverParticipant",
+        "key": "hint",
+        "message": "Hint"
+      },
+      {
+        "module": "vs/editor/contrib/inlineCompletions/browser/controller/inlineCompletionsController",
+        "key": "nextEditSuggestionAcceptNoKb",
+        "message": "Next edit suggestion available on line {0}, accept it to apply"
+      },
+      {
+        "module": "vs/editor/contrib/inlineCompletions/browser/controller/inlineCompletionsController",
+        "key": "nextEditSuggestionAcceptWithKb",
+        "message": "Next edit suggestion available on line {0}, press {1} to accept"
+      },
+      {
+        "module": "vs/editor/contrib/inlineCompletions/browser/controller/inlineCompletionsController",
+        "key": "nextEditSuggestionJumpNoKb",
+        "message": "Next edit suggestion available on line {0}"
+      },
+      {
+        "module": "vs/editor/contrib/inlineCompletions/browser/controller/inlineCompletionsController",
+        "key": "nextEditSuggestionJumpWithKb",
+        "message": "Next edit suggestion available on line {0}, press {1} to jump"
+      },
+      {
+        "module": "vs/editor/contrib/inlineCompletions/browser/controller/inlineCompletionsController",
+        "key": "nextEditSuggestionNoAction",
+        "message": "Next edit suggestion available on line {0}"
+      },
+      {
+        "module": "vs/editor/contrib/suggest/browser/suggestWidget",
+        "key": "editorSuggestWidgetFocusOutline",
+        "message": "Outline color of the focused (keyboard-navigated) entry in the suggest widget."
+      },
+      {
+        "module": "vs/platform/accessibilitySignal/browser/accessibilitySignalService",
+        "key": "accessibility.signals.voiceModeStarted",
+        "message": "Voice Mode Started"
+      },
+      {
+        "module": "vs/platform/accessibilitySignal/browser/accessibilitySignalService",
+        "key": "accessibility.signals.voiceModeStopped",
+        "message": "Voice Mode Stopped"
+      },
+      {
+        "module": "vs/platform/accessibilitySignal/browser/accessibilitySignalService",
+        "key": "accessibilitySignals.confetti",
+        "message": "Confetti"
+      },
+      {
+        "module": "vs/platform/accessibilitySignal/browser/accessibilitySignalService",
+        "key": "accessibilitySignals.voiceModeStarted",
+        "message": "Voice Mode Started"
+      },
+      {
+        "module": "vs/platform/accessibilitySignal/browser/accessibilitySignalService",
+        "key": "accessibilitySignals.voiceModeStopped",
+        "message": "Voice Mode Stopped"
+      },
+      {
+        "module": "vs/platform/actionWidget/browser/actionList",
+        "key": "actionList.standaloneToggle.disabledReason",
+        "message": "{0}, {1}"
+      },
+      {
+        "module": "vs/platform/actionWidget/browser/actionList",
+        "key": "actionList.standaloneToggle.off",
+        "message": "{0}, off"
+      },
+      {
+        "module": "vs/platform/actionWidget/browser/actionList",
+        "key": "actionList.standaloneToggle.on",
+        "message": "{0}, on"
+      },
+      {
+        "module": "vs/platform/browserView/electron-main/browserViewInspector",
+        "key": "browserView.addComment",
+        "message": "Add Comment"
+      },
+      {
+        "module": "vs/platform/browserView/electron-main/browserViewInspector",
+        "key": "browserView.addCommentPlaceholder",
+        "message": "Add a comment"
+      },
+      {
+        "module": "vs/platform/browserView/electron-main/browserViewInspector",
+        "key": "browserView.commentOnSelectedElement",
+        "message": "Comment on selected element"
+      },
+      {
+        "module": "vs/platform/browserView/electron-main/browserViewInspector",
+        "key": "browserView.elementComment",
+        "message": "Element comment {0}"
+      },
+      {
+        "module": "vs/platform/browserView/electron-main/browserViewInspector",
+        "key": "browserView.elementCommentWithBody",
+        "message": "Element comment {0}: {1}"
+      },
+      {
+        "module": "vs/platform/browserView/electron-main/browserViewInspector",
+        "key": "browserView.emptyElementComment",
+        "message": "Empty element comment {0}"
+      },
+      {
+        "module": "vs/platform/browserView/electron-main/browserViewInspector",
+        "key": "browserView.removeComment",
+        "message": "Remove Comment"
+      },
+      {
+        "module": "vs/platform/browserView/electron-main/browserViewInspector",
+        "key": "browserView.removeElementComment",
+        "message": "Remove element comment"
+      },
+      {
+        "module": "vs/platform/browserView/electron-main/browserViewMainService",
+        "key": "browser.closeBeforeNetworkChange",
+        "message": "Close this workspace's open browser tabs, then open the page again to use the new network setting."
+      },
+      {
+        "module": "vs/platform/browserView/electron-main/browserViewMainService",
+        "key": "browser.contextMenu.addComment",
+        "message": "Add Comment..."
+      },
+      {
+        "module": "vs/platform/browserView/electron-main/browserViewMainService",
+        "key": "browser.contextMenu.addToDictionary",
+        "message": "Add to Dictionary"
+      },
+      {
+        "module": "vs/platform/configuration/common/configurationRegistry",
+        "key": "config.agentHost.duplicate",
+        "message": "Cannot register '{0}'. The agent host configuration key '{1}' is already mirrored from '{2}'."
+      },
+      {
+        "module": "vs/platform/contextkey/common/contextkeys",
+        "key": "isChromeOS",
+        "message": "Whether the operating system is ChromeOS"
+      },
+      {
+        "module": "vs/platform/dialogs/electron-browser/dialog",
+        "key": "aboutDetailWithoutCopilot",
+        "message": "Version: {0}\nCommit: {1}\nDate: {2}\nElectron: {3}\nElectronBuildId: {4}\nChromium: {5}\nNode.js: {6}\nV8: {7}\nOS: {8}"
+      },
+      {
+        "module": "vs/platform/extensionManagement/common/extensionManagementUtil",
+        "key": "blocked by marketplace",
+        "message": "This extension has been blocked by the Extension Marketplace and must not be used."
+      },
+      {
+        "module": "vs/platform/extensionManagement/common/extensionManagementUtil",
+        "key": "blocked by organization policy",
+        "message": "This extension is not allowed by your organization."
+      },
+      {
+        "module": "vs/platform/files/common/fileService",
+        "key": "atomicMoveProvider",
+        "message": "Atomic moves require the same file system provider."
+      },
+      {
+        "module": "vs/platform/files/common/fileService",
+        "key": "atomicMoveSource",
+        "message": "Atomic moves only support files."
+      },
+      {
+        "module": "vs/platform/files/common/fileService",
+        "key": "atomicMoveTarget",
+        "message": "Atomic moves only support replacing files."
+      },
+      {
+        "module": "vs/platform/files/common/fileService",
+        "key": "atomicMoveUnsupported",
+        "message": "The file system provider does not support atomic rename."
+      },
+      {
+        "module": "vs/platform/files/node/diskFileSystemProvider",
+        "key": "atomicRenameSource",
+        "message": "Atomic renames only support files."
+      },
+      {
+        "module": "vs/platform/files/node/diskFileSystemProvider",
+        "key": "atomicRenameTarget",
+        "message": "Atomic renames only support replacing files."
+      },
+      {
+        "module": "vs/platform/files/node/diskFileSystemProvider",
+        "key": "fileIsDirectory",
+        "message": "File is a directory"
+      },
+      {
+        "module": "vs/platform/files/node/diskFileSystemProvider",
+        "key": "fileNotRegular",
+        "message": "File is not a regular file"
+      },
+      {
+        "module": "vs/platform/files/node/diskFileSystemProvider",
+        "key": "moveInUseError",
+        "message": "Unable to move '{0}' into '{1}'. It may be in use by another application, or you may not have permission ({2})."
+      },
+      {
+        "module": "vs/platform/files/node/diskFileSystemProvider",
+        "key": "renameInUseError",
+        "message": "Unable to rename '{0}' to '{1}'. It may be in use by another application, or you may not have permission ({2})."
+      },
+      {
+        "module": "vs/platform/git/node/localGitService",
+        "key": "gitAuthenticationRequiresNewerGit",
+        "message": "VS Code GitHub authentication requires Git 2.31 or later. Update Git and retry."
+      },
+      {
+        "module": "vs/platform/git/node/localGitService",
+        "key": "pluginsInvalidPinnedCommit",
+        "message": "Pinned plugin commit '{0}' is not a full SHA-1 hash."
+      },
+      {
+        "module": "vs/platform/git/node/localGitService",
+        "key": "pluginsPinnedCloneCleanupFailed",
+        "message": "Failed to prepare and clean up the plugin repository at '{0}'."
+      },
+      {
+        "module": "vs/platform/git/node/localGitService",
+        "key": "pluginsPinnedCommitCheckoutMismatch",
+        "message": "Pinned plugin commit '{0}' was not checked out. The repository is at commit '{1}'."
+      },
+      {
+        "module": "vs/platform/git/node/localGitService",
+        "key": "pluginsPinnedCommitResolutionMismatch",
+        "message": "Pinned plugin commit '{0}' resolved to a different commit '{1}'."
+      },
+      {
+        "module": "vs/platform/onboarding/electron-main/onboardingTryoutHandoff",
+        "key": "onboardingTryout.acceptTimeout",
+        "message": "The Agents window did not accept the feature example in time."
+      },
+      {
+        "module": "vs/platform/onboarding/electron-main/onboardingTryoutHandoff",
+        "key": "onboardingTryout.invalidRequest",
+        "message": "The feature example request is invalid."
+      },
+      {
+        "module": "vs/platform/onboarding/electron-main/onboardingTryoutHandoff",
+        "key": "onboardingTryout.noAgentsWindow",
+        "message": "The feature example could not be sent to an Agents window."
+      },
+      {
+        "module": "vs/platform/theme/common/colors/confettiColors",
+        "key": "confettiColor1",
+        "message": "The first color used in confetti animations."
+      },
+      {
+        "module": "vs/platform/theme/common/colors/confettiColors",
+        "key": "confettiColor2",
+        "message": "The second color used in confetti animations."
+      },
+      {
+        "module": "vs/platform/theme/common/colors/confettiColors",
+        "key": "confettiColor3",
+        "message": "The third color used in confetti animations."
+      },
+      {
+        "module": "vs/platform/theme/common/colors/confettiColors",
+        "key": "confettiColor4",
+        "message": "The fourth color used in confetti animations."
+      },
+      {
+        "module": "vs/platform/theme/common/colors/confettiColors",
+        "key": "confettiColor5",
+        "message": "The fifth color used in confetti animations."
+      },
+      {
+        "module": "vs/platform/theme/common/colors/confettiColors",
+        "key": "confettiColor6",
+        "message": "The sixth color used in confetti animations."
+      },
+      {
+        "module": "vs/platform/update/common/update.config.contribution",
+        "key": "restartWhenIdle",
+        "message": "Controls whether to restart automatically to apply a downloaded update after the screen has been locked for a minute while on power, keeping the machine from going to sleep until then. The restart only happens if every window can be restored exactly as it was, for example when no terminal process, task, debug session, chat request, or agent session is running, and it does not take focus from another application. Only supported on macOS."
+      },
+      {
+        "module": "vs/platform/update/common/update.config.contribution",
+        "key": "showOutdatedBuildReminder",
+        "message": "Show a reminder to update once this version of VS Code is two months old. The reminder is shown at most once a month."
+      },
+      {
+        "module": "vs/platform/webContentExtractor/electron-main/webPageLoader",
+        "key": "webPageLoader.invalidUri",
+        "message": "Navigation to an invalid URI is not allowed."
+      },
+      {
+        "module": "vs/platform/webContentExtractor/electron-main/webPageLoader",
+        "key": "webPageLoader.unsupportedUriScheme",
+        "message": "Navigation to the '{0}' URI scheme is not allowed."
+      },
+      {
+        "module": "vs/platform/webContentExtractor/node/sharedWebContentExtractorService",
+        "key": "imageRequestFailed",
+        "message": "Image request failed ({0})."
+      },
+      {
+        "module": "vs/platform/webContentExtractor/node/sharedWebContentExtractorService",
+        "key": "imageTypeUnsupported",
+        "message": "The response is not a supported image."
+      },
+      {
+        "module": "vs/platform/workspaces/electron-main/workspacesHistoryMainService",
+        "key": "agentsWindowRecentWorkspace",
+        "message": "Agents Window"
+      },
+      {
+        "module": "vs/workbench/api/browser/mainThreadDataChannels",
+        "key": "linkPresentation.ruleMismatch",
+        "message": "The selected link presentation provider does not accept this resource."
+      },
+      {
+        "module": "vs/workbench/api/browser/mainThreadDataChannels",
+        "key": "linkPresentation.unavailable",
+        "message": "Not available"
+      },
+      {
+        "module": "vs/workbench/api/browser/mainThreadDataChannels",
+        "key": "linkPresentation.unavailableAriaLabel",
+        "message": "Link presentation is not available"
+      },
+      {
+        "module": "vs/workbench/api/browser/mainThreadDataChannels",
+        "key": "linkPresentation.unavailableTooltip",
+        "message": "The link presentation provider failed to load."
+      },
+      {
+        "module": "vs/workbench/api/browser/mainThreadGitHub",
+        "key": "github.clientDisposed",
+        "message": "The GitHub client has been disposed."
+      },
+      {
+        "module": "vs/workbench/api/browser/mainThreadGitHub",
+        "key": "github.createRequiresSession",
+        "message": "Creating a gist requires a client bound to a GitHub session."
+      },
+      {
+        "module": "vs/workbench/api/browser/mainThreadGitHub",
+        "key": "github.invalidGist",
+        "message": "Invalid gist request: {0}"
+      },
+      {
+        "module": "vs/workbench/api/browser/mainThreadGitHub",
+        "key": "github.invalidGistFiles",
+        "message": "A gist must contain at least one file with non-empty names and no path separators."
+      },
+      {
+        "module": "vs/workbench/api/browser/mainThreadGitHub",
+        "key": "github.invalidGistId",
+        "message": "A gist identifier is required."
+      },
+      {
+        "module": "vs/workbench/api/browser/mainThreadGitHub",
+        "key": "github.invalidHandle",
+        "message": "The GitHub client could not be created."
+      },
+      {
+        "module": "vs/workbench/api/browser/mainThreadGitHub",
+        "key": "github.sessionUnavailable",
+        "message": "The selected GitHub session is not available to this extension."
+      },
+      {
+        "module": "vs/workbench/api/browser/mainThreadGitHub",
+        "key": "github.unknownError",
+        "message": "The GitHub request failed."
+      },
+      {
+        "module": "vs/workbench/api/common/configurationExtensionPoint",
+        "key": "config.property.agentHost.unsupported",
+        "message": "Extension '{0}' CANNOT use the 'agentHost' property on configuration '{1}'."
+      },
+      {
+        "module": "vs/workbench/api/common/configurationExtensionPoint",
+        "key": "scope.deprecationMessageSeverity",
+        "message": "Controls the severity used to display the deprecation message."
+      },
+      {
+        "module": "vs/workbench/api/common/configurationExtensionPoint",
+        "key": "scope.deprecationMessageSeverity.info",
+        "message": "Shows the deprecation message using an informational treatment."
+      },
+      {
+        "module": "vs/workbench/api/common/configurationExtensionPoint",
+        "key": "scope.deprecationMessageSeverity.warning",
+        "message": "Shows the deprecation message using the standard warning treatment."
+      },
+      {
+        "module": "vs/workbench/api/common/jsonValidationExtensionPoint",
+        "key": "contributes.jsonValidationRegistry",
+        "message": "Contributes a JSON validation registry. The registry can be a dynamic resource from a filesystem provider and allows associations to change at runtime."
+      },
+      {
+        "module": "vs/workbench/api/common/jsonValidationExtensionPoint",
+        "key": "contributes.jsonValidationRegistry.url",
+        "message": "A registry URI or relative path to the extension folder ('./')."
+      },
+      {
+        "module": "vs/workbench/api/common/jsonValidationExtensionPoint",
+        "key": "invalid.jsonValidationRegistry",
+        "message": "'configuration.jsonValidationRegistry' must be an array"
+      },
+      {
+        "module": "vs/workbench/api/common/jsonValidationExtensionPoint",
+        "key": "invalid.jsonValidationRegistry.fileschema",
+        "message": "'configuration.jsonValidationRegistry.url' is an invalid relative URI: {0}"
+      },
+      {
+        "module": "vs/workbench/api/common/jsonValidationExtensionPoint",
+        "key": "invalid.jsonValidationRegistry.path",
+        "message": "Expected `contributes.{0}.url` ({1}) to be included inside extension's folder ({2}). This might make the extension non-portable."
+      },
+      {
+        "module": "vs/workbench/api/common/jsonValidationExtensionPoint",
+        "key": "invalid.jsonValidationRegistry.schema",
+        "message": "'configuration.jsonValidationRegistry.url' must be an absolute URI or start with './' to reference a registry located in the extension."
+      },
+      {
+        "module": "vs/workbench/api/common/jsonValidationExtensionPoint",
+        "key": "invalid.jsonValidationRegistry.url",
+        "message": "'configuration.jsonValidationRegistry.url' must be a URI or relative path"
+      },
+      {
+        "module": "vs/workbench/browser/actions/developerActions",
+        "key": "communicationBlockSource",
+        "message": "Selected communication block"
+      },
+      {
+        "module": "vs/workbench/browser/actions/developerActions",
+        "key": "excludedBlockContributions",
+        "message": "Contributions excluded by a selected whole block"
+      },
+      {
+        "module": "vs/workbench/browser/actions/developerActions",
+        "key": "excludedBlockStatus",
+        "message": "Excluded by higher-priority {0} block (value omitted)"
+      },
+      {
+        "module": "vs/workbench/browser/actions/developerActions",
+        "key": "managedSettingsPrecedence",
+        "message": "Precedence is native MDM, then server, then file. Most settings resolve per key, filling gaps from lower channels. Telemetry and communication each select one whole block: omitted leaves never inherit from weaker blocks. Empty or unknown-only server/file objects still select a block; native MDM exposes only declared flat keys. The internal block presence markers are not policy settings. For sandbox.enabled, any managed true wins regardless of channel precedence, matching the runtime sandbox floor."
+      },
+      {
+        "module": "vs/workbench/browser/actions/developerActions",
+        "key": "noSelectedManagedSettingsKeys",
+        "message": "The selected sources supply no managed-settings leaves."
+      },
+      {
+        "module": "vs/workbench/browser/actions/developerActions",
+        "key": "policyDiagnostics.editorTitle",
+        "message": "Policy Diagnostics"
+      },
+      {
+        "module": "vs/workbench/browser/actions/developerActions",
+        "key": "policyDiagnostics.previewError",
+        "message": "Policy diagnostics opened as Markdown source because the rendered preview could not be opened: {0}"
+      },
+      {
+        "module": "vs/workbench/browser/actions/developerActions",
+        "key": "policyDiagnostics.previewMissingResource",
+        "message": "Policy diagnostics opened as Markdown source because the rendered preview could not be initialized."
+      },
+      {
+        "module": "vs/workbench/browser/actions/developerActions",
+        "key": "policyDiagnostics.progress",
+        "message": "Generating policy diagnostics..."
+      },
+      {
+        "module": "vs/workbench/browser/actions/developerActions",
+        "key": "syncAccountPolicy.blocked",
+        "message": "Failed to sync account policy."
+      },
+      {
+        "module": "vs/workbench/browser/actions/developerActions",
+        "key": "syncAccountPolicy.blocked.detail",
+        "message": "The required managed settings could not be refreshed."
+      },
+      {
+        "module": "vs/workbench/browser/actions/developerActions",
+        "key": "telemetryBlockSource",
+        "message": "Selected telemetry block"
+      },
+      {
+        "module": "vs/workbench/browser/actions/layoutActions",
+        "key": "layoutDensity",
+        "message": "Layout Density"
+      },
+      {
+        "module": "vs/workbench/browser/actions/layoutActions",
+        "key": "layoutDensityCompact",
+        "message": "Compact"
+      },
+      {
+        "module": "vs/workbench/browser/actions/layoutActions",
+        "key": "layoutDensityCompactIcon",
+        "message": "Represents the compact layout density"
+      },
+      {
+        "module": "vs/workbench/browser/actions/layoutActions",
+        "key": "layoutDensityDefault",
+        "message": "Default"
+      },
+      {
+        "module": "vs/workbench/browser/actions/layoutActions",
+        "key": "layoutDensityDefaultIcon",
+        "message": "Represents the default layout density"
+      },
+      {
+        "module": "vs/workbench/browser/actions/layoutDensityActions",
+        "key": "layoutDensityCompact",
+        "message": "Compact"
+      },
+      {
+        "module": "vs/workbench/browser/actions/layoutDensityActions",
+        "key": "layoutDensityDefault",
+        "message": "Default"
+      },
+      {
+        "module": "vs/workbench/browser/download",
+        "key": "downloadFile.imageUnavailable",
+        "message": "Unable to read image data from the URL."
+      },
+      {
+        "module": "vs/workbench/browser/download",
+        "key": "downloadFile.title",
+        "message": "Download"
+      },
+      {
+        "module": "vs/workbench/browser/layout",
+        "key": "auxiliaryBarHidden",
+        "message": "Secondary Side Bar hidden"
+      },
+      {
+        "module": "vs/workbench/browser/layout",
+        "key": "auxiliaryBarVisible",
+        "message": "Secondary Side Bar shown"
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/contentPart",
+        "key": "contentPart",
+        "message": "Editor"
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editor.contribution",
+        "key": "diffView",
+        "message": "Diff View"
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editor.contribution",
+        "key": "diffView.automaticInline",
+        "message": "Automatic (Currently Inline)"
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editor.contribution",
+        "key": "diffView.automaticSideBySide",
+        "message": "Automatic (Currently Side by Side)"
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editor.contribution",
+        "key": "diffView.inline",
+        "message": "Inline"
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editor.contribution",
+        "key": "diffView.inlineTemporary",
+        "message": "Inline (Temporary)"
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editor.contribution",
+        "key": "diffView.sideBySide",
+        "message": "Side by Side"
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editor.contribution",
+        "key": "viewEditor",
+        "message": "View Editor"
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editorActions",
+        "key": "closeOthers",
+        "message": "Close Others"
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editorAddTabControl",
+        "key": "addTab",
+        "message": "Add Tab"
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editorAddTabControl",
+        "key": "ariaLabelAddTab",
+        "message": "Add Tab"
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editorDropTarget",
+        "key": "movedEditorToPart",
+        "message": "Moved {0} to {1}"
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editorGroupWatermark",
+        "key": "watermark.chatIcon",
+        "message": "Icon for opening chat in the editor watermark."
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editorGroupWatermark",
+        "key": "watermark.commandsIcon",
+        "message": "Icon for showing all commands in the editor watermark."
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editorGroupWatermark",
+        "key": "watermark.debugIcon",
+        "message": "Icon for starting debugging in the editor watermark."
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editorGroupWatermark",
+        "key": "watermark.findInFilesIcon",
+        "message": "Icon for finding in files in the editor watermark."
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editorGroupWatermark",
+        "key": "watermark.newFileIcon",
+        "message": "Icon for creating a file in the editor watermark."
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editorGroupWatermark",
+        "key": "watermark.openFileFolderIcon",
+        "message": "Icon for opening a file or folder in the editor watermark."
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editorGroupWatermark",
+        "key": "watermark.openFileIcon",
+        "message": "Icon for opening a file in the editor watermark."
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editorGroupWatermark",
+        "key": "watermark.openFolderIcon",
+        "message": "Icon for opening a folder in the editor watermark."
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editorGroupWatermark",
+        "key": "watermark.openRecentIcon",
+        "message": "Icon for opening a recent workspace in the editor watermark."
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editorGroupWatermark",
+        "key": "watermark.quickOpenIcon",
+        "message": "Icon for going to a file in the editor watermark."
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editorGroupWatermark",
+        "key": "watermark.settingsIcon",
+        "message": "Icon for opening settings in the editor watermark."
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editorGroupWatermark",
+        "key": "watermark.shortcutAriaLabel",
+        "message": "{0} ({1})"
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editorGroupWatermark",
+        "key": "watermark.shortcuts",
+        "message": "Editor Shortcuts"
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editorGroupWatermark",
+        "key": "watermark.terminalIcon",
+        "message": "Icon for toggling the terminal in the editor watermark."
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editorHeaderControl",
+        "key": "ariaLabelEditorHeaderActions",
+        "message": "Editor actions"
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editorHeaderControl",
+        "key": "ariaLabelEditorHeaderLayoutActions",
+        "message": "Editor layout actions"
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editorHeaderControl",
+        "key": "ariaLabelEditorHeaderPrimaryActions",
+        "message": "Editor primary actions"
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editorPartActions",
+        "key": "movedEditorToPart",
+        "message": "Moved {0} to {1}"
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editorPartActions",
+        "key": "moveEditorToPart",
+        "message": "Move Editor to Part..."
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editorPartActions",
+        "key": "noOtherPart",
+        "message": "There is no other part in this window"
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editorPartActions",
+        "key": "part",
+        "message": "Part"
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editorPartActions",
+        "key": "pickPart",
+        "message": "Select a part to move '{0}' to"
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editorTransferVeto",
+        "key": "editorTransferVetoDetail",
+        "message": "Try saving or reverting the editor first and then try again."
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editorTypePicker",
+        "key": "editorType.openToSide",
+        "message": "{0} (Open to the Side)"
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/multiEditorTabsControl",
+        "key": "altClick",
+        "message": "Alt+Click"
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/multiEditorTabsControl",
+        "key": "altClickMac",
+        "message": "⌥+Click"
+      },
+      {
+        "module": "vs/workbench/browser/parts/partGrid/partGrid",
+        "key": "copiedEditorsIntoNewPart",
+        "message": "Copied {0} into a new part"
+      },
+      {
+        "module": "vs/workbench/browser/parts/partGrid/partGrid",
+        "key": "mergedPart",
+        "message": "Merged {0} into {1}"
+      },
+      {
+        "module": "vs/workbench/browser/parts/partGrid/partGrid",
+        "key": "movedEditorsIntoNewPart",
+        "message": "Moved {0} into a new part"
+      },
+      {
+        "module": "vs/workbench/browser/parts/partGrid/partGrid",
+        "key": "movedPart",
+        "message": "Moved {0}"
+      },
+      {
+        "module": "vs/workbench/browser/parts/partGrid/partGridActions",
+        "key": "movedPart",
+        "message": "Moved {0}"
+      },
+      {
+        "module": "vs/workbench/browser/parts/partGrid/partGridActions",
+        "key": "moveEditorIntoNewPartAbove",
+        "message": "Move Editor into New Part Above"
+      },
+      {
+        "module": "vs/workbench/browser/parts/partGrid/partGridActions",
+        "key": "moveEditorIntoNewPartBelow",
+        "message": "Move Editor into New Part Below"
+      },
+      {
+        "module": "vs/workbench/browser/parts/partGrid/partGridActions",
+        "key": "moveEditorIntoNewPartLeft",
+        "message": "Move Editor into New Part Left"
+      },
+      {
+        "module": "vs/workbench/browser/parts/partGrid/partGridActions",
+        "key": "moveEditorIntoNewPartRight",
+        "message": "Move Editor into New Part Right"
+      },
+      {
+        "module": "vs/workbench/browser/parts/partGrid/partGridActions",
+        "key": "movePartDown",
+        "message": "Move Part Down"
+      },
+      {
+        "module": "vs/workbench/browser/parts/partGrid/partGridActions",
+        "key": "movePartLeft",
+        "message": "Move Part Left"
+      },
+      {
+        "module": "vs/workbench/browser/parts/partGrid/partGridActions",
+        "key": "movePartRight",
+        "message": "Move Part Right"
+      },
+      {
+        "module": "vs/workbench/browser/parts/partGrid/partGridActions",
+        "key": "movePartUp",
+        "message": "Move Part Up"
+      },
+      {
+        "module": "vs/workbench/browser/parts/partGrid/partGridActions",
+        "key": "noNewPart",
+        "message": "Editors do not go into new parts in this window"
+      },
+      {
+        "module": "vs/workbench/browser/parts/partGrid/partGridActions",
+        "key": "partCannotMove",
+        "message": "The parts of this window do not move"
+      },
+      {
+        "module": "vs/workbench/browser/parts/partGrid/partGridActions",
+        "key": "partCannotMoveNow",
+        "message": "{0} does not move as it shows now"
+      },
+      {
+        "module": "vs/workbench/browser/parts/partGrid/partGridActions",
+        "key": "partDidNotMove",
+        "message": "{0} is already there"
+      },
+      {
+        "module": "vs/workbench/browser/workbench.contribution",
+        "key": "accountsShowAvatar",
+        "message": "Controls whether signed-in account profile images (avatars) are shown in account-related UI, such as the Accounts item in the Activity Bar."
+      },
+      {
+        "module": "vs/workbench/browser/workbench.contribution",
+        "key": "modernUIEditorTabStyle",
+        "message": "Controls the editor tab style when {0} is enabled, and the chat and side-panel tab style in the Agents window. High contrast themes retain explicit selection and focus borders."
+      },
+      {
+        "module": "vs/workbench/browser/workbench.contribution",
+        "key": "modernUIEditorTabStyle.connected",
+        "message": "Connect the active tab to the editor surface with an outside border and curved shoulders."
+      },
+      {
+        "module": "vs/workbench/browser/workbench.contribution",
+        "key": "modernUIEditorTabStyle.pill",
+        "message": "Show editor tabs as separate rounded pills."
+      },
+      {
+        "module": "vs/workbench/browser/workbench.contribution",
+        "key": "modernUIFrostedGlass",
+        "message": "Adds a softly blurred background to menus, the Command Palette, and other pop-ups. Available in the Agents window and in editor windows with {0} enabled. Always respects reduced transparency in your operating system's accessibility settings, as well as {1}. Uses solid backgrounds in high contrast themes or when the effect isn't supported. Turn this off if you notice display or performance issues. Your operating system's own menus and dialogs are unchanged."
+      },
+      {
+        "module": "vs/workbench/browser/workbench.contribution",
+        "key": "modernUIFrostedGlassOpacity",
+        "message": "Controls how see-through frosted glass backgrounds are, from 50% to 100%. Lower values reveal more of the blurred content behind them; higher values make the background more solid. Text and controls stay unchanged. Requires {0} and does not override reduced transparency settings in your operating system or VS Code."
+      },
+      {
+        "module": "vs/workbench/browser/workbench.contribution",
+        "key": "modernUIUppercaseViewHeaders",
+        "message": "Controls whether view headers, side bar titles, and panel tabs use uppercase text when {0} is enabled."
+      },
+      {
+        "module": "vs/workbench/browser/workbench.contribution",
+        "key": "windowDensityLayout",
+        "message": "Controls the spacing density of the workbench layout. Applies in the Agents window and when {0} is enabled in the editor window."
+      },
+      {
+        "module": "vs/workbench/browser/workbench.contribution",
+        "key": "windowDensityLayout.compact",
+        "message": "Removes the gaps between workbench parts and reduces their internal spacing to provide more room for content. Uses a shorter title bar in the Agents window."
+      },
+      {
+        "module": "vs/workbench/browser/workbench.contribution",
+        "key": "windowDensityLayout.default",
+        "message": "Uses the standard spacing between workbench parts and a taller title bar in the Agents window."
+      },
+      {
+        "module": "vs/workbench/browser/workbench.contribution",
+        "key": "workbench.editor.tabActionReserveSpace",
+        "message": "Controls whether Modern UI editor tabs always reserve space for tab action buttons. When disabled, clean tabs stay compact; tabs with persistent dirty or pinned indicators reserve space regardless."
+      },
+      {
+        "module": "vs/workbench/common/agentsColors",
+        "key": "activeSessionView.background",
+        "message": "Background color of an active session view in the agent sessions window."
+      },
+      {
+        "module": "vs/workbench/common/agentsColors",
+        "key": "activeSessionView.foreground",
+        "message": "Foreground color of an active session view in the agent sessions window."
+      },
+      {
+        "module": "vs/workbench/common/agentsColors",
+        "key": "agentFeedbackEditorWidget.background",
+        "message": "Background color of the agent feedback widget shown in the editor."
+      },
+      {
+        "module": "vs/workbench/common/agentsColors",
+        "key": "agentFeedbackEditorWidget.border",
+        "message": "Border color of the agent feedback widget shown in the editor."
+      },
+      {
+        "module": "vs/workbench/common/agentsColors",
+        "key": "agentFeedbackInputWidget.border",
+        "message": "Border color of the agent feedback input widget shown in the editor."
+      },
+      {
+        "module": "vs/workbench/common/agentsColors",
+        "key": "agents.background",
+        "message": "Background color of the agent sessions window shell and gradient base."
+      },
+      {
+        "module": "vs/workbench/common/agentsColors",
+        "key": "agentsBadge.background",
+        "message": "Background color of badges in the agent sessions window."
+      },
+      {
+        "module": "vs/workbench/common/agentsColors",
+        "key": "agentsBadge.foreground",
+        "message": "Foreground color of badges in the agent sessions window."
+      },
+      {
+        "module": "vs/workbench/common/agentsColors",
+        "key": "agentsBottomPanel.border",
+        "message": "Border color of the bottom panel in the agent sessions window."
+      },
+      {
+        "module": "vs/workbench/common/agentsColors",
+        "key": "agentsCard.border",
+        "message": "Border color of the floating content card (sessions grid and custom view grid) in the agent sessions window."
+      },
+      {
+        "module": "vs/workbench/common/agentsColors",
+        "key": "agentsChatInput.background",
+        "message": "Background color of the chat input field in the agent sessions window."
+      },
+      {
+        "module": "vs/workbench/common/agentsColors",
+        "key": "agentsChatInput.border",
+        "message": "Border color of the chat input field in the agent sessions window."
+      },
+      {
+        "module": "vs/workbench/common/agentsColors",
+        "key": "agentsChatInput.focusBorder",
+        "message": "Border color of the chat input field when focused in the agent sessions window."
+      },
+      {
+        "module": "vs/workbench/common/agentsColors",
+        "key": "agentsChatInput.foreground",
+        "message": "Foreground color of the chat input field in the agent sessions window."
+      },
+      {
+        "module": "vs/workbench/common/agentsColors",
+        "key": "agentsChatInput.placeholderForeground",
+        "message": "Placeholder text color in the chat input field in the agent sessions window."
+      },
+      {
+        "module": "vs/workbench/common/agentsColors",
+        "key": "agentsDetail.background",
+        "message": "Background color of the docked details pane in the agent sessions window."
+      },
+      {
+        "module": "vs/workbench/common/agentsColors",
+        "key": "agentsGradient.tintColor",
+        "message": "Tint color used in the background gradient of the agent sessions window shell."
+      },
+      {
+        "module": "vs/workbench/common/agentsColors",
+        "key": "agentsNewSessionButton.background",
+        "message": "Background color of the New Session button in the agent sessions sidebar."
+      },
+      {
+        "module": "vs/workbench/common/agentsColors",
+        "key": "agentsNewSessionButton.border",
+        "message": "Border color of the New Session button in the agent sessions sidebar."
+      },
+      {
+        "module": "vs/workbench/common/agentsColors",
+        "key": "agentsNewSessionButton.foreground",
+        "message": "Foreground color of the New Session button in the agent sessions sidebar."
+      },
+      {
+        "module": "vs/workbench/common/agentsColors",
+        "key": "agentsNewSessionButton.hoverBackground",
+        "message": "Background color of the New Session button when hovered in the agent sessions sidebar."
+      },
+      {
+        "module": "vs/workbench/common/agentsColors",
+        "key": "agentsPanel.background",
+        "message": "Background color of the card panels (chat, files, terminal) in the agent sessions window."
+      },
+      {
+        "module": "vs/workbench/common/agentsColors",
+        "key": "agentsPanel.border",
+        "message": "Border color of the card panels (chat, files, terminal) in the agent sessions window."
+      },
+      {
+        "module": "vs/workbench/common/agentsColors",
+        "key": "agentsPanel.foreground",
+        "message": "Foreground color of the card panels (chat, files, terminal) in the agent sessions window."
+      },
+      {
+        "module": "vs/workbench/common/agentsColors",
+        "key": "agentsUnreadBadge.background",
+        "message": "Background color of the unread sessions count badge on the sidebar toggle."
+      },
+      {
+        "module": "vs/workbench/common/agentsColors",
+        "key": "agentsUnreadBadge.foreground",
+        "message": "Foreground color of the unread sessions count badge on the sidebar toggle."
+      },
+      {
+        "module": "vs/workbench/common/agentsColors",
+        "key": "agentsUpdateButton.downloadedBackground",
+        "message": "Background color of the update button when download is complete in the agent sessions window."
+      },
+      {
+        "module": "vs/workbench/common/agentsColors",
+        "key": "agentsUpdateButton.downloadingBackground",
+        "message": "Background color of the update button to show download progress in the agent sessions window."
+      },
+      {
+        "module": "vs/workbench/common/agentsColors",
+        "key": "agentsWindowGraphic.orange",
+        "message": "Orange used for a project and for code in the graphic that explains the Agents window on the Welcome page."
+      },
+      {
+        "module": "vs/workbench/common/agentsColors",
+        "key": "inactiveSessionView.background",
+        "message": "Background color of an inactive session view in the agent sessions window."
+      },
+      {
+        "module": "vs/workbench/common/agentsColors",
+        "key": "inactiveSessionView.foreground",
+        "message": "Foreground color of an inactive session view in the agent sessions window."
+      },
+      {
+        "module": "vs/workbench/common/contextkeys",
+        "key": "activeEditorCannotClose",
+        "message": "Whether the active editor cannot be closed through standard user actions"
+      },
+      {
+        "module": "vs/workbench/common/contextkeys",
+        "key": "editorGroupLockActionsHidden",
+        "message": "Whether the editor group hides the actions that lock and unlock it, as its owner keeps it locked"
+      },
+      {
+        "module": "vs/workbench/common/contextkeys",
+        "key": "editorPartInPartGrid",
+        "message": "Whether the editor part is one of the parts of a window that arranges its parts in a grid, where parts move and editors go into new parts"
+      },
+      {
+        "module": "vs/workbench/common/contextkeys",
+        "key": "editorPartModalCanMoveToEditorArea",
+        "message": "Whether the modal editor can move into an editor area"
+      },
+      {
+        "module": "vs/workbench/common/contextkeys",
+        "key": "editorPartModalVisible",
+        "message": "Whether a modal editor part is visible"
+      },
+      {
+        "module": "vs/workbench/common/contextkeys",
+        "key": "layoutMode",
+        "message": "How the window shows its chat and its editor parts, either 'chatOnly', 'editorOnly', 'stacked' or 'sideBySide'. Unset in windows without layout modes."
+      },
+      {
+        "module": "vs/workbench/common/contextkeys",
+        "key": "secondarySideBarVisible",
+        "message": "Whether the layout surface representing the secondary side bar is visible"
+      },
+      {
+        "module": "vs/workbench/common/contextkeys",
+        "key": "splitLayout",
+        "message": "How the window arranges its chat and its editor parts while both show, or as they will next show together, either 'stacked' or 'sideBySide'. Unset in windows without layout modes."
+      },
+      {
+        "module": "vs/workbench/common/contextkeys",
+        "key": "terminalsPosition",
+        "message": "Where the part that holds the window's terminals sits, either 'underChat', 'underEditor' or 'fullWidth'. Unset in windows without such a part."
+      },
+      {
+        "module": "vs/workbench/common/contextkeys",
+        "key": "terminalsVisible",
+        "message": "Whether the window shows the part that holds its terminals. Unset in windows without such a part."
+      },
+      {
+        "module": "vs/workbench/common/theme",
+        "key": "connectedTabsContainerBackground",
+        "message": "Background color of connected tabs in editor group title headers. Editor groups are the containers of editors."
+      },
+      {
+        "module": "vs/workbench/common/theme",
+        "key": "editorBorder",
+        "message": "Border color of the editor surface in the modern layout."
+      },
+      {
+        "module": "vs/workbench/common/theme",
+        "key": "modernActivityBarActiveBackground",
+        "message": "Background color of active Activity bar items in the default side position when the modern UI is enabled."
+      },
+      {
+        "module": "vs/workbench/common/theme",
+        "key": "modernActivityBarActiveBackgroundDeprecated",
+        "message": "'modernActivityBar.activeBackground' is deprecated. Use 'modernActivityBarItem.activeBackground' instead."
+      },
+      {
+        "module": "vs/workbench/common/theme",
+        "key": "modernActivityBarActiveForeground",
+        "message": "Foreground color of active Activity bar items in the default side position when the modern UI is enabled."
+      },
+      {
+        "module": "vs/workbench/common/theme",
+        "key": "modernActivityBarActiveForegroundDeprecated",
+        "message": "'modernActivityBar.activeForeground' is deprecated. Use 'modernActivityBarItem.activeForeground' instead."
+      },
+      {
+        "module": "vs/workbench/common/theme",
+        "key": "modernActivityBarBackground",
+        "message": "Background color of the Activity bar in the default side position when the modern UI is enabled."
+      },
+      {
+        "module": "vs/workbench/common/theme",
+        "key": "modernActivityBarBorder",
+        "message": "Border color of the Activity bar in the default side position when the modern UI is enabled."
+      },
+      {
+        "module": "vs/workbench/common/theme",
+        "key": "modernActivityBarHoverBackground",
+        "message": "Background color of Activity bar items in the default side position when hovering and the modern UI is enabled."
+      },
+      {
+        "module": "vs/workbench/common/theme",
+        "key": "modernActivityBarHoverBackgroundDeprecated",
+        "message": "'modernActivityBar.hoverBackground' is deprecated. Use 'modernActivityBarItem.hoverBackground' instead."
+      },
+      {
+        "module": "vs/workbench/common/theme",
+        "key": "modernActivityBarHoverForeground",
+        "message": "Foreground color of Activity bar items in the default side position when hovering and the modern UI is enabled."
+      },
+      {
+        "module": "vs/workbench/common/theme",
+        "key": "modernActivityBarHoverForegroundDeprecated",
+        "message": "'modernActivityBar.hoverForeground' is deprecated. Use 'modernActivityBarItem.hoverForeground' instead."
+      },
+      {
+        "module": "vs/workbench/common/theme",
+        "key": "modernActivityBarInactiveBackground",
+        "message": "Background color of the Activity bar in an inactive window when it is in the default side position and the modern UI is enabled."
+      },
+      {
+        "module": "vs/workbench/common/theme",
+        "key": "modernActivityBarItemActiveBackground",
+        "message": "Background color of active Activity bar items in the default side position when the modern UI is enabled."
+      },
+      {
+        "module": "vs/workbench/common/theme",
+        "key": "modernActivityBarItemActiveForeground",
+        "message": "Foreground color of active Activity bar items in the default side position when the modern UI is enabled."
+      },
+      {
+        "module": "vs/workbench/common/theme",
+        "key": "modernActivityBarItemHoverBackground",
+        "message": "Background color of Activity bar items in the default side position when hovering and the modern UI is enabled."
+      },
+      {
+        "module": "vs/workbench/common/theme",
+        "key": "modernActivityBarItemHoverForeground",
+        "message": "Foreground color of Activity bar items in the default side position when hovering and the modern UI is enabled."
+      },
+      {
+        "module": "vs/workbench/common/theme",
+        "key": "modernEditorTabActiveActionBackground",
+        "message": "Opaque background color of tab actions on active editor tabs when the modern tab style is enabled."
+      },
+      {
+        "module": "vs/workbench/common/theme",
+        "key": "modernEditorTabActiveBackground",
+        "message": "Background color of active editor tabs when the modern tab style is enabled."
+      },
+      {
+        "module": "vs/workbench/common/theme",
+        "key": "modernEditorTabActiveForeground",
+        "message": "Foreground color of active editor tabs when the modern tab style is enabled."
+      },
+      {
+        "module": "vs/workbench/common/theme",
+        "key": "modernEditorTabActiveHoverActionBackground",
+        "message": "Opaque background color of tab actions on active editor tabs when hovering and the modern tab style is enabled."
+      },
+      {
+        "module": "vs/workbench/common/theme",
+        "key": "modernEditorTabActiveHoverBackground",
+        "message": "Background color of active editor tabs when hovering and the modern tab style is enabled."
+      },
+      {
+        "module": "vs/workbench/common/theme",
+        "key": "modernEditorTabHoverActionBackground",
+        "message": "Opaque background color of tab actions on editor tabs when hovering and the modern tab style is enabled."
+      },
+      {
+        "module": "vs/workbench/common/theme",
+        "key": "modernEditorTabHoverBackground",
+        "message": "Background color of editor tabs when hovering and the modern tab style is enabled."
+      },
+      {
+        "module": "vs/workbench/common/theme",
+        "key": "modernEditorTabHoverForeground",
+        "message": "Foreground color of editor tabs when hovering and the modern tab style is enabled."
+      },
+      {
+        "module": "vs/workbench/common/theme",
+        "key": "modernEditorTabInactiveBackground",
+        "message": "Background color of inactive editor tabs when the modern tab style is enabled."
+      },
+      {
+        "module": "vs/workbench/common/theme",
+        "key": "modernEditorTabSelectedActionBackground",
+        "message": "Opaque background color of tab actions on selected editor tabs when the modern tab style is enabled."
+      },
+      {
+        "module": "vs/workbench/common/theme",
+        "key": "modernPanelBorder",
+        "message": "Border color of the panel surface when the modern UI is enabled."
+      },
+      {
+        "module": "vs/workbench/common/theme",
+        "key": "modernSashGripForeground",
+        "message": "Color of the grip handles marking the resizable boundaries between workbench parts when the modern UI is enabled."
+      },
+      {
+        "module": "vs/workbench/common/theme",
+        "key": "modernTabActiveBackground",
+        "message": "Background color of active tabs when the modern tab style is enabled."
+      },
+      {
+        "module": "vs/workbench/common/theme",
+        "key": "modernTabActiveForeground",
+        "message": "Foreground color of active tabs when the modern tab style is enabled."
+      },
+      {
+        "module": "vs/workbench/common/theme",
+        "key": "modernTabHoverBackground",
+        "message": "Background color of tabs when hovering and the modern tab style is enabled."
+      },
+      {
+        "module": "vs/workbench/common/theme",
+        "key": "modernTabHoverForeground",
+        "message": "Foreground color of tabs when hovering and the modern tab style is enabled."
+      },
+      {
+        "module": "vs/workbench/common/theme",
+        "key": "modernUIInactiveShellBackground",
+        "message": "Background color of the shell visible around floating workbench surfaces when the window is inactive and the modern UI is enabled."
+      },
+      {
+        "module": "vs/workbench/common/theme",
+        "key": "modernUIShellBackground",
+        "message": "Background color of the shell visible around floating workbench surfaces when the modern UI is enabled."
+      },
+      {
+        "module": "vs/workbench/common/theme",
+        "key": "statusBarInactiveBackground",
+        "message": "Status bar background color when a workspace or folder is opened and the window is inactive. Debugging and other background overrides take precedence. If not set, the current status bar background is used."
+      },
+      {
+        "module": "vs/workbench/common/theme",
+        "key": "surfaceBackground",
+        "message": "Background color of framed container surfaces (\"cards\"), such as the floating workbench panels in the modern layout."
+      },
+      {
+        "module": "vs/workbench/common/theme",
+        "key": "surfaceBorder",
+        "message": "Border color of framed container surfaces (\"cards\"), such as the floating workbench panels in the modern layout."
+      },
+      {
+        "module": "vs/workbench/common/theme",
+        "key": "surfaceForeground",
+        "message": "Foreground color of framed container surfaces (\"cards\"), such as the floating workbench panels in the modern layout."
+      },
+      {
+        "module": "vs/workbench/common/theme",
+        "key": "tabDivider",
+        "message": "Color of dividers between editor tabs."
+      },
+      {
+        "module": "vs/workbench/contrib/accessibility/browser/accessibilityConfiguration",
+        "key": "accessibility.signals.confetti",
+        "message": "Plays a joyful sound / audio cue when confetti is shown."
+      },
+      {
+        "module": "vs/workbench/contrib/accessibility/browser/accessibilityConfiguration",
+        "key": "accessibility.signals.confetti.sound",
+        "message": "Plays a joyful sound when confetti is shown."
+      },
+      {
+        "module": "vs/workbench/contrib/accessibility/browser/accessibilityConfiguration",
+        "key": "accessibility.signals.voiceModeStarted",
+        "message": "Plays a signal - sound (audio cue) and/or announcement (alert) - when voice mode has started."
+      },
+      {
+        "module": "vs/workbench/contrib/accessibility/browser/accessibilityConfiguration",
+        "key": "accessibility.signals.voiceModeStarted.announcement",
+        "message": "Announces when voice mode has started."
+      },
+      {
+        "module": "vs/workbench/contrib/accessibility/browser/accessibilityConfiguration",
+        "key": "accessibility.signals.voiceModeStarted.sound",
+        "message": "Plays a sound when voice mode has started."
+      },
+      {
+        "module": "vs/workbench/contrib/accessibility/browser/accessibilityConfiguration",
+        "key": "accessibility.signals.voiceModeStopped",
+        "message": "Plays a signal - sound (audio cue) and/or announcement (alert) - when voice mode has stopped."
+      },
+      {
+        "module": "vs/workbench/contrib/accessibility/browser/accessibilityConfiguration",
+        "key": "accessibility.signals.voiceModeStopped.announcement",
+        "message": "Announces when voice mode has stopped."
+      },
+      {
+        "module": "vs/workbench/contrib/accessibility/browser/accessibilityConfiguration",
+        "key": "accessibility.signals.voiceModeStopped.sound",
+        "message": "Plays a sound when voice mode has stopped."
+      },
+      {
+        "module": "vs/workbench/contrib/accessibility/browser/accessibilityConfiguration",
+        "key": "verbosity.agentsWindowExtensions",
+        "message": "Provide information about how to access accessibility help when managing which extensions run in the Agents window."
+      },
+      {
+        "module": "vs/workbench/contrib/accessibility/browser/accessibilityConfiguration",
+        "key": "verbosity.browserElementCommenting",
+        "message": "Provide information about how to access element commenting accessibility help in the Integrated Browser."
+      },
+      {
+        "module": "vs/workbench/contrib/accessibility/browser/accessibilityConfiguration",
+        "key": "verbosity.chatPetAchievements",
+        "message": "Provide information about how to access chat pet achievements accessibility help when the Achievements modal is focused."
+      },
+      {
+        "module": "vs/workbench/contrib/accessibility/browser/accessibilityConfiguration",
+        "key": "verbosity.chatPetJumpGame",
+        "message": "Provide information about how to access accessibility help when Blobby's jump game is focused."
+      },
+      {
+        "module": "vs/workbench/contrib/accessibility/browser/accessibilityConfiguration",
+        "key": "verbosity.connectionDiagnostics",
+        "message": "Provide information about how to access connection diagnostics accessibility help when the report is focused."
+      },
+      {
+        "module": "vs/workbench/contrib/accessibility/browser/accessibilityConfiguration",
+        "key": "verbosity.customizationDiscovery.description",
+        "message": "Provide information about how to access accessibility help when discovering customizations."
+      },
+      {
+        "module": "vs/workbench/contrib/accessibility/browser/accessibilityConfiguration",
+        "key": "verbosity.customizationMigrations.description",
+        "message": "Provide information about how to access accessibility help for the customization migration checklist."
+      },
+      {
+        "module": "vs/workbench/contrib/accessibility/browser/accessibilityConfiguration",
+        "key": "verbosity.emptyFileEditorSearch",
+        "message": "Provide information about how to use file search in the empty Files editor."
+      },
+      {
+        "module": "vs/workbench/contrib/accessibility/browser/accessibilityConfiguration",
+        "key": "verbosity.inboxNotifications",
+        "message": "Provide information about how to navigate and act on prioritized notifications in the Inbox view."
+      },
+      {
+        "module": "vs/workbench/contrib/accessibility/browser/accessibilityConfiguration",
+        "key": "verbosity.mcpServerConfiguration.description",
+        "message": "Provide information about how to access accessibility help when an MCP server configuration form is focused."
+      },
+      {
+        "module": "vs/workbench/contrib/accessibility/browser/accessibilityConfiguration",
+        "key": "verbosity.multiDiffEditorFileList.description",
+        "message": "Provide information about how to navigate the changed files list in the multi diff editor when it is focused."
+      },
+      {
+        "module": "vs/workbench/contrib/accessibility/browser/accessibilityConfiguration",
+        "key": "verbosity.newSessionWelcome",
+        "message": "Announce the welcome message when a new session composer is shown."
+      },
+      {
+        "module": "vs/workbench/contrib/accessibility/browser/accessibilityConfiguration",
+        "key": "verbosity.releaseNotes",
+        "message": "Provide information about how to access release notes accessibility help when the release notes are focused."
+      },
+      {
+        "module": "vs/workbench/contrib/accessibility/browser/accessibilityConfiguration",
+        "key": "verbosity.remotes.description",
+        "message": "Provide information about how to access accessibility help when managing remotes."
+      },
+      {
+        "module": "vs/workbench/contrib/accessibility/browser/accessibilityConfiguration",
+        "key": "verbosity.sessionCanvas",
+        "message": "Provide information about how to access canvas accessibility help when a canvas is focused."
+      },
+      {
+        "module": "vs/workbench/contrib/accessibility/browser/accessibilityConfiguration",
+        "key": "verbosity.sessionsGetStarted",
+        "message": "Provide information about how to access accessibility help for the Get Started checklist in the Sessions view."
+      },
+      {
+        "module": "vs/workbench/contrib/accessibility/browser/accessibilityConfiguration",
+        "key": "verbosity.sessionsListNotification",
+        "message": "Provide information about how to access accessibility help for the Undo notice in the sessions list."
+      },
+      {
+        "module": "vs/workbench/contrib/accessibility/browser/accessibilityConfiguration",
+        "key": "verbosity.sessionWorktreeCleanup",
+        "message": "Provide information about how to use the Manage Agent Session Storage editor when it is focused."
+      },
+      {
+        "module": "vs/workbench/contrib/accessibility/browser/accessibleView",
+        "key": "notificationLinks",
+        "message": "If a notification contains links, they are available in the toolbar. Use Left and Right Arrow to find a link and Enter to open it."
+      },
+      {
+        "module": "vs/workbench/contrib/accessibility/browser/editorAccessibilityHelp",
+        "key": "editor.simpleFileDialogSelectInitialPath",
+        "message": "In the simple file dialog, the pre-filled path is selected when a screen reader is detected, so typing replaces it. Change this with the files.simpleDialog.selectInitialPath setting."
+      },
+      {
+        "module": "vs/workbench/contrib/accessibility/browser/editorAccessibilityHelp",
+        "key": "editorType.openToSideHelp",
+        "message": "In the Reopen Editor With menu, hold Alt to show alternatives labelled with (Open to the Side) after the editor name. On Windows and Linux, Shift also works. Native menus select the alternative when the menu opens; custom menus update while open. Click an entry or press Enter to run the displayed action. Editors that cannot be split do not offer this alternative for their current type. Switching editor types preserves the selection when supported by the editor."
+      },
+      {
+        "module": "vs/workbench/contrib/browserView/common/browserView",
+        "key": "browserView.openShareableCopy.cancel",
+        "message": "Cancel"
+      },
+      {
+        "module": "vs/workbench/contrib/browserView/common/browserView",
+        "key": "browserView.openShareableCopy.confirm",
+        "message": "&&Open and Share"
+      },
+      {
+        "module": "vs/workbench/contrib/browserView/common/browserView",
+        "key": "browserView.openShareableCopy.detail",
+        "message": "This tab does not enforce the configured policy restrictions required for agent sharing.\n\nOpen the page in a new tab to share it with agents."
+      },
+      {
+        "module": "vs/workbench/contrib/browserView/common/browserView",
+        "key": "browserView.openShareableCopy.message",
+        "message": "Open a New Tab for Sharing?"
+      },
+      {
+        "module": "vs/workbench/contrib/browserView/electron-browser/browserView.contribution",
+        "key": "browser.htmlEditorLabel",
+        "message": "Integrated Browser"
+      },
+      {
+        "module": "vs/workbench/contrib/browserView/electron-browser/browserViewWorkbenchService",
+        "key": "browser.networkFilteringEnabled",
+        "message": "Agent access to browser tabs was revoked because network filtering was enabled."
+      },
+      {
+        "module": "vs/workbench/contrib/browserView/electron-browser/browserViewWorkbenchService",
+        "key": "browser.networkProxyUnavailable",
+        "message": "The browser network proxy did not start. Reload the window and try again."
+      },
+      {
+        "module": "vs/workbench/contrib/browserView/electron-browser/browserViewWorkbenchService",
+        "key": "browser.requiredNetworkUnavailable",
+        "message": "The required remote network is unavailable."
+      },
+      {
+        "module": "vs/workbench/contrib/browserView/electron-browser/browserViewWorkbenchService",
+        "key": "browser.unknownNetwork",
+        "message": "This page was opened for another remote ({0}). Open it again from a window connected to that remote."
+      },
+      {
+        "module": "vs/workbench/contrib/browserView/electron-browser/features/browserAutoReloadFeatures",
+        "key": "browser.autoReloadOnFileChange",
+        "message": "Controls whether the Integrated Browser automatically reloads by default when displaying local `file://` resources that change on disk."
+      },
+      {
+        "module": "vs/workbench/contrib/browserView/electron-browser/features/browserAutoReloadFeatures",
+        "key": "browser.refreshAutomatically",
+        "message": "Refresh Automatically"
+      },
+      {
+        "module": "vs/workbench/contrib/browserView/electron-browser/features/browserAutoReloadFeatures",
+        "key": "browser.reloadAutomaticRefreshEnabled",
+        "message": "Reload (Automatic Refresh Enabled)"
+      },
+      {
+        "module": "vs/workbench/contrib/browserView/electron-browser/features/browserAutoReloadFeatures",
+        "key": "browser.reloadMenu",
+        "message": "More Reload Actions"
+      },
+      {
+        "module": "vs/workbench/contrib/browserView/electron-browser/features/browserDataStorageFeatures",
+        "key": "browser.clearAgentStorageAction",
+        "message": "Clear Storage (Agent)"
+      },
+      {
+        "module": "vs/workbench/contrib/browserView/electron-browser/features/browserDataStorageFeatures",
+        "key": "browser.dataStorage.agent",
+        "message": "Browser views share one in-memory session that is cleaned up when the application is closed. This session is shared with agent-opened browser pages, so **all data including local storage and cookies will be accessible by agents.** When agent network filtering is enabled, requests from this session are restricted by the configured network domain policy."
+      },
+      {
+        "module": "vs/workbench/contrib/browserView/electron-browser/features/browserEditorErrorFeatures",
+        "key": "browser.networkPolicyErrorExtraWarning",
+        "message": "The request was most likely blocked by network domain policy.\nCheck the configured allowed and denied network domains."
+      },
+      {
+        "module": "vs/workbench/contrib/browserView/electron-browser/features/browserRemoteFeatures",
+        "key": "browser.connectedViaHost",
+        "message": "Connected via {0}"
+      },
+      {
+        "module": "vs/workbench/contrib/browserView/electron-browser/features/browserRemoteFeatures",
+        "key": "browser.hostDisconnected",
+        "message": "{0} is disconnected. Reload the page after it reconnects."
+      },
+      {
+        "module": "vs/workbench/contrib/browserView/electron-browser/features/browserRemoteFeatures",
+        "key": "browser.localFallback.global",
+        "message": "Connected locally. Browsers using global storage load pages from your local network, not from {0}."
+      },
+      {
+        "module": "vs/workbench/contrib/browserView/electron-browser/features/browserRemoteFeatures",
+        "key": "browser.localFallback.unsupported",
+        "message": "{0} does not support browser proxying. Pages load from your local network. Update the agent host to reach its network."
+      },
+      {
+        "module": "vs/workbench/contrib/browserView/electron-browser/features/browserTabManagementFeatures",
+        "key": "browser.externalUriOpener",
+        "message": "Open in Integrated Browser"
+      },
+      {
+        "module": "vs/workbench/contrib/browserView/electron-browser/webContentsViewHost",
+        "key": "browser.overlayPauseDetail.notification",
+        "message": "Dismiss the notification to continue using the browser."
+      },
+      {
+        "module": "vs/workbench/contrib/browserView/electron-browser/webContentsViewHost",
+        "key": "browser.overlayPauseHeading.notification",
+        "message": "Paused due to Notification"
+      },
+      {
+        "module": "vs/workbench/contrib/browserView/electron-browser/widgets/browserUrlBarWidget",
+        "key": "browser.address",
+        "message": "Address"
+      },
+      {
+        "module": "vs/workbench/contrib/browserView/electron-browser/widgets/browserUrlBarWidget",
+        "key": "browser.addressLockedAriaLabel",
+        "message": "Address. This address cannot be changed because the browser is locked to a file resource."
+      },
+      {
+        "module": "vs/workbench/contrib/browserView/electron-browser/widgets/browserUrlBarWidget",
+        "key": "browser.addressLockedTooltip",
+        "message": "The address is read-only because the browser is locked to a file resource."
+      },
+      {
+        "module": "vs/workbench/contrib/codeEditor/browser/diffEditorAccessibilityHelp",
+        "key": "compactHiddenLines",
+        "message": "In compact diff presentations, use Tab to focus a hidden-lines disclosure, then Enter or Space to expand or collapse unchanged lines. Breadcrumbs are separate buttons that reveal their symbol."
+      },
+      {
+        "module": "vs/workbench/contrib/codeEditor/browser/diffEditorAccessibilityHelp",
+        "key": "msg6",
+        "message": "Use Diff View in the editor title area's More Actions menu to select inline, side-by-side, or automatic layout."
+      },
+      {
+        "module": "vs/workbench/contrib/codeEditor/browser/diffEditorTryout.contribution",
+        "key": "diffEditor.tryout.description",
+        "message": "Open a read-only sample comparison. Use Diff View to choose Inline, Side by Side, or Automatic, then resize the editor."
+      },
+      {
+        "module": "vs/workbench/contrib/codeEditor/browser/diffEditorTryout.contribution",
+        "key": "diffEditor.tryout.editorTitle",
+        "message": "Smart Diff Layout Example"
+      },
+      {
+        "module": "vs/workbench/contrib/codeEditor/browser/diffEditorTryout.contribution",
+        "key": "diffEditor.tryout.title",
+        "message": "Try Smart Diff Layout"
+      },
+      {
+        "module": "vs/workbench/contrib/codeEditor/common/languageConfigurationExtensionPoint",
+        "key": "schema.autoClosingPairs.beforeText",
+        "message": "This pair will only auto close if the text on the current line before the cursor, including the just-typed opening string, matches this regular expression."
+      },
+      {
+        "module": "vs/workbench/contrib/codeEditor/common/languageConfigurationExtensionPoint",
+        "key": "schema.autoClosingPairs.beforeText.errorMessage",
+        "message": "Must match the pattern `/^([gimuy]+)$/`."
+      },
+      {
+        "module": "vs/workbench/contrib/codeEditor/common/languageConfigurationExtensionPoint",
+        "key": "schema.autoClosingPairs.beforeText.flags",
+        "message": "The RegExp flags for beforeText."
+      },
+      {
+        "module": "vs/workbench/contrib/codeEditor/common/languageConfigurationExtensionPoint",
+        "key": "schema.autoClosingPairs.beforeText.pattern",
+        "message": "The RegExp pattern for beforeText."
+      },
+      {
+        "module": "vs/workbench/contrib/customEditor/common/extensionPoint",
+        "key": "contributes.priority.explicit",
+        "message": "The editor is not automatically used or opted into by an association from another editor mode. It can still be opened using the `Reopen With` command or an association configured specifically for this editor mode."
+      },
+      {
+        "module": "vs/workbench/contrib/debug/common/debug",
+        "key": "threadHasMultipleStackFrames",
+        "message": "True when the target thread has more than one stack frame."
+      },
+      {
+        "module": "vs/workbench/contrib/extensions/browser/extensions.contribution",
+        "key": "extensions.gallery.authProvider",
+        "message": "Configure the authentication provider for the Extensions Marketplace"
+      },
+      {
+        "module": "vs/workbench/contrib/extensions/browser/extensions.contribution",
+        "key": "extensions.gallery.authProvider.github",
+        "message": "Authenticate to the Extensions Marketplace using GitHub."
+      },
+      {
+        "module": "vs/workbench/contrib/extensions/browser/extensions.contribution",
+        "key": "extensions.gallery.authProvider.microsoft",
+        "message": "Authenticate to the Extensions Marketplace using a Microsoft (Entra ID) account."
+      },
+      {
+        "module": "vs/workbench/contrib/extensions/browser/extensionsActions",
+        "key": "check logs label",
+        "message": "log"
+      },
+      {
+        "module": "vs/workbench/contrib/extensions/browser/extensionsActions",
+        "key": "check logs linked",
+        "message": "Please check the {0} for more details."
+      },
+      {
+        "module": "vs/workbench/contrib/extensions/browser/extensionsActions",
+        "key": "installed version blocked by marketplace",
+        "message": "The installed version has been blocked by the Extension Marketplace. Switch to a permitted version."
+      },
+      {
+        "module": "vs/workbench/contrib/extensions/browser/extensionsActions",
+        "key": "installed version blocked by organization policy",
+        "message": "The installed version is blocked by your organization's policy. Switch to a permitted version."
+      },
+      {
+        "module": "vs/workbench/contrib/extensions/browser/extensionsActions",
+        "key": "installExtensionStartWithoutEditor",
+        "message": "Installing extension {0} started."
+      },
+      {
+        "module": "vs/workbench/contrib/extensions/browser/extensionsActions",
+        "key": "updates blocked by marketplace",
+        "message": "Updates for this extension have been blocked by the Extension Marketplace."
+      },
+      {
+        "module": "vs/workbench/contrib/extensions/browser/extensionsActions",
+        "key": "updates blocked by organization policy",
+        "message": "Updates for this extension are blocked by your organization's policy."
+      },
+      {
+        "module": "vs/workbench/contrib/files/browser/fileActions.contribution",
+        "key": "revealInFilesView",
+        "message": "Reveal in Files View"
+      },
+      {
+        "module": "vs/workbench/contrib/files/browser/files.contribution",
+        "key": "files.exclude.exception",
+        "message": "An exception: files and folders that match the glob pattern after the `!`, and everything inside them, are not excluded even if another pattern excludes them. Version control folders such as `.git` stay excluded unless the pattern names them. Set to true or false to enable or disable the exception."
+      },
+      {
+        "module": "vs/workbench/contrib/files/browser/files.contribution",
+        "key": "files.simpleDialog.selectInitialPath",
+        "message": "Controls whether the pre-filled path in the simple file dialog is selected when the dialog opens."
+      },
+      {
+        "module": "vs/workbench/contrib/files/browser/files.contribution",
+        "key": "files.simpleDialog.selectInitialPath.auto",
+        "message": "Select the pre-filled path only when a screen reader is detected."
+      },
+      {
+        "module": "vs/workbench/contrib/files/browser/files.contribution",
+        "key": "files.simpleDialog.selectInitialPath.off",
+        "message": "Never select the pre-filled path; place the cursor at its end."
+      },
+      {
+        "module": "vs/workbench/contrib/files/browser/files.contribution",
+        "key": "files.simpleDialog.selectInitialPath.on",
+        "message": "Always select the pre-filled path so typing replaces it."
+      },
+      {
+        "module": "vs/workbench/contrib/files/browser/views/openEditorsView",
+        "key": "dirtyCounterAriaLabel",
+        "message": "{0} unsaved, open unsaved editor"
+      },
+      {
+        "module": "vs/workbench/contrib/files/browser/views/openEditorsView",
+        "key": "openUnsavedEditor",
+        "message": "Open Unsaved Editor"
+      },
+      {
+        "module": "vs/workbench/contrib/github/browser/githubLinkPresentation.contribution",
+        "key": "github.authenticationRequired",
+        "message": "Sign in to GitHub to load pull request status and other GitHub link details."
+      },
+      {
+        "module": "vs/workbench/contrib/github/browser/githubLinkPresentation.contribution",
+        "key": "github.authenticationRequired.signIn",
+        "message": "Sign In"
+      },
+      {
+        "module": "vs/workbench/contrib/github/browser/githubLinkPresentation.contribution",
+        "key": "github.checks.failed",
+        "message": "Checks failed"
+      },
+      {
+        "module": "vs/workbench/contrib/github/browser/githubLinkPresentation.contribution",
+        "key": "github.checks.passed",
+        "message": "Checks passed"
+      },
+      {
+        "module": "vs/workbench/contrib/github/browser/githubLinkPresentation.contribution",
+        "key": "github.checks.running",
+        "message": "Checks running"
+      },
+      {
+        "module": "vs/workbench/contrib/github/browser/githubLinkPresentation.contribution",
+        "key": "github.failure.accessDenied",
+        "message": "Access denied"
+      },
+      {
+        "module": "vs/workbench/contrib/github/browser/githubLinkPresentation.contribution",
+        "key": "github.failure.ariaLabel",
+        "message": "GitHub {0} lookup failed: {1}"
+      },
+      {
+        "module": "vs/workbench/contrib/github/browser/githubLinkPresentation.contribution",
+        "key": "github.failure.authenticationRequired",
+        "message": "Authentication required"
+      },
+      {
+        "module": "vs/workbench/contrib/github/browser/githubLinkPresentation.contribution",
+        "key": "github.failure.notFound",
+        "message": "Not found"
+      },
+      {
+        "module": "vs/workbench/contrib/github/browser/githubLinkPresentation.contribution",
+        "key": "github.failure.rateLimited",
+        "message": "Rate limited"
+      },
+      {
+        "module": "vs/workbench/contrib/github/browser/githubLinkPresentation.contribution",
+        "key": "github.failure.tooltip",
+        "message": "GitHub could not load this resource: {0}"
+      },
+      {
+        "module": "vs/workbench/contrib/github/browser/githubLinkPresentation.contribution",
+        "key": "github.failure.unavailable",
+        "message": "Not available"
+      },
+      {
+        "module": "vs/workbench/contrib/github/browser/githubLinkPresentation.contribution",
+        "key": "github.issue.ariaLabel",
+        "message": "Issue {0} slash {1} number {2}, {3}: {4}"
+      },
+      {
+        "module": "vs/workbench/contrib/github/browser/githubLinkPresentation.contribution",
+        "key": "github.pullRequest.ariaLabel",
+        "message": "Pull request {0} slash {1} number {2}, {3}: {4}"
+      },
+      {
+        "module": "vs/workbench/contrib/github/browser/githubLinkPresentation.contribution",
+        "key": "github.pullRequest.ariaLabelWithChecks",
+        "message": "Pull request {0} slash {1} number {2}, {3}, {4}: {5}"
+      },
+      {
+        "module": "vs/workbench/contrib/github/browser/githubLinkPresentation.contribution",
+        "key": "github.repository.ariaLabel",
+        "message": "GitHub repository {0} slash {1}"
+      },
+      {
+        "module": "vs/workbench/contrib/github/browser/githubLinkPresentation.contribution",
+        "key": "github.repository.stars",
+        "message": "{0} stars"
+      },
+      {
+        "module": "vs/workbench/contrib/github/browser/githubLinkPresentation.contribution",
+        "key": "github.status.closed",
+        "message": "Closed"
+      },
+      {
+        "module": "vs/workbench/contrib/github/browser/githubLinkPresentation.contribution",
+        "key": "github.status.draft",
+        "message": "Draft"
+      },
+      {
+        "module": "vs/workbench/contrib/github/browser/githubLinkPresentation.contribution",
+        "key": "github.status.merged",
+        "message": "Merged"
+      },
+      {
+        "module": "vs/workbench/contrib/github/browser/githubLinkPresentation.contribution",
+        "key": "github.status.notPlanned",
+        "message": "Not planned"
+      },
+      {
+        "module": "vs/workbench/contrib/github/browser/githubLinkPresentation.contribution",
+        "key": "github.status.open",
+        "message": "Open"
+      },
+      {
+        "module": "vs/workbench/contrib/imageCarousel/browser/imageCarouselEditor",
+        "key": "imageCarousel.actions",
+        "message": "Images Preview actions"
+      },
+      {
+        "module": "vs/workbench/contrib/imageCarousel/browser/imageCarouselEditor",
+        "key": "imageCarousel.download",
+        "message": "Download"
+      },
+      {
+        "module": "vs/workbench/contrib/imageCarousel/browser/imageCarouselEditor",
+        "key": "imageCarousel.downloadError",
+        "message": "Failed to download {0}: {1}"
+      },
+      {
+        "module": "vs/workbench/contrib/imageCarousel/browser/imageCarouselEditor",
+        "key": "imageCarousel.missingImageData",
+        "message": "The image has no data to download."
+      },
+      {
+        "module": "vs/workbench/contrib/limitIndicator/browser/limitIndicator.contribution",
+        "key": "diagnosticHighlightsStatusItem.name",
+        "message": "Problems Status"
+      },
+      {
+        "module": "vs/workbench/contrib/limitIndicator/browser/limitIndicator.contribution",
+        "key": "diagnosticHighlightsStatusItem.source",
+        "message": "Problems"
+      },
+      {
+        "module": "vs/workbench/contrib/limitIndicator/browser/limitIndicator.contribution",
+        "key": "status.limitedDiagnosticHighlights.details",
+        "message": "Only {0} problems are rendered in the editor for performance reasons."
+      },
+      {
+        "module": "vs/workbench/contrib/limitIndicator/browser/limitIndicator.contribution",
+        "key": "status.limitedDiagnosticHighlights.short",
+        "message": "Problems"
+      },
+      {
+        "module": "vs/workbench/contrib/limitIndicator/browser/limitIndicator.contribution",
+        "key": "status.limitedDiagnostics.details",
+        "message": "Some problems are not shown in the problems view for performance reasons."
+      },
+      {
+        "module": "vs/workbench/contrib/limitIndicator/browser/limitIndicator.contribution",
+        "key": "status.limitedDiagnosticsAndHighlights.details",
+        "message": "Some problems are not shown in the problems view, and only {0} problems are rendered in the editor for performance reasons."
+      },
+      {
+        "module": "vs/workbench/contrib/localHistory/browser/localHistoryCommands",
+        "key": "confirmDeleteMultipleMessage",
+        "message": "Do you want to delete {0} local history entries?"
+      },
+      {
+        "module": "vs/workbench/contrib/mediaPreview/browser/activeMediaPreview",
+        "key": "activeImagePreview",
+        "message": "Whether the active editor, or the focused side of the active diff editor, is an image preview"
+      },
+      {
+        "module": "vs/workbench/contrib/mediaPreview/browser/imagePreviewEditor",
+        "key": "imagePreview.ariaLabel",
+        "message": "Image Preview: {0}"
+      },
+      {
+        "module": "vs/workbench/contrib/mediaPreview/browser/imagePreviewEditor",
+        "key": "imagePreview.gitLfs",
+        "message": "The image is stored with Git LFS and is not available for preview."
+      },
+      {
+        "module": "vs/workbench/contrib/mediaPreview/browser/imagePreviewEditor",
+        "key": "imagePreview.loadError",
+        "message": "An error occurred while loading the image."
+      },
+      {
+        "module": "vs/workbench/contrib/mediaPreview/browser/imagePreviewEditor",
+        "key": "mediaPreview.openInTextEditor",
+        "message": "Open in Text Editor"
+      },
+      {
+        "module": "vs/workbench/contrib/mediaPreview/browser/mediaPlayerEditorInput",
+        "key": "audioPreview.gitLfs",
+        "message": "The audio file is stored with Git LFS and is not available for preview."
+      },
+      {
+        "module": "vs/workbench/contrib/mediaPreview/browser/mediaPlayerEditorInput",
+        "key": "audioPreview.loadError",
+        "message": "An error occurred while loading the audio file."
+      },
+      {
+        "module": "vs/workbench/contrib/mediaPreview/browser/mediaPlayerEditorInput",
+        "key": "audioPreview.unsupportedCodec",
+        "message": "This audio file uses the {0} codec, which can't be played in the audio preview. Open the file in an external application to listen to it."
+      },
+      {
+        "module": "vs/workbench/contrib/mediaPreview/browser/mediaPlayerEditorInput",
+        "key": "audioPreview.unsupportedUnknownCodec",
+        "message": "This audio file uses a codec that can't be played in the audio preview. Open the file in an external application to listen to it."
+      },
+      {
+        "module": "vs/workbench/contrib/mediaPreview/browser/mediaPlayerEditorInput",
+        "key": "mediaPreview.openInTextEditor",
+        "message": "Open in Text Editor"
+      },
+      {
+        "module": "vs/workbench/contrib/mediaPreview/browser/mediaPlayerEditorInput",
+        "key": "videoPreview.gitLfs",
+        "message": "The video file is stored with Git LFS and is not available for preview."
+      },
+      {
+        "module": "vs/workbench/contrib/mediaPreview/browser/mediaPlayerEditorInput",
+        "key": "videoPreview.loadError",
+        "message": "An error occurred while loading the video file."
+      },
+      {
+        "module": "vs/workbench/contrib/mediaPreview/browser/mediaPlayerEditorInput",
+        "key": "videoPreview.unsupportedAudioCodec",
+        "message": "This video's audio uses the {0} codec, which can't be played in the video preview. Open the file in an external application to hear its audio."
+      },
+      {
+        "module": "vs/workbench/contrib/mediaPreview/browser/mediaPlayerEditorInput",
+        "key": "videoPreview.unsupportedUnknownAudioCodec",
+        "message": "This video's audio uses a codec that can't be played in the video preview. Open the file in an external application to hear its audio."
+      },
+      {
+        "module": "vs/workbench/contrib/mediaPreview/browser/mediaPreview.contribution",
+        "key": "audioPreview.displayName",
+        "message": "Audio Preview"
+      },
+      {
+        "module": "vs/workbench/contrib/mediaPreview/browser/mediaPreview.contribution",
+        "key": "imagePreview.displayName",
+        "message": "Image Preview"
+      },
+      {
+        "module": "vs/workbench/contrib/mediaPreview/browser/mediaPreview.contribution",
+        "key": "imagePreviewEditor",
+        "message": "Image Preview"
+      },
+      {
+        "module": "vs/workbench/contrib/mediaPreview/browser/mediaPreview.contribution",
+        "key": "mediaPreview.video.autoPlay",
+        "message": "Start playing videos on mute automatically."
+      },
+      {
+        "module": "vs/workbench/contrib/mediaPreview/browser/mediaPreview.contribution",
+        "key": "mediaPreview.video.loop",
+        "message": "Loop videos over again automatically."
+      },
+      {
+        "module": "vs/workbench/contrib/mediaPreview/browser/mediaPreview.contribution",
+        "key": "mediaPreviewConfigurationTitle",
+        "message": "Media Preview"
+      },
+      {
+        "module": "vs/workbench/contrib/mediaPreview/browser/mediaPreview.contribution",
+        "key": "videoPreview.displayName",
+        "message": "Video Preview"
+      },
+      {
+        "module": "vs/workbench/contrib/mediaPreview/browser/mediaPreviewActions",
+        "key": "imagePreview",
+        "message": "Image Preview"
+      },
+      {
+        "module": "vs/workbench/contrib/mediaPreview/browser/mediaPreviewActions",
+        "key": "imagePreview.copyImage",
+        "message": "Copy"
+      },
+      {
+        "module": "vs/workbench/contrib/mediaPreview/browser/mediaPreviewActions",
+        "key": "imagePreview.reopenAsPreview",
+        "message": "Reopen as Image Preview"
+      },
+      {
+        "module": "vs/workbench/contrib/mediaPreview/browser/mediaPreviewActions",
+        "key": "imagePreview.reopenAsText",
+        "message": "Reopen as Source Text"
+      },
+      {
+        "module": "vs/workbench/contrib/mediaPreview/browser/mediaPreviewActions",
+        "key": "imagePreview.selectZoomLevel",
+        "message": "Select Zoom Level"
+      },
+      {
+        "module": "vs/workbench/contrib/mediaPreview/browser/mediaPreviewActions",
+        "key": "imagePreview.selectZoomLevelPlaceholder",
+        "message": "Select zoom level"
+      },
+      {
+        "module": "vs/workbench/contrib/mediaPreview/browser/mediaPreviewActions",
+        "key": "imagePreview.zoomIn",
+        "message": "Zoom In"
+      },
+      {
+        "module": "vs/workbench/contrib/mediaPreview/browser/mediaPreviewActions",
+        "key": "imagePreview.zoomOut",
+        "message": "Zoom Out"
+      },
+      {
+        "module": "vs/workbench/contrib/mediaPreview/browser/mediaPreviewStatusBar",
+        "key": "imagePreview.dimensionsStatus",
+        "message": "Image Dimensions"
+      },
+      {
+        "module": "vs/workbench/contrib/mediaPreview/browser/mediaPreviewStatusBar",
+        "key": "imagePreview.dimensionsStatusAriaLabel",
+        "message": "Image Dimensions: {0}"
+      },
+      {
+        "module": "vs/workbench/contrib/mediaPreview/browser/mediaPreviewStatusBar",
+        "key": "imagePreview.selectZoomLevel",
+        "message": "Select Zoom Level"
+      },
+      {
+        "module": "vs/workbench/contrib/mediaPreview/browser/mediaPreviewStatusBar",
+        "key": "imagePreview.zoomFit",
+        "message": "Whole Image"
+      },
+      {
+        "module": "vs/workbench/contrib/mediaPreview/browser/mediaPreviewStatusBar",
+        "key": "imagePreview.zoomPercent",
+        "message": "{0}%"
+      },
+      {
+        "module": "vs/workbench/contrib/mediaPreview/browser/mediaPreviewStatusBar",
+        "key": "imagePreview.zoomStatus",
+        "message": "Image Zoom"
+      },
+      {
+        "module": "vs/workbench/contrib/mediaPreview/browser/mediaPreviewStatusBar",
+        "key": "imagePreview.zoomStatusAriaLabel",
+        "message": "Image Zoom: {0}"
+      },
+      {
+        "module": "vs/workbench/contrib/mediaPreview/browser/mediaPreviewStatusBar",
+        "key": "mediaPreview.fileSizeStatus",
+        "message": "Media File Size"
+      },
+      {
+        "module": "vs/workbench/contrib/mediaPreview/browser/mediaPreviewStatusBar",
+        "key": "mediaPreview.fileSizeStatusAriaLabel",
+        "message": "File Size: {0}"
+      },
+      {
+        "module": "vs/workbench/contrib/modernUI/browser/modernUI.contribution",
+        "key": "layoutDensity",
+        "message": "Layout Density"
+      },
+      {
+        "module": "vs/workbench/contrib/multiDiffEditor/browser/actions",
+        "key": "diffView",
+        "message": "Diff View"
+      },
+      {
+        "module": "vs/workbench/contrib/multiDiffEditor/browser/actions",
+        "key": "filesViewAndPosition",
+        "message": "Files View & Position"
+      },
+      {
+        "module": "vs/workbench/contrib/multiDiffEditor/browser/actions",
+        "key": "focusFileList",
+        "message": "Focus File List"
+      },
+      {
+        "module": "vs/workbench/contrib/multiDiffEditor/browser/actions",
+        "key": "openMultiDiffEditorLayoutDebug",
+        "message": "Open Multi Diff Editor Layout Debug State"
+      },
+      {
+        "module": "vs/workbench/contrib/multiDiffEditor/browser/actions",
+        "key": "positionFileListLeft",
+        "message": "On the Left"
+      },
+      {
+        "module": "vs/workbench/contrib/multiDiffEditor/browser/actions",
+        "key": "positionFileListRight",
+        "message": "On the Right"
+      },
+      {
+        "module": "vs/workbench/contrib/multiDiffEditor/browser/actions",
+        "key": "toggleFileList",
+        "message": "Toggle Files"
+      },
+      {
+        "module": "vs/workbench/contrib/multiDiffEditor/browser/actions",
+        "key": "viewFileListAsList",
+        "message": "View as List"
+      },
+      {
+        "module": "vs/workbench/contrib/multiDiffEditor/browser/actions",
+        "key": "viewFileListAsTree",
+        "message": "View as Tree"
+      },
+      {
+        "module": "vs/workbench/contrib/multiDiffEditor/browser/multiDiffEditorAccessibilityHelp",
+        "key": "multiDiffEditor.fileListHelp.actions",
+        "message": "Use Toggle Files in the editor toolbar or Command Palette to show or hide the changed files. The Files View & Position submenu in the editor toolbar's More Actions menu switches between a list and a folder tree, and moves the files to the left or right of the diffs."
+      },
+      {
+        "module": "vs/workbench/contrib/multiDiffEditor/browser/multiDiffEditorAccessibilityHelp",
+        "key": "multiDiffEditor.fileListHelp.agentsWindowActions",
+        "message": "Use Toggle Details in the editor toolbar{0} to show or hide the changed files. The Files View & Position submenu in the tab bar's More Actions menu switches between a list and a folder tree, and moves the files to the left or right of the diffs."
+      },
+      {
+        "module": "vs/workbench/contrib/multiDiffEditor/browser/multiDiffEditorAccessibilityHelp",
+        "key": "multiDiffEditor.fileListHelp.editorHeaderActions",
+        "message": "Use Toggle Files, the last action in the header row above the diffs, to show or hide the changed files."
+      },
+      {
+        "module": "vs/workbench/contrib/multiDiffEditor/browser/multiDiffEditorAccessibilityHelp",
+        "key": "multiDiffEditor.fileListHelp.navigation",
+        "message": "Use the Up and Down Arrow keys to navigate files. In tree mode, use the Left and Right Arrow keys to collapse or expand folders."
+      },
+      {
+        "module": "vs/workbench/contrib/multiDiffEditor/browser/multiDiffEditorAccessibilityHelp",
+        "key": "multiDiffEditor.fileListHelp.open",
+        "message": "Press Enter to reveal the selected file and move focus to its diff."
+      },
+      {
+        "module": "vs/workbench/contrib/multiDiffEditor/browser/multiDiffEditorAccessibilityHelp",
+        "key": "multiDiffEditor.fileListHelp.overview",
+        "message": "You are in the changed files list of a multi diff editor."
+      },
+      {
+        "module": "vs/workbench/contrib/multiDiffEditor/browser/multiDiffEditorFileList",
+        "key": "multiDiffEditorFileList",
+        "message": "Changed Files"
+      },
+      {
+        "module": "vs/workbench/contrib/multiDiffEditor/browser/multiDiffEditorFileList",
+        "key": "multiDiffEditorFileList.accessibilityHelp",
+        "message": "{0}, use {1} for accessibility help"
+      },
+      {
+        "module": "vs/workbench/contrib/multiDiffEditor/browser/multiDiffEditorFileList",
+        "key": "multiDiffEditorFileList.accessibilityHelpNoKb",
+        "message": "{0}, run the Open Accessibility Help command for more information"
+      },
+      {
+        "module": "vs/workbench/contrib/multiDiffEditor/browser/multiDiffEditorFileList",
+        "key": "multiDiffEditorFileList.added",
+        "message": "Added"
+      },
+      {
+        "module": "vs/workbench/contrib/multiDiffEditor/browser/multiDiffEditorFileList",
+        "key": "multiDiffEditorFileList.deleted",
+        "message": "Deleted"
+      },
+      {
+        "module": "vs/workbench/contrib/multiDiffEditor/browser/multiDiffEditorFileList",
+        "key": "multiDiffEditorFileList.item",
+        "message": "{0}, {1}, {2}"
+      },
+      {
+        "module": "vs/workbench/contrib/multiDiffEditor/browser/multiDiffEditorFileList",
+        "key": "multiDiffEditorFileList.modified",
+        "message": "Modified"
+      },
+      {
+        "module": "vs/workbench/contrib/multiDiffEditor/browser/multiDiffEditorFileList",
+        "key": "multiDiffEditorFileList.renamed",
+        "message": "Renamed"
+      },
+      {
+        "module": "vs/workbench/contrib/multiDiffEditor/browser/multiDiffEditorFileList",
+        "key": "multiDiffEditorFileList.renamedTitle",
+        "message": "{0} (renamed from {1})"
+      },
+      {
+        "module": "vs/workbench/contrib/multiDiffEditor/common/multiDiffEditor",
+        "key": "multiDiffEditor.experimental.fileList",
+        "message": "Controls whether newly created multi diff editors support a list of the changed files alongside the diffs. Reload the window to apply this change to existing editors."
+      },
+      {
+        "module": "vs/workbench/contrib/multiDiffEditor/common/multiDiffEditor",
+        "key": "multiDiffEditor.experimental.variant",
+        "message": "Controls the experimental variant of the multi diff editor."
+      },
+      {
+        "module": "vs/workbench/contrib/multiDiffEditor/common/multiDiffEditor",
+        "key": "multiDiffEditor.experimental.variant.cards",
+        "message": "Use the compact card-based variant."
+      },
+      {
+        "module": "vs/workbench/contrib/multiDiffEditor/common/multiDiffEditor",
+        "key": "multiDiffEditor.experimental.variant.noCards",
+        "message": "Use the compact variant without cards."
+      },
+      {
+        "module": "vs/workbench/contrib/multiDiffEditor/common/multiDiffEditor",
+        "key": "multiDiffEditorConfigurationTitle",
+        "message": "Multi Diff Editor"
+      },
+      {
+        "module": "vs/workbench/contrib/multiDiffEditor/common/multiDiffEditor",
+        "key": "multiDiffEditorFileListAvailable",
+        "message": "Whether the active multi diff editor supports the changed files list"
+      },
+      {
+        "module": "vs/workbench/contrib/multiDiffEditor/common/multiDiffEditor",
+        "key": "multiDiffEditorFileListEnabled",
+        "message": "Whether the changed files list is enabled in the active multi diff editor"
+      },
+      {
+        "module": "vs/workbench/contrib/multiDiffEditor/common/multiDiffEditor",
+        "key": "multiDiffEditorFileListFocus",
+        "message": "Whether focus is in the multi diff editor changed files list"
+      },
+      {
+        "module": "vs/workbench/contrib/multiDiffEditor/common/multiDiffEditor",
+        "key": "multiDiffEditorFileListPosition",
+        "message": "The position of the multi diff editor file list"
+      },
+      {
+        "module": "vs/workbench/contrib/multiDiffEditor/common/multiDiffEditor",
+        "key": "multiDiffEditorFileListViewMode",
+        "message": "Whether the multi diff editor file list shows the files as a flat list or as a tree of folders"
+      },
+      {
+        "module": "vs/workbench/contrib/multiDiffEditor/common/multiDiffEditor",
+        "key": "multiDiffEditorFileListVisible",
+        "message": "Whether the multi diff editor shows the list of changed files"
+      },
+      {
+        "module": "vs/workbench/contrib/onboarding/browser/guidedTryoutPresentation",
+        "key": "onboarding.tryout.guidanceUnavailable",
+        "message": "The example opened, but its highlighted control is not available."
+      },
+      {
+        "module": "vs/workbench/contrib/onboarding/browser/guidedTryoutPresentation",
+        "key": "onboarding.tryout.invalidGuidedPayload",
+        "message": "The guided feature example '{0}' has an invalid presentation."
+      },
+      {
+        "module": "vs/workbench/contrib/onboarding/browser/onboarding.contribution",
+        "key": "onboarding.developerModeVariations",
+        "message": "Map of onboarding scenario/tour id to the variation used while developer mode is enabled for that scenario. An empty value uses the experiment-selected or default variation."
+      },
+      {
+        "module": "vs/workbench/contrib/onboarding/browser/onboardingSamplePresentation",
+        "key": "onboarding.tryout.languageUnavailable",
+        "message": "Language support for this example is not available yet."
+      },
+      {
+        "module": "vs/workbench/contrib/onboarding/browser/onboardingSamplePresentation",
+        "key": "onboarding.tryout.sampleFailed",
+        "message": "The example editor could not be opened."
+      },
+      {
+        "module": "vs/workbench/contrib/onboarding/browser/onboardingSamplePresentation",
+        "key": "onboarding.tryout.sampleUnavailable",
+        "message": "This sample is no longer available. Open its feature example from the release notes again."
+      },
+      {
+        "module": "vs/workbench/contrib/onboarding/browser/onboardingTryout.contribution",
+        "key": "onboarding.tryout.copyLink",
+        "message": "Copy Feature Example Link"
+      },
+      {
+        "module": "vs/workbench/contrib/onboarding/browser/onboardingTryout.contribution",
+        "key": "onboarding.tryout.pick",
+        "message": "Select a feature example"
+      },
+      {
+        "module": "vs/workbench/contrib/onboarding/browser/onboardingTryout.contribution",
+        "key": "onboarding.tryout.run",
+        "message": "Try Feature Example"
+      },
+      {
+        "module": "vs/workbench/contrib/onboarding/browser/onboardingTryoutActions",
+        "key": "onboarding.tryout.commandUnavailable",
+        "message": "This command is not available in the current context."
+      },
+      {
+        "module": "vs/workbench/contrib/onboarding/browser/onboardingTryoutActions",
+        "key": "onboarding.tryout.targetUnavailable",
+        "message": "The example opened, but its target is no longer available."
+      },
+      {
+        "module": "vs/workbench/contrib/onboarding/browser/onboardingTryoutActions",
+        "key": "onboarding.tryout.viewFailed",
+        "message": "The example's view could not be opened."
+      },
+      {
+        "module": "vs/workbench/contrib/onboarding/browser/onboardingTryoutActions",
+        "key": "onboarding.tryout.viewUnavailable",
+        "message": "This view is not available in the current window."
+      },
+      {
+        "module": "vs/workbench/contrib/onboarding/browser/onboardingTryoutRunner",
+        "key": "onboarding.tryout.setupChanged",
+        "message": "The example's availability changed. Try opening it again."
+      },
+      {
+        "module": "vs/workbench/contrib/onboarding/browser/onboardingTryoutService",
+        "key": "onboarding.tryout.agentsUnavailable",
+        "message": "This example requires the desktop Agents window."
+      },
+      {
+        "module": "vs/workbench/contrib/onboarding/browser/onboardingTryoutService",
+        "key": "onboarding.tryout.aiHidden",
+        "message": "AI features are disabled."
+      },
+      {
+        "module": "vs/workbench/contrib/onboarding/browser/onboardingTryoutService",
+        "key": "onboarding.tryout.chatDisabledInWorkspace",
+        "message": "Chat is disabled in this workspace."
+      },
+      {
+        "module": "vs/workbench/contrib/onboarding/browser/onboardingTryoutService",
+        "key": "onboarding.tryout.chatSetupRequired",
+        "message": "Set up Chat before trying this example."
+      },
+      {
+        "module": "vs/workbench/contrib/onboarding/browser/onboardingTryoutService",
+        "key": "onboarding.tryout.invalidRunOptions",
+        "message": "The feature example run context is invalid."
+      },
+      {
+        "module": "vs/workbench/contrib/onboarding/browser/onboardingTryoutService",
+        "key": "onboarding.tryout.notAvailableHere",
+        "message": "This example is not available in the current context."
+      },
+      {
+        "module": "vs/workbench/contrib/onboarding/browser/onboardingTryoutService",
+        "key": "onboarding.tryout.setUpChat",
+        "message": "Set Up Chat"
+      },
+      {
+        "module": "vs/workbench/contrib/onboarding/browser/onboardingTryoutService",
+        "key": "onboarding.tryout.unavailable",
+        "message": "This feature example is not available in this version."
+      },
+      {
+        "module": "vs/workbench/contrib/onboarding/browser/onboardingTryoutService",
+        "key": "onboarding.tryout.unknown",
+        "message": "The feature example '{0}' is not available in this version."
+      },
+      {
+        "module": "vs/workbench/contrib/onboarding/browser/onboardingTryoutUrlHandler",
+        "key": "onboarding.tryout.external.confirm.detail",
+        "message": "An external link requested this feature example in {0}.\n\n{1}\n\nOnly continue if you initiated this request."
+      },
+      {
+        "module": "vs/workbench/contrib/onboarding/browser/onboardingTryoutUrlHandler",
+        "key": "onboarding.tryout.external.confirm.open",
+        "message": "&&Open Example"
+      },
+      {
+        "module": "vs/workbench/contrib/onboarding/browser/onboardingTryoutUrlHandler",
+        "key": "onboarding.tryout.external.confirm.title",
+        "message": "Open '{0}'?"
+      },
+      {
+        "module": "vs/workbench/contrib/onboarding/browser/onboardingTryoutUrlHandler",
+        "key": "onboarding.tryout.external.unavailable.detail",
+        "message": "This external link does not identify a feature example available in this version of {0}."
+      },
+      {
+        "module": "vs/workbench/contrib/onboarding/browser/onboardingTryoutUrlHandler",
+        "key": "onboarding.tryout.external.unavailable.title",
+        "message": "Feature example unavailable"
+      },
+      {
+        "module": "vs/workbench/contrib/onboarding/browser/spotlight/spotlightOverlay",
+        "key": "spotlight.endTour.customTooltip",
+        "message": "{0} (Esc)"
+      },
+      {
+        "module": "vs/workbench/contrib/onboarding/browser/spotlight/spotlightOverlay",
+        "key": "spotlight.stepAnnouncement",
+        "message": "{0}: {1}"
+      },
+      {
+        "module": "vs/workbench/contrib/onboarding/common/onboardingTryout",
+        "key": "onboarding.tryout.invalidArguments",
+        "message": "Expected exactly one valid feature example identifier."
+      },
+      {
+        "module": "vs/workbench/contrib/onboarding/common/onboardingTryout",
+        "key": "onboarding.tryout.invalidPayload",
+        "message": "The feature example '{0}' has an invalid presentation."
+      },
+      {
+        "module": "vs/workbench/contrib/onboarding/electron-browser/onboardingTryoutWindow",
+        "key": "onboarding.tryout.agentsRejected",
+        "message": "The Agents window could not start the feature example."
+      },
+      {
+        "module": "vs/workbench/contrib/onboarding/electron-browser/onboardingTryoutWindow",
+        "key": "onboarding.tryout.invalidNativeRequest",
+        "message": "The feature example request is invalid."
+      },
+      {
+        "module": "vs/workbench/contrib/onboarding/electron-browser/onboardingTryoutWindow",
+        "key": "onboarding.tryout.notInAgentsWindow",
+        "message": "The feature example '{0}' is not available in the Agents window."
+      },
+      {
+        "module": "vs/workbench/contrib/opener/browser/opener.contribution",
+        "key": "folderLink.failedExternalOpen",
+        "message": "Unable to open the folder in the operating system's file manager."
+      },
+      {
+        "module": "vs/workbench/contrib/preferences/browser/settingsSearchMenu",
+        "key": "expAssignmentSettingsSearch",
+        "message": "ExP Assigned"
+      },
+      {
+        "module": "vs/workbench/contrib/preferences/browser/settingsSearchMenu",
+        "key": "expAssignmentSettingsSearchTooltip",
+        "message": "Show settings with an ExP treatment assignment"
+      },
+      {
+        "module": "vs/workbench/contrib/preferences/browser/settingsTree",
+        "key": "setting.deprecationMessageSeverity.info",
+        "message": "Info"
+      },
+      {
+        "module": "vs/workbench/contrib/preferences/browser/settingsTree",
+        "key": "setting.deprecationMessageSeverity.warning",
+        "message": "Warning"
+      },
+      {
+        "module": "vs/workbench/contrib/preferences/browser/settingsTreeModels",
+        "key": "agentSandbox.allowNetwork.label",
+        "message": "Allow Outbound Connections"
+      },
+      {
+        "module": "vs/workbench/contrib/preferences/browser/settingsTreeModels",
+        "key": "agentSandbox.allowUnsandboxedCommands.label",
+        "message": "Allow Sandbox Bypass"
+      },
+      {
+        "module": "vs/workbench/contrib/preferences/browser/settingsTreeModels",
+        "key": "agentSandbox.authenticateGh.label",
+        "message": "Authenticate gh"
+      },
+      {
+        "module": "vs/workbench/contrib/preferences/browser/settingsTreeModels",
+        "key": "agentSandbox.authenticateGit.label",
+        "message": "Authenticate git"
+      },
+      {
+        "module": "vs/workbench/contrib/preferences/browser/settingsTreeModels",
+        "key": "agentSandbox.credentialEnvVars.label",
+        "message": "Masked environment variables"
+      },
+      {
+        "module": "vs/workbench/contrib/preferences/browser/settingsTreeModels",
+        "key": "agentSandbox.lspServers.label",
+        "message": "Sandbox LSP Servers"
+      },
+      {
+        "module": "vs/workbench/contrib/preferences/browser/settingsTreeModels",
+        "key": "agentSandbox.mcpServers.label",
+        "message": "Sandbox MCP Servers"
+      },
+      {
+        "module": "vs/workbench/contrib/preferences/browser/settingsTreeModels",
+        "key": "agentSandbox.userConfiguredPaths.label",
+        "message": "User-Configured Paths"
+      },
+      {
+        "module": "vs/workbench/contrib/sash/browser/sash.contribution",
+        "key": "sashAutoHideGrippers",
+        "message": "Controls whether sash grippers between views and editors hide when the mouse is idle and reappear when the mouse moves. Use {0} to configure the delay. Disable to keep grippers visible. Mouse movement inside nested frames embedded in webviews, such as Simple Browser pages, is not detected. Hover and drag feedback is unaffected."
+      },
+      {
+        "module": "vs/workbench/contrib/sash/browser/sash.contribution",
+        "key": "sashAutoHideGrippersDelay",
+        "message": "Controls how long to wait in milliseconds without mouse movement before fading out sash grippers. Applies when {0} is enabled."
+      },
+      {
+        "module": "vs/workbench/contrib/search/browser/anythingQuickAccess",
+        "key": "invalidQuickOpenLink",
+        "message": "Invalid Link"
+      },
+      {
+        "module": "vs/workbench/contrib/search/browser/anythingQuickAccess",
+        "key": "invalidQuickOpenLinkDescription",
+        "message": "Enter a valid link to open it from Quick Open."
+      },
+      {
+        "module": "vs/workbench/contrib/search/browser/anythingQuickAccess",
+        "key": "openLinkToBottom",
+        "message": "Open to the Bottom ({0})"
+      },
+      {
+        "module": "vs/workbench/contrib/search/browser/anythingQuickAccess",
+        "key": "openLinkToSide",
+        "message": "Open to the Side ({0})"
+      },
+      {
+        "module": "vs/workbench/contrib/search/browser/anythingQuickAccess",
+        "key": "openQuickOpenLink",
+        "message": "Open Link"
+      },
+      {
+        "module": "vs/workbench/contrib/search/browser/anythingQuickAccess",
+        "key": "openQuickOpenLinkDefault",
+        "message": "Default"
+      },
+      {
+        "module": "vs/workbench/contrib/search/browser/anythingQuickAccess",
+        "key": "openQuickOpenLinkWith",
+        "message": "open link"
+      },
+      {
+        "module": "vs/workbench/contrib/search/browser/anythingQuickAccess",
+        "key": "quickOpenLinkNotOpened",
+        "message": "The link could not be opened. It may be unsupported or opening it was canceled."
+      },
+      {
+        "module": "vs/workbench/contrib/search/browser/search.common.contribution",
+        "key": "exclude",
+        "message": "Configure [glob patterns](https://code.visualstudio.com/docs/editor/codebasics#_advanced-search-options) for excluding files and folders in fulltext searches and file search in quick open. To exclude files from the recently opened list in quick open, patterns must be absolute (for example `**/node_modules/**`). Inherits all glob patterns from the `#files.exclude#` setting. Prefix a pattern with `!` to search matching files and folders even if another pattern, including one from `#files.exclude#`, excludes them."
+      },
+      {
+        "module": "vs/workbench/contrib/search/browser/search.common.contribution",
+        "key": "exclude.boolean",
+        "message": "The glob pattern to match file paths against. Set to true or false to enable or disable the pattern."
+      },
+      {
+        "module": "vs/workbench/contrib/search/browser/search.common.contribution",
+        "key": "exclude.exception",
+        "message": "An exception: files and folders that match the glob pattern after the `!`, and everything inside them, are searched even if another pattern excludes them. Version control folders such as `.git` stay excluded unless the pattern names them. Set to true or false to enable or disable the exception."
+      },
+      {
+        "module": "vs/workbench/contrib/search/browser/search.common.contribution",
+        "key": "exclude.when",
+        "message": "Additional check on the siblings of a matching file. Use \\$(basename) as variable for the matching file name."
+      },
+      {
+        "module": "vs/workbench/contrib/search/browser/search.common.contribution",
+        "key": "search.followSymlinks",
+        "message": "Controls whether to follow symlinks while searching."
+      },
+      {
+        "module": "vs/workbench/contrib/search/browser/search.common.contribution",
+        "key": "search.maxResults",
+        "message": "Controls the maximum number of search results, this can be set to `null` (empty) to return unlimited results."
+      },
+      {
+        "module": "vs/workbench/contrib/search/browser/search.common.contribution",
+        "key": "search.ripgrep.maxThreads",
+        "message": "Number of threads to use for searching. When set to 0, the engine automatically determines this value."
+      },
+      {
+        "module": "vs/workbench/contrib/search/browser/search.common.contribution",
+        "key": "search.smartCase",
+        "message": "Search case-insensitively if the pattern is all lowercase, otherwise, search case-sensitively."
+      },
+      {
+        "module": "vs/workbench/contrib/search/browser/search.common.contribution",
+        "key": "search.sortOrder",
+        "message": "Controls sorting order of search results."
+      },
+      {
+        "module": "vs/workbench/contrib/search/browser/search.common.contribution",
+        "key": "searchSortOrder.countAscending",
+        "message": "Results are sorted by count per file, in ascending order."
+      },
+      {
+        "module": "vs/workbench/contrib/search/browser/search.common.contribution",
+        "key": "searchSortOrder.countDescending",
+        "message": "Results are sorted by count per file, in descending order."
+      },
+      {
+        "module": "vs/workbench/contrib/search/browser/search.common.contribution",
+        "key": "searchSortOrder.default",
+        "message": "Results are sorted by folder and file names, in alphabetical order."
+      },
+      {
+        "module": "vs/workbench/contrib/search/browser/search.common.contribution",
+        "key": "searchSortOrder.filesOnly",
+        "message": "Results are sorted by file names ignoring folder order, in alphabetical order."
+      },
+      {
+        "module": "vs/workbench/contrib/search/browser/search.common.contribution",
+        "key": "searchSortOrder.modified",
+        "message": "Results are sorted by file last modified date, in descending order."
+      },
+      {
+        "module": "vs/workbench/contrib/search/browser/search.common.contribution",
+        "key": "searchSortOrder.type",
+        "message": "Results are sorted by file extensions, in alphabetical order."
+      },
+      {
+        "module": "vs/workbench/contrib/search/browser/search.common.contribution",
+        "key": "useGlobalIgnoreFiles",
+        "message": "Controls whether to use your global gitignore file (for example, from `$HOME/.config/git/ignore`) when searching for files. Requires {0} to be enabled."
+      },
+      {
+        "module": "vs/workbench/contrib/search/browser/search.common.contribution",
+        "key": "useIgnoreFiles",
+        "message": "Controls whether to use `.gitignore` and `.ignore` files when searching for files."
+      },
+      {
+        "module": "vs/workbench/contrib/search/browser/search.common.contribution",
+        "key": "useParentIgnoreFiles",
+        "message": "Controls whether to use `.gitignore` and `.ignore` files in parent directories when searching for files. Requires {0} to be enabled."
+      },
+      {
+        "module": "vs/workbench/contrib/snippets/browser/commands/configureSnippets",
+        "key": "detected",
+        "message": "This file type was detected from the current file."
+      },
+      {
+        "module": "vs/workbench/contrib/terminal/browser/terminalMenus",
+        "key": "workbench.action.terminal.startVoiceContext",
+        "message": "Start Dictation"
+      },
+      {
+        "module": "vs/workbench/contrib/terminal/browser/xterm/decorationStyles",
+        "key": "terminalPromptCommandSuccess.noDuration",
+        "message": "Command executed {0}"
+      },
+      {
+        "module": "vs/workbench/contrib/terminal/common/terminalConfiguration",
+        "key": "host",
+        "message": "the name of the remote agent host the terminal runs on."
+      },
+      {
+        "module": "vs/workbench/contrib/terminal/common/terminalConfiguration",
+        "key": "terminal.integrated.fontRendering",
+        "message": "Controls how terminal text is antialiased on high-DPI displays."
+      },
+      {
+        "module": "vs/workbench/contrib/terminal/common/terminalConfiguration",
+        "key": "terminal.integrated.fontRendering.grayscale",
+        "message": "Use grayscale antialiasing, which can make text look sharper. With GPU acceleration, this may require **Developer: Reload Window** to take effect."
+      },
+      {
+        "module": "vs/workbench/contrib/terminal/common/terminalConfiguration",
+        "key": "terminal.integrated.fontRendering.inherit",
+        "message": "Follow {0}."
+      },
+      {
+        "module": "vs/workbench/contrib/terminal/common/terminalConfiguration",
+        "key": "terminal.integrated.windowsReparentConsoleWindow",
+        "message": "Whether to make the window that shows a terminal the owner of its console window, so dialogs that console applications open, like sign-in prompts, appear in front of VS Code instead of behind it. Requires {0}."
+      },
+      {
+        "module": "vs/workbench/contrib/terminal/common/terminalStrings",
+        "key": "terminalOnHost",
+        "message": "on {0}"
+      },
+      {
+        "module": "vs/workbench/contrib/terminal/common/terminalStrings",
+        "key": "terminalTitleOnHost",
+        "message": "{0} on {1}"
+      },
+      {
+        "module": "vs/workbench/contrib/terminal/electron-browser/terminalInstallActions",
+        "key": "copilotInstallTerminal",
+        "message": "Install GitHub Copilot CLI"
+      },
+      {
+        "module": "vs/workbench/contrib/terminal/electron-browser/terminalInstallActions",
+        "key": "copilotShimMissing",
+        "message": "GitHub Copilot CLI installation could not be started because the shipped installer was not found."
+      },
+      {
+        "module": "vs/workbench/contrib/terminal/electron-browser/terminalInstallActions",
+        "key": "copilotShimStartFailed",
+        "message": "GitHub Copilot CLI installation could not be started: {0}"
+      },
+      {
+        "module": "vs/workbench/contrib/terminal/electron-browser/terminalInstallActions",
+        "key": "installCopilotPrompt",
+        "message": "Would you also like to install GitHub Copilot CLI?"
+      },
+      {
+        "module": "vs/workbench/contrib/terminal/electron-browser/terminalInstallActions",
+        "key": "installWithCopilot",
+        "message": "Install '{0}' and optionally 'copilot' commands in PATH"
+      },
+      {
+        "module": "vs/workbench/contrib/terminal/electron-browser/terminalInstallActions",
+        "key": "no",
+        "message": "No"
+      },
+      {
+        "module": "vs/workbench/contrib/terminal/electron-browser/terminalInstallActions",
+        "key": "pressAnyKeyToCloseTerminal",
+        "message": "Press any key to close this terminal."
+      },
+      {
+        "module": "vs/workbench/contrib/terminal/electron-browser/terminalInstallActions",
+        "key": "yes",
+        "message": "Yes"
+      },
+      {
+        "module": "vs/workbench/contrib/terminalContrib/accessibility/browser/terminalAccessibilityHelp",
+        "key": "iconPicker",
+        "message": "Change Icon opens a searchable icon grid. Enter a name to filter, then press Down Arrow to enter the grid. Arrow keys move between icons, Home and End move to the first and last icon, and Up Arrow from the top row returns to search. Tab and Shift+Tab move between search, the grid, and the Reset to default button below the grid. Press Enter to choose an icon or reset the default terminal icon without changing its color. Escape cancels without changing the icon."
+      },
+      {
+        "module": "vs/workbench/contrib/terminalContrib/accessibility/browser/terminalAccessibilityHelp",
+        "key": "terminalDictation",
+        "message": "Start or stop dictation in the terminal<keybinding:{0}>."
+      },
+      {
+        "module": "vs/workbench/contrib/terminalContrib/accessibility/common/terminalAccessibilityConfiguration",
+        "key": "terminal.integrated.accessibleViewPreserveCursorPosition.always",
+        "message": "Always preserve the cursor position, including when new terminal content arrives."
+      },
+      {
+        "module": "vs/workbench/contrib/terminalContrib/accessibility/common/terminalAccessibilityConfiguration",
+        "key": "terminal.integrated.accessibleViewPreserveCursorPosition.false",
+        "message": "Always position the cursor at the bottom of the buffer."
+      },
+      {
+        "module": "vs/workbench/contrib/terminalContrib/accessibility/common/terminalAccessibilityConfiguration",
+        "key": "terminal.integrated.accessibleViewPreserveCursorPosition.true",
+        "message": "Preserve the cursor position on reopen until new terminal content arrives."
+      },
+      {
+        "module": "vs/workbench/contrib/terminalContrib/autoReplies/browser/terminal.autoReplies.contribution",
+        "key": "removeTerminalAutoReplies",
+        "message": "Remove Terminal Auto Replies"
+      },
+      {
+        "module": "vs/workbench/contrib/terminalContrib/resizeDimensionsOverlay/common/terminalResizeDimensionsOverlayConfiguration",
+        "key": "resizeDimensionsOverlay.enabled",
+        "message": "Whether to show a visual overlay with the terminal's columns and rows when it is resized."
+      },
+      {
+        "module": "vs/workbench/contrib/timeline/browser/timelinePane",
+        "key": "timeline.compareSelected",
+        "message": "Compare Selected"
+      },
+      {
+        "module": "vs/workbench/contrib/timeline/browser/timelinePane",
+        "key": "timeline.compareSelectedLabel",
+        "message": "{0} ({1}) ↔ {2} ({3})"
+      },
+      {
+        "module": "vs/workbench/contrib/timeline/browser/timelinePane",
+        "key": "timeline.loadingWorkspace",
+        "message": "Loading workspace timeline..."
+      },
+      {
+        "module": "vs/workbench/contrib/timeline/browser/timelinePane",
+        "key": "timeline.showWorkspaceTimeline",
+        "message": "Pin Workspace Timeline"
+      },
+      {
+        "module": "vs/workbench/contrib/timeline/browser/timelinePane",
+        "key": "timeline.workspace",
+        "message": "Workspace"
+      },
+      {
+        "module": "vs/workbench/contrib/timeline/browser/timelinePane",
+        "key": "timelineForWorkspace",
+        "message": "Whether the Timeline view shows the workspace timeline instead of the timeline of a file or folder."
+      },
+      {
+        "module": "vs/workbench/contrib/timeline/browser/timelinePane",
+        "key": "timelineInputAriaLabel",
+        "message": "Type timeline item name. Press Enter to confirm or Escape to cancel."
+      },
+      {
+        "module": "vs/workbench/contrib/update/browser/outdatedBuildReminder",
+        "key": "outdatedBuildReminder.checkForUpdates",
+        "message": "Check for Updates"
+      },
+      {
+        "module": "vs/workbench/contrib/update/browser/outdatedBuildReminder",
+        "key": "outdatedBuildReminder.downloadUpdate",
+        "message": "Download Update"
+      },
+      {
+        "module": "vs/workbench/contrib/update/browser/outdatedBuildReminder",
+        "key": "outdatedBuildReminder.installUpdate",
+        "message": "Install Update"
+      },
+      {
+        "module": "vs/workbench/contrib/update/browser/outdatedBuildReminder",
+        "key": "outdatedBuildReminder.message",
+        "message": "This version of {0} is {1} old. Update to get the latest features and fixes."
+      },
+      {
+        "module": "vs/workbench/contrib/update/browser/outdatedBuildReminder",
+        "key": "outdatedBuildReminder.openDownloadPage",
+        "message": "Open Download Page"
+      },
+      {
+        "module": "vs/workbench/contrib/update/browser/outdatedBuildReminder",
+        "key": "outdatedBuildReminder.restartToUpdate",
+        "message": "Restart to Update"
+      },
+      {
+        "module": "vs/workbench/contrib/update/browser/releaseNotesAccessibilityHelp",
+        "key": "releaseNotes.help.close",
+        "message": "Press Escape to close this help and return focus to the release notes."
+      },
+      {
+        "module": "vs/workbench/contrib/update/browser/releaseNotesAccessibilityHelp",
+        "key": "releaseNotes.help.currentSection",
+        "message": "The table of contents identifies the current section as you scroll. This does not move keyboard focus."
+      },
+      {
+        "module": "vs/workbench/contrib/update/browser/releaseNotesAccessibilityHelp",
+        "key": "releaseNotes.help.find",
+        "message": "Use {0} to find text in the release notes. The Find input has its own accessibility help."
+      },
+      {
+        "module": "vs/workbench/contrib/update/browser/releaseNotesAccessibilityHelp",
+        "key": "releaseNotes.help.navigation",
+        "message": "Press Tab or Shift+Tab to move between links, settings, the update preference checkbox, and available setup actions. Press Enter to activate a link. Press Space or Enter to activate a setup button."
+      },
+      {
+        "module": "vs/workbench/contrib/update/browser/releaseNotesAccessibilityHelp",
+        "key": "releaseNotes.help.overview",
+        "message": "You are in the release notes. Use your screen reader's reading and heading navigation commands to explore the document and its table of contents."
+      },
+      {
+        "module": "vs/workbench/contrib/update/browser/releaseNotesAccessibilityHelp",
+        "key": "releaseNotes.help.tryouts",
+        "message": "Feature example links may use custom labels and open locally registered examples. Reading, hovering, or focusing a link does not run it. If an example is unavailable, its explanation and any available setup action appear beside it. Setup does not automatically run the example."
+      },
+      {
+        "module": "vs/workbench/contrib/update/browser/releaseNotesAccessibilityHelp",
+        "key": "releaseNotes.help.windows",
+        "message": "Some actions open another editor or window, including the Agents window. Chat examples prepare an input for you to review and do not send it automatically."
+      },
+      {
+        "module": "vs/workbench/contrib/update/browser/releaseNotesEditor",
+        "key": "releaseNotes.accessibilityHint",
+        "message": "Press {0} for release notes accessibility help."
+      },
+      {
+        "module": "vs/workbench/contrib/update/browser/releaseNotesTryouts",
+        "key": "releaseNotes.tryout.anotherWindow",
+        "message": "Opens in the Agents window."
+      },
+      {
+        "module": "vs/workbench/contrib/update/browser/releaseNotesTryouts",
+        "key": "releaseNotes.tryout.contextualLabel",
+        "message": "Try This: {0}"
+      },
+      {
+        "module": "vs/workbench/contrib/update/browser/releaseNotesTryouts",
+        "key": "releaseNotes.tryout.failed",
+        "message": "This feature example could not be loaded."
+      },
+      {
+        "module": "vs/workbench/contrib/update/browser/releaseNotesTryouts",
+        "key": "releaseNotes.tryout.fallback",
+        "message": "{0} ({1})"
+      },
+      {
+        "module": "vs/workbench/contrib/update/browser/releaseNotesTryouts",
+        "key": "releaseNotes.tryout.invalidLink",
+        "message": "This feature example link is invalid."
+      },
+      {
+        "module": "vs/workbench/contrib/update/browser/releaseNotesTryouts",
+        "key": "releaseNotes.tryout.label",
+        "message": "Try This"
+      },
+      {
+        "module": "vs/workbench/contrib/update/browser/releaseNotesTryouts",
+        "key": "releaseNotes.tryout.noAutoSend",
+        "message": "Chat examples are prepared for review and are not sent automatically."
+      },
+      {
+        "module": "vs/workbench/contrib/update/browser/releaseNotesTryouts",
+        "key": "releaseNotes.tryout.nowReady",
+        "message": "This example is ready. Activate the example link to continue."
+      },
+      {
+        "module": "vs/workbench/contrib/update/browser/releaseNotesTryouts",
+        "key": "releaseNotes.tryout.setupLabel",
+        "message": "{0} for {1}"
+      },
+      {
+        "module": "vs/workbench/contrib/update/browser/releaseNotesTryouts",
+        "key": "releaseNotes.tryout.unknown",
+        "message": "This example is not available in this version of VS Code."
+      },
+      {
+        "module": "vs/workbench/contrib/url/browser/trustedDomainsValidator",
+        "key": "commandWorkspaceTrust",
+        "message": "Running a command from a link requires trusting this workspace."
+      },
+      {
+        "module": "vs/workbench/contrib/webview/browser/webviewElement",
+        "key": "fatalErrorMessageWithExtension",
+        "message": "Error loading webview provided by '{0}': {1}"
+      },
+      {
+        "module": "vs/workbench/contrib/workspace/browser/workspace.contribution",
+        "key": "resourcesTrustRemoteEnvironment",
+        "message": "This folder is hosted on the remote agent environment {0}."
+      },
+      {
+        "module": "vs/workbench/contrib/workspace/browser/workspace.contribution",
+        "key": "resourcesTrustRemoteScope",
+        "message": "Your decision is saved in {0} on this computer and lets agent sessions read, modify, and run commands in this folder on {1}. It does not change any trust settings on the remote environment."
+      },
+      {
+        "module": "vs/workbench/contrib/workspace/browser/workspace.contribution",
+        "key": "resourcesTrustUnnamedRemoteEnvironment",
+        "message": "This folder is hosted on a remote agent environment."
+      },
+      {
+        "module": "vs/workbench/contrib/workspace/browser/workspace.contribution",
+        "key": "resourcesTrustUnnamedRemoteScope",
+        "message": "Your decision is saved in {0} on this computer and lets agent sessions read, modify, and run commands in this folder. It does not change any trust settings on the remote environment."
+      },
+      {
+        "module": "vs/workbench/contrib/workspace/browser/workspaceTrustEditor",
+        "key": "retryTrustSource",
+        "message": "Retry Source Check"
+      },
+      {
+        "module": "vs/workbench/contrib/workspace/browser/workspaceTrustEditor",
+        "key": "unresolvedTrustSource",
+        "message": "The source repository for this workspace could not be verified. You can keep reviewing files in Restricted Mode. Make sure the repository extension is enabled and you are signed in, then retry."
+      },
+      {
+        "module": "vs/workbench/contrib/workspaces/browser/workspaces.contribution",
+        "key": "foundWorkspaceLinked",
+        "message": "This folder contains a workspace file '{0}'. Do you want to open it? {1} about workspace files."
+      },
+      {
+        "module": "vs/workbench/contrib/workspaces/browser/workspaces.contribution",
+        "key": "foundWorkspacesLinked",
+        "message": "This folder contains multiple workspace files. Do you want to open one? {0} about workspace files."
+      },
+      {
+        "module": "vs/workbench/contrib/workspaces/browser/workspaces.contribution",
+        "key": "workspaceFilesLearnMore",
+        "message": "Learn more"
+      },
+      {
+        "module": "vs/workbench/services/accounts/common/githubEnterprise",
+        "key": "invalidGitHubEnterpriseUri",
+        "message": "Invalid GitHub Enterprise instance URI: {0}"
+      },
+      {
+        "module": "vs/workbench/services/accounts/common/githubEnterprise",
+        "key": "invalidGitHubEnterpriseUris",
+        "message": "GitHub Enterprise URIs must be an array of instance URLs."
+      },
+      {
+        "module": "vs/workbench/services/dataChannel/browser/dataChannelService",
+        "key": "linkPresentation.unavailable",
+        "message": "Not available"
+      },
+      {
+        "module": "vs/workbench/services/dataChannel/browser/dataChannelService",
+        "key": "linkPresentation.unavailableAriaLabel",
+        "message": "Link presentation is not available"
+      },
+      {
+        "module": "vs/workbench/services/dataChannel/browser/dataChannelService",
+        "key": "linkPresentation.unavailableTooltip",
+        "message": "The link presentation provider failed to load."
+      },
+      {
+        "module": "vs/workbench/services/dataChannel/browser/dataChannelService",
+        "key": "linkPresentationProvider.coreDuplicateId",
+        "message": "Link presentation provider identifier '{0}' is already registered by the core."
+      },
+      {
+        "module": "vs/workbench/services/dataChannel/browser/dataChannelService",
+        "key": "linkPresentationProvider.duplicateId",
+        "message": "Link presentation provider identifier '{0}' is already contributed."
+      },
+      {
+        "module": "vs/workbench/services/dataChannel/browser/dataChannelService",
+        "key": "linkPresentationProvider.enablement",
+        "message": "Configuration key that must be enabled before this provider is selected."
+      },
+      {
+        "module": "vs/workbench/services/dataChannel/browser/dataChannelService",
+        "key": "linkPresentationProvider.id",
+        "message": "Unique identifier used to register this link presentation provider."
+      },
+      {
+        "module": "vs/workbench/services/dataChannel/browser/dataChannelService",
+        "key": "linkPresentationProvider.invalidPattern",
+        "message": "Link presentation provider '{0}' must use a valid anchored URI regular expression of at most {1} characters."
+      },
+      {
+        "module": "vs/workbench/services/dataChannel/browser/dataChannelService",
+        "key": "linkPresentationProvider.kind",
+        "message": "The semantic kind produced by this provider."
+      },
+      {
+        "module": "vs/workbench/services/dataChannel/browser/dataChannelService",
+        "key": "linkPresentationProvider.uriPattern",
+        "message": "Anchored regular expression matched against the canonical URI string before the extension is activated."
+      },
+      {
+        "module": "vs/workbench/services/dataChannel/browser/dataChannelService",
+        "key": "linkPresentationProviderExtensionPoint",
+        "message": "Contributes link presentation providers selected by URI regular expressions."
+      },
+      {
+        "module": "vs/workbench/services/dialogs/browser/simpleFileDialog",
+        "key": "remoteFileDialog.multiSelectPlaceholder",
+        "message": "Folder path (use Space to select items)"
+      },
+      {
+        "module": "vs/workbench/services/editor/browser/openWithEditorPicker",
+        "key": "promptOpenWith.configureDefault",
+        "message": "Configure default editor for '{0}'..."
+      },
+      {
+        "module": "vs/workbench/services/editor/browser/openWithEditorPicker",
+        "key": "promptOpenWith.configureDefaultDiff",
+        "message": "Configure default editor (diff only) for '{0}'..."
+      },
+      {
+        "module": "vs/workbench/services/editor/browser/openWithEditorPicker",
+        "key": "promptOpenWith.currentDefault",
+        "message": "Default"
+      },
+      {
+        "module": "vs/workbench/services/editor/browser/openWithEditorPicker",
+        "key": "promptOpenWith.currentDefaultAndActive",
+        "message": "Active and Default"
+      },
+      {
+        "module": "vs/workbench/services/editor/browser/openWithEditorPicker",
+        "key": "promptOpenWith.currentlyActive",
+        "message": "Active"
+      },
+      {
+        "module": "vs/workbench/services/editor/browser/openWithEditorPicker",
+        "key": "promptOpenWith.placeHolder",
+        "message": "Select editor for '{0}'"
+      },
+      {
+        "module": "vs/workbench/services/editor/browser/openWithEditorPicker",
+        "key": "promptOpenWith.updateDefaultDiffPlaceHolder",
+        "message": "Select new default editor (diff only) for '{0}'"
+      },
+      {
+        "module": "vs/workbench/services/editor/browser/openWithEditorPicker",
+        "key": "promptOpenWith.updateDefaultPlaceHolder",
+        "message": "Select new default editor for '{0}'"
+      },
+      {
+        "module": "vs/workbench/services/editor/common/editorResolverService",
+        "key": "editor.hiddenEditorTypes",
+        "message": "Configure editor types that are hidden from the editor type picker. The active editor type remains visible."
+      },
+      {
+        "module": "vs/workbench/services/extensions/common/extensionManifestPropertiesService",
+        "key": "extensions.supportAgentsWindow",
+        "message": "Override the Agents window support of an extension. Set an extension to `true` to enable it even when it would otherwise be disabled, or to `false` to disable it even when it is supported by default. This does not affect editor windows. Reload the Agents window to apply changes."
+      },
+      {
+        "module": "vs/workbench/services/extensions/common/extensionsRegistry",
+        "key": "vscode.extension.activationEvents.onChatArtifactIntegration",
+        "message": "An activation event emitted when recorded chat artifacts are observed or an agent host that can use artifact integrations connects."
+      },
+      {
+        "module": "vs/workbench/services/extensions/common/extensionsRegistry",
+        "key": "vscode.extension.capabilities.agentsWindow",
+        "message": "Declares whether the extension should be enabled in the Agents window."
+      },
+      {
+        "module": "vs/workbench/services/extensions/common/extensionsRegistry",
+        "key": "vscode.extension.capabilities.agentsWindow.supported",
+        "message": "Declares whether the extension supports running in the Agents window."
+      },
+      {
+        "module": "vs/workbench/services/github/browser/githubCredentialProvider",
+        "key": "githubEndpointUnavailable",
+        "message": "The selected GitHub session does not identify a matching GitHub endpoint."
+      },
+      {
+        "module": "vs/workbench/services/github/browser/githubCredentialProvider",
+        "key": "githubGrantUnavailable",
+        "message": "The selected GitHub session or permissions are no longer available."
+      },
+      {
+        "module": "vs/workbench/services/github/browser/githubCredentialProvider",
+        "key": "githubProviderUnavailable",
+        "message": "The selected authentication provider is not a GitHub provider."
+      },
+      {
+        "module": "vs/workbench/services/github/browser/githubService",
+        "key": "githubAccountChanged",
+        "message": "The selected GitHub account changed. Try again."
+      },
+      {
+        "module": "vs/workbench/services/github/browser/githubService",
+        "key": "githubAuthenticationRequired",
+        "message": "Sign in to GitHub to load GitHub data."
+      },
+      {
+        "module": "vs/workbench/services/github/browser/githubService",
+        "key": "githubRepositoryAccessRequired",
+        "message": "Sign in to GitHub with repository access to load GitHub data."
+      },
+      {
+        "module": "vs/workbench/services/github/browser/githubService",
+        "key": "githubSessionUnavailable",
+        "message": "The selected GitHub session is unavailable."
+      },
+      {
+        "module": "vs/workbench/services/github/browser/githubService",
+        "key": "githubUrlUnavailable",
+        "message": "The GitHub Enterprise URL is unavailable. Sign in and try again."
+      },
+      {
+        "module": "vs/workbench/services/policies/browser/accountPolicyGateContribution",
+        "key": "managedSettingsRefresh.dialog.close",
+        "message": "Close"
+      },
+      {
+        "module": "vs/workbench/services/policies/browser/accountPolicyGateContribution",
+        "key": "managedSettingsRefresh.dialog.httpError",
+        "message": "AI features are unavailable because {0} could not refresh your organization's managed settings (HTTP {1}). Retry after checking your connection."
+      },
+      {
+        "module": "vs/workbench/services/policies/browser/accountPolicyGateContribution",
+        "key": "managedSettingsRefresh.dialog.invalidTitle",
+        "message": "Invalid Managed Settings"
+      },
+      {
+        "module": "vs/workbench/services/policies/browser/accountPolicyGateContribution",
+        "key": "managedSettingsRefresh.dialog.malformed",
+        "message": "AI features are unavailable because {0} received an invalid managed settings response. Retry or contact your administrator."
+      },
+      {
+        "module": "vs/workbench/services/policies/browser/accountPolicyGateContribution",
+        "key": "managedSettingsRefresh.dialog.network",
+        "message": "Your organization requires {0} to refresh managed settings whenever it starts or reloads.\n\nAn error prevented the required policy from being retrieved, so AI features are unavailable. Retry, or contact your organization's administrator if the issue persists."
+      },
+      {
+        "module": "vs/workbench/services/policies/browser/accountPolicyGateContribution",
+        "key": "managedSettingsRefresh.dialog.noToken",
+        "message": "AI features are unavailable because {0} must refresh your organization's managed settings. Sign in to continue."
+      },
+      {
+        "module": "vs/workbench/services/policies/browser/accountPolicyGateContribution",
+        "key": "managedSettingsRefresh.dialog.noUrl",
+        "message": "AI features are unavailable because {0} cannot locate your organization's managed settings service. Contact your administrator."
+      },
+      {
+        "module": "vs/workbench/services/policies/browser/accountPolicyGateContribution",
+        "key": "managedSettingsRefresh.dialog.rateLimited",
+        "message": "AI features are temporarily unavailable because your organization's managed settings service is rate limiting requests. Try again later."
+      },
+      {
+        "module": "vs/workbench/services/policies/browser/accountPolicyGateContribution",
+        "key": "managedSettingsRefresh.dialog.retry",
+        "message": "Retry"
+      },
+      {
+        "module": "vs/workbench/services/policies/browser/accountPolicyGateContribution",
+        "key": "managedSettingsRefresh.dialog.signIn",
+        "message": "Sign In"
+      },
+      {
+        "module": "vs/workbench/services/policies/browser/accountPolicyGateContribution",
+        "key": "managedSettingsRefresh.dialog.title",
+        "message": "Managed Settings Unavailable"
+      },
+      {
+        "module": "vs/workbench/services/policies/browser/accountPolicyGateContribution",
+        "key": "managedSettingsRefresh.notification.pending",
+        "message": "{0} is resolving your organization's policy. AI features will remain unavailable until this completes."
+      },
+      {
+        "module": "vs/workbench/services/policies/browser/managedSettingsUpdate.contribution",
+        "key": "managedSettingsUpdate.actionHelp",
+        "message": "The available update action is {0}."
+      },
+      {
+        "module": "vs/workbench/services/policies/browser/managedSettingsUpdate.contribution",
+        "key": "managedSettingsUpdate.agentsHelp",
+        "message": "The Agents window is blocked by your organization's minimum-version requirement. The overlay explains the required update."
+      },
+      {
+        "module": "vs/workbench/services/policies/browser/managedSettingsUpdate.contribution",
+        "key": "managedSettingsUpdate.availableActionsHelp",
+        "message": "Use Tab or Shift+Tab to move between available actions, then press Enter or Space to activate one."
+      },
+      {
+        "module": "vs/workbench/services/policies/browser/managedSettingsUpdate.contribution",
+        "key": "managedSettingsUpdate.bannerHelp",
+        "message": "The window banner is also available with the Focus Banner command. In the banner, use the arrow keys to reach its actions. Closing the banner does not dismiss the explanation in Chat or change your organization's requirement."
+      },
+      {
+        "module": "vs/workbench/services/policies/browser/managedSettingsUpdate.contribution",
+        "key": "managedSettingsUpdate.bannerWithStatus",
+        "message": "{0} {1}"
+      },
+      {
+        "module": "vs/workbench/services/policies/browser/managedSettingsUpdate.contribution",
+        "key": "managedSettingsUpdate.editorWindowHelp",
+        "message": "Use Tab or Shift+Tab to reach Open Editor Window, then press Enter or Space. This opens a new editor window."
+      },
+      {
+        "module": "vs/workbench/services/policies/browser/managedSettingsUpdate.contribution",
+        "key": "managedSettingsUpdate.help",
+        "message": "Chat is read-only while this requirement is active."
+      },
+      {
+        "module": "vs/workbench/services/policies/common/managedSettingsUpdate",
+        "key": "managedSettingsUpdate.check",
+        "message": "Check for Updates"
+      },
+      {
+        "module": "vs/workbench/services/policies/common/managedSettingsUpdate",
+        "key": "managedSettingsUpdate.disabled",
+        "message": "Built-in updates are disabled by your organization. Contact your administrator for an approved update."
+      },
+      {
+        "module": "vs/workbench/services/policies/common/managedSettingsUpdate",
+        "key": "managedSettingsUpdate.download",
+        "message": "Download Update"
+      },
+      {
+        "module": "vs/workbench/services/policies/common/managedSettingsUpdate",
+        "key": "managedSettingsUpdate.initializing",
+        "message": "Update availability is not yet known."
+      },
+      {
+        "module": "vs/workbench/services/policies/common/managedSettingsUpdate",
+        "key": "managedSettingsUpdate.install",
+        "message": "Install Update"
+      },
+      {
+        "module": "vs/workbench/services/policies/common/managedSettingsUpdate",
+        "key": "managedSettingsUpdate.installed",
+        "message": "Installed: {0}"
+      },
+      {
+        "module": "vs/workbench/services/policies/common/managedSettingsUpdate",
+        "key": "managedSettingsUpdate.message",
+        "message": "Your organization requires an update to {0} to use AI features."
+      },
+      {
+        "module": "vs/workbench/services/policies/common/managedSettingsUpdate",
+        "key": "managedSettingsUpdate.minimumVersion",
+        "message": "Your organization requires {0} {1} or later to use AI features."
+      },
+      {
+        "module": "vs/workbench/services/policies/common/managedSettingsUpdate",
+        "key": "managedSettingsUpdate.progress",
+        "message": "An update operation is in progress."
+      },
+      {
+        "module": "vs/workbench/services/policies/common/managedSettingsUpdate",
+        "key": "managedSettingsUpdate.restart",
+        "message": "Restart to Update"
+      },
+      {
+        "module": "vs/workbench/services/policies/common/managedSettingsUpdate",
+        "key": "managedSettingsUpdate.title",
+        "message": "Update required by your organization"
+      },
+      {
+        "module": "vs/workbench/services/policies/common/organizationSupport",
+        "key": "organizationSupport.contactAdmin",
+        "message": "Contact Admin"
+      },
+      {
+        "module": "vs/workbench/services/policies/common/organizationSupport",
+        "key": "organizationSupport.tooltip",
+        "message": "Opens your organization's help page ({0})"
+      },
+      {
+        "module": "vs/workbench/services/search/node/ripgrepTextSearchEngine",
+        "key": "symlinkLoops",
+        "message": "Symbolic links in '{0}' were not followed because they form too many loops, so results may be incomplete. Exclude the folders that contain the loops or turn off the '{1}' setting to avoid this."
+      },
+      {
+        "module": "vs/workbench/services/themes/common/fileIconThemeSchema",
+        "key": "schema.usesCurrentColor",
+        "message": "Whether image icons use their alpha channel as a mask filled with the current text color. When enabled, only the shape of an image icon is used, so any colors defined in the icon (including light and high contrast variants) are ignored."
+      },
+      {
+        "module": "vs/workbench/services/userDataProfile/browser/iconPicker",
+        "key": "changeIcon",
+        "message": "Change icon"
+      },
+      {
+        "module": "vs/workbench/services/userDataProfile/browser/iconSelectBox",
+        "key": "resetIcon",
+        "message": "Reset to default"
+      },
+      {
+        "module": "vs/workbench/services/workspaces/common/workspaceTrust",
+        "key": "unresolvedWorkspaceTrustSource",
+        "message": "The source of this workspace could not be determined. Continue in Restricted Mode until its source can be verified."
+      },
+      {
+        "module": "vs/workbench/services/workspaces/common/workspaceTrust",
+        "key": "workspaceTrustSourceChanged",
+        "message": "The repository source must be verified again before updating trust. Try again."
+      }
+    ],
+    "excludedKeys": [],
+    "keysVsMessagesMismatch": false
+  },
+  "roughEnglishOnly": {
+    "effectiveEnglishOnly": 768,
+    "defaultEnglishOnly": 12200,
+    "note": "日本語（かな・漢字・全角記号）を含まず、英字3字以上の並びを持つ文言の数（リーダーの粗い数えと同じ）。English が正しい文言も含む。"
+  },
+  "clpCrossCheck": {
+    "found": true,
+    "file": "C:\\Users\\kou_z\\AppData\\Roaming\\Shuko\\clp\\bf8a15d7e63e7a2c7731b6677a101075.ja\\8d91c4af38854187d92d0099cdfb246b0ff9cc4862347202a2922cfb81752d7b\\nls.messages.json",
+    "actualLength": 12355,
+    "ourLength": 12355,
+    "differing": 0,
+    "firstDifferingIndexes": [],
+    "roughEnglishOnlyInActual": 768
+  },
+  "extensions": {
+    "vscode.bat": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "bat",
+      "hasPackFile": true
+    },
+    "vscode.clojure": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "clojure",
+      "hasPackFile": true
+    },
+    "vscode.coffeescript": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "coffeescript",
+      "hasPackFile": true
+    },
+    "vscode.configuration-editing": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "configuration-editing",
+      "hasPackFile": true
+    },
+    "vscode.cpp": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "cpp",
+      "hasPackFile": true
+    },
+    "vscode.csharp": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "csharp",
+      "hasPackFile": true
+    },
+    "vscode.css": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "css",
+      "hasPackFile": true
+    },
+    "vscode.css-language-features": {
+      "total": 109,
+      "translated": 109,
+      "untranslated": 0,
+      "sameAsEnglish": 3,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "css-language-features",
+      "hasPackFile": true
+    },
+    "vscode.dart": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "dart",
+      "hasPackFile": true
+    },
+    "vscode.diff": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "diff",
+      "hasPackFile": true
+    },
+    "vscode.docker": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "docker",
+      "hasPackFile": true
+    },
+    "vscode.dotenv": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "dotenv",
+      "hasPackFile": true
+    },
+    "vscode.emmet": {
+      "total": 62,
+      "translated": 62,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "emmet",
+      "hasPackFile": true
+    },
+    "vscode.fsharp": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "fsharp",
+      "hasPackFile": true
+    },
+    "vscode.git": {
+      "total": 364,
+      "translated": 363,
+      "untranslated": 1,
+      "sameAsEnglish": 2,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 1,
+      "untranslatedKeys": [
+        {
+          "key": "config.worktreeSymlinkFolders",
+          "message": "Configure patterns, using `.gitignore` syntax, for folders to symlink from the current checkout into newly created worktrees. Only folders that match the patterns and are ignored by git (for example, listed in `.gitignore`) will be symlinked. Changes made through a symlink affect the folder in the current checkout."
+        }
+      ],
+      "excludedKeys": [],
+      "dir": "git",
+      "hasPackFile": true
+    },
+    "vscode.git-base": {
+      "total": 3,
+      "translated": 3,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "git-base",
+      "hasPackFile": true
+    },
+    "vscode.go": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "go",
+      "hasPackFile": true
+    },
+    "vscode.groovy": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "groovy",
+      "hasPackFile": true
+    },
+    "vscode.handlebars": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "handlebars",
+      "hasPackFile": true
+    },
+    "vscode.hlsl": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "hlsl",
+      "hasPackFile": true
+    },
+    "vscode.html": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "html",
+      "hasPackFile": true
+    },
+    "vscode.html-language-features": {
+      "total": 36,
+      "translated": 36,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "html-language-features",
+      "hasPackFile": true
+    },
+    "vscode.ini": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "ini",
+      "hasPackFile": true
+    },
+    "vscode.java": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "java",
+      "hasPackFile": true
+    },
+    "vscode.javascript": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "javascript",
+      "hasPackFile": true
+    },
+    "vscode.json": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "json",
+      "hasPackFile": true
+    },
+    "vscode.json-language-features": {
+      "total": 22,
+      "translated": 22,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "json-language-features",
+      "hasPackFile": true
+    },
+    "vscode.julia": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "julia",
+      "hasPackFile": true
+    },
+    "vscode.latex": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "latex",
+      "hasPackFile": true
+    },
+    "vscode.less": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "less",
+      "hasPackFile": true
+    },
+    "vscode.log": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "log",
+      "hasPackFile": true
+    },
+    "vscode.lua": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "lua",
+      "hasPackFile": true
+    },
+    "vscode.make": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "make",
+      "hasPackFile": true
+    },
+    "vscode.markdown": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "markdown-basics",
+      "hasPackFile": true
+    },
+    "vscode.markdown-language-features": {
+      "total": 148,
+      "translated": 96,
+      "untranslated": 52,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 52,
+      "untranslatedKeys": [
+        {
+          "key": "markdown.editor.rename",
+          "message": "Rename Symbol"
+        },
+        {
+          "key": "markdown.editor.triggerSuggest",
+          "message": "Trigger Suggest"
+        },
+        {
+          "key": "configuration.markdown.editor.highlightActiveBlock",
+          "message": "Controls whether the active block in the rich Markdown editor is highlighted. Does not affect source markers or editing behavior."
+        },
+        {
+          "key": "configuration.markdown.editor.renderWhitespace",
+          "message": "Controls whether the rich Markdown editor shows space and tab indicators where Markdown syntax is revealed."
+        },
+        {
+          "key": "configuration.markdown.experimental.richLinks.enabled",
+          "message": "Controls whether supported links in the Markdown editor are rendered as rich links with live metadata. Enabling this may make authenticated requests to services such as GitHub."
+        },
+        {
+          "key": "configuration.markdown.editor.quickSuggestions",
+          "message": "Controls whether typing automatically requests suggestions in the rich Markdown editor. Also requires `#editor.quickSuggestions#` to be enabled for Markdown. Does not affect manually invoking Trigger Suggest or suggestions in the Markdown code editor."
+        },
+        {
+          "key": "markdown.editor.cursorLeft.title",
+          "message": "Move Cursor Left"
+        },
+        {
+          "key": "markdown.editor.cursorRight.title",
+          "message": "Move Cursor Right"
+        },
+        {
+          "key": "markdown.editor.cursorUp.title",
+          "message": "Move Cursor Up"
+        },
+        {
+          "key": "markdown.editor.cursorDown.title",
+          "message": "Move Cursor Down"
+        },
+        {
+          "key": "markdown.editor.cursorLeftSelect.title",
+          "message": "Select Left"
+        },
+        {
+          "key": "markdown.editor.cursorRightSelect.title",
+          "message": "Select Right"
+        },
+        {
+          "key": "markdown.editor.cursorUpSelect.title",
+          "message": "Select Up"
+        },
+        {
+          "key": "markdown.editor.cursorDownSelect.title",
+          "message": "Select Down"
+        },
+        {
+          "key": "markdown.editor.cursorWordLeft.title",
+          "message": "Move Cursor Word Left"
+        },
+        {
+          "key": "markdown.editor.cursorWordRight.title",
+          "message": "Move Cursor Word Right"
+        },
+        {
+          "key": "markdown.editor.cursorWordLeftSelect.title",
+          "message": "Select Word Left"
+        },
+        {
+          "key": "markdown.editor.cursorWordRightSelect.title",
+          "message": "Select Word Right"
+        },
+        {
+          "key": "markdown.editor.cursorVisualLineStart.title",
+          "message": "Move Cursor to Visual Line Start"
+        },
+        {
+          "key": "markdown.editor.cursorVisualLineEnd.title",
+          "message": "Move Cursor to Visual Line End"
+        },
+        {
+          "key": "markdown.editor.cursorVisualLineStartSelect.title",
+          "message": "Select to Visual Line Start"
+        },
+        {
+          "key": "markdown.editor.cursorVisualLineEndSelect.title",
+          "message": "Select to Visual Line End"
+        },
+        {
+          "key": "markdown.editor.cursorLogicalLineStart.title",
+          "message": "Move Cursor to Logical Line Start"
+        },
+        {
+          "key": "markdown.editor.cursorLogicalLineEnd.title",
+          "message": "Move Cursor to Logical Line End"
+        },
+        {
+          "key": "markdown.editor.cursorLogicalLineStartSelect.title",
+          "message": "Select to Logical Line Start"
+        },
+        {
+          "key": "markdown.editor.cursorLogicalLineEndSelect.title",
+          "message": "Select to Logical Line End"
+        },
+        {
+          "key": "markdown.editor.cursorDocumentStart.title",
+          "message": "Move Cursor to Document Start"
+        },
+        {
+          "key": "markdown.editor.cursorDocumentEnd.title",
+          "message": "Move Cursor to Document End"
+        },
+        {
+          "key": "markdown.editor.cursorDocumentStartSelect.title",
+          "message": "Select to Document Start"
+        },
+        {
+          "key": "markdown.editor.cursorDocumentEndSelect.title",
+          "message": "Select to Document End"
+        },
+        {
+          "key": "markdown.editor.selectAll.title",
+          "message": "Select All"
+        },
+        {
+          "key": "markdown.editor.deleteLeft.title",
+          "message": "Delete Left"
+        },
+        {
+          "key": "markdown.editor.deleteRight.title",
+          "message": "Delete Right"
+        },
+        {
+          "key": "markdown.editor.deleteWordLeft.title",
+          "message": "Delete Word Left"
+        },
+        {
+          "key": "markdown.editor.deleteWordRight.title",
+          "message": "Delete Word Right"
+        },
+        {
+          "key": "markdown.editor.deleteLineLeft.title",
+          "message": "Delete All Left"
+        },
+        {
+          "key": "markdown.editor.deleteLineRight.title",
+          "message": "Delete All Right"
+        },
+        {
+          "key": "markdown.editor.copyLinesUp.title",
+          "message": "Copy Line Up"
+        },
+        {
+          "key": "markdown.editor.copyLinesDown.title",
+          "message": "Copy Line Down"
+        },
+        {
+          "key": "markdown.editor.moveLinesUp.title",
+          "message": "Move Line Up"
+        },
+        {
+          "key": "markdown.editor.moveLinesDown.title",
+          "message": "Move Line Down"
+        },
+        {
+          "key": "markdown.editor.deleteLines.title",
+          "message": "Delete Line"
+        },
+        {
+          "key": "markdown.editor.joinLines.title",
+          "message": "Join Lines"
+        },
+        {
+          "key": "markdown.editor.toggleLocked.title",
+          "message": "Toggle Markdown Read-only"
+        },
+        {
+          "key": "markdown.editor.undo.title",
+          "message": "Undo"
+        },
+        {
+          "key": "markdown.editor.redo.title",
+          "message": "Redo"
+        },
+        {
+          "key": "markdown.editor.insertTab.title",
+          "message": "Insert Tab"
+        },
+        {
+          "key": "markdown.editor.outdent.title",
+          "message": "Outdent"
+        },
+        {
+          "key": "markdown.editor.toggleTabFocus.title",
+          "message": "Toggle Tab Key Moves Focus"
+        },
+        {
+          "key": "markdown.editor.smartEnter.title",
+          "message": "Insert Paragraph"
+        },
+        {
+          "key": "markdown.editor.insertHardLineBreak.title",
+          "message": "Insert Hard Line Break"
+        },
+        {
+          "key": "markdown.editor.insertParagraph.title",
+          "message": "Insert Paragraph Without Continuing Markup"
+        }
+      ],
+      "excludedKeys": [],
+      "dir": "markdown-language-features",
+      "hasPackFile": true
+    },
+    "vscode.markdown-math": {
+      "total": 4,
+      "translated": 4,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "markdown-math",
+      "hasPackFile": true
+    },
+    "vscode.merge-conflict": {
+      "total": 21,
+      "translated": 21,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "merge-conflict",
+      "hasPackFile": true
+    },
+    "vscode.npm": {
+      "total": 38,
+      "translated": 38,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "npm",
+      "hasPackFile": true
+    },
+    "vscode.objective-c": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "objective-c",
+      "hasPackFile": true
+    },
+    "vscode.perl": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "perl",
+      "hasPackFile": true
+    },
+    "vscode.php": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "php",
+      "hasPackFile": true
+    },
+    "vscode.powershell": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "powershell",
+      "hasPackFile": true
+    },
+    "vscode.pug": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "pug",
+      "hasPackFile": true
+    },
+    "vscode.python": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "python",
+      "hasPackFile": true
+    },
+    "vscode.r": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "r",
+      "hasPackFile": true
+    },
+    "vscode.razor": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "razor",
+      "hasPackFile": true
+    },
+    "vscode.references-view": {
+      "total": 29,
+      "translated": 29,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "references-view",
+      "hasPackFile": true
+    },
+    "vscode.restructuredtext": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 1,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "restructuredtext",
+      "hasPackFile": true
+    },
+    "vscode.ruby": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "ruby",
+      "hasPackFile": true
+    },
+    "vscode.rust": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "rust",
+      "hasPackFile": true
+    },
+    "vscode.scss": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "scss",
+      "hasPackFile": true
+    },
+    "vscode.search-result": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "search-result",
+      "hasPackFile": true
+    },
+    "vscode.shaderlab": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "shaderlab",
+      "hasPackFile": true
+    },
+    "vscode.shellscript": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "shellscript",
+      "hasPackFile": true
+    },
+    "vscode.sql": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "sql",
+      "hasPackFile": true
+    },
+    "vscode.swift": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "swift",
+      "hasPackFile": true
+    },
+    "vscode.theme-defaults": {
+      "total": 13,
+      "translated": 13,
+      "untranslated": 0,
+      "sameAsEnglish": 2,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "theme-defaults",
+      "hasPackFile": true
+    },
+    "vscode.vscode-theme-seti": {
+      "total": 3,
+      "translated": 3,
+      "untranslated": 0,
+      "sameAsEnglish": 1,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "theme-seti",
+      "hasPackFile": true
+    },
+    "vscode.typescript": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "typescript-basics",
+      "hasPackFile": true
+    },
+    "vscode.typescript-language-features": {
+      "total": 308,
+      "translated": 308,
+      "untranslated": 0,
+      "sameAsEnglish": 2,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "typescript-language-features",
+      "hasPackFile": true
+    },
+    "vscode.vb": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "vb",
+      "hasPackFile": true
+    },
+    "vscode.xml": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "xml",
+      "hasPackFile": true
+    },
+    "vscode.yaml": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "dir": "yaml",
+      "hasPackFile": true
+    }
+  },
+  "extensionsTotals": {
+    "total": 1258,
+    "translated": 1205,
+    "untranslated": 53,
+    "sameAsEnglish": 11,
+    "excluded": 0,
+    "untranslatedOutsideExclusions": 53
+  },
+  "extensionsWithoutNlsFile": [
+    {
+      "id": "shuko.mydist",
+      "dir": "mydist"
+    },
+    {
+      "id": "shuko.notion-sync",
+      "dir": "notion-sync"
+    }
+  ],
+  "invalidExclusions": [],
+  "totals": {
+    "untranslatedOutsideExclusions": 742,
+    "untranslated": 742,
+    "excluded": 0
+  },
+  "pass": false
+}

@@ -2,7 +2,7 @@
 
 - 担当: meng-tian（蒙恬）
 - 依頼日: 2026-11-17
-- 状態: 依頼中
+- 状態: 完了
 
 ## 目的
 
@@ -45,12 +45,15 @@
 
 ## 結果
 
-（リーダーが記入）
+- 候補 A（`center-spark`）・B（`spark-badge`）・C（`dark-tile`）と参考の D（`warm-ribbon`）を作った。見本は `preview-all.png`。`scripts/make-icons.mjs` に `--variant`・`--preview`・`--check` を足し、SVG のパスを描く部品を中に持つ（Node.js の標準の部品だけ）。元の絵の写しは `scripts/icon-src/`（出どころと SHA-256 は `SOURCES.json`）。
+- Claude の絵は、依頼書の場所（`%USERPROFILE%\.shuko\extensions\…`）が蒙恬の `read_paths` の外だったので、ビルドのキャッシュの同じ版の VSIX から取り出した。入っている拡張のファイルと SHA-256（`a3101f30…8364`）が同じことをリーダーが確かめた。
+- ユーザーの裁定（2026-11-17）: A「中央に印」に決まった。
 
 ## 未解決
 
-（リーダーが記入）
+- 仕上げ（既定を A にし `assets/` へ書き出す、`assets/README.md` を直す）とビルドは `tasks/2026-11-17-icon-ja-build/` へ。
+- `docs/02-repository-and-build.md` の `make-icons.mjs` の説明と、`copy-icon-sources.mjs`・`scripts/icon-src/` がリポジトリの一覧に無い（関門の後にリーダーが直す）。
 
 ## 次の担当
 
-ユーザーの選択の後、蒙恬（仕上げとビルド）・曹参（テスト）・大岡越前守（検証）
+蒙恬（`tasks/2026-11-17-icon-ja-build/`）

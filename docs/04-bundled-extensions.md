@@ -22,9 +22,10 @@
 | mechatroner.rainbow-csv | 3.24.1 | 2026-03-01 | MIT | ^1.95.0 | true | CSV |
 | weixu.wx-vsce-dotenv | 0.2.3 | 2026-10-15 | MIT | ^1.96.0 | true | .env。裁定「エラー表示を持つほうを1つ載せる」により、こちらに決めた（2026-11-13）。誤りを含む .env で診断を4件出し、`dotenv.dotenv-vscode` 1.5.8 は0件だった（`tasks/2026-11-13-p1-smoke/handoff-notes.md` の「合図後の実行の結果」6節）。`dotenv.dotenv-vscode` は台帳から外す |
 | tomoki1207.pdf | 1.2.2 | 2022-12-23 | API に表示なし。GitHub の LICENSE と VSIX 内の LICENSE.txt はどちらも MIT License（著作権者 tomoki1207。冒頭に PDF.js などの第三者の表記あり）[一次] https://raw.githubusercontent.com/tomoki1207/vscode-pdfviewer/master/LICENSE | ^1.46.0 | true | PDF プレビュー |
-| MS-CEINTL.vscode-language-pack-ja | 1.131.0 | 2026-07-28 | "SEE MIT LICENSE IN LICENSE.md" | ^1.131.0 | true | 日本語化 |
 
 出典: すべて [一次] `https://open-vsx.org/api/<namespace>/<name>`（`sources/research-extensions-services.md` の1節・6節）。
+
+- 2026-11-17 に `MS-CEINTL.vscode-language-pack-ja` 1.131.0（2026-07-28 公開、"SEE MIT LICENSE IN LICENSE.md"、engines ^1.131.0）を台帳から外した。本体と同じ版の自前の組み込みのパックに置き換えた（7節）。台帳は7件。
 
 - Claude Code の Marketplace の掲載文は「VS Code 1.98.0 or higher」と書き、manifest の 1.94.0 と食い違う [一次・要照合] https://marketplace.visualstudio.com/items?itemName=anthropic.claude-code 。本体は 1.146 系なので、どちらでも満たす。
 - 拡張の任意の依存（Python 拡張、Jupyter 拡張、Claude in Chrome）は入れない。必須ではない [一次] https://code.claude.com/docs/en/vs-code 。
@@ -95,7 +96,7 @@
 
 1. 台帳を読み、VSIX を `<buildRoot>\cache\vsix\` に取る（あればキャッシュを使う）。`<editor>` の CLI は `<installRoot>\current\bin` のものを使う。`buildRoot`・`installRoot` は PC ごとの設定ファイル `local.json` から読む（道具ごとに使うキーは [02](02-repository-and-build.md) の6.1 の表のとおり。この道具はビルドリポジトリの中で動くので `builderRepo` は使わない）。
 2. SHA-256 を台帳と照合する。違えば止める。
-3. 言語パックを先に、残りを台帳の順に `<editor> --install-extension <vsix> --force` で入れる。
+3. 台帳の順に `<editor> --install-extension <vsix> --force` で入れる（2026-11-17 までは言語パックを先に入れていた。今の日本語パックは本体に同梱する組み込みの拡張なので、台帳に無い。7節）。
 4. 台帳に無い拡張が入っていたら、一覧を出して止める（消すかはユーザーが決める）。
 5. `argv.json` に `"locale": "ja"` を書く（7節）。ファイルの末尾は `\n}` で終える（既存の中身を書き換えるときも同じ）。エディタは初めての起動で末尾の2文字を切って `enable-crash-reporter` などを足すため、`}` の後に改行があると壊れた JSON になり、`locale` が効かなくなる（Phase 0 で実際に起きた）。
 
@@ -149,11 +150,16 @@
 - 表示言語は `argv.json` の `"locale": "ja"` で決める（`argv.json` の場所は `%USERPROFILE%\<product の dataFolderName>\argv.json`。`dataFolderName` を `.shuko` にすれば `%USERPROFILE%\.shuko\argv.json`。環境変数 `VSCODE_PORTABLE` があれば `<VSCODE_PORTABLE>\argv.json`。`--user-data-dir` は関係しない [一次] 本家 1.146.0 の `src/mainImpl.ts` の `getArgvConfigPath`（Phase 0 で確認）。Phase 1 で実際の場所を確かめる）。
 - 裁定（2026-11-17）: 未訳の部分を英語のまま残さず、日本語にする。前の裁定（2026-11-12「未訳の部分が英語になるのを受け入れる。目立つなら改めて諮る」）を改めた。
 - 2026-11-17 の状態（リーダーが読んで確かめた）: Open VSX の `MS-CEINTL.vscode-language-pack-ja` 1.131.0（engines ^1.131.0）を入れ、`languagepacks.json` に登録されて効いている。本体 1.146.0 の文言 12,355 件のうち約 650 件が英語のまま（1.132〜1.146 で増えた文言）。Open VSX の最新は 1.131.0 で、本体より古い。
-- 進め方（2026-11-17 のリーダーの判断。作り方の詳細は `tasks/2026-11-17-l10n-ja/` の調べを受けてここに書く）:
-  1. 本体と同じ版の日本語の言語パックを自分で作る（前の別案）。訳の元は、公式の訳のうち新しいもの（Open VSX の日本語パックの最新、vscode-loc（MIT）[一次] https://github.com/microsoft/vscode-loc の最新）。
-  2. 公式の訳に無い文言（本家の新しい文言と、Shuko のパッチが足した文言）は、課が訳を足す。足した訳はリポジトリに置き、どの文言の訳かを鍵で引けるようにする。
-  3. 網: ビルドの文言の一覧と照らして、未訳の数を出す。英語のままでよいもの（固有名詞・コードの名前・記号だけなど）は、理由つきの除外の一覧に載せる。合格の条件は「除外の外の未訳 0」。対象は本体と組み込み拡張。
-  4. 本体の版が上がったら（毎週の取り込み）、増えた文言を同じ手順で訳してからパックを作り直す（`TAKE-IN.md`）。
+- 作り方（2026-11-17。詳細は `tasks/2026-11-17-l10n-ja/l10n-design.md`）:
+  1. **入れ方**: 自前の組み込みの拡張 `shuko.language-pack-ja`（`extensions-src/language-pack-ja/`）にし、mydist・notion-sync と同じく `apply.mjs` が本体の `extensions/` に写す。`contributes.localizations` の `ja` に、本体（`vscode`）と組み込みの拡張ごとの訳の束を並べる。組み込みの拡張も言語パックの一覧（`languagepacks.json`）に載り、`extensions.allowed` には止められない（本家 1.146.0 の `languagePacks.ts`・`extensionsScannerService.ts`。notion-sync が前例）。
+  2. **Open VSX のパックとは置き換える**: 同じ翻訳の ID は後から読んだ拡張が勝ち、読む順は組み込みが先・ユーザーの拡張が後なので、`MS-CEINTL.vscode-language-pack-ja` が入ったままだと古い訳に戻る。台帳と `extensions.allowed` から外し、入れ替えのときに入っている拡張も外す（外す許可は Team に依頼。`tasks/2026-11-17-l10n-ja/permission-requests.md`）。
+  3. **訳の元**（`sources.json`。先に書いた元が勝つ）: vscode-loc（MIT）の PR #2450（Microsoft の自動の書き出し、head `e0407b9e`、2026-10-23。未マージ）→ vscode-loc の main → Open VSX の 1.131.0。commit を40桁で、ファイルごとの SHA-256 も固定する。取得は `scripts/l10n-ja.mjs fetch`（置き場所は `<buildRoot>\cache\l10n\`）。
+  4. **足した訳**（`added/<本体の版>.json`）: 公式の訳に無い文言と、公式の訳が英語のままの文言（上書き）を、鍵（`core.<moduleId>.<key>`・`extensions.<ID>.package|bundle.<key>`）で引ける形で置く。値は `{ en, ja }` で、`en` が今の英語と違えば作り直しが止まる。訳語は公式の訳の言い回しにそろえる。
+  5. **除外**（`exclusions.json`）: 英語のままでよい文言を1件ずつ理由（`format`・`proper-noun`・`code`）つきで載せる。規則での除外は使わない。
+  6. **組む**: `scripts/l10n-ja.mjs build` が `sources.json` と `added/` から `dist/translations/` を作る（本家の言語パックと同じ形。dist はリポジトリに入れる）。
+  7. **数える**: `scripts/l10n-ja.mjs count`（本体・package・bundle・直書き）と、曹参の独立の網 `tests/l10n-audit.mjs`。合格は「除外の外の未訳 0」。
+  - 1.146.0（版 `1.146.0-p5-c-all-r4` の文言）の結果: 全体 15,159 件（本体 12,334、組み込み拡張の package 1,258・bundle 1,545、自前の拡張の直書き 22）。公式の訳 14,941、課が足した訳 182、上書き 9、除外 5（書式の印だけ）、除外の外の未訳 0。Shuko のパッチが足した文言は1件（`aboutDetailWithoutCopilot`）。
+- 本体の版が上がったら（毎週の取り込み）、訳の元を新しくし、増えた文言を訳してからパックを作り直す（`TAKE-IN.md`）。訳すのは蒙恬で、今は自動にしない。未訳が残っても取り込みの採否は止めない（判定に未訳の数を書く。急ぐセキュリティの修正では英語が残ったまま入れ替えて、後で訳を足してよい）。別の検知の項目（vscode-loc の見張り）は足さない（2026-11-17 のリーダーの判断）。
 - 対象の外: 台帳のほかの拡張（Claude Code・PowerShell など）の表示。拡張が日本語の訳を持たなければ英語のまま。VSIX は改変しない（1節）。
 - Microsoft 発行の拡張（言語パック、PowerShell）を Open VSX 経由で使うことが Marketplace の規約に触れないかは、文書から断定できない。裁定: 個人利用として、法的な確認をせずに使う。リスクはユーザーが受け入れる（[00](00-overview.md) の4.3）。
 

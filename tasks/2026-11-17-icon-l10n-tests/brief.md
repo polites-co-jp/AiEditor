@@ -2,7 +2,7 @@
 
 - 担当: cao-shen（曹参）
 - 依頼日: 2026-11-17
-- 状態: 依頼中
+- 状態: 完了
 
 ## 目的
 
@@ -47,12 +47,15 @@
 
 ## 結果
 
-（リーダーが記入）
+- 独立の網 `tests/l10n-audit.mjs` とテスト（14件が通る）。本家と同じ引き方で、本体 12,355 件の結果が clp の `nls.messages.json` と全件一致した。r4 と 1.131.0 のパックで未訳 742（本体 689、拡張の package 53）。
+- `tests/make-icons.test.mjs` を候補に依らない検査に直した（`ICON_TEST_ARGS_LIST` で候補ごとに走る）。
 
 ## 未解決
 
-（リーダーが記入）
+- bundle と直書きを数えない、除外の `en` を比べない、など網の改めと、足りないテストは `tasks/2026-11-17-icon-ja-tests/` へ。
+- 使い捨ての `tests/probe-l10n.mjs` と重複の `audit-run-pack1131.json` はコミットしない。
+- 曹参が `%LOCALAPPDATA%`・`%USERPROFILE%` を Read できず、台本を通して読んだ件: 台本は件数と鍵だけを出し、`node tests/*.mjs` は許可の範囲なので、この形でよい（リーダー）。
 
 ## 次の担当
 
-大岡越前守（検証）
+曹参（`tasks/2026-11-17-icon-ja-tests/`）
