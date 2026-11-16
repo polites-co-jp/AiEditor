@@ -368,3 +368,109 @@ keep の10本（期待する値は1節の表。今日の survey と 2026-11-15 �
 ## R3-5. 未解決の点
 
 - この節で増えたものは無い。2回目の R2-6 の2（`trial.mts` の既定の置き場所、`perm-proposal.md` を読めない）は残っている。
+
+---
+
+# 4回目（2026-11-16。copy-verify.mjs の穴の直し）
+
+- 依頼: リーダーの知らせ「copy-verify.mjs の穴の直し」。穴は曹参の `tests/copy-verify.test.mjs` の「（見張り）」3件（`handoff-notes-cao-shen.md`）
+- 結果: **一部完了**
+  - 穴の3つは直した。「（見張り）」の3件はどれも通る。
+  - `node --test tests/copy-verify.test.mjs` は 44件のうち **42件が通り、2件が落ちる**。落ちる2件は、指示の「--out はリポジトリの tasks/ の下に限る」と、テストの前提（`--out` を `tmp\tests\` の下に置いて終了 0 を期待する）が食い違うため（R4-3）。どちらに寄せるかを決めてほしい。
+
+## R4-1. 直したこと（`scripts/copy-verify.mjs`）
+
+1・2（途中のフォルダのリンク・ジャンクション）:
+
+- 新しい関数 `linkInChain(p, root)`。柵の根から、ファイルの親までのフォルダを1つずつ `lstat` で見る。
+  - 見るフォルダには根そのものも入る。
+  - リンク（Node は Windows のジャンクションも `isSymbolicLink()` で返す）か、フォルダでないものがあれば、その理由を返す。
+  - 無いフォルダから先は見ない。写し先は `mkdir` で本物のフォルダを作るため。
+  - 加えて、在るフォルダのうちいちばん深いものの実体（`fs.realpathSync.native`）が、根の実体の下にあるかも照らす（指示にあった realpath の形も足した）。
+- `validateList` は、行ごとに、その行が入る柵（どの `fromRoot`・`toRoot` の下か）を決め、元と写し先の両方に `linkInChain` をかける。
+  - 理由があれば、その行を誤りにする（`entries[i]: 元の途中のフォルダがリンクかジャンクション: …` など）。
+  - 一覧のほかの誤りと同じく、ListError になり、終了 2 で何も書かない。
+- `copyVerify` も、各行を写す直前に同じ確かめをもう一度する。確かめてから写すまでの間にリンクに変わったら、その行を `error`（`写す前の見直しで止めた: …`）にして写さない。
+- 確かめた結果を写す側で使うため、`validateList` の戻り値の各行に `fromFence`・`toFence`（その行の柵）を足した。
+
+3（`--out` の柵）:
+
+- 新しい関数 `checkOut(out, checked, { cwd, repo, listPath })`。次のどれかに当たれば ListError にする。
+  - リポジトリの `tasks/` の下でない。`tasks/` そのものも不可で、途中のフォルダにリンクがあっても不可（`linkInChain` を `tasks/` を根にしてかける）。
+  - 元の柵（どれかの `fromRoot`）の下にある。
+  - 一覧のどれかの元と同じ。
+  - 一覧のどれかの写し先と同じ。
+  - 一覧のファイル（`--list`）と同じ。この1つは指示に無いが、一覧を結果で上書きしないために足した。
+  - 既にあるものがリンクかフォルダ。
+- `main` は、一覧を確かめた後、写す前に `checkOut` を呼ぶ。誤りなら `[copy-verify] --out の誤り（何も写していない）: …` を出して終了 2。写し先にも `--out` にも何も書かない。
+- 書くのは `checkOut` が返した絶対パスだけ。
+
+変えていないこと: 何も消さないこと。書くのは一覧の写し先と、柵を通った `--out` だけであること。出力の JSON の形（行に `fromFence`・`toFence` は出さない）と、終了コードの意味。
+
+書き出す関数に `linkInChain`・`checkOut` が増えた（台本の頭の説明も直した）。
+
+## R4-2. 確かめたこと
+
+- `node --check scripts/copy-verify.mjs`: 誤りなし。
+- `node --test tests/copy-verify.test.mjs`: tests 44、**pass 42、fail 2**、skipped 0。
+  - 「（見張り）」の3件はどれも通った。
+    - 写し先の途中のジャンクションを断る。
+    - 元の途中のジャンクションを断る。
+    - `--out` が一覧の元のときと、元の柵の下のときに断る。
+  - 落ちたのは316行と529行の2件（R4-3）。どちらも終了 2 が出て、0 を期待している。
+- 今の一覧の dry-run: `node scripts/copy-verify.mjs --list tasks/2026-11-16-before-delete-c/evidence-copy-list.json --dry-run --out tasks/2026-11-16-before-delete-c/copy-verify-dry-run-4.json`
+  - 終了 1、`counts` は `entries 25 / copied 0 / unchanged 21 / match 21 / mismatch 4 / errors 0`。
+  - 25行とも `expectMatch: true`。2回目の `copy-verify-dry-run-2.json` と同じ結果。
+  - `--out` の `tasks/…` は柵を通った。何も写していない。
+
+## R4-3. 落ちる2件と、指示との食い違い
+
+| テスト | `--out` の場所 | 期待 | 今の台本 |
+|---|---|---|---|
+| 316行「--out: 結果の JSON を書く…」 | `<sandbox>\case-N\res\out.json` | 終了 0 | 終了 2（tasks/ の下でない） |
+| 529行「--out は元の柵の外・写し先と別の場所なら書ける…」 | `<sandbox>\case-N\results\ok.json` | 終了 0 | 終了 2（同じ） |
+
+- `<sandbox>` は `tests/build/helpers.mjs` の `sandboxBase()` で、既定は `<リポジトリ>\tmp\tests\`（`AIED_TEST_TMP` で変えられる）。`tasks/` の下ではない。
+- 指示の条件の3（「リポジトリの tasks/ の下に限る」）を入れると、この2件は通らない。指示の確かめ（44件すべてが通る）と同時には満たせない。
+- 私は指示の条件をそのまま入れ、テストは書き換えていない（テストは曹参の担当）。
+
+決めてほしいこと（案を並べる。どれも私は採っていない）:
+
+1. **曹参が2件の `--out` を `tasks/` の下へ移す**。条件はそのまま。ただし、テストを走らせるたびに `tasks/` に試しのファイルができる（後始末が要る）。
+2. **`--out` を置ける場所に `tmp/` も足す**（`tasks/` か `tmp/` の下）。テストはそのまま通る見込み。`tmp/b`（ビルドの置き場所）の下にも置けるようになる。
+3. **2件の期待を「終了 2（tasks/ の外を断る）」に変える**。`--out` の JSON の形の検査（316行）は、`tasks/` の下か `--out` 無しの標準出力で見る形に書き直す（曹参）。
+
+台本の側で変えるのは1行（`checkOut` の `tasksRoot` の決め方）で済む。決まれば直す。
+
+## R4-4. 守ったこと
+
+- 書いたもの: `scripts/copy-verify.mjs`、`tasks/2026-11-16-before-delete-c/copy-verify-dry-run-4.json`、この節。テスト（`tests/`）は変えていない。
+- `C:\b` は読むだけ（dry-run で元の SHA-256 を取っただけ）。records・`kept/` には何も書いていない。何も消していない。
+- 前に試した `tmp/copy-verify-trial/` の一覧は `--out` を `tmp/` に向けていたので、今の台本では `--out` 付きだと終了 2 になる（`--out` 無しなら今までどおり）。
+
+## R4-5. 未解決の点
+
+1. R4-3 の食い違い（2件）。リーダーが決める。→ R4-6 で片づいた。
+2. 前から残る2点（`trial.mts` の既定の置き場所、`perm-proposal.md` を読めない）。
+
+## R4-6. 追記: --out の柵の決め直し（リーダーの判断。R4-3 の案2を狭めた形）
+
+- 判断: `--out` を置いてよい場所は、リポジトリの `tasks/` の下か `tmp/tests/` の下（曹参のテストの作業場所。`sandboxBase` の既定）に限る。`tmp/b` の下と `tmp/` の直下には置けない。ほかの条件は今のまま。
+- 直し（`scripts/copy-verify.mjs`）:
+  - 置いてよい場所を定数 `OUT_ROOTS = ["tasks", "tmp/tests"]`（リポジトリからの相対。書き出す）にした。
+  - `checkOut` は、`--out` がどれかの根の下（根そのものは不可）にあるかを見る。途中のフォルダのリンクは、その根から `linkInChain` で見る。
+  - 誤りの文は `--out がリポジトリの tasks/ か tmp/tests/ の下でない: …`。
+  - ほかの条件（元の柵の下でない、一覧の元・写し先・一覧のファイルと同じでない、リンクやフォルダでない）は変えていない。
+  - 台本の頭の説明も直した。
+- 確かめ:
+
+| 確かめ | 結果 |
+|---|---|
+| `node --check scripts/copy-verify.mjs` | 誤りなし |
+| `node --test tests/copy-verify.test.mjs` | **tests 44、pass 44、fail 0**、skipped 0（316行・529行の2件も通った。「（見張り）」の3件も通る） |
+| `--out tmp/b/copy-verify-out.json`（`tmp/copy-verify-trial/list-ok.json` の `--dry-run`） | **終了 2**。`--out の誤り（何も写していない）: --out がリポジトリの tasks/ か tmp/tests/ の下でない: tmp/b/copy-verify-out.json`。ファイルはできていない |
+| `--out tmp/copy-verify-out.json`（`tmp/` の直下） | 終了 2（同じ文） |
+| 今の一覧の dry-run（`--out tasks/2026-11-16-before-delete-c/copy-verify-dry-run-4b.json`） | 終了 1、`entries 25 / copied 0 / unchanged 21 / match 21 / mismatch 4 / errors 0`、25行とも `expectMatch: true`。2回目・R4-2 と同じ結果。records・`kept/` には何も書いていない |
+
+- 注意: `sandboxBase()` は環境変数 `AIED_TEST_TMP` で別の場所に向けられる。向けた先が `tmp/tests/` の外なら、`--out` を使う2件（316行・529行）は終了 2 で落ちる。既定のままなら通る。
+- 書いたもの: `scripts/copy-verify.mjs`、`copy-verify-dry-run-4b.json`、この節。テストは変えていない。何も消していない。
