@@ -1,7 +1,7 @@
 {
-  "description": "records/phase0/evidence/ の22ファイルを C:\\b\\p0 から写し直す一覧。records/phase0/evidence/README.md の「写したもの」の表から作った。expectSha256 は表の元の値（extension.vsixmanifest は「元」の値）。",
-  "fromRoot": "C:/b/p0",
-  "toRoot": "records/phase0/evidence",
+  "description": "records/phase0/evidence/ の22ファイルを C:\\b\\p0 から写し直す一覧（records/phase0/evidence/README.md の「写したもの」の表から作った。expectSha256 は表の元の値、extension.vsixmanifest は「元」の値）。2回目（2026-11-16 のリーダーの判断）で3行を足した: README の「写していないもの」の basedpyright と bash-ide の files.json（expectSha256 は README の元の値）、C:\\b\\p4-watch\\trial\\real\\responses.json（写し先は kept/。C:\\b からの相対の形。expectSha256 は 2026-11-16 の dry-run で台本が取った元の値）。",
+  "fromRoot": ["C:/b/p0", "C:/b/p4-watch/trial/real"],
+  "toRoot": ["records/phase0/evidence", "tasks/2026-11-16-before-delete-c/kept"],
   "entries": [
     { "from": "C:/b/p0/vsix/verify-result.json", "to": "records/phase0/evidence/vsix/verify-result.json", "expectSha256": "02bc6c36a7fb29319191f6147e7da242b065ee6095b1526d9160eb32d88e824e" },
     { "from": "C:/b/p0/vsix/fetch-result.json", "to": "records/phase0/evidence/vsix/fetch-result.json", "expectSha256": "ad6e3e212f8fb28eb17b289e273222ddb6ddea772dac2d7c7cd65966dddfab16" },
@@ -24,6 +24,9 @@
     { "from": "C:/b/p0/sublime/same-key-different-when.json", "to": "records/phase0/evidence/sublime/same-key-different-when.json", "expectSha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570" },
     { "from": "C:/b/p0/sublime/convert-meta.json", "to": "records/phase0/evidence/sublime/convert-meta.json", "expectSha256": "5b8d414856fb0ffea70050a23e3dc49539b4d67196d92371856cf4bca78fdbff" },
     { "from": "C:/b/p0/sublime/sublime-4.1.10.package.json", "to": "records/phase0/evidence/sublime/sublime-4.1.10.package.json", "expectSha256": "fe956455ea2d09561544f83f301ad08f9bb443931f019671c297350b0fdb40fe" },
-    { "from": "C:/b/p0/sublime/ms-vscode.sublime-keybindings-4.1.10.sha256", "to": "records/phase0/evidence/sublime/ms-vscode.sublime-keybindings-4.1.10.sha256", "expectSha256": "bf8120afe163fd08347807802d3ad4e84a0351d61c6f4d2d935ac0bd0fc1ad71" }
+    { "from": "C:/b/p0/sublime/ms-vscode.sublime-keybindings-4.1.10.sha256", "to": "records/phase0/evidence/sublime/ms-vscode.sublime-keybindings-4.1.10.sha256", "expectSha256": "bf8120afe163fd08347807802d3ad4e84a0351d61c6f4d2d935ac0bd0fc1ad71" },
+    { "from": "C:/b/p0/vsix/detachhead.basedpyright-1.40.2/files.json", "to": "records/phase0/evidence/vsix/detachhead.basedpyright-1.40.2/files.json", "expectSha256": "b1967fe60e834b2df8fea034b263f51a8717e2cb4d51e2f2e6ba49d4a9620695" },
+    { "from": "C:/b/p0/vsix/mads-hartmann.bash-ide-vscode-1.43.2/files.json", "to": "records/phase0/evidence/vsix/mads-hartmann.bash-ide-vscode-1.43.2/files.json", "expectSha256": "4a69ac99a50cbe7e6debfa59f38a0a54f7ccbbeb3ad8b71444a1ed92d8c137b6" },
+    { "from": "C:/b/p4-watch/trial/real/responses.json", "to": "tasks/2026-11-16-before-delete-c/kept/p4-watch/trial/real/responses.json", "expectSha256": "e895facc9e3b61935eeb696f53f47bde24452e5c8407f251a33309f764c61a86" }
   ]
 }

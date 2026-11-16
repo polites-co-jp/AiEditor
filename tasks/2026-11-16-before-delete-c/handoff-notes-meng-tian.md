@@ -214,3 +214,157 @@ node scripts/copy-verify.mjs --list tasks/2026-11-16-before-delete-c/evidence-co
 4. 写していない5項目のうち、`p4-watch\trial\real\responses.json` を残すか（2節）。
 5. `basedpyright`・`bash-ide` の `files.json` を一覧に足すか（5節）。
 6. Team の `perm-proposal.md`（85行からの手順の全文）を、私の許可では読めない。brief とこのリポジトリの `permission-response.md` で足りたが、全文と食い違う手順があれば知らせてほしい。
+
+---
+
+# 2回目（2026-11-16。リーダーの判断を受けた一覧の追加と残りの確かめ）
+
+- 依頼: リーダーの知らせ「写し直しの一覧の追加と残りの確かめ」の1〜4。判断は `docs/user-decisions.md` の「C:\b を消す前の確かめで出た点」
+- 結果: **一部完了**。一覧に3行を足し、dry-run で確かめた。brief の1（fetch と for-each-ref）は、r4 の終わりが見えないので、まだ打っていない（R2-3）
+
+## R2-0. 要点
+
+1. 一覧 `evidence-copy-list.json` に3行を足して25行にした。`basedpyright` と `bash-ide` の `files.json`（写し先は `records/phase0/evidence/vsix/` の下）と、`C:\b\p4-watch\trial\real\responses.json`（写し先は `kept/` の下）。
+2. 写し先が2つの場所になるので、台本の `fromRoot`・`toRoot` に配列も書けるようにした（柵を複数置ける）。文字列1つの一覧は今までどおりに動く。
+3. dry-run（`copy-verify-dry-run-2.json`）では、25行とも元が `expectSha256` と同じだった。一致しないのは4行で、既にある `extension.vsixmanifest` と、まだ無い3つの写し先。何も書いていない。
+4. `trial-bwt` の変更の2行は、判断（捨ててよい）のとおり何もしていない。
+5. copy-verify.mjs のテストは曹参に任せる（入口は6節。下の R2-1 の配列の形も足してほしい）。
+
+## R2-1. 台本の直し（`scripts/copy-verify.mjs`）
+
+- `fromRoot`・`toRoot` は、文字列か文字列の配列。行ごとに、`from` がどれかの `fromRoot` の下にあり、`to` がどれかの `toRoot` の下にあればよい。柵そのもの（`fromRoot`・`toRoot` のパスと同じもの）は元にも写し先にもしない（1回目と同じ）。
+- `fromRoot` と `toRoot` が重なるかは、すべての組で見る（`fromRoot と toRoot が重なる: <元の柵> / <写し先の柵>`）。
+- 出力の `fromRoot`・`toRoot` は、柵が1つなら文字列、2つ以上なら配列（1回目の出力の形を変えないため）。
+- 誤りの文の「fromRoot の外」「toRoot の外」はそのまま（どの柵の下にも無いときに出る）。
+- 試し: `node --check` は誤りなし。`tmp/copy-verify-trial/list-bad.json` は1回目と同じ5つの誤りで終了 2、`list-ok.json`（柵が1つ）の `--dry-run` は終了 0 で、出力の `fromRoot`・`toRoot` は文字列のままだった。
+
+曹参へ（6節に足す）: `validateList` に配列の柵を渡す形。次のことを確かめてほしい。
+
+- 2つの柵のどちらかの下なら通ること。
+- どちらの下にも無ければ止まること。
+- 片方の `toRoot` が片方の `fromRoot` の中なら「重なる」で止まること。
+- 空の配列は `fromRoot が絶対パス（かその配列）でない`・`toRoot が無い` で止まること。
+
+## R2-2. 一覧に足した3行
+
+| 元 | 写し先 | expectSha256 | 大きさ | 値の出どころ |
+|---|---|---|---|---|
+| `C:/b/p0/vsix/detachhead.basedpyright-1.40.2/files.json` | `records/phase0/evidence/vsix/detachhead.basedpyright-1.40.2/files.json` | `b1967fe60e834b2df8fea034b263f51a8717e2cb4d51e2f2e6ba49d4a9620695` | 626,794 B | `records/phase0/evidence/README.md` の52行（元の SHA-256） |
+| `C:/b/p0/vsix/mads-hartmann.bash-ide-vscode-1.43.2/files.json` | `records/phase0/evidence/vsix/mads-hartmann.bash-ide-vscode-1.43.2/files.json` | `4a69ac99a50cbe7e6debfa59f38a0a54f7ccbbeb3ad8b71444a1ed92d8c137b6` | 271,629 B | 同上 |
+| `C:/b/p4-watch/trial/real/responses.json` | `tasks/2026-11-16-before-delete-c/kept/p4-watch/trial/real/responses.json` | `e895facc9e3b61935eeb696f53f47bde24452e5c8407f251a33309f764c61a86` | 321,393 B | 記録した値が無いので、`expectSha256` を付けずに dry-run（`copy-verify-dry-run-2a.json`）を流し、台本が出した元の `sourceSha256` を写した |
+
+- 柵: `fromRoot` は `["C:/b/p0", "C:/b/p4-watch/trial/real"]`、`toRoot` は `["records/phase0/evidence", "tasks/2026-11-16-before-delete-c/kept"]`。p4-watch の柵は `real` のフォルダまでに絞った（`*.dpapi` のある `trial` の直下は柵の外）。
+- `responses.json` の写し先は、`kept/` の下に `C:\b` からの相対の形（`p4-watch/trial/real/`）で置く。出どころがパスで分かるようにするため。
+- `responses.json` の `expectSha256` は、2026-11-16 07:35 UTC の元の値。前に取った値と照らしたのではない。役目は、写すまでの間に元が変わっていないことの確かめだけ。
+- 一覧の `description` に、2回目で足したことを書いた。
+
+## R2-3. dry-run の結果
+
+```
+node scripts/copy-verify.mjs --list tasks/2026-11-16-before-delete-c/evidence-copy-list.json --dry-run --out tasks/2026-11-16-before-delete-c/copy-verify-dry-run-2.json
+```
+
+- 終了 1（期待どおり。写し先がまだ元と同じでないため）。`counts` は `entries 25 / copied 0 / unchanged 21 / match 21 / mismatch 4 / errors 0`。
+- 25行とも `expectMatch: true`。
+- `match: false` の4行:
+  - `extension.vsixmanifest`: 写し `ead27a22…0261`（2,108 B）、元 `301bdf41…d3e9`（2,146 B）
+  - `basedpyright` の `files.json`: 写し先は無い
+  - `bash-ide` の `files.json`: 写し先は無い
+  - `responses.json`: 写し先は無い
+- records と `kept/` には何も書いていない（`kept/` のフォルダも作っていない）。
+
+大岡越前守が打つコマンドは1回目と同じ（5節）。期待は次のとおり。
+
+- 終了 0
+- `counts` が `entries 25 / copied 25 / match 25 / errors 0`
+- 新しく `records/phase0/evidence/vsix/` の下に2つ、`tasks/2026-11-16-before-delete-c/kept/p4-watch/trial/real/responses.json` が1つできる
+- README の「写していないもの」の basedpyright・bash-ide の記述も直すことになる（`records/` の書き手の大岡越前守）
+
+## R2-4. brief の1（枝の取り込み）: まだ打っていない
+
+- 07:35:32 UTC に `c1fix-r4prep`（prepare・apply）が終わった（build-record の `finishedAt`。2つの手順とも `ok`）。これは r4 の準備で、r4 そのものではない。
+- `tasks/2026-11-16-p5-c1-product-keys/handoff-notes-meng-tian.md` に「r4」の節はまだ無い。r4 のビルドはこれから `tmp/b/vscode` に作業ツリーを足すはずなので、終わりはまだ見えない。
+- 知らせのとおり、ここで終える。r4 の終わりを知らせてもらったら、1節の12行を打ち、keep の10本を1節の表と、builds の8本を古い clone の packed-refs と照らす。
+
+## R2-5. 守ったこと
+
+- 書いたもの: `scripts/copy-verify.mjs`（柵の配列）、`evidence-copy-list.json`（3行と description）、`copy-verify-dry-run-2a.json`・`copy-verify-dry-run-2.json`、この節。`records/`・`kept/` には書いていない。
+- `C:\b` は読むだけ（台本が元の SHA-256 を取っただけ）。`tmp/b/vscode` には触れていない。何も消していない。
+
+## R2-6. 未解決の点
+
+1. brief の1（R2-4）。r4 の後に打つ。
+2. 1回目の未解決の3（`trial.mts` の既定の置き場所 `C:\b\notion-sync-trial`）と6（`perm-proposal.md` を読めない）は残っている。2・4・5は、リーダーの判断で片づいた。
+
+---
+
+# 3回目（2026-11-16。古い clone の枝の取り込み）
+
+- 依頼: リーダーの知らせ「古い clone の枝の取り込み」（r4 のビルドが終わった後）
+- 結果: **完了**。fetch の11行と for-each-ref を打った。builds の8本と keep の10本が、古い clone の値と1節の表の値にすべて一致した
+
+## R3-1. 打つ前に確かめたこと
+
+- `tasks/2026-11-16-p5-c1-product-keys/handoff-notes-meng-tian.md` に「r4」の節（377行の `# r4`、434行の `## R4-B. 版 1.146.0-p5-c-all-r4`）がある。
+- リーダーの知らせでは、今 `tmp/b/vscode` を使うのは大岡越前守の r4 の関門だけで、関門は clone の参照を書き換えない。
+- 照らす相手の builds の8本を、古い clone から読んだ（Read・Grep。読むだけ）:
+  - `C:/b/vscode/.git/packed-refs` の2〜6行に、B-1〜B-5 の5本があった。
+  - B-6・B-7・all の3本は `refs/heads/builds/` の単独のファイルにあった。packed-refs にこの3本の古い行は無い。
+
+## R3-2. 打ったコマンドと結果
+
+1節の12行を、そのままの形で順に打った（リポジトリの直下）。どれも終了 0 で、ロックの誤りは出なかった。fetch はパスを取らないので、`-C` の先からの相対で読まれる件（リーダーの注意）には当たらない。元は `C:/b/...` の絶対パスで渡している。
+
+| 回 | コマンド（要点） | 出力 |
+|---|---|---|
+| 1 | `fetch C:/b/vscode`（builds の8本を名指し、`+` なし） | `* [new branch]` が8行（B-1-r2〜B-7-r2、p2-all） |
+| 2〜11 | `fetch C:/b/wt/<名前> HEAD:refs/heads/keep/wt-<名前>`（10個） | どれも `* [new ref] HEAD -> keep/wt-<名前>` |
+| 12 | `for-each-ref refs/heads/builds refs/heads/keep` | 下 |
+
+for-each-ref の出力は24行（builds が14本、keep が10本）。取り込んだ builds の8本と keep の10本は下の表のとおり。ほかに `tmp/b` で作った builds の6本（`1.146.0-p5-c-all`・`-r2`・`-r3`・`-r3b`・`-r3c`・`-r4`）も出た。r4 は `7fac30e886f79ebe44e1bac93acd7a86fbbafed8`。
+
+- 出力を写したファイルは作っていない。私の許可ではリダイレクトが打てない。また、出力を Read・Write で書き写すのは、写し方の裁定に触れるため。
+- 下の表の値は、出力と照らして書いた。原本が要るときは、同じ for-each-ref を打ち直せば取れる（読むだけ）。
+
+## R3-3. 照らした結果
+
+builds の8本（期待する値は古い clone の値）:
+
+| 枝 | `tmp/b/vscode` の値 | 古い clone の値（出どころ） | 一致 |
+|---|---|---|---|
+| `builds/1.146.0-p2-B-1-r2` | `f47742d90bcc30886f716c9d5d1365f7c29b450c` | 同じ（packed-refs 2行） | 一致 |
+| `builds/1.146.0-p2-B-2-r2` | `b9c0a9c1adc39b212af85c00115f5bd4a32780e0` | 同じ（packed-refs 3行） | 一致 |
+| `builds/1.146.0-p2-B-3-r2` | `cd09c2010487b3c5e740ad7ffbb58f4d61b04afb` | 同じ（packed-refs 4行） | 一致 |
+| `builds/1.146.0-p2-B-4-r2` | `b4417153ede5a54479f066e8ddbce6a22839c35d` | 同じ（packed-refs 5行） | 一致 |
+| `builds/1.146.0-p2-B-5-r2` | `4dd38929c46e0026691afece4a2c3f476bb0b6b0` | 同じ（packed-refs 6行） | 一致 |
+| `builds/1.146.0-p2-B-6-r2` | `1f4abbee7a679a3bdad05200fc7289dbd0543e6d` | 同じ（`refs/heads/builds/1.146.0-p2-B-6-r2`） | 一致 |
+| `builds/1.146.0-p2-B-7-r2` | `680e99e95c9988295b29a2a5ee7a8ecc107c4e39` | 同じ（`refs/heads/builds/1.146.0-p2-B-7-r2`） | 一致 |
+| `builds/1.146.0-p2-all` | `d5fd4c3a7558f7216fe5e9ba86970d11aceb40aa` | 同じ（`refs/heads/builds/1.146.0-p2-all`） | 一致 |
+
+keep の10本（期待する値は1節の表。今日の survey と 2026-11-15 の survey の `head`）:
+
+| 枝 | `tmp/b/vscode` の値 | 一致 |
+|---|---|---|
+| `keep/wt-1.145.3` | `79055c2cb190e7937d217a2928ed0079881686cc` | 一致 |
+| `keep/wt-dev-a` | `a8145cd7bee686d8b9ac63fe366a7ddfdbe879ee` | 一致（古い clone の `units-a`） |
+| `keep/wt-dev-a-apply` | `28869a097e3553e56440ca20561d79915c7e8ebd` | 一致 |
+| `keep/wt-dev-b` | `44be84f8aa6d5f3c61b8badfc75f5c4fef492c61` | 一致 |
+| `keep/wt-dev-c1` | `8d5cdfd0b1767e434a4205d9ead55a3030d03a9e` | 一致 |
+| `keep/wt-dev-c3` | `526d25d777f5a7c2abe71513cf9f6c870121cbe2` | 一致 |
+| `keep/wt-p1-a1` | `cff68091803f933ffbd34c93d1a7dc14633f7a72` | 一致 |
+| `keep/wt-p2` | `ed59899d41cd3035594ff62df3a57c3e62f2f483` | 一致 |
+| `keep/wt-trial-bwt` | `4be87ac66ef0fb21941e9d4e1830efb134d94156` | 一致 |
+| `keep/wt-verify-p2` | `6fba38db6119ca8dbb2de9244f07b5ae8f323d0d` | 一致 |
+
+- どれも種類は `commit`。
+- これで、条件の1（Team の返答の3節の1）は満たした。作業ツリーの `1.146.0` と `dev-apply` は取っていない（HEAD がタグ `1.146.0` と同じ `69047191…a7ab`。返答の2節）。
+
+## R3-4. 守ったこと
+
+- 打ったのは、許可の bash_exact にある12行だけ。`C:\b` は読むだけ（fetch の元にして、packed-refs と refs を Read・Grep した）。
+- `tmp/b/vscode` に足したのは、名前の重ならない新しい枝の18本だけ。既にあった枝は変えていない（どの行も `new`）。
+- 何も消していない。
+
+## R3-5. 未解決の点
+
+- この節で増えたものは無い。2回目の R2-6 の2（`trial.mts` の既定の置き場所、`perm-proposal.md` を読めない）は残っている。
