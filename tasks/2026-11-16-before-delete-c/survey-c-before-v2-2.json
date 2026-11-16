@@ -1,0 +1,4333 @@
+{
+  "countedAt": "2026-11-16T07:22:22.499Z",
+  "from": "C:\\b",
+  "to": {
+    "path": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b",
+    "length": 45,
+    "hasSpace": false,
+    "nonAscii": false,
+    "drive": "E:",
+    "freeGB": 4163.82
+  },
+  "delta": 41,
+  "limits": {
+    "file": 259,
+    "dir": 247
+  },
+  "localConfig": {
+    "configPath": "C:\\Users\\kou_z\\AppData\\Local\\Shuko\\local.json",
+    "configExists": false,
+    "buildRoot": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b",
+    "installRoot": "C:\\Users\\kou_z\\AppData\\Local\\Programs\\Shuko",
+    "builderRepo": null,
+    "sources": {
+      "installRoot": "default",
+      "keepVersions": "default",
+      "builderRepo": "default",
+      "buildRoot": "default"
+    }
+  },
+  "longPaths": {
+    "registry": {
+      "key": "HKLM\\SYSTEM\\CurrentControlSet\\Control\\FileSystem",
+      "name": "LongPathsEnabled",
+      "found": true,
+      "type": "REG_DWORD",
+      "value": "0x0"
+    },
+    "gitCoreLongpaths": {
+      "status": 1,
+      "stdout": "",
+      "stderr": "",
+      "error": null
+    },
+    "gitVersion": "git version 2.54.0.windows.1",
+    "nodeVersion": "v24.22.1"
+  },
+  "tools": {
+    "pnpmVersion": {
+      "status": 0,
+      "stdout": "12.16.0",
+      "stderr": "",
+      "error": null
+    },
+    "pnpmStorePathAtTo": {
+      "status": 0,
+      "stdout": "E:\\.pnpm-store\\v11",
+      "stderr": "",
+      "error": null
+    },
+    "pnpmStorePathAtFrom": {
+      "status": 0,
+      "stdout": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11",
+      "stderr": "",
+      "error": null
+    },
+    "npmCache": {
+      "status": 0,
+      "stdout": "C:\\Users\\kou_z\\AppData\\Local\\npm-cache",
+      "stderr": "",
+      "error": null
+    },
+    "pnpmGlobalConfig": {
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\config\\rc",
+      "exists": false
+    },
+    "userNpmrc": {
+      "path": "C:\\Users\\kou_z\\.npmrc",
+      "exists": false
+    }
+  },
+  "env": {
+    "APPDATA": "C:\\Users\\kou_z\\AppData\\Roaming",
+    "ELECTRON_RUN_AS_NODE": "1",
+    "HOME": "C:\\Users\\kou_z",
+    "LOCALAPPDATA": "C:\\Users\\kou_z\\AppData\\Local",
+    "TEMP": "C:\\Users\\kou_z\\AppData\\Local\\Temp",
+    "TMP": "C:\\Users\\kou_z\\AppData\\Local\\Temp",
+    "USERPROFILE": "C:\\Users\\kou_z"
+  },
+  "cFreeGB": 98.44,
+  "toExists": true,
+  "repoTmpExists": true,
+  "worktrees": {
+    "clone": {
+      "repo": "C:\\b\\vscode",
+      "items": [
+        {
+          "path": "C:/b/vscode",
+          "head": "9f2bcd2269d23919b216d23529e5fb3cc2badc8f",
+          "branch": "refs/heads/main",
+          "reachableFrom": {
+            "branches": 95,
+            "tags": 0,
+            "sampleBranches": [
+              "refs/heads/main",
+              "refs/remotes/origin/HEAD",
+              "refs/remotes/origin/aeschli/agents/fix-empty-md-editor-on-skill-create"
+            ]
+          },
+          "reachable": true
+        },
+        {
+          "path": "C:/b/wt/1.145.3",
+          "head": "79055c2cb190e7937d217a2928ed0079881686cc",
+          "detached": true,
+          "reachableFrom": {
+            "branches": 0,
+            "tags": 0,
+            "sampleBranches": []
+          },
+          "reachable": false
+        },
+        {
+          "path": "C:/b/wt/1.146.0",
+          "head": "69047191fc427f2f92828279aae1d90d8eeda7ab",
+          "detached": true,
+          "reachableFrom": {
+            "branches": 10,
+            "tags": 1,
+            "sampleBranches": [
+              "refs/heads/builds/1.146.0-p2-B-1-r2",
+              "refs/heads/builds/1.146.0-p2-B-2-r2",
+              "refs/heads/builds/1.146.0-p2-B-3-r2"
+            ]
+          },
+          "reachable": true
+        },
+        {
+          "path": "C:/b/wt/dev-a",
+          "head": "a8145cd7bee686d8b9ac63fe366a7ddfdbe879ee",
+          "branch": "refs/heads/units-a",
+          "reachableFrom": {
+            "branches": 1,
+            "tags": 0,
+            "sampleBranches": [
+              "refs/heads/units-a"
+            ]
+          },
+          "reachable": true
+        },
+        {
+          "path": "C:/b/wt/dev-a-apply",
+          "head": "28869a097e3553e56440ca20561d79915c7e8ebd",
+          "detached": true,
+          "reachableFrom": {
+            "branches": 0,
+            "tags": 0,
+            "sampleBranches": []
+          },
+          "reachable": false
+        },
+        {
+          "path": "C:/b/wt/dev-apply",
+          "head": "69047191fc427f2f92828279aae1d90d8eeda7ab",
+          "detached": true,
+          "reachableFrom": {
+            "branches": 10,
+            "tags": 1,
+            "sampleBranches": [
+              "refs/heads/builds/1.146.0-p2-B-1-r2",
+              "refs/heads/builds/1.146.0-p2-B-2-r2",
+              "refs/heads/builds/1.146.0-p2-B-3-r2"
+            ]
+          },
+          "reachable": true
+        },
+        {
+          "path": "C:/b/wt/dev-b",
+          "head": "44be84f8aa6d5f3c61b8badfc75f5c4fef492c61",
+          "detached": true,
+          "reachableFrom": {
+            "branches": 0,
+            "tags": 0,
+            "sampleBranches": []
+          },
+          "reachable": false
+        },
+        {
+          "path": "C:/b/wt/dev-c1",
+          "head": "8d5cdfd0b1767e434a4205d9ead55a3030d03a9e",
+          "detached": true,
+          "reachableFrom": {
+            "branches": 0,
+            "tags": 0,
+            "sampleBranches": []
+          },
+          "reachable": false
+        },
+        {
+          "path": "C:/b/wt/dev-c3",
+          "head": "526d25d777f5a7c2abe71513cf9f6c870121cbe2",
+          "detached": true,
+          "reachableFrom": {
+            "branches": 0,
+            "tags": 0,
+            "sampleBranches": []
+          },
+          "reachable": false
+        },
+        {
+          "path": "C:/b/wt/p1-a1",
+          "head": "cff68091803f933ffbd34c93d1a7dc14633f7a72",
+          "detached": true,
+          "reachableFrom": {
+            "branches": 0,
+            "tags": 0,
+            "sampleBranches": []
+          },
+          "reachable": false
+        },
+        {
+          "path": "C:/b/wt/p2",
+          "head": "ed59899d41cd3035594ff62df3a57c3e62f2f483",
+          "detached": true,
+          "reachableFrom": {
+            "branches": 0,
+            "tags": 0,
+            "sampleBranches": []
+          },
+          "reachable": false
+        },
+        {
+          "path": "C:/b/wt/trial-bwt",
+          "head": "4be87ac66ef0fb21941e9d4e1830efb134d94156",
+          "detached": true,
+          "reachableFrom": {
+            "branches": 0,
+            "tags": 0,
+            "sampleBranches": []
+          },
+          "reachable": false
+        },
+        {
+          "path": "C:/b/wt/verify-p2",
+          "head": "6fba38db6119ca8dbb2de9244f07b5ae8f323d0d",
+          "detached": true,
+          "reachableFrom": {
+            "branches": 0,
+            "tags": 0,
+            "sampleBranches": []
+          },
+          "reachable": false
+        }
+      ]
+    },
+    "builderRepo": {
+      "repo": "e:\\develop\\self\\Team\\projects\\ai-editor",
+      "items": [
+        {
+          "path": "E:/develop/self/Team/projects/ai-editor",
+          "head": "c40388ff65e4c88dfda8d054e671f8998a16d890",
+          "branch": "refs/heads/main",
+          "reachableFrom": {
+            "branches": 2,
+            "tags": 0,
+            "sampleBranches": [
+              "refs/heads/main",
+              "refs/remotes/origin/main"
+            ]
+          },
+          "reachable": true
+        }
+      ]
+    }
+  },
+  "tree": [
+    {
+      "name": "cache",
+      "path": "C:\\b\\cache",
+      "children": [
+        {
+          "name": "vsix",
+          "gb": 0.19,
+          "globalGB": 0.19,
+          "files": 62,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T16:32:31.109Z",
+          "longestFile": {
+            "path": "C:\\b\\cache\\vsix\\MS-CEINTL.vscode-language-pack-ja-1.131.0\\MS-CEINTL.vscode-language-pack-ja-1.131.0.sha256",
+            "length": 106,
+            "after": 147
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        }
+      ],
+      "gb": 0.19,
+      "globalGB": 0.19,
+      "files": 62,
+      "overFile": 0,
+      "overDir": 0,
+      "longestFile": {
+        "path": "C:\\b\\cache\\vsix\\MS-CEINTL.vscode-language-pack-ja-1.131.0\\MS-CEINTL.vscode-language-pack-ja-1.131.0.sha256",
+        "length": 106,
+        "after": 147
+      },
+      "linkCount": 0
+    },
+    {
+      "name": "dist",
+      "path": "C:\\b\\dist",
+      "children": [
+        {
+          "name": "1.146.0-p1-a1-r3.zip",
+          "file": true,
+          "bytes": 406723259,
+          "mtime": "2026-11-14T12:32:29.497Z"
+        },
+        {
+          "name": "1.146.0-p2-all.zip",
+          "file": true,
+          "bytes": 373218781,
+          "mtime": "2026-11-14T15:46:26.081Z"
+        }
+      ],
+      "gb": 0.73,
+      "globalGB": 0.73,
+      "files": 2,
+      "overFile": 0,
+      "overDir": 0,
+      "longestFile": null,
+      "linkCount": 0
+    },
+    {
+      "name": "logs",
+      "path": "C:\\b\\logs",
+      "children": [
+        {
+          "name": "1.146.0-1",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T01:40:35.038Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\1.146.0-1\\typecheck.log",
+            "length": 33,
+            "after": 74
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "1.146.0-d1",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 2,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T16:29:12.730Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\1.146.0-d1\\prepare.log",
+            "length": 32,
+            "after": 73
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "1.146.0-d3",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 3,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T16:59:13.559Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\1.146.0-d3\\lockfile.log",
+            "length": 33,
+            "after": 74
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "1.146.0-p1-a1",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 4,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T11:07:53.136Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\1.146.0-p1-a1\\typecheck.log",
+            "length": 37,
+            "after": 78
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "1.146.0-p1-a1-r2",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 5,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T11:13:47.920Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\1.146.0-p1-a1-r2\\typecheck.log",
+            "length": 40,
+            "after": 81
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "1.146.0-p1-a1-r3",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 5,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T12:31:51.412Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\1.146.0-p1-a1-r3\\typecheck.log",
+            "length": 40,
+            "after": 81
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "1.146.0-p2-A-1",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 5,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T12:44:05.492Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\1.146.0-p2-A-1\\typecheck.log",
+            "length": 38,
+            "after": 79
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "1.146.0-p2-A-2",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 5,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T12:50:04.525Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\1.146.0-p2-A-2\\typecheck.log",
+            "length": 38,
+            "after": 79
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "1.146.0-p2-A-3",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 5,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T12:55:36.493Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\1.146.0-p2-A-3\\typecheck.log",
+            "length": 38,
+            "after": 79
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "1.146.0-p2-A-4",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 5,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T13:00:48.299Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\1.146.0-p2-A-4\\typecheck.log",
+            "length": 38,
+            "after": 79
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "1.146.0-p2-A-5",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 5,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T13:10:07.328Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\1.146.0-p2-A-5\\typecheck.log",
+            "length": 38,
+            "after": 79
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "1.146.0-p2-A-6",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 5,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T13:15:50.868Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\1.146.0-p2-A-6\\typecheck.log",
+            "length": 38,
+            "after": 79
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "1.146.0-p2-A-7",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 5,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T13:21:29.291Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\1.146.0-p2-A-7\\typecheck.log",
+            "length": 38,
+            "after": 79
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "1.146.0-p2-all",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 5,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T15:45:55.276Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\1.146.0-p2-all\\typecheck.log",
+            "length": 38,
+            "after": 79
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "1.146.0-p2-B-1",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 5,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T13:27:11.817Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\1.146.0-p2-B-1\\typecheck.log",
+            "length": 38,
+            "after": 79
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "1.146.0-p2-B-1-r2",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 5,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T14:19:17.249Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\1.146.0-p2-B-1-r2\\typecheck.log",
+            "length": 41,
+            "after": 82
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "1.146.0-p2-B-2",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 5,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T13:33:30.453Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\1.146.0-p2-B-2\\typecheck.log",
+            "length": 38,
+            "after": 79
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "1.146.0-p2-B-2-r2",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 5,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T14:25:13.637Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\1.146.0-p2-B-2-r2\\typecheck.log",
+            "length": 41,
+            "after": 82
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "1.146.0-p2-B-3",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 5,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T13:38:52.714Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\1.146.0-p2-B-3\\typecheck.log",
+            "length": 38,
+            "after": 79
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "1.146.0-p2-B-3-r2",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 5,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T14:30:50.396Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\1.146.0-p2-B-3-r2\\typecheck.log",
+            "length": 41,
+            "after": 82
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "1.146.0-p2-B-4",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 5,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T13:44:56.129Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\1.146.0-p2-B-4\\typecheck.log",
+            "length": 38,
+            "after": 79
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "1.146.0-p2-B-4-r2",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 5,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T14:36:18.369Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\1.146.0-p2-B-4-r2\\typecheck.log",
+            "length": 41,
+            "after": 82
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "1.146.0-p2-B-5",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 5,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T13:50:59.166Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\1.146.0-p2-B-5\\typecheck.log",
+            "length": 38,
+            "after": 79
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "1.146.0-p2-B-5-r2",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 5,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T14:41:05.483Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\1.146.0-p2-B-5-r2\\typecheck.log",
+            "length": 41,
+            "after": 82
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "1.146.0-p2-B-6",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 5,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T13:57:48.232Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\1.146.0-p2-B-6\\typecheck.log",
+            "length": 38,
+            "after": 79
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "1.146.0-p2-B-6-r2",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 5,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T14:47:52.490Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\1.146.0-p2-B-6-r2\\typecheck.log",
+            "length": 41,
+            "after": 82
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "1.146.0-p2-B-7",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 5,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T14:03:55.727Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\1.146.0-p2-B-7\\typecheck.log",
+            "length": 38,
+            "after": 79
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "1.146.0-p2-B-7-r2",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 5,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T14:55:07.243Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\1.146.0-p2-B-7-r2\\typecheck.log",
+            "length": 41,
+            "after": 82
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "1.146.0-p2-base",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 4,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T12:38:47.063Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\1.146.0-p2-base\\typecheck.log",
+            "length": 39,
+            "after": 80
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "1.146.0-t1",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 3,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T15:32:33.312Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\1.146.0-t1\\lockfile.log",
+            "length": 33,
+            "after": 74
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "1.146.0-upstream",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 3,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T10:16:04.881Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\1.146.0-upstream\\typecheck.log",
+            "length": 40,
+            "after": 81
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "1.146.0-upstream-r2",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 4,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T10:28:04.296Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\1.146.0-upstream-r2\\typecheck.log",
+            "length": 43,
+            "after": 84
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c1tc-1",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T23:28:47.993Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c1tc-1\\typecheck.log",
+            "length": 30,
+            "after": 71
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c1tc-2",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T23:42:39.084Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c1tc-2\\typecheck.log",
+            "length": 30,
+            "after": 71
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c1tc-3",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T23:48:53.767Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c1tc-3\\typecheck.log",
+            "length": 30,
+            "after": 71
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c1tc-4",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T00:01:31.584Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c1tc-4\\typecheck.log",
+            "length": 30,
+            "after": 71
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c1tc-5",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T00:17:37.373Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c1tc-5\\typecheck.log",
+            "length": 30,
+            "after": 71
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c1tc-6",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T00:33:11.410Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c1tc-6\\typecheck.log",
+            "length": 30,
+            "after": 71
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c1tc-7",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T00:34:05.302Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c1tc-7\\typecheck.log",
+            "length": 30,
+            "after": 71
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c1tc-8",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T00:36:03.387Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c1tc-8\\typecheck.log",
+            "length": 30,
+            "after": 71
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c1tc-verify",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T00:37:48.153Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c1tc-verify\\typecheck.log",
+            "length": 35,
+            "after": 76
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c1tc2-1",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T00:58:56.154Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c1tc2-1\\typecheck.log",
+            "length": 31,
+            "after": 72
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c1tc2-verify",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T01:01:15.287Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c1tc2-verify\\typecheck.log",
+            "length": 36,
+            "after": 77
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c1tc2-verify2",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T01:04:50.733Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c1tc2-verify2\\typecheck.log",
+            "length": 37,
+            "after": 78
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c1tc3-verify",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T01:14:20.108Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c1tc3-verify\\typecheck.log",
+            "length": 36,
+            "after": 77
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c1tc5-1",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T01:50:07.158Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c1tc5-1\\typecheck.log",
+            "length": 31,
+            "after": 72
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c1tc5-verify",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T01:51:29.336Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c1tc5-verify\\typecheck.log",
+            "length": 36,
+            "after": 77
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c1tc6-1",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T08:03:09.352Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c1tc6-1\\typecheck.log",
+            "length": 31,
+            "after": 72
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c1tc6-c16",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T08:05:52.913Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c1tc6-c16\\typecheck.log",
+            "length": 33,
+            "after": 74
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c1tc6-verify",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T08:04:28.902Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c1tc6-verify\\typecheck.log",
+            "length": 36,
+            "after": 77
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c1tc7-c17",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T09:13:52.779Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c1tc7-c17\\typecheck.log",
+            "length": 33,
+            "after": 74
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c1tc7-verify",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T09:12:34.839Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c1tc7-verify\\typecheck.log",
+            "length": 36,
+            "after": 77
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c2tc-1",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T02:13:44.778Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c2tc-1\\typecheck.log",
+            "length": 30,
+            "after": 71
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c2tc-2",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T02:21:30.294Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c2tc-2\\typecheck.log",
+            "length": 30,
+            "after": 71
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c2tc-3",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T02:23:00.854Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c2tc-3\\typecheck.log",
+            "length": 30,
+            "after": 71
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c2tc-4",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T02:24:52.690Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c2tc-4\\typecheck.log",
+            "length": 30,
+            "after": 71
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c2tc-verify-a",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T02:27:58.554Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c2tc-verify-a\\typecheck.log",
+            "length": 37,
+            "after": 78
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c2tc-verify-b",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T02:29:49.003Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c2tc-verify-b\\typecheck.log",
+            "length": 37,
+            "after": 78
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c3tc-1",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T02:38:40.375Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c3tc-1\\typecheck.log",
+            "length": 30,
+            "after": 71
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c3tc-2",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T02:40:06.392Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c3tc-2\\typecheck.log",
+            "length": 30,
+            "after": 71
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c3tc-verify-a",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T02:42:41.451Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c3tc-verify-a\\typecheck.log",
+            "length": 37,
+            "after": 78
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c3tc-verify-b",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T02:44:38.141Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c3tc-verify-b\\typecheck.log",
+            "length": 37,
+            "after": 78
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c4-gate-b-ooka",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T04:11:48.923Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c4-gate-b-ooka\\typecheck.log",
+            "length": 38,
+            "after": 79
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c4r2tc-1",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T04:34:11.800Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c4r2tc-1\\typecheck.log",
+            "length": 32,
+            "after": 73
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c4r2tc-2",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T04:34:57.421Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c4r2tc-2\\typecheck.log",
+            "length": 32,
+            "after": 73
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c4r2tc-verify-a",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T04:36:19.076Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c4r2tc-verify-a\\typecheck.log",
+            "length": 39,
+            "after": 80
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c4r2tc-verify-b",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T04:37:49.235Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c4r2tc-verify-b\\typecheck.log",
+            "length": 39,
+            "after": 80
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c4tc-1",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T02:52:53.115Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c4tc-1\\typecheck.log",
+            "length": 30,
+            "after": 71
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c4tc-2",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T03:03:15.274Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c4tc-2\\typecheck.log",
+            "length": 30,
+            "after": 71
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c4tc-3",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T03:07:50.969Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c4tc-3\\typecheck.log",
+            "length": 30,
+            "after": 71
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c4tc-4",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T03:10:12.667Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c4tc-4\\typecheck.log",
+            "length": 30,
+            "after": 71
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c4tc-5",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T03:12:53.810Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c4tc-5\\typecheck.log",
+            "length": 30,
+            "after": 71
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c4tc-verify-a",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T03:16:01.731Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c4tc-verify-a\\typecheck.log",
+            "length": 37,
+            "after": 78
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c4tc-verify-b",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T03:17:59.767Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c4tc-verify-b\\typecheck.log",
+            "length": 37,
+            "after": 78
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c5-gate-b-ooka",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T08:35:35.486Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c5-gate-b-ooka\\typecheck.log",
+            "length": 38,
+            "after": 79
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c5r2tc-1",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T03:57:22.804Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c5r2tc-1\\typecheck.log",
+            "length": 32,
+            "after": 73
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c5r2tc-2",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T03:58:03.674Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c5r2tc-2\\typecheck.log",
+            "length": 32,
+            "after": 73
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c5r2tc-verify-a",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T03:59:50.771Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c5r2tc-verify-a\\typecheck.log",
+            "length": 39,
+            "after": 80
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c5r2tc-verify-b",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T04:01:21.617Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c5r2tc-verify-b\\typecheck.log",
+            "length": 39,
+            "after": 80
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c5tc-1",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T03:28:05.224Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c5tc-1\\typecheck.log",
+            "length": 30,
+            "after": 71
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c5tc-2",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T03:37:30.136Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c5tc-2\\typecheck.log",
+            "length": 30,
+            "after": 71
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c5tc-3",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T03:39:14.796Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c5tc-3\\typecheck.log",
+            "length": 30,
+            "after": 71
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c5tc-4",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T03:41:55.328Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c5tc-4\\typecheck.log",
+            "length": 30,
+            "after": 71
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c5tc-verify-a",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T03:44:24.932Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c5tc-verify-a\\typecheck.log",
+            "length": 37,
+            "after": 78
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c5tc-verify-b",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T03:46:08.770Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c5tc-verify-b\\typecheck.log",
+            "length": 37,
+            "after": 78
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c6tc-1",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T04:42:42.397Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c6tc-1\\typecheck.log",
+            "length": 30,
+            "after": 71
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c6tc-2",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T04:46:56.662Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c6tc-2\\typecheck.log",
+            "length": 30,
+            "after": 71
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c6tc-3",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T04:47:29.206Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c6tc-3\\typecheck.log",
+            "length": 30,
+            "after": 71
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c6tc-verify-a",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T04:51:30.763Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c6tc-verify-a\\typecheck.log",
+            "length": 37,
+            "after": 78
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c6tc-verify-b",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T04:53:33.228Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c6tc-verify-b\\typecheck.log",
+            "length": 37,
+            "after": 78
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c7-gate-b-ooka",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T09:38:55.779Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c7-gate-b-ooka\\typecheck.log",
+            "length": 38,
+            "after": 79
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c7tc-1",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T08:11:13.305Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c7tc-1\\typecheck.log",
+            "length": 30,
+            "after": 71
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c7tc-2",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T08:17:26.527Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c7tc-2\\typecheck.log",
+            "length": 30,
+            "after": 71
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c7tc-3",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T08:18:06.345Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c7tc-3\\typecheck.log",
+            "length": 30,
+            "after": 71
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c7tc-verify-a",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T08:21:46.296Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c7tc-verify-a\\typecheck.log",
+            "length": 37,
+            "after": 78
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "c7tc-verify-b",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T08:23:40.552Z",
+          "longestFile": {
+            "path": "C:\\b\\logs\\c7tc-verify-b\\typecheck.log",
+            "length": 37,
+            "after": 78
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        }
+      ],
+      "gb": 0,
+      "globalGB": 0,
+      "files": 208,
+      "overFile": 0,
+      "overDir": 0,
+      "longestFile": {
+        "path": "C:\\b\\logs\\1.146.0-upstream-r2\\typecheck.log",
+        "length": 43,
+        "after": 84
+      },
+      "linkCount": 0
+    },
+    {
+      "name": "notion-sync-trial",
+      "path": "C:\\b\\notion-sync-trial",
+      "children": [
+        {
+          "name": "User",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 4,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T14:32:27.023Z",
+          "longestFile": {
+            "path": "C:\\b\\notion-sync-trial\\User\\globalStorage\\shuko.notion-sync\\sync-base.json",
+            "length": 74,
+            "after": 115
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        }
+      ],
+      "gb": 0,
+      "globalGB": 0,
+      "files": 4,
+      "overFile": 0,
+      "overDir": 0,
+      "longestFile": {
+        "path": "C:\\b\\notion-sync-trial\\User\\globalStorage\\shuko.notion-sync\\sync-base.json",
+        "length": 74,
+        "after": 115
+      },
+      "linkCount": 0
+    },
+    {
+      "name": "p0",
+      "path": "C:\\b\\p0",
+      "children": [
+        {
+          "name": "data",
+          "gb": 7.98,
+          "globalGB": 7.98,
+          "files": 82065,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-12T22:38:11.472Z",
+          "longestFile": {
+            "path": "C:\\b\\p0\\data\\bp-probe-d\\user\\user-data\\Code Cache\\electron-preload\\90DF5F738B679F796A0706EDFB9D418FA03D060423CF6F105FB3F5F696365AE0-67A64C46445250C0C0E1103FCA3290FE88811449B7F10FD5FBBE5AA8F3AC1EB2.cache",
+            "length": 202,
+            "after": 243
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "downloads",
+          "gb": 0.59,
+          "globalGB": 0.59,
+          "files": 2,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-12T20:12:19.035Z",
+          "longestFile": {
+            "path": "C:\\b\\p0\\downloads\\VSCodium-win32-x64-1.143.17232.zip",
+            "length": 52,
+            "after": 93
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "logs",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 8,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-12T20:29:50.447Z",
+          "longestFile": {
+            "path": "C:\\b\\p0\\logs\\ext-allowed-20261113-052950\\control-install-claude-code.txt",
+            "length": 72,
+            "after": 113
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "netlog",
+          "gb": 0.02,
+          "globalGB": 0.02,
+          "files": 50,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T15:57:45.703Z",
+          "longestFile": {
+            "path": "C:\\b\\p0\\netlog\\p05-upstream-ai-disabled-20261113-221303.node-stderr.txt",
+            "length": 71,
+            "after": 112
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "p0-fetch.json",
+          "file": true,
+          "bytes": 2473,
+          "mtime": "2026-11-12T20:12:44.208Z"
+        },
+        {
+          "name": "probe",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 27,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-12T21:20:16.923Z",
+          "longestFile": {
+            "path": "C:\\b\\p0\\probe\\openvsx\\ms-python.vscode-python-envs\\package.json",
+            "length": 63,
+            "after": 104
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "run",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T16:07:53.898Z",
+          "longestFile": {
+            "path": "C:\\b\\p0\\run\\.p0-run-root",
+            "length": 24,
+            "after": 65
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "scratch",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 52,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-12T21:11:09.078Z",
+          "longestFile": {
+            "path": "C:\\b\\p0\\scratch\\.git\\objects\\de\\4cdeb39c4b8c3a2a7667f81198df9dc4e6fed6",
+            "length": 70,
+            "after": 111
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "sublime",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 10,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-12T20:13:41.798Z",
+          "longestFile": {
+            "path": "C:\\b\\p0\\sublime\\ms-vscode.sublime-keybindings-4.1.10.sha256",
+            "length": 59,
+            "after": 100
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "testbed",
+          "gb": 0.57,
+          "globalGB": 0.57,
+          "files": 2434,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-12T20:25:11.413Z",
+          "longestFile": {
+            "path": "C:\\b\\p0\\testbed\\resources\\app\\out\\vs\\workbench\\contrib\\terminal\\common\\scripts\\psreadline\\net6plus\\Microsoft.PowerShell.PSReadLine.Polyfiller.dll",
+            "length": 145,
+            "after": 186
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "trial",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 2,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-12T20:40:08.254Z",
+          "longestFile": {
+            "path": "C:\\b\\p0\\trial\\verify-result.json",
+            "length": 32,
+            "after": 73
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "vscode-1.146.0",
+          "gb": 1.05,
+          "globalGB": 1.05,
+          "files": 3278,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-12T20:12:11.676Z",
+          "longestFile": {
+            "path": "C:\\b\\p0\\vscode-1.146.0\\69047191fc\\resources\\app\\node_modules.asar.unpacked\\@github\\copilot-sdk-win32-x64\\plugins\\browser-use\\scripts\\nativeMessagingRegistration.mjs",
+            "length": 164,
+            "after": 205
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "vscodium-1.143.17232",
+          "gb": 0.63,
+          "globalGB": 0.63,
+          "files": 2991,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-12T20:12:42.781Z",
+          "longestFile": {
+            "path": "C:\\b\\p0\\vscodium-1.143.17232\\resources\\app\\out\\vs\\workbench\\contrib\\terminal\\common\\scripts\\psreadline\\net6plus\\Microsoft.PowerShell.PSReadLine.Polyfiller.dll",
+            "length": 158,
+            "after": 199
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "vsix",
+          "gb": 0.52,
+          "globalGB": 0.52,
+          "files": 110,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-12T20:20:38.814Z",
+          "longestFile": {
+            "path": "C:\\b\\p0\\vsix\\MS-CEINTL.vscode-language-pack-ja-1.131.0\\MS-CEINTL.vscode-language-pack-ja-1.131.0.sha256",
+            "length": 103,
+            "after": 144
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "ws-info.json",
+          "file": true,
+          "bytes": 3879,
+          "mtime": "2026-11-12T21:03:46.167Z"
+        }
+      ],
+      "gb": 11.37,
+      "globalGB": 11.37,
+      "files": 91032,
+      "overFile": 0,
+      "overDir": 0,
+      "longestFile": {
+        "path": "C:\\b\\p0\\data\\bp-probe-d\\user\\user-data\\Code Cache\\electron-preload\\90DF5F738B679F796A0706EDFB9D418FA03D060423CF6F105FB3F5F696365AE0-67A64C46445250C0C0E1103FCA3290FE88811449B7F10FD5FBBE5AA8F3AC1EB2.cache",
+        "length": 202,
+        "after": 243
+      },
+      "linkCount": 0
+    },
+    {
+      "name": "p1",
+      "path": "C:\\b\\p1",
+      "children": [
+        {
+          "name": "1.146.0-p1-a1-r2",
+          "gb": 1.18,
+          "globalGB": 1.18,
+          "files": 2690,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T11:15:28.277Z",
+          "longestFile": {
+            "path": "C:\\b\\p1\\1.146.0-p1-a1-r2\\portable\\user-data\\Code Cache\\electron-preload\\975EB566AA9BFB2EDD9853588B6E5AA3A493B80C55DFF7B7C9A39B0F3F3FE591-67A64C46445250C0C0E1103FCA3290FE88811449B7F10FD5FBBE5AA8F3AC1EB2.cache",
+            "length": 207,
+            "after": 248
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "1.146.0-p1-a1-r3",
+          "gb": 1.19,
+          "globalGB": 1.19,
+          "files": 2698,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T12:33:19.124Z",
+          "longestFile": {
+            "path": "C:\\b\\p1\\1.146.0-p1-a1-r3\\portable\\user-data\\Code Cache\\electron-preload\\9B7C430097FC9CEF7B023377FB93D44DEA3EF0D7CA640E50C40CE9E4DD21CD50-67A64C46445250C0C0E1103FCA3290FE88811449B7F10FD5FBBE5AA8F3AC1EB2.cache",
+            "length": 207,
+            "after": 248
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "1.146.0-upstream-partial",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 22,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T10:32:25.860Z",
+          "longestFile": {
+            "path": "C:\\b\\p1\\1.146.0-upstream-partial\\portable\\user-data\\Shared Dictionary\\cache\\index-dir\\the-real-index",
+            "length": 100,
+            "after": 141
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        }
+      ],
+      "gb": 2.37,
+      "globalGB": 2.37,
+      "files": 5410,
+      "overFile": 0,
+      "overDir": 0,
+      "longestFile": {
+        "path": "C:\\b\\p1\\1.146.0-p1-a1-r2\\portable\\user-data\\Code Cache\\electron-preload\\975EB566AA9BFB2EDD9853588B6E5AA3A493B80C55DFF7B7C9A39B0F3F3FE591-67A64C46445250C0C0E1103FCA3290FE88811449B7F10FD5FBBE5AA8F3AC1EB2.cache",
+        "length": 207,
+        "after": 248
+      },
+      "linkCount": 0
+    },
+    {
+      "name": "p2",
+      "path": "C:\\b\\p2",
+      "children": [
+        {
+          "name": "1.146.0-p2-all",
+          "gb": 1.08,
+          "globalGB": 1.08,
+          "files": 1974,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T15:47:13.616Z",
+          "longestFile": {
+            "path": "C:\\b\\p2\\1.146.0-p2-all\\portable\\user-data\\Code Cache\\electron-preload\\A7EC00F240622DF7E63C8C4948314B4140A0BC369E87C8A8F5D0926958D8D1E6-67A64C46445250C0C0E1103FCA3290FE88811449B7F10FD5FBBE5AA8F3AC1EB2.cache",
+            "length": 205,
+            "after": 246
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        }
+      ],
+      "gb": 1.08,
+      "globalGB": 1.08,
+      "files": 1974,
+      "overFile": 0,
+      "overDir": 0,
+      "longestFile": {
+        "path": "C:\\b\\p2\\1.146.0-p2-all\\portable\\user-data\\Code Cache\\electron-preload\\A7EC00F240622DF7E63C8C4948314B4140A0BC369E87C8A8F5D0926958D8D1E6-67A64C46445250C0C0E1103FCA3290FE88811449B7F10FD5FBBE5AA8F3AC1EB2.cache",
+        "length": 205,
+        "after": 246
+      },
+      "linkCount": 0
+    },
+    {
+      "name": "p4-watch",
+      "path": "C:\\b\\p4-watch",
+      "children": [
+        {
+          "name": "trial",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 23,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T16:32:52.850Z",
+          "longestFile": {
+            "path": "C:\\b\\p4-watch\\trial\\E\\state\\state.json.broken-1794587573877",
+            "length": 59,
+            "after": 100
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        }
+      ],
+      "gb": 0,
+      "globalGB": 0,
+      "files": 23,
+      "overFile": 0,
+      "overDir": 0,
+      "longestFile": {
+        "path": "C:\\b\\p4-watch\\trial\\E\\state\\state.json.broken-1794587573877",
+        "length": 59,
+        "after": 100
+      },
+      "linkCount": 0
+    },
+    {
+      "name": "smoke",
+      "path": "C:\\b\\smoke",
+      "children": [
+        {
+          "name": "absent",
+          "gb": 0.91,
+          "globalGB": 0.91,
+          "files": 4975,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T15:55:01.255Z",
+          "longestFile": {
+            "path": "C:\\b\\smoke\\absent\\r2-control-old-B-1-aiEdits-20261114T151004\\user\\user-data\\Code Cache\\electron-preload\\EC1DB0088C76E75B8A019422DAE6B9310EAD37C66E3D5E18188C526650FE4E55-67A64C46445250C0C0E1103FCA3290FE88811449B7F10FD5FBBE5AA8F3AC1EB2.cache",
+            "length": 239,
+            "after": 280
+          },
+          "overFile": 50,
+          "overDir": 0,
+          "overFileSamples": [
+            "C:\\b\\smoke\\absent\\regate-prev-A-7-on-A-6-20261114T145333\\user\\user-data\\Code Cache\\electron-preload\\B4E0E55EEBC4E9621B6CD4D76646AD49406EFA45A34E9718C97A2E7D708D4D90-67A64C46445250C0C0E1103FCA3290FE88811449B7F10FD5FBBE5AA8F3AC1EB2.cache",
+            "C:\\b\\smoke\\absent\\regate-prev-A-5-on-A-4-20261114T145314\\user\\user-data\\Code Cache\\electron-preload\\CAD3C8F9F1860C6308173432C1953B1181D1406C463C88B6EC9B89C6A7049AF6-67A64C46445250C0C0E1103FCA3290FE88811449B7F10FD5FBBE5AA8F3AC1EB2.cache",
+            "C:\\b\\smoke\\absent\\regate-prev-A-4-on-A-3-20261114T145250\\user\\user-data\\Code Cache\\electron-preload\\226B390BBCA4F7D91A682AE64C5981626CE4AEBE4D8E0937D08DA53FEE3175C5-67A64C46445250C0C0E1103FCA3290FE88811449B7F10FD5FBBE5AA8F3AC1EB2.cache",
+            "C:\\b\\smoke\\absent\\regate-prev-A-2-on-A-1-20261114T145226\\user\\user-data\\Code Cache\\electron-preload\\9CE836C0886C69A0DC04DC3CEBBB7E01CE9562CC06715FA3A0E558B52CBBA367-67A64C46445250C0C0E1103FCA3290FE88811449B7F10FD5FBBE5AA8F3AC1EB2.cache",
+            "C:\\b\\smoke\\absent\\regate-official-20261114T144944\\user\\user-data\\Code Cache\\electron-preload\\90DF5F738B679F796A0706EDFB9D418FA03D060423CF6F105FB3F5F696365AE0-67A64C46445250C0C0E1103FCA3290FE88811449B7F10FD5FBBE5AA8F3AC1EB2.cache"
+          ],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "apply-cli",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 2,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T15:35:06.756Z",
+          "longestFile": {
+            "path": "C:\\b\\smoke\\apply-cli\\checks-badonly.json",
+            "length": 40,
+            "after": 81
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "baseline-official-1.146.0.json",
+          "file": true,
+          "bytes": 1334,
+          "mtime": "2026-11-13T14:11:23.122Z"
+        },
+        {
+          "name": "baseline-p2-A-1.json",
+          "file": true,
+          "bytes": 1380,
+          "mtime": "2026-11-14T13:12:33.861Z"
+        },
+        {
+          "name": "baseline-p2-A-2.json",
+          "file": true,
+          "bytes": 1380,
+          "mtime": "2026-11-14T13:17:38.352Z"
+        },
+        {
+          "name": "baseline-p2-A-3.json",
+          "file": true,
+          "bytes": 1377,
+          "mtime": "2026-11-14T13:19:40.409Z"
+        },
+        {
+          "name": "baseline-p2-A-4.json",
+          "file": true,
+          "bytes": 1377,
+          "mtime": "2026-11-14T13:21:38.926Z"
+        },
+        {
+          "name": "baseline-p2-A-5.json",
+          "file": true,
+          "bytes": 1189,
+          "mtime": "2026-11-14T13:28:06.990Z"
+        },
+        {
+          "name": "baseline-p2-A-6.json",
+          "file": true,
+          "bytes": 1380,
+          "mtime": "2026-11-14T13:34:46.733Z"
+        },
+        {
+          "name": "baseline-p2-A-7.json",
+          "file": true,
+          "bytes": 1377,
+          "mtime": "2026-11-14T13:42:31.216Z"
+        },
+        {
+          "name": "baseline-p2-all.json",
+          "file": true,
+          "bytes": 1232,
+          "mtime": "2026-11-14T15:57:27.579Z"
+        },
+        {
+          "name": "baseline-p2-B-1-r2.json",
+          "file": true,
+          "bytes": 1380,
+          "mtime": "2026-11-14T15:16:12.563Z"
+        },
+        {
+          "name": "baseline-p2-B-1.json",
+          "file": true,
+          "bytes": 1673,
+          "mtime": "2026-11-14T13:44:40.541Z"
+        },
+        {
+          "name": "baseline-p2-B-2-r2.json",
+          "file": true,
+          "bytes": 1385,
+          "mtime": "2026-11-14T15:21:19.573Z"
+        },
+        {
+          "name": "baseline-p2-B-2.json",
+          "file": true,
+          "bytes": 1673,
+          "mtime": "2026-11-14T13:47:59.783Z"
+        },
+        {
+          "name": "baseline-p2-B-3-r2.json",
+          "file": true,
+          "bytes": 1385,
+          "mtime": "2026-11-14T15:22:48.833Z"
+        },
+        {
+          "name": "baseline-p2-B-3.json",
+          "file": true,
+          "bytes": 1673,
+          "mtime": "2026-11-14T13:52:27.803Z"
+        },
+        {
+          "name": "baseline-p2-B-4-r2.json",
+          "file": true,
+          "bytes": 1233,
+          "mtime": "2026-11-14T15:24:21.054Z"
+        },
+        {
+          "name": "baseline-p2-B-4.json",
+          "file": true,
+          "bytes": 1673,
+          "mtime": "2026-11-14T13:54:33.023Z"
+        },
+        {
+          "name": "baseline-p2-B-5-r2.json",
+          "file": true,
+          "bytes": 1233,
+          "mtime": "2026-11-14T15:26:04.016Z"
+        },
+        {
+          "name": "baseline-p2-B-5.json",
+          "file": true,
+          "bytes": 1676,
+          "mtime": "2026-11-14T13:59:18.321Z"
+        },
+        {
+          "name": "baseline-p2-B-6-r2.json",
+          "file": true,
+          "bytes": 1233,
+          "mtime": "2026-11-14T15:27:33.940Z"
+        },
+        {
+          "name": "baseline-p2-B-6.json",
+          "file": true,
+          "bytes": 1673,
+          "mtime": "2026-11-14T14:03:11.590Z"
+        },
+        {
+          "name": "baseline-p2-B-7-r2.json",
+          "file": true,
+          "bytes": 1233,
+          "mtime": "2026-11-14T15:29:03.345Z"
+        },
+        {
+          "name": "baseline-p2-B-7.json",
+          "file": true,
+          "bytes": 1673,
+          "mtime": "2026-11-14T14:13:11.170Z"
+        },
+        {
+          "name": "baseline-trial-official-1.146.0.json",
+          "file": true,
+          "bytes": 1674,
+          "mtime": "2026-11-13T17:11:51.691Z"
+        },
+        {
+          "name": "ext",
+          "gb": 2.72,
+          "globalGB": 2.72,
+          "files": 35060,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-15T13:06:54.718Z",
+          "longestFile": {
+            "path": "C:\\b\\smoke\\ext\\1.146.0-p2-all-3\\ms-vscode.powershell-2025.4.0\\modules\\PSScriptAnalyzer\\1.24.0\\compatibility_profiles\\win-48_x64_10.0.17763.0_5.1.17763.316_x64_4.0.30319.42000_framework.json",
+            "length": 189,
+            "after": 230
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "runs",
+          "gb": 1.45,
+          "globalGB": 1.45,
+          "files": 12547,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T15:57:27.694Z",
+          "longestFile": {
+            "path": "C:\\b\\smoke\\runs\\take-in-trial-official-1.146.0-3-20261113T170741\\user\\user-data\\Code Cache\\electron-preload\\90DF5F738B679F796A0706EDFB9D418FA03D060423CF6F105FB3F5F696365AE0-67A64C46445250C0C0E1103FCA3290FE88811449B7F10FD5FBBE5AA8F3AC1EB2.cache",
+            "length": 243,
+            "after": 284
+          },
+          "overFile": 28,
+          "overDir": 0,
+          "overFileSamples": [
+            "C:\\b\\smoke\\runs\\take-in-trial-official-1.146.0-3-20261113T170741\\user\\user-data\\Code Cache\\electron-preload\\90DF5F738B679F796A0706EDFB9D418FA03D060423CF6F105FB3F5F696365AE0-67A64C46445250C0C0E1103FCA3290FE88811449B7F10FD5FBBE5AA8F3AC1EB2.cache",
+            "C:\\b\\smoke\\runs\\take-in-trial-official-1.146.0-2-20261113T170325\\user\\user-data\\Code Cache\\electron-preload\\90DF5F738B679F796A0706EDFB9D418FA03D060423CF6F105FB3F5F696365AE0-67A64C46445250C0C0E1103FCA3290FE88811449B7F10FD5FBBE5AA8F3AC1EB2.cache",
+            "C:\\b\\smoke\\runs\\take-in-trial-official-1.146.0-1-20261113T165914\\user\\user-data\\Code Cache\\electron-preload\\90DF5F738B679F796A0706EDFB9D418FA03D060423CF6F105FB3F5F696365AE0-67A64C46445250C0C0E1103FCA3290FE88811449B7F10FD5FBBE5AA8F3AC1EB2.cache",
+            "C:\\b\\smoke\\runs\\p2-B-7-r2-20261114T152738\\user\\user-data\\Code Cache\\electron-preload\\233B0EB65D38F558784943BCD06F8545071B1A58AF8CB428BD6EA6A5F8D0F819-67A64C46445250C0C0E1103FCA3290FE88811449B7F10FD5FBBE5AA8F3AC1EB2.cache",
+            "C:\\b\\smoke\\runs\\p2-B-6-r2-20261114T152608\\user\\user-data\\Code Cache\\electron-preload\\EF96FC66F3290690D40D9C7F009DC85F697478E9798386B7911537BEE2DCD161-67A64C46445250C0C0E1103FCA3290FE88811449B7F10FD5FBBE5AA8F3AC1EB2.cache"
+          ],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        }
+      ],
+      "gb": 5.08,
+      "globalGB": 5.08,
+      "files": 52608,
+      "overFile": 78,
+      "overDir": 0,
+      "longestFile": {
+        "path": "C:\\b\\smoke\\runs\\take-in-trial-official-1.146.0-3-20261113T170741\\user\\user-data\\Code Cache\\electron-preload\\90DF5F738B679F796A0706EDFB9D418FA03D060423CF6F105FB3F5F696365AE0-67A64C46445250C0C0E1103FCA3290FE88811449B7F10FD5FBBE5AA8F3AC1EB2.cache",
+        "length": 243,
+        "after": 284
+      },
+      "linkCount": 0
+    },
+    {
+      "name": "take-in",
+      "path": "C:\\b\\take-in",
+      "children": [
+        {
+          "name": "trial-official-1.146.0",
+          "gb": 0.68,
+          "globalGB": 0.68,
+          "files": 8781,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T17:12:31.796Z",
+          "longestFile": {
+            "path": "C:\\b\\take-in\\trial-official-1.146.0\\netaudit-env\\ext\\ms-vscode.powershell-2025.4.0\\modules\\PSScriptAnalyzer\\1.24.0\\compatibility_profiles\\win-48_x64_10.0.17763.0_5.1.17763.316_x64_4.0.30319.42000_framework.json",
+            "length": 210,
+            "after": 251
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        }
+      ],
+      "gb": 0.68,
+      "globalGB": 0.68,
+      "files": 8781,
+      "overFile": 0,
+      "overDir": 0,
+      "longestFile": {
+        "path": "C:\\b\\take-in\\trial-official-1.146.0\\netaudit-env\\ext\\ms-vscode.powershell-2025.4.0\\modules\\PSScriptAnalyzer\\1.24.0\\compatibility_profiles\\win-48_x64_10.0.17763.0_5.1.17763.316_x64_4.0.30319.42000_framework.json",
+        "length": 210,
+        "after": 251
+      },
+      "linkCount": 0
+    },
+    {
+      "name": "take-in-trial",
+      "path": "C:\\b\\take-in-trial",
+      "children": [
+        {
+          "name": "bwt-conflict",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 3,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T16:41:50.102Z",
+          "longestFile": {
+            "path": "C:\\b\\take-in-trial\\bwt-conflict\\removals\\A-8-trial\\edits.patch",
+            "length": 62,
+            "after": 103
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "bwt-fail",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 2,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T16:39:47.145Z",
+          "longestFile": {
+            "path": "C:\\b\\take-in-trial\\bwt-fail\\removals\\A-9-trial\\unit.json",
+            "length": 56,
+            "after": 97
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "fake-claude",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 4,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T17:16:53.384Z",
+          "longestFile": {
+            "path": "C:\\b\\take-in-trial\\fake-claude\\write-outside.flag",
+            "length": 49,
+            "after": 90
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "m3",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 3,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T17:32:17.931Z",
+          "longestFile": {
+            "path": "C:\\b\\take-in-trial\\m3\\state\\state.json",
+            "length": 38,
+            "after": 79
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "probe-dry",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 0,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T16:35:17.609Z",
+          "longestFile": null,
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "t1",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 3,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T16:39:28.772Z",
+          "longestFile": {
+            "path": "C:\\b\\take-in-trial\\t1\\logs\\apply-1.log",
+            "length": 38,
+            "after": 79
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "t10",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 8,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T17:17:47.604Z",
+          "longestFile": {
+            "path": "C:\\b\\take-in-trial\\t10\\repair-1\\claude-output.json",
+            "length": 50,
+            "after": 91
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "t11",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 3,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T17:32:53.505Z",
+          "longestFile": {
+            "path": "C:\\b\\take-in-trial\\t11\\logs\\apply-1.log",
+            "length": 39,
+            "after": 80
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "t12",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 3,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T17:33:22.487Z",
+          "longestFile": {
+            "path": "C:\\b\\take-in-trial\\t12\\logs\\apply-1.log",
+            "length": 39,
+            "after": 80
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "t2",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 3,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T16:40:10.060Z",
+          "longestFile": {
+            "path": "C:\\b\\take-in-trial\\t2\\logs\\apply-1.log",
+            "length": 38,
+            "after": 79
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "t3",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 5,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T16:40:59.140Z",
+          "longestFile": {
+            "path": "C:\\b\\take-in-trial\\t3\\repair-preview\\claude-args.json",
+            "length": 53,
+            "after": 94
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "t4",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 5,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T16:42:20.269Z",
+          "longestFile": {
+            "path": "C:\\b\\take-in-trial\\t4\\repair-preview\\claude-args.json",
+            "length": 53,
+            "after": 94
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "t5",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 9,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T16:44:30.718Z",
+          "longestFile": {
+            "path": "C:\\b\\take-in-trial\\t5\\repair-1\\claude-output.json",
+            "length": 49,
+            "after": 90
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "t6",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 3,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T16:45:48.436Z",
+          "longestFile": {
+            "path": "C:\\b\\take-in-trial\\t6\\logs\\apply-1.log",
+            "length": 38,
+            "after": 79
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "t7",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 17,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T16:47:04.667Z",
+          "longestFile": {
+            "path": "C:\\b\\take-in-trial\\t7\\repair-1\\claude-output.json",
+            "length": 49,
+            "after": 90
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "t8",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 23,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T17:12:31.276Z",
+          "longestFile": {
+            "path": "C:\\b\\take-in-trial\\t8\\smoke\\baseline-trial-official-1.146.0.json",
+            "length": 64,
+            "after": 105
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "t9",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 3,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T17:17:22.427Z",
+          "longestFile": {
+            "path": "C:\\b\\take-in-trial\\t9\\logs\\apply-1.log",
+            "length": 38,
+            "after": 79
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        }
+      ],
+      "gb": 0,
+      "globalGB": 0,
+      "files": 97,
+      "overFile": 0,
+      "overDir": 0,
+      "longestFile": {
+        "path": "C:\\b\\take-in-trial\\t8\\smoke\\baseline-trial-official-1.146.0.json",
+        "length": 64,
+        "after": 105
+      },
+      "linkCount": 0
+    },
+    {
+      "name": "tmp",
+      "path": "C:\\b\\tmp",
+      "children": [
+        {
+          "name": "b1-r2-patch",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T14:15:05.526Z",
+          "longestFile": {
+            "path": "C:\\b\\tmp\\b1-r2-patch\\0001-unit-B-1-telemetry-edits.patch",
+            "length": 56,
+            "after": 97
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        }
+      ],
+      "gb": 0,
+      "globalGB": 0,
+      "files": 1,
+      "overFile": 0,
+      "overDir": 0,
+      "longestFile": {
+        "path": "C:\\b\\tmp\\b1-r2-patch\\0001-unit-B-1-telemetry-edits.patch",
+        "length": 56,
+        "after": 97
+      },
+      "linkCount": 0
+    },
+    {
+      "name": "vscode",
+      "path": "C:\\b\\vscode",
+      "children": [
+        {
+          "name": ".agents",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 13,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T12:41:22.800Z",
+          "longestFile": {
+            "path": "C:\\b\\vscode\\.agents\\skills\\launch\\scripts\\bootstrap\\windows-process-tree-monitor.ps1",
+            "length": 84,
+            "after": 125
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": ".config",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 3,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T12:41:22.998Z",
+          "longestFile": {
+            "path": "C:\\b\\vscode\\.config\\1espt\\PipelineAutobaseliningConfig.yml",
+            "length": 58,
+            "after": 99
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": ".devcontainer",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 6,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T12:41:23.007Z",
+          "longestFile": {
+            "path": "C:\\b\\vscode\\.devcontainer\\devcontainer-lock.json",
+            "length": 48,
+            "after": 89
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": ".editorconfig",
+          "file": true,
+          "bytes": 380,
+          "mtime": "2026-11-13T12:41:23.008Z"
+        },
+        {
+          "name": ".eslint-allowed-bracket-notation-files",
+          "file": true,
+          "bytes": 28497,
+          "mtime": "2026-11-13T12:41:23.009Z"
+        },
+        {
+          "name": ".eslint-allowed-javascript-files",
+          "file": true,
+          "bytes": 7179,
+          "mtime": "2026-11-13T12:41:23.009Z"
+        },
+        {
+          "name": ".eslint-ignore",
+          "file": true,
+          "bytes": 2661,
+          "mtime": "2026-11-13T12:41:23.010Z"
+        },
+        {
+          "name": ".eslint-plugin-local",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 108,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T12:41:23.714Z",
+          "longestFile": {
+            "path": "C:\\b\\vscode\\.eslint-plugin-local\\code-parameter-properties-must-have-explicit-accessibility.ts",
+            "length": 94,
+            "after": 135
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": ".git",
+          "gb": 1.75,
+          "globalGB": 1.75,
+          "files": 1131,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-16T01:48:29.308Z",
+          "longestFile": {
+            "path": "C:\\b\\vscode\\.git\\logs\\refs\\remotes\\origin\\gh-readonly-queue\\main\\pr-347354-d49d77b5f837da4796d86edfcb2de2811d7a8479",
+            "length": 115,
+            "after": 156
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": ".git-blame-ignore-revs",
+          "file": true,
+          "bytes": 986,
+          "mtime": "2026-11-13T12:41:23.714Z"
+        },
+        {
+          "name": ".gitattributes",
+          "file": true,
+          "bytes": 178,
+          "mtime": "2026-11-13T12:41:23.714Z"
+        },
+        {
+          "name": ".github",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 172,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T12:41:24.719Z",
+          "longestFile": {
+            "path": "C:\\b\\vscode\\.github\\instructions\\resources\\interactive\\interactive.model.resolution.drawio.svg",
+            "length": 94,
+            "after": 135
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": ".gitignore",
+          "file": true,
+          "bytes": 1538,
+          "mtime": "2026-11-13T12:41:24.940Z"
+        },
+        {
+          "name": ".lsifrc.json",
+          "file": true,
+          "bytes": 122,
+          "mtime": "2026-11-13T12:41:24.940Z"
+        },
+        {
+          "name": ".mailmap",
+          "file": true,
+          "bytes": 124,
+          "mtime": "2026-11-13T12:41:24.947Z"
+        },
+        {
+          "name": ".mcp.json",
+          "file": true,
+          "bytes": 299,
+          "mtime": "2026-11-13T12:41:24.947Z"
+        },
+        {
+          "name": ".mention-bot",
+          "file": true,
+          "bytes": 159,
+          "mtime": "2026-11-13T12:41:24.948Z"
+        },
+        {
+          "name": ".nvmrc",
+          "file": true,
+          "bytes": 9,
+          "mtime": "2026-11-13T12:41:24.954Z"
+        },
+        {
+          "name": ".pnpmfile.mjs",
+          "file": true,
+          "bytes": 987,
+          "mtime": "2026-11-13T12:41:24.975Z"
+        },
+        {
+          "name": ".vscode",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 49,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T12:41:25.429Z",
+          "longestFile": {
+            "path": "C:\\b\\vscode\\.vscode\\extensions\\vscode-selfhost-test-provider\\src\\failingDeepStrictEqualAssertFixer.ts",
+            "length": 101,
+            "after": 142
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": ".vscode-test.js",
+          "file": true,
+          "bytes": 5269,
+          "mtime": "2026-11-13T12:41:24.976Z"
+        },
+        {
+          "name": "AGENTS.md",
+          "file": true,
+          "bytes": 276,
+          "mtime": "2026-11-13T12:41:25.430Z"
+        },
+        {
+          "name": "build",
+          "gb": 0.01,
+          "globalGB": 0.01,
+          "files": 567,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T12:41:32.642Z",
+          "longestFile": {
+            "path": "C:\\b\\vscode\\build\\azure-pipelines\\darwin\\steps\\product-build-darwin-download-compilation.yml",
+            "length": 92,
+            "after": 133
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "cglicenses.json",
+          "file": true,
+          "bytes": 84570,
+          "mtime": "2026-11-13T12:41:32.662Z"
+        },
+        {
+          "name": "cgmanifest.json",
+          "file": true,
+          "bytes": 43718,
+          "mtime": "2026-11-13T12:41:32.662Z"
+        },
+        {
+          "name": "cli",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 92,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T12:41:32.803Z",
+          "longestFile": {
+            "path": "C:\\b\\vscode\\cli\\src\\tunnels\\agent_host_registry_acl_windows.rs",
+            "length": 62,
+            "after": 103
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "CONTRIBUTING.md",
+          "file": true,
+          "bytes": 6230,
+          "mtime": "2026-11-13T12:41:25.430Z"
+        },
+        {
+          "name": "copilot_shim",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 37,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T12:41:32.834Z",
+          "longestFile": {
+            "path": "C:\\b\\vscode\\copilot_shim\\tests\\fixtures\\legacy\\windows-bootstrapper.ps1",
+            "length": 71,
+            "after": 112
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "eslint.config.js",
+          "file": true,
+          "bytes": 126872,
+          "mtime": "2026-11-13T12:41:32.842Z"
+        },
+        {
+          "name": "extensions",
+          "gb": 0.08,
+          "globalGB": 0.08,
+          "files": 5855,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T12:41:41.996Z",
+          "longestFile": {
+            "path": "C:\\b\\vscode\\extensions\\copilot\\src\\extension\\test\\node\\fixtures\\patch\\out-20240514-153256\\should-not-generate-an-error-for-variables-declared-in-outer-scopes.expected.txt",
+            "length": 170,
+            "after": 211
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "gulpfile.mjs",
+          "file": true,
+          "bytes": 387,
+          "mtime": "2026-11-13T12:41:42.029Z"
+        },
+        {
+          "name": "LICENSE.txt",
+          "file": true,
+          "bytes": 1109,
+          "mtime": "2026-11-13T12:41:25.430Z"
+        },
+        {
+          "name": "oxlint.config.ts",
+          "file": true,
+          "bytes": 688,
+          "mtime": "2026-11-13T12:41:42.030Z"
+        },
+        {
+          "name": "package.json",
+          "file": true,
+          "bytes": 14293,
+          "mtime": "2026-11-13T12:41:42.031Z"
+        },
+        {
+          "name": "pnpm-lock.yaml",
+          "file": true,
+          "bytes": 840110,
+          "mtime": "2026-11-13T12:41:42.034Z"
+        },
+        {
+          "name": "pnpm-workspace.yaml",
+          "file": true,
+          "bytes": 5359,
+          "mtime": "2026-11-13T12:41:42.041Z"
+        },
+        {
+          "name": "product.json",
+          "file": true,
+          "bytes": 8282,
+          "mtime": "2026-11-13T12:41:42.041Z"
+        },
+        {
+          "name": "README.md",
+          "file": true,
+          "bytes": 6804,
+          "mtime": "2026-11-13T12:41:25.431Z"
+        },
+        {
+          "name": "remote",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 5,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T12:41:42.056Z",
+          "longestFile": {
+            "path": "C:\\b\\vscode\\remote\\pnpm-workspace.yaml",
+            "length": 38,
+            "after": 79
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "resources",
+          "gb": 0.01,
+          "globalGB": 0.01,
+          "files": 118,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T12:41:42.226Z",
+          "longestFile": {
+            "path": "C:\\b\\vscode\\resources\\server\\bin\\helpers\\check-requirements-linux.sh",
+            "length": 68,
+            "after": 109
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "scripts",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 73,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T12:41:42.546Z",
+          "longestFile": {
+            "path": "C:\\b\\vscode\\scripts\\chat-simulation\\fixtures\\_chatperf_lifecycle.ts",
+            "length": 67,
+            "after": 108
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "SECURITY.md",
+          "file": true,
+          "bytes": 557,
+          "mtime": "2026-11-13T12:41:25.431Z"
+        },
+        {
+          "name": "src",
+          "gb": 0.23,
+          "globalGB": 0.23,
+          "files": 13997,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T12:42:21.342Z",
+          "longestFile": {
+            "path": "C:\\b\\vscode\\src\\vs\\workbench\\contrib\\notebook\\test\\browser\\__snapshots__\\NotebookEditorStickyScroll_test2__should_render_0____visible_range_6-_9_so_collapsing_next_2_against_following_section.0.snap",
+            "length": 198,
+            "after": 239
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "test",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 217,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T12:42:21.710Z",
+          "longestFile": {
+            "path": "C:\\b\\vscode\\test\\smoke\\extensions\\vscode-smoketest-language-pack-de\\translations\\main.i18n.json",
+            "length": 95,
+            "after": 136
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "ThirdPartyNotices.txt",
+          "file": true,
+          "bytes": 183203,
+          "mtime": "2026-11-13T12:41:25.432Z"
+        },
+        {
+          "name": "tsfmt.json",
+          "file": true,
+          "bytes": 763,
+          "mtime": "2026-11-13T12:42:21.727Z"
+        }
+      ],
+      "gb": 2.09,
+      "globalGB": 2.09,
+      "files": 22473,
+      "overFile": 0,
+      "overDir": 0,
+      "longestFile": {
+        "path": "C:\\b\\vscode\\src\\vs\\workbench\\contrib\\notebook\\test\\browser\\__snapshots__\\NotebookEditorStickyScroll_test2__should_render_0____visible_range_6-_9_so_collapsing_next_2_against_following_section.0.snap",
+        "length": 198,
+        "after": 239
+      },
+      "linkCount": 0
+    },
+    {
+      "name": "work-b",
+      "path": "C:\\b\\work-b",
+      "children": [
+        {
+          "name": "README.txt",
+          "file": true,
+          "bytes": 94,
+          "mtime": "2026-11-13T15:11:37.611Z"
+        }
+      ],
+      "gb": 0,
+      "globalGB": 0,
+      "files": 1,
+      "overFile": 0,
+      "overDir": 0,
+      "longestFile": null,
+      "linkCount": 0
+    },
+    {
+      "name": "wt",
+      "path": "C:\\b\\wt",
+      "children": [
+        {
+          "name": "1.145.3",
+          "gb": 0.31,
+          "globalGB": 0.31,
+          "files": 20760,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T17:33:11.886Z",
+          "longestFile": {
+            "path": "C:\\b\\wt\\1.145.3\\src\\vs\\workbench\\contrib\\notebook\\test\\browser\\__snapshots__\\NotebookEditorStickyScroll_test2__should_render_0____visible_range_6-_9_so_collapsing_next_2_against_following_section.0.snap",
+            "length": 202,
+            "after": 243
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "1.146.0",
+          "gb": 6.14,
+          "globalGB": 5.22,
+          "files": 215646,
+          "hardlinkedFiles": 172786,
+          "mtime": "2026-11-14T10:29:29.751Z",
+          "longestFile": {
+            "path": "C:\\b\\wt\\1.146.0\\.build\\extensions\\copilot\\node_modules\\applicationinsights\\node_modules\\@opentelemetry\\sdk-trace-base\\node_modules\\@opentelemetry\\semantic-conventions\\build\\esnext\\resource\\SemanticResourceAttributes.js.map",
+            "length": 222,
+            "after": 263
+          },
+          "overFile": 3,
+          "overDir": 0,
+          "overFileSamples": [
+            "C:\\b\\wt\\1.146.0\\.build\\extensions\\copilot\\node_modules\\applicationinsights\\node_modules\\@opentelemetry\\sdk-trace-base\\node_modules\\@opentelemetry\\semantic-conventions\\build\\src\\resource\\SemanticResourceAttributes.js.map",
+            "C:\\b\\wt\\1.146.0\\.build\\extensions\\copilot\\node_modules\\applicationinsights\\node_modules\\@opentelemetry\\sdk-trace-base\\node_modules\\@opentelemetry\\semantic-conventions\\build\\esnext\\resource\\SemanticResourceAttributes.js.map",
+            "C:\\b\\wt\\1.146.0\\.build\\extensions\\copilot\\node_modules\\applicationinsights\\node_modules\\@opentelemetry\\sdk-trace-base\\node_modules\\@opentelemetry\\semantic-conventions\\build\\esm\\resource\\SemanticResourceAttributes.js.map"
+          ],
+          "overDirSamples": [],
+          "linkCount": 20,
+          "links": [
+            {
+              "path": "C:\\b\\wt\\1.146.0\\remote\\node_modules\\vscode-web",
+              "target": "..\\web"
+            },
+            {
+              "path": "C:\\b\\wt\\1.146.0\\node_modules\\code-oss-component-fixture-tests",
+              "target": "..\\test\\componentFixtures\\playwright"
+            },
+            {
+              "path": "C:\\b\\wt\\1.146.0\\node_modules\\code-oss-dev-integration-test",
+              "target": "..\\test\\integration\\browser"
+            },
+            {
+              "path": "C:\\b\\wt\\1.146.0\\node_modules\\code-oss-dev-smoke-test",
+              "target": "..\\test\\smoke"
+            },
+            {
+              "path": "C:\\b\\wt\\1.146.0\\node_modules\\sessions-e2e-tests",
+              "target": "..\\src\\vs\\sessions\\test\\e2e"
+            },
+            {
+              "path": "C:\\b\\wt\\1.146.0\\node_modules\\test-monaco",
+              "target": "..\\test\\monaco"
+            },
+            {
+              "path": "C:\\b\\wt\\1.146.0\\node_modules\\vscode-automation",
+              "target": "..\\test\\automation"
+            },
+            {
+              "path": "C:\\b\\wt\\1.146.0\\node_modules\\vscode-dev-scripts",
+              "target": "..\\scripts"
+            },
+            {
+              "path": "C:\\b\\wt\\1.146.0\\node_modules\\vscode-eslint-plugin-local",
+              "target": "..\\.eslint-plugin-local"
+            },
+            {
+              "path": "C:\\b\\wt\\1.146.0\\node_modules\\vscode-pr-pinger",
+              "target": "..\\.vscode\\extensions\\vscode-pr-pinger"
+            },
+            {
+              "path": "C:\\b\\wt\\1.146.0\\node_modules\\vscode-scenario-runner",
+              "target": "..\\test\\scenario"
+            },
+            {
+              "path": "C:\\b\\wt\\1.146.0\\node_modules\\vscode-selfhost-import-aid",
+              "target": "..\\.vscode\\extensions\\vscode-selfhost-import-aid"
+            },
+            {
+              "path": "C:\\b\\wt\\1.146.0\\node_modules\\vscode-selfhost-test-provider",
+              "target": "..\\.vscode\\extensions\\vscode-selfhost-test-provider"
+            },
+            {
+              "path": "C:\\b\\wt\\1.146.0\\node_modules\\vscode-unit-test-runner",
+              "target": "..\\test\\unit"
+            },
+            {
+              "path": "C:\\b\\wt\\1.146.0\\extensions\\notebook-renderers\\node_modules\\@types\\vscode-notebook-renderer",
+              "target": "..\\..\\..\\markdown-language-features\\node_modules\\@types\\vscode-notebook-renderer"
+            },
+            {
+              "path": "C:\\b\\wt\\1.146.0\\extensions\\json-language-features\\node_modules\\@vscode\\extension-telemetry",
+              "target": "..\\..\\..\\html-language-features\\node_modules\\@vscode\\extension-telemetry"
+            },
+            {
+              "path": "C:\\b\\wt\\1.146.0\\build\\node_modules\\code-oss-dev-rspack",
+              "target": "..\\rspack"
+            },
+            {
+              "path": "C:\\b\\wt\\1.146.0\\build\\node_modules\\@vscode\\sample-source",
+              "target": "..\\..\\vite"
+            },
+            {
+              "path": "C:\\b\\wt\\1.146.0\\.claude\\CLAUDE.md",
+              "target": "..\\.github\\copilot-instructions.md"
+            },
+            {
+              "path": "C:\\b\\wt\\1.146.0\\.claude\\skills",
+              "target": "C:\\b\\wt\\1.146.0\\.agents\\skills"
+            }
+          ]
+        },
+        {
+          "name": "1.146.0.prepare.json",
+          "file": true,
+          "bytes": 1427,
+          "mtime": "2026-11-13T15:31:25.376Z"
+        },
+        {
+          "name": "dev-a",
+          "gb": 0.34,
+          "globalGB": 0.34,
+          "files": 21006,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T15:16:06.900Z",
+          "longestFile": {
+            "path": "C:\\b\\wt\\dev-a\\src\\vs\\workbench\\contrib\\notebook\\test\\browser\\__snapshots__\\NotebookEditorStickyScroll_test2__should_render_0____visible_range_6-_9_so_collapsing_next_2_against_following_section.0.snap",
+            "length": 200,
+            "after": 241
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "dev-a-apply",
+          "gb": 0.29,
+          "globalGB": 0.29,
+          "files": 16863,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T16:26:42.910Z",
+          "longestFile": {
+            "path": "C:\\b\\wt\\dev-a-apply\\src\\vs\\workbench\\contrib\\notebook\\test\\browser\\__snapshots__\\NotebookEditorStickyScroll_test2__should_render_0____visible_range_6-_9_so_collapsing_next_2_against_following_section.0.snap",
+            "length": 206,
+            "after": 247
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "dev-apply",
+          "gb": 0.34,
+          "globalGB": 0.34,
+          "files": 21007,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T16:33:47.832Z",
+          "longestFile": {
+            "path": "C:\\b\\wt\\dev-apply\\src\\vs\\workbench\\contrib\\notebook\\test\\browser\\__snapshots__\\NotebookEditorStickyScroll_test2__should_render_0____visible_range_6-_9_so_collapsing_next_2_against_following_section.0.snap",
+            "length": 204,
+            "after": 245
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "dev-b",
+          "gb": 0.33,
+          "globalGB": 0.33,
+          "files": 20801,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T16:26:16.597Z",
+          "longestFile": {
+            "path": "C:\\b\\wt\\dev-b\\src\\vs\\workbench\\contrib\\notebook\\test\\browser\\__snapshots__\\NotebookEditorStickyScroll_test2__should_render_0____visible_range_6-_9_so_collapsing_next_2_against_following_section.0.snap",
+            "length": 200,
+            "after": 241
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "dev-c1",
+          "gb": 0.14,
+          "globalGB": 0.14,
+          "files": 9425,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T19:21:27.902Z",
+          "longestFile": {
+            "path": "C:\\b\\wt\\dev-c1\\src\\vs\\workbench\\contrib\\notebook\\test\\browser\\__snapshots__\\NotebookEditorStickyScroll_test2__should_render_0____visible_range_6-_9_so_collapsing_next_2_against_following_section.0.snap",
+            "length": 201,
+            "after": 242
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "dev-c3",
+          "gb": 0.14,
+          "globalGB": 0.14,
+          "files": 9201,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T18:42:55.454Z",
+          "longestFile": {
+            "path": "C:\\b\\wt\\dev-c3\\src\\vs\\workbench\\contrib\\update\\test\\browser\\__snapshots__\\Release_notes_renderer_preserves_the_highlights_table_and_renders_fenced_blocks_separately_from_inline_code.0.snap",
+            "length": 188,
+            "after": 229
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "dev-d1.prepare.json",
+          "file": true,
+          "bytes": 1437,
+          "mtime": "2026-11-13T16:30:52.539Z"
+        },
+        {
+          "name": "dev-d3.prepare.json",
+          "file": true,
+          "bytes": 1436,
+          "mtime": "2026-11-13T17:00:48.981Z"
+        },
+        {
+          "name": "p1-a1",
+          "gb": 4.5,
+          "globalGB": 1.61,
+          "files": 131106,
+          "hardlinkedFiles": 109681,
+          "mtime": "2026-11-14T12:29:17.991Z",
+          "longestFile": {
+            "path": "C:\\b\\wt\\p1-a1\\src\\vs\\workbench\\contrib\\notebook\\test\\browser\\__snapshots__\\NotebookEditorStickyScroll_test2__should_render_0____visible_range_6-_9_so_collapsing_next_2_against_following_section.0.snap",
+            "length": 200,
+            "after": 241
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 18,
+          "links": [
+            {
+              "path": "C:\\b\\wt\\p1-a1\\remote\\node_modules\\vscode-web",
+              "target": "..\\web"
+            },
+            {
+              "path": "C:\\b\\wt\\p1-a1\\node_modules\\code-oss-component-fixture-tests",
+              "target": "..\\test\\componentFixtures\\playwright"
+            },
+            {
+              "path": "C:\\b\\wt\\p1-a1\\node_modules\\code-oss-dev-integration-test",
+              "target": "..\\test\\integration\\browser"
+            },
+            {
+              "path": "C:\\b\\wt\\p1-a1\\node_modules\\code-oss-dev-smoke-test",
+              "target": "..\\test\\smoke"
+            },
+            {
+              "path": "C:\\b\\wt\\p1-a1\\node_modules\\sessions-e2e-tests",
+              "target": "..\\src\\vs\\sessions\\test\\e2e"
+            },
+            {
+              "path": "C:\\b\\wt\\p1-a1\\node_modules\\test-monaco",
+              "target": "..\\test\\monaco"
+            },
+            {
+              "path": "C:\\b\\wt\\p1-a1\\node_modules\\vscode-automation",
+              "target": "..\\test\\automation"
+            },
+            {
+              "path": "C:\\b\\wt\\p1-a1\\node_modules\\vscode-dev-scripts",
+              "target": "..\\scripts"
+            },
+            {
+              "path": "C:\\b\\wt\\p1-a1\\node_modules\\vscode-eslint-plugin-local",
+              "target": "..\\.eslint-plugin-local"
+            },
+            {
+              "path": "C:\\b\\wt\\p1-a1\\node_modules\\vscode-pr-pinger",
+              "target": "..\\.vscode\\extensions\\vscode-pr-pinger"
+            },
+            {
+              "path": "C:\\b\\wt\\p1-a1\\node_modules\\vscode-scenario-runner",
+              "target": "..\\test\\scenario"
+            },
+            {
+              "path": "C:\\b\\wt\\p1-a1\\node_modules\\vscode-selfhost-import-aid",
+              "target": "..\\.vscode\\extensions\\vscode-selfhost-import-aid"
+            },
+            {
+              "path": "C:\\b\\wt\\p1-a1\\node_modules\\vscode-selfhost-test-provider",
+              "target": "..\\.vscode\\extensions\\vscode-selfhost-test-provider"
+            },
+            {
+              "path": "C:\\b\\wt\\p1-a1\\node_modules\\vscode-unit-test-runner",
+              "target": "..\\test\\unit"
+            },
+            {
+              "path": "C:\\b\\wt\\p1-a1\\extensions\\notebook-renderers\\node_modules\\@types\\vscode-notebook-renderer",
+              "target": "..\\..\\..\\markdown-language-features\\node_modules\\@types\\vscode-notebook-renderer"
+            },
+            {
+              "path": "C:\\b\\wt\\p1-a1\\extensions\\json-language-features\\node_modules\\@vscode\\extension-telemetry",
+              "target": "..\\..\\..\\html-language-features\\node_modules\\@vscode\\extension-telemetry"
+            },
+            {
+              "path": "C:\\b\\wt\\p1-a1\\build\\node_modules\\code-oss-dev-rspack",
+              "target": "..\\rspack"
+            },
+            {
+              "path": "C:\\b\\wt\\p1-a1\\build\\node_modules\\@vscode\\sample-source",
+              "target": "..\\..\\vite"
+            }
+          ]
+        },
+        {
+          "name": "p2",
+          "gb": 3.79,
+          "globalGB": 1.34,
+          "files": 95692,
+          "hardlinkedFiles": 82992,
+          "mtime": "2026-11-15T09:37:38.372Z",
+          "longestFile": {
+            "path": "C:\\b\\wt\\p2\\remote\\node_modules\\@vscode\\windows-process-tree\\build\\node_modules\\node-addon-api\\Release\\obj\\node_addon_api_except\\node_add.23FB4E2E.tlog\\node_addon_api_except.lastbuildstate",
+            "length": 187,
+            "after": 228
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 19,
+          "links": [
+            {
+              "path": "C:\\b\\wt\\p2\\remote\\node_modules\\vscode-web",
+              "target": "..\\web"
+            },
+            {
+              "path": "C:\\b\\wt\\p2\\node_modules\\code-oss-component-fixture-tests",
+              "target": "..\\test\\componentFixtures\\playwright"
+            },
+            {
+              "path": "C:\\b\\wt\\p2\\node_modules\\code-oss-dev-integration-test",
+              "target": "..\\test\\integration\\browser"
+            },
+            {
+              "path": "C:\\b\\wt\\p2\\node_modules\\code-oss-dev-smoke-test",
+              "target": "..\\test\\smoke"
+            },
+            {
+              "path": "C:\\b\\wt\\p2\\node_modules\\sessions-e2e-tests",
+              "target": "..\\src\\vs\\sessions\\test\\e2e"
+            },
+            {
+              "path": "C:\\b\\wt\\p2\\node_modules\\test-monaco",
+              "target": "..\\test\\monaco"
+            },
+            {
+              "path": "C:\\b\\wt\\p2\\node_modules\\vscode-automation",
+              "target": "..\\test\\automation"
+            },
+            {
+              "path": "C:\\b\\wt\\p2\\node_modules\\vscode-dev-scripts",
+              "target": "..\\scripts"
+            },
+            {
+              "path": "C:\\b\\wt\\p2\\node_modules\\vscode-eslint-plugin-local",
+              "target": "..\\.eslint-plugin-local"
+            },
+            {
+              "path": "C:\\b\\wt\\p2\\node_modules\\vscode-pr-pinger",
+              "target": "..\\.vscode\\extensions\\vscode-pr-pinger"
+            },
+            {
+              "path": "C:\\b\\wt\\p2\\node_modules\\vscode-scenario-runner",
+              "target": "..\\test\\scenario"
+            },
+            {
+              "path": "C:\\b\\wt\\p2\\node_modules\\vscode-selfhost-import-aid",
+              "target": "..\\.vscode\\extensions\\vscode-selfhost-import-aid"
+            },
+            {
+              "path": "C:\\b\\wt\\p2\\node_modules\\vscode-selfhost-test-provider",
+              "target": "..\\.vscode\\extensions\\vscode-selfhost-test-provider"
+            },
+            {
+              "path": "C:\\b\\wt\\p2\\node_modules\\vscode-unit-test-runner",
+              "target": "..\\test\\unit"
+            },
+            {
+              "path": "C:\\b\\wt\\p2\\extensions\\json-language-features\\node_modules\\@vscode\\extension-telemetry",
+              "target": "..\\..\\..\\html-language-features\\node_modules\\@vscode\\extension-telemetry"
+            },
+            {
+              "path": "C:\\b\\wt\\p2\\build\\node_modules\\code-oss-dev-rspack",
+              "target": "..\\rspack"
+            },
+            {
+              "path": "C:\\b\\wt\\p2\\build\\node_modules\\@vscode\\sample-source",
+              "target": "..\\..\\vite"
+            },
+            {
+              "path": "C:\\b\\wt\\p2\\.claude\\CLAUDE.md",
+              "target": "..\\.github\\copilot-instructions.md"
+            },
+            {
+              "path": "C:\\b\\wt\\p2\\.claude\\skills",
+              "target": "C:\\b\\wt\\p2\\.agents\\skills"
+            }
+          ]
+        },
+        {
+          "name": "trial-bwt",
+          "gb": 0.31,
+          "globalGB": 0.31,
+          "files": 20756,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T17:17:48.715Z",
+          "longestFile": {
+            "path": "C:\\b\\wt\\trial-bwt\\src\\vs\\workbench\\contrib\\notebook\\test\\browser\\__snapshots__\\NotebookEditorStickyScroll_test2__should_render_0____visible_range_6-_9_so_collapsing_next_2_against_following_section.0.snap",
+            "length": 204,
+            "after": 245
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "verify-p2",
+          "gb": 0.14,
+          "globalGB": 0.14,
+          "files": 9067,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T16:37:54.631Z",
+          "longestFile": {
+            "path": "C:\\b\\wt\\verify-p2\\src\\vs\\workbench\\contrib\\update\\test\\browser\\__snapshots__\\Release_notes_renderer_preserves_the_highlights_table_and_renders_fenced_blocks_separately_from_inline_code.0.snap",
+            "length": 191,
+            "after": 232
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "VSCode-win32-x64",
+          "gb": 1.06,
+          "globalGB": 1.06,
+          "files": 1889,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T15:45:29.556Z",
+          "longestFile": {
+            "path": "C:\\b\\wt\\VSCode-win32-x64\\resources\\app\\out\\vs\\workbench\\services\\textMate\\browser\\backgroundTokenization\\worker\\textMateTokenizationWorker.workerMain.js.map",
+            "length": 156,
+            "after": 197
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        }
+      ],
+      "gb": 17.83,
+      "globalGB": 11.58,
+      "files": 593222,
+      "overFile": 3,
+      "overDir": 0,
+      "longestFile": {
+        "path": "C:\\b\\wt\\1.146.0\\.build\\extensions\\copilot\\node_modules\\applicationinsights\\node_modules\\@opentelemetry\\sdk-trace-base\\node_modules\\@opentelemetry\\semantic-conventions\\build\\esnext\\resource\\SemanticResourceAttributes.js.map",
+        "length": 222,
+        "after": 263
+      },
+      "linkCount": 57
+    }
+  ],
+  "seconds": 268.519
+}

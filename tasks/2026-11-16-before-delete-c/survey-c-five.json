@@ -1,0 +1,759 @@
+{
+  "countedAt": "2026-11-16T07:18:02.801Z",
+  "from": "C:\\b",
+  "to": {
+    "path": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b",
+    "length": 45,
+    "hasSpace": false,
+    "nonAscii": false,
+    "drive": "E:",
+    "freeGB": 4163.98
+  },
+  "delta": 41,
+  "limits": {
+    "file": 259,
+    "dir": 247
+  },
+  "localConfig": {
+    "configPath": "C:\\Users\\kou_z\\AppData\\Local\\Shuko\\local.json",
+    "configExists": false,
+    "buildRoot": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b",
+    "installRoot": "C:\\Users\\kou_z\\AppData\\Local\\Programs\\Shuko",
+    "builderRepo": null,
+    "sources": {
+      "installRoot": "default",
+      "keepVersions": "default",
+      "builderRepo": "default",
+      "buildRoot": "default"
+    }
+  },
+  "longPaths": {
+    "registry": {
+      "key": "HKLM\\SYSTEM\\CurrentControlSet\\Control\\FileSystem",
+      "name": "LongPathsEnabled",
+      "found": true,
+      "type": "REG_DWORD",
+      "value": "0x0"
+    },
+    "gitCoreLongpaths": {
+      "status": 1,
+      "stdout": "",
+      "stderr": "",
+      "error": null
+    },
+    "gitVersion": "git version 2.54.0.windows.1",
+    "nodeVersion": "v24.22.1"
+  },
+  "tools": {
+    "pnpmVersion": {
+      "status": 0,
+      "stdout": "12.16.0",
+      "stderr": "",
+      "error": null
+    },
+    "pnpmStorePathAtTo": {
+      "status": 0,
+      "stdout": "E:\\.pnpm-store\\v11",
+      "stderr": "",
+      "error": null
+    },
+    "pnpmStorePathAtFrom": {
+      "status": 0,
+      "stdout": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11",
+      "stderr": "",
+      "error": null
+    },
+    "npmCache": {
+      "status": 0,
+      "stdout": "C:\\Users\\kou_z\\AppData\\Local\\npm-cache",
+      "stderr": "",
+      "error": null
+    },
+    "pnpmGlobalConfig": {
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\config\\rc",
+      "exists": false
+    },
+    "userNpmrc": {
+      "path": "C:\\Users\\kou_z\\.npmrc",
+      "exists": false
+    }
+  },
+  "env": {
+    "APPDATA": "C:\\Users\\kou_z\\AppData\\Roaming",
+    "ELECTRON_RUN_AS_NODE": "1",
+    "HOME": "C:\\Users\\kou_z",
+    "LOCALAPPDATA": "C:\\Users\\kou_z\\AppData\\Local",
+    "TEMP": "C:\\Users\\kou_z\\AppData\\Local\\Temp",
+    "TMP": "C:\\Users\\kou_z\\AppData\\Local\\Temp",
+    "USERPROFILE": "C:\\Users\\kou_z"
+  },
+  "cFreeGB": 98.49,
+  "toExists": true,
+  "repoTmpExists": true,
+  "worktrees": {
+    "clone": {
+      "repo": "C:\\b\\vscode",
+      "items": [
+        {
+          "path": "C:/b/vscode",
+          "head": "9f2bcd2269d23919b216d23529e5fb3cc2badc8f",
+          "branch": "refs/heads/main",
+          "reachableFrom": {
+            "branches": 95,
+            "tags": 0,
+            "sampleBranches": [
+              "refs/heads/main",
+              "refs/remotes/origin/HEAD",
+              "refs/remotes/origin/aeschli/agents/fix-empty-md-editor-on-skill-create"
+            ]
+          },
+          "reachable": true
+        },
+        {
+          "path": "C:/b/wt/1.145.3",
+          "head": "79055c2cb190e7937d217a2928ed0079881686cc",
+          "detached": true,
+          "reachableFrom": {
+            "branches": 0,
+            "tags": 0,
+            "sampleBranches": []
+          },
+          "reachable": false
+        },
+        {
+          "path": "C:/b/wt/1.146.0",
+          "head": "69047191fc427f2f92828279aae1d90d8eeda7ab",
+          "detached": true,
+          "reachableFrom": {
+            "branches": 10,
+            "tags": 1,
+            "sampleBranches": [
+              "refs/heads/builds/1.146.0-p2-B-1-r2",
+              "refs/heads/builds/1.146.0-p2-B-2-r2",
+              "refs/heads/builds/1.146.0-p2-B-3-r2"
+            ]
+          },
+          "reachable": true
+        },
+        {
+          "path": "C:/b/wt/dev-a",
+          "head": "a8145cd7bee686d8b9ac63fe366a7ddfdbe879ee",
+          "branch": "refs/heads/units-a",
+          "reachableFrom": {
+            "branches": 1,
+            "tags": 0,
+            "sampleBranches": [
+              "refs/heads/units-a"
+            ]
+          },
+          "reachable": true
+        },
+        {
+          "path": "C:/b/wt/dev-a-apply",
+          "head": "28869a097e3553e56440ca20561d79915c7e8ebd",
+          "detached": true,
+          "reachableFrom": {
+            "branches": 0,
+            "tags": 0,
+            "sampleBranches": []
+          },
+          "reachable": false
+        },
+        {
+          "path": "C:/b/wt/dev-apply",
+          "head": "69047191fc427f2f92828279aae1d90d8eeda7ab",
+          "detached": true,
+          "reachableFrom": {
+            "branches": 10,
+            "tags": 1,
+            "sampleBranches": [
+              "refs/heads/builds/1.146.0-p2-B-1-r2",
+              "refs/heads/builds/1.146.0-p2-B-2-r2",
+              "refs/heads/builds/1.146.0-p2-B-3-r2"
+            ]
+          },
+          "reachable": true
+        },
+        {
+          "path": "C:/b/wt/dev-b",
+          "head": "44be84f8aa6d5f3c61b8badfc75f5c4fef492c61",
+          "detached": true,
+          "reachableFrom": {
+            "branches": 0,
+            "tags": 0,
+            "sampleBranches": []
+          },
+          "reachable": false
+        },
+        {
+          "path": "C:/b/wt/dev-c1",
+          "head": "8d5cdfd0b1767e434a4205d9ead55a3030d03a9e",
+          "detached": true,
+          "reachableFrom": {
+            "branches": 0,
+            "tags": 0,
+            "sampleBranches": []
+          },
+          "reachable": false
+        },
+        {
+          "path": "C:/b/wt/dev-c3",
+          "head": "526d25d777f5a7c2abe71513cf9f6c870121cbe2",
+          "detached": true,
+          "reachableFrom": {
+            "branches": 0,
+            "tags": 0,
+            "sampleBranches": []
+          },
+          "reachable": false
+        },
+        {
+          "path": "C:/b/wt/p1-a1",
+          "head": "cff68091803f933ffbd34c93d1a7dc14633f7a72",
+          "detached": true,
+          "reachableFrom": {
+            "branches": 0,
+            "tags": 0,
+            "sampleBranches": []
+          },
+          "reachable": false
+        },
+        {
+          "path": "C:/b/wt/p2",
+          "head": "ed59899d41cd3035594ff62df3a57c3e62f2f483",
+          "detached": true,
+          "reachableFrom": {
+            "branches": 0,
+            "tags": 0,
+            "sampleBranches": []
+          },
+          "reachable": false
+        },
+        {
+          "path": "C:/b/wt/trial-bwt",
+          "head": "4be87ac66ef0fb21941e9d4e1830efb134d94156",
+          "detached": true,
+          "reachableFrom": {
+            "branches": 0,
+            "tags": 0,
+            "sampleBranches": []
+          },
+          "reachable": false
+        },
+        {
+          "path": "C:/b/wt/verify-p2",
+          "head": "6fba38db6119ca8dbb2de9244f07b5ae8f323d0d",
+          "detached": true,
+          "reachableFrom": {
+            "branches": 0,
+            "tags": 0,
+            "sampleBranches": []
+          },
+          "reachable": false
+        }
+      ]
+    },
+    "builderRepo": {
+      "repo": "e:\\develop\\self\\Team\\projects\\ai-editor",
+      "items": [
+        {
+          "path": "E:/develop/self/Team/projects/ai-editor",
+          "head": "c40388ff65e4c88dfda8d054e671f8998a16d890",
+          "branch": "refs/heads/main",
+          "reachableFrom": {
+            "branches": 2,
+            "tags": 0,
+            "sampleBranches": [
+              "refs/heads/main",
+              "refs/remotes/origin/main"
+            ]
+          },
+          "reachable": true
+        }
+      ]
+    }
+  },
+  "tree": [
+    {
+      "name": "notion-sync-trial",
+      "path": "C:\\b\\notion-sync-trial",
+      "children": [
+        {
+          "name": "User",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 4,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T14:32:27.023Z",
+          "longestFile": {
+            "path": "C:\\b\\notion-sync-trial\\User\\globalStorage\\shuko.notion-sync\\sync-base.json",
+            "length": 74,
+            "after": 115
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        }
+      ],
+      "gb": 0,
+      "globalGB": 0,
+      "files": 4,
+      "overFile": 0,
+      "overDir": 0,
+      "longestFile": {
+        "path": "C:\\b\\notion-sync-trial\\User\\globalStorage\\shuko.notion-sync\\sync-base.json",
+        "length": 74,
+        "after": 115
+      },
+      "linkCount": 0
+    },
+    {
+      "name": "p4-watch",
+      "path": "C:\\b\\p4-watch",
+      "children": [
+        {
+          "name": "trial",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 23,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T16:32:52.850Z",
+          "longestFile": {
+            "path": "C:\\b\\p4-watch\\trial\\E\\state\\state.json.broken-1794587573877",
+            "length": 59,
+            "after": 100
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        }
+      ],
+      "gb": 0,
+      "globalGB": 0,
+      "files": 23,
+      "overFile": 0,
+      "overDir": 0,
+      "longestFile": {
+        "path": "C:\\b\\p4-watch\\trial\\E\\state\\state.json.broken-1794587573877",
+        "length": 59,
+        "after": 100
+      },
+      "linkCount": 0
+    },
+    {
+      "name": "take-in",
+      "path": "C:\\b\\take-in",
+      "children": [
+        {
+          "name": "trial-official-1.146.0",
+          "gb": 0.68,
+          "globalGB": 0.68,
+          "files": 8781,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T17:12:31.796Z",
+          "longestFile": {
+            "path": "C:\\b\\take-in\\trial-official-1.146.0\\netaudit-env\\ext\\ms-vscode.powershell-2025.4.0\\modules\\PSScriptAnalyzer\\1.24.0\\compatibility_profiles\\win-48_x64_10.0.17763.0_5.1.17763.316_x64_4.0.30319.42000_framework.json",
+            "length": 210,
+            "after": 251
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        }
+      ],
+      "gb": 0.68,
+      "globalGB": 0.68,
+      "files": 8781,
+      "overFile": 0,
+      "overDir": 0,
+      "longestFile": {
+        "path": "C:\\b\\take-in\\trial-official-1.146.0\\netaudit-env\\ext\\ms-vscode.powershell-2025.4.0\\modules\\PSScriptAnalyzer\\1.24.0\\compatibility_profiles\\win-48_x64_10.0.17763.0_5.1.17763.316_x64_4.0.30319.42000_framework.json",
+        "length": 210,
+        "after": 251
+      },
+      "linkCount": 0
+    },
+    {
+      "name": "take-in-trial",
+      "path": "C:\\b\\take-in-trial",
+      "children": [
+        {
+          "name": "bwt-conflict",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 3,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T16:41:50.102Z",
+          "longestFile": {
+            "path": "C:\\b\\take-in-trial\\bwt-conflict\\removals\\A-8-trial\\edits.patch",
+            "length": 62,
+            "after": 103
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "bwt-fail",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 2,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T16:39:47.145Z",
+          "longestFile": {
+            "path": "C:\\b\\take-in-trial\\bwt-fail\\removals\\A-9-trial\\unit.json",
+            "length": 56,
+            "after": 97
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "fake-claude",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 4,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T17:16:53.384Z",
+          "longestFile": {
+            "path": "C:\\b\\take-in-trial\\fake-claude\\write-outside.flag",
+            "length": 49,
+            "after": 90
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "m3",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 3,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T17:32:17.931Z",
+          "longestFile": {
+            "path": "C:\\b\\take-in-trial\\m3\\state\\state.json",
+            "length": 38,
+            "after": 79
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "probe-dry",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 0,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T16:35:17.609Z",
+          "longestFile": null,
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "t1",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 3,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T16:39:28.772Z",
+          "longestFile": {
+            "path": "C:\\b\\take-in-trial\\t1\\logs\\apply-1.log",
+            "length": 38,
+            "after": 79
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "t10",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 8,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T17:17:47.604Z",
+          "longestFile": {
+            "path": "C:\\b\\take-in-trial\\t10\\repair-1\\claude-output.json",
+            "length": 50,
+            "after": 91
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "t11",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 3,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T17:32:53.505Z",
+          "longestFile": {
+            "path": "C:\\b\\take-in-trial\\t11\\logs\\apply-1.log",
+            "length": 39,
+            "after": 80
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "t12",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 3,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T17:33:22.487Z",
+          "longestFile": {
+            "path": "C:\\b\\take-in-trial\\t12\\logs\\apply-1.log",
+            "length": 39,
+            "after": 80
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "t2",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 3,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T16:40:10.060Z",
+          "longestFile": {
+            "path": "C:\\b\\take-in-trial\\t2\\logs\\apply-1.log",
+            "length": 38,
+            "after": 79
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "t3",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 5,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T16:40:59.140Z",
+          "longestFile": {
+            "path": "C:\\b\\take-in-trial\\t3\\repair-preview\\claude-args.json",
+            "length": 53,
+            "after": 94
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "t4",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 5,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T16:42:20.269Z",
+          "longestFile": {
+            "path": "C:\\b\\take-in-trial\\t4\\repair-preview\\claude-args.json",
+            "length": 53,
+            "after": 94
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "t5",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 9,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T16:44:30.718Z",
+          "longestFile": {
+            "path": "C:\\b\\take-in-trial\\t5\\repair-1\\claude-output.json",
+            "length": 49,
+            "after": 90
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "t6",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 3,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T16:45:48.436Z",
+          "longestFile": {
+            "path": "C:\\b\\take-in-trial\\t6\\logs\\apply-1.log",
+            "length": 38,
+            "after": 79
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "t7",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 17,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T16:47:04.667Z",
+          "longestFile": {
+            "path": "C:\\b\\take-in-trial\\t7\\repair-1\\claude-output.json",
+            "length": 49,
+            "after": 90
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "t8",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 23,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T17:12:31.276Z",
+          "longestFile": {
+            "path": "C:\\b\\take-in-trial\\t8\\smoke\\baseline-trial-official-1.146.0.json",
+            "length": 64,
+            "after": 105
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "t9",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 3,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-13T17:17:22.427Z",
+          "longestFile": {
+            "path": "C:\\b\\take-in-trial\\t9\\logs\\apply-1.log",
+            "length": 38,
+            "after": 79
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        }
+      ],
+      "gb": 0,
+      "globalGB": 0,
+      "files": 97,
+      "overFile": 0,
+      "overDir": 0,
+      "longestFile": {
+        "path": "C:\\b\\take-in-trial\\t8\\smoke\\baseline-trial-official-1.146.0.json",
+        "length": 64,
+        "after": 105
+      },
+      "linkCount": 0
+    },
+    {
+      "name": "tmp",
+      "path": "C:\\b\\tmp",
+      "children": [
+        {
+          "name": "b1-r2-patch",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T14:15:05.526Z",
+          "longestFile": {
+            "path": "C:\\b\\tmp\\b1-r2-patch\\0001-unit-B-1-telemetry-edits.patch",
+            "length": 56,
+            "after": 97
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        }
+      ],
+      "gb": 0,
+      "globalGB": 0,
+      "files": 1,
+      "overFile": 0,
+      "overDir": 0,
+      "longestFile": {
+        "path": "C:\\b\\tmp\\b1-r2-patch\\0001-unit-B-1-telemetry-edits.patch",
+        "length": 56,
+        "after": 97
+      },
+      "linkCount": 0
+    }
+  ],
+  "seconds": 105.634
+}

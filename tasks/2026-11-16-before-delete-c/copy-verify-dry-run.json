@@ -1,0 +1,415 @@
+{
+  "checkedAt": "2026-11-16T07:25:24.401Z",
+  "list": "tasks/2026-11-16-before-delete-c/evidence-copy-list.json",
+  "dryRun": true,
+  "fromRoot": "C:\\b\\p0",
+  "toRoot": "e:\\develop\\self\\Team\\projects\\ai-editor\\records\\phase0\\evidence",
+  "entries": [
+    {
+      "from": "C:/b/p0/vsix/verify-result.json",
+      "to": "records/phase0/evidence/vsix/verify-result.json",
+      "bytes": 83682,
+      "sourceSha256": "02bc6c36a7fb29319191f6147e7da242b065ee6095b1526d9160eb32d88e824e",
+      "expectSha256": "02bc6c36a7fb29319191f6147e7da242b065ee6095b1526d9160eb32d88e824e",
+      "expectMatch": true,
+      "destBefore": {
+        "exists": true,
+        "sha256": "02bc6c36a7fb29319191f6147e7da242b065ee6095b1526d9160eb32d88e824e",
+        "bytes": 83682
+      },
+      "changed": false,
+      "copied": false,
+      "destSha256": "02bc6c36a7fb29319191f6147e7da242b065ee6095b1526d9160eb32d88e824e",
+      "match": true,
+      "error": null
+    },
+    {
+      "from": "C:/b/p0/vsix/fetch-result.json",
+      "to": "records/phase0/evidence/vsix/fetch-result.json",
+      "bytes": 33548,
+      "sourceSha256": "ad6e3e212f8fb28eb17b289e273222ddb6ddea772dac2d7c7cd65966dddfab16",
+      "expectSha256": "ad6e3e212f8fb28eb17b289e273222ddb6ddea772dac2d7c7cd65966dddfab16",
+      "expectMatch": true,
+      "destBefore": {
+        "exists": true,
+        "sha256": "ad6e3e212f8fb28eb17b289e273222ddb6ddea772dac2d7c7cd65966dddfab16",
+        "bytes": 33548
+      },
+      "changed": false,
+      "copied": false,
+      "destSha256": "ad6e3e212f8fb28eb17b289e273222ddb6ddea772dac2d7c7cd65966dddfab16",
+      "match": true,
+      "error": null
+    },
+    {
+      "from": "C:/b/p0/vsix/anthropic.claude-code-2.1.322@win32-x64/files.json",
+      "to": "records/phase0/evidence/vsix/anthropic.claude-code-2.1.322@win32-x64/files.json",
+      "bytes": 4136,
+      "sourceSha256": "4ff8062421b4aa24f5a5114dc6ea95d8e8d8af8018579ce3e14f17497268d979",
+      "expectSha256": "4ff8062421b4aa24f5a5114dc6ea95d8e8d8af8018579ce3e14f17497268d979",
+      "expectMatch": true,
+      "destBefore": {
+        "exists": true,
+        "sha256": "4ff8062421b4aa24f5a5114dc6ea95d8e8d8af8018579ce3e14f17497268d979",
+        "bytes": 4136
+      },
+      "changed": false,
+      "copied": false,
+      "destSha256": "4ff8062421b4aa24f5a5114dc6ea95d8e8d8af8018579ce3e14f17497268d979",
+      "match": true,
+      "error": null
+    },
+    {
+      "from": "C:/b/p0/vsix/anthropic.claude-code-2.1.322@win32-x64/extension.vsixmanifest",
+      "to": "records/phase0/evidence/vsix/anthropic.claude-code-2.1.322@win32-x64/extension.vsixmanifest",
+      "bytes": 2146,
+      "sourceSha256": "301bdf41b2eaf9dbb9604c588b5b6146e4e51cb5615b01a4ee5182a794fdd3e9",
+      "expectSha256": "301bdf41b2eaf9dbb9604c588b5b6146e4e51cb5615b01a4ee5182a794fdd3e9",
+      "expectMatch": true,
+      "destBefore": {
+        "exists": true,
+        "sha256": "ead27a228c81bc816a86fe3acdcde5f64ec6b392c695aef4317438b999120261",
+        "bytes": 2108
+      },
+      "changed": true,
+      "copied": false,
+      "destSha256": "ead27a228c81bc816a86fe3acdcde5f64ec6b392c695aef4317438b999120261",
+      "match": false,
+      "error": null
+    },
+    {
+      "from": "C:/b/p0/vsix/anthropic.claude-code-2.1.322@win32-x64/api.json",
+      "to": "records/phase0/evidence/vsix/anthropic.claude-code-2.1.322@win32-x64/api.json",
+      "bytes": 11233,
+      "sourceSha256": "902c6fcd94eb4fe60019ee8817722186cbce9568bcacc9de3913cf36b38db221",
+      "expectSha256": "902c6fcd94eb4fe60019ee8817722186cbce9568bcacc9de3913cf36b38db221",
+      "expectMatch": true,
+      "destBefore": {
+        "exists": true,
+        "sha256": "902c6fcd94eb4fe60019ee8817722186cbce9568bcacc9de3913cf36b38db221",
+        "bytes": 11233
+      },
+      "changed": false,
+      "copied": false,
+      "destSha256": "902c6fcd94eb4fe60019ee8817722186cbce9568bcacc9de3913cf36b38db221",
+      "match": true,
+      "error": null
+    },
+    {
+      "from": "C:/b/p0/vsix/ms-vscode.powershell-2025.4.0/files.json",
+      "to": "records/phase0/evidence/vsix/ms-vscode.powershell-2025.4.0/files.json",
+      "bytes": 34410,
+      "sourceSha256": "00863dc16c99255e2d0ae71a3817492ab1fcbfedf65981c1903dc4f7bf6f17b5",
+      "expectSha256": "00863dc16c99255e2d0ae71a3817492ab1fcbfedf65981c1903dc4f7bf6f17b5",
+      "expectMatch": true,
+      "destBefore": {
+        "exists": true,
+        "sha256": "00863dc16c99255e2d0ae71a3817492ab1fcbfedf65981c1903dc4f7bf6f17b5",
+        "bytes": 34410
+      },
+      "changed": false,
+      "copied": false,
+      "destSha256": "00863dc16c99255e2d0ae71a3817492ab1fcbfedf65981c1903dc4f7bf6f17b5",
+      "match": true,
+      "error": null
+    },
+    {
+      "from": "C:/b/p0/vsix/mechatroner.rainbow-csv-3.24.1/files.json",
+      "to": "records/phase0/evidence/vsix/mechatroner.rainbow-csv-3.24.1/files.json",
+      "bytes": 4484,
+      "sourceSha256": "3bc86b9a23c8e0747baacea03b8150c0713775253a640bf1aa8bec90a738037e",
+      "expectSha256": "3bc86b9a23c8e0747baacea03b8150c0713775253a640bf1aa8bec90a738037e",
+      "expectMatch": true,
+      "destBefore": {
+        "exists": true,
+        "sha256": "3bc86b9a23c8e0747baacea03b8150c0713775253a640bf1aa8bec90a738037e",
+        "bytes": 4484
+      },
+      "changed": false,
+      "copied": false,
+      "destSha256": "3bc86b9a23c8e0747baacea03b8150c0713775253a640bf1aa8bec90a738037e",
+      "match": true,
+      "error": null
+    },
+    {
+      "from": "C:/b/p0/vsix/dotenv.dotenv-vscode-1.5.8/files.json",
+      "to": "records/phase0/evidence/vsix/dotenv.dotenv-vscode-1.5.8/files.json",
+      "bytes": 26014,
+      "sourceSha256": "b27e95dde43e0165182dc0469f7c536a2ecf1632e0b42f35ccc2a8ec8f7c547e",
+      "expectSha256": "b27e95dde43e0165182dc0469f7c536a2ecf1632e0b42f35ccc2a8ec8f7c547e",
+      "expectMatch": true,
+      "destBefore": {
+        "exists": true,
+        "sha256": "b27e95dde43e0165182dc0469f7c536a2ecf1632e0b42f35ccc2a8ec8f7c547e",
+        "bytes": 26014
+      },
+      "changed": false,
+      "copied": false,
+      "destSha256": "b27e95dde43e0165182dc0469f7c536a2ecf1632e0b42f35ccc2a8ec8f7c547e",
+      "match": true,
+      "error": null
+    },
+    {
+      "from": "C:/b/p0/vsix/weixu.wx-vsce-dotenv-0.2.3/files.json",
+      "to": "records/phase0/evidence/vsix/weixu.wx-vsce-dotenv-0.2.3/files.json",
+      "bytes": 845,
+      "sourceSha256": "324db8d81fad6e9c12539a3712c6a3c868857ead91d99a24c9026dad9254c929",
+      "expectSha256": "324db8d81fad6e9c12539a3712c6a3c868857ead91d99a24c9026dad9254c929",
+      "expectMatch": true,
+      "destBefore": {
+        "exists": true,
+        "sha256": "324db8d81fad6e9c12539a3712c6a3c868857ead91d99a24c9026dad9254c929",
+        "bytes": 845
+      },
+      "changed": false,
+      "copied": false,
+      "destSha256": "324db8d81fad6e9c12539a3712c6a3c868857ead91d99a24c9026dad9254c929",
+      "match": true,
+      "error": null
+    },
+    {
+      "from": "C:/b/p0/vsix/tomoki1207.pdf-1.2.2/files.json",
+      "to": "records/phase0/evidence/vsix/tomoki1207.pdf-1.2.2/files.json",
+      "bytes": 32553,
+      "sourceSha256": "299011be3b0a3d75f563b92c716f043ce1200be8805a67b37c10d79066b54809",
+      "expectSha256": "299011be3b0a3d75f563b92c716f043ce1200be8805a67b37c10d79066b54809",
+      "expectMatch": true,
+      "destBefore": {
+        "exists": true,
+        "sha256": "299011be3b0a3d75f563b92c716f043ce1200be8805a67b37c10d79066b54809",
+        "bytes": 32553
+      },
+      "changed": false,
+      "copied": false,
+      "destSha256": "299011be3b0a3d75f563b92c716f043ce1200be8805a67b37c10d79066b54809",
+      "match": true,
+      "error": null
+    },
+    {
+      "from": "C:/b/p0/vsix/MS-CEINTL.vscode-language-pack-ja-1.131.0/files.json",
+      "to": "records/phase0/evidence/vsix/MS-CEINTL.vscode-language-pack-ja-1.131.0/files.json",
+      "bytes": 10016,
+      "sourceSha256": "4d7f30872b22d3e675b2cf91267a6abc999830b0523bfd6150d0ed8814c1d3c8",
+      "expectSha256": "4d7f30872b22d3e675b2cf91267a6abc999830b0523bfd6150d0ed8814c1d3c8",
+      "expectMatch": true,
+      "destBefore": {
+        "exists": true,
+        "sha256": "4d7f30872b22d3e675b2cf91267a6abc999830b0523bfd6150d0ed8814c1d3c8",
+        "bytes": 10016
+      },
+      "changed": false,
+      "copied": false,
+      "destSha256": "4d7f30872b22d3e675b2cf91267a6abc999830b0523bfd6150d0ed8814c1d3c8",
+      "match": true,
+      "error": null
+    },
+    {
+      "from": "C:/b/p0/trial/verify-result.json",
+      "to": "records/phase0/evidence/trial/verify-result.json",
+      "bytes": 9185,
+      "sourceSha256": "a37909ba4f53356167cec42e57dff7d74fee8e31f31f9f7e36f2f826f355669a",
+      "expectSha256": "a37909ba4f53356167cec42e57dff7d74fee8e31f31f9f7e36f2f826f355669a",
+      "expectMatch": true,
+      "destBefore": {
+        "exists": true,
+        "sha256": "a37909ba4f53356167cec42e57dff7d74fee8e31f31f9f7e36f2f826f355669a",
+        "bytes": 9185
+      },
+      "changed": false,
+      "copied": false,
+      "destSha256": "a37909ba4f53356167cec42e57dff7d74fee8e31f31f9f7e36f2f826f355669a",
+      "match": true,
+      "error": null
+    },
+    {
+      "from": "C:/b/p0/trial/lock.json",
+      "to": "records/phase0/evidence/trial/lock.json",
+      "bytes": 1478,
+      "sourceSha256": "9f5f055c2072e13e0437bc71ae3dba5c8db0ff03fe6b63c7ef042f655f967917",
+      "expectSha256": "9f5f055c2072e13e0437bc71ae3dba5c8db0ff03fe6b63c7ef042f655f967917",
+      "expectMatch": true,
+      "destBefore": {
+        "exists": true,
+        "sha256": "9f5f055c2072e13e0437bc71ae3dba5c8db0ff03fe6b63c7ef042f655f967917",
+        "bytes": 1478
+      },
+      "changed": false,
+      "copied": false,
+      "destSha256": "9f5f055c2072e13e0437bc71ae3dba5c8db0ff03fe6b63c7ef042f655f967917",
+      "match": true,
+      "error": null
+    },
+    {
+      "from": "C:/b/p0/sublime/conversion.md",
+      "to": "records/phase0/evidence/sublime/conversion.md",
+      "bytes": 7332,
+      "sourceSha256": "dcca00fdbdfb32629da7d4c9dc7aebc0bbb90fb00b2730538744d759039e644e",
+      "expectSha256": "dcca00fdbdfb32629da7d4c9dc7aebc0bbb90fb00b2730538744d759039e644e",
+      "expectMatch": true,
+      "destBefore": {
+        "exists": true,
+        "sha256": "dcca00fdbdfb32629da7d4c9dc7aebc0bbb90fb00b2730538744d759039e644e",
+        "bytes": 7332
+      },
+      "changed": false,
+      "copied": false,
+      "destSha256": "dcca00fdbdfb32629da7d4c9dc7aebc0bbb90fb00b2730538744d759039e644e",
+      "match": true,
+      "error": null
+    },
+    {
+      "from": "C:/b/p0/sublime/converted-keybindings.json",
+      "to": "records/phase0/evidence/sublime/converted-keybindings.json",
+      "bytes": 6764,
+      "sourceSha256": "803bc242215d3283a4a5af710fb9f7a1d2ffaa64a272910aa7efc67c415a4c9c",
+      "expectSha256": "803bc242215d3283a4a5af710fb9f7a1d2ffaa64a272910aa7efc67c415a4c9c",
+      "expectMatch": true,
+      "destBefore": {
+        "exists": true,
+        "sha256": "803bc242215d3283a4a5af710fb9f7a1d2ffaa64a272910aa7efc67c415a4c9c",
+        "bytes": 6764
+      },
+      "changed": false,
+      "copied": false,
+      "destSha256": "803bc242215d3283a4a5af710fb9f7a1d2ffaa64a272910aa7efc67c415a4c9c",
+      "match": true,
+      "error": null
+    },
+    {
+      "from": "C:/b/p0/sublime/dropped.json",
+      "to": "records/phase0/evidence/sublime/dropped.json",
+      "bytes": 369,
+      "sourceSha256": "5c342d685d87d81edae6abb58b820564aa57df9b6f4bdf4d5e2b148aa92a193c",
+      "expectSha256": "5c342d685d87d81edae6abb58b820564aa57df9b6f4bdf4d5e2b148aa92a193c",
+      "expectMatch": true,
+      "destBefore": {
+        "exists": true,
+        "sha256": "5c342d685d87d81edae6abb58b820564aa57df9b6f4bdf4d5e2b148aa92a193c",
+        "bytes": 369
+      },
+      "changed": false,
+      "copied": false,
+      "destSha256": "5c342d685d87d81edae6abb58b820564aa57df9b6f4bdf4d5e2b148aa92a193c",
+      "match": true,
+      "error": null
+    },
+    {
+      "from": "C:/b/p0/sublime/claude-code-keybindings.json",
+      "to": "records/phase0/evidence/sublime/claude-code-keybindings.json",
+      "bytes": 2012,
+      "sourceSha256": "f38ef2a8ebfb5c9dd8fbb0231212a6d40e55f2f56f893006524cfdc3ef398161",
+      "expectSha256": "f38ef2a8ebfb5c9dd8fbb0231212a6d40e55f2f56f893006524cfdc3ef398161",
+      "expectMatch": true,
+      "destBefore": {
+        "exists": true,
+        "sha256": "f38ef2a8ebfb5c9dd8fbb0231212a6d40e55f2f56f893006524cfdc3ef398161",
+        "bytes": 2012
+      },
+      "changed": false,
+      "copied": false,
+      "destSha256": "f38ef2a8ebfb5c9dd8fbb0231212a6d40e55f2f56f893006524cfdc3ef398161",
+      "match": true,
+      "error": null
+    },
+    {
+      "from": "C:/b/p0/sublime/conflicts.json",
+      "to": "records/phase0/evidence/sublime/conflicts.json",
+      "bytes": 3,
+      "sourceSha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "expectSha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "expectMatch": true,
+      "destBefore": {
+        "exists": true,
+        "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "bytes": 3
+      },
+      "changed": false,
+      "copied": false,
+      "destSha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "match": true,
+      "error": null
+    },
+    {
+      "from": "C:/b/p0/sublime/same-key-different-when.json",
+      "to": "records/phase0/evidence/sublime/same-key-different-when.json",
+      "bytes": 3,
+      "sourceSha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "expectSha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "expectMatch": true,
+      "destBefore": {
+        "exists": true,
+        "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "bytes": 3
+      },
+      "changed": false,
+      "copied": false,
+      "destSha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "match": true,
+      "error": null
+    },
+    {
+      "from": "C:/b/p0/sublime/convert-meta.json",
+      "to": "records/phase0/evidence/sublime/convert-meta.json",
+      "bytes": 1002,
+      "sourceSha256": "5b8d414856fb0ffea70050a23e3dc49539b4d67196d92371856cf4bca78fdbff",
+      "expectSha256": "5b8d414856fb0ffea70050a23e3dc49539b4d67196d92371856cf4bca78fdbff",
+      "expectMatch": true,
+      "destBefore": {
+        "exists": true,
+        "sha256": "5b8d414856fb0ffea70050a23e3dc49539b4d67196d92371856cf4bca78fdbff",
+        "bytes": 1002
+      },
+      "changed": false,
+      "copied": false,
+      "destSha256": "5b8d414856fb0ffea70050a23e3dc49539b4d67196d92371856cf4bca78fdbff",
+      "match": true,
+      "error": null
+    },
+    {
+      "from": "C:/b/p0/sublime/sublime-4.1.10.package.json",
+      "to": "records/phase0/evidence/sublime/sublime-4.1.10.package.json",
+      "bytes": 15923,
+      "sourceSha256": "fe956455ea2d09561544f83f301ad08f9bb443931f019671c297350b0fdb40fe",
+      "expectSha256": "fe956455ea2d09561544f83f301ad08f9bb443931f019671c297350b0fdb40fe",
+      "expectMatch": true,
+      "destBefore": {
+        "exists": true,
+        "sha256": "fe956455ea2d09561544f83f301ad08f9bb443931f019671c297350b0fdb40fe",
+        "bytes": 15923
+      },
+      "changed": false,
+      "copied": false,
+      "destSha256": "fe956455ea2d09561544f83f301ad08f9bb443931f019671c297350b0fdb40fe",
+      "match": true,
+      "error": null
+    },
+    {
+      "from": "C:/b/p0/sublime/ms-vscode.sublime-keybindings-4.1.10.sha256",
+      "to": "records/phase0/evidence/sublime/ms-vscode.sublime-keybindings-4.1.10.sha256",
+      "bytes": 64,
+      "sourceSha256": "bf8120afe163fd08347807802d3ad4e84a0351d61c6f4d2d935ac0bd0fc1ad71",
+      "expectSha256": "bf8120afe163fd08347807802d3ad4e84a0351d61c6f4d2d935ac0bd0fc1ad71",
+      "expectMatch": true,
+      "destBefore": {
+        "exists": true,
+        "sha256": "bf8120afe163fd08347807802d3ad4e84a0351d61c6f4d2d935ac0bd0fc1ad71",
+        "bytes": 64
+      },
+      "changed": false,
+      "copied": false,
+      "destSha256": "bf8120afe163fd08347807802d3ad4e84a0351d61c6f4d2d935ac0bd0fc1ad71",
+      "match": true,
+      "error": null
+    }
+  ],
+  "counts": {
+    "entries": 22,
+    "copied": 0,
+    "unchanged": 21,
+    "match": 21,
+    "mismatch": 1,
+    "errors": 0
+  },
+  "result": "error",
+  "message": "dry run: 1 of 22 destinations differ from the sources (nothing written)"
+}

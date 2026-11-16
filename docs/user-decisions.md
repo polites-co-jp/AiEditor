@@ -516,3 +516,14 @@
 | U10: 古い clone の枝のうち取らないもの | `main`（本家の古い main）と、取り込む `builds/*`・`keep/wt-*` 以外は要らない。タグは本家から取り直せる |
 | R22: `take-in.mjs` の `--records-dir` で記録を `records/take-in/` の外へ向けると、判定役が材料を読めない | `--records-dir` を `records/take-in/` の外に向けない決まりにする。台本に、外を指したら止める検査を足す（蒙恬。急がない） |
 | U6: リーダーはフックの対象外なので、リポジトリの直下で `git clean -x` などを打つと `tmp/b`（clone を含む）が消える | リーダーは、リポジトリの直下で `clean`・`checkout`・`reset` を打たない。課の台帳に書いた |
+
+## 記録（2026-11-16、C:\b を消す前の確かめで出た点。リーダーの判断）
+
+根拠: `tasks/2026-11-16-before-delete-c/handoff-notes-meng-tian.md`
+
+| 論点 | 扱い |
+|---|---|
+| 作業ツリー `trial-bwt` の未コミットの変更2行（`removals/A-8-trial/edits.patch` の変更と、追跡していない `product.overlay.json`。取り込みの試しの残り） | 捨ててよい（試しの単位と設定で、本物の単位と関係しない。結果は tasks の記録にある） |
+| 写していない5項目（`take-in`・`take-in-trial`・`notion-sync-trial`・`p4-watch`・`tmp`） | 試しの残りなので要らない。`p4-watch\trial\real\responses.json`（GitHub と Open VSX の本物の応答）だけは、コマンドで `tasks/2026-11-16-before-delete-c/kept/` に写して残す |
+| basedpyright・bash-ide の `files.json`（前は Read・Write で写せず、写さない判断にした） | コマンドで写せるようになったので、`records/phase0/evidence/` に写す（写し直しの一覧に足す） |
+| `extensions-src/notion-sync/dev/trial.mts` の既定 `C:\b\notion-sync-trial`、`check-env.ps1` の C: のキャッシュ、`take-in.mjs` の `--records-dir` | 直す（蒙恬。関門の後にまとめる）。消した後に走らせると `C:\b` を作り直すので、`trial.mts` は消す前か直後に直す |
