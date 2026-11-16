@@ -1,0 +1,303 @@
+{
+  "countedAt": "2026-11-16T02:22:37.391Z",
+  "from": "C:\\Users\\kou_z\\AppData\\Local\\pnpm-cache",
+  "to": {
+    "path": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b",
+    "length": 45,
+    "hasSpace": false,
+    "nonAscii": false,
+    "drive": "E:",
+    "freeGB": 4185.85
+  },
+  "delta": 6,
+  "limits": {
+    "file": 259,
+    "dir": 247
+  },
+  "localConfig": {
+    "configPath": "C:\\Users\\kou_z\\AppData\\Local\\Shuko\\local.json",
+    "configExists": false,
+    "buildRoot": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b",
+    "installRoot": "C:\\Users\\kou_z\\AppData\\Local\\Programs\\Shuko",
+    "builderRepo": null,
+    "sources": {
+      "installRoot": "default",
+      "keepVersions": "default",
+      "builderRepo": "default",
+      "buildRoot": "default"
+    }
+  },
+  "longPaths": {
+    "registry": {
+      "key": "HKLM\\SYSTEM\\CurrentControlSet\\Control\\FileSystem",
+      "name": "LongPathsEnabled",
+      "found": true,
+      "type": "REG_DWORD",
+      "value": "0x0"
+    },
+    "gitCoreLongpaths": {
+      "status": 1,
+      "stdout": "",
+      "stderr": "",
+      "error": null
+    },
+    "gitVersion": "git version 2.54.0.windows.1",
+    "nodeVersion": "v24.22.1"
+  },
+  "tools": {
+    "pnpmVersion": {
+      "status": 0,
+      "stdout": "12.16.0",
+      "stderr": "",
+      "error": null
+    },
+    "pnpmStorePathAtTo": {
+      "status": 0,
+      "stdout": "E:\\.pnpm-store\\v11",
+      "stderr": "",
+      "error": null
+    },
+    "pnpmStorePathAtFrom": {
+      "status": 0,
+      "stdout": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11",
+      "stderr": "",
+      "error": null
+    },
+    "npmCache": {
+      "status": 0,
+      "stdout": "C:\\Users\\kou_z\\AppData\\Local\\npm-cache",
+      "stderr": "",
+      "error": null
+    },
+    "pnpmGlobalConfig": {
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\config\\rc",
+      "exists": false
+    },
+    "userNpmrc": {
+      "path": "C:\\Users\\kou_z\\.npmrc",
+      "exists": false
+    }
+  },
+  "env": {
+    "APPDATA": "C:\\Users\\kou_z\\AppData\\Roaming",
+    "ELECTRON_RUN_AS_NODE": "1",
+    "HOME": "C:\\Users\\kou_z",
+    "LOCALAPPDATA": "C:\\Users\\kou_z\\AppData\\Local",
+    "TEMP": "C:\\Users\\kou_z\\AppData\\Local\\Temp",
+    "TMP": "C:\\Users\\kou_z\\AppData\\Local\\Temp",
+    "USERPROFILE": "C:\\Users\\kou_z"
+  },
+  "cFreeGB": 96.41,
+  "toExists": true,
+  "repoTmpExists": true,
+  "worktrees": {
+    "clone": null,
+    "builderRepo": {
+      "repo": "e:\\develop\\self\\Team\\projects\\ai-editor",
+      "items": [
+        {
+          "path": "E:/develop/self/Team/projects/ai-editor",
+          "head": "39e7628f1db0645aaf9e29fa8fe178755cc48a30",
+          "branch": "refs/heads/main",
+          "reachableFrom": {
+            "branches": 2,
+            "tags": 0,
+            "sampleBranches": [
+              "refs/heads/main",
+              "refs/remotes/origin/main"
+            ]
+          },
+          "reachable": true
+        }
+      ]
+    }
+  },
+  "tree": [
+    {
+      "name": "dlx",
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm-cache\\dlx",
+      "children": [
+        {
+          "name": "00fe5f25a2f273d6b894aa8a6e373f9875ecf407576f1b609aacf5b015a1ddec",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 12,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-09-04T06:21:14.374Z",
+          "longestFile": {
+            "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm-cache\\dlx\\00fe5f25a2f273d6b894aa8a6e373f9875ecf407576f1b609aacf5b015a1ddec\\1a06b1417f7-102fc\\node_modules\\.pnpm-workspace-state-v1.json",
+            "length": 169,
+            "after": 175
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 3,
+          "links": [
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm-cache\\dlx\\00fe5f25a2f273d6b894aa8a6e373f9875ecf407576f1b609aacf5b015a1ddec\\pkg",
+              "target": "C:\\Users\\kou_z\\AppData\\Local\\pnpm-cache\\dlx\\00fe5f25a2f273d6b894aa8a6e373f9875ecf407576f1b609aacf5b015a1ddec\\1a06b1417f7-102fc"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm-cache\\dlx\\00fe5f25a2f273d6b894aa8a6e373f9875ecf407576f1b609aacf5b015a1ddec\\1a06b1417f7-102fc\\node_modules\\wawoff2",
+              "target": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\links\\@\\wawoff2\\2.0.1\\a5632d7b847e8b58aff961f288f5318ff60184524cbc081efd18112d1d302a9c\\node_modules\\wawoff2"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm-cache\\dlx\\00fe5f25a2f273d6b894aa8a6e373f9875ecf407576f1b609aacf5b015a1ddec\\1a06b1417f7-102fc\\node_modules\\.pnpm\\node_modules\\argparse",
+              "target": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\links\\@\\argparse\\2.0.1\\1d1c3ad830fa4d64819bb1e7bc85812e61dc09303c0a4b2733103b176e963f18\\node_modules\\argparse"
+            }
+          ]
+        }
+      ],
+      "gb": 0,
+      "globalGB": 0,
+      "files": 12,
+      "overFile": 0,
+      "overDir": 0,
+      "longestFile": {
+        "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm-cache\\dlx\\00fe5f25a2f273d6b894aa8a6e373f9875ecf407576f1b609aacf5b015a1ddec\\1a06b1417f7-102fc\\node_modules\\.pnpm-workspace-state-v1.json",
+        "length": 169,
+        "after": 175
+      },
+      "linkCount": 3
+    },
+    {
+      "name": "lockfile-verified.jsonl",
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm-cache\\lockfile-verified.jsonl",
+      "file": true,
+      "bytes": 206785,
+      "after": 69
+    },
+    {
+      "name": "v11",
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm-cache\\v11",
+      "children": [
+        {
+          "name": "metadata",
+          "gb": 0.67,
+          "globalGB": 0.67,
+          "files": 1790,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-06-21T11:50:51.633Z",
+          "longestFile": {
+            "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm-cache\\v11\\metadata\\registry.npmjs.org\\@babel\\helper-skip-transparent-expression-wrappers.jsonl",
+            "length": 128,
+            "after": 134
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "metadata-full",
+          "gb": 0.23,
+          "globalGB": 0.23,
+          "files": 405,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-06-21T11:50:53.462Z",
+          "longestFile": {
+            "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm-cache\\v11\\metadata-full\\registry.npmjs.org\\@msgpackr-extract\\msgpackr-extract-darwin-arm64.jsonl",
+            "length": 130,
+            "after": 136
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "metadata-full-filtered",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-09-04T06:21:14.104Z",
+          "longestFile": {
+            "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm-cache\\v11\\metadata-full-filtered\\registry.npmjs.org\\wawoff2.jsonl",
+            "length": 99,
+            "after": 105
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        }
+      ],
+      "gb": 0.9,
+      "globalGB": 0.9,
+      "files": 2196,
+      "overFile": 0,
+      "overDir": 0,
+      "longestFile": {
+        "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm-cache\\v11\\metadata-full\\registry.npmjs.org\\@msgpackr-extract\\msgpackr-extract-darwin-arm64.jsonl",
+        "length": 130,
+        "after": 136
+      },
+      "linkCount": 0
+    },
+    {
+      "name": "v12",
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm-cache\\v12",
+      "children": [
+        {
+          "name": "metadata",
+          "gb": 0.37,
+          "globalGB": 0.37,
+          "files": 1573,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T10:09:40.550Z",
+          "longestFile": {
+            "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm-cache\\v12\\metadata\\https%3A+registry.npmjs.org\\micromark-util-decode-numeric-character-reference.jsonl",
+            "length": 136,
+            "after": 142
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        },
+        {
+          "name": "metadata-full",
+          "gb": 0.44,
+          "globalGB": 0.44,
+          "files": 219,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-14T10:09:40.628Z",
+          "longestFile": {
+            "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm-cache\\v12\\metadata-full\\https%3A+registry.npmjs.org\\@microsoft\\applicationinsights-channel-js.jsonl",
+            "length": 133,
+            "after": 139
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        }
+      ],
+      "gb": 0.81,
+      "globalGB": 0.81,
+      "files": 1792,
+      "overFile": 0,
+      "overDir": 0,
+      "longestFile": {
+        "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm-cache\\v12\\metadata\\https%3A+registry.npmjs.org\\micromark-util-decode-numeric-character-reference.jsonl",
+        "length": 136,
+        "after": 142
+      },
+      "linkCount": 0
+    }
+  ],
+  "seconds": 11.678
+}

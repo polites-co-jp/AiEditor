@@ -1,0 +1,96 @@
+{
+  "countedAt": "2026-11-16T02:40:15.193Z",
+  "seconds": 49.748,
+  "drive": {
+    "root": "C:\\",
+    "freeBytes": 103166910464,
+    "freeGB": 96.08
+  },
+  "entries": [
+    {
+      "name": "userCache",
+      "path": "C:\\Users\\kou_z\\.cache",
+      "exists": true,
+      "bytes": 2152042228,
+      "gb": 2,
+      "files": 22447,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 2152042228,
+      "uniqueGB": 2
+    },
+    {
+      "name": "appdataNpm",
+      "path": "C:\\Users\\kou_z\\AppData\\Roaming\\npm",
+      "exists": true,
+      "bytes": 1241434803,
+      "gb": 1.16,
+      "files": 26726,
+      "hardlinkedFiles": 9,
+      "uniqueBytes": 819956403,
+      "uniqueGB": 0.76
+    },
+    {
+      "name": "appdataNpmCache",
+      "path": "C:\\Users\\kou_z\\AppData\\Roaming\\npm-cache",
+      "exists": false
+    },
+    {
+      "name": "localPnpm",
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm",
+      "exists": true,
+      "bytes": 4337314748,
+      "gb": 4.04,
+      "files": 109107,
+      "hardlinkedFiles": 97408,
+      "uniqueBytes": 3844964315,
+      "uniqueGB": 3.58
+    },
+    {
+      "name": "userNpm",
+      "path": "C:\\Users\\kou_z\\.npm",
+      "exists": false
+    },
+    {
+      "name": "userNodeGyp",
+      "path": "C:\\Users\\kou_z\\.node-gyp",
+      "exists": false
+    },
+    {
+      "name": "localTemp",
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\Temp",
+      "exists": true,
+      "bytes": 7877535221,
+      "gb": 7.34,
+      "files": 73982,
+      "hardlinkedFiles": 139,
+      "uniqueBytes": 7875758550,
+      "uniqueGB": 7.33
+    },
+    {
+      "name": "localTs",
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\Microsoft\\TypeScript",
+      "exists": true,
+      "bytes": 102838558,
+      "gb": 0.1,
+      "files": 13068,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 102838558,
+      "uniqueGB": 0.1
+    },
+    {
+      "name": "electronBuilder",
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\electron-builder",
+      "exists": true,
+      "bytes": 66011247,
+      "gb": 0.06,
+      "files": 831,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 66011247,
+      "uniqueGB": 0.06
+    }
+  ],
+  "uniqueTotal": {
+    "bytes": 14861571301,
+    "gb": 13.84
+  }
+}

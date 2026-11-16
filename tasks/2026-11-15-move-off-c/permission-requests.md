@@ -49,6 +49,8 @@
 
 | delete_paths | `tmp/b/official/`・`tmp/b/cache/`・`tmp/b/logs/`・`tmp/b/vscode/`・`tmp/b/smoke/`・`tmp/b/work-b/` | 写す途中で止まり、写し先に途中まで書いたファイルが残ったとき、その項目の写し先を消して写し直す（台本は消さない。元の `C:\b` は残っているので、写し直せる）。移し終えたら外す（2026-11-16 追記） |
 
+| bash_exact | `git -C tmp/b/vscode fetch C:/b/vscode +refs/heads/builds/*:refs/heads/builds/* +refs/heads/keep/*:refs/heads/keep/*` | 2026-11-16 追記。本家の clone は `tmp\b\vscode` に GitHub から新しく作った（段階 C の版のビルドのとき）ので、古い clone `C:\b\vscode` にある版ごとの枝 `builds/<label>`（版を作り直すため。docs/02 の4節）と、作業ツリーの HEAD に付ける `keep/wt-*` が無い。`C:\b` を消す前に、新しい clone へ取り込む。これにより、作業ツリーごと clone を写す段（`move-build-root.mjs` の clone の項目）は要らなくなる |
+
 - 写す作業は台本 `node scripts/move-build-root.mjs`（今の許可 `node scripts/*.mjs` で走る。消さない・上書きしない・数と大きさと SHA-256 を照らす）で行うので、`cp` の許可は要らない。
 - `C:\b\p0` は、要るもの（公式の 1.146.0 と、records の根拠の小さなファイル）を写した後、`rm -rf C:/b` でまとめて消す（ユーザーの裁定「データを消し、道具は引退」）。
 

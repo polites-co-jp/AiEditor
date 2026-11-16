@@ -1,0 +1,450 @@
+{
+  "countedAt": "2026-11-16T02:40:30.168Z",
+  "from": "C:\\Users\\kou_z\\AppData\\Local\\pnpm",
+  "to": {
+    "path": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b",
+    "length": 45,
+    "hasSpace": false,
+    "nonAscii": false,
+    "drive": "E:",
+    "freeGB": 4182.74
+  },
+  "delta": 12,
+  "limits": {
+    "file": 259,
+    "dir": 247
+  },
+  "localConfig": {
+    "configPath": "C:\\Users\\kou_z\\AppData\\Local\\Shuko\\local.json",
+    "configExists": false,
+    "buildRoot": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b",
+    "installRoot": "C:\\Users\\kou_z\\AppData\\Local\\Programs\\Shuko",
+    "builderRepo": null,
+    "sources": {
+      "installRoot": "default",
+      "keepVersions": "default",
+      "builderRepo": "default",
+      "buildRoot": "default"
+    }
+  },
+  "longPaths": {
+    "registry": {
+      "key": "HKLM\\SYSTEM\\CurrentControlSet\\Control\\FileSystem",
+      "name": "LongPathsEnabled",
+      "found": true,
+      "type": "REG_DWORD",
+      "value": "0x0"
+    },
+    "gitCoreLongpaths": {
+      "status": 1,
+      "stdout": "",
+      "stderr": "",
+      "error": null
+    },
+    "gitVersion": "git version 2.54.0.windows.1",
+    "nodeVersion": "v24.22.1"
+  },
+  "tools": {
+    "pnpmVersion": {
+      "status": 0,
+      "stdout": "12.16.0",
+      "stderr": "",
+      "error": null
+    },
+    "pnpmStorePathAtTo": {
+      "status": 0,
+      "stdout": "E:\\.pnpm-store\\v11",
+      "stderr": "",
+      "error": null
+    },
+    "pnpmStorePathAtFrom": {
+      "status": 0,
+      "stdout": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11",
+      "stderr": "",
+      "error": null
+    },
+    "npmCache": {
+      "status": 0,
+      "stdout": "C:\\Users\\kou_z\\AppData\\Local\\npm-cache",
+      "stderr": "",
+      "error": null
+    },
+    "pnpmGlobalConfig": {
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\config\\rc",
+      "exists": false
+    },
+    "userNpmrc": {
+      "path": "C:\\Users\\kou_z\\.npmrc",
+      "exists": false
+    }
+  },
+  "env": {
+    "APPDATA": "C:\\Users\\kou_z\\AppData\\Roaming",
+    "ELECTRON_RUN_AS_NODE": "1",
+    "HOME": "C:\\Users\\kou_z",
+    "LOCALAPPDATA": "C:\\Users\\kou_z\\AppData\\Local",
+    "TEMP": "C:\\Users\\kou_z\\AppData\\Local\\Temp",
+    "TMP": "C:\\Users\\kou_z\\AppData\\Local\\Temp",
+    "USERPROFILE": "C:\\Users\\kou_z"
+  },
+  "cFreeGB": 96.08,
+  "toExists": true,
+  "repoTmpExists": true,
+  "worktrees": {
+    "clone": null,
+    "builderRepo": {
+      "repo": "e:\\develop\\self\\Team\\projects\\ai-editor",
+      "items": [
+        {
+          "path": "E:/develop/self/Team/projects/ai-editor",
+          "head": "39e7628f1db0645aaf9e29fa8fe178755cc48a30",
+          "branch": "refs/heads/main",
+          "reachableFrom": {
+            "branches": 2,
+            "tags": 0,
+            "sampleBranches": [
+              "refs/heads/main",
+              "refs/remotes/origin/main"
+            ]
+          },
+          "reachable": true
+        }
+      ]
+    }
+  },
+  "tree": [
+    {
+      "name": "global",
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\global",
+      "children": [
+        {
+          "name": "v11",
+          "gb": 0,
+          "globalGB": 0,
+          "files": 1,
+          "hardlinkedFiles": 0,
+          "mtime": "2026-11-16T02:14:41.304Z",
+          "longestFile": {
+            "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\global\\v11\\pnpm-lock.yaml",
+            "length": 59,
+            "after": 71
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 0,
+          "links": []
+        }
+      ],
+      "gb": 0,
+      "globalGB": 0,
+      "files": 1,
+      "overFile": 0,
+      "overDir": 0,
+      "longestFile": {
+        "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\global\\v11\\pnpm-lock.yaml",
+        "length": 59,
+        "after": 71
+      },
+      "linkCount": 0
+    },
+    {
+      "name": "package-manager-store",
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\package-manager-store",
+      "children": [
+        {
+          "name": "v11",
+          "gb": 0.58,
+          "globalGB": 0.12,
+          "files": 935,
+          "hardlinkedFiles": 46,
+          "mtime": "2026-11-16T02:14:43.755Z",
+          "longestFile": {
+            "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\package-manager-store\\v11\\links\\@pnpm\\exe\\11.8.0\\62c5fc650c5003775d296d7fd03a8ea704305bc6e5ee65dc36fdfaf9ef6a8c60\\node_modules\\@pnpm\\exe\\dist\\node_modules\\exponential-backoff\\dist\\delay\\skip-first\\skip-first.delay.js",
+            "length": 250,
+            "after": 262
+          },
+          "overFile": 1,
+          "overDir": 0,
+          "overFileSamples": [
+            "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\package-manager-store\\v11\\links\\@pnpm\\exe\\11.8.0\\62c5fc650c5003775d296d7fd03a8ea704305bc6e5ee65dc36fdfaf9ef6a8c60\\node_modules\\@pnpm\\exe\\dist\\node_modules\\exponential-backoff\\dist\\delay\\skip-first\\skip-first.delay.js"
+          ],
+          "overDirSamples": [],
+          "linkCount": 5,
+          "links": [
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\package-manager-store\\v11\\projects\\db9b2b39ca2590d17e586a7af5d0734a",
+              "target": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\package-manager-store\\v11\\tmp\\pnpm-engine-11.8.0-36736-1794795281502604700"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\package-manager-store\\v11\\links\\@reflink\\reflink\\0.1.19\\af174f995b132ae59d9033d9742277b15551a8285a1232f8f7074fa659a9f0ea\\node_modules\\@reflink\\reflink-win32-x64-msvc",
+              "target": "..\\..\\..\\..\\..\\reflink-win32-x64-msvc\\0.1.19\\d2ca336cc3fb933d461c9f6e55929f6f057e8bbf7cca8d093a69edaaf6ecd0b5\\node_modules\\@reflink\\reflink-win32-x64-msvc"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\package-manager-store\\v11\\links\\@pnpm\\exe\\11.8.0\\62c5fc650c5003775d296d7fd03a8ea704305bc6e5ee65dc36fdfaf9ef6a8c60\\node_modules\\detect-libc",
+              "target": "..\\..\\..\\..\\..\\@\\detect-libc\\2.1.2\\a1e36129e998f9971b8906296c04a9314f612077e4f1e2a4342793f735c2fb37\\node_modules\\detect-libc"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\package-manager-store\\v11\\links\\@pnpm\\exe\\11.8.0\\62c5fc650c5003775d296d7fd03a8ea704305bc6e5ee65dc36fdfaf9ef6a8c60\\node_modules\\@reflink\\reflink",
+              "target": "..\\..\\..\\..\\..\\..\\@reflink\\reflink\\0.1.19\\af174f995b132ae59d9033d9742277b15551a8285a1232f8f7074fa659a9f0ea\\node_modules\\@reflink\\reflink"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\package-manager-store\\v11\\links\\@pnpm\\exe\\11.8.0\\62c5fc650c5003775d296d7fd03a8ea704305bc6e5ee65dc36fdfaf9ef6a8c60\\node_modules\\@pnpm\\win-x64",
+              "target": "..\\..\\..\\..\\..\\win-x64\\11.8.0\\771416de3fdc509e3770271024ff3f1a94604d0afe1c5bbe5b1e15f04331b65a\\node_modules\\@pnpm\\win-x64"
+            }
+          ]
+        }
+      ],
+      "gb": 0.58,
+      "globalGB": 0.12,
+      "files": 935,
+      "overFile": 1,
+      "overDir": 0,
+      "longestFile": {
+        "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\package-manager-store\\v11\\links\\@pnpm\\exe\\11.8.0\\62c5fc650c5003775d296d7fd03a8ea704305bc6e5ee65dc36fdfaf9ef6a8c60\\node_modules\\@pnpm\\exe\\dist\\node_modules\\exponential-backoff\\dist\\delay\\skip-first\\skip-first.delay.js",
+        "length": 250,
+        "after": 262
+      },
+      "linkCount": 5
+    },
+    {
+      "name": "store",
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store",
+      "children": [
+        {
+          "name": "v11",
+          "gb": 3.46,
+          "globalGB": 3.46,
+          "files": 108171,
+          "hardlinkedFiles": 97362,
+          "mtime": "2026-11-14T16:45:37.572Z",
+          "longestFile": {
+            "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\links\\@\\wawoff2\\2.0.1\\a5632d7b847e8b58aff961f288f5318ff60184524cbc081efd18112d1d302a9c\\node_modules\\wawoff2\\node_modules\\.bin\\woff2_decompress.js.CMD",
+            "length": 193,
+            "after": 205
+          },
+          "overFile": 0,
+          "overDir": 0,
+          "overFileSamples": [],
+          "overDirSamples": [],
+          "linkCount": 83,
+          "links": [
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\02899ba35d188b0e31d8ec2dcf5cdb93",
+              "target": "C:\\b\\tests-cli-wEu9DJ\\notion-sync"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\09688237d77d90182a5179f9f41f361b",
+              "target": "C:\\b\\tests-cli-KZZG81\\notion-sync"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\09a508fc6090a12d033aeca7457ab6c3",
+              "target": "C:\\b\\wt\\p2\\remote"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\0aeaaa00610fd205b154bc4393cb70bf",
+              "target": "C:\\b\\tests-cli-VuEKbz\\notion-sync"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\0cc5607ebff0e40924bf339845b51159",
+              "target": "..\\..\\..\\..\\..\\..\\..\\..\\b\\tests-cli-zLfyJz\\notion-sync"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\0d985e84a6a82a7cea903c7b5c37f1ee",
+              "target": "C:\\b\\tests-cli-8SokN6\\notion-sync"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\0e5bd46f505c7c38b528ea1fe378df92",
+              "target": "C:\\b\\wt\\p2"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\0f5287c9160369dc3ea86ded5e96e087",
+              "target": "C:\\b\\tests-cli-bXRnje\\notion-sync"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\0f70ab16dd17e500af14dc97427fc64a",
+              "target": "..\\..\\..\\..\\..\\..\\..\\..\\b\\tests-cli-etIaLI\\notion-sync"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\116e69cd4736fddfca935999ac36e957",
+              "target": "C:\\b\\tests-cli-rV6wyw\\notion-sync"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\1314f55160bfcc5d49fe9368d3c73b9e",
+              "target": "C:\\b\\tests-cli-OPKFhp\\notion-sync"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\1851ff03a8b24f2f31b85c51bf742b58",
+              "target": "C:\\b\\tests-cli-vRYPJW\\notion-sync"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\1a44811e308fe3bc22d075b6e485e14a",
+              "target": "..\\..\\..\\..\\..\\..\\..\\..\\b\\tests-cli-jZGtxc\\notion-sync"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\1a6a3575dbf278e913c0e0d954d085e8",
+              "target": "C:\\b\\tests-cli-THbZ8I\\notion-sync"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\1ad035c25e6333d24fffcaf2ac0c5248",
+              "target": "C:\\b\\wt\\1.146.0\\extensions"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\1be500c079aa0377bc88c431c279ffaa",
+              "target": "C:\\b\\wt\\1.146.0\\remote"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\2d1905eb443654c3c6015fa6bc6b0ad5",
+              "target": "C:\\b\\tests-cli-OdkFlJ\\notion-sync"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\2f4edecb7cc063f9490ce666b1818bc0",
+              "target": "C:\\b\\tests-cli-q8dYJE\\notion-sync"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\300828c10e7854082555de00a80a8729",
+              "target": "..\\..\\..\\..\\Temp\\claude\\e--develop-Torifune\\2cc5ab25-0894-41ea-be08-dd387e0b7d6d\\scratchpad\\wt-7897c53"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\3156274cf0eea6b5d68d0f0aee589908",
+              "target": "C:\\b\\tests-cli-jsU3Wu\\notion-sync"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\32a2adcd0e1221f73d053f40f0721bad",
+              "target": "C:\\Users\\kou_z\\AppData\\Local\\pnpm-cache\\dlx\\00fe5f25a2f273d6b894aa8a6e373f9875ecf407576f1b609aacf5b015a1ddec\\1a06b1417f7-102fc"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\3685d1ec8457f1a702fad2dec786d78d",
+              "target": "C:\\b\\tests-cli-GEwm0g\\notion-sync"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\3689c807b342c5d2a42e9ca9b71b6379",
+              "target": "C:\\b\\tests-cli-wpVP6d\\notion-sync"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\37cff96b08ae6a27d39324d533c1b527",
+              "target": "C:\\b\\tests-cli-GGDzZD\\notion-sync"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\3fa9539ec658bb90df4977baed10ce36",
+              "target": "C:\\b\\tests-cli-wW8hjG\\notion-sync"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\425d87907bb9e4bf93b55d6b557897b4",
+              "target": "C:\\b\\wt\\p1-a1"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\43f147ca795bedb88795224a30643aa3",
+              "target": "C:\\b\\tests-cli-1ZgwAY\\notion-sync"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\4783b74ee59d06ef4802eebf6f3d3e6a",
+              "target": "..\\..\\..\\..\\..\\..\\..\\..\\b\\tests-cli-W0BIsW\\notion-sync"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\4ae21b239f7efb546d613a924bee5466",
+              "target": "C:\\b\\tests-cli-utkyGJ\\notion-sync"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\4b1f6d4f4fb29583ddc4e59cd4192d71",
+              "target": "C:\\b\\tests-cli-2UWv1Y\\notion-sync"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\4ba127b5c2b5dcb5974e5e00d100c3d4",
+              "target": "C:\\b\\tests-cli-RSsAxN\\notion-sync"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\4d99e527ab717c4b2520227f0a7ffe49",
+              "target": "C:\\b\\tests-cli-CFEk24\\notion-sync"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\50e813d231830a9552053e7b19868858",
+              "target": "..\\..\\..\\..\\Temp\\claude\\e--develop-Torifune\\2cc5ab25-0894-41ea-be08-dd387e0b7d6d\\scratchpad\\mut"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\5af49157941e8c42e471409bdfbdfb6a",
+              "target": "C:\\b\\tests-cli-iTZbCY\\notion-sync"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\5e808f32c1606f804d30d2681ed6df57",
+              "target": "C:\\b\\tests-cli-zHaYRh\\notion-sync"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\6293b8b2806b0a89a2acd39990446e52",
+              "target": "C:\\b\\tests-cli-glrOuG\\notion-sync"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\66ae31ca6e7a8f90d546cdcdf93093b0",
+              "target": "C:\\b\\tests-cli-cVbLMD\\notion-sync"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\67481c598792f7a9796dece4b0d94ce0",
+              "target": "C:\\b\\tests-cli-ZEPVmM\\notion-sync"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\6a19c973bb99c6c254ee1e50e2ca561a",
+              "target": "..\\..\\..\\..\\Temp\\claude\\e--develop-Torifune\\fecdb32b-7103-4d4d-bdb5-1c569741c154\\scratchpad\\base042"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\6fa3957d2781e6f445a803ecdcb24867",
+              "target": "C:\\b\\tests-cli-IvgVRy\\notion-sync"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\72a580763fb40da7607036cea5910719",
+              "target": "..\\..\\..\\..\\..\\..\\..\\..\\b\\tests-cli-7NpFwW\\notion-sync"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\73132df8b5dd0f5112a82fd2e0c84525",
+              "target": "C:\\b\\tests-cli-1kZocg\\notion-sync"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\7484b9dcd12df14a5aca7bf44f990b7f",
+              "target": "C:\\b\\tests-cli-McES0l\\notion-sync"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\76e5725b8036f555de00f53e194ff435",
+              "target": "C:\\b\\tests-cli-HdV9uf\\notion-sync"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\77d1320aeb76aea43da3cd80dc7da64a",
+              "target": "C:\\b\\tests-cli-tfSUxT\\notion-sync"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\77deda8a19e38fa843b13462bef9555c",
+              "target": "C:\\b\\tests-cli-aecu0O\\notion-sync"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\787aaa5dac0eda52cd44b921dab45d53",
+              "target": "C:\\b\\tests-cli-hOVpZE\\notion-sync"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\7aa306e153a0e35354eda031dddfbcf6",
+              "target": "C:\\b\\tests-cli-xzhlCt\\notion-sync"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\7fcfb2449511c74faa06c5fae4294b01",
+              "target": "C:\\b\\tests-cli-w9Mhkb\\notion-sync"
+            },
+            {
+              "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\projects\\81f35a13e766f2b1a9746492d49f55b8",
+              "target": "C:\\b\\tests-cli-K00iHH\\notion-sync"
+            }
+          ]
+        }
+      ],
+      "gb": 3.46,
+      "globalGB": 3.46,
+      "files": 108171,
+      "overFile": 0,
+      "overDir": 0,
+      "longestFile": {
+        "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store\\v11\\links\\@\\wawoff2\\2.0.1\\a5632d7b847e8b58aff961f288f5318ff60184524cbc081efd18112d1d302a9c\\node_modules\\wawoff2\\node_modules\\.bin\\woff2_decompress.js.CMD",
+        "length": 193,
+        "after": 205
+      },
+      "linkCount": 83
+    }
+  ],
+  "seconds": 11.908
+}

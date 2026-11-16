@@ -1,0 +1,1331 @@
+{
+  "label": "1.146.0-p5-c-all",
+  "upstream": {
+    "tag": "1.146.0",
+    "commit": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+  },
+  "units": [
+    {
+      "id": "A-1-copilot-extension",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "A-2-accounts-extensions",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "A-3-debug-extensions",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "A-4-notebook-extensions",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "A-5-remote-extensions",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "A-6-themes",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "A-7-unused-extensions",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "B-1-telemetry",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "B-2-onboarding-experiments-surveys",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "B-3-issue-share",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "B-4-outline-view",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "B-5-theme-switching",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "B-6-online-feeds",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "B-7-terminal-suggest",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "C-1-ai",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "C-2-debug",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "C-3-remote",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "C-4-notebook",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "C-5-extension-gallery",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "C-6-settings-sync",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "C-7-breadcrumbs-outline",
+      "enabled": true,
+      "applied": "ok"
+    }
+  ],
+  "patches": [
+    {
+      "file": "patches/20-product-configuration-defaults.patch",
+      "applied": "ok"
+    },
+    {
+      "file": "patches/30-proxy-direct-without-settings.patch",
+      "applied": "ok"
+    }
+  ],
+  "lockfileDiff": "tasks/2026-11-15-p5-stagec-gate/1.146.0-p5-c-all/lockfile.diff",
+  "toolchain": {
+    "node": "24.22.1",
+    "electron": "43.8.6",
+    "packageManager": "pnpm 12.16.0",
+    "packageManagerDeclared": "pnpm@12.16.0",
+    "nvmrc": "24.22.1",
+    "nodeOfBuildScript": "v24.22.1"
+  },
+  "durations": {
+    "install": 750.119,
+    "typecheck": 6.604,
+    "package": 155.182,
+    "zip": 27.712
+  },
+  "zip": {
+    "path": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\dist\\1.146.0-p5-c-all.zip",
+    "sha256": "e798cce0a39cad4a7e890df79cbeee52964704ffb387296ca0040007354b63a1",
+    "bytes": 219102721,
+    "topFolder": "Shuko-win32-x64-1.146.0-p5-c-all"
+  },
+  "extensionsLockSha256": "6b4c3ceae7d6cb407f62bbcbd57ca50267e998975887884cc325fd26a85cce10",
+  "result": "ok",
+  "stoppedAt": null,
+  "dryRun": false,
+  "startedAt": "2026-11-16T02:10:37.517Z",
+  "finishedAt": "2026-11-16T02:34:36.181Z",
+  "paths": {
+    "buildRoot": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b",
+    "worktree": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\wt\\1.146.0",
+    "packageDir": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\wt\\VSCode-win32-x64",
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-15-p5-stagec-gate\\1.146.0-p5-c-all\\checks.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\removals",
+    "dist": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\dist",
+    "logs": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\logs\\1.146.0-p5-c-all"
+  },
+  "config": {
+    "path": "C:\\Users\\kou_z\\AppData\\Local\\Shuko\\local.json",
+    "exists": false,
+    "buildRootFrom": "default"
+  },
+  "stepsSelected": [
+    "prepare",
+    "apply",
+    "install",
+    "lockfile",
+    "typecheck",
+    "package",
+    "postprocess",
+    "zip"
+  ],
+  "envRemovedForChildren": [
+    "ELECTRON_RUN_AS_NODE",
+    "VSCODE_CODE_CACHE_PATH",
+    "VSCODE_CRASH_REPORTER_PROCESS_TYPE",
+    "VSCODE_CWD",
+    "VSCODE_ESM_ENTRYPOINT",
+    "VSCODE_HANDLES_UNCAUGHT_ERRORS",
+    "VSCODE_IPC_HOOK",
+    "VSCODE_NLS_CONFIG",
+    "VSCODE_PID",
+    "VSCODE_PROCESS_TITLE"
+  ],
+  "envRedirectedForChildren": {
+    "all": {
+      "TEMP": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\tmp",
+      "TMP": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\tmp",
+      "pnpm_config_store_dir": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\pnpm-store",
+      "pnpm_config_cache_dir": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\pnpm-cache",
+      "npm_config_cache": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\npm-cache"
+    },
+    "toolchain": {
+      "TEMP": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\tmp",
+      "TMP": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\tmp",
+      "pnpm_config_store_dir": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\pnpm-store",
+      "pnpm_config_cache_dir": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\pnpm-cache",
+      "npm_config_cache": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\npm-cache",
+      "LOCALAPPDATA": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\localappdata"
+    },
+    "toolchainSteps": [
+      "install",
+      "typecheck",
+      "package"
+    ],
+    "layout": {
+      "root": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b",
+      "temp": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\tmp",
+      "localAppData": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\localappdata",
+      "pnpmStore": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\pnpm-store",
+      "pnpmCache": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\pnpm-cache",
+      "npmCache": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\npm-cache",
+      "electronCache": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\localappdata\\electron\\Cache",
+      "nodeGypCache": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\localappdata\\node-gyp\\Cache"
+    },
+    "created": [
+      "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\tmp",
+      "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\pnpm-store",
+      "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\pnpm-cache",
+      "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\npm-cache",
+      "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\localappdata"
+    ]
+  },
+  "sourceVersion": {
+    "name": "BUILD_SOURCEVERSION",
+    "value": "101e832240f4f92b1eddb2b505078bed96f84d43",
+    "source": "worktree HEAD",
+    "worktree": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\wt\\1.146.0",
+    "readAt": "typecheck",
+    "steps": [
+      "typecheck",
+      "package"
+    ],
+    "error": null,
+    "uncommittedEntries": 3,
+    "checksHeadCommit": "101e832240f4f92b1eddb2b505078bed96f84d43",
+    "matchesChecksHead": true
+  },
+  "branch": {
+    "name": "builds/1.146.0-p5-c-all",
+    "commit": "101e832240f4f92b1eddb2b505078bed96f84d43",
+    "previous": null,
+    "action": "created",
+    "ok": true,
+    "error": null,
+    "at": "typecheck"
+  },
+  "steps": [
+    {
+      "name": "prepare",
+      "status": "ok",
+      "startedAt": "2026-11-16T02:10:37.525Z",
+      "command": "C:\\Program Files\\nodejs\\node.exe e:\\develop\\self\\Team\\projects\\ai-editor\\scripts\\prepare.mjs --tag 1.146.0 --build-root E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b --worktree E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\wt\\1.146.0 --out E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\wt\\1.146.0.prepare.json",
+      "cwd": "e:\\develop\\self\\Team\\projects\\ai-editor",
+      "log": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\logs\\1.146.0-p5-c-all\\prepare.log",
+      "seconds": 223.66,
+      "exitCode": 0,
+      "prepare": {
+        "result": "ok",
+        "worktree": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\wt\\1.146.0",
+        "tagCommit": "69047191fc427f2f92828279aae1d90d8eeda7ab",
+        "worktreeHead": "69047191fc427f2f92828279aae1d90d8eeda7ab",
+        "worktreeClean": true,
+        "disk": {
+          "cloneGitDir": {
+            "bytes": 1912732297,
+            "gb": 1.78,
+            "files": 43
+          },
+          "cloneCheckout": {
+            "bytes": 368382900,
+            "gb": 0.34,
+            "files": 21449
+          },
+          "worktree": {
+            "bytes": 359848892,
+            "gb": 0.34,
+            "files": 21005
+          },
+          "countedSeconds": 2.818
+        },
+        "record": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\wt\\1.146.0.prepare.json"
+      }
+    },
+    {
+      "name": "apply",
+      "status": "ok",
+      "startedAt": "2026-11-16T02:14:21.188Z",
+      "command": "C:\\Program Files\\nodejs\\node.exe e:\\develop\\self\\Team\\projects\\ai-editor\\scripts\\apply.mjs E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\wt\\1.146.0 --label 1.146.0-p5-c-all --checks-out e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-15-p5-stagec-gate\\1.146.0-p5-c-all\\checks.json --removals e:\\develop\\self\\Team\\projects\\ai-editor\\removals --keep e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json --build-root E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b --config C:\\Users\\kou_z\\AppData\\Local\\Shuko\\local.json",
+      "cwd": "e:\\develop\\self\\Team\\projects\\ai-editor",
+      "log": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\logs\\1.146.0-p5-c-all\\apply.log",
+      "seconds": 246.246,
+      "exitCode": 0,
+      "checksResult": "ok"
+    },
+    {
+      "name": "install",
+      "status": "ok",
+      "startedAt": "2026-11-16T02:18:27.437Z",
+      "command": "pnpm install --no-frozen-lockfile",
+      "cwd": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\wt\\1.146.0",
+      "log": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\logs\\1.146.0-p5-c-all\\install.log",
+      "seconds": 750.119,
+      "exitCode": 0
+    },
+    {
+      "name": "lockfile",
+      "status": "ok",
+      "startedAt": "2026-11-16T02:30:57.922Z",
+      "command": "C:\\Program Files\\nodejs\\node.exe e:\\develop\\self\\Team\\projects\\ai-editor\\scripts\\apply.mjs E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\wt\\1.146.0 --label 1.146.0-p5-c-all --lockfile-check --checks-out e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-15-p5-stagec-gate\\1.146.0-p5-c-all\\checks.json --diff-out e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-15-p5-stagec-gate\\1.146.0-p5-c-all\\lockfile.diff --removals e:\\develop\\self\\Team\\projects\\ai-editor\\removals --build-root E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b --config C:\\Users\\kou_z\\AppData\\Local\\Shuko\\local.json",
+      "cwd": "e:\\develop\\self\\Team\\projects\\ai-editor",
+      "log": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\logs\\1.146.0-p5-c-all\\lockfile.log",
+      "seconds": 0.85,
+      "exitCode": 0,
+      "lockfile": {
+        "status": "ok",
+        "files": [
+          {
+            "path": "build/pnpm-lock.yaml",
+            "status": "ok",
+            "unchanged": true
+          },
+          {
+            "path": "extensions/copilot/pnpm-lock.yaml",
+            "status": "removed",
+            "reason": "単位が消したフォルダの中"
+          },
+          {
+            "path": "extensions/pnpm-lock.yaml",
+            "status": "ok",
+            "unchanged": false,
+            "expected": {
+              "removedImporters": [
+                "debug-auto-launch",
+                "debug-server-ready",
+                "extension-editing",
+                "github",
+                "github-authentication",
+                "grunt",
+                "gulp",
+                "ipynb",
+                "jake",
+                "mermaid-markdown-features",
+                "microsoft-authentication",
+                "notebook-renderers",
+                "php-language-features",
+                "simple-browser",
+                "terminal-suggest",
+                "tunnel-forwarding"
+              ],
+              "removedDeps": {},
+              "removedPatches": []
+            },
+            "changedSections": [],
+            "addedImporters": [],
+            "removedImporters": [
+              "debug-auto-launch",
+              "debug-server-ready",
+              "extension-editing",
+              "github",
+              "github-authentication",
+              "grunt",
+              "gulp",
+              "ipynb",
+              "jake",
+              "mermaid-markdown-features",
+              "microsoft-authentication",
+              "notebook-renderers",
+              "php-language-features",
+              "simple-browser",
+              "terminal-suggest",
+              "tunnel-forwarding"
+            ],
+            "unexpectedRemovedImporters": [],
+            "addedDeps": [],
+            "unexpectedRemovedDeps": [],
+            "changedDeps": [],
+            "addedPackages": [],
+            "addedSnapshots": [],
+            "unexpectedPatchChanges": [],
+            "removedPatches": [],
+            "removedDeps": {
+              "count": 0,
+              "items": []
+            },
+            "removedPackages": {
+              "count": 280,
+              "first": [
+                "@acemir/cssom@0.9.31",
+                "@antfu/install-pkg@1.1.0",
+                "@asamuzakjp/css-color@5.0.1",
+                "@asamuzakjp/dom-selector@6.8.1",
+                "@asamuzakjp/nwsapi@2.3.9",
+                "@azure/ms-rest-azure-env@2.0.0",
+                "@azure/msal-common@16.11.1",
+                "@azure/msal-node-extensions@5.3.2",
+                "@azure/msal-node-runtime@0.20.1",
+                "@azure/msal-node@5.4.0",
+                "@braintree/sanitize-url@7.1.2",
+                "@bramus/specificity@2.4.2",
+                "@chevrotain/cst-dts-gen@13.2.0",
+                "@chevrotain/gast@13.2.0",
+                "@chevrotain/regexp-to-ast@13.2.0",
+                "@chevrotain/types@13.2.0",
+                "@chevrotain/utils@13.2.0",
+                "@csstools/color-helpers@6.0.2",
+                "@csstools/css-calc@3.1.1",
+                "@csstools/css-color-parser@4.0.2",
+                "@csstools/css-parser-algorithms@4.0.0",
+                "@csstools/css-syntax-patches-for-csstree@1.0.29",
+                "@csstools/css-tokenizer@4.0.0",
+                "@enonic/fnv-plus@1.3.0",
+                "@exodus/bytes@1.15.0",
+                "@floating-ui/core@1.7.5",
+                "@floating-ui/dom@1.7.6",
+                "@floating-ui/react-dom@2.1.8",
+                "@floating-ui/react@0.26.28",
+                "@floating-ui/react@0.27.19",
+                "@floating-ui/utils@0.2.11",
+                "@headlessui/react@2.2.10",
+                "@headlessui/tailwindcss@0.2.2",
+                "@iconify-json/logos@1.2.11",
+                "@iconify-json/mdi@1.2.3",
+                "@iconify/types@2.0.0",
+                "@iconify/utils@3.1.0",
+                "@internationalized/date@3.12.1",
+                "@internationalized/number@3.6.6",
+                "@internationalized/string@3.2.8",
+                "@jupyterlab/nbformat@3.4.3",
+                "@lumino/coreutils@1.12.0",
+                "@mermaid-js/layout-tidy-tree@1.0.1",
+                "@mermaid-js/mermaid-zenuml@1.0.1",
+                "@mermaid-js/parser@2.0.1",
+                "@napi-rs/canvas-android-arm64@0.1.100",
+                "@napi-rs/canvas-darwin-arm64@0.1.100",
+                "@napi-rs/canvas-darwin-x64@0.1.100",
+                "@napi-rs/canvas-linux-arm-gnueabihf@0.1.100",
+                "@napi-rs/canvas-linux-arm64-gnu@0.1.100",
+                "@napi-rs/canvas-linux-arm64-musl@0.1.100",
+                "@napi-rs/canvas-linux-riscv64-gnu@0.1.100",
+                "@napi-rs/canvas-linux-x64-gnu@0.1.100",
+                "@napi-rs/canvas-linux-x64-musl@0.1.100",
+                "@napi-rs/canvas-win32-arm64-msvc@0.1.100",
+                "@napi-rs/canvas-win32-x64-msvc@0.1.100",
+                "@napi-rs/canvas@0.1.100",
+                "@octokit/auth-token@5.1.2",
+                "@octokit/core@6.1.5",
+                "@octokit/endpoint@10.1.4",
+                "@octokit/graphql-schema@14.4.0",
+                "@octokit/graphql@8.2.0",
+                "@octokit/graphql@8.2.2",
+                "@octokit/openapi-types@24.2.0",
+                "@octokit/openapi-types@25.0.0",
+                "@octokit/plugin-paginate-rest@11.6.0",
+                "@octokit/plugin-request-log@5.3.1",
+                "@octokit/plugin-rest-endpoint-methods@13.5.0",
+                "@octokit/request-error@6.1.8",
+                "@octokit/request@9.2.3",
+                "@octokit/rest@21.1.0",
+                "@octokit/types@13.10.0",
+                "@octokit/types@14.0.0",
+                "@react-aria/focus@3.22.0",
+                "@react-aria/interactions@3.28.0",
+                "@react-types/shared@3.34.0",
+                "@swc/helpers@0.5.21",
+                "@tanstack/react-virtual@3.13.24",
+                "@tanstack/virtual-core@3.14.0",
+                "@types/d3-array@3.2.1",
+                "@types/d3-axis@3.0.6",
+                "@types/d3-brush@3.0.6",
+                "@types/d3-chord@3.0.6",
+                "@types/d3-color@3.1.3",
+                "@types/d3-contour@3.0.6",
+                "@types/d3-delaunay@6.0.4",
+                "@types/d3-dispatch@3.0.7",
+                "@types/d3-drag@3.0.7",
+                "@types/d3-dsv@3.0.7",
+                "@types/d3-ease@3.0.2",
+                "@types/d3-fetch@3.0.7",
+                "@types/d3-force@3.0.10",
+                "@types/d3-format@3.0.4",
+                "@types/d3-geo@3.1.0",
+                "@types/d3-hierarchy@3.1.7",
+                "@types/d3-interpolate@3.0.4",
+                "@types/d3-path@3.1.1",
+                "@types/d3-polygon@3.0.2",
+                "@types/d3-quadtree@3.0.6",
+                "@types/d3-random@3.0.3"
+              ]
+            },
+            "removedSnapshots": {
+              "count": 280,
+              "first": [
+                "@acemir/cssom@0.9.31",
+                "@antfu/install-pkg@1.1.0",
+                "@asamuzakjp/css-color@5.0.1",
+                "@asamuzakjp/dom-selector@6.8.1",
+                "@asamuzakjp/nwsapi@2.3.9",
+                "@azure/ms-rest-azure-env@2.0.0",
+                "@azure/msal-common@16.11.1",
+                "@azure/msal-node-extensions@5.3.2",
+                "@azure/msal-node-runtime@0.20.1",
+                "@azure/msal-node@5.4.0",
+                "@braintree/sanitize-url@7.1.2",
+                "@bramus/specificity@2.4.2",
+                "@chevrotain/cst-dts-gen@13.2.0",
+                "@chevrotain/gast@13.2.0",
+                "@chevrotain/regexp-to-ast@13.2.0",
+                "@chevrotain/types@13.2.0",
+                "@chevrotain/utils@13.2.0",
+                "@csstools/color-helpers@6.0.2",
+                "@csstools/css-calc@3.1.1(@csstools/css-parser-algorithms@4.0.0(@csstools/css-tokenizer@4.0.0))(@csstools/css-tokenizer@4.0.0)",
+                "@csstools/css-color-parser@4.0.2(@csstools/css-parser-algorithms@4.0.0(@csstools/css-tokenizer@4.0.0))(@csstools/css-tokenizer@4.0.0)",
+                "@csstools/css-parser-algorithms@4.0.0(@csstools/css-tokenizer@4.0.0)",
+                "@csstools/css-syntax-patches-for-csstree@1.0.29",
+                "@csstools/css-tokenizer@4.0.0",
+                "@enonic/fnv-plus@1.3.0",
+                "@exodus/bytes@1.15.0",
+                "@floating-ui/core@1.7.5",
+                "@floating-ui/dom@1.7.6",
+                "@floating-ui/react-dom@2.1.8(react-dom@19.2.6(react@19.2.6))(react@19.2.6)",
+                "@floating-ui/react@0.26.28(react-dom@19.2.6(react@19.2.6))(react@19.2.6)",
+                "@floating-ui/react@0.27.19(react-dom@19.2.6(react@19.2.6))(react@19.2.6)",
+                "@floating-ui/utils@0.2.11",
+                "@headlessui/react@2.2.10(react-dom@19.2.6(react@19.2.6))(react@19.2.6)",
+                "@headlessui/tailwindcss@0.2.2",
+                "@iconify-json/logos@1.2.11",
+                "@iconify-json/mdi@1.2.3",
+                "@iconify/types@2.0.0",
+                "@iconify/utils@3.1.0",
+                "@internationalized/date@3.12.1",
+                "@internationalized/number@3.6.6",
+                "@internationalized/string@3.2.8",
+                "@jupyterlab/nbformat@3.4.3",
+                "@lumino/coreutils@1.12.0",
+                "@mermaid-js/layout-tidy-tree@1.0.1(mermaid@12.2.0)",
+                "@mermaid-js/mermaid-zenuml@1.0.1(mermaid@12.2.0)",
+                "@mermaid-js/parser@2.0.1",
+                "@napi-rs/canvas-android-arm64@0.1.100",
+                "@napi-rs/canvas-darwin-arm64@0.1.100",
+                "@napi-rs/canvas-darwin-x64@0.1.100",
+                "@napi-rs/canvas-linux-arm-gnueabihf@0.1.100",
+                "@napi-rs/canvas-linux-arm64-gnu@0.1.100",
+                "@napi-rs/canvas-linux-arm64-musl@0.1.100",
+                "@napi-rs/canvas-linux-riscv64-gnu@0.1.100",
+                "@napi-rs/canvas-linux-x64-gnu@0.1.100",
+                "@napi-rs/canvas-linux-x64-musl@0.1.100",
+                "@napi-rs/canvas-win32-arm64-msvc@0.1.100",
+                "@napi-rs/canvas-win32-x64-msvc@0.1.100",
+                "@napi-rs/canvas@0.1.100",
+                "@octokit/auth-token@5.1.2",
+                "@octokit/core@6.1.5",
+                "@octokit/endpoint@10.1.4",
+                "@octokit/graphql-schema@14.4.0",
+                "@octokit/graphql@8.2.0",
+                "@octokit/graphql@8.2.2",
+                "@octokit/openapi-types@24.2.0",
+                "@octokit/openapi-types@25.0.0",
+                "@octokit/plugin-paginate-rest@11.6.0(@octokit/core@6.1.5)",
+                "@octokit/plugin-request-log@5.3.1(@octokit/core@6.1.5)",
+                "@octokit/plugin-rest-endpoint-methods@13.5.0(@octokit/core@6.1.5)",
+                "@octokit/request-error@6.1.8",
+                "@octokit/request@9.2.3",
+                "@octokit/rest@21.1.0",
+                "@octokit/types@13.10.0",
+                "@octokit/types@14.0.0",
+                "@react-aria/focus@3.22.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)",
+                "@react-aria/interactions@3.28.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)",
+                "@react-types/shared@3.34.0(react@19.2.6)",
+                "@swc/helpers@0.5.21",
+                "@tanstack/react-virtual@3.13.24(react-dom@19.2.6(react@19.2.6))(react@19.2.6)",
+                "@tanstack/virtual-core@3.14.0",
+                "@types/d3-array@3.2.1",
+                "@types/d3-axis@3.0.6",
+                "@types/d3-brush@3.0.6",
+                "@types/d3-chord@3.0.6",
+                "@types/d3-color@3.1.3",
+                "@types/d3-contour@3.0.6",
+                "@types/d3-delaunay@6.0.4",
+                "@types/d3-dispatch@3.0.7",
+                "@types/d3-drag@3.0.7",
+                "@types/d3-dsv@3.0.7",
+                "@types/d3-ease@3.0.2",
+                "@types/d3-fetch@3.0.7",
+                "@types/d3-force@3.0.10",
+                "@types/d3-format@3.0.4",
+                "@types/d3-geo@3.1.0",
+                "@types/d3-hierarchy@3.1.7",
+                "@types/d3-interpolate@3.0.4",
+                "@types/d3-path@3.1.1",
+                "@types/d3-polygon@3.0.2",
+                "@types/d3-quadtree@3.0.6",
+                "@types/d3-random@3.0.3"
+              ]
+            }
+          },
+          {
+            "path": "pnpm-lock.yaml",
+            "status": "ok",
+            "unchanged": false,
+            "expected": {
+              "removedImporters": [
+                "src/vs/sessions/test/e2e"
+              ],
+              "removedDeps": {
+                ".": [
+                  "@microsoft/1ds-core-js",
+                  "@microsoft/1ds-post-js",
+                  "@anthropic-ai/sdk",
+                  "@github/copilot-sdk",
+                  "@vscode/copilot-api",
+                  "foundry-local-sdk",
+                  "@anthropic-ai/claude-agent-sdk",
+                  "@openai/codex",
+                  "@modelcontextprotocol/sdk",
+                  "@hpke/core",
+                  "libsodium-wrappers",
+                  "@devcontainers/cli",
+                  "@microsoft/dev-tunnels-connections",
+                  "@microsoft/dev-tunnels-contracts",
+                  "@microsoft/dev-tunnels-management",
+                  "@microsoft/dev-tunnels-ssh",
+                  "@microsoft/dev-tunnels-ssh-tcp",
+                  "ssh2",
+                  "ws"
+                ]
+              },
+              "removedPatches": [
+                "foundry-local-sdk"
+              ]
+            },
+            "changedSections": [],
+            "addedImporters": [],
+            "removedImporters": [
+              "src/vs/sessions/test/e2e"
+            ],
+            "unexpectedRemovedImporters": [],
+            "addedDeps": [],
+            "unexpectedRemovedDeps": [],
+            "changedDeps": [],
+            "addedPackages": [],
+            "addedSnapshots": [],
+            "unexpectedPatchChanges": [],
+            "removedPatches": [
+              "foundry-local-sdk"
+            ],
+            "removedDeps": {
+              "count": 19,
+              "items": [
+                {
+                  "importer": ".",
+                  "group": "dependencies",
+                  "name": "@anthropic-ai/sdk",
+                  "version": "0.82.0(zod@4.4.3)"
+                },
+                {
+                  "importer": ".",
+                  "group": "dependencies",
+                  "name": "@devcontainers/cli",
+                  "version": "0.88.0"
+                },
+                {
+                  "importer": ".",
+                  "group": "dependencies",
+                  "name": "@github/copilot-sdk",
+                  "version": "1.0.30-preview.0"
+                },
+                {
+                  "importer": ".",
+                  "group": "dependencies",
+                  "name": "@hpke/core",
+                  "version": "1.9.0"
+                },
+                {
+                  "importer": ".",
+                  "group": "dependencies",
+                  "name": "@microsoft/1ds-core-js",
+                  "version": "3.2.13(tslib@2.8.1)"
+                },
+                {
+                  "importer": ".",
+                  "group": "dependencies",
+                  "name": "@microsoft/1ds-post-js",
+                  "version": "3.2.13(tslib@2.8.1)"
+                },
+                {
+                  "importer": ".",
+                  "group": "dependencies",
+                  "name": "@microsoft/dev-tunnels-connections",
+                  "version": "1.3.61(@microsoft/dev-tunnels-ssh-tcp@3.12.22)(@microsoft/dev-tunnels-ssh@3.12.22)"
+                },
+                {
+                  "importer": ".",
+                  "group": "dependencies",
+                  "name": "@microsoft/dev-tunnels-contracts",
+                  "version": "1.3.61"
+                },
+                {
+                  "importer": ".",
+                  "group": "dependencies",
+                  "name": "@microsoft/dev-tunnels-management",
+                  "version": "1.3.61"
+                },
+                {
+                  "importer": ".",
+                  "group": "dependencies",
+                  "name": "@microsoft/dev-tunnels-ssh",
+                  "version": "3.12.22"
+                },
+                {
+                  "importer": ".",
+                  "group": "dependencies",
+                  "name": "@microsoft/dev-tunnels-ssh-tcp",
+                  "version": "3.12.22"
+                },
+                {
+                  "importer": ".",
+                  "group": "dependencies",
+                  "name": "@vscode/copilot-api",
+                  "version": "0.5.2"
+                },
+                {
+                  "importer": ".",
+                  "group": "dependencies",
+                  "name": "foundry-local-sdk",
+                  "version": "2.2.1(patch_hash=144dc233226af4a735d3bbf7e0476ef09c2c7336c8f47d488703c483b013745e)"
+                },
+                {
+                  "importer": ".",
+                  "group": "dependencies",
+                  "name": "libsodium-wrappers",
+                  "version": "0.8.4"
+                },
+                {
+                  "importer": ".",
+                  "group": "dependencies",
+                  "name": "ssh2",
+                  "version": "1.17.0"
+                },
+                {
+                  "importer": ".",
+                  "group": "dependencies",
+                  "name": "ws",
+                  "version": "8.21.0"
+                },
+                {
+                  "importer": ".",
+                  "group": "devDependencies",
+                  "name": "@anthropic-ai/claude-agent-sdk",
+                  "version": "0.3.304(@anthropic-ai/sdk@0.82.0(zod@4.4.3))(@modelcontextprotocol/sdk@1.29.0(zod@4.4.3))(zod@4.4.3)"
+                },
+                {
+                  "importer": ".",
+                  "group": "devDependencies",
+                  "name": "@modelcontextprotocol/sdk",
+                  "version": "1.29.0(zod@4.4.3)"
+                },
+                {
+                  "importer": ".",
+                  "group": "devDependencies",
+                  "name": "@openai/codex",
+                  "version": "0.163.0"
+                }
+              ]
+            },
+            "removedPackages": {
+              "count": 80,
+              "items": [
+                "@anthropic-ai/claude-agent-sdk-darwin-arm64@0.3.304",
+                "@anthropic-ai/claude-agent-sdk-darwin-x64@0.3.304",
+                "@anthropic-ai/claude-agent-sdk-linux-arm64-musl@0.3.304",
+                "@anthropic-ai/claude-agent-sdk-linux-arm64@0.3.304",
+                "@anthropic-ai/claude-agent-sdk-linux-x64-musl@0.3.304",
+                "@anthropic-ai/claude-agent-sdk-linux-x64@0.3.304",
+                "@anthropic-ai/claude-agent-sdk-win32-arm64@0.3.304",
+                "@anthropic-ai/claude-agent-sdk-win32-x64@0.3.304",
+                "@anthropic-ai/claude-agent-sdk@0.3.304",
+                "@anthropic-ai/sdk@0.82.0",
+                "@babel/runtime@7.29.2",
+                "@devcontainers/cli@0.88.0",
+                "@github/copilot-sdk-darwin-arm64@1.0.30-preview.0",
+                "@github/copilot-sdk-darwin-x64@1.0.30-preview.0",
+                "@github/copilot-sdk-linux-arm64@1.0.30-preview.0",
+                "@github/copilot-sdk-linux-x64@1.0.30-preview.0",
+                "@github/copilot-sdk-linuxmusl-arm64@1.0.30-preview.0",
+                "@github/copilot-sdk-linuxmusl-x64@1.0.30-preview.0",
+                "@github/copilot-sdk-win32-arm64@1.0.30-preview.0",
+                "@github/copilot-sdk-win32-x64@1.0.30-preview.0",
+                "@github/copilot-sdk@1.0.30-preview.0",
+                "@hpke/common@1.10.1",
+                "@hpke/core@1.9.0",
+                "@koromix/koffi-android-arm64@3.2.1",
+                "@koromix/koffi-android-x64@3.2.1",
+                "@koromix/koffi-darwin-arm64@3.2.1",
+                "@koromix/koffi-darwin-x64@3.2.1",
+                "@koromix/koffi-freebsd-arm64@3.2.1",
+                "@koromix/koffi-freebsd-ia32@3.2.1",
+                "@koromix/koffi-freebsd-x64@3.2.1",
+                "@koromix/koffi-linux-arm64@3.2.1",
+                "@koromix/koffi-linux-arm@3.2.1",
+                "@koromix/koffi-linux-ia32@3.2.1",
+                "@koromix/koffi-linux-loong64@3.2.1",
+                "@koromix/koffi-linux-riscv64@3.2.1",
+                "@koromix/koffi-linux-x64@3.2.1",
+                "@koromix/koffi-openbsd-ia32@3.2.1",
+                "@koromix/koffi-openbsd-x64@3.2.1",
+                "@koromix/koffi-win32-arm64@3.2.1",
+                "@koromix/koffi-win32-ia32@3.2.1",
+                "@koromix/koffi-win32-x64@3.2.1",
+                "@microsoft/1ds-core-js@3.2.13",
+                "@microsoft/1ds-post-js@3.2.13",
+                "@microsoft/applicationinsights-core-js@2.8.15",
+                "@microsoft/applicationinsights-shims@2.0.2",
+                "@microsoft/dev-tunnels-connections@1.3.61",
+                "@microsoft/dev-tunnels-ssh-tcp@3.12.22",
+                "@microsoft/dev-tunnels-ssh@3.12.22",
+                "@microsoft/dynamicproto-js@1.1.9",
+                "@openai/codex@0.163.0",
+                "@openai/codex@0.163.0-darwin-arm64",
+                "@openai/codex@0.163.0-darwin-x64",
+                "@openai/codex@0.163.0-linux-arm64",
+                "@openai/codex@0.163.0-linux-x64",
+                "@openai/codex@0.163.0-win32-arm64",
+                "@openai/codex@0.163.0-win32-x64",
+                "@vscode/copilot-api@0.5.2",
+                "adm-zip@0.6.1",
+                "await-semaphore@0.1.3",
+                "bn.js@4.12.3",
+                "brorand@1.1.0",
+                "bufferutil@4.1.0",
+                "diffie-hellman@5.0.3",
+                "foundry-local-sdk@2.2.1",
+                "is-typedarray@1.0.0",
+                "json-schema-to-ts@3.1.1",
+                "koffi@3.2.1",
+                "libsodium-wrappers@0.8.4",
+                "libsodium@0.8.4",
+                "miller-rabin@4.0.1",
+                "node-gyp-build@4.8.1",
+                "randombytes@2.1.0",
+                "ts-algebra@2.0.0",
+                "typedarray-to-buffer@3.1.5",
+                "utf-8-validate@5.0.10",
+                "uuid@3.4.0",
+                "vscode-jsonrpc@10.0.0",
+                "websocket@1.0.35",
+                "yaeti@0.0.6",
+                "zod@4.6.7"
+              ]
+            },
+            "removedSnapshots": {
+              "count": 80,
+              "items": [
+                "@anthropic-ai/claude-agent-sdk-darwin-arm64@0.3.304",
+                "@anthropic-ai/claude-agent-sdk-darwin-x64@0.3.304",
+                "@anthropic-ai/claude-agent-sdk-linux-arm64-musl@0.3.304",
+                "@anthropic-ai/claude-agent-sdk-linux-arm64@0.3.304",
+                "@anthropic-ai/claude-agent-sdk-linux-x64-musl@0.3.304",
+                "@anthropic-ai/claude-agent-sdk-linux-x64@0.3.304",
+                "@anthropic-ai/claude-agent-sdk-win32-arm64@0.3.304",
+                "@anthropic-ai/claude-agent-sdk-win32-x64@0.3.304",
+                "@anthropic-ai/claude-agent-sdk@0.3.304(@anthropic-ai/sdk@0.82.0(zod@4.4.3))(@modelcontextprotocol/sdk@1.29.0(zod@4.4.3))(zod@4.4.3)",
+                "@anthropic-ai/sdk@0.82.0(zod@4.4.3)",
+                "@babel/runtime@7.29.2",
+                "@devcontainers/cli@0.88.0",
+                "@github/copilot-sdk-darwin-arm64@1.0.30-preview.0",
+                "@github/copilot-sdk-darwin-x64@1.0.30-preview.0",
+                "@github/copilot-sdk-linux-arm64@1.0.30-preview.0",
+                "@github/copilot-sdk-linux-x64@1.0.30-preview.0",
+                "@github/copilot-sdk-linuxmusl-arm64@1.0.30-preview.0",
+                "@github/copilot-sdk-linuxmusl-x64@1.0.30-preview.0",
+                "@github/copilot-sdk-win32-arm64@1.0.30-preview.0",
+                "@github/copilot-sdk-win32-x64@1.0.30-preview.0",
+                "@github/copilot-sdk@1.0.30-preview.0",
+                "@hpke/common@1.10.1",
+                "@hpke/core@1.9.0",
+                "@koromix/koffi-android-arm64@3.2.1",
+                "@koromix/koffi-android-x64@3.2.1",
+                "@koromix/koffi-darwin-arm64@3.2.1",
+                "@koromix/koffi-darwin-x64@3.2.1",
+                "@koromix/koffi-freebsd-arm64@3.2.1",
+                "@koromix/koffi-freebsd-ia32@3.2.1",
+                "@koromix/koffi-freebsd-x64@3.2.1",
+                "@koromix/koffi-linux-arm64@3.2.1",
+                "@koromix/koffi-linux-arm@3.2.1",
+                "@koromix/koffi-linux-ia32@3.2.1",
+                "@koromix/koffi-linux-loong64@3.2.1",
+                "@koromix/koffi-linux-riscv64@3.2.1",
+                "@koromix/koffi-linux-x64@3.2.1",
+                "@koromix/koffi-openbsd-ia32@3.2.1",
+                "@koromix/koffi-openbsd-x64@3.2.1",
+                "@koromix/koffi-win32-arm64@3.2.1",
+                "@koromix/koffi-win32-ia32@3.2.1",
+                "@koromix/koffi-win32-x64@3.2.1",
+                "@microsoft/1ds-core-js@3.2.13(tslib@2.8.1)",
+                "@microsoft/1ds-post-js@3.2.13(tslib@2.8.1)",
+                "@microsoft/applicationinsights-core-js@2.8.15(tslib@2.8.1)",
+                "@microsoft/applicationinsights-shims@2.0.2",
+                "@microsoft/dev-tunnels-connections@1.3.61(@microsoft/dev-tunnels-ssh-tcp@3.12.22)(@microsoft/dev-tunnels-ssh@3.12.22)",
+                "@microsoft/dev-tunnels-ssh-tcp@3.12.22",
+                "@microsoft/dev-tunnels-ssh@3.12.22",
+                "@microsoft/dynamicproto-js@1.1.9",
+                "@openai/codex@0.163.0",
+                "@openai/codex@0.163.0-darwin-arm64",
+                "@openai/codex@0.163.0-darwin-x64",
+                "@openai/codex@0.163.0-linux-arm64",
+                "@openai/codex@0.163.0-linux-x64",
+                "@openai/codex@0.163.0-win32-arm64",
+                "@openai/codex@0.163.0-win32-x64",
+                "@vscode/copilot-api@0.5.2",
+                "adm-zip@0.6.1",
+                "await-semaphore@0.1.3",
+                "bn.js@4.12.3",
+                "brorand@1.1.0",
+                "bufferutil@4.1.0",
+                "diffie-hellman@5.0.3",
+                "foundry-local-sdk@2.2.1(patch_hash=144dc233226af4a735d3bbf7e0476ef09c2c7336c8f47d488703c483b013745e)",
+                "is-typedarray@1.0.0",
+                "json-schema-to-ts@3.1.1",
+                "koffi@3.2.1",
+                "libsodium-wrappers@0.8.4",
+                "libsodium@0.8.4",
+                "miller-rabin@4.0.1",
+                "node-gyp-build@4.8.1",
+                "randombytes@2.1.0",
+                "ts-algebra@2.0.0",
+                "typedarray-to-buffer@3.1.5",
+                "utf-8-validate@5.0.10",
+                "uuid@3.4.0",
+                "vscode-jsonrpc@10.0.0",
+                "websocket@1.0.35",
+                "yaeti@0.0.6",
+                "zod@4.6.7"
+              ]
+            }
+          },
+          {
+            "path": "remote/pnpm-lock.yaml",
+            "status": "ok",
+            "unchanged": false,
+            "expected": {
+              "removedImporters": [],
+              "removedDeps": {
+                ".": [
+                  "@microsoft/1ds-core-js",
+                  "@microsoft/1ds-post-js",
+                  "@github/copilot-sdk",
+                  "@vscode/copilot-api",
+                  "@hpke/core",
+                  "libsodium-wrappers",
+                  "@devcontainers/cli",
+                  "ssh2",
+                  "ws"
+                ],
+                "web": [
+                  "@microsoft/1ds-core-js",
+                  "@microsoft/1ds-post-js"
+                ]
+              },
+              "removedPatches": []
+            },
+            "changedSections": [],
+            "addedImporters": [],
+            "removedImporters": [],
+            "unexpectedRemovedImporters": [],
+            "addedDeps": [],
+            "unexpectedRemovedDeps": [],
+            "changedDeps": [],
+            "addedPackages": [],
+            "addedSnapshots": [],
+            "unexpectedPatchChanges": [],
+            "removedPatches": [],
+            "removedDeps": {
+              "count": 11,
+              "items": [
+                {
+                  "importer": ".",
+                  "group": "dependencies",
+                  "name": "@devcontainers/cli",
+                  "version": "0.88.0"
+                },
+                {
+                  "importer": ".",
+                  "group": "dependencies",
+                  "name": "@github/copilot-sdk",
+                  "version": "1.0.30-preview.0"
+                },
+                {
+                  "importer": ".",
+                  "group": "dependencies",
+                  "name": "@hpke/core",
+                  "version": "1.9.0"
+                },
+                {
+                  "importer": ".",
+                  "group": "dependencies",
+                  "name": "@microsoft/1ds-core-js",
+                  "version": "3.2.13"
+                },
+                {
+                  "importer": ".",
+                  "group": "dependencies",
+                  "name": "@microsoft/1ds-post-js",
+                  "version": "3.2.13"
+                },
+                {
+                  "importer": ".",
+                  "group": "dependencies",
+                  "name": "@vscode/copilot-api",
+                  "version": "0.5.2"
+                },
+                {
+                  "importer": ".",
+                  "group": "dependencies",
+                  "name": "libsodium-wrappers",
+                  "version": "0.8.4"
+                },
+                {
+                  "importer": ".",
+                  "group": "dependencies",
+                  "name": "ssh2",
+                  "version": "1.17.0"
+                },
+                {
+                  "importer": ".",
+                  "group": "dependencies",
+                  "name": "ws",
+                  "version": "8.21.0"
+                },
+                {
+                  "importer": "web",
+                  "group": "dependencies",
+                  "name": "@microsoft/1ds-core-js",
+                  "version": "3.2.13"
+                },
+                {
+                  "importer": "web",
+                  "group": "dependencies",
+                  "name": "@microsoft/1ds-post-js",
+                  "version": "3.2.13"
+                }
+              ]
+            },
+            "removedPackages": {
+              "count": 50,
+              "items": [
+                "@devcontainers/cli@0.88.0",
+                "@github/copilot-sdk-darwin-arm64@1.0.30-preview.0",
+                "@github/copilot-sdk-darwin-x64@1.0.30-preview.0",
+                "@github/copilot-sdk-linux-arm64@1.0.30-preview.0",
+                "@github/copilot-sdk-linux-x64@1.0.30-preview.0",
+                "@github/copilot-sdk-linuxmusl-arm64@1.0.30-preview.0",
+                "@github/copilot-sdk-linuxmusl-x64@1.0.30-preview.0",
+                "@github/copilot-sdk-win32-arm64@1.0.30-preview.0",
+                "@github/copilot-sdk-win32-x64@1.0.30-preview.0",
+                "@github/copilot-sdk@1.0.30-preview.0",
+                "@hpke/common@1.10.1",
+                "@hpke/core@1.9.0",
+                "@koromix/koffi-android-arm64@3.2.1",
+                "@koromix/koffi-android-x64@3.2.1",
+                "@koromix/koffi-darwin-arm64@3.2.1",
+                "@koromix/koffi-darwin-x64@3.2.1",
+                "@koromix/koffi-freebsd-arm64@3.2.1",
+                "@koromix/koffi-freebsd-ia32@3.2.1",
+                "@koromix/koffi-freebsd-x64@3.2.1",
+                "@koromix/koffi-linux-arm64@3.2.1",
+                "@koromix/koffi-linux-arm@3.2.1",
+                "@koromix/koffi-linux-ia32@3.2.1",
+                "@koromix/koffi-linux-loong64@3.2.1",
+                "@koromix/koffi-linux-riscv64@3.2.1",
+                "@koromix/koffi-linux-x64@3.2.1",
+                "@koromix/koffi-openbsd-ia32@3.2.1",
+                "@koromix/koffi-openbsd-x64@3.2.1",
+                "@koromix/koffi-win32-arm64@3.2.1",
+                "@koromix/koffi-win32-ia32@3.2.1",
+                "@koromix/koffi-win32-x64@3.2.1",
+                "@microsoft/1ds-core-js@3.2.13",
+                "@microsoft/1ds-post-js@3.2.13",
+                "@microsoft/applicationinsights-core-js@2.8.15",
+                "@microsoft/applicationinsights-shims@2.0.2",
+                "@microsoft/dynamicproto-js@1.1.9",
+                "@vscode/copilot-api@0.5.2",
+                "asn1@0.2.6",
+                "bcrypt-pbkdf@1.0.2",
+                "buildcheck@0.0.7",
+                "cpu-features@0.0.10",
+                "koffi@3.2.1",
+                "libsodium-wrappers@0.8.4",
+                "libsodium@0.8.4",
+                "nan@2.26.2",
+                "safer-buffer@2.1.2",
+                "ssh2@1.17.0",
+                "tweetnacl@0.14.5",
+                "vscode-jsonrpc@10.0.0",
+                "ws@8.21.0",
+                "zod@4.6.7"
+              ]
+            },
+            "removedSnapshots": {
+              "count": 50,
+              "items": [
+                "@devcontainers/cli@0.88.0",
+                "@github/copilot-sdk-darwin-arm64@1.0.30-preview.0",
+                "@github/copilot-sdk-darwin-x64@1.0.30-preview.0",
+                "@github/copilot-sdk-linux-arm64@1.0.30-preview.0",
+                "@github/copilot-sdk-linux-x64@1.0.30-preview.0",
+                "@github/copilot-sdk-linuxmusl-arm64@1.0.30-preview.0",
+                "@github/copilot-sdk-linuxmusl-x64@1.0.30-preview.0",
+                "@github/copilot-sdk-win32-arm64@1.0.30-preview.0",
+                "@github/copilot-sdk-win32-x64@1.0.30-preview.0",
+                "@github/copilot-sdk@1.0.30-preview.0",
+                "@hpke/common@1.10.1",
+                "@hpke/core@1.9.0",
+                "@koromix/koffi-android-arm64@3.2.1",
+                "@koromix/koffi-android-x64@3.2.1",
+                "@koromix/koffi-darwin-arm64@3.2.1",
+                "@koromix/koffi-darwin-x64@3.2.1",
+                "@koromix/koffi-freebsd-arm64@3.2.1",
+                "@koromix/koffi-freebsd-ia32@3.2.1",
+                "@koromix/koffi-freebsd-x64@3.2.1",
+                "@koromix/koffi-linux-arm64@3.2.1",
+                "@koromix/koffi-linux-arm@3.2.1",
+                "@koromix/koffi-linux-ia32@3.2.1",
+                "@koromix/koffi-linux-loong64@3.2.1",
+                "@koromix/koffi-linux-riscv64@3.2.1",
+                "@koromix/koffi-linux-x64@3.2.1",
+                "@koromix/koffi-openbsd-ia32@3.2.1",
+                "@koromix/koffi-openbsd-x64@3.2.1",
+                "@koromix/koffi-win32-arm64@3.2.1",
+                "@koromix/koffi-win32-ia32@3.2.1",
+                "@koromix/koffi-win32-x64@3.2.1",
+                "@microsoft/1ds-core-js@3.2.13",
+                "@microsoft/1ds-post-js@3.2.13",
+                "@microsoft/applicationinsights-core-js@2.8.15",
+                "@microsoft/applicationinsights-shims@2.0.2",
+                "@microsoft/dynamicproto-js@1.1.9",
+                "@vscode/copilot-api@0.5.2",
+                "asn1@0.2.6",
+                "bcrypt-pbkdf@1.0.2",
+                "buildcheck@0.0.7",
+                "cpu-features@0.0.10",
+                "koffi@3.2.1",
+                "libsodium-wrappers@0.8.4",
+                "libsodium@0.8.4",
+                "nan@2.26.2",
+                "safer-buffer@2.1.2",
+                "ssh2@1.17.0",
+                "tweetnacl@0.14.5",
+                "vscode-jsonrpc@10.0.0",
+                "ws@8.21.0",
+                "zod@4.6.7"
+              ]
+            }
+          },
+          {
+            "path": "test/sanity/pnpm-lock.yaml",
+            "status": "ok",
+            "unchanged": true
+          }
+        ],
+        "diff": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-15-p5-stagec-gate\\1.146.0-p5-c-all\\lockfile.diff",
+        "checkedAt": "2026-11-16T02:30:58.757Z",
+        "baseRef": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+      },
+      "diff": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-15-p5-stagec-gate\\1.146.0-p5-c-all\\lockfile.diff"
+    },
+    {
+      "name": "typecheck",
+      "status": "ok",
+      "startedAt": "2026-11-16T02:30:58.777Z",
+      "env": {
+        "BUILD_SOURCEVERSION": "101e832240f4f92b1eddb2b505078bed96f84d43"
+      },
+      "command": "pnpm run typecheck-client",
+      "cwd": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\wt\\1.146.0",
+      "log": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\logs\\1.146.0-p5-c-all\\typecheck.log",
+      "seconds": 6.604,
+      "exitCode": 0
+    },
+    {
+      "name": "package",
+      "status": "ok",
+      "startedAt": "2026-11-16T02:31:05.667Z",
+      "signtool": {
+        "path": "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\x64\\signtool.exe",
+        "source": "WindowsKits",
+        "pathPrepended": "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\x64"
+      },
+      "env": {
+        "BUILD_SOURCEVERSION": "101e832240f4f92b1eddb2b505078bed96f84d43"
+      },
+      "command": "pnpm run gulp vscode-win32-x64-min",
+      "cwd": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\wt\\1.146.0",
+      "log": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\logs\\1.146.0-p5-c-all\\package.log",
+      "seconds": 155.182,
+      "exitCode": 0
+    },
+    {
+      "name": "postprocess",
+      "status": "ok",
+      "startedAt": "2026-11-16T02:33:40.867Z",
+      "layout": {
+        "appDir": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\wt\\VSCode-win32-x64\\resources\\app",
+        "versionedFolder": null,
+        "exe": "Shuko.exe",
+        "cli": "bin\\shuko.cmd",
+        "version": "1.146.0",
+        "commit": "101e832240f4f92b1eddb2b505078bed96f84d43",
+        "nameShort": "Shuko"
+      },
+      "productCommit": {
+        "ok": true,
+        "commit": "101e832240f4f92b1eddb2b505078bed96f84d43",
+        "expected": "101e832240f4f92b1eddb2b505078bed96f84d43",
+        "problems": []
+      },
+      "license": {
+        "LICENSE.txt": true,
+        "ThirdPartyNotices.txt": true
+      },
+      "extensions": {
+        "unitsFrom": "checks.json",
+        "unitIds": [
+          "A-1-copilot-extension",
+          "A-2-accounts-extensions",
+          "A-3-debug-extensions",
+          "A-4-notebook-extensions",
+          "A-5-remote-extensions",
+          "A-6-themes",
+          "A-7-unused-extensions",
+          "B-1-telemetry",
+          "B-2-onboarding-experiments-surveys",
+          "B-3-issue-share",
+          "B-4-outline-view",
+          "B-5-theme-switching",
+          "B-6-online-feeds",
+          "B-7-terminal-suggest",
+          "C-1-ai",
+          "C-2-debug",
+          "C-3-remote",
+          "C-4-notebook",
+          "C-5-extension-gallery",
+          "C-6-settings-sync",
+          "C-7-breadcrumbs-outline"
+        ],
+        "removed": [
+          "copilot",
+          "debug-auto-launch",
+          "debug-server-ready",
+          "extension-editing",
+          "github",
+          "github-authentication",
+          "grunt",
+          "gulp",
+          "ipynb",
+          "jake",
+          "mermaid-markdown-features",
+          "microsoft-authentication",
+          "notebook-renderers",
+          "php-language-features",
+          "prompt-basics",
+          "simple-browser",
+          "terminal-suggest",
+          "theme-abyss",
+          "theme-kimbie-dark",
+          "theme-modern-icons",
+          "theme-monokai",
+          "theme-monokai-dimmed",
+          "theme-quietlight",
+          "theme-red",
+          "theme-solarized-dark",
+          "theme-solarized-light",
+          "theme-tomorrow-night-blue",
+          "tunnel-forwarding"
+        ],
+        "presentCount": 65,
+        "nonExtensionDirs": [
+          "node_modules"
+        ],
+        "ok": true,
+        "residual": [],
+        "missingKeep": [],
+        "notShipped": [
+          "vscode-api-tests",
+          "vscode-colorize-perf-tests",
+          "vscode-colorize-tests",
+          "vscode-test-resolver"
+        ],
+        "missingOwn": [],
+        "unexpected": []
+      },
+      "seconds": 0.188
+    },
+    {
+      "name": "zip",
+      "status": "ok",
+      "startedAt": "2026-11-16T02:33:41.058Z",
+      "command": "C:\\WINDOWS\\System32\\tar.exe -a -c -H -f E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\dist\\1.146.0-p5-c-all.zip -C E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\dist\\.stage-1.146.0-p5-c-all Shuko-win32-x64-1.146.0-p5-c-all",
+      "log": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\logs\\1.146.0-p5-c-all\\zip.log",
+      "exitCode": 0,
+      "topFolders": [
+        "Shuko-win32-x64-1.146.0-p5-c-all"
+      ],
+      "entries": 2037,
+      "seconds": 27.712
+    }
+  ],
+  "warnings": [],
+  "applyResult": "ok",
+  "unitsFrom": {
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-15-p5-stagec-gate\\1.146.0-p5-c-all\\checks.json",
+    "applyRan": true
+  },
+  "disk": {
+    "worktree": {
+      "bytes": 2472961048,
+      "gb": 2.3,
+      "files": 89741
+    },
+    "package": {
+      "bytes": 664189142,
+      "gb": 0.62,
+      "files": 1632
+    },
+    "zipBytes": 219102721,
+    "countedSeconds": 27.408
+  }
+}

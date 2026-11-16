@@ -1,0 +1,136 @@
+{
+  "countedAt": "2026-11-16T02:39:08.012Z",
+  "seconds": 200.556,
+  "drive": {
+    "root": "C:\\",
+    "freeBytes": 103198302208,
+    "freeGB": 96.11
+  },
+  "entries": [
+    {
+      "name": "cb",
+      "path": "C:\\b",
+      "exists": true,
+      "bytes": 44467666638,
+      "gb": 41.41,
+      "files": 775898,
+      "hardlinkedFiles": 365459,
+      "uniqueBytes": 37754721804,
+      "uniqueGB": 35.16
+    },
+    {
+      "name": "pnpmStore",
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm\\store",
+      "exists": true,
+      "bytes": 3713457387,
+      "gb": 3.46,
+      "files": 108171,
+      "hardlinkedFiles": 97362,
+      "uniqueBytes": 3712007699,
+      "uniqueGB": 3.46
+    },
+    {
+      "name": "pnpmCache",
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm-cache",
+      "exists": true,
+      "bytes": 1831996150,
+      "gb": 1.71,
+      "files": 4001,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 1831996150,
+      "uniqueGB": 1.71
+    },
+    {
+      "name": "pnpmState",
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\pnpm-state",
+      "exists": true,
+      "bytes": 51,
+      "gb": 0,
+      "files": 1,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 51,
+      "uniqueGB": 0
+    },
+    {
+      "name": "electron",
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\electron",
+      "exists": true,
+      "bytes": 978047803,
+      "gb": 0.91,
+      "files": 7,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 978047803,
+      "uniqueGB": 0.91
+    },
+    {
+      "name": "nodeGyp",
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\node-gyp",
+      "exists": true,
+      "bytes": 128831857,
+      "gb": 0.12,
+      "files": 5666,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 128831857,
+      "uniqueGB": 0.12
+    },
+    {
+      "name": "npmCache",
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\npm-cache",
+      "exists": true,
+      "bytes": 11806307990,
+      "gb": 11,
+      "files": 60662,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 11806307990,
+      "uniqueGB": 11
+    },
+    {
+      "name": "electronGyp",
+      "path": "C:\\Users\\kou_z\\.electron-gyp",
+      "exists": true,
+      "bytes": 2912823,
+      "gb": 0,
+      "files": 126,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 2912823,
+      "uniqueGB": 0
+    },
+    {
+      "name": "corepack",
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\node\\corepack",
+      "exists": true,
+      "bytes": 36906628,
+      "gb": 0.03,
+      "files": 1353,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 36906628,
+      "uniqueGB": 0.03
+    },
+    {
+      "name": "playwright",
+      "path": "C:\\Users\\kou_z\\AppData\\Local\\ms-playwright",
+      "exists": true,
+      "bytes": 1971665345,
+      "gb": 1.84,
+      "files": 1629,
+      "hardlinkedFiles": 0,
+      "uniqueBytes": 1971665345,
+      "uniqueGB": 1.84
+    },
+    {
+      "name": "tmpb",
+      "path": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b",
+      "exists": true,
+      "bytes": 15837098527,
+      "gb": 14.75,
+      "files": 206374,
+      "hardlinkedFiles": 122706,
+      "uniqueBytes": 14495715326,
+      "uniqueGB": 13.5
+    }
+  ],
+  "uniqueTotal": {
+    "bytes": 69488121219,
+    "gb": 64.72
+  }
+}
