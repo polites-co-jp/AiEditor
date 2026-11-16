@@ -1,6 +1,6 @@
 // scripts/apply.mjs の入口（引数・終了コード・--dry-run）のテスト。仕様: tasks/2026-11-13-p2-apply/apply-design.md の1・3節。
 // --dry-run の試しは、蒙恬の試しの作業ツリー <buildRoot>\wt\dev-apply（読むだけ。変わらないことを確かめる。tests/build/root.mjs）と、試しの入れ物
-// tasks/2026-11-13-p2-apply/fixtures/ を使う。作業ツリーが無ければ飛ぶ。書き込みは <buildRoot>\smoke\ の下の checks.json だけ。
+// tasks/2026-11-13-p2-apply/fixtures/ を使う。作業ツリーが無ければ飛ぶ。書き込みは試しの入れ物（tmp\tests\）の下の checks.json だけ。
 // Run: node --test tests/apply-cli.test.mjs
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -12,9 +12,13 @@ import { fileURLToPath } from 'node:url';
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const APPLY = join(REPO, 'scripts', 'apply.mjs');
 const FIX = join(REPO, 'tasks', '2026-11-13-p2-apply', 'fixtures');
-import { WT_DIR, SMOKE_DIR } from './build/root.mjs';
+import { WT_DIR } from './build/root.mjs';
+import { makeSandbox, removeSandbox } from './build/helpers.mjs';
+import { after } from 'node:test';
 const WT = process.env.AIED_APPLY_WT || join(WT_DIR, 'dev-apply');
-const OUT = join(SMOKE_DIR, 'apply-cli');
+// checks.json の出力先は試しの入れ物（<リポジトリ>\tmp\tests\）。<buildRoot>\smoke（C:\b\smoke など）には書かない（2026-11-16 の直し）。
+const OUT = makeSandbox('tests-apply-cli-');
+after(() => removeSandbox(OUT));
 const hasApply = existsSync(APPLY);
 const skipApply = hasApply ? false : '実装なし: scripts/apply.mjs';
 

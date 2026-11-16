@@ -20,6 +20,11 @@ function Ids { param($Procs) (@($Procs | ForEach-Object { [int]$_.ProcessId } | 
 
 $here = Split-Path -Parent $MyInvocation.MyCommand.Path
 $repo = Split-Path -Parent $here
+# 2026-11-16: temporary files go under <repo>\tmp\tests-temp (git-ignored), not under C: - also when this file is run directly. This process only.
+$ttemp = $env:AIED_TEST_TEMP
+if (-not $ttemp) { $ttemp = Join-Path $repo 'tmp\tests-temp' }
+New-Item -ItemType Directory -Force -Path $ttemp | Out-Null
+$env:TEMP = $ttemp; $env:TMP = $ttemp
 . (Join-Path $repo 'scripts\measure.ps1')
 
 # ---- the script itself ------------------------------------------------------

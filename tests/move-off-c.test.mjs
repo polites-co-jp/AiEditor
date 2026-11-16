@@ -327,6 +327,18 @@ const SURVEY = /[\\/]scripts[\\/]move-survey\.mjs$/i;
 const PHASE0 = /[\\/]scripts[\\/](p0-[^\\/]*\.(ps1|mjs)|lib[\\/]p0-common\.ps1)$/i;
 const scanFiles = () => [...walk(path.join(REPO, 'scripts')), ...walk(path.join(REPO, 'tools'))].filter((f) => !SURVEY.test(f) && !PHASE0.test(f));
 
+test('パスの長さ: 取り込みの監査（<buildRoot>\\audit\\take-in-<縮めたラベル>-netaudit）の最長のファイルが、どんなラベルでも 259 文字以下', async () => {
+  const net = await import('../scripts/lib/take-in/smoke-net.mjs');
+  const worstLabel = 'N'.repeat(net.NETAUDIT_LABEL_MAX);
+  const worst = NEW_DEFAULT + '\\audit\\' + net.netauditLabel(worstLabel) + '-netaudit' + CC_TAIL;
+  assert.ok(worst.length <= WIN_MAX_PATH_CHARS, `最長の見積もり ${worst.length} 文字`);
+  for (const label of ['1.147.0-1', '1.146.0-p2-A-1', 'take-in-trial-official-1.146.0-3', 'L'.repeat(100)]) {
+    const p = NEW_DEFAULT + '\\audit\\' + net.netauditLabel(label) + '-netaudit' + CC_TAIL;
+    assert.ok(p.length <= WIN_MAX_PATH_CHARS, `${label}: ${p.length} 文字`);
+  }
+  assert.ok(WIN_MAX_PATH_CHARS - worst.length >= 1, '余裕は 1 文字以上');
+});
+
 test('scripts/ と tools/ のコード行（コメント以外）に C:\\b を文字で持たない', () => {
   const hits = [];
   for (const f of scanFiles()) {

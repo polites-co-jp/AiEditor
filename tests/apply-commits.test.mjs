@@ -12,10 +12,10 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { MAIN_FILES, checkUpstreamAdditions } from '../scripts/lib/apply/checks.mjs';
-import { REPO, makeSandbox, removeSandbox, writeFile, runNode } from './build/helpers.mjs';
+import { REPO, makeSandbox, removeSandbox, sandboxBase, writeFile, runNode } from './build/helpers.mjs';
 
 const IDENT = 'shuko-apply <apply@shuko.invalid>';
-import { UPSTREAM_REPO as UP_DEFAULT, WT_DIR } from './build/root.mjs';
+import { UPSTREAM_REPO as UP_DEFAULT } from './build/root.mjs';
 const UP_REPO = UP_DEFAULT; // 常設の clone（<buildRoot>/vscode。tests/build/root.mjs）
 const UP_TAG = process.env.AIED_UPSTREAM_TAG || '1.146.0';
 const git = (cwd, ...args) => spawnSync('git', ['-C', cwd, ...args], { encoding: 'utf8', maxBuffer: 256 * 1024 * 1024 });
@@ -152,10 +152,12 @@ test('checkUpstreamAdditions: workbench と sessions の main に増えた impor
 });
 
 // ---- apply.mjs を本当に当てる通しの試し（commitIdentity と mydist の既定の外し方） ------------------
-const WT_BASE = WT_DIR;
+// 作業ツリーは試しの入れ物（<リポジトリ>\tmp\tests\）の下に作る。<buildRoot>\wt（C:\b\wt や本物の tmp\b\wt）には何も作らない（2026-11-16 の直し）。
+// 常設の clone（UP_REPO）は読む・worktree の登録だけ。名前は短くする（vscode の木は深いので MAX_PATH に余裕を残す）。
+const WT_BASE = sandboxBase();
 const e2eSkip = upstreamOk ? false : `本家の clone が読めない: ${UP_REPO}`;
 let wt = null;
-const wtName = `tests-ac-${process.pid}`;
+const wtName = `acw-${process.pid}`;
 
 function newWorktree() {
   fs.mkdirSync(WT_BASE, { recursive: true });
@@ -171,6 +173,7 @@ after(() => {
   if (wt) {
     git(UP_REPO, 'worktree', 'remove', '--force', wt);
     git(UP_REPO, 'worktree', 'prune');
+    removeSandbox(wt);
   }
 });
 const applyRun = (args) => runNode(['scripts/apply.mjs', wt, ...args], { timeout: 900000 });

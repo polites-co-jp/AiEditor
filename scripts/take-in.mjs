@@ -30,7 +30,7 @@ import { classifyApplyFailure, findConflictMarkers, outsideAllowed, normalizeRep
 import { fetchUpstreamInfo, parseLsRemote } from "./lib/take-in/upstream-info.mjs";
 import { findPrevFetchDir, prevFetchCandidates, pickFetchedItem, seedFor, decideExtVersion, setLedgerVerdict } from "./lib/take-in/ext.mjs";
 import { writeBack, readWatchStatus } from "./lib/take-in/writeback.mjs";
-import { smokeRunArgs, newBaselinePath, summarizeSmoke, NETAUDIT_SETTINGS, netEnvLayout, netEnvInstallArgs, netauditArgs } from "./lib/take-in/smoke-net.mjs";
+import { smokeRunArgs, newBaselinePath, summarizeSmoke, NETAUDIT_SETTINGS, netEnvLayout, netEnvInstallArgs, netauditArgs, netauditPathCheck } from "./lib/take-in/smoke-net.mjs";
 import { listMaterials, buildJudgeRequest, JUDGE_PROMPT, listIssues, composeBuildRecord, factsFrom, auditHosts } from "./lib/take-in/records.mjs";
 
 const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
@@ -629,6 +629,13 @@ async function runCore(a) {
   if (ctx.prevTag === a.tag) throw new Stop(`タグ ${a.tag} は main の upstream.json と同じ（取り込むものが無い）`, 3);
   const steps = selectCoreSteps(a.from, a.to).map((s) => s.n);
   const run = (n) => steps.includes(n);
+  // 通信の監査の実行のフォルダの名前と、その中の最も長いファイルの文字数（smoke-net.mjs の netauditPathCheck。指摘の1）。
+  // ラベルは netauditLabel で縮める。<buildRoot> が長くて収まらないときは、手順 7 を含む実行を最初に止める（dry-run では止めず、計画に出す）。
+  ctx.netauditRun = netauditPathCheck(netauditWorkRoot(ctx), ctx.label);
+  ctx.rec.netauditRun = ctx.netauditRun;
+  if (!a.dryRun && run(7) && !ctx.netauditRun.ok) {
+    throw new Stop(`通信の監査の実行のフォルダの中のパスが長すぎる（${ctx.netauditRun.longest} 文字。上限 ${ctx.netauditRun.limit}）: ${ctx.netauditRun.runDir}。buildRoot を短くするか、--to で手順 7 の前までにする`);
+  }
 
   if (a.dryRun) {
     const plan = corePlan(ctx);
@@ -636,7 +643,7 @@ async function runCore(a) {
       repair: describeInvocation(buildClaudeInvocation({ kind: "repair", repoRoot: REPO, worktree: ctx.wt, builderWorktree: ctx.bwt, prompt: REPAIR_PROMPT, input: "(修理の依頼の本文)", claudePath: ctx.claudePath, model: a.repairModel, rulesFile: path.join(REPO, "TAKE-IN.md") })),
       verdict: describeInvocation(buildClaudeInvocation({ kind: "verdict", repoRoot: REPO, prompt: JUDGE_PROMPT(`records/take-in/${ctx.label}/judge-request.md`), claudePath: ctx.claudePath })),
     };
-    const out = { result: "dry-run", label: ctx.label, tag: a.tag, prevTag: ctx.prevTag, commit: ctx.commit || "(git ls-remote で取る)", branch: ctx.branch, steps: CORE_STEPS.filter((s) => run(s.n)), paths: ctx.rec.paths, childTemp: ctx.rec.childTemp, currentLabel: ctx.currentLabel, watch, plan, claude: inv, recordDirExists: fs.existsSync(ctx.recDir), expandOnlySupported: plan.expand.supported };
+    const out = { result: "dry-run", label: ctx.label, tag: a.tag, prevTag: ctx.prevTag, commit: ctx.commit || "(git ls-remote で取る)", branch: ctx.branch, steps: CORE_STEPS.filter((s) => run(s.n)), paths: ctx.rec.paths, childTemp: ctx.rec.childTemp, netauditRun: ctx.netauditRun, currentLabel: ctx.currentLabel, watch, plan, claude: inv, recordDirExists: fs.existsSync(ctx.recDir), expandOnlySupported: plan.expand.supported };
     console.log(JSON.stringify(out, null, 2));
     return 0;
   }

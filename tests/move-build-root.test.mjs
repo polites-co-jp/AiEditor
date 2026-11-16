@@ -254,7 +254,8 @@ test('verifySame: 数・大きさ・SHA-256 の違いを見つける', () => {
   fs.copyFileSync(sel.files[0].src, sel.files[0].dst);
   assert.deepEqual(verifySame(it, sel), { ok: true, checked: 1, problems: [] });
   fs.writeFileSync(sel.files[0].dst, 'ZIPDATA-p2-XXX');
-  const v = verifySame(it, sel);
+  // 照らし済み（f.verified）のファイルは照らし直さない。書き換えた後は選び直す
+  const v = verifySame(it, selectFiles(it, from, to));
   assert.equal(v.ok, false);
   assert.match(v.problems[0], /SHA-256 が違う/);
 });
@@ -423,6 +424,173 @@ test('--out に結果の JSON を書く', () => {
   const j = JSON.parse(fs.readFileSync(out, 'utf8'));
   assert.equal(j.result, 'ok');
   assert.equal(j.items[0].name, 'p2-all');
+});
+
+// ---- 2026-11-16 の直し: dir の SHA-256、途中で止まった後の続き -----------------------------------------
+// 裁定「数と大きさと SHA-256 を照らす」を file だけでなく dir（p2-all・smoke-ext など約 8 GB）にもかける。
+// 写し先に途中まで写したものがあるときは、元と同じファイル（大きさと SHA-256）は飛ばし、無いものだけを写して続ける。違うものがあれば problem（上書きしない）。
+
+const P2 = ['p2', '1.146.0-p2-all'];
+
+test('dir の SHA-256: 写し先に同じ大きさで中身だけ違うファイルがあれば problem（大きさだけの照らしでは通ってしまう）。上書きしない', () => {
+  const from = fresh('from');
+  const to = fresh('to');
+  makeSource(from);
+  // 元の Shuko.exe は 'EXE'（3 バイト）。同じ大きさで中身が違うもの
+  writeFile(path.join(to, ...P2, 'Shuko.exe'), 'EXX');
+  writeFile(path.join(to, ...P2, 'resources', 'app', 'product.json'), '{"a":1}');
+  const r = run(['--from', from, '--to', to, '--only', 'p2-all']);
+  assert.equal(r.status, 1, r.stderr + r.stdout);
+  assert.equal(item(r.json, 'p2-all').status, 'problem');
+  assert.match(item(r.json, 'p2-all').problems.join(' '), /SHA-256|上書きしない/);
+  assert.equal(fs.readFileSync(path.join(to, ...P2, 'Shuko.exe'), 'utf8'), 'EXX', '上書きしていない');
+});
+
+test('dir の SHA-256: 写した後の照らし（verifySame）が、同じ大きさで中身が違う dir のファイルを見つける', () => {
+  const from = fresh('from');
+  const to = fresh('to');
+  makeSource(from);
+  const it = PLAN.find((p) => p.name === 'p2-all');
+  const sel = selectFiles(it, from, to);
+  for (const f of sel.files) {
+    fs.mkdirSync(path.dirname(f.dst), { recursive: true });
+    fs.copyFileSync(f.src, f.dst);
+  }
+  assert.equal(verifySame(it, selectFiles(it, from, to)).ok, true, '全部同じなら ok');
+  fs.writeFileSync(path.join(to, ...P2, 'Shuko.exe'), 'EXX'); // 同じ 3 バイト
+  const v = verifySame(it, selectFiles(it, from, to));
+  assert.equal(v.ok, false, 'dir でも SHA-256 を照らす');
+  assert.match(v.problems.join(' '), /SHA-256 が違う/);
+  assert.equal(v.checked, sel.files.length, '照らした数は写す全部');
+});
+
+test('写した項目ごとに、かかった時間を記録に出す（写す時間と照らす時間。秒の数値）', () => {
+  const from = fresh('from');
+  const to = fresh('to');
+  makeSource(from);
+  const r = run(['--from', from, '--to', to, '--only', 'p2-all,dist-p2-all']);
+  assert.equal(r.status, 0, r.stderr + r.stdout);
+  for (const nme of ['p2-all', 'dist-p2-all']) {
+    const it = item(r.json, nme);
+    assert.equal(it.status, 'copied', nme);
+    assert.equal(typeof it.seconds, 'number', `${nme}.seconds`);
+    assert.equal(typeof it.verifySeconds, 'number', `${nme}.verifySeconds`);
+    assert.ok(it.verify.checked >= 1, `${nme} は照らした数が出る`);
+  }
+  assert.equal(item(r.json, 'p2-all').verify.checked, 2, 'dir は全ファイル（2 個）を照らす');
+});
+
+test('続き: 途中で止まった写し先（一部だけ写してある）は、元と同じものを飛ばし、無いものだけを写して終わる。上書きしない', () => {
+  const from = fresh('from');
+  const to = fresh('to');
+  makeSource(from);
+  const exe = path.join(to, ...P2, 'Shuko.exe');
+  writeFile(exe, 'EXE'); // 元と同じ
+  const old = new Date(2020, 0, 1);
+  fs.utimesSync(exe, old, old); // 上書きされたら更新時刻が変わる
+  const before = fs.statSync(exe);
+  const r = run(['--from', from, '--to', to, '--only', 'p2-all']);
+  assert.equal(r.status, 0, r.stderr + r.stdout);
+  const it = item(r.json, 'p2-all');
+  assert.notEqual(it.status, 'problem', it.problems.join(' '));
+  assert.equal(it.status, 'copied', '無いものを写したので copied');
+  assert.equal(it.existing.same, 1, '飛ばした数（前からあった同じもの）');
+  assert.equal(it.existing.missing, 1);
+  assert.equal(it.copied, 1, '写したのは無かった 1 個だけ');
+  assert.equal(fs.readFileSync(path.join(to, ...P2, 'resources', 'app', 'product.json'), 'utf8'), '{"a":1}', '無かったものが写った');
+  const after = fs.statSync(exe);
+  assert.equal(after.mtimeMs, before.mtimeMs, '前からあった同じファイルは触らない');
+  assert.equal(fs.readFileSync(exe, 'utf8'), 'EXE');
+  // もう一度走らせれば already（何も変えない）
+  const fp = fingerprint(to);
+  const r2 = run(['--from', from, '--to', to, '--only', 'p2-all']);
+  assert.equal(r2.status, 0);
+  assert.equal(item(r2.json, 'p2-all').status, 'already');
+  assert.deepEqual(fingerprint(to), fp);
+});
+
+test('続き: 写し先に違うファイルが1つでもあれば problem。無いものも写さず、違うファイルも上書きしない', () => {
+  const from = fresh('from');
+  const to = fresh('to');
+  makeSource(from);
+  writeFile(path.join(to, ...P2, 'Shuko.exe'), 'EXX'); // 同じ大きさで中身が違う。product.json は無い
+  const r = run(['--from', from, '--to', to, '--only', 'p2-all']);
+  assert.equal(r.status, 1, r.stderr + r.stdout);
+  assert.equal(item(r.json, 'p2-all').status, 'problem');
+  assert.ok(!fs.existsSync(path.join(to, ...P2, 'resources', 'app', 'product.json')), '違うものがあるときは何も写さない');
+  assert.equal(fs.readFileSync(path.join(to, ...P2, 'Shuko.exe'), 'utf8'), 'EXX', '上書きしない');
+});
+
+test('続き: 途中で切れたファイル（元より小さい）は「違うもの」。problem で止まり、上書きもしない', () => {
+  const from = fresh('from');
+  const to = fresh('to');
+  makeSource(from);
+  writeFile(path.join(to, 'dist', '1.146.0-p2-all.zip'), 'ZIP'); // 元は 'ZIPDATA-p2-all'
+  const r = run(['--from', from, '--to', to, '--only', 'dist-p2-all']);
+  assert.equal(r.status, 1, r.stderr + r.stdout);
+  assert.equal(item(r.json, 'dist-p2-all').status, 'problem');
+  assert.equal(fs.readFileSync(path.join(to, 'dist', '1.146.0-p2-all.zip'), 'utf8'), 'ZIP');
+});
+
+test('続き: 実行の置き場所（results）も、直下のファイルが一部だけ写してあれば無いものだけを写す', () => {
+  const from = fresh('from');
+  const to = fresh('to');
+  makeSource(from);
+  const dst = path.join(to, 'smoke', 'archive', 'runs', 'official-20261113T124359');
+  writeFile(path.join(dst, 'smoke-result.json'), '{"ok":true}');
+  const r = run(['--from', from, '--to', to, '--only', 'smoke-runs']);
+  assert.equal(r.status, 0, r.stderr + r.stdout);
+  assert.equal(item(r.json, 'smoke-runs').status, 'copied');
+  assert.equal(fs.readFileSync(path.join(dst, 'smoke-result.md'), 'utf8'), '# ok');
+  assert.ok(fs.existsSync(path.join(to, 'smoke', 'archive', 'runs', 'p2-A-1-20261114T130741', 'probe-result.json')));
+  assert.ok(!fs.existsSync(path.join(dst, 'user')), 'user\\ の下は写さない（続きでも）');
+});
+
+test('続き: dry-run は何も写さず、飛ばす数と写す数（existing）を出す', () => {
+  const from = fresh('from');
+  const to = fresh('to');
+  makeSource(from);
+  writeFile(path.join(to, ...P2, 'Shuko.exe'), 'EXE');
+  const fp = fingerprint(to);
+  const r = run(['--from', from, '--to', to, '--only', 'p2-all', '--dry-run']);
+  assert.equal(r.status, 0, r.stderr + r.stdout);
+  const it = item(r.json, 'p2-all');
+  assert.equal(it.status, 'planned');
+  assert.equal(it.existing.same, 1);
+  assert.equal(it.existing.missing, 1);
+  assert.deepEqual(fingerprint(to), fp, 'dry-run は何も写さない');
+});
+
+test('順番: smoke-ext（smoke\\ext を作る）の後に smoke-baselines（根が smoke）を写しても problem にならない。2回目は already', () => {
+  const from = fresh('from');
+  const to = fresh('to');
+  makeSource(from);
+  writeFile(path.join(from, 'smoke', 'ext', 'p', 'x.txt'), 'ext');
+  const names = PLAN.map((p) => p.name);
+  assert.ok(names.indexOf('smoke-ext') < names.indexOf('smoke-baselines'), 'PLAN の順');
+  const args = ['--from', from, '--to', to, '--only', 'smoke-ext,smoke-baselines'];
+  const r = run(args);
+  assert.equal(r.status, 0, r.stderr + r.stdout);
+  assert.equal(item(r.json, 'smoke-ext').status, 'copied');
+  assert.equal(item(r.json, 'smoke-baselines').status, 'copied', 'smoke\\ が先にできていても、無いものを写す');
+  assert.ok(fs.existsSync(path.join(to, 'smoke', 'baseline-1.json')));
+  assert.ok(!fs.existsSync(path.join(to, 'smoke', 'notes.txt')));
+  const r2 = run(args);
+  assert.equal(r2.status, 0);
+  assert.equal(item(r2.json, 'smoke-ext').status, 'already');
+  assert.equal(item(r2.json, 'smoke-baselines').status, 'already');
+});
+
+test('続き: 写し先にあって元に無いファイルは、数えず、消さず、照らさない', () => {
+  const from = fresh('from');
+  const to = fresh('to');
+  makeSource(from);
+  assert.equal(run(['--from', from, '--to', to, '--only', 'p2-all']).status, 0);
+  writeFile(path.join(to, ...P2, 'extra-only-in-dest.txt'), 'x');
+  const r = run(['--from', from, '--to', to, '--only', 'p2-all']);
+  assert.equal(r.status, 0, r.stderr + r.stdout);
+  assert.equal(item(r.json, 'p2-all').status, 'already');
+  assert.ok(fs.existsSync(path.join(to, ...P2, 'extra-only-in-dest.txt')));
 });
 
 // ---- 静的な検査 --------------------------------------------------------------------------------

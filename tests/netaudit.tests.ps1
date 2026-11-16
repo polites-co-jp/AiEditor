@@ -18,6 +18,11 @@ function New-Proc { param([int]$Id, [int]$ParentId, [string]$Name, [string]$Cmd 
 
 $here = Split-Path -Parent $MyInvocation.MyCommand.Path
 $repo = Split-Path -Parent $here
+# 2026-11-16: temporary files go under <repo>\tmp\tests-temp (git-ignored), not under C: - also when this file is run directly. This process only.
+$ttemp = $env:AIED_TEST_TEMP
+if (-not $ttemp) { $ttemp = Join-Path $repo 'tmp\tests-temp' }
+New-Item -ItemType Directory -Force -Path $ttemp | Out-Null
+$env:TEMP = $ttemp; $env:TMP = $ttemp
 . (Join-Path $repo 'scripts\netaudit.ps1')
 
 Test-Case 'dot-source loads functions without running an audit' {
@@ -747,6 +752,99 @@ try {
         Assert-True ($src -match "-like 'could not remove the net log files after reading them\*'") 'the leftover error of the normal path is rethrown as is'
     }
 } finally { Remove-Item -LiteralPath $tmpEx -Recurse -Force -ErrorAction SilentlyContinue }
+# 2026-11-16 fix (verification point 5): the NORMAL path (nothing throws) is run with a fake editor too, not only read as text.
+# Everything that touches the machine is replaced by a function in this scope: Start-EditorProcess (writes the 3 log files), Get-ProcessSnapshot,
+# Get-NetTCPConnection, Get-DnsClientCache, Stop-EditorTree, Start-Sleep. The run data lives under <repo>\tmp\tests (git-ignored; never under tmp\b or C:\b).
+$tmpOk = Join-Path (Join-Path $repo 'tmp\tests') ('netaudit-ok-' + [guid]::NewGuid().ToString('N'))
+New-Item -ItemType Directory -Force -Path $tmpOk | Out-Null
+function New-OkRun {
+    param([string]$Name)
+    $d = Join-Path $tmpOk $Name
+    New-Item -ItemType Directory -Force -Path (Join-Path $d 'env\user'), (Join-Path $d 'env\ext'), (Join-Path $d 'ws') | Out-Null
+    Set-Content -LiteralPath (Join-Path $d 'ws\a.ts') -Value 'x'; Set-Content -LiteralPath (Join-Path $d 'ws\b.py') -Value 'y'
+    return @{
+        Exe = (Join-Path $env:SystemRoot 'System32\cmd.exe'); EnvDir = (Join-Path $d 'env'); Workspace = (Join-Path $d 'ws')
+        OpenFiles = @('a.ts', 'b.py'); Label = 'ok'; DurationSeconds = 1; IntervalSeconds = 2; DnsIntervalSeconds = 30; LaunchWaitSeconds = 1
+        OutDir = (Join-Path $d 'out'); Allowlist = (Join-Path $d 'no-allowlist.json'); Previous = $null
+        NetLogDir = (Join-Path $d 'netlog'); NoNetLog = $false; NoNodeDebug = $false; NoHints = $true
+        WorkRoot = (Join-Path $d 'work'); ProcessName = $null; KeepData = $false; Force = $true; CleanStale = $false; StaleFilter = '*'
+        Dir = $d
+    }
+}
+try {
+    Test-Case 'normal path (fake editor): the net log is read, then removed; the records name the host; no secret is left anywhere; the run data is gone' {
+        $P = New-OkRun 'a'
+        function Start-EditorProcess {
+            param($Exe, $Arguments, $Portable, $ExtraEnv, $StdoutFile, $StderrFile)
+            if ($Arguments -match '--log-net-log="([^"]+)"') { Set-Content -LiteralPath $Matches[1] -Value $script:nlLines }
+            Set-Content -LiteralPath $StdoutFile -Value 'host'; Set-Content -LiteralPath $StderrFile -Value 'host'
+            $o = [pscustomobject]@{ Id = 99999999 }
+            $o | Add-Member -MemberType ScriptMethod -Name CloseMainWindow -Value { $true }
+            $o | Add-Member -MemberType ScriptMethod -Name WaitForExit -Value { param($ms) $true }
+            return $o
+        }
+        function Get-ProcessSnapshot { return @() }
+        function Get-NetTCPConnection { return @() }
+        function Get-DnsClientCache { return @() }
+        function Stop-EditorTree { param($Tree) }
+        function Start-Sleep { param($Seconds, $Milliseconds) }
+        $script:nlLines = $nlLines
+        $out = Invoke-NetAudit -P $P
+        Assert-Equal (@($out)[-1]) $P.OutDir 'returns the output dir'
+        $left = @(Get-ChildItem -LiteralPath $P.NetLogDir -Force -ErrorAction SilentlyContinue)
+        Assert-Equal $left.Count 0 ('net log dir is empty: ' + (($left | ForEach-Object { $_.Name }) -join ','))
+        $j = Get-Content -LiteralPath (Join-Path $P.OutDir 'destinations.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+        Assert-True ($j.Meta.NetLogFilesRemoved -eq $true) 'Meta.NetLogFilesRemoved'
+        Assert-Equal @($j.Meta.NetLogFilesStuck).Count 0 'nothing stuck'
+        Assert-True ($j.Meta.NetLogEvents -gt 0) ('the net log was read before it was removed: events ' + $j.Meta.NetLogEvents)
+        $named = Get-Content -LiteralPath (Join-Path $P.OutDir 'named-hosts.csv') -Raw -Encoding UTF8
+        Assert-True ($named -match 'marketplace\.visualstudio\.com') 'the host from the net log is in the records'
+        $all = (Get-ChildItem -LiteralPath $P.Dir -Recurse -File -Force | ForEach-Object { Get-Content -LiteralPath $_.FullName -Raw -ErrorAction SilentlyContinue }) -join "`n"
+        Assert-True ($all -notmatch 'SECRET123') 'the secret in the URL is not kept anywhere'
+        Assert-True (-not (Test-Path -LiteralPath (Join-Path $P.WorkRoot 'ok-netaudit'))) 'the run data dir is removed'
+    }
+    Test-Case 'normal path (fake editor): a file held open after reading stops the run, but the records are written and the other files are removed' {
+        $P = New-OkRun 'b'
+        $script:heldStream2 = $null
+        function Start-EditorProcess {
+            param($Exe, $Arguments, $Portable, $ExtraEnv, $StdoutFile, $StderrFile)
+            if ($Arguments -match '--log-net-log="([^"]+)"') {
+                Set-Content -LiteralPath $Matches[1] -Value $script:nlLines
+            }
+            Set-Content -LiteralPath $StdoutFile -Value 'host'; Set-Content -LiteralPath $StderrFile -Value 'host'
+            $script:heldPath2 = $StderrFile
+            $o = [pscustomobject]@{ Id = 99999999 }
+            $o | Add-Member -MemberType ScriptMethod -Name CloseMainWindow -Value { $true }
+            $o | Add-Member -MemberType ScriptMethod -Name WaitForExit -Value { param($ms) $true }
+            return $o
+        }
+        function Get-ProcessSnapshot { return @() }
+        function Get-NetTCPConnection { return @() }
+        function Get-DnsClientCache { return @() }
+        function Stop-EditorTree { param($Tree) }
+        $script:nlLines = $nlLines
+        function Start-Sleep { param($Seconds, $Milliseconds) }
+        $msg = $null
+        # The Node debug files are "read" by this fake, which keeps the stderr file open (a file that is open cannot be deleted); the real Remove-AuditLogFiles then fails on it.
+        function Read-NodeDebugFiles {
+            param($Paths)
+            $script:heldStream2 = [IO.File]::Open($script:heldPath2, [IO.FileMode]::Open, [IO.FileAccess]::Read, [IO.FileShare]::ReadWrite)
+            return $null
+        }
+        try { Invoke-NetAudit -P $P | Out-Null } catch { $msg = "$_" }
+        try {
+            Assert-True ($msg -and $msg -like '*could not remove the net log files after reading them*') ("the stop names the problem: $msg")
+            Assert-True ($msg.Contains($script:heldPath2)) 'the held file is listed'
+            Assert-True ($msg -notlike '*ALSO*') 'the normal-path error is not doubled'
+            Assert-True (Test-Path -LiteralPath (Join-Path $P.OutDir 'destinations.json')) 'the records are written before the stop'
+            $j = Get-Content -LiteralPath (Join-Path $P.OutDir 'destinations.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+            Assert-True ($j.Meta.NetLogFilesRemoved -eq $false) 'Meta.NetLogFilesRemoved is false'
+            Assert-Equal @($j.Meta.NetLogFilesStuck).Count 1 'one file stuck'
+            $others = @(Get-ChildItem -LiteralPath $P.NetLogDir -Force | Where-Object { $_.FullName -ne $script:heldPath2 })
+            Assert-Equal $others.Count 0 'the other files are removed'
+        } finally { if ($script:heldStream2) { $script:heldStream2.Dispose() } }
+    }
+} finally { Remove-Item -LiteralPath $tmpOk -Recurse -Force -ErrorAction SilentlyContinue }
 Test-Case 'net log place: the default is <WorkRoot parent>\netlog and the default WorkRoot is <buildRoot>\audit, so the net log is <buildRoot>\netlog' {
     $src = Get-Content -LiteralPath (Join-Path $repo 'scripts\netaudit.ps1') -Raw
     Assert-True ($src -match "Join-Path \(Split-Path \`$P\.WorkRoot -Parent\) 'netlog'") 'netlog next to WorkRoot'

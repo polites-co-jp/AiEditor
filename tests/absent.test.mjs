@@ -100,6 +100,7 @@ test('loadUnitChecks: 単位が無ければ Error。ids が空なら []', () => 
 
 // ---- manifest の網（起動しない拡張のコマンドも見る）----
 import { mkdtempSync, mkdirSync, readFileSync, writeFileSync, rmSync } from 'node:fs';
+import './build/temp-root.mjs'; // os.tmpdir() を tmp\tests-temp に向ける（C: に出さない）
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createRequire } from 'node:module';

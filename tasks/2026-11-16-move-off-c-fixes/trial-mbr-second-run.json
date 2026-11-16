@@ -1,0 +1,66 @@
+{
+  "startedAt": "2026-11-16T00:16:23.110Z",
+  "from": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\tests\\meng-tian-mbr\\from",
+  "to": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\tests\\meng-tian-mbr\\to",
+  "dryRun": false,
+  "items": [
+    {
+      "name": "p2-all",
+      "kind": "dir",
+      "problems": [],
+      "src": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\tests\\meng-tian-mbr\\from\\p2\\1.146.0-p2-all",
+      "dst": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\tests\\meng-tian-mbr\\to\\p2\\1.146.0-p2-all",
+      "files": 2,
+      "bytes": 19,
+      "gb": 0,
+      "destExists": true,
+      "existing": {
+        "same": 2,
+        "missing": 0,
+        "different": 0,
+        "sameBytes": 19,
+        "missingBytes": 0,
+        "differentFiles": [],
+        "seconds": 0.001
+      },
+      "verify": {
+        "ok": true,
+        "checked": 2,
+        "problems": []
+      },
+      "verifySeconds": 0.001,
+      "status": "already"
+    },
+    {
+      "name": "smoke-baselines",
+      "kind": "files",
+      "problems": [],
+      "src": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\tests\\meng-tian-mbr\\from\\smoke",
+      "dst": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\tests\\meng-tian-mbr\\to\\smoke",
+      "files": 1,
+      "bytes": 7,
+      "gb": 0,
+      "destExists": true,
+      "existing": {
+        "same": 1,
+        "missing": 0,
+        "different": 0,
+        "sameBytes": 7,
+        "missingBytes": 0,
+        "differentFiles": [],
+        "seconds": 0
+      },
+      "verify": {
+        "ok": true,
+        "checked": 1,
+        "problems": []
+      },
+      "verifySeconds": 0,
+      "status": "already"
+    }
+  ],
+  "result": "ok",
+  "totalGB": 0,
+  "seconds": 0.004,
+  "finishedAt": "2026-11-16T00:16:23.114Z"
+}

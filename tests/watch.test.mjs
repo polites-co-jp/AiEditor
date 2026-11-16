@@ -5,6 +5,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import './build/temp-root.mjs'; // os.tmpdir() を tmp\tests-temp に向ける（C: に出さない）
 import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';

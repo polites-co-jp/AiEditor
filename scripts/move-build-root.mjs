@@ -18,13 +18,20 @@
 //   dir      フォルダをまるごと写す（リンク・ジャンクションがあれば写さずに止める）
 //   git      常設の clone。dir と同じに写し、前に「付いている作業ツリーが無い」こと、後に refs がすべて同じこと・作業ツリーが
 //            main だけであることを git で確かめる
-//   file     1つのファイル。sha256: true なら SHA-256 も照らす
+//   file     1つのファイル
 //   files    フォルダの直下のファイルのうち、pattern に合うものだけ
 //   results  フォルダの直下の各フォルダ（スモークの実行など）の、直下のファイルだけ（user\・ws\・logs\ などの下は写さない）
 // どの種類も、写し先のパスが 259 文字（フォルダは 247 文字）を超えるものがあれば、その項目を写さない（LongPathsEnabled が無効）。
-// 写し先が既にあるときは上書きしない。中身が元と同じ（数・大きさ。file は SHA-256 も）なら already、違えば問題にする。
+// 照らし方（2026-11-16。裁定「数と大きさと SHA-256 を照らす」を全部の項目にかける。写した後に古い作業場所を消すため）:
+//   どの種類も、写す全部のファイルが写し先にあり、大きさと SHA-256 が元と同じこと。かかった時間を項目ごとに記録に出す
+//   （seconds = 写した時間、verifySeconds = 照らした時間、existing.seconds = 前からあった写し先を照らした時間）。
+// 写し先が既にあるとき（2回目・途中で止まった後）は上書きしない。写し先のファイルを1つずつ元と照らし、
+//   全部が同じ（大きさと SHA-256）なら already。
+//   違うものが1つでもあれば problem（何も写さない。違うファイルを problems と existing.differentFiles に出す）。
+//   違うものが無く、無いものだけがあれば、無いものだけを COPYFILE_EXCL で写して続ける（続きから写す。状態は copied で、
+//   existing.same に飛ばした数が出る）。dry-run では写さずに planned と existing を出す。
 //
-// 書き出している関数（テストの入口）: PLAN, parseArgs, planItem, selectFiles, verifySame, FILE_LIMIT, DIR_LIMIT
+// 書き出している関数（テストの入口）: PLAN, parseArgs, planItem, selectFiles, compareExisting, verifySame, FILE_LIMIT, DIR_LIMIT
 
 import fs from "node:fs";
 import path from "node:path";
@@ -41,8 +48,8 @@ export const DIR_LIMIT = 247;
 // official\ へ、計測が読む ws-info.json を measure\ へ写す。
 export const PLAN = Object.freeze([
   { name: "clone", kind: "git", src: "vscode", dst: "vscode" },
-  { name: "dist-p2-all", kind: "file", src: "dist/1.146.0-p2-all.zip", dst: "dist/1.146.0-p2-all.zip", sha256: true },
-  { name: "dist-p1-a1-r3", kind: "file", src: "dist/1.146.0-p1-a1-r3.zip", dst: "dist/1.146.0-p1-a1-r3.zip", sha256: true },
+  { name: "dist-p2-all", kind: "file", src: "dist/1.146.0-p2-all.zip", dst: "dist/1.146.0-p2-all.zip" },
+  { name: "dist-p1-a1-r3", kind: "file", src: "dist/1.146.0-p1-a1-r3.zip", dst: "dist/1.146.0-p1-a1-r3.zip" },
   { name: "p2-all", kind: "dir", src: "p2/1.146.0-p2-all", dst: "p2/1.146.0-p2-all" },
   { name: "p1-a1-r3", kind: "dir", src: "p1/1.146.0-p1-a1-r3", dst: "p1/1.146.0-p1-a1-r3" },
   { name: "smoke-ext", kind: "dir", src: "smoke/ext", dst: "smoke/ext" },
@@ -53,9 +60,9 @@ export const PLAN = Object.freeze([
   { name: "logs", kind: "dir", src: "logs", dst: "logs" },
   { name: "work-b", kind: "dir", src: "work-b", dst: "work-b" },
   { name: "official-1.146.0", kind: "dir", src: "p0/vscode-1.146.0", dst: "official/vscode-1.146.0" },
-  { name: "official-zip", kind: "file", src: "p0/downloads/VSCode-win32-x64-1.146.0.zip", dst: "official/downloads/VSCode-win32-x64-1.146.0.zip", sha256: true },
-  { name: "official-fetch-record", kind: "file", src: "p0/p0-fetch.json", dst: "official/downloads/p0-fetch.json", sha256: true },
-  { name: "ws-info", kind: "file", src: "p0/ws-info.json", dst: "measure/ws-info.json", sha256: true },
+  { name: "official-zip", kind: "file", src: "p0/downloads/VSCode-win32-x64-1.146.0.zip", dst: "official/downloads/VSCode-win32-x64-1.146.0.zip" },
+  { name: "official-fetch-record", kind: "file", src: "p0/p0-fetch.json", dst: "official/downloads/p0-fetch.json" },
+  { name: "ws-info", kind: "file", src: "p0/ws-info.json", dst: "measure/ws-info.json" },
 ]);
 
 const KINDS = ["dir", "git", "file", "files", "results"];
@@ -185,7 +192,9 @@ function sha256(file) {
   return h.digest("hex");
 }
 
-// 写し先が元と同じか（数と大きさ。item.sha256 なら SHA-256 も）。sel は selectFiles の結果。
+// 写し先が元と同じか（数・大きさ・SHA-256。どの種類の項目も。2026-11-16 から dir・git・files・results も SHA-256 を照らす）。
+// sel は selectFiles の結果。毎回すべてのファイルの SHA-256 を計算し直す（前の結果を使わない。消す前の最後の照らしなので）。
+// item は呼び出しの形を保つために受ける（今は使わない）。
 export function verifySame(item, sel) {
   const problems = [];
   let checked = 0;
@@ -199,7 +208,7 @@ export function verifySame(item, sel) {
       continue;
     }
     if (st.size !== f.size) problems.push(`大きさが違う: ${f.dst}（元 ${f.size}、写し先 ${st.size}）`);
-    else if (item.sha256) {
+    else {
       const a = sha256(f.src);
       const b = sha256(f.dst);
       if (a !== b) problems.push(`SHA-256 が違う: ${f.dst}`);
@@ -209,6 +218,48 @@ export function verifySame(item, sel) {
     if (problems.length > 20) break;
   }
   return { ok: problems.length === 0, checked, problems };
+}
+
+// 写し先が既にあるとき（2回目・途中で止まった後）に、写すファイルを1つずつ写し先と照らす。読むだけ。
+// 返り値 { same, missing, different, sameBytes, missingBytes, differentFiles: [...最大 20], seconds }
+//   same      写し先にあり、大きさと SHA-256 が元と同じ（f.existingSame = true、f.sha256 を書く。copyFiles はこのファイルを飛ばす）
+//   missing   写し先に無い（続きで写す）
+//   different 写し先にあるが、大きさか SHA-256 が違う（上書きしないので、その項目は problem）。途中で写すのが止まったファイルもここに入る
+// 写し先にあって元に無いファイルは数えない（消さないし、照らさない）。
+export function compareExisting(sel) {
+  const t0 = Date.now();
+  const out = { same: 0, missing: 0, different: 0, sameBytes: 0, missingBytes: 0, differentFiles: [], seconds: 0 };
+  for (const f of sel.files) {
+    let st;
+    try {
+      st = fs.statSync(f.dst);
+    } catch {
+      out.missing++;
+      out.missingBytes += f.size;
+      continue;
+    }
+    let why = null;
+    if (!st.isFile()) why = "ファイルでない";
+    else if (st.size !== f.size) why = `大きさが違う（元 ${f.size}、写し先 ${st.size}）`;
+    else {
+      const a = sha256(f.src);
+      const b = sha256(f.dst);
+      if (a !== b) why = "SHA-256 が違う";
+      else {
+        f.sha256 = a;
+        f.existingSame = true;
+      }
+    }
+    if (why) {
+      out.different++;
+      if (out.differentFiles.length < 20) out.differentFiles.push(`${why}: ${f.dst}`);
+    } else {
+      out.same++;
+      out.sameBytes += f.size;
+    }
+  }
+  out.seconds = (Date.now() - t0) / 1000;
+  return out;
 }
 
 function git(dir, args) {
@@ -253,6 +304,8 @@ export function planItem(item, from, to) {
   return res;
 }
 
+// 写す。f.existingSame のファイル（compareExisting で、写し先に元と同じものがあると分かった）は飛ばす。
+// ほかは COPYFILE_EXCL で写す（写し先にあれば失敗する。上書きしない）。
 function copyFiles(sel) {
   const made = new Set();
   const mk = (d) => {
@@ -263,6 +316,7 @@ function copyFiles(sel) {
   for (const rel of sel.dirs) mk(path.win32.join(sel.dstRoot, rel));
   let copied = 0;
   for (const f of sel.files) {
+    if (f.existingSame) continue;
     mk(path.win32.dirname(f.dst));
     // COPYFILE_EXCL: 写し先にあれば失敗する（上書きしない）
     fs.copyFileSync(f.src, f.dst, fs.constants.COPYFILE_EXCL);
@@ -298,6 +352,7 @@ function main() {
     console.error(`[move-build-root] --from と --to が重なっている: ${a.from} / ${to}`);
     process.exit(2);
   }
+  const t00 = Date.now();
   const out = { startedAt: new Date().toISOString(), from: a.from, to, dryRun: a.dryRun, items: [], result: "ok" };
   const items = PLAN.filter((p) => !a.only || a.only.includes(p.name));
   for (const item of items) {
@@ -310,12 +365,22 @@ function main() {
       continue;
     }
     if (p.destExists) {
-      // 上書きしない。同じなら already、違えば問題
-      const v = verifySame(item, sel);
-      p.verify = v;
-      p.status = v.ok ? "already" : "problem";
-      if (!v.ok) p.problems.push("写し先が既にあり、元と違う（上書きしない）");
-      continue;
+      // 上書きしない。写し先のファイルを1つずつ元と照らす（大きさと SHA-256）。
+      //   全部が同じ → already。違うものがある → problem（何も写さない）。無いものだけ → 続きから写す（下へ）
+      const ex = compareExisting(sel);
+      p.existing = ex;
+      if (ex.different) {
+        p.status = "problem";
+        p.problems.push(`写し先が既にあり、元と違う（上書きしない）: ${ex.different} ファイル`, ...ex.differentFiles.slice(0, 5));
+        continue;
+      }
+      if (!ex.missing) {
+        p.verify = { ok: true, checked: ex.same, problems: [] };
+        p.verifySeconds = ex.seconds;
+        p.status = "already";
+        continue;
+      }
+      p.resume = true;
     }
     if (a.dryRun) {
       p.status = "planned";
@@ -330,7 +395,9 @@ function main() {
       continue;
     }
     p.seconds = (Date.now() - t0) / 1000;
+    const t1 = Date.now();
     const v = verifySame(item, sel);
+    p.verifySeconds = (Date.now() - t1) / 1000;
     p.verify = v;
     if (item.kind === "git") {
       const refsA = refsOf(sel.srcRoot);
@@ -343,10 +410,11 @@ function main() {
     }
     p.status = v.ok ? "copied" : "problem";
     if (!v.ok) p.problems.push(...v.problems.slice(0, 5));
-    process.stderr.write(`[move-build-root] ${item.name}: ${p.status}（${p.files} ファイル、${gb(p.bytes)} GB）\n`);
+    process.stderr.write(`[move-build-root] ${item.name}: ${p.status}（${p.files} ファイル、${gb(p.bytes)} GB${p.resume ? `、続きから。前からあった同じもの ${p.existing.same} ファイル` : ""}。写す ${p.seconds} 秒、照らす ${p.verifySeconds} 秒）\n`);
   }
   if (out.items.some((p) => p.status === "problem")) out.result = "problem";
   out.totalGB = gb(out.items.reduce((s, p) => s + (p.bytes || 0), 0));
+  out.seconds = (Date.now() - t00) / 1000;
   out.finishedAt = new Date().toISOString();
   const text = `${JSON.stringify(out, null, 2)}\n`;
   if (a.out) {

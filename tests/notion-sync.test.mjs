@@ -16,6 +16,7 @@ import { parsePage, headingBlock, codeBlock } from '../extensions-src/notion-syn
 import { runSync, readDiffs, sharedForm } from '../extensions-src/notion-sync/src/sync.mts';
 import { memoryFileStore, memoryBaseStore, userDirFromGlobalStorage, userDirFileStore } from '../extensions-src/notion-sync/src/stores.mts';
 import fs from 'node:fs';
+import './build/temp-root.mjs'; // os.tmpdir() を tmp\tests-temp に向ける（C: に出さない）
 import os from 'node:os';
 import path from 'node:path';
 

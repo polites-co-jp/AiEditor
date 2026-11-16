@@ -8,7 +8,6 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { parseArgs, expandEnv, countDir } from '../scripts/disk-usage.mjs';
 import { REPO, makeSandbox, removeSandbox, writeFile, runNode, runPs, parseJsonOut } from './build/helpers.mjs';
-import { NEW_DEFAULT } from './build/root.mjs';
 
 let sb;
 before(() => {
@@ -169,14 +168,16 @@ test('disk-usage.mjs: 引数の誤りは終了コード 2（形でない・場�
 });
 
 // ---- p1-launch-check.ps1（断る所だけ。起動はしない） -------------------------------------------
-// 2026-11-15 の裁定: <buildRoot> は local.json、無ければ <リポジトリ>\tmp\b。実際の local.json を読まないよう、LOCALAPPDATA を一時の空の場所に向けて走らせる
-// （local.json が無い → 既定の <リポジトリ>\tmp\b）。<buildRoot> は作らなくてよい（台本が必要なら作る）。
+// 2026-11-15 の裁定: <buildRoot> は local.json、無ければ <リポジトリ>\tmp\b。実際の local.json を読まないよう、LOCALAPPDATA を一時の場所に向け、
+// そこの local.json で <buildRoot> を試しの入れ物の中に向けて走らせる。<buildRoot> は作らなくてよい（台本が必要なら作る）。
 const skipNoCb = false;
-const BR = NEW_DEFAULT;
+// 2026-11-16 の直し: <buildRoot> は本物の <リポジトリ>\tmp\b ではなく、試しの入れ物の中（偽の LOCALAPPDATA の local.json で向ける）。
+// 本物の tmp\b（移した後は残す版のある <buildRoot>\p2 を含む）に何も作らず、消さない。
+const BR = path.join(sb, 'fake-build-root');
 const BR_RE = BR.replace(/[\\^$.*+?()[\]{}|]/g, '\\$&');
 function launch(args) {
   const la = path.join(sb, 'localappdata');
-  fs.mkdirSync(la, { recursive: true });
+  writeFile(path.join(la, 'Shuko', 'local.json'), JSON.stringify({ buildRoot: BR }));
   const r = runPs(LAUNCH, args, { timeout: 60000, env: { LOCALAPPDATA: la } });
   return r;
 }
