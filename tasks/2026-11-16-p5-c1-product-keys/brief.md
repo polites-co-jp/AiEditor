@@ -48,3 +48,21 @@
 ## 次の担当
 
 ooka-echizen（大岡越前守）: 直した版でもう一度関門。
+
+## 追加の依頼（2026-11-16、r2 の関門の後）
+
+r2 の関門（`records/take-in/1.146.0-p5-c-all-r2/gate-C-1-ai.md`）で、C-1 にワークベンチが動いて初めて見える誤りが3種出た。判断は `docs/user-decisions.md` の「段階 C の版 r2 の関門で出た点」。
+
+### 蒙恬
+
+1. `ITerminalChatService` の UNKNOWN service: 何もしない実装を登録するか、注入を外す（小さい方。`services/chat` の `NullChatEntitlementService` と同じ形が第一）。
+2. `searchView.ts` の `semanticSearchBehavior` など（695・2002・2008行）: `?.` で守り、設定の型を省略できる形にする。
+3. `_chat.editSessions.accept`: 何もしないコマンドとして残す（B-1 の `_aiEdits.*` と同じ形）。
+4. **同じ種類の残りを全部探す**: C-1 が消した部品（サービスの ID・設定のキー・コマンドの ID・文脈キー）を、21単位の木の残るコードと組み込み拡張（`extensions/`）が使っていないかを探し、見つけたものも直す。今回の3つに限らない。
+5. 直し方は前と同じ（edits.patch の本文を直し、`build.mjs` で当て直しと型検査）。21単位の版 `1.146.0-p5-c-all-r3` を作り直し、`p1-launch-check.ps1` で確かめる。
+
+### 曹参
+
+1. C-1 の検査に、消した部品の「注入（`@I…Service`・`accessor.get`）・設定のキーの読み手・コマンドの呼び手（`executeCommand`、組み込み拡張を含む）」が残っていないことを見る検査を足す。期待は本家から読む。ほかの単位（C-2〜C-7）にも同じ網をかけられるなら、共通の部品にする。
+2. スモークの devtools-console の誤りの鍵から、版の置き場所のパスを外す（置き場所の違う版どうしで同じ誤りを同じと見る）。
+3. 蒙恬の4の結果に合わせたテスト。`run-all` の件数。
