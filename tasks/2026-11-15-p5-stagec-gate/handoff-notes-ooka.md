@@ -4,6 +4,7 @@
 - 依頼: brief の「3. 関門」「3'.」。相手は蒙恬の `1.146.0-p5-c-all`（R2-7）
 - 結果: **不合格**。原因は C-1-ai。C-2〜C-7 は 1・2 が合格で、3・4 は C-1 の誤りのせいで判定できない
 - 記録: `records/take-in/1.146.0-p5-c-all/`（`gate-p5-c-all.md` が全体。単位ごとに `gate-C-1-ai.md`〜`gate-C-7-breadcrumbs-outline.md`）
+- 直した版（r2）の関門は、このファイルの末尾の「r2」の節
 
 ## 1. 要点
 
@@ -56,3 +57,64 @@
 ## 6. 守ったこと
 
 - コード・テスト・台本・docs/ は直していない。`C:\b` には触れていない。普段使いのデータは、起動の確かめ（6つのフォルダが不変）とスモークの `safety.daily-argv`（PASS）で見た。local.json・スタートメニュー・PATH・タスクスケジューラ・Notion は変えていない。netaudit を流していないので、ネットのログは作っていない。秘密の場所には触れていない。
+
+---
+
+# r2（2026-11-16。直した版 `1.146.0-p5-c-all-r2`）
+
+- 依頼: リーダー（タスクの名称「段階 C の版の関門（r2）」）。相手は蒙恬の `1.146.0-p5-c-all-r2`（`tasks/2026-11-16-p5-c1-product-keys/handoff-notes-meng-tian.md`）
+- 結果: **不合格**。原因は C-1-ai（7節の4）。**C-2〜C-7 は自動で見られる関門 1〜4 をすべて通った**（手の項目が残る）
+- 記録: `records/take-in/1.146.0-p5-c-all-r2/`（`gate-p5-c-all-r2.md` が全体、単位ごとに `gate-C-1-ai.md`〜`gate-C-7-breadcrumbs-outline.md`、手の項目 `manual-checks-p5-c-all-r2.md`）
+
+## R2-1. 要点
+
+1. 前回の2つの症状は直った。ワークベンチが立ち上がり（新しい起動の確かめで、しるし3つと `Uncaught` 0）、CLI の導入は台帳の拡張がすべて通る。C-1 の直し（8ファイル。省略できる型と `?.`）は、裁定「product.json の AI のキーは消す」を守った形。
+2. 1・2 は合格。照らし役 c1〜c7（曹参が足した21単位の組 c を含む）は全部期待どおり。型検査の誤り 0。静的なテストは c1〜c7-unit 292/292（c1-unit 53/53。依頼文の「直している最中の2件」は直っていた）、removals 229/229、smoke 79/79、p1 の3つ 50/50。
+3. 3 は合格。absent の21単位で fail 0・unknown 0（19単位。公式の版で網になっていることも確かめた。C-1 の2項目は網にならず、ソースの検査を根拠にした）。通信の監査2通り×600秒で、エディタの宛先 0・claude の宛先 0・許可の外 0・前の版に無い宛先 0。absentHosts、ギャラリーのホスト、同期のストアへの接続も名前の問い合わせも無い。**続きの編集の通信も無い**（裁定で諮る条件に当たらない）。
+4. 4 は **C-1 で不合格**。スモーク3回とも、前の段階に無い誤りが同じ3種出た。
+   - `depends on UNKNOWN service terminalChatService`（ターミナルのタブのビューが作れない。C-1 が `terminalContrib/chat` を消し、何もしない実装が無い）
+   - `Cannot read properties of undefined (reading 'semanticSearchBehavior')`（全文検索の欄の入力の聞き手。C-1 が `search.searchView.*` の設定を消した）
+   - `command '_chat.editSessions.accept' not found`（git のステージ・コミットのたび。C-1 が `contrib/chat` を消した）
+5. 4 のほかの項目はすべて通った。Claude Code の組（3回とも起動・拡張ホストのログ・.lock）、`vscode.lm`・`vscode.chat`・`vscode.debug` の誤りなし、`Missing proxy instance` なし、ほかの単位の UNKNOWN service なし、台帳の拡張（PowerShell・basedpyright ほか）と言語の組、全文検索・分割・差分・2つめのウィンドウ・git・ターミナル・タスク、「知らない contributes」の警告なし。
+6. 3回目だけ `base.ui-language` が落ちた（翻訳の束の置き場ができず英語）。原因未確認の揺れとして記録した（単位の合否には使わない）。
+
+## R2-2. 流したもの
+
+| 何 | コマンド（パスは絶対パスで渡した） | 結果 |
+|---|---|---|
+| zip の SHA-256 | `sha256sum E:/develop/self/Team/projects/ai-editor/tmp/b/dist/1.146.0-p5-c-all-r2.zip` | 一致 |
+| 照らし役（当て直し） | `node tests/c1-check-json.mjs tasks/2026-11-16-p5-c1-product-keys/1.146.0-p5-c-all-r2/checks.json`（c1〜c7） | 7つとも期待どおり |
+| 照らし役（作業ツリー） | `node tests/c1-check-worktree.mjs E:/develop/self/Team/projects/ai-editor/tmp/b/wt-r2/1.146.0`（c1〜c7） | 7つとも期待どおり |
+| ロックファイルの差 | `sha256sum` で前の版と r2 の `lockfile.diff` | 同じ |
+| 静的なテスト | `node tests/run-all.mjs --no-ps --only -unit`・`--only removals`・`--only smoke`・`--only p1-` | 292/292、229/229、79/79、50/50 |
+| 展開と起動・CLI の導入 | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/p1-launch-check.ps1 -OutFile tasks/2026-11-15-p5-stagec-gate/launch-check-p5-c-all-r2-ooka.json -Zip <zip> -Dest tmp/b/p2/1.146.0-p5-c-all-r2-ooka -InstallExtension <7つの VSIX>` | `result: ok`（ワークベンチが立ち上がり、7つとも導入） |
+| スモーク3回 | `node tests/smoke-run.mjs --build <展開先> --label p5r2-1/2/3 --mode built --prime --baseline <p2-all・公式・p2-all> --save-baseline tmp/b/smoke/baseline-p5-c-all-r2.json [--merge-baseline] --timeout 300 --keep-runs 40` | 48/1、48/1、47/2。置き場所に `.keep` を置いた |
+| 消えている | `node tests/absent-run.mjs --build <展開先> --units <21単位> --expect absent --label p5r2-21` | fail 0・unknown 0 |
+| 網の確かめ | `node tests/absent-run.mjs --units <C の7単位> --expect present --label off-c-present`（公式の版） | C-1 の2項目を除いて全部在る |
+| 通信の監査 | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/netaudit.ps1 -Exe <展開先>/Shuko.exe -EnvDir tasks/2026-11-14-p2-gates/netaudit-env -Label p5r2 -DurationSeconds 600 -Previous records/network-audits/2026-11-15-p2-all` と、`-EnvDir C:/b/p0/data/upstream-default -Label p5r2-ledger -Previous records/network-audits/2026-11-15-p2-all-ledger` | 2通りとも宛先 0。ネットのログは消えた |
+| C: の空き | `node scripts/disk-usage.mjs records=records` | 95.86 GB（04:26）、95.60 GB（04:38） |
+
+許可の外で止まったものは無い。飛ばしたものも無い。各単位の台本の「関門の起動の確かめ」のうち、画面を見て操作する項目（タブの帯の見た目、右クリックのメニュー、設定の画面の見た目など）は自動では見られないので、手の項目 C1〜C21 に分けた。これは C-1 を直した次の版でユーザーが行う。
+
+## R2-3. 直す必要があるところ
+
+| 誰 | どこ | 何を |
+|---|---|---|
+| 蒙恬 | C-1 の `edits.patch` | (1) `ITerminalChatService` の何もしない実装を登録する（またはターミナルの2ファイルの注入を外す）。(2) `searchView.ts` の 695・2002・2008 行を、`searchView` が無くても落ちない形にする（`?.`、または設定の型の `searchView` を省略できる形に）。(3) `_chat.editSessions.accept` を何もしないコマンドで残すか、git の拡張の2か所の呼び出しを外す（B-1 の `_aiEdits.*` の直し方に合わせる） |
+| 曹参 | C-1 のテスト | 消した部品の「サービスの ID の注入」「設定のキーの読み手」「コマンドの呼び手（組み込みの拡張を含む）」が残っていないことを見る静的な検査が無い |
+| 曹参 | `tests/smoke/lib/common.mjs` の誤りの鍵 | devtools-console の鍵に版の置き場所のパスがそのまま入る。置き場所の違う版どうしで同じ誤りが「新しい誤り」に見えるので、パスをそろえるとよい |
+
+## R2-4. 次の担当への注意
+
+- `tmp\b\smoke\baseline-p5-c-all-r2.json`（3回の和、鍵10個）は C-1 の誤りを含む。次の版の比べの相手にしない。次の版のスモークも、1回目・3回目は `baseline-p2-all.json`、2回目は `baseline-official-1.146.0.json` と比べ、和は新しいファイルに作る。
+- C-1 を直した次の版で流すもの: スモーク3回、absent の21単位、監査2通り（各600秒）。直しが C-1 の edits.patch の中だけなら、照らし役と監査の結果は変わらない見込み（推定。流し直して確かめる）。合格したら、手の項目（`records/take-in/1.146.0-p5-c-all-r2/manual-checks-p5-c-all-r2.md`。版の名前を読み替える）をユーザーへ。
+- base.ui-language の揺れ（3回目だけ）は、次の版でもう一度見る。2回以上出たら調べる。
+- C-7 の「2回続けて通らなければ諮る」: 今回、C-7 の自動の関門で落ちた所は無い。
+- 残してあるもの: `tmp\b\p2\1.146.0-p5-c-all-r2-ooka\`（起動の確かめの展開と portable）、`tmp\b\smoke\runs\p5r2-{1,2,3}-*`、`tmp\b\smoke\ext\1.146.0-p5r2-{1,2,3}\`、`tmp\b\smoke\absent\p5rdf7-*`・`off362-*`。
+
+## R2-5. 守ったこと
+
+- コード・テスト・台本・docs/ は直していない。
+- `C:\b` は読むだけ（監査の環境の写しの元 `C:\b\p0\data\upstream-default`）。書いていない。
+- 普段使いのデータは、起動の確かめで6つのフォルダが変わらないこと、スモークの `safety.daily-argv` が3回とも PASS であることで確かめた。local.json・スタートメニュー・PATH・タスクスケジューラ・Notion は変えていない。秘密の場所には触れていない。ネットのログは台本が読んだ直後に消した（`tmp\b\netlog\` は空）。
+- C: の空きは 96.33 GB から 95.60 GB に減った。何が増えたかは、私の読める場所の外で分からない（Claude Code を入れたスモーク・監査の間。推定）。
