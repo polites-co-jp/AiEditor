@@ -569,3 +569,11 @@
 | `notion-sync` の試しの台本（`trial.mts`）が、前は置き場所を丸ごと消してから作り直していた | 消さずに、毎回その下に新しい `run-XXXXXX` を作る形を認める（台本が削除の許可の外を消さない。課の台帳の「塞いでいない穴」）。既定の置き場所は `<buildRoot>\trial-notion-sync`（削除の許可の `tmp/b/trial-*` に入る） |
 | `take-in.mjs` の `--records-dir` | `records/take-in/` の下でなければ、何かを作る前に止める（判定役が読めないため。前は警告だけで続けた） |
 | `check-env.ps1` | 起こす子の TEMP・TMP と pnpm・npm のキャッシュを `<buildRoot>` の下へ向ける。LOCALAPPDATA は変えない |
+
+## 裁定（2026-11-16、版の入れ替え）
+
+| 論点 | 裁定 |
+|---|---|
+| 版の入れ替え（前の裁定は「入れ替えはユーザーが行う」） | 課に任せる（ユーザーの答え「入れ替えも課に任せる」）。蒙恬が手順書（`docs/install.md`）の1（`configure.ps1` で `local.json`）・2（`switch.ps1` で版のフォルダと `current`）・4（`install-extensions.mjs` で台帳の拡張）を打つ。どれも今の許可（`powershell … -File scripts/*.ps1`・`node scripts/*.mjs`）で走る。版は `1.146.0-p5-c-all-r4`、ラベルは `1.146.0-1` |
+| 初めの1回だけの設定（3 スタートメニューと PATH、5 外部ツール、6 Notion のトークン、7 タスクスケジューラ） | ユーザーが行う（3 は手の手順で台本が無い、5 は UAC が出うる、6 は秘密でユーザーだけが入れる決まり、7 はトークンの復号にユーザーの権限が要る） |
+| 画面を見る確かめ（C1〜C22） | ユーザーが行う |
