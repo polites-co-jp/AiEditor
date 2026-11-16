@@ -432,3 +432,12 @@
 | `p0-check-ps.ps1`（PowerShell の台本の構文と ASCII の検査。`C:\b` を使わない） | 引退の注記のまま、検査として使い続けてよい |
 | 写す方法 | `cp -a` でなく、写すだけの台本 `scripts/move-build-root.mjs`（消さない・上書きしない・数と大きさと SHA-256 を照らす） |
 | `C:\b\p0` の basedpyright・bash-ide-vscode の `files.json`（大きく、今の許可では records へ写せない） | 写さずに消す。要点（ファイル数・フォルダごとの数と大きさ・実行ファイル・LICENSE の有無）は写した `verify-result.json` に残り、一覧は台帳の VSIX（SHA-256 は台帳にある）を Open VSX から取り直せば作り直せる。写した22ファイルの一覧は `records/phase0/evidence/README.md` |
+
+## 記録（2026-11-16、移す直しの残りで出た点。リーダーの判断）
+
+根拠: `tasks/2026-11-16-move-off-c-fixes/handoff-notes-meng-tian.md`
+
+| 論点 | 扱い |
+|---|---|
+| 取り込みの監査の作業場所の名前が長いラベルで 259 文字を超える | 止めずに縮める（スモークと同じ `shortLabel` の決まり。10 文字まで）。縮めても超えるときは、手順 7 を含む実行を手順 1 の前に止める |
+| 写す途中で止まり、写し先に途中まで書いたファイルが残ったとき（台本はそれを problem として止まる。台本は消さない） | その項目の写し先を `rm -rf` で消して写し直す。そのための一時の削除の許可（`tmp/b/` の写し先）を権限の依頼に足した（`tasks/2026-11-15-move-off-c/permission-requests.md`）。元の `C:\b` は照らしが済むまで消さない |

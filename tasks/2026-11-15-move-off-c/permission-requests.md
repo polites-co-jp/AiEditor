@@ -47,6 +47,8 @@
 | delete_paths | `C:/b/wt/` | `rm -rf C:/b/wt` |
 | delete_paths | `C:/b`（末尾の `/` なし。そのものとその下） | 最後に `rm -rf C:/b`。写した物の照らし（台本 `scripts/move-build-root.mjs`）が済んでから。そのとき `delete_keep` の `C:/b/...` の7行を外す |
 
+| delete_paths | `tmp/b/official/`・`tmp/b/cache/`・`tmp/b/logs/`・`tmp/b/vscode/`・`tmp/b/smoke/`・`tmp/b/work-b/` | 写す途中で止まり、写し先に途中まで書いたファイルが残ったとき、その項目の写し先を消して写し直す（台本は消さない。元の `C:\b` は残っているので、写し直せる）。移し終えたら外す（2026-11-16 追記） |
+
 - 写す作業は台本 `node scripts/move-build-root.mjs`（今の許可 `node scripts/*.mjs` で走る。消さない・上書きしない・数と大きさと SHA-256 を照らす）で行うので、`cp` の許可は要らない。
 - `C:\b\p0` は、要るもの（公式の 1.146.0 と、records の根拠の小さなファイル）を写した後、`rm -rf C:/b` でまとめて消す（ユーザーの裁定「データを消し、道具は引退」）。
 
