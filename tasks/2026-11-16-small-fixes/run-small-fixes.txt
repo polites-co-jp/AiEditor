@@ -1,9 +1,2 @@
-small-fixes.test.mjs               tests   18  pass   13  fail   5  skip   0
-TOTAL                              tests   18  pass   13  fail   5  skip   0
-
-Failing:
-  small-fixes.test.mjs: take-in.mjs --records-dir: records/take-in/ の外(別の場所・リポジトリの外・tmp)を指すと、止まる(終了コードが 0 でない・メッセージに --records-dir)。何も作らない
-  small-fixes.test.mjs: take-in.mjs --records-dir: 外へ出る形(.. で records/take-in/ から抜ける・records/take-in-x の前方一致の偽装・リポジトリの前方一致の偽装)も止まる
-  small-fixes.test.mjs: take-in.mjs --records-dir: ext でも同じ守り(外を指すと止まる)
-  small-fixes.test.mjs: take-in.mjs --records-dir: --skip-judge を付けても、外は止まる(判定役を使わなくても、records/take-in/ の外に記録を置かない)
-  small-fixes.test.mjs: take-in.mjs: 前の「警告だけで続ける」形(startsWith(REPO) の文字列比較)が残っていない
+small-fixes.test.mjs               tests   30  pass   30  fail   0  skip   0
+TOTAL                              tests   30  pass   30  fail   0  skip   0

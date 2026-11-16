@@ -84,6 +84,8 @@ brief の完了条件（1〜3 の直しとテストがあり、関係するテ�
    - 6〜7行は「直しが入るまで落ちてよい」と書いている。25行は「本物の試し(trial.mts)は走らせない(root を rm -r するため)」と書いている。
    - どちらも今の実装と合わない。今は18件とも通り、trial.mts は消さない。
 
+（この3点と、下の記録の1は、曹参の追加で閉じた。付記を参照）
+
 ### 記録として伝える点（直す必要は無い）
 
 1. **check-env の子の TEMP・TMP と、ELECTRON_CACHE など6つは、テストで見ていない**
@@ -102,3 +104,60 @@ brief の完了条件（1〜3 の直しとテストがあり、関係するテ�
 ## 5. 記録したファイル
 
 - `tasks/2026-11-16-small-fixes/verification-ooka.md`（この書き物）
+
+## 付記（2026-11-16）: small-fixes のテストの追加の確かめ
+
+- 依頼: リーダーの知らせ「small-fixes のテストの追加の確かめ」
+- 対象: 曹参の `tests/small-fixes.test.mjs` の追加（`handoff-notes-cao-shen.md` の追記）
+  - 4節の直す点の1〜3
+  - 記録の1（check-env の TEMP・TMP と6つ、PowerShell 版と mjs 版の一致）
+- 判定: **合格**
+  - 足した12件は結果を見ていて、台本に合わせて緩めた所は見当たらない。
+  - ジャンクションの後片づけは、テストが作ったものだけに限られている。
+  - 30/30 で通った。
+  - 4節の直す点の1〜3と記録の1は、閉じた。
+
+### 足した12件（`git diff tests/small-fixes.test.mjs`）
+
+| 件 | 見ているもの（結果） |
+|---|---|
+| check-env: 子の TEMP・TMP と、親にある6つ | 親に `C:\parent-junk\…` の6つと TEMP・TMP を入れて台本を走らせる。偽の pnpm・npm が見た値が、`build-env.mjs` の `cacheEnvVars(br, 親)` の全部の名前で同じ場所になり、`parent-junk` が残らないこと。期待は mjs 版から読んでいて、手で並べていない |
+| check-env: 親に6つが無ければ足さない | 子の TEMP・TMP が `<BuildRoot>\tmp`。親に無い6つは、子の環境でも空のまま。このテストの環境の親に元からある変数だけは飛ばす。その変数は向け直されて当然なので、緩めではない |
+| check-env: 結果の JSON の `childEnv.vars` | `cacheEnvVars(br, 親)` と、名前の集まりも値も同じ（`deepEqual`） |
+| child-cache-env.ps1 と mjs 版の一致 | `Get-ShukoChildCacheEnv` を PowerShell で直接呼ぶ。親の名前が無い・6つ全部（小文字に変えて）・一部、の3つの場合で、`cacheEnvVars` と同じ値を返すこと。絶対でない buildRoot は断ること |
+| recordsDirProblem: 根そのもの | `records/take-in` と、末尾に区切りのついた形を止める。下の新しい場所・前からある下のフォルダは通す |
+| recordsDirProblem: 外 | 別の場所・`records/other`・`tmp/x`・`..` で抜ける2形・`take-in-evil`・`<repo>-evil`・リポジトリそのもの、の8つを止める |
+| recordsDirProblem: 大文字小文字・相対 | 大文字の形は通す。相対は `cwd` から数え、`cwd` が別の場所なら外にする。`..` を通って中に入る相対は通す |
+| recordsDirProblem: 空・型・repoRoot | 空・undefined・null は止める。`repoRoot` が無ければ例外 |
+| recordsDirProblem: 途中のジャンクション | `records/take-in/jn` を柵の外のフォルダへのジャンクションにする。次の3つをすべて止める。`jn\label`、`jn` そのもの、`jn\a\b\c`。ジャンクションの先に何もできないこと（読むだけ）も見る。対照として、ふつうのフォルダの兄弟は通す |
+| recordsDirProblem: 中を指すジャンクション | 行き先が `records/take-in` の中でも、リンクは一律に止める |
+| recordsDirProblem: 途中がファイル | 止める |
+| recordsDirProblem: 読むだけ | 呼ぶ前後で、試しの repoRoot の木（名前・大きさ・更新時刻）が同じ。新しい場所を作らない |
+
+- ほかの直し:
+  - 228行の `|| name.startsWith('..')` を外した。`..` の2件も含めて、置き場所ができていないことを全部で見る（直す点の2）。
+  - 冒頭の説明（6〜8行）と1節の注（47〜49行）を今の実装に合わせた（直す点の3）。
+  - 既存の「親に何も無くても」の件の照らしの範囲を、書き出す変数が増えた分に合わせて、3つのキャッシュと TEMP・TMP に決めた。6つは空のままが正しいので、別の件で見ている。緩めではない。
+- 落ちるべきときに落ちるか（読んで確かめた）:
+  - `recordsDirProblem` の `lstat` のリンクの照らしを外すと、ジャンクションは `isDirectory()` が偽なので「フォルダでない」の文になる。ジャンクションの件は `/リンクかジャンクション/` を期待するので落ちる。
+  - 両方の照らしを外すと、`jn\label` が通るので落ちる。
+  - PowerShell 版と mjs 版のどちらかだけ名前や場所を変えると、一致の件と JSON の件が落ちる。
+- ジャンクションの2件は、飛ばされずに本当に試された（skipped 0）。
+
+### ジャンクションの後片づけ
+
+- ジャンクションは、どちらも試しの入れ物（`tmp\tests\tests-smallfix-*`）の中の、試しの repoRoot に作る。
+  - `<sb>\recrepo-junction\records\take-in\jn` は `<sb>\recjunction-target` を指す。
+  - `<sb>\recrepo-junction-in\records\take-in\alias` は同じ repoRoot の中の `real` を指す。
+- 本物の `records/` には作らない。
+- 後片づけは `finally` の `dropLink(linkPath)` で、テストが作ったジャンクションのパス1つだけを対象にする。
+  - `unlinkSync` を試し、だめなら `rmdirSync`。どちらもジャンクションそのものを外すだけで、指す先の中身は消さない。`recursive` は使わない。
+- 指す先も試しの入れ物の中にあり、終わりに `after` の `removeSandbox(sb)` が入れ物ごと片づける。ほかの物を巻き込まない。
+
+### 走らせたもの
+
+| コマンド | 結果 |
+|---|---|
+| `node --test tests/small-fixes.test.mjs` | **tests 30、pass 30、fail 0、skipped 0**（19.3 秒） |
+
+`C:\b`・本物の `records/`・普段使いのデータには触れていない。書いたのはこの書き物だけ。

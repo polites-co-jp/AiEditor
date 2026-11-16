@@ -3,8 +3,9 @@
 //   1. extensions-src/notion-sync/dev/trial.mts の既定の置き場所が C:\b でない(<buildRoot> か tmp/ の下)
 //   2. scripts/check-env.ps1 が本物の環境で起こす pnpm・npm の子の環境の、キャッシュの向け先が <buildRoot> の下(build-env.mjs と同じ向け先)
 //   3. scripts/take-in.mjs の --records-dir が records/take-in/ の外を指したら止まる(判定役の狄仁傑は records/take-in/ しか読めない)
-// 状態: 蒙恬の handoff-notes がまだ無い時点で、仕様から先に書いた。蒙恬の直しが入るまで、直しを要する検査は落ちてよい(落ちるのは直しがまだ無いため)。
-//   想定した入口は、各節の頭に書いた。蒙恬の入口と違えば、どちらを直すかを決めてから直す(ここでは決めない)。
+// 状態: 3つの直しは蒙恬が入れ、大岡越前守が検証して合格した(2026-11-16)。このテストは、直しを外す退行を捕まえる見張りとして残す。
+//   入口: trial.mts の defaultTrialRoot・makeTrialRunDir、scripts/lib/child-cache-env.ps1 の Get-ShukoChildCacheEnv(build-env.mjs の cacheEnvVars の PowerShell 版)、
+//         scripts/lib/take-in/records.mjs の recordsDirProblem(repoRoot・cwd を渡して、本物の records/ に触れずに直接呼べる)。
 // 試しは <リポジトリ>\tmp\tests\ の下(tests/build/helpers.mjs の makeSandbox)。C:\b・本物の tmp\b・普段使いのデータには触れない。
 // Run: node --test tests/small-fixes.test.mjs
 import test, { before, after } from 'node:test';
@@ -13,7 +14,30 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { REPO, makeSandbox, removeSandbox, writeFile, runPs, parseJsonOut } from './build/helpers.mjs';
-import { cacheLayout } from '../scripts/lib/build-env.mjs';
+import { cacheEnvVars, cacheLayout, IF_PRESENT_VARS } from '../scripts/lib/build-env.mjs';
+import { recordsDirProblem } from '../scripts/lib/take-in/records.mjs';
+
+const IF_PRESENT_NAMES = Object.keys(IF_PRESENT_VARS); // ELECTRON_CACHE・electron_config_cache・ELECTRON_BUILDER_CACHE・npm_config_devdir・PLAYWRIGHT_BROWSERS_PATH・COREPACK_HOME
+
+const write = (p, data) => { fs.mkdirSync(path.dirname(p), { recursive: true }); fs.writeFileSync(p, data); return p; };
+/** ジャンクションを作れなければ null(許可が無い環境)。 */
+function junction(target, link) {
+  try { fs.symlinkSync(target, link, 'junction'); return link; } catch { return null; }
+}
+const dropLink = (p) => { try { fs.unlinkSync(p); } catch { try { fs.rmdirSync(p); } catch { /* 無い */ } } };
+/** フォルダの木を { 相対パス: 'sha256 か <dir>:サイズ' } にする。 */
+function snapshot(dir) {
+  const out = {};
+  const walk = (d) => {
+    for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+      const p = path.join(d, e.name);
+      const rel = path.relative(dir, p);
+      if (e.isDirectory()) { out[rel] = '<dir>'; walk(p); } else out[rel] = `${fs.statSync(p).size}:${fs.statSync(p).mtimeMs}`;
+    }
+  };
+  if (fs.existsSync(dir)) walk(dir);
+  return out;
+}
 
 let sb;
 before(() => { sb = makeSandbox('tests-smallfix-'); });
@@ -22,7 +46,7 @@ after(() => removeSandbox(sb));
 // ===========================================================================
 // 1. trial.mts の既定の置き場所
 //    想定した入口: 既定(NOTION_SYNC_TRIAL_DIR が無いとき)の場所が、C:\b の決め打ちでなく、<buildRoot>(local.json)か tmp/ の下の式になる。
-//    本物の試し(trial.mts)は走らせない(root を rm -r するため。試しの場所を消す)。静的に読む。
+//    本物の試し(trial.mts の main)は走らせない。台本が何かを消す行が無いことは静的に読み、defaultTrialRoot・makeTrialRunDir は関数で試す。
 // ===========================================================================
 const TRIAL = path.join(REPO, 'extensions-src', 'notion-sync', 'dev', 'trial.mts');
 const trialSrc = fs.readFileSync(TRIAL, 'utf8');
@@ -115,6 +139,8 @@ function fakeTool(binDir, name, dumpFile) {
     `echo ${name}:pnpm_config_store_dir=%pnpm_config_store_dir%>>"${dumpFile}"`,
     `echo ${name}:pnpm_config_cache_dir=%pnpm_config_cache_dir%>>"${dumpFile}"`,
     `echo ${name}:npm_config_cache=%npm_config_cache%>>"${dumpFile}"`,
+    // TEMP・TMP と、親にあるときだけ向け直される6つ(build-env.mjs の IF_PRESENT_VARS と同じ名前)
+    ...['TEMP', 'TMP', ...IF_PRESENT_NAMES].map((v) => `echo ${name}:${v}=%${v}%>>"${dumpFile}"`),
     'echo 12.16.0',
   ];
   writeFile(path.join(binDir, `${name}.cmd`), lines.join('\r\n') + '\r\n');
@@ -152,12 +178,70 @@ test('check-env.ps1: 親の環境に何も無くても、子の向け先は <Bui
   const L = cacheLayout(br);
   const local = (process.env.LOCALAPPDATA || '').toLowerCase();
   for (const tool of ['pnpm', 'npm']) {
-    for (const [k, v] of Object.entries(vars[tool])) {
+    for (const k of ['pnpm_config_store_dir', 'pnpm_config_cache_dir', 'npm_config_cache', 'TEMP', 'TMP']) {
+      const v = vars[tool][k];
       assert.ok(v && !v.startsWith('%'), `${tool}: ${k} が空(向けていない): ${v}`);
       assert.ok(v.toLowerCase().startsWith(L.root.toLowerCase() + '\\'), `${tool}: ${k} が <BuildRoot> の下でない: ${v}`);
       if (local) assert.ok(!v.toLowerCase().startsWith(local), `${tool}: ${k} が LOCALAPPDATA の下: ${v}`);
     }
   }
+});
+
+// 親に6つの変数(ELECTRON_CACHE など)があるときだけ向け直される。期待は build-env.mjs の cacheEnvVars から読む(PowerShell 版と同じに保つ決まり)
+const JUNK6 = Object.fromEntries(IF_PRESENT_NAMES.map((n) => [n, `C:\\parent-junk\\${n}`]));
+
+test('check-env.ps1: 子の TEMP・TMP と、親にある ELECTRON_CACHE など6つも、build-env.mjs の cacheEnvVars と同じ場所に向く', () => {
+  const { r, br, vars } = runCheckEnv('env-six', { ...JUNK6, TEMP: 'C:\\parent-junk\\temp', TMP: 'C:\\parent-junk\\tmp' });
+  assert.ok(vars.pnpm && vars.npm, `偽の pnpm・npm が走っていない: ${r.stderr.slice(0, 200)}`);
+  const expected = cacheEnvVars(br, JUNK6); // 親にあるのでこの6つも向く
+  for (const tool of ['pnpm', 'npm']) {
+    for (const [name, want] of Object.entries(expected)) {
+      assert.equal(vars[tool][name]?.toLowerCase(), want.toLowerCase(), `${tool}: ${name}`);
+    }
+    for (const v of Object.values(vars[tool])) assert.ok(!/parent-junk/i.test(v), `${tool}: 親の C: の向け先が残った: ${v}`);
+  }
+  assert.equal(Object.keys(expected).filter((k) => IF_PRESENT_NAMES.includes(k)).length, 6, '6つとも期待に入っている(読み方の退行)');
+});
+
+test('check-env.ps1: 親に6つの変数が無ければ、足さない(子の環境に値が無い)。TEMP・TMP は <BuildRoot>\\tmp', () => {
+  // バッチの中では、未設定の %名% は空になる。この環境の親に元からある変数は向け直されて当然なので、飛ばす
+  const { br, vars } = runCheckEnv('env-none');
+  const L = cacheLayout(br);
+  for (const tool of ['pnpm', 'npm']) {
+    assert.equal(vars[tool].TEMP?.toLowerCase(), L.temp.toLowerCase(), `${tool}: TEMP`);
+    assert.equal(vars[tool].TMP?.toLowerCase(), L.temp.toLowerCase(), `${tool}: TMP`);
+    for (const n of IF_PRESENT_NAMES) {
+      if (process.env[n] !== undefined || Object.keys(process.env).some((k) => k.toUpperCase() === n.toUpperCase())) continue; // この環境の親にある変数は、向け直されて当然
+      assert.equal(vars[tool][n], '', `${tool}: ${n} を親に無いのに足した: ${vars[tool][n]}`);
+    }
+  }
+});
+
+test('check-env.ps1: 結果の JSON の childEnv.vars は、build-env.mjs の cacheEnvVars と同じ名前・同じ場所(PowerShell 版と mjs 版を同じに保つ)', () => {
+  const { out, br } = runCheckEnv('env-json', JUNK6);
+  const j = parseJsonOut(fs.readFileSync(out, 'utf8'));
+  const expected = cacheEnvVars(br, JUNK6);
+  const got = Object.fromEntries(Object.entries(j.childEnv.vars).map(([k, v]) => [k, String(v).toLowerCase()]));
+  const want = Object.fromEntries(Object.entries(expected).map(([k, v]) => [k, v.toLowerCase()]));
+  assert.deepEqual(Object.keys(got).sort(), Object.keys(want).sort(), '向け直す変数の名前の集まりが違う');
+  assert.deepEqual(got, want);
+});
+
+test('child-cache-env.ps1: Get-ShukoChildCacheEnv(PowerShell)と cacheEnvVars(mjs)が、親の名前の大文字小文字が違っても同じ値を返す。絶対でない buildRoot は断る', () => {
+  const ps1 = path.join(REPO, 'scripts', 'lib', 'child-cache-env.ps1');
+  const br = path.join(sb, 'twin-br');
+  const run = (cmd) => spawnSync('powershell.exe', ['-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-Command', `. '${ps1.replace(/'/g, "''")}'; ${cmd}`], { encoding: 'utf8', timeout: 60000, windowsHide: true });
+  // 親の名前を小文字・大文字にずらして渡す(Windows の環境変数名は大文字小文字を区別しない)
+  const lowered = IF_PRESENT_NAMES.map((n) => n.toLowerCase());
+  for (const [label, names] of [['無し', []], ['6つとも(大文字小文字を変えて)', lowered], ['一部', ['COREPACK_HOME', 'electron_config_cache']]]) {
+    const r = run(`Get-ShukoChildCacheEnv -BuildRoot '${br}' -BaseNames @(${names.map((n) => `'${n}'`).join(',')}) | ConvertTo-Json -Compress`);
+    assert.equal(r.status, 0, `${label}: ${r.stderr}`);
+    const got = JSON.parse(r.stdout);
+    const expected = cacheEnvVars(br, Object.fromEntries(names.map((n) => [n, 'x'])));
+    assert.deepEqual(Object.fromEntries(Object.entries(got).map(([k, v]) => [k, v.toLowerCase()])), Object.fromEntries(Object.entries(expected).map(([k, v]) => [k, v.toLowerCase()])), label);
+  }
+  const bad = run(`Get-ShukoChildCacheEnv -BuildRoot 'relative\\dir'`);
+  assert.notEqual(bad.status, 0, '絶対でない buildRoot を断らない');
 });
 
 test('check-env.ps1: 台本の結果(JSON)は、pnpm・npm の版を今までどおり読む(環境を向けても結果の形が変わらない)', () => {
@@ -225,7 +309,8 @@ test('take-in.mjs --records-dir: 外へ出る形(.. で records/take-in/ から�
     const r = takeIn(coreArgs(dir));
     assert.notEqual(r.status, 0, `${name}: 止まらない(終了 ${r.status})\n${r.text.slice(0, 300)}`);
     assert.match(r.text, /--records-dir/, `${name}: メッセージに --records-dir が無い`);
-    assert.ok(!fs.existsSync(path.resolve(dir)) || name.startsWith('..'), `${name}: 置き場所を作った`);
+    // .. の2件も、正規化した先(tmp\tests\smallfix-dotdot・records\smallfix-up)は前から無い場所。止まる前に作っていないことを、全部で見る
+    assert.ok(!fs.existsSync(path.resolve(dir)), `${name}: 置き場所を作った: ${path.resolve(dir)}`);
   }
 });
 
@@ -250,6 +335,104 @@ test('take-in.mjs --records-dir: --skip-judge を付けても、外は止まる(
   const r = takeIn([...coreArgs(dir), '--skip-judge']);
   assert.notEqual(r.status, 0, `止まらない(終了 ${r.status})\n${r.text.slice(0, 300)}`);
   assert.ok(!fs.existsSync(dir));
+});
+
+// recordsDirProblem を、試しの入れ物を repoRoot・cwd に渡して直接呼ぶ(本物の records/ には触れない)。
+// 戻り値: 問題の文(止める)か null(通す)。
+function recRepo(tag) {
+  const repoRoot = path.join(sb, `recrepo-${tag}`);
+  const cwd = path.join(sb, `reccwd-${tag}`);
+  fs.mkdirSync(path.join(repoRoot, 'records', 'take-in'), { recursive: true });
+  fs.mkdirSync(cwd, { recursive: true });
+  return { repoRoot, cwd, root: path.join(repoRoot, 'records', 'take-in') };
+}
+
+test('recordsDirProblem: records/take-in そのもの(根)は止める。下の新しい場所・前からある下のフォルダは通す', () => {
+  const { repoRoot, cwd, root } = recRepo('basic');
+  fs.mkdirSync(path.join(root, 'existing', 'deep'), { recursive: true });
+  assert.match(recordsDirProblem(root, { repoRoot, cwd }) ?? '', /records\/take-in\/ の下でない/, '根そのものを通した');
+  assert.match(recordsDirProblem(root + path.sep, { repoRoot, cwd }) ?? '', /下でない/, '末尾の区切りつきの根を通した');
+  assert.equal(recordsDirProblem(path.join(root, 'new-label'), { repoRoot, cwd }), null);
+  assert.equal(recordsDirProblem(path.join(root, 'existing'), { repoRoot, cwd }), null);
+  assert.equal(recordsDirProblem(path.join(root, 'existing', 'deep', 'x', 'y'), { repoRoot, cwd }), null);
+});
+
+test('recordsDirProblem: 外(別の場所・records の直下・リポジトリの外・.. で抜ける・前方一致の偽装)は止める', () => {
+  const { repoRoot, cwd, root } = recRepo('outside');
+  const bad = [
+    path.join(sb, 'elsewhere'),
+    path.join(repoRoot, 'records', 'other'),
+    path.join(repoRoot, 'tmp', 'x'),
+    path.join(root, '..', 'x'),
+    path.join(root, 'a', '..', '..', 'x'),
+    `${root}-evil${path.sep}x`,
+    path.join(`${repoRoot}-evil`, 'records', 'take-in', 'x'),
+    repoRoot,
+  ];
+  for (const d of bad) assert.ok(recordsDirProblem(d, { repoRoot, cwd }), `通した: ${d}`);
+});
+
+test('recordsDirProblem: 大文字小文字は区別しない(Windows)。相対パスは cwd から数える(cwd がリポジトリなら records/take-in/x は通る。別の場所なら外)', () => {
+  const { repoRoot, cwd, root } = recRepo('case');
+  assert.equal(recordsDirProblem(root.toUpperCase() + path.sep + 'X', { repoRoot, cwd }), null);
+  assert.equal(recordsDirProblem(path.join('records', 'take-in', 'rel'), { repoRoot, cwd: repoRoot }), null);
+  assert.ok(recordsDirProblem(path.join('records', 'take-in', 'rel'), { repoRoot, cwd }), 'cwd が別の場所なら外');
+  assert.equal(recordsDirProblem(path.join('..', 'recrepo-case', 'records', 'take-in', 'rel2'), { repoRoot, cwd }), null, '相対で .. を通って入る形も、正規化した先が中なら通す');
+});
+
+test('recordsDirProblem: 空・文字列でない・repoRoot が無い', () => {
+  const { repoRoot, cwd } = recRepo('empty');
+  assert.match(recordsDirProblem('', { repoRoot, cwd }) ?? '', /空/);
+  assert.ok(recordsDirProblem(undefined, { repoRoot, cwd }));
+  assert.ok(recordsDirProblem(null, { repoRoot, cwd }));
+  assert.throws(() => recordsDirProblem(path.join(sb, 'x'), { cwd }), /repoRoot/);
+});
+
+test('recordsDirProblem: 途中がジャンクションなら止める(records/take-in の下のジャンクションを通る形も、ジャンクションそのものも)。ジャンクションの先に何もできない。作れない環境では飛ばす', (t) => {
+  const { repoRoot, cwd, root } = recRepo('junction');
+  const target = path.join(sb, 'recjunction-target');
+  fs.mkdirSync(target, { recursive: true });
+  const linkPath = path.join(root, 'jn');
+  const link = junction(target, linkPath);
+  if (!link) { t.skip('ジャンクションを作れない環境'); return; }
+  try {
+    const through = recordsDirProblem(path.join(linkPath, 'label'), { repoRoot, cwd });
+    assert.match(through ?? '', /リンクかジャンクション/, 'ジャンクションを通る形を通した');
+    assert.match(recordsDirProblem(linkPath, { repoRoot, cwd }) ?? '', /リンクかジャンクション/, 'ジャンクションそのものを通した');
+    assert.match(recordsDirProblem(path.join(linkPath, 'a', 'b', 'c'), { repoRoot, cwd }) ?? '', /リンクかジャンクション/, '深い下を通した');
+    assert.deepEqual(fs.readdirSync(target), [], '関数が行き先に何か作った(読むだけのはず)');
+    // 対照: ふつうのフォルダの兄弟は通る
+    assert.equal(recordsDirProblem(path.join(root, 'plain', 'label'), { repoRoot, cwd }), null);
+  } finally { dropLink(linkPath); }
+});
+
+test('recordsDirProblem: 途中のジャンクションが records/take-in の中を指していても止める(リンクは一律に外。行き先を信用しない)。作れない環境では飛ばす', (t) => {
+  const { repoRoot, cwd, root } = recRepo('junction-in');
+  fs.mkdirSync(path.join(root, 'real'), { recursive: true });
+  const linkPath = path.join(root, 'alias');
+  const link = junction(path.join(root, 'real'), linkPath);
+  if (!link) { t.skip('ジャンクションを作れない環境'); return; }
+  try {
+    assert.match(recordsDirProblem(path.join(linkPath, 'x'), { repoRoot, cwd }) ?? '', /リンクかジャンクション/);
+  } finally { dropLink(linkPath); }
+});
+
+test('recordsDirProblem: 途中がフォルダでない(ファイル)なら止める', () => {
+  const { repoRoot, cwd, root } = recRepo('file');
+  write(path.join(root, 'afile'), 'x');
+  assert.match(recordsDirProblem(path.join(root, 'afile', 'label'), { repoRoot, cwd }) ?? '', /フォルダでない/);
+});
+
+test('recordsDirProblem: 呼んでも何も作らない・消さない(読むだけ)', () => {
+  const { repoRoot, cwd, root } = recRepo('readonly');
+  fs.mkdirSync(path.join(root, 'keep'), { recursive: true });
+  write(path.join(root, 'keep', 'f.txt'), 'f');
+  const before = snapshot(repoRoot);
+  recordsDirProblem(path.join(root, 'new', 'deep'), { repoRoot, cwd });
+  recordsDirProblem(path.join(sb, 'outside'), { repoRoot, cwd });
+  recordsDirProblem(path.join(root, 'keep'), { repoRoot, cwd });
+  assert.deepEqual(snapshot(repoRoot), before);
+  assert.ok(!fs.existsSync(path.join(root, 'new')));
 });
 
 test('take-in.mjs: 前の「警告だけで続ける」形(startsWith(REPO) の文字列比較)が残っていない', () => {
