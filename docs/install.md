@@ -194,6 +194,10 @@ node scripts/install-extensions.mjs
 
 ほかに手で見る項目は `records/take-in/1.146.0-p5-c-all-r2/manual-checks-p5-c-all-r2.md`（C1〜C21）と `records/take-in/1.146.0-p5-c-all-r3c/manual-checks-p5-c-all-r3c.md`（C22）にあります。版の名前を `1.146.0-p5-c-all-r4` に読み替えてください。段階 A・B だけの版の項目は `records/phase2/manual-checks-p2-all.md` です。
 
+### 4.2 拡張を足したいとき
+
+拡張を自分で入れないでください（台帳に無い拡張は `extensions.allowed` で止まり、入っていると手順4が止まります）。このリポジトリで `claude` を起動し、拡張の名前か Open VSX の URL と、何に使うかを伝えて頼みます。課が取得し、スリム化した Shuko に合うかを確かめ、台帳に載せて入れます（2026-11-17 の裁定。[04](04-bundled-extensions.md) の8節）。新しい拡張を入れるには本体の作り直しが要るので、急がなければ毎週の取り込みの版に乗ります。
+
 ## 5. 外部ツール
 
 補完やエラーの表示に、エディタの外のツールを使う言語があります。ツールが無いと、その機能（検査・整形など）が動かないだけで、色付けは残ります（[01](01-requirements.md) の4節。裁定）。

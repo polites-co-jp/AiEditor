@@ -38,7 +38,7 @@
 | 拡張の実行（拡張ホスト） | 本体 | `src/vs/workbench/api`、`services/extensions` | 同梱した拡張を動かすために必須 |
 | 拡張のインストール（CLI のみ） | 本体 | `src/vs/platform/extensionManagement` | 台帳の VSIX を `--install-extension` で入れるために残す。画面からの検索・追加は消す（C-5） |
 | 動作中の拡張の一覧・Process Explorer | 本体 | `contrib/extensions/electron-browser` の runtime extensions、`contrib/processExplorer` | 不具合の調査と、関門の「消えている」の確認に使う。C-5 で消さずに残す |
-| 日本語の表示 | 同梱 | 言語パック `MS-CEINTL.vscode-language-pack-ja` | [04](04-bundled-extensions.md) |
+| 日本語の表示 | 同梱 | 本体と同じ版の日本語の言語パック（2026-11-17 から自分で作る。前は `MS-CEINTL.vscode-language-pack-ja` 1.131.0） | [04](04-bundled-extensions.md) の7節 |
 | Sublime Text のキー割り当て | 自前 | `mydist` の `contributes.keybindings` | `ms-vscode.sublime-keybindings`（MIT）から一度だけ変換する（[04](04-bundled-extensions.md)） |
 | 固定のテーマ（Light Modern） | 組込＋設定 | `extensions/theme-defaults`、`workbench.colorTheme` を既定で固定 | 他の色のテーマは消す（A-6）。ファイルのアイコン `extensions/theme-seti` は残す |
 | Claude Code 拡張 | 同梱 | `anthropic.claude-code` | [04](04-bundled-extensions.md) |

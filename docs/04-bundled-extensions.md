@@ -4,6 +4,7 @@
 
 - 裁定: 同梱する拡張は Open VSX から取得し、版とハッシュを固定して台帳（`extensions.lock.json`）に記録する。発行元と公式配布物の一致も確かめる。更新は「通知 → Claude が検証 → 差し替え」の順。
 - 拡張の追加インストールは消す（裁定）。動くのは台帳の拡張と組み込み拡張だけ。
+- 拡張を足すときは、ユーザーが Claude へのプロンプトで課に代行を頼み、課が取得・確かめ・台帳への記載・導入までを行う（裁定 2026-11-17。8節）。
 - **拡張を本体のビルドに組み込まない**。Claude Code 拡張は数日おきに新版が出る（2.1.322 は 2026-11-10 公開）[一次] https://open-vsx.org/api/Anthropic/claude-code 。本体の再ビルド（重い）と拡張の差し替え（軽い）の周期を分ける。
 - **VSIX は改変せず、本体の正規の手順で入れる**（`<editor> --install-extension <vsix> --force`）。Claude Code の条件 "Claude Code must be installed and run as published by Anthropic" にそのまま合う [一次] https://code.claude.com/docs/en/legal-and-compliance 。
 - Marketplace からは取らない。規約が対象を Visual Studio 系の製品に限る [一次] Marketplace Terms of Use 2.b・3（[00](00-overview.md) の5節）。
@@ -145,8 +146,30 @@
 
 ## 7. 日本語化
 
-- 言語パック `MS-CEINTL.vscode-language-pack-ja` を台帳に載せて入れる。表示言語は `argv.json` の `"locale": "ja"` で決める（`argv.json` の場所は `%USERPROFILE%\<product の dataFolderName>\argv.json`。`dataFolderName` を `.shuko` にすれば `%USERPROFILE%\.shuko\argv.json`。環境変数 `VSCODE_PORTABLE` があれば `<VSCODE_PORTABLE>\argv.json`。`--user-data-dir` は関係しない [一次] 本家 1.146.0 の `src/mainImpl.ts` の `getArgvConfigPath`（Phase 0 で確認）。Phase 1 で実際の場所を確かめる）。
-- Open VSX の最新は 1.131.0（engines ^1.131.0）で、本体の 1.146.0 より古い。版の番号は VS Code の版と一致している [二次] Open VSX の版の一覧。新しい本体で使うと、未訳の部分が英語で出るだけで済む見込み（推定）。Phase 0 の 0-7 で確かめる。
-- 裁定: 未訳の部分が英語になるのを受け入れる。目立つなら改めてユーザーに諮る。
-- 目立つときに諮る別案: vscode-loc（MIT）のソースから、本体と同じ版の言語パックを自分で包んで台帳に載せる。ただし vscode-loc の文字列の最終更新は 2026-09-04 で、どの本体の版に対応するかの記述は無い [一次] https://github.com/microsoft/vscode-loc/commits/main 。
+- 表示言語は `argv.json` の `"locale": "ja"` で決める（`argv.json` の場所は `%USERPROFILE%\<product の dataFolderName>\argv.json`。`dataFolderName` を `.shuko` にすれば `%USERPROFILE%\.shuko\argv.json`。環境変数 `VSCODE_PORTABLE` があれば `<VSCODE_PORTABLE>\argv.json`。`--user-data-dir` は関係しない [一次] 本家 1.146.0 の `src/mainImpl.ts` の `getArgvConfigPath`（Phase 0 で確認）。Phase 1 で実際の場所を確かめる）。
+- 裁定（2026-11-17）: 未訳の部分を英語のまま残さず、日本語にする。前の裁定（2026-11-12「未訳の部分が英語になるのを受け入れる。目立つなら改めて諮る」）を改めた。
+- 2026-11-17 の状態（リーダーが読んで確かめた）: Open VSX の `MS-CEINTL.vscode-language-pack-ja` 1.131.0（engines ^1.131.0）を入れ、`languagepacks.json` に登録されて効いている。本体 1.146.0 の文言 12,355 件のうち約 650 件が英語のまま（1.132〜1.146 で増えた文言）。Open VSX の最新は 1.131.0 で、本体より古い。
+- 進め方（2026-11-17 のリーダーの判断。作り方の詳細は `tasks/2026-11-17-l10n-ja/` の調べを受けてここに書く）:
+  1. 本体と同じ版の日本語の言語パックを自分で作る（前の別案）。訳の元は、公式の訳のうち新しいもの（Open VSX の日本語パックの最新、vscode-loc（MIT）[一次] https://github.com/microsoft/vscode-loc の最新）。
+  2. 公式の訳に無い文言（本家の新しい文言と、Shuko のパッチが足した文言）は、課が訳を足す。足した訳はリポジトリに置き、どの文言の訳かを鍵で引けるようにする。
+  3. 網: ビルドの文言の一覧と照らして、未訳の数を出す。英語のままでよいもの（固有名詞・コードの名前・記号だけなど）は、理由つきの除外の一覧に載せる。合格の条件は「除外の外の未訳 0」。対象は本体と組み込み拡張。
+  4. 本体の版が上がったら（毎週の取り込み）、増えた文言を同じ手順で訳してからパックを作り直す（`TAKE-IN.md`）。
+- 対象の外: 台帳のほかの拡張（Claude Code・PowerShell など）の表示。拡張が日本語の訳を持たなければ英語のまま。VSIX は改変しない（1節）。
 - Microsoft 発行の拡張（言語パック、PowerShell）を Open VSX 経由で使うことが Marketplace の規約に触れないかは、文書から断定できない。裁定: 個人利用として、法的な確認をせずに使う。リスクはユーザーが受け入れる（[00](00-overview.md) の4.3）。
+
+## 8. 拡張を足すとき（代行の依頼）
+
+裁定（2026-11-17）: ユーザーは拡張を自分で入れない。Claude へのプロンプトで課に代行を頼む。課は拡張を取得し、スリム化した Shuko に合うかを確かめ、要れば整えてから台帳に載せて入れる。
+
+1. **受け付け**（リーダー）: ユーザーが、このリポジトリで起動した `claude`（リーダー）に、拡張の名前か Open VSX の URL と、何に使うかを伝える。リーダーが `tasks/<日付>-ext-<名前>/brief.md` を書く。
+2. **取得と検証**（蒙恬）: Open VSX から取る（Marketplace からは取らない。1節）。4節の検証の項目1〜9を通す。Open VSX に無い、`verified` でない、寝かせる期間に満たないときは、リーダーがユーザーに諮る。
+3. **スリム化した Shuko に合うかの確かめ**（蒙恬）:
+   - manifest を見る。消した機能（[03](03-removal-design.md)）に依存する印: `contributes` の `debuggers`・`breakpoints`・`notebooks`・`notebookRenderer`・`chatParticipants`・`languageModelTools`・`languageModelChatProviders`・`mcpServerDefinitionProviders`、`enabledApiProposals`、`extensionDependencies`（依存する拡張も同じ手順で足す）、`engines.vscode` が今の本体の版を満たすか。
+   - 一時的な置き場所で入れて動かす（4節の10）。拡張が起動し、新しい誤りが出ないこと。消した機能の API は何もしない実装なので、呼んでも止まらないが、その機能は働かない。
+4. **整える**: 消した機能に依存して働かない部分があるときは、扱いをリーダーがユーザーに諮る（入れない／働かない部分を承知で入れる／包み直す（ライセンスが改変を許すものだけ。Claude Code は対象外）／消した機能を戻す）。VSIX を改変するのは、ユーザーが選んだときだけ。
+5. **台帳に載せる**（蒙恬）: `extensions.lock.json` に足し、`product.overlay.json` の `shukoConfigurationDefaults` の `extensions.allowed` に ID を足す。`extensions.allowed` は product.json の既定なので、新しい ID は本体を作り直さないと入れられない。急がなければ毎週の取り込みの版に乗せ、急ぐときは作り直す。
+6. **テストと検証**: 曹参が台帳と `extensions.allowed` の照合などのテストを直し、大岡越前守が検証とスモーク（拡張が起動し、新しい誤りが無い）で合否を出す。
+7. **入れる**（蒙恬）: 作り直した版に入れ替え（`switch.ps1`）、`install-extensions.mjs` で台帳の拡張を入れる。リーダーがコミットし、ユーザーに報告する。
+
+- 以後、その拡張は台帳のほかの拡張と同じく、毎週の検知と取り込みの対象になる（[06](06-update-watch-and-take-in.md)）。
+- 外すときも同じ窓口で頼む。課が台帳と `extensions.allowed` から外し、本体を作り直して入れ替え、入っている拡張を消す。

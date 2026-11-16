@@ -2,7 +2,7 @@
 
 Claude Code でのコーディングに特化した、省メモリの VS Code 派生エディタ（Windows 専用、利用者は1人）の設計資料。実装する人がこの資料だけを読んで Phase 0 に着手できるように書いた。
 
-- 「Shuko」は仮の名前。正式な名前とアイコンは後でユーザーが決める（[08-risks-and-open-items.md](08-risks-and-open-items.md)）。Microsoft・Visual Studio・Claude の名称とロゴは使わない。
+- 「Shuko」は仮の名前。正式な名前は後でユーザーが決める（[08-risks-and-open-items.md](08-risks-and-open-items.md)）。Microsoft・Visual Studio・Claude の名称は使わない。アイコンは Claude と VS Code のアイコンを合わせた意匠にする（2026-11-17 の裁定）。
 - 本文の `<editor>` は決まった名前（applicationName）に置き換えて読む。
 
 ## 読む順
