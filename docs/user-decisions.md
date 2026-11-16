@@ -453,3 +453,14 @@
 | `check-env.ps1` が本物の環境で `pnpm --version`・`npm --version` を起こし、C: のキャッシュに小さく書く恐れ | 直す（子の環境を `<buildRoot>` の下へ向ける）。急がないので、関門の後にまとめる |
 | C-1 と C-2 の `delete` の `debugChatIntegration.ts` の重なりの警告 | 前の判断（2026-11-15「C-2 のテストで出た点」）のまま残す |
 | `%LOCALAPPDATA%\pnpm\package-manager-store`（0.58 GB、2026-11-16 02:14）が C: にできた | このビルドの台本は pnpm を起こしていない時刻で、別の作業の見込み（推定）。ユーザーに知らせる |
+
+## 記録（2026-11-16、段階 C の版の関門で出た点。リーダーの判断）
+
+根拠: `records/take-in/1.146.0-p5-c-all/gate-p5-c-all.md`・`gate-C-1-ai.md`
+
+| 論点 | 扱い |
+|---|---|
+| 21単位の版でワークベンチが立ち上がらない。C-1 の `productRemove` が product.json から `defaultChatAgent`・`builtInExtensionsEnabledWithAutoUpdates` を外し、残る本家のコード（8か所。`defaultAccount.ts`・`extensionsScannerService.ts` など）が `?.` なしで読む（型では省略できないキーなので型検査に掛からない） | 裁定「product.json の AI のキーは消す」のまま、読む側を直す（C-1 の edits.patch に、キーが無いときに空として扱う直しを足す）。キーを空の値で残す案は採らない |
+| 作業ツリーへ直接打つ git の許可が `C:/b` 前提で、`tmp/b` に当たらない | edits.patch（`removals/` の中の本文）を直し、当て直しと型検査は `build.mjs` の手順に任せる。C: の古い作業ツリーは使わない |
+| C-7 の「関門を2回続けて通らなければ諮る」の数え方 | 今回は数えない（C-1 の誤りで、C-7 を確かめる所まで行っていない） |
+| スモークの `extractChromiumErrors` が `INFO:CONSOLE` で出るコンソールの誤りを拾わず、今回の TypeError で `errors.new` が PASS になった。`p1-launch-check.ps1` はワークベンチが立ち上がったかを見ない | 直す（スモークは曹参、起動の確かめは蒙恬）。照らし役 c2〜c5-check-json の21単位の組、c1-unit の「`productRemove` のキーを残る src が `?.` なしで読まない」検査も足す（曹参） |
