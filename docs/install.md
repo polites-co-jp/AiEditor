@@ -3,7 +3,7 @@
 ビルドした zip から Shuko を日常の利用に入れるまでの手順です（[07](07-phases.md) の7節の3）。普段使いの本家の VS Code は消さず、そのまま残します。Shuko が合わなかったときに戻る先にするためです（同じ節の4）。
 
 - 対象: Windows 11、x64。利用者はこの PC のユーザー1人
-- 入れる版: `C:\b\dist\1.146.0-p2-all.zip`（段階 A・B の14単位を当てた版。SHA-256 `15aa0ce75ead4e7455cfe4f40557f62c2b56b4822151319271e30916e3081f6f`、本体の commit `d5fd4c3a7558f7216fe5e9ba86970d11aceb40aa`。全桁は `tasks/2026-11-15-p2-all-build/1.146.0-p2-all/build-record.json` の `zip.sha256`。締めの検証は `records/phase2/phase2-close.md`）
+- 入れる版: `<ビルドリポジトリ>\tmp\b\dist\1.146.0-p5-c-all-r4.zip`（段階 A・B・C の21単位を当てた版。SHA-256 `e3e524699a9994a6507dfa6896eaefb2582ae3fdf75798186c5411e5f91a2e6e`、本体の commit `7fac30e886f79ebe44e1bac93acd7a86fbbafed8`。全桁は `tasks/2026-11-16-p5-c1-product-keys/1.146.0-p5-c-all-r4/build-record.json` の `zip.sha256`。関門は `records/take-in/1.146.0-p5-c-all-r4/gate-p5-c-all-r4.md`。2026-11-16 までは段階 A・B だけの `1.146.0-p2-all` だった）
 - 所要時間: 手順1〜4は10分ほど（zip の展開と拡張の導入はそれぞれ1分弱）。外部ツールと Notion の用意を含めると1時間ほど
 - 管理者の権限: Shuko の手順はどれも要りません（全部ユーザーごとの場所に書きます）。外部ツール（手順5）の導入で UAC の確認が出ることがあります
 - 前提: [build-env-setup](build-env-setup.md) の道具が入っていて、Smart App Control がオフ。自分でビルドした署名の無いネイティブの部品は、オンだと読み込めません（[02](02-repository-and-build.md) の5節。裁定 2026-11-14）
@@ -48,7 +48,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/configure.ps1
   | `installRoot` | `C:\Users\<ユーザー>\AppData\Local\Programs\Shuko`（ファイルの中は `%LOCALAPPDATA%\Programs\Shuko`） |
   | `keepVersions` | `3` |
   | `builderRepo` | `E:\develop\self\Team\projects\ai-editor` |
-  | `buildRoot` | `C:\b` |
+  | `buildRoot` | `<ビルドリポジトリ>\tmp\b`（2026-11-16 から。C: に置かない裁定） |
 
 - 2回目からは、引数なしで実行しても何も変えず、今の値を出すだけです。今の値を確かめたいときにも使えます。
 
@@ -90,11 +90,11 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/configure.ps1 -Insta
 ## 2. zip を展開し、`current` を作る（`switch.ps1`）
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/switch.ps1 1.146.0-1 -Zip C:\b\dist\1.146.0-p2-all.zip -Sha256 15aa0ce75ead4e7455cfe4f40557f62c2b56b4822151319271e30916e3081f6f
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/switch.ps1 1.146.0-1 -Zip tmp\b\dist\1.146.0-p5-c-all-r4.zip -Sha256 e3e524699a9994a6507dfa6896eaefb2582ae3fdf75798186c5411e5f91a2e6e
 ```
 
 - zip の SHA-256 を確かめてから、`<installRoot>\versions\1.146.0-1\` に展開し、`<installRoot>\current` をそこへ向けるジャンクションを作り、`history.txt` に1行書きます。
-- 版のフォルダの名前（ラベル）は「本家のタグ-ビルドの番号」にします（[02](02-repository-and-build.md) の6節）。zip の名前はビルドのときの `1.146.0-p2-all` ですが、ラベルは `1.146.0-1` にしてください。更新の検知は、`current` の指すフォルダの名前から今の版を読みます。読めるのは `1.146.0` か `1.146.0-1` の形だけです。
+- 版のフォルダの名前（ラベル）は「本家のタグ-ビルドの番号」にします（[02](02-repository-and-build.md) の6節）。zip の名前はビルドのときの `1.146.0-p5-c-all-r4` ですが、ラベルは `1.146.0-1` にしてください。更新の検知は、`current` の指すフォルダの名前から今の版を読みます。読めるのは `1.146.0` か `1.146.0-1` の形だけです。
 - 出力の見どころ: `"result": "ok"`、`target.exe` が `...\versions\1.146.0-1\Shuko.exe`、`engines.unsatisfied` が空、`history` が `<日時>\t-\t1.146.0-1`（`\t` はタブ。`-` は「前の版なし」）。
 - 初めてのときは `backup.missing` に5つ全部が並びますが、写すユーザーのデータがまだ無いだけで、誤りではありません。
 - `switch.ps1` は、どの使い方でも初めに、更新の検知（手順7）が最後に成功した日時を1行出します（[06](06-update-watch-and-take-in.md) の2.3。JSON では `watch`）。警告だけで、切り替えは止めず、終了コードも変えません。
@@ -148,7 +148,7 @@ $ws.CreateShortcut($lnk).TargetPath
    shuko --version
    ```
 
-   `where.exe` が `...\Shuko\current\bin\shuko.cmd` を出し、`shuko --version` が `1.146.0`・`d5fd4c3a7558f7216fe5e9ba86970d11aceb40aa`・`x64` の3行を出せば済んでいます。
+   `where.exe` が `...\Shuko\current\bin\shuko.cmd` を出し、`shuko --version` が `1.146.0`・`7fac30e886f79ebe44e1bac93acd7a86fbbafed8`・`x64` の3行を出せば済んでいます。
 
 - `setx PATH ...` は使わないでください。1024 文字で切れ、`%LOCALAPPDATA%` などの形も展開されて失われます。
 
@@ -163,7 +163,7 @@ node scripts/install-extensions.mjs --dry-run
 ```
 
 - `"result": "dry-run"`、`vsix` の8件すべてが `"sha256Ok": true`、`argv.path` が `C:\Users\<ユーザー>\.shuko\argv.json` であることを確かめます。
-- VSIX は `C:\b\cache\vsix\` にあればそれを使い、無ければ Open VSX（`open-vsx.org`）から取ってそこに置きます。
+- VSIX は `<buildRoot>\cache\vsix\` にあればそれを使い、無ければ Open VSX（`open-vsx.org`）から取ってそこに置きます。
 
 続けて、入れます。
 
@@ -192,7 +192,7 @@ node scripts/install-extensions.mjs
 - エクスプローラーで、`%APPDATA%\Shuko\User` ができていて、`%APPDATA%\Code` の更新日時が変わっていない。
 - `%USERPROFILE%\.shuko-shared\` ができているか（できていれば、8節の「すっかり消すとき」の対象。できていなくても誤りではありません）。
 
-ほかに手で見る項目は `records/phase2/manual-checks-p2-all.md` にあります（ここでは全部をやり直さなくて構いません）。
+ほかに手で見る項目は `records/take-in/1.146.0-p5-c-all-r2/manual-checks-p5-c-all-r2.md`（C1〜C21）と `records/take-in/1.146.0-p5-c-all-r3c/manual-checks-p5-c-all-r3c.md`（C22）にあります。版の名前を `1.146.0-p5-c-all-r4` に読み替えてください。段階 A・B だけの版の項目は `records/phase2/manual-checks-p2-all.md` です。
 
 ## 5. 外部ツール
 
@@ -353,7 +353,7 @@ git log --oneline -- extensions.lock.json
 node scripts/install-extensions.mjs --rev <前のコミット>
 ```
 
-前の版の VSIX は `C:\b\cache\vsix\` に残っているので、取り直しはしません。終わったら Shuko を再起動します。
+前の版の VSIX は `<buildRoot>\cache\vsix\` に残っているので、取り直しはしません。終わったら Shuko を再起動します。
 
 ### 本家の VS Code に戻る
 
