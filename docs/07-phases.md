@@ -233,3 +233,6 @@ UDP や、2秒より短い接続は取りこぼす。必要になったら、Win
 - 下ごしらえ（ユーザーの答え 2026-11-15。片づけの許可を待つ間に edits.patch を作る）: C-1〜C-7 の全部の `edits.patch` と検査・テストができ、大岡越前守の検証で「パッケージ化の前まで」合格した。段階 C の全部（A・B の14と C-1〜C-7 の21単位）をタグから当てて、型検査は誤り 0。記録は `tasks/2026-11-15-p5-c*-patch/`・`p5-c*-tests/`・`p5-c1-verify/`・`p5-c2-c4-verify/`・`p5-c4-c5-verify/`・`p5-c1-c6-c7-verify/`。どの単位も `enabled` は `false`。
 - 残り: C-1〜C-7 を全部有効にした1つの版のビルド（パッケージ化）・起動の確かめ・関門（[03](03-removal-design.md) の7節の2〜4）。ビルドは古い版の片づけの許可の後（`docs/user-decisions.md` 2026-11-15 の「段階 C の関門の段取り」）。関門で見る項目は各単位の台本 `tests/removals/c*-gate-script.md` にある（起動時の注入の外し損ね、Claude Code の組、拡張ホストのログ、ロックファイルの作り直し、本物の `pnpm install`）。
 - 検証役が組の間で作業ツリーをタグに戻す許可と、ロックファイルを作り直す許可は、`tasks/2026-11-15-permission-requests/requests.md` の2で依頼している。
+
+- **関門（2026-11-16）**: C-1〜C-7 を全部有効にした21単位の版を4回作り直し、`1.146.0-p5-c-all-r4` で C-1〜C-7 の全部が関門（[03](03-removal-design.md) の7節の1〜4）を通った（大岡越前守。`records/take-in/1.146.0-p5-c-all-r4/gate-p5-c-all-r4.md`）。1回目は C-1 が消した product.json のキーを残る読み手が読んでワークベンチが立ち上がらず、r2 は消した部品の使い手が3つ残り、r3c は edits.patch の書式の傷で保留だった。r3c の関門で、スモーク3回とも PASS 49 / FAIL 0、absent 19単位 fail 0、通信の監査は許可の外 0（続きの編集の通信なし）。r4 は木が r3c と同じで、静的なテスト・起動の確かめ・スモーク1回で確かめた。C-1〜C-7 の `enabled` は `true`。
+- 残り: 画面を見て操作する手の項目（`records/take-in/1.146.0-p5-c-all-r2/manual-checks-p5-c-all-r2.md` の C1〜C21 と r3c の C22。版を r4 に読み替える）と、入れ替え（ユーザー）。

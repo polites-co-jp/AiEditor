@@ -2,7 +2,7 @@
   "id": "C-1-ai",
   "stage": "C",
   "order": 310,
-  "enabled": false,
+  "enabled": true,
   "intent": "本家の AI（チャット・インラインチャット・MCP・エージェントのホスト・Agents の窓・エージェントのセッション・音声の口述・言語モデルの API の実装）を消す。拡張 API の vscode.lm・vscode.chat などは何もしない実装にして残す（edits.patch。extHostRemovedApi.ai.ts）。AI の SDK の依存と product.json の AI のキーを消す。Claude Code が使う受け手（Webview・セカンダリサイドバー・コメント・差分エディタ・拡張のファイルシステム・JSON の検査・ワークスペースの信頼）は消さない",
   "after": ["A-1-copilot-extension", "B-1-telemetry", "B-2-onboarding-experiments-surveys"],
   "delete": [

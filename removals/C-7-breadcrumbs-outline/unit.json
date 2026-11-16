@@ -2,7 +2,7 @@
   "id": "C-7-breadcrumbs-outline",
   "stage": "C",
   "order": 370,
-  "enabled": false,
+  "enabled": true,
   "intent": "パンくずリスト（エディタの上の経路と記号の表示）と、それが使うアウトラインのサービス・テキストエディタの記号のアウトラインを消す。パンくずリストはエディタの枠（共有部品）が作っているので、枠のファイルへのパッチは作る部分だけに絞る。記号へ移動（Ctrl+Shift+O）は従来の記号の取得で残す。差分エディタの『変更の無い部分』のパンくず（editor/contrib/diffEditorBreadcrumbs）は残す",
   "after": ["B-4-outline-view", "C-1-ai", "C-4-notebook"],
   "delete": [

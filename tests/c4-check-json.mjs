@@ -20,6 +20,10 @@ export const BASE_UNITS = ['A-1-copilot-extension', 'A-2-accounts-extensions', '
   'B-4-outline-view', 'B-5-theme-switching', 'B-6-online-feeds', 'B-7-terminal-suggest'];
 export const UNITS_A = [...BASE_UNITS, 'C-1-ai', 'C-2-debug', 'C-4-notebook'];
 export const UNITS_B = [...BASE_UNITS, 'C-1-ai', 'C-2-debug', 'C-3-remote', 'C-4-notebook'];
+/** c: 段階 C のすべて(21単位。2026-11-16 に足した。b と同じ見方に、C-5〜C-7 の edits が衝突しないことを足す) */
+export const UNITS_C = [...UNITS_B, 'C-5-extension-gallery', 'C-6-settings-sync', 'C-7-breadcrumbs-outline'];
+/** c の組で、C-4 の後ろに当たる単位 */
+const AFTER_C4 = ['C-5-extension-gallery', 'C-6-settings-sync', 'C-7-breadcrumbs-outline'];
 /** C-1 が先に消すため C-2 の delete が「本家に無い」警告になる1件(a・b とも。C-2 の台本と同じ) */
 export const C2_WARNING_FILE = 'src/vs/workbench/contrib/debug/browser/debugChatIntegration.ts';
 /** C-4 の前提の単位(unit.json の after) */
@@ -27,14 +31,17 @@ export const AFTER = ['A-4-notebook-extensions', 'B-4-outline-view', 'C-1-ai', '
 
 /** 記録の組を見分ける。 */
 export function kindOf(j) {
-  return (j.units ?? []).some((u) => u.id === 'C-3-remote') ? 'b' : 'a';
+  const ids = (j.units ?? []).map((u) => u.id);
+  if (ids.includes('C-7-breadcrumbs-outline')) return 'c';
+  return ids.includes('C-3-remote') ? 'b' : 'a';
 }
 
 /** 当て直しの記録を照らす。食い違いの文の配列を返す（空なら期待どおり）。 */
 export function checkApply(j, unitJson) {
   const bad = [];
   const kind = kindOf(j);
-  const expected = kind === 'b' ? UNITS_B : UNITS_A;
+  const expected = kind === 'c' ? UNITS_C : kind === 'b' ? UNITS_B : UNITS_A;
+  const withC3 = kind !== 'a'; // b・c は C-3 も当たる
   if (j.result !== 'ok') bad.push(`result が ok でない: ${j.result} (stoppedAt: ${JSON.stringify(j.stoppedAt)})`);
   if (j.dryRun) bad.push('dryRun の記録（実際に当てていない）');
   if (!/^[0-9a-f]{40}$/.test(j.headCommit ?? '')) bad.push(`headCommit が sha でない: ${j.headCommit}`);
@@ -46,9 +53,13 @@ export function checkApply(j, unitJson) {
   const at = (id) => ids.indexOf(id);
   for (const dep of AFTER) if (at(dep) > at('C-4-notebook')) bad.push(`C-4 が前提の ${dep} より先に当たっている`);
   if (!(at('C-1-ai') < at('C-2-debug'))) bad.push('C-2 が C-1 より先に当たっている');
-  if (kind === 'b' && !(at('C-2-debug') < at('C-3-remote') && at('C-3-remote') < at('C-4-notebook'))) bad.push('b の並びが C-1、C-2、C-3、C-4 の順でない');
+  if (withC3 && !(at('C-2-debug') < at('C-3-remote') && at('C-3-remote') < at('C-4-notebook'))) bad.push(`${kind} の並びが C-1、C-2、C-3、C-4 の順でない`);
+  if (kind === 'c') {
+    const order = ['C-4-notebook', ...AFTER_C4];
+    for (let i = 1; i < order.length; i++) if (at(order[i - 1]) > at(order[i])) { bad.push(`c の並びが ${order.join('→')} の順でない`); break; }
+  }
 
-  for (const id of ['C-1-ai', 'C-2-debug', ...(kind === 'b' ? ['C-3-remote'] : [])]) {
+  for (const id of ['C-1-ai', 'C-2-debug', ...(withC3 ? ['C-3-remote'] : []), ...(kind === 'c' ? AFTER_C4 : [])]) {
     const u = units.find((x) => x.id === id);
     if (!u) continue;
     if (u.edits?.applied !== 'ok') bad.push(`${id} の edits が ok でない: ${u.edits?.applied}`);
@@ -114,7 +125,7 @@ export function checkApply(j, unitJson) {
     if (iOps < 0 || iEdits < 0) bad.push('commits に C-4 の ops・edits のコミットが無い');
     else {
       if (iOps > iEdits) bad.push('commits の並びが違う（C-4 の ops が edits の後）');
-      for (const id of ['C-1-ai', 'C-2-debug', ...(kind === 'b' ? ['C-3-remote'] : [])]) {
+      for (const id of ['C-1-ai', 'C-2-debug', ...(withC3 ? ['C-3-remote'] : [])]) {
         if (subj.indexOf(`unit ${id}: edits`) > iOps) bad.push(`commits の並びが違う（${id} の edits が C-4 の ops の後）`);
       }
     }

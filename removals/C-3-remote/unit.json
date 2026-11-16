@@ -2,7 +2,7 @@
   "id": "C-3-remote",
   "stage": "C",
   "order": 330,
-  "enabled": false,
+  "enabled": true,
   "intent": "リモート開発の画面と機能（リモートエクスプローラー、ポートのビュー、リモートの状態表示、リモートトンネルのアクセス）と、サーバー（reh）のビルドタスクを消す。product.json の server・tunnel のキーを消す。ローカルの拡張ホストと Webview が使うリモートの基盤（services/remote・services/tunnel・platform/remote・platform/tunnel）は残す",
   "after": ["A-5-remote-extensions", "C-1-ai"],
   "delete": [

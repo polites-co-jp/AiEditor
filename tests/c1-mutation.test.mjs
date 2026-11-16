@@ -84,6 +84,9 @@ const CASES = [
   ['参加者の onDidChangePauseState の門が消える', ({ patch, unit }) => ({ patch: sub(patch, /(\+\t\tget onDidChangePauseState\(\) \{\r?\n)\+\t\t\tcheckProposedApiEnabled\(extension, 'chatParticipantAdditions'\);\r?\n/, '$1'), unit }), /メンバーごとに門/],
   ['参加者の onDidPerformAction が提案なしでもイベントになる', ({ patch, unit }) => ({ patch: sub(patch, '+\t\t\t? undefined!', '+\t\t\t? Event.None'), unit }), /参加者の値/],
   ['fileIsIgnored が有効な拡張でも reject する', ({ patch, unit }) => ({ patch: sub(patch, /(\+\t\t\tcheckProposedApiEnabled\(extension, 'chatParticipantAdditions'\);\r?\n)\+\t\t\treturn Promise\.resolve\(false\);/, '$1+\t\t\treturn Promise.reject(new Error("x"));'), unit }), /fileIsIgnored|lm\.tools/],
+  // 型の網(案A): 省略できる型の直しを外すと、?. なしで読む行を型検査が止めなくなる
+  ['defaultChatAgent の型の直し(?:)を外す', ({ patch, unit }) => ({ patch: sub(patch, '+\treadonly defaultChatAgent?: IDefaultChatAgent;', '+\treadonly defaultChatAgent: IDefaultChatAgent;'), unit }), /型の網|残るコードが/],
+  ['builtInExtensionsEnabledWithAutoUpdates の型の直し(?:)を外す', ({ patch, unit }) => ({ patch: sub(patch, '+\treadonly builtInExtensionsEnabledWithAutoUpdates?: readonly string[];', '+\treadonly builtInExtensionsEnabledWithAutoUpdates: readonly string[];'), unit }), /型の網|残るコードが/],
   ['registerToolDefinition が有効な拡張でも投げる', ({ patch, unit }) => ({ patch: sub(patch, /(\+\t\t\tcheckProposedApiEnabled\(extension, 'languageModelToolSupportsModel'\);\r?\n)\+\t\t\treturn noopDisposable\(\);/, "$1+\t\t\tthrow new Error('x');"), unit }), /fileIsIgnored|registerToolDefinition|登録系/],
 ];
 

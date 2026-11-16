@@ -543,3 +543,11 @@
 | C-1 の edits.patch の書式の傷 | `tmp/b/wt/c1fix` で `git format-patch` で丸ごと作り直した（全121区画に `index` の行、空の文脈の行 0、+/- の行は前と同じ）。3方向の当て方が効くことを確かめた。版 `1.146.0-p5-c-all-r4` の木は r3c と同じ |
 | `git -C tmp/b/vscode worktree add tmp/b/wt/<名前>` が `-C` の先からの相対で読まれ、clone の中に入れ子の作業ツリーができた | 許しの書き方を直すよう Team に依頼する（`permission-requests-2.md` の2）。それまで、作業ツリーを作るのは `build.mjs --worktree` に任せ、直接の `worktree add` を打たない |
 | gulp の出力 `tmp/b/wt/VSCode-win32-x64` を `tmp/b/wt/` の下の作業ツリーが共有する | 同時に2つの版をパッケージ化しない |
+
+## 記録（2026-11-16、段階 C の関門の合格。リーダーの判断）
+
+| 論点 | 扱い |
+|---|---|
+| 段階 C（C-1〜C-7） | 版 `1.146.0-p5-c-all-r4` で C-1〜C-7 の全部が関門に合格（大岡越前守。`records/take-in/1.146.0-p5-c-all-r4/gate-p5-c-all-r4.md`）。C-1〜C-7 の `enabled: true` をコミットする。これで当初の設計の機能の削減（段階 A・B・C の21単位）がすべて有効になった |
+| 最終の版 | `tmp\b\dist\1.146.0-p5-c-all-r4.zip`（SHA-256 `e3e524699a9994a6507dfa6896eaefb2582ae3fdf75798186c5411e5f91a2e6e`）。入れ替えはユーザーが行う（裁定）。手の項目は r2 の C1〜C21 と r3c の C22（版を r4 に読み替える） |
+| 次の版のスモークの比べの相手 | `baseline-p5-c-all-r3c.json`（3回の和。r4 の基準は1回分） |

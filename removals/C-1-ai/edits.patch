@@ -1,18 +1,24 @@
-From f2cf57060499e9fb76b31ea01a509edf85efcfa1 Mon Sep 17 00:00:00 2001
+From dc8c21678aa7e3cb0c6929f8e3842e66b82a00f7 Mon Sep 17 00:00:00 2001
 From: shuko-apply <apply@shuko.invalid>
 Date: Sun, 15 Nov 2026 10:50:31 +0900
 Subject: [PATCH] unit C-1-ai: edits
 
-Remove the references to the built-in AI - chat, inline chat, language models, tools, MCP, agent host, Agents window, AI search results - from the remaining files. The chat, lm and AI members of the extension API do nothing, see extHostRemovedApi.ai.ts. The chat entitlement service never asks for Copilot entitlements, see NullChatEntitlementService at the end of chatEntitlementService.ts. The removed API shapes and ids are dropped from extHost.protocol.ts. The packaging no longer ships the Copilot runtime, the Copilot CLI launcher or the agent host crypto bundle, requests to open the Agents window open nothing, and the About dialog no longer lists Copilot versions.
+Remove the references to the built-in AI - chat, inline chat, language models, tools, MCP, agent host, Agents window, AI search results - from the remaining files. The chat, lm and AI members of the extension API do nothing, see extHostRemovedApi.ai.ts. The chat entitlement service never asks for Copilot entitlements, see NullChatEntitlementService at the end of chatEntitlementService.ts. The removed API shapes and ids are dropped from extHost.protocol.ts. The packaging no longer ships the Copilot runtime, the Copilot CLI launcher or the agent host crypto bundle, requests to open the Agents window open nothing, and the About dialog no longer lists Copilot versions. product.json no longer has defaultChatAgent or builtInExtensionsEnabledWithAutoUpdates: IProductConfiguration marks both optional, the remaining readers treat a missing key as empty, and without a defaultChatAgent no default account provider is set. The remaining parts that used what chat provided keep working: the terminal tabs get a terminal chat service that tracks nothing, the integrated browser gets the agent network filter (off without its settings), the search view reads the removed search.searchView settings as optional, and the git extension's _chat.editSessions.accept is a no-op.
 ---
  build/gulpfile.ts                             |   10 +-
  build/gulpfile.vscode.ts                      |  101 +-
  build/next/index.ts                           |   29 +-
  src/server-main.ts                            |   12 +-
+ src/vs/base/common/product.ts                 |    4 +-
  src/vs/code/electron-main/app.ts              |   50 +-
  .../sharedProcess/sharedProcessMain.ts        |   60 -
  src/vs/code/node/cliProcessMain.ts            |   20 -
  .../dialogs/electron-browser/dialog.ts        |   14 +-
+ .../abstractExtensionManagementService.ts     |    2 +-
+ .../common/extensionGalleryService.ts         |    6 +-
+ .../common/extensionManagementCLI.ts          |    2 +-
+ .../common/extensionsScannerService.ts        |    2 +-
+ .../node/extensionManagementService.ts        |    2 +-
  .../electron-main/protocolMainService.ts      |    7 +-
  .../electronRemoteResourceLoader.test.ts      |    9 +-
  .../windows/electron-main/windowImpl.ts       |    4 +-
@@ -36,9 +42,11 @@ Remove the references to the built-in AI - chat, inline chat, language models, t
  .../browser/actions/developerActions.ts       |   93 +-
  .../actions/policyDiagnosticsMarkdown.ts      |   36 +-
  src/vs/workbench/browser/layout.ts            |   13 +-
- .../browser/parts/globalCompositeBar.ts       |   17 +-
+ .../browser/parts/globalCompositeBar.ts       |   35 +-
  .../accessibility/browser/accessibleView.ts   |   13 +-
  .../browser/editorAccessibilityHelp.ts        |   32 +-
+ .../browser/actions/manageAccountsAction.ts   |   10 +-
+ .../browserView.contribution.ts               |    5 +
  .../browserViewWorkbenchService.ts            |   41 +-
  .../features/browserWelcomeFeature.ts         |    7 +-
  .../browserEditorInput.test.ts                |   28 +-
@@ -47,8 +55,10 @@ Remove the references to the built-in AI - chat, inline chat, language models, t
  .../comments/browser/simpleCommentEditor.ts   |    2 -
  .../contrib/debug/browser/debugCommands.ts    |    4 +-
  .../debug/browser/debugEditorActions.ts       |   10 +-
+ .../aiEditTelemetry/aiEditTelemetryService.ts |    5 +
  .../browser/extensions.contribution.ts        |   30 +-
  .../extensions/browser/extensionsViewlet.ts   |   38 +-
+ .../browser/extensionsWorkbenchService.ts     |    2 +-
  .../fileActions.contribution.test.ts          |    3 +-
  .../browser/interactive.contribution.ts       |    6 -
  .../interactive/browser/interactiveEditor.ts  |    2 -
@@ -85,11 +95,12 @@ Remove the references to the built-in AI - chat, inline chat, language models, t
  .../contrib/search/browser/searchCompare.ts   |    5 +-
  .../search/browser/searchResultsView.ts       |    4 +-
  .../browser/searchTreeModel/searchResult.ts   |   48 +-
- .../contrib/search/browser/searchView.ts      |    7 +-
+ .../contrib/search/browser/searchView.ts      |   13 +-
  .../search/browser/symbolsQuickAccess.ts      |   22 +-
  .../test/browser/anythingQuickAccess.test.ts  |    2 -
  .../tasks/browser/abstractTaskService.ts      |   33 +-
  .../tasks/electron-browser/taskService.ts     |    6 -
+ .../terminal/browser/terminal.contribution.ts |   45 +-
  .../contrib/terminal/browser/terminalMenus.ts |    5 +-
  .../terminal/browser/xterm/decorationAddon.ts |   56 +-
  .../terminalInstallActions.ts                 |    3 +-
@@ -99,12 +110,14 @@ Remove the references to the built-in AI - chat, inline chat, language models, t
  .../update/browser/updateTitleBarEntry.ts     |   10 +-
  .../browser/workspace.contribution.ts         |    3 +-
  .../workspaceTrustRequestHandler.test.ts      |    3 +-
+ .../accounts/browser/defaultAccount.ts        |   25 +-
  .../test/browser/defaultAccount.test.ts       |    6 +-
  .../chat/common/chatEntitlementService.ts     |   55 +-
  .../test/browser/configurationService.test.ts |    8 +-
  .../test/browser/simpleFileDialog.test.ts     |    3 +-
  .../test/browser/accountPolicyService.test.ts |   60 +-
  .../browserRemoteResourceHandler.test.ts      |    7 +-
+ .../services/search/common/search.ts          |    2 +-
  .../fileSystemFileSearchProvider.test.ts      |   22 +-
  .../workspaces/common/workspaceTrust.ts       |    3 +-
  .../test/common/workspaceTrust.test.ts        |    8 +-
@@ -113,7 +126,7 @@ Remove the references to the built-in AI - chat, inline chat, language models, t
  .../browser/componentFixtures/fixtureUtils.ts |  125 +-
  .../test/browser/workbenchTestServices.ts     |   37 +-
  test/unit/browser/renderer.html               |    4 +-
- 108 files changed, 849 insertions(+), 5418 deletions(-)
+ 121 files changed, 946 insertions(+), 5457 deletions(-)
  create mode 100644 src/vs/workbench/api/common/extHostRemovedApi.ai.ts
 
 diff --git a/build/gulpfile.ts b/build/gulpfile.ts
@@ -434,6 +447,28 @@ index 0da02622aee..af0cc5b941c 100644
  	loadCode(nlsConfiguration).then((mod) => {
  		mod.spawnCli();
  	});
+diff --git a/src/vs/base/common/product.ts b/src/vs/base/common/product.ts
+index 37cbeefd169..4216599f432 100644
+--- a/src/vs/base/common/product.ts
++++ b/src/vs/base/common/product.ts
+@@ -261,7 +261,7 @@ export interface IProductConfiguration {
+ 		readonly excludeVersionRange?: string;
+ 	}>;
+ 	readonly extensionsForceVersionByQuality?: readonly string[];
+-	readonly builtInExtensionsEnabledWithAutoUpdates: readonly string[];
++	readonly builtInExtensionsEnabledWithAutoUpdates?: readonly string[];
+ 	readonly sessionsWindowAllowedExtensions?: readonly string[];
+ 
+ 	readonly msftInternalDomains?: string[];
+@@ -279,7 +279,7 @@ export interface IProductConfiguration {
+ 	readonly commonlyUsedSettings?: string[];
+ 	readonly aiGeneratedWorkspaceTrust?: IAiGeneratedWorkspaceTrust;
+ 
+-	readonly defaultChatAgent: IDefaultChatAgent;
++	readonly defaultChatAgent?: IDefaultChatAgent;
+ 	readonly chatParticipantRegistry?: string;
+ 	readonly chatSessionRecommendations?: IChatSessionRecommendation[];
+ 	readonly emergencyAlertUrl?: string;
 diff --git a/src/vs/code/electron-main/app.ts b/src/vs/code/electron-main/app.ts
 index 9d266151594..c4d7611c991 100644
 --- a/src/vs/code/electron-main/app.ts
@@ -754,6 +789,82 @@ index 71d2a8a906a..b3864b626ac 100644
  			`${osProps.type} ${osProps.arch} ${osProps.release}${isLinuxSnap ? ' snap' : ''}`
  		);
  	};
+diff --git a/src/vs/platform/extensionManagement/common/abstractExtensionManagementService.ts b/src/vs/platform/extensionManagement/common/abstractExtensionManagementService.ts
+index 833dd7b449a..5f4ef9b834c 100644
+--- a/src/vs/platform/extensionManagement/common/abstractExtensionManagementService.ts
++++ b/src/vs/platform/extensionManagement/common/abstractExtensionManagementService.ts
+@@ -998,7 +998,7 @@ export abstract class AbstractExtensionManagementService extends CommontExtensio
+ 		if (checked.indexOf(extension) !== -1) {
+ 			return [];
+ 		}
+-		if (areSameExtensions(extension.identifier, { id: this.productService.defaultChatAgent.extensionId })) {
++		if (this.productService.defaultChatAgent && areSameExtensions(extension.identifier, { id: this.productService.defaultChatAgent.extensionId })) {
+ 			return [];
+ 		}
+ 		checked.push(extension);
+diff --git a/src/vs/platform/extensionManagement/common/extensionGalleryService.ts b/src/vs/platform/extensionManagement/common/extensionGalleryService.ts
+index 37a7d8c36c2..44510e9d655 100644
+--- a/src/vs/platform/extensionManagement/common/extensionGalleryService.ts
++++ b/src/vs/platform/extensionManagement/common/extensionGalleryService.ts
+@@ -1231,7 +1231,7 @@ export abstract class AbstractExtensionGalleryService implements IExtensionGalle
+ 			for (let index = 0; index < extensions.length; index++) {
+ 				const extension = extensions[index];
+ 				setTelemetry(extension, ((query.pageNumber - 1) * query.pageSize) + index, options.source);
+-				if (areSameExtensions(extension.identifier, { id: this.productService.defaultChatAgent.extensionId, })) {
++				if (this.productService.defaultChatAgent && areSameExtensions(extension.identifier, { id: this.productService.defaultChatAgent.extensionId, })) {
+ 					defaultChatAgentExtension = extension;
+ 				} else {
+ 					result.push(extension);
+@@ -2055,6 +2055,10 @@ export abstract class AbstractExtensionGalleryService implements IExtensionGalle
+ 			}
+ 		}
+ 
++		// Shuko (C-1-ai): product.json has no defaultChatAgent, so there is nothing to mark as deprecated here.
++		if (!this.productService.defaultChatAgent) {
++			return { malicious, deprecated, search, autoUpdate };
++		}
+ 		deprecated[this.productService.defaultChatAgent.extensionId.toLowerCase()] = {
+ 			disallowInstall: true,
+ 			extension: {
+diff --git a/src/vs/platform/extensionManagement/common/extensionManagementCLI.ts b/src/vs/platform/extensionManagement/common/extensionManagementCLI.ts
+index f1c3f891d02..875f8f4bb84 100644
+--- a/src/vs/platform/extensionManagement/common/extensionManagementCLI.ts
++++ b/src/vs/platform/extensionManagement/common/extensionManagementCLI.ts
+@@ -386,7 +386,7 @@ export class ExtensionManagementCLI {
+ 	}
+ 
+ 	private validateBuiltinExtensionEnabledWithAutoUpdates(extension: ILocalExtension): string | undefined {
+-		if (extension.isBuiltin && this.productService.builtInExtensionsEnabledWithAutoUpdates.some(e => e.toLowerCase() === extension.identifier.id.toLowerCase()) && !extension.forceAutoUpdate) {
++		if (extension.isBuiltin && this.productService.builtInExtensionsEnabledWithAutoUpdates?.some(e => e.toLowerCase() === extension.identifier.id.toLowerCase()) && !extension.forceAutoUpdate) {
+ 			return localize('builtinAutoUpdate', "Extension '{0}' is a built-in extension and not allowed to be updated in the current product quality '{1}'.", extension.identifier.id, this.productService.quality);
+ 		}
+ 		return undefined;
+diff --git a/src/vs/platform/extensionManagement/common/extensionsScannerService.ts b/src/vs/platform/extensionManagement/common/extensionsScannerService.ts
+index df80d99ff53..da83b62cb37 100644
+--- a/src/vs/platform/extensionManagement/common/extensionsScannerService.ts
++++ b/src/vs/platform/extensionManagement/common/extensionsScannerService.ts
+@@ -110,7 +110,7 @@ interface IBuiltInExtensionControl {
+ 
+ function getProductBuiltInExtensionsEnabledWithAutoUpdates(productService: IProductService, environmentService: IEnvironmentService): Set<string> {
+ 	const result = new Set<string>();
+-	for (const id of productService.builtInExtensionsEnabledWithAutoUpdates) {
++	for (const id of productService.builtInExtensionsEnabledWithAutoUpdates ?? []) {
+ 		const toLowerCaseId = id.toLowerCase();
+ 		if (environmentService.skipBuiltinExtensions?.some(skipId => skipId.toLowerCase() === toLowerCaseId)) {
+ 			continue;
+diff --git a/src/vs/platform/extensionManagement/node/extensionManagementService.ts b/src/vs/platform/extensionManagement/node/extensionManagementService.ts
+index 6eefd7163db..85cb785b21a 100644
+--- a/src/vs/platform/extensionManagement/node/extensionManagementService.ts
++++ b/src/vs/platform/extensionManagement/node/extensionManagementService.ts
+@@ -944,7 +944,7 @@ export class ExtensionsScanner extends Disposable {
+ 		const builtinExtensions = await this.extensionsScannerService.scanSystemExtensions({});
+ 		const userExtensions = await this.extensionsScannerService.scanAllUserExtensions();
+ 		const staleExtensions = userExtensions.filter(userExtension => {
+-			if (!this.productService.builtInExtensionsEnabledWithAutoUpdates.some(id => id.toLowerCase() === userExtension.identifier.id.toLowerCase())) {
++			if (!this.productService.builtInExtensionsEnabledWithAutoUpdates?.some(id => id.toLowerCase() === userExtension.identifier.id.toLowerCase())) {
+ 				return false;
+ 			}
+ 			const builtinExtension = builtinExtensions.find(e => areSameExtensions(e.identifier, userExtension.identifier));
 diff --git a/src/vs/platform/protocol/electron-main/protocolMainService.ts b/src/vs/platform/protocol/electron-main/protocolMainService.ts
 index 15e27593953..99e3ed81612 100644
 --- a/src/vs/platform/protocol/electron-main/protocolMainService.ts
@@ -6032,7 +6143,7 @@ index 0c06ee52d36..275b0e8cda1 100644
  			// Existing users: respect visibility setting
  			switch (configuration.value) {
 diff --git a/src/vs/workbench/browser/parts/globalCompositeBar.ts b/src/vs/workbench/browser/parts/globalCompositeBar.ts
-index d0f5bd1bd21..befe78b6978 100644
+index d0f5bd1bd21..bafb4e96a29 100644
 --- a/src/vs/workbench/browser/parts/globalCompositeBar.ts
 +++ b/src/vs/workbench/browser/parts/globalCompositeBar.ts
 @@ -50,7 +50,6 @@ import { IBaseActionViewItemOptions } from '../../../base/browser/ui/actionbar/a
@@ -6051,7 +6162,46 @@ index d0f5bd1bd21..befe78b6978 100644
  		@IDefaultAccountService private readonly defaultAccountService: IDefaultAccountService,
  	) {
  		const action = instantiationService.createInstance(CompositeBarAction, {
-@@ -597,18 +595,6 @@ export class AccountsActivityActionViewItem extends AbstractGlobalActivityAction
+@@ -487,7 +485,6 @@ export class AccountsActivityActionViewItem extends AbstractGlobalActivityAction
+ 					continue;
+ 				}
+ 
+-				const canUseMcp = !!provider.authorizationServers?.length;
+ 				for (const account of accounts) {
+ 					const manageExtensionsAction = toAction({
+ 						id: `configureSessions${account.label}`,
+@@ -498,15 +495,7 @@ export class AccountsActivityActionViewItem extends AbstractGlobalActivityAction
+ 
+ 
+ 					const providerSubMenuActions: IAction[] = [manageExtensionsAction];
+-					if (canUseMcp) {
+-						const manageMCPAction = toAction({
+-							id: `configureSessions${account.label}`,
+-							label: localize('manageTrustedMCPServers', "Manage Trusted MCP Servers"),
+-							enabled: true,
+-							run: () => this.commandService.executeCommand('_manageTrustedMCPServersForAccount', { providerId, accountLabel: account.label })
+-						});
+-						providerSubMenuActions.push(manageMCPAction);
+-					}
++					// Shuko (C-1-ai): no "Manage Trusted MCP Servers" here or below. MCP is removed, and so is the command it ran.
+ 					if (account.canSignOut) {
+ 						providerSubMenuActions.push(toAction({
+ 							id: 'signOut',
+@@ -562,13 +551,6 @@ export class AccountsActivityActionViewItem extends AbstractGlobalActivityAction
+ 					// });
+ 
+ 					const providerSubMenuActions: IAction[] = [];
+-					const manageMCPAction = toAction({
+-						id: `configureSessions${account.label}`,
+-						label: localize('manageTrustedMCPServers', "Manage Trusted MCP Servers"),
+-						enabled: true,
+-						run: () => this.commandService.executeCommand('_manageTrustedMCPServersForAccount', { providerId, accountLabel: account.label })
+-					});
+-					providerSubMenuActions.push(manageMCPAction);
+ 					providerSubMenuActions.push(manageDynamicAuthProvidersAction);
+ 					if (account.canSignOut) {
+ 						providerSubMenuActions.push(toAction({
+@@ -597,18 +579,6 @@ export class AccountsActivityActionViewItem extends AbstractGlobalActivityAction
  		};
  		appendCommandGroups(sharedAccountCommandGroups);
  
@@ -6070,7 +6220,7 @@ index d0f5bd1bd21..befe78b6978 100644
  		appendCommandGroups(remainingCommandGroups);
  
  		return menus;
-@@ -797,7 +783,6 @@ export class SimpleAccountActivityActionViewItem extends AccountsActivityActionV
+@@ -797,7 +767,6 @@ export class SimpleAccountActivityActionViewItem extends AccountsActivityActionV
  		@IActivityService activityService: IActivityService,
  		@IInstantiationService instantiationService: IInstantiationService,
  		@ICommandService commandService: ICommandService,
@@ -6078,7 +6228,7 @@ index d0f5bd1bd21..befe78b6978 100644
  		@IDefaultAccountService defaultAccountService: IDefaultAccountService,
  	) {
  		super(() => simpleActivityContextMenuActions(storageService, true),
-@@ -809,7 +794,7 @@ export class SimpleAccountActivityActionViewItem extends AccountsActivityActionV
+@@ -809,7 +778,7 @@ export class SimpleAccountActivityActionViewItem extends AccountsActivityActionV
  				}),
  				hoverOptions,
  				compact: true,
@@ -6216,6 +6366,54 @@ index c1504a9ba2b..583cb939b9e 100644
  		return AccessibilityHelpNLS.editorDictation;
  	}
  	return;
+diff --git a/src/vs/workbench/contrib/authentication/browser/actions/manageAccountsAction.ts b/src/vs/workbench/contrib/authentication/browser/actions/manageAccountsAction.ts
+index 2316e89d8b8..fd7551d72b2 100644
+--- a/src/vs/workbench/contrib/authentication/browser/actions/manageAccountsAction.ts
++++ b/src/vs/workbench/contrib/authentication/browser/actions/manageAccountsAction.ts
+@@ -94,7 +94,7 @@ class ManageAccountsActionImpl {
+ 	}
+ 
+ 	private async showAccountActions(account: AccountQuickPickItem): Promise<void> {
+-		const { providerId, label: accountLabel, canUseMcp, canSignOut } = account;
++		const { providerId, label: accountLabel, canSignOut } = account;
+ 
+ 		const store = new DisposableStore();
+ 		const quickPick = store.add(this.quickInputService.createQuickPick<AccountActionQuickPickItem>());
+@@ -108,13 +108,7 @@ class ManageAccountsActionImpl {
+ 			action: () => this.commandService.executeCommand('_manageTrustedExtensionsForAccount', { providerId, accountLabel })
+ 		}];
+ 
+-		if (canUseMcp) {
+-			items.push({
+-				label: localize('manageTrustedMCPServers', "Manage Trusted MCP Servers"),
+-				action: () => this.commandService.executeCommand('_manageTrustedMCPServersForAccount', { providerId, accountLabel })
+-			});
+-		}
+-
++		// Shuko (C-1-ai): no "Manage Trusted MCP Servers" item. MCP is removed, and so is the command it ran.
+ 		if (await canSignOut()) {
+ 			items.push({
+ 				label: localize('signOut', "Sign Out"),
+diff --git a/src/vs/workbench/contrib/browserView/electron-browser/browserView.contribution.ts b/src/vs/workbench/contrib/browserView/electron-browser/browserView.contribution.ts
+index b260ca4dd92..babf6f53db5 100644
+--- a/src/vs/workbench/contrib/browserView/electron-browser/browserView.contribution.ts
++++ b/src/vs/workbench/contrib/browserView/electron-browser/browserView.contribution.ts
+@@ -21,6 +21,7 @@ import { BrowserViewWorkbenchService } from './browserViewWorkbenchService.js';
+ import { BrowserViewCDPService } from './browserViewCDPService.js';
+ import { ITelemetryService } from '../../../../platform/telemetry/common/telemetry.js';
+ import { logBrowserOpen } from '../../../../platform/browserView/common/browserViewTelemetry.js';
++import { AgentNetworkFilterService, IAgentNetworkFilterService } from '../../../../platform/networkFilter/common/networkFilterService.js';
+ 
+ // Register actions and browser features
+ import './features/webContentsViewRendererFeature.js';
+@@ -145,3 +146,7 @@ registerWorkbenchContribution2(BrowserEditorResolverContribution.ID, BrowserEdit
+ 
+ registerSingleton(IBrowserViewWorkbenchService, BrowserViewWorkbenchService, InstantiationType.Delayed);
+ registerSingleton(IBrowserViewCDPService, BrowserViewCDPService, InstantiationType.Delayed);
++
++// Shuko (C-1-ai): the integrated browser (browserView.ts, browserEditorErrorFeatures.ts) injects this service, which only
++// the removed chat registered in the workbench. Its settings are gone with chat, so the filter is off and allows every URI.
++registerSingleton(IAgentNetworkFilterService, AgentNetworkFilterService, InstantiationType.Delayed);
 diff --git a/src/vs/workbench/contrib/browserView/electron-browser/browserViewWorkbenchService.ts b/src/vs/workbench/contrib/browserView/electron-browser/browserViewWorkbenchService.ts
 index 1fe4bcbbc84..09a1f12261e 100644
 --- a/src/vs/workbench/contrib/browserView/electron-browser/browserViewWorkbenchService.ts
@@ -6690,6 +6888,19 @@ index 3e67ae929f4..a41f00d3ac7 100644
  			contextMenuOpts: {
  				group: 'debug',
  				order: 1
+diff --git a/src/vs/workbench/contrib/editTelemetry/browser/telemetry/aiEditTelemetry/aiEditTelemetryService.ts b/src/vs/workbench/contrib/editTelemetry/browser/telemetry/aiEditTelemetry/aiEditTelemetryService.ts
+index a0306222d0e..fd0de88aef2 100644
+--- a/src/vs/workbench/contrib/editTelemetry/browser/telemetry/aiEditTelemetry/aiEditTelemetryService.ts
++++ b/src/vs/workbench/contrib/editTelemetry/browser/telemetry/aiEditTelemetry/aiEditTelemetryService.ts
+@@ -130,3 +130,8 @@ registerSingleton(IAiEditTelemetryService, NullAiEditTelemetryService, Instantia
+ CommandsRegistry.registerCommand('_aiEdits.hasAiContributions', () => false);
+ CommandsRegistry.registerCommand('_aiEdits.clearAiContributions', () => { });
+ CommandsRegistry.registerCommand('_aiEdits.clearAllAiContributions', () => { });
++
++// Shuko (C-1-ai): the git extension also calls this one after it stages and commits (extensions/git/src/repository.ts).
++// The removed chat registered it to accept the pending chat edits of those files. There are no chat edits any more, so
++// keep the id and do nothing (same form as the B-1 ones above).
++CommandsRegistry.registerCommand('_chat.editSessions.accept', () => { });
 diff --git a/src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts b/src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts
 index ddc9d0000a2..3a548831a6e 100644
 --- a/src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts
@@ -6857,6 +7068,19 @@ index 604c40cda78..a58e047cc6f 100644
  	}
  
  	private async updateInstalledExtensionsContexts(): Promise<void> {
+diff --git a/src/vs/workbench/contrib/extensions/browser/extensionsWorkbenchService.ts b/src/vs/workbench/contrib/extensions/browser/extensionsWorkbenchService.ts
+index a87bd94a723..4e04dd444a3 100644
+--- a/src/vs/workbench/contrib/extensions/browser/extensionsWorkbenchService.ts
++++ b/src/vs/workbench/contrib/extensions/browser/extensionsWorkbenchService.ts
+@@ -2997,7 +2997,7 @@ export class ExtensionsWorkbenchService extends Disposable implements IExtension
+ 		}
+ 
+ 		const extensionsToUninstall: UninstallExtensionInfo[] = [{ extension: extension.local }];
+-		if (!areSameExtensions(extension.identifier, { id: this.productService.defaultChatAgent.extensionId })) {
++		if (!this.productService.defaultChatAgent || !areSameExtensions(extension.identifier, { id: this.productService.defaultChatAgent.extensionId })) {
+ 			for (const packExtension of this.getAllPackedExtensions(extension, this.local)) {
+ 				if (packExtension.local && !extensionsToUninstall.some(e => areSameExtensions(e.extension.identifier, packExtension.identifier))) {
+ 					extensionsToUninstall.push({ extension: packExtension.local });
 diff --git a/src/vs/workbench/contrib/files/test/electron-browser/fileActions.contribution.test.ts b/src/vs/workbench/contrib/files/test/electron-browser/fileActions.contribution.test.ts
 index ef371971062..2914562a0d3 100644
 --- a/src/vs/workbench/contrib/files/test/electron-browser/fileActions.contribution.test.ts
@@ -8316,7 +8540,7 @@ index c55c9aa68da..d9394df8c72 100644
  		this._register(this._plainTextSearchResult.onChange((e) => this._onChange.fire(e)));
  		this._register(this._aiTextSearchResult.onChange((e) => this._onChange.fire(e)));
 diff --git a/src/vs/workbench/contrib/search/browser/searchView.ts b/src/vs/workbench/contrib/search/browser/searchView.ts
-index 164d061b346..3a6b33fa40c 100644
+index 164d061b346..86a8af1b75d 100644
 --- a/src/vs/workbench/contrib/search/browser/searchView.ts
 +++ b/src/vs/workbench/contrib/search/browser/searchView.ts
 @@ -83,7 +83,6 @@ import { ISearchViewModelWorkbenchService } from './searchTreeModel/searchViewMo
@@ -8327,6 +8551,31 @@ index 164d061b346..3a6b33fa40c 100644
  import { ITelemetryService } from '../../../../platform/telemetry/common/telemetry.js';
  import { forcedExpandRecursively } from './searchActionsTopBar.js';
  
+@@ -698,7 +697,7 @@ export class SearchView extends ViewPane {
+ 		}
+ 
+ 		this._register(this.searchWidget.onSearchSubmit(options => {
+-			const shouldRenderAIResults = this.configurationService.getValue<ISearchConfigurationProperties>('search').searchView.semanticSearchBehavior;
++			const shouldRenderAIResults = this.configurationService.getValue<ISearchConfigurationProperties>('search').searchView?.semanticSearchBehavior;
+ 			if (shouldRenderAIResults === SemanticSearchBehavior.Auto) {
+ 				this.logService.info(`SearchView: Automatically rendering AI results`);
+ 			}
+@@ -2005,13 +2004,13 @@ export class SearchView extends ViewPane {
+ 			this.viewModel.searchResult.setAIQueryUsingTextQuery(query);
+ 		}
+ 
+-		if (this.configurationService.getValue<ISearchConfigurationProperties>('search').searchView.keywordSuggestions) {
++		if (this.configurationService.getValue<ISearchConfigurationProperties>('search').searchView?.keywordSuggestions) {
+ 			this.getKeywordSuggestions();
+ 		}
+ 
+ 		return result.asyncResults.then((complete) => {
+ 			clearTimeout(slowTimer);
+-			const config = this.configurationService.getValue<ISearchConfigurationProperties>('search').searchView.semanticSearchBehavior;
++			const config = this.configurationService.getValue<ISearchConfigurationProperties>('search').searchView?.semanticSearchBehavior;
+ 			if (complete.results.length === 0 && config === SemanticSearchBehavior.RunOnEmpty) {
+ 				this.logService.info(`SearchView: Requesting semantic results on empty search.`);
+ 				this.model.searchResult.aiTextSearchResult.hidden = false;
 @@ -2648,10 +2647,8 @@ class SearchViewDataSource implements IAsyncDataSource<ISearchResult, Renderable
  
  	private createFolderIterator(folderMatch: ISearchTreeFolderMatch): Iterable<ISearchTreeFolderMatch | ISearchTreeFileMatch> {
@@ -8504,6 +8753,87 @@ index bffaa341d92..92d365a2e27 100644
  			_hostService
  		);
  		this._register(lifecycleService.onBeforeShutdown(event => event.veto(this.beforeShutdown(), 'veto.tasks')));
+diff --git a/src/vs/workbench/contrib/terminal/browser/terminal.contribution.ts b/src/vs/workbench/contrib/terminal/browser/terminal.contribution.ts
+index ec00cb43c7e..321c1beeec8 100644
+--- a/src/vs/workbench/contrib/terminal/browser/terminal.contribution.ts
++++ b/src/vs/workbench/contrib/terminal/browser/terminal.contribution.ts
+@@ -4,10 +4,13 @@
+  *--------------------------------------------------------------------------------------------*/
+ 
+ import { getFontSnippets } from '../../../../base/browser/fonts.js';
++import { Event } from '../../../../base/common/event.js';
+ import { KeyCode, KeyMod } from '../../../../base/common/keyCodes.js';
++import { Disposable, IDisposable } from '../../../../base/common/lifecycle.js';
+ import { Schemas } from '../../../../base/common/network.js';
+ import { URI } from '../../../../base/common/uri.js';
+ import * as nls from '../../../../nls.js';
++import { CommandsRegistry } from '../../../../platform/commands/common/commands.js';
+ import { Extensions as DragAndDropExtensions, IDragAndDropContributionRegistry, IDraggedResourceEditorInput } from '../../../../platform/dnd/browser/dnd.js';
+ import { SyncDescriptor } from '../../../../platform/instantiation/common/descriptors.js';
+ import { InstantiationType, registerSingleton } from '../../../../platform/instantiation/common/extensions.js';
+@@ -30,7 +33,7 @@ import './media/terminalVoice.css';
+ import './media/widgets.css';
+ import './media/xterm.css';
+ import { RemoteTerminalBackendContribution } from './remoteTerminalBackend.js';
+-import { ITerminalConfigurationService, ITerminalEditingService, ITerminalEditorService, ITerminalGroupService, ITerminalInstanceService, ITerminalService, TerminalDataTransfers, terminalEditorId } from './terminal.js';
++import { ITerminalChatService, ITerminalConfigurationService, ITerminalEditingService, ITerminalEditorService, ITerminalGroupService, ITerminalInstance, ITerminalInstanceService, ITerminalService, TerminalDataTransfers, terminalEditorId } from './terminal.js';
+ import { registerTerminalActions } from './terminalActions.js';
+ import { setupTerminalCommands } from './terminalCommands.js';
+ import { TerminalConfigurationService } from './terminalConfigurationService.js';
+@@ -48,6 +51,42 @@ import { TerminalService } from './terminalService.js';
+ import { TerminalUnattendedRestartParticipant } from './terminalUnattendedRestart.js';
+ import { TerminalViewPane } from './terminalView.js';
+ 
++/**
++ * Shuko (C-1-ai): the terminal chat parts are removed (they registered the real service), but the terminal tabs
++ * (terminalTabbedView.ts, terminalTabsChatEntry.ts) still inject this service. No terminal is ever registered with
++ * a tool session or a chat session, so there are no hidden chat terminals and nothing to auto approve.
++ */
++class NullTerminalChatService implements ITerminalChatService {
++	declare readonly _serviceBrand: undefined;
++
++	readonly onDidRegisterTerminalInstanceWithToolSession = Event.None;
++	readonly onDidContinueInBackground = Event.None;
++
++	registerTerminalInstanceWithToolSession(): void { }
++	async getTerminalInstanceByToolSessionId(): Promise<ITerminalInstance | undefined> { return undefined; }
++	registerTerminalInstanceWithExecutionId(): IDisposable { return Disposable.None; }
++	getTerminalInstanceByExecutionId(): ITerminalInstance | undefined { return undefined; }
++	getToolSessionTerminalInstances(): readonly ITerminalInstance[] { return []; }
++	getToolSessionIdForInstance(): string | undefined { return undefined; }
++	registerTerminalInstanceWithChatSession(): void { }
++	getChatSessionResourceForInstance(): undefined { return undefined; }
++	isBackgroundTerminal(): boolean { return false; }
++	registerOutputSource(): IDisposable { return Disposable.None; }
++	getOutputSource(): undefined { return undefined; }
++	registerProgressPart(): IDisposable { return Disposable.None; }
++	setFocusedProgressPart(): void { }
++	clearFocusedProgressPart(): void { }
++	getFocusedProgressPart(): undefined { return undefined; }
++	getMostRecentProgressPart(): undefined { return undefined; }
++	setChatSessionAutoApproval(): void { }
++	hasChatSessionAutoApproval(): boolean { return false; }
++	addSessionAutoApproveRule(): void { }
++	getSessionAutoApproveRules(): Readonly<Record<string, boolean>> { return {}; }
++	continueInBackground(): void { }
++	registerAhpCommandSource(): IDisposable { return Disposable.None; }
++	getAhpCommandSource(): undefined { return undefined; }
++}
++
+ // Register services
+ registerSingleton(ITerminalLogService, TerminalLogService, InstantiationType.Delayed);
+ registerSingleton(ITerminalConfigurationService, TerminalConfigurationService, InstantiationType.Delayed);
+@@ -57,6 +96,10 @@ registerSingleton(ITerminalEditingService, TerminalEditingService, Instantiation
+ registerSingleton(ITerminalGroupService, TerminalGroupService, InstantiationType.Delayed);
+ registerSingleton(ITerminalInstanceService, TerminalInstanceService, InstantiationType.Delayed);
+ registerSingleton(ITerminalProfileService, TerminalProfileService, InstantiationType.Delayed);
++registerSingleton(ITerminalChatService, NullTerminalChatService, InstantiationType.Delayed);
++// Shuko (C-1-ai): the chat entry of the tabs (terminalTabsChatEntry.ts) runs this command. The entry only shows when there
++// are hidden chat terminals, and there are none. Keep the id so that it never fails with "command not found".
++CommandsRegistry.registerCommand('workbench.action.terminal.chat.viewHiddenChatTerminals', () => { });
+ 
+ // Register workbench contributions
+ // This contribution blocks startup as it's critical to enable the web embedder window.createTerminal API
 diff --git a/src/vs/workbench/contrib/terminal/browser/terminalMenus.ts b/src/vs/workbench/contrib/terminal/browser/terminalMenus.ts
 index 73e3e335322..71ffa586551 100644
 --- a/src/vs/workbench/contrib/terminal/browser/terminalMenus.ts
@@ -8824,6 +9154,56 @@ index 2240af5c988..1593e929886 100644
  import { ICommandService } from '../../../../../platform/commands/common/commands.js';
  import { IDialogService, IPrompt } from '../../../../../platform/dialogs/common/dialogs.js';
  import { ILabelService } from '../../../../../platform/label/common/label.js';
+diff --git a/src/vs/workbench/services/accounts/browser/defaultAccount.ts b/src/vs/workbench/services/accounts/browser/defaultAccount.ts
+index 00164eda551..b2d53309523 100644
+--- a/src/vs/workbench/services/accounts/browser/defaultAccount.ts
++++ b/src/vs/workbench/services/accounts/browser/defaultAccount.ts
+@@ -92,7 +92,23 @@ interface IMcpRegistryResponse {
+ 	readonly mcp_registries: ReadonlyArray<IMcpRegistryProvider>;
+ }
+ 
+-function toDefaultAccountConfig(defaultChatAgent: IDefaultChatAgent): IDefaultAccountConfig {
++function toDefaultAccountConfig(defaultChatAgent: IDefaultChatAgent | undefined): IDefaultAccountConfig {
++	// Shuko (C-1-ai): product.json has no defaultChatAgent. An empty config; no default account provider is set then (DefaultAccountProviderContribution).
++	if (!defaultChatAgent) {
++		return {
++			preferredExtensions: [],
++			authenticationProvider: {
++				default: { id: '', name: '' },
++				enterprise: { id: '', name: '' },
++				enterpriseProviderConfig: '',
++				scopes: [],
++			},
++			entitlementUrl: '',
++			tokenEntitlementUrl: '',
++			mcpRegistryDataUrl: '',
++			managedSettingsUrl: '',
++		};
++	}
+ 	return {
+ 		preferredExtensions: [
+ 			defaultChatAgent.chatExtensionId,
+@@ -156,6 +172,10 @@ export class DefaultAccountService extends Disposable implements IDefaultAccount
+ 	) {
+ 		super();
+ 		this.defaultAccountConfig = toDefaultAccountConfig(productService.defaultChatAgent);
++		if (!productService.defaultChatAgent) {
++			// Shuko (C-1-ai): no default account provider is set without a defaultChatAgent, so nothing waits for one.
++			this.initBarrier.open();
++		}
+ 	}
+ 
+ 	async getDefaultAccount(): Promise<IDefaultAccount | null> {
+@@ -1665,6 +1685,9 @@ class DefaultAccountProviderContribution extends Disposable implements IWorkbenc
+ 		@IDefaultAccountService defaultAccountService: IDefaultAccountService,
+ 	) {
+ 		super();
++		if (!productService.defaultChatAgent) {
++			return;
++		}
+ 		const defaultAccountProvider = this._register(instantiationService.createInstance(DefaultAccountProvider, toDefaultAccountConfig(productService.defaultChatAgent)));
+ 		defaultAccountService.setDefaultAccountProvider(defaultAccountProvider);
+ 	}
 diff --git a/src/vs/workbench/services/accounts/test/browser/defaultAccount.test.ts b/src/vs/workbench/services/accounts/test/browser/defaultAccount.test.ts
 index ee042bc05d5..d306caa2779 100644
 --- a/src/vs/workbench/services/accounts/test/browser/defaultAccount.test.ts
@@ -9070,6 +9450,19 @@ index c52ea55c2b0..4971ee6537d 100644
  			const response = await request(FileAccess.uriToBrowserUri(resource));
  			assert.deepStrictEqual(response, { status, text: error.message, headers: {} });
  		});
+diff --git a/src/vs/workbench/services/search/common/search.ts b/src/vs/workbench/services/search/common/search.ts
+index e735a495109..d97247dbf18 100644
+--- a/src/vs/workbench/services/search/common/search.ts
++++ b/src/vs/workbench/services/search/common/search.ts
+@@ -472,7 +472,7 @@ export interface ISearchConfigurationProperties {
+ 	experimental: {
+ 		closedNotebookRichContentResults: boolean;
+ 	};
+-	searchView: {
++	searchView?: {
+ 		semanticSearchBehavior: string;
+ 		keywordSuggestions: boolean;
+ 	};
 diff --git a/src/vs/workbench/services/search/test/common/fileSystemFileSearchProvider.test.ts b/src/vs/workbench/services/search/test/common/fileSystemFileSearchProvider.test.ts
 index 565fe92e045..96bf8ee14b8 100644
 --- a/src/vs/workbench/services/search/test/common/fileSystemFileSearchProvider.test.ts

@@ -7,11 +7,13 @@
 // Run: node --test tests/c1-unit.test.mjs
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { dirname, join, resolve } from 'node:path';
 import { posix } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { checkPatchShape, readLineByLine } from './patch-shape.mjs';
+import { applyAllowlist, describeFound, findOrphans, loadUnits, upstream } from './gate-orphans.mjs';
 import { compareMemberGates, expectChecked, memberGatesOf, outerSyncGateNames } from './gate-members.mjs';
 
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -630,4 +632,392 @@ test('C-1 何もしない実装: NullChatEntitlementService は chatEntitlementS
   const iClass = entAdded.findIndex((l) => /^export class NullChatEntitlementService\b/.test(l));
   const iReg = entAdded.findIndex((l) => /^registerSingleton\(\s*IChatEntitlementService\s*,\s*NullChatEntitlementService\b/.test(l));
   assert.ok(iClass >= 0 && iReg > iClass, 'クラスの定義より前に登録がある(クラスは宣言の巻き上げが効かず、起動時に落ちる)');
+});
+
+// ---------------------------------------------------------------------------
+// 3. productRemove のキーを、21単位の木の残るコードが「無くても落ちない形」でしか読まないこと(2026-11-16。段階 C の版の関門の不合格を受けて足した)
+// ---------------------------------------------------------------------------
+// 起きたこと: C-1 が product.json から defaultChatAgent・builtInExtensionsEnabledWithAutoUpdates を外し、残る本家のコードが `?.` なしで読んだ
+//   (defaultAccount.ts は toDefaultAccountConfig(productService.defaultChatAgent) から chatExtensionId をたどり、
+//    extensionsScannerService.ts は `for (const id of productService.builtInExtensionsEnabledWithAutoUpdates)`)。
+//   IProductConfiguration ではどちらも省略できない型なので型検査に掛からず、ワークベンチが立ち上がらなかった。静的な検査が無かったので見逃した。
+// 期待は本家のタグから読む(実装の一覧から写さない):
+//   1) 本家のタグの src で、productRemove のキーを `product 系の変数 . キー` で読む行を拾う(git grep)。
+//   2) 21単位の delete が消すファイル・テストのファイルは外す(残るコードだけ)。
+//   3) 読み方が「無くても落ちない形」(?. ・?? ・|| ・&& ・比較・否定・typeof・Array.isArray・三項の条件)でない行は、
+//      21単位の edits.patch のどれかがその行を消している(書き換えている)ことを求める。
+//      または、edits.patch が product の既定に `キー: []` を足している(配列のキーだけ。{} は .a.b で落ちるので認めない)。
+//   4) 例外は下の SAFE_BY_REASON だけ。本家にその行がもう無ければ失敗(古い例外を残さない)。
+//   5) edits.patch が足す行にも、落ちる読み方が無いこと。
+
+/** パッチの本文を、ファイルごとの区画に分ける(上の sections と同じ読み方。複数の単位のパッチに使う)。 */
+function parsePatchSections(text) {
+  const out = [];
+  let cur = null;
+  let inHunk = false;
+  for (const line of text.replace(/\r\n/g, '\n').split('\n')) {
+    const m = /^diff --git a\/(.+) b\/(.+)$/.exec(line);
+    if (m) { cur = { path: m[2], added: [], removed: [] }; out.push(cur); inHunk = false; continue; }
+    if (!cur) continue;
+    if (!inHunk) { if (/^@@ /.test(line)) inHunk = true; continue; }
+    if (/^@@ /.test(line)) continue;
+    if (line.startsWith('+')) cur.added.push(line.slice(1));
+    else if (line.startsWith('-')) cur.removed.push(line.slice(1));
+  }
+  return out;
+}
+
+const KEY_NEVER_THROW_AFTER = [/^\?\./, /^\?\?/, /^\|\|/, /^&&/, /^\?(?![.?])(?:\s|$)/, /^(?:===|!==|==|!=)/];
+// 前に付く否定・typeof・Array.isArray(。ただし後ろが `.`・`[`・`(` なら、否定などが掛かるのは読んだ値のメンバーの結果で、キー自体ではない(`!x.key.some(...)` は落ちる)
+const KEY_SAFE_BEFORE = [/!\s*[\w$.]*$/, /\btypeof\s+[\w$.]*$/, /\bArray\.isArray\(\s*[\w$.]*$/];
+
+/** 1行の中の、productRemove のキーの読み。{ key, kind: 'safe' | 'unsafe', why } の配列(product 系の変数の読みだけ)。 */
+function classifyKeyReads(rawLine, keyList) {
+  const code = rawLine.trim();
+  if (/^(?:\/\/|\/\*|\*)/.test(code)) return [];
+  const body = code.replace(/\s\/\/\s.*$/, '');
+  const out = [];
+  const keyAlt = keyList.join('|');
+  // 1) 分割代入: const { key } = productService
+  for (const m of body.matchAll(new RegExp(`\\{[^{}]*\\b(${keyAlt})\\b[^{}]*\\}\\s*=\\s*[\\w.$]*[Pp]roduct`, 'g'))) out.push({ key: m[1], kind: 'unsafe', why: '分割代入' });
+  // 2) product['key']
+  for (const m of body.matchAll(new RegExp(`[Pp]roduct\\w*\\s*\\[\\s*['"](${keyAlt})['"]\\s*\\]`, 'g'))) out.push({ key: m[1], kind: 'unsafe', why: '添字' });
+  // 3) product.key / product?.key / this.productService.key
+  for (const m of body.matchAll(new RegExp(`(\\?\\.|\\.)(${keyAlt})\\b`, 'g'))) {
+    const before = body.slice(0, m.index);
+    const recv = /([A-Za-z_$][\w$]*)\s*$/.exec(before)?.[1] ?? '';
+    if (!/product/i.test(recv)) continue; // product 系でない変数の同じ名前のメンバー(引数の defaultChatAgent など)は、読み手ではない
+    const after = body.slice(m.index + m[0].length).trimStart();
+    // 同じ行の前のほうで、同じ読みを条件にしている(`x.key ? [x.key.a] : []`、`x.key && x.key.a`)
+    // (`!x.key || …x.key.a…` の形も、左が偽のときだけ右へ進むので守られている)
+    const guardedBefore = new RegExp(`\\b\\w*[Pp]roduct\\w*\\??\\.${m[2]}\\s*(?:\\?(?![.?])|&&)`).test(before)
+      || new RegExp(`!\\s*[\\w$.]*[Pp]roduct\\w*\\??\\.${m[2]}\\s*\\|\\|`).test(before);
+    const safe = KEY_NEVER_THROW_AFTER.some((re) => re.test(after)) || (KEY_SAFE_BEFORE.some((re) => re.test(before)) && !/^[.[(]/.test(after)) || guardedBefore;
+    out.push({ key: m[2], kind: safe ? 'safe' : 'unsafe', why: safe ? '' : `${m[1]}${m[2]} の後ろが「${after.slice(0, 24)}」(値を渡す・たどる・回す形)` });
+  }
+  return out;
+}
+
+/** 本家のタグで、キーを含む行を拾う: { path, line, text }[] */
+function upstreamKeyLines(keyList) {
+  const re = `\\b(${keyList.join('|')})\\b`;
+  const r = spawnSync('git', ['-C', UP_REPO, 'grep', '-n', '-I', '-E', re, UP_TAG, '--', 'src'], { encoding: 'utf8', maxBuffer: 256 * 1024 * 1024 });
+  if (r.status !== 0 && r.status !== 1) throw new Error(`git grep が失敗: ${r.stderr}`);
+  const out = [];
+  for (const l of r.stdout.split('\n')) {
+    const m = /^[^:]+:(.+?):(\d+):(.*)$/.exec(l.replace(/\r$/, ''));
+    if (m) out.push({ path: m[1], line: Number(m[2]), text: m[3] });
+  }
+  return out;
+}
+
+const isTestPath = (p) => /(^|\/)test\/|\.test\.ts$|\/fixtures?\//.test(p);
+
+/**
+ * 落ちる形に見えるが、本家のコードの読みで安全と分かっているもの(path の末尾・キー・行の一部・理由)。
+ * 理由は、本家のコードから確かめられる事実だけを書く。本家にその行がもう無ければ、下の「古い例外」の検査が落ちる。
+ */
+const SAFE_BY_REASON = [
+  { path: 'workbench/services/authentication/browser/authenticationUsageService.ts', key: 'trustedExtensionAuthAccess', contains: 'productService.trustedExtensionAuthAccess;', reason: '代入のあと Array.isArray(...) で見て、else if (値) で見る。無ければ何もしない(2026-11-16 大岡越前守の読み)' },
+  { path: 'workbench/services/authentication/browser/authenticationAccessService.ts', key: 'trustedExtensionAuthAccess', contains: 'this._productService.trustedExtensionAuthAccess;', reason: '代入のあと Array.isArray(...) と ?.[providerId] / typeof === object で見る。無ければ空(大岡越前守の読み)' },
+  { path: 'workbench/services/extensions/common/extensionManifestPropertiesService.ts', key: 'sessionsWindowAllowedExtensions', contains: 'new ExtensionIdentifierSet(productService.sessionsWindowAllowedExtensions)', reason: 'ExtensionIdentifierSet(undefined) は空の集まりになる(大岡越前守の読み)' },
+  { path: 'server/node/webClientServer.ts', key: 'voiceWsUrl', contains: 'voiceWsUrl: this._productService.voiceWsUrl,', reason: 'サーバー側(ウェブ版)の設定オブジェクトへの値渡しだけ。undefined でも落ちない(大岡越前守の読み)' },
+  { path: 'workbench/services/extensions/electron-browser/localProcessExtensionHost.ts', key: 'agentsTelemetryAppName', contains: 'this._productService.agentsTelemetryAppName : undefined) ||', reason: '`||` の左の三項の値。undefined なら右へ進む(大岡越前守の読み)' },
+];
+
+function loadEnabledUnits() {
+  const root = join(REPO, 'removals');
+  const out = [];
+  for (const d of readdirSync(root, { withFileTypes: true })) {
+    if (!d.isDirectory()) continue;
+    const f = join(root, d.name, 'unit.json');
+    if (!existsSync(f)) continue;
+    const u = d.name === 'C-1-ai' ? unit : readJson(f);
+    if (!u || u.enabled === false) continue;
+    const patchPath = u.patch ? join(d.name === 'C-1-ai' ? UNIT_DIR : join(root, d.name), u.patch) : null;
+    out.push({ id: d.name, json: u, sections: patchPath && existsSync(patchPath) ? parsePatchSections(readFileSync(patchPath, 'utf8')) : [] });
+  }
+  return out;
+}
+
+const productKeys = unit?.productRemove ?? [];
+const skipKeys = noUnit || (productKeys.length ? false : '実装なし: C-1 の productRemove が空') || (upOk ? false : `本家のソースが読めない: ${UP_REPO} の ${UP_TAG}`);
+
+/** extraSections: 試し用の、足したパッチの区画({ path, added, removed })。自己検査で「直した」状態を作るのに使う。 */
+function unsafeReaders(extraSections = [], { noRealPatch = false } = {}) {
+  const units = loadEnabledUnits();
+  if (noRealPatch) for (const u of units) u.sections = []; // 自己検査用: 今の edits.patch に左右されない
+  if (extraSections.length) units.push({ id: 'extra', json: {}, sections: extraSections });
+  const deleted = units.flatMap((u) => u.json.delete ?? []);
+  const removedByPath = new Map(); // path -> Set(trim した、パッチが消す行)
+  const addedByPath = new Map();
+  for (const u of units) {
+    for (const s of u.sections) {
+      if (!removedByPath.has(s.path)) removedByPath.set(s.path, new Set());
+      for (const l of s.removed) removedByPath.get(s.path).add(l.trim());
+      if (!addedByPath.has(s.path)) addedByPath.set(s.path, []);
+      addedByPath.get(s.path).push(...s.added);
+    }
+  }
+  // 既定を足している(配列のキーだけ): product の既定のファイルに `キー: []`
+  const defaulted = new Set();
+  for (const [p, lines] of addedByPath) {
+    if (!/(^|\/)product\.ts$/.test(p)) continue;
+    for (const l of lines) for (const k of productKeys) if (new RegExp(`^\\s*${k}\\s*:\\s*\\[\\s*\\]`).test(l)) defaulted.add(k);
+  }
+  // 型の網(案A。2026-11-16): 本家の IProductConfiguration で省略できないキーを、edits.patch が省略できる型(`?:`)にしている。
+  // すると、`?.` なしで読む行は型検査(strictNullChecks)が止める。前の行の早い return や、undefined を受ける関数で守った読み手は、これで安全と数える。
+  // (型検査が通っていることは、別の検査が build-record.json で確かめる)
+  const typeNetted = new Set();
+  const upProduct = upShow('src/vs/base/common/product.ts') ?? '';
+  for (const [p, lines] of addedByPath) {
+    if (!/(^|\/)base\/common\/product\.ts$/.test(p)) continue;
+    for (const k of productKeys) {
+      const requiredUpstream = new RegExp(`^\\s*readonly\\s+${k}\\s*:`, 'm').test(upProduct);
+      if (requiredUpstream && lines.some((l) => new RegExp(`^\\s*readonly\\s+${k}\\?\\s*:`).test(l))) typeNetted.add(k);
+    }
+  }
+  const found = []; // 落ちる形の読み(残るコード)
+  const all = []; // 残るコードの読み(安全も含む)
+  for (const h of upstreamKeyLines(productKeys)) {
+    if (isTestPath(h.path) || underAny(deleted, h.path)) continue;
+    for (const r of classifyKeyReads(h.text, productKeys)) {
+      const rec = { ...r, path: h.path, line: h.line, text: h.text.trim() };
+      all.push(rec);
+      if (r.kind === 'unsafe') found.push(rec);
+    }
+  }
+  const notFixed = [];
+  const allowedUsed = new Set();
+  for (const r of found) {
+    const ex = SAFE_BY_REASON.findIndex((e) => r.path.endsWith(e.path) && e.key === r.key && r.text.includes(e.contains));
+    if (ex >= 0) { allowedUsed.add(ex); continue; }
+    if (defaulted.has(r.key) || typeNetted.has(r.key)) continue;
+    if (removedByPath.get(r.path)?.has(r.text)) continue; // パッチがこの行を消している(書き換えている)
+    notFixed.push(r);
+  }
+  // パッチが足した行にも、落ちる読み方が残っていないこと
+  const addedUnsafe = [];
+  for (const [p, lines] of addedByPath) {
+    for (const l of lines) for (const r of classifyKeyReads(l, productKeys)) if (r.kind === 'unsafe') addedUnsafe.push({ path: p, text: l.trim(), key: r.key, why: r.why });
+  }
+  return { all, found, notFixed, addedUnsafe, allowedUsed, defaulted, typeNetted };
+}
+
+test('C-1 productRemove: 読み手の拾い方(1行ごと): ?. ・?? ・|| ・比較・否定・三項の条件・同じ行の前の条件は安全。引数・たどる・回す・代入・分割代入は落ちる形', () => {
+  const k = ['defaultChatAgent', 'builtInExtensionsEnabledWithAutoUpdates'];
+  const kinds = (s) => classifyKeyReads(s, k).map((r) => r.kind);
+  // 落ちる形(今回の実例を含む)
+  assert.deepEqual(kinds('for (const id of productService.builtInExtensionsEnabledWithAutoUpdates) {'), ['unsafe']);
+  assert.deepEqual(kinds('if (!this.productService.builtInExtensionsEnabledWithAutoUpdates.some(id => id === x)) {'), ['unsafe']);
+  assert.deepEqual(kinds('this.defaultAccountConfig = toDefaultAccountConfig(productService.defaultChatAgent);'), ['unsafe']);
+  assert.deepEqual(kinds('if (areSameExtensions(extension.identifier, { id: this.productService.defaultChatAgent.extensionId })) {'), ['unsafe']);
+  assert.deepEqual(kinds('const { defaultChatAgent } = productService;'), ['unsafe']);
+  assert.deepEqual(kinds("const x = product['defaultChatAgent'];"), ['unsafe']);
+  // 安全な形
+  assert.deepEqual(kinds('this._chatExtensionId = productService.defaultChatAgent?.chatExtensionId.toLowerCase();'), ['safe']);
+  assert.deepEqual(kinds('if (this.productService.builtInExtensionsEnabledWithAutoUpdates?.some(id => id === x)) {'), ['safe']);
+  assert.deepEqual(kinds('const a = productService.builtInExtensionsEnabledWithAutoUpdates ?? [];'), ['safe']);
+  assert.deepEqual(kinds('if (!productService.defaultChatAgent) {'), ['safe']);
+  assert.deepEqual(kinds('if (typeof productService.defaultChatAgent === "object") {'), ['safe']);
+  assert.deepEqual(kinds('new Set(product.defaultChatAgent ? [product.defaultChatAgent.extensionId, product.defaultChatAgent.chatExtensionId].map(id => id.toLowerCase()) : [])'), ['safe', 'safe', 'safe']);
+  assert.deepEqual(kinds('const ok = product.defaultChatAgent && product.defaultChatAgent.extensionId;'), ['safe', 'safe']);
+  // 読み手でないもの: product 系でない変数の同じ名前のメンバー、コメント、宣言
+  assert.deepEqual(kinds('defaultChatAgent.chatExtensionId,'), []);
+  assert.deepEqual(kinds('// productService.defaultChatAgent.extensionId を読む'), []);
+  assert.deepEqual(kinds('readonly defaultChatAgent: IDefaultChatAgent;'), []);
+});
+
+test('C-1 productRemove: 本家のタグで、残るコードの読み手が拾えている(読み方の退行を見張る。関門の表の場所が入っている)', { skip: skipKeys }, () => {
+  const { all } = unsafeReaders();
+  const has = (suffix, key) => all.some((r) => r.path.endsWith(suffix) && r.key === key);
+  // 大岡越前守の表(records/take-in/1.146.0-p5-c-all/gate-C-1-ai.md)の、本家にあった読み手。C-2〜C-7 が消すファイルでない
+  for (const [suffix, key] of [
+    ['workbench/services/accounts/browser/defaultAccount.ts', 'defaultChatAgent'],
+    ['platform/extensionManagement/common/extensionsScannerService.ts', 'builtInExtensionsEnabledWithAutoUpdates'],
+    ['platform/extensionManagement/common/extensionManagementCLI.ts', 'builtInExtensionsEnabledWithAutoUpdates'],
+    ['platform/extensionManagement/node/extensionManagementService.ts', 'builtInExtensionsEnabledWithAutoUpdates'],
+    ['platform/extensionManagement/common/extensionGalleryService.ts', 'defaultChatAgent'],
+    ['platform/extensionManagement/common/abstractExtensionManagementService.ts', 'defaultChatAgent'],
+  ]) assert.ok(has(suffix, key), `読み手が拾えていない: ${suffix} の ${key}`);
+  assert.ok(all.length >= 15, `拾えた読み手が少ない: ${all.length}`);
+});
+
+test('C-1 productRemove: 残るコードが、外すキーを落ちる形(?. なしで渡す・たどる・回す)で読んでいない。読んでいる行は edits.patch が直しているか、既定(キー: [])を足している', { skip: skipKeys }, () => {
+  const { notFixed } = unsafeReaders();
+  const lines = notFixed.map((r) => `${r.path}:${r.line} [${r.key}] ${r.text.slice(0, 120)}  <- ${r.why}`);
+  assert.deepEqual(lines, [], `直されていない読み手が ${lines.length} か所(キーが無いと、起動しない・CLI の導入が落ちる)`);
+});
+
+test('C-1 productRemove(自己検査): 直された状態を作ると読み手が 0 になり、一部だけ直すと残りが出る。配列の既定(キー: [])を足すと配列のキーは 0 になる', { skip: skipKeys }, () => {
+  const NP = { noRealPatch: true };
+  const base = unsafeReaders([], NP);
+  assert.ok(base.notFixed.length >= 8, '何も直さない状態で、例外以外が直されていない扱いにならない');
+  assert.ok(base.found.length >= 8, `落ちる形の読み手が少ない(読み方の退行か、すでに直っている): ${base.found.length}`);
+  // 全部を直した状態: 各行を消す(書き換える)区画を足す
+  const fix = (rows) => {
+    const byPath = new Map();
+    for (const r of rows) { if (!byPath.has(r.path)) byPath.set(r.path, { path: r.path, added: [], removed: [] }); byPath.get(r.path).removed.push(r.text); }
+    return [...byPath.values()];
+  };
+  assert.deepEqual(unsafeReaders(fix(base.found), NP).notFixed, []);
+  // 1か所だけ残す(例外でない行)
+  const left = base.notFixed[0];
+  const rest = base.found.filter((r) => !(r.path === left.path && r.line === left.line));
+  assert.deepEqual(unsafeReaders(fix(rest), NP).notFixed.map((r) => `${r.path}:${r.line}`), [`${left.path}:${left.line}`]);
+  // 配列のキーの既定
+  const withDefault = unsafeReaders([{ path: 'src/vs/platform/product/common/product.ts', added: ['\t\t\tbuiltInExtensionsEnabledWithAutoUpdates: [],'], removed: [] }], NP);
+  assert.ok(withDefault.notFixed.every((r) => r.key !== 'builtInExtensionsEnabledWithAutoUpdates'));
+  assert.ok(withDefault.notFixed.some((r) => r.key === 'defaultChatAgent'), 'defaultChatAgent は配列でないので、既定では直ったと見なさない');
+  // 直す行が危ない読み方を足したら、足した行の検査に出る
+  const bad = unsafeReaders([{ path: 'src/vs/x.ts', added: ['for (const id of productService.builtInExtensionsEnabledWithAutoUpdates) {'], removed: [] }], NP);
+  assert.equal(bad.addedUnsafe.length, 1);
+});
+
+test('C-1 productRemove: edits.patch が足した行にも、外すキーを落ちる形で読む行が無い', { skip: skipKeys }, () => {
+  const { addedUnsafe } = unsafeReaders();
+  assert.deepEqual(addedUnsafe.map((r) => `${r.path} [${r.key}] ${r.text.slice(0, 120)}  <- ${r.why}`), []);
+});
+
+test('C-1 productRemove(型の網): 本家の IProductConfiguration で省略できないキーは、edits.patch が省略できる型(?:)にしている', { skip: skipKeys }, () => {
+  const t = upShow('src/vs/base/common/product.ts');
+  const required = productKeys.filter((k) => new RegExp(`^\\s*readonly\\s+${k}\\s*:`, 'm').test(t));
+  assert.ok(required.length >= 2, `本家で省略できないキーが少ない(読み方の退行か本家の変更): ${required.join(',')}`);
+  const { typeNetted } = unsafeReaders();
+  assert.deepEqual(required.filter((k) => !typeNetted.has(k)), [], '省略できないキーのままだと、?. なしの読み手を型検査が止めない(起動で落ちる)');
+  // 元の行を消し、省略できる行を足している(同じ区画)
+  const s = sections.find((x) => /(^|\/)base\/common\/product\.ts$/.test(x.path));
+  assert.ok(s, 'base/common/product.ts の区画が無い');
+  for (const k of required) {
+    assert.ok(s.removed.some((l) => new RegExp(`^\\s*readonly\\s+${k}\\s*:`).test(l)), `${k}: 省略できない元の行を消していない`);
+    assert.ok(s.added.some((l) => new RegExp(`^\\s*readonly\\s+${k}\\?\\s*:`).test(l)), `${k}: 省略できる行を足していない`);
+  }
+});
+
+test('C-1 productRemove(型の網): 型検査が通っている記録がある(build-record.json の typecheck が ok・終了コード 0)', () => {
+  const f = join(REPO, 'tasks', '2026-11-16-p5-c1-product-keys', '1.146.0-p5-c-all-r2', 'build-record.json');
+  if (!existsSync(f)) return; // 記録が無い(片づけた)ときは見ない。型の直しがあることは上の検査が見る
+  const rec = readJson(f);
+  const step = (rec.steps ?? []).find((s) => s.name === 'typecheck');
+  assert.ok(step, 'typecheck の手順が記録に無い');
+  assert.equal(step.status, 'ok');
+  assert.equal(step.exitCode, 0);
+});
+
+test('C-1 productRemove: `!x.key || …x.key.a…` の形は安全と数える。ただし `!x.key.some(…)` は落ちる形のまま', () => {
+  const k = ['defaultChatAgent'];
+  const kinds = (s) => classifyKeyReads(s, k).map((r) => r.kind);
+  assert.deepEqual(kinds('if (!this.productService.defaultChatAgent || !areSameExtensions(a, { id: this.productService.defaultChatAgent.extensionId })) {'), ['safe', 'safe']);
+  assert.deepEqual(kinds('if (!this.productService.defaultChatAgent.extensionId) {'), ['unsafe']);
+});
+
+// ---------------------------------------------------------------------------
+// 4a. パッチの形(空の文脈の行の先頭の空白が落ちていても、1行ずつ読む読み手が誤らない)は、次の検査が見る。
+test('C-1 edits.patch の形: ハンクの行数が見出しと合い、空の文脈の行(先頭の空白が落ちたもの)を数えても、1行ずつ読む読み手と見出しで読む読み手の + / - の行が一致する(落ちたら、どのファイルのどのハンクかを出力と tmp/ のファイルに出す)', { skip: noPatch }, () => {
+  const r = checkPatchShape(patchText);
+  if (!r.ok) {
+    // 背景で走らせても読めるように、落ちた場所をファイルにも書く(tasks/ の下。書き込みの許可の中)
+    try { writeFileSync(join(REPO, 'tasks', '2026-11-16-p5-c1-product-keys', 'patch-shape-detail.txt'), r.text + '\n'); } catch { /* 書けなくても検査の結果は変わらない */ }
+  }
+  assert.equal(r.ok, true, `\n${r.text}`);
+  // 1行ずつ読む読み手(このファイルの sections)も、同じ区画の数
+  assert.equal(readLineByLine(patchText).length, sections.length);
+});
+
+test('C-1 edits.patch の形(自己検査): 行数の合わないハンクと、食い違う読み手を見つけ、ファイルとハンクの場所を出す。空の文脈の行・署名は誤りにしない', () => {
+  const ok = 'diff --git a/a.ts b/a.ts\n--- a/a.ts\n+++ b/a.ts\n@@ -1,4 +1,4 @@\n x\n\n-old\n+new\n y\n-- \n2.43.0\n';
+  assert.equal(checkPatchShape(ok).ok, true, checkPatchShape(ok).text);
+  const short = 'diff --git a/a.ts b/a.ts\n--- a/a.ts\n+++ b/a.ts\n@@ -1,5 +1,5 @@\n x\n-old\n+new\n y\n';
+  const s = checkPatchShape(short);
+  assert.equal(s.ok, false);
+  assert.match(s.text, /a\.ts \(パッチの 4 行目の @@ -1,5 \+1,5 @@\) 行数が見出しと合わない/);
+  const extra = 'diff --git a/b.ts b/b.ts\n--- a/b.ts\n+++ b/b.ts\n@@ -1,2 +1,2 @@\n x\n-old\n+new\n y\n';
+  assert.match(checkPatchShape(extra).text, /b\.ts .*(見出しの行数のあとにも続きの行がある|行数が見出しと合わない)/);
+  const noPrefix = 'diff --git a/c.ts b/c.ts\n--- a/c.ts\n+++ b/c.ts\n@@ -1,2 +1,2 @@\n\tx\n-old\n+new\n';
+  assert.match(checkPatchShape(noPrefix).text, /c\.ts .*空白で始まらない/);
+});
+
+// 4. 消した部品の使い手の網(2026-11-16。r2 の関門: ITerminalChatService の注入・searchView の設定の鎖・_chat.editSessions.accept の呼び手)
+//    共通の部品は tests/gate-orphans.mjs(サービスの注入・設定のキーの鎖の読み・コマンドの呼び手。組み込み拡張 extensions/ も見る)。
+//    期待は本家のタグから読む。他の単位も同じ部品で見られる: node tests/orphans-report.mjs C-2-debug ...
+// ---------------------------------------------------------------------------
+// 例外(理由つき)。path の末尾・ID か key・行の一部。本家にその行が無くなれば「古い例外」で落ちる。今は無い。
+const ORPHAN_ALLOW = [
+  {
+    path: 'workbench/browser/actions/quickAccessActions.ts', id: 'workbench.action.unifiedQuickAccess', contains: "executeCommand('workbench.action.unifiedQuickAccess')",
+    reason: '呼び手(quickAccessActions.ts 187行)を try/catch で包んでいて、コマンドが無ければふつうのクイックアクセスに戻る。何もしないコマンドを登録すると、何も開かなくなり、かえって悪い(2026-11-16 リーダーの判断)',
+  },
+];
+const orphanUnits = () => loadUnits(REPO, { 'C-1-ai': UNIT_DIR });
+const orphanUp = () => upstream(UP_REPO, UP_TAG);
+const orphanSkip = noUnit || (upOk ? false : `本家のソースが読めない: ${UP_REPO} の ${UP_TAG}`);
+const orphanLines = (r) => [...r.services, ...r.settings, ...r.commands];
+
+test('C-1 消した部品の使い手: サービスの注入・設定のキーの鎖の読み・コマンドの呼び手(組み込み拡張を含む)が、残るコードに残っていない(edits.patch が直しているか、登録・定義を足している)', { skip: orphanSkip }, () => {
+  const r = findOrphans({ up: orphanUp(), units: orphanUnits(), by: 'C-1-ai' });
+  const { left } = applyAllowlist(orphanLines(r), ORPHAN_ALLOW);
+  assert.deepEqual(left.map(describeFound), [], `残っている使い手 ${left.length} か所(ワークベンチが動くと、UNKNOWN service・undefined の読み・command not found になる)`);
+});
+
+test('C-1 消した部品の使い手: 例外の一覧(ORPHAN_ALLOW)は、本家にその行がある(古い例外を残さない)', { skip: orphanSkip }, () => {
+  const r = findOrphans({ up: orphanUp(), units: orphanUnits(), by: 'C-1-ai' });
+  const { used } = applyAllowlist(orphanLines(r), ORPHAN_ALLOW);
+  assert.deepEqual(ORPHAN_ALLOW.filter((_, i) => !used.has(i)), []);
+});
+
+test('C-1 消した部品の使い手(自己検査): patch を外した状態では、関門で出た3種(ITerminalChatService の注入・searchView の設定の鎖・_chat.editSessions.accept の呼び手)を見つける。直した状態を作ると消える', { skip: orphanSkip }, () => {
+  const up = orphanUp();
+  // patch を外した状態。ただし設定の登録を消す行だけは残す(登録の消しは patch の仕事で、読み手の直しではない。登録が残るキーは「消えていない」ので数えない)
+  const dropReg = { path: 'src/vs/workbench/contrib/search/browser/search.contribution.ts', added: [], removed: ["'search.searchView.semanticSearchBehavior': {", "'search.searchView.keywordSuggestions': {"] };
+  const bare = orphanUnits().map((u) => ({ ...u, sections: u.id === 'C-1-ai' ? [dropReg] : [] }));
+  const r = findOrphans({ up, units: bare, by: 'C-1-ai' });
+  assert.ok(r.services.some((f) => f.id === 'ITerminalChatService' && /terminalTabbedView\.ts$/.test(f.path)), 'ITerminalChatService の注入を見つけない');
+  assert.ok(r.services.some((f) => f.id === 'ITerminalChatService' && /terminalTabsChatEntry\.ts$/.test(f.path)));
+  assert.ok(r.settings.some((f) => f.key === 'search.searchView.semanticSearchBehavior' && /searchView\.ts$/.test(f.path)), 'searchView の設定の鎖を見つけない');
+  assert.ok(r.settings.some((f) => f.key === 'search.searchView.keywordSuggestions'));
+  assert.ok(r.commands.some((f) => f.id === '_chat.editSessions.accept' && /extensions\/git\/src\/repository\.ts$/.test(f.path)), '_chat.editSessions.accept の呼び手(組み込みの git)を見つけない');
+  // 直した状態: 行を消す・登録を足す・定義を足す・親を省略できる型にする
+  const fixLine = (f) => ({ path: f.path, added: [], removed: [f.text] });
+  const extra = (sections) => bare.map((u) => (u.id === 'C-1-ai' ? { ...u, sections: [...u.sections, ...sections] } : u));
+  const svc = r.services.filter((f) => f.id === 'ITerminalChatService');
+  assert.equal(findOrphans({ up, units: extra(svc.map(fixLine)), by: 'C-1-ai' }).services.filter((f) => f.id === 'ITerminalChatService').length, 0, '行を消しても残る');
+  assert.equal(findOrphans({ up, units: extra([{ path: 'src/vs/x.ts', added: ['registerSingleton(ITerminalChatService, NullTerminalChatService, InstantiationType.Delayed);'], removed: [] }]), by: 'C-1-ai' }).services.filter((f) => f.id === 'ITerminalChatService').length, 0, '登録を足しても残る');
+  assert.equal(findOrphans({ up, units: extra([{ path: 'src/vs/x.ts', added: ["CommandsRegistry.registerCommand('_chat.editSessions.accept', () => { });"], removed: [] }]), by: 'C-1-ai' }).commands.filter((f) => f.id === '_chat.editSessions.accept').length, 0, '定義を足しても残る');
+  assert.equal(findOrphans({ up, units: extra([{ path: 'src/vs/workbench/services/search/common/search.ts', added: ['\treadonly searchView?: { semanticSearchBehavior?: string };'], removed: [] }]), by: 'C-1-ai' }).settings.filter((f) => /searchView\.ts$/.test(f.path)).length, 0, '親を省略できる型にしても残る');
+  const fixCmd = r.commands.filter((f) => f.id === '_chat.editSessions.accept').map(fixLine);
+  assert.equal(findOrphans({ up, units: extra(fixCmd), by: 'C-1-ai' }).commands.filter((f) => f.id === '_chat.editSessions.accept').length, 0, '呼び手の行を消しても残る');
+});
+
+test('C-1 消した部品の使い手(自己検査): main には登録があり、ワークベンチの登録だけが消えた ID(IAgentNetworkFilterService)の注入も見つける。ワークベンチ側の登録を足せば消え、main 側の登録を足しても消えない', { skip: orphanSkip }, () => {
+  const up = orphanUp();
+  const bare = orphanUnits().map((u) => ({ ...u, sections: [] }));
+  const extra = (sections) => bare.map((u) => (u.id === 'C-1-ai' ? { ...u, sections } : u));
+  const hits = (units) => findOrphans({ up, units, by: 'C-1-ai' }).services.filter((f) => f.id === 'IAgentNetworkFilterService');
+  const base = hits(bare);
+  assert.ok(base.some((f) => /contrib\/browserView\/common\/browserView\.ts$/.test(f.path)), 'ワークベンチの使い手(browserView.ts)を見つけない');
+  assert.ok(base.every((f) => !/electron-main\/|^src\/vs\/code\//.test(f.path)), 'main の側の使い手は数えない');
+  const reg = 'registerSingleton(IAgentNetworkFilterService, AgentNetworkFilterService, InstantiationType.Delayed);';
+  assert.equal(hits(extra([{ path: 'src/vs/workbench/contrib/browserView/electron-browser/browserView.contribution.ts', added: [reg], removed: [] }])).length, 0, 'ワークベンチ側の登録を足しても残る');
+  assert.ok(hits(extra([{ path: 'src/vs/code/electron-main/app.ts', added: [reg], removed: [] }])).length > 0, 'main 側の登録では、ワークベンチの使い手は直らない');
+});
+
+test('C-1 消した部品の使い手(自己検査): 別の単位が消した登録の ID は、C-1 の持ち分にしない。コメントの行・API の説明の例・文字列の中の一致は使い手でない', { skip: orphanSkip }, () => {
+  const r = findOrphans({ up: orphanUp(), units: orphanUnits().map((u) => ({ ...u, sections: [] })), by: 'C-1-ai' });
+  assert.ok(!r.services.some((f) => f.id === 'INotebookService'), 'INotebookService は C-4 の持ち分');
+  assert.ok(!r.services.some((f) => /^\s*\/\//.test(f.text)), 'コメントの行を数えた');
+  assert.ok(!r.commands.some((f) => f.path.startsWith('src/vscode-dts/')), 'API の説明の例を数えた');
+  assert.ok(!r.settings.some((f) => /^\s*(?:\w+\s*=\s*)?['"]/.test(f.text) && !/getValue|\)\./.test(f.text)), '文字列の中の一致を数えた');
+});
+
+test('C-1 productRemove: 例外の一覧(SAFE_BY_REASON)は、本家にその行がある(古い例外を残さない)', { skip: skipKeys }, () => {
+  const { allowedUsed } = unsafeReaders();
+  const stale = SAFE_BY_REASON.filter((_, i) => !allowedUsed.has(i)).map((e) => `${e.path} [${e.key}] ${e.contains}`);
+  assert.deepEqual(stale, []);
+});
+
+test('C-1 productRemove: productRemove のキーが、本家の IProductConfiguration にある(キーの名前の誤りに気づく)', { skip: skipKeys }, () => {
+  const t = upShow('src/vs/base/common/product.ts');
+  assert.ok(t, 'base/common/product.ts が読めない');
+  const missing = productKeys.filter((k) => !new RegExp(`readonly\\s+${k}\\??\\s*:`).test(t));
+  assert.deepEqual(missing, []);
 });

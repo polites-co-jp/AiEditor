@@ -2,7 +2,7 @@
   "id": "C-6-settings-sync",
   "stage": "C",
   "order": 360,
-  "enabled": false,
+  "enabled": true,
   "intent": "本家の設定の同期（Settings Sync。バックアップと同期）の画面・コマンド・同期のビュー・ワークベンチ側の同期のサービスを消す。設定の同期は Notion の自前の拡張（notion-sync）が担う。プロファイル・拡張の管理・設定の画面が注入する同期の状態のサービスと platform/userDataSync、アカウントのメニュー（services/accounts）は残す",
   "after": ["C-1-ai"],
   "delete": [

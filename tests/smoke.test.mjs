@@ -224,6 +224,68 @@ test('extractChromiumErrors: CONSOLE は devtools-console、それ以外の ERRO
   assert.equal(e[1].group, 'chromium');
 });
 
+// 2026-11-16 の段階 C の版(1.146.0-p5-c-all)の chromium.log の、ただ1行の誤り(records/take-in/1.146.0-p5-c-all/gate-C-1-ai.md)。
+// 「INFO:CONSOLE:<行>]」の形(括弧でなくコロン)で出て、前は拾わず errors.new が PASS になった。
+const REAL_LINE = '[59188:1116/115143.357:INFO:CONSOLE:1847] "Uncaught (in promise) TypeError: Cannot read properties of undefined (reading \'chatExtensionId\')", source: vscode-file://vscode-app/e:/develop/self/Team/projects/ai-editor/tmp/b/p2/1.146.0-p5-c-all/Shuko-win32-x64-1.146.0-p5-c-all/resources/app/out/vs/workbench/workbench.desktop.main.js (1847)';
+
+test('extractChromiumErrors: INFO:CONSOLE で出る Uncaught TypeError(今回の実際の行)を devtools-console として拾う', () => {
+  const e = extractChromiumErrors(REAL_LINE);
+  assert.equal(e.length, 1);
+  assert.equal(e[0].group, 'devtools-console');
+  assert.equal(e[0].time, '1116/115143.357');
+  assert.match(e[0].message, /Uncaught \(in promise\) TypeError: Cannot read properties of undefined \(reading 'chatExtensionId'\)/);
+});
+
+test('extractChromiumErrors: INFO・WARNING の CONSOLE のうち、誤りの形(Uncaught・〜Error・UNKNOWN service)だけ拾い、普通の行は拾わない', () => {
+  const text = [
+    '[1:2:1116/115143.100:INFO:CONSOLE:10] "[Extension Host] activated", source: vscode-file://a (10)',
+    '[1:2:1116/115143.200:INFO:CONSOLE:11] "ReferenceError: x is not defined", source: vscode-file://a (11)',
+    '[1:2:1116/115143.300:WARNING:CONSOLE:12] "Uncaught SyntaxError: Unexpected token", source: vscode-file://a (12)',
+    '[1:2:1116/115143.400:INFO:CONSOLE:13] "depends on UNKNOWN service IFoo.", source: vscode-file://a (13)',
+    '[1:2:1116/115143.500:WARNING:CONSOLE:14] "deprecated api used", source: vscode-file://a (14)',
+    '[1:2:1116/115143.600:INFO:CONSOLE:15] "the word errors in text and TypeErrorHandler list", source: vscode-file://a (15)',
+  ].join('\n');
+  const msgs = extractChromiumErrors(text).map((x) => x.message);
+  assert.equal(msgs.length, 3, msgs.join(' | '));
+  assert.ok(msgs[0].includes('ReferenceError'));
+  assert.ok(msgs[1].includes('SyntaxError'));
+  assert.ok(msgs[2].includes('UNKNOWN service'));
+});
+
+test('extractChromiumErrors: 既存の ERROR の拾い方は変わらない。INFO の CONSOLE 以外(gpu など)の行は INFO なら拾わない', () => {
+  const text = [
+    REAL_LINE,
+    '[1:2:1116/115144.000:INFO:gpu_process_host.cc(1)] TypeError mentioned in a non-console info line',
+    '[1:2:1116/115145.000:ERROR:CONSOLE:20] "boom", source: vscode-file://a (20)',
+  ].join('\n');
+  const e = extractChromiumErrors(text);
+  assert.equal(e.length, 2);
+  assert.deepEqual(e.map((x) => x.group), ['devtools-console', 'devtools-console']);
+});
+
+test('errors.new の鍵: 実際の行の誤りは、前の版の鍵に無ければ newErrors に出る(PASS にならない)', () => {
+  const errors = extractChromiumErrors(REAL_LINE);
+  assert.equal(newErrors(errors, []).length, 1);
+  assert.equal(newErrors(errors, [...errorKeys(errors)]).length, 0);
+});
+
+test('normalizeError / errorKeys: devtools-console の誤りの鍵から、版の置き場所のパスと行番号を外す(置き場所の違う版どうしで同じ誤りは同じ鍵)', () => {
+  const a = '[59188:1116/115143.357:INFO:CONSOLE:1847] "Uncaught (in promise) TypeError: Cannot read properties of undefined (reading \'x\')", source: vscode-file://vscode-app/e:/develop/self/Team/projects/ai-editor/tmp/b/p2/1.146.0-p5-c-all/Shuko-win32-x64-1.146.0-p5-c-all/resources/app/out/vs/workbench/workbench.desktop.main.js (1847)';
+  const b = '[7:1116/130000.000:INFO:CONSOLE:1902] "Uncaught (in promise) TypeError: Cannot read properties of undefined (reading \'x\')", source: vscode-file://vscode-app/c:/z/other/Shuko-win32-x64-1.146.0-p5-c-all-r3/resources/app/out/vs/workbench/workbench.desktop.main.js (1902)';
+  const ka = [...errorKeys(extractChromiumErrors(a))];
+  const kb = [...errorKeys(extractChromiumErrors(b))];
+  assert.equal(ka.length, 1);
+  assert.deepEqual(ka, kb);
+  assert.ok(!/p5-c-all|ai-editor|tmp\/b|1847/.test(ka[0]), ka[0]);
+  assert.ok(ka[0].startsWith('devtools-console|'));
+  // 誤りの中身が違えば別の鍵のまま
+  const c = b.replace("reading 'x'", "reading 'y'");
+  assert.notDeepEqual([...errorKeys(extractChromiumErrors(c))], kb);
+  // 前の版(a)の鍵があれば、置き場所の違う版(b)の同じ誤りは「新しい誤り」にならない
+  assert.equal(newErrors(extractChromiumErrors(b), ka).length, 0);
+  assert.equal(newErrors(extractChromiumErrors(c), ka).length, 1);
+});
+
 test('parseLogTime / splitByCutoff: 止め始めた後の誤りを後始末として分ける。時刻が読めないものは残す', () => {
   const t = parseLogTime('2026-11-13 21:48:24.020');
   assert.equal(t.getFullYear(), 2026);

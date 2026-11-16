@@ -329,7 +329,11 @@ export function stopByRunDir(runDir, exePath) {
 const VSC_LINE = /^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}(?:\.\d+)?) \[(trace|debug|info|warning|error)\]\s?(.*)$/;
 // Chromium のログの行: [12345:6789:1113/062432.123:ERROR:CONSOLE(123)] "本文", source: file (123)
 // pid:tid は付かないこともあるので省けるようにする
-const CHROMIUM_LINE = /^\[(?:(\d+):(\d+):)?(\d{4}\/\d{6}\.\d+):(INFO|WARNING|ERROR|FATAL|VERBOSE\d*):(.*)$/;
+// 実際の行(2026-11-16): [59188:1116/115143.357:INFO:CONSOLE:1847] ... は pid だけ(tid が無い)。pid:tid の形も、どちらも無い形も読む
+const CHROMIUM_LINE = /^\[(?:(\d+):)?(?:(\d+):)?(\d{4}\/\d{6}\.\d+):(INFO|WARNING|ERROR|FATAL|VERBOSE\d*):(.*)$/;
+
+// INFO・WARNING で出るコンソールの行のうち、誤りと見なす本文(Uncaught / Unhandled、TypeError などの名前つきの誤り、UNKNOWN service)
+const CONSOLE_ERROR_BODY = /"\s*(?:Uncaught|Unhandled)\b|\b(?:Type|Reference|Syntax|Range|Eval|URI)Error\b|\bUNKNOWN service\b/;
 
 /**
  * VS Code 形式のログの本文から、[error] の記録を取り出す。続きの行（スタック）は直前の記録にくっつける。
@@ -359,6 +363,12 @@ export function extractChromiumErrors(text, source = 'chromium') {
   for (const line of text.split(/\r?\n/)) {
     const m = CHROMIUM_LINE.exec(line);
     if (!m) continue;
+    // この Electron では、renderer の捕まえていない誤りも INFO:CONSOLE:<行>] で出る(2026-11-16 の実例)。
+    // INFO・WARNING の CONSOLE は、本文が誤りの形(Uncaught・〜Error:・UNKNOWN service)のものだけ拾う。console.log の普通の行は拾わない
+    if ((m[4] === 'INFO' || m[4] === 'WARNING') && /^CONSOLE\b/.test(m[5].trim()) && CONSOLE_ERROR_BODY.test(m[5])) {
+      out.push({ source, group: 'devtools-console', time: m[3], level: m[4].toLowerCase(), message: m[5].trim(), stack: [] });
+      continue;
+    }
     if (m[4] === 'ERROR' || m[4] === 'FATAL') {
       // CONSOLE(行) は renderer の console.error（開発者ツールのコンソールに出るもの）。それ以外は Chromium 自身の誤り
       const group = /^CONSOLE/.test(m[5].trim()) ? 'devtools-console' : 'chromium';
@@ -394,6 +404,11 @@ export function splitByCutoff(errors, cutoff) {
 /** 前の版との比べのために、誤りの文面から揺れる部分（時刻・PID・ポート・作業場所・乱数）を落とす。 */
 export function normalizeError(message) {
   return String(message)
+    // 開発者ツールのコンソールの行: source: vscode-file://vscode-app/e:/…/Shuko-win32-x64-<版の名前>/…/workbench.desktop.main.js (1847)
+    // 置き場所(版の名前を含む)と、ビルドで変わる行番号(CONSOLE:1847]・(1847))を外す。置き場所の違う版どうしで同じ誤りを同じと見るため
+    .replace(/vscode-(?:file|webview):\/\/[^\s"'`)\]]+(?: \(\d+\))?/g, '<uri>')
+    .replace(/\b[A-Za-z]:\/[^\s"'`)\]]+/g, '<path>')
+    .replace(/\bCONSOLE[:(]\d+\)?\]?/g, 'CONSOLE')
     .replace(/[A-Za-z]:\\[^\s"'`)\]]+/g, '<path>')
     .replace(/file:\/\/\/[^\s"'`)\]]+/g, '<uri>')
     .replace(/\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b/gi, '<uuid>')

@@ -1,0 +1,41 @@
+C-1-ai(patch なし): サービス 33・設定 0・コマンド 7
+  src/vs/workbench/api/browser/mainThreadBrowserTunnelProxy.ts:34 [service: IAgentHostConnectionsService] @IAgentHostConnectionsService private readonly _agentHostConnectionsService: IAgentHostConnectionsService,
+  src/vs/workbench/api/common/extHost.api.impl.ts:179 [service: IExtHostLanguageModels] const extHostLanguageModels = accessor.get(IExtHostLanguageModels);
+  src/vs/workbench/api/common/extHost.api.impl.ts:180 [service: IExtHostMpcService] const extHostMcp = accessor.get(IExtHostMpcService);
+  src/vs/workbench/api/common/extHost.api.impl.ts:274 [service: IExtHostMpcService] rpcProtocol.set(ExtHostContext.ExtHostMcp, accessor.get(IExtHostMpcService));
+  src/vs/workbench/api/common/extHostExtensionService.ts:139 [service: IExtHostLanguageModels] @IExtHostLanguageModels private readonly _extHostLanguageModels: IExtHostLanguageModels,
+  src/vs/workbench/browser/actions/developerActions.ts:787 [service: IAgentHostService] const agentHostService = accessor.get(IAgentHostService);
+  src/vs/workbench/browser/actions/developerActions.ts:788 [service: IAgentHostEnablementService] const agentHostEnablementService = accessor.get(IAgentHostEnablementService);
+  src/vs/workbench/browser/parts/globalCompositeBar.ts:307 [service: ICodexAccountService] @ICodexAccountService private readonly codexAccountService: ICodexAccountService,
+  src/vs/workbench/browser/parts/globalCompositeBar.ts:800 [service: ICodexAccountService] @ICodexAccountService codexAccountService: ICodexAccountService,
+  src/vs/workbench/contrib/accessibility/browser/accessibleView.ts:125 [service: IChatCodeBlockContextProviderService] @IChatCodeBlockContextProviderService private readonly _codeBlockContextProviderService: IChatCodeBlockContextProviderService,
+  src/vs/workbench/contrib/browserView/common/browserView.ts:690 [service: IAgentNetworkFilterService] @IAgentNetworkFilterService private readonly agentNetworkFilterService: IAgentNetworkFilterService,
+  src/vs/workbench/contrib/browserView/electron-browser/browserViewWorkbenchService.ts:162 [service: IChatWidgetService] @IChatWidgetService private readonly chatWidgetService: IChatWidgetService,
+  src/vs/workbench/contrib/browserView/electron-browser/features/browserEditorErrorFeatures.ts:55 [service: IAgentNetworkFilterService] @IAgentNetworkFilterService private readonly agentNetworkFilterService: IAgentNetworkFilterService,
+  src/vs/workbench/contrib/codeEditor/browser/emptyTextEditorHint/emptyTextEditorHint.ts:46 [service: IInlineChatSessionService] @IInlineChatSessionService private readonly inlineChatSessionService: IInlineChatSessionService,
+  src/vs/workbench/contrib/codeEditor/browser/emptyTextEditorHint/emptyTextEditorHint.ts:47 [service: IChatAgentService] @IChatAgentService private readonly chatAgentService: IChatAgentService,
+  src/vs/workbench/contrib/codeEditor/browser/emptyTextEditorHint/emptyTextEditorHint.ts:150 [service: IChatAgentService] @IChatAgentService private readonly chatAgentService: IChatAgentService,
+  src/vs/workbench/contrib/codeEditor/browser/quickaccess/gotoSymbolQuickAccess.ts:66 [service: IChatWidgetService] @IChatWidgetService private readonly chatWidgetService: IChatWidgetService,
+  src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts:623 [service: IPluginInstallService] @IPluginInstallService private readonly pluginInstallService: IPluginInstallService,
+  src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts:2098 [service: ILanguageModelToolsService] @ILanguageModelToolsService toolsService: ILanguageModelToolsService,
+  src/vs/workbench/contrib/quickaccess/browser/commandsQuickAccess.ts:81 [service: IChatAgentService] @IChatAgentService private readonly chatAgentService: IChatAgentService,
+  src/vs/workbench/contrib/scm/browser/quickDiffModel.ts:142 [service: IChatEditingService] @IChatEditingService private readonly _chatEditingService: IChatEditingService,
+  src/vs/workbench/contrib/search/browser/anythingQuickAccess.ts:152 [service: IQuickChatService] @IQuickChatService private readonly quickChatService: IQuickChatService,
+  src/vs/workbench/contrib/search/browser/anythingQuickAccess.ts:155 [service: IChatWidgetService] @IChatWidgetService private readonly chatWidgetService: IChatWidgetService,
+  src/vs/workbench/contrib/search/browser/symbolsQuickAccess.ts:70 [service: IChatWidgetService] @IChatWidgetService private readonly chatWidgetService: IChatWidgetService
+  src/vs/workbench/contrib/tasks/browser/abstractTaskService.ts:299 [service: IChatService] @IChatService private readonly _chatService: IChatService,
+  src/vs/workbench/contrib/tasks/browser/abstractTaskService.ts:300 [service: IChatAgentService] @IChatAgentService private readonly _chatAgentService: IChatAgentService,
+  src/vs/workbench/contrib/tasks/electron-browser/taskService.ts:99 [service: IChatService] @IChatService _chatService: IChatService,
+  src/vs/workbench/contrib/tasks/electron-browser/taskService.ts:100 [service: IChatAgentService] @IChatAgentService _chatAgentService: IChatAgentService,
+  src/vs/workbench/contrib/terminal/browser/terminalTabbedView.ts:80 [service: ITerminalChatService] @ITerminalChatService private readonly _terminalChatService: ITerminalChatService,
+  src/vs/workbench/contrib/terminal/browser/terminalTabsChatEntry.ts:33 [service: ITerminalChatService] @ITerminalChatService private readonly _terminalChatService: ITerminalChatService,
+  src/vs/workbench/contrib/terminal/browser/xterm/decorationAddon.ts:67 [service: IChatContextPickService] @IChatContextPickService private readonly _contextPickService: IChatContextPickService,
+  src/vs/workbench/contrib/terminal/browser/xterm/decorationAddon.ts:68 [service: IChatWidgetService] @IChatWidgetService private readonly _chatWidgetService: IChatWidgetService,
+  src/vs/workbench/contrib/update/browser/updateTitleBarEntry.ts:90 [service: IChatService] @IChatService chatService: IChatService,
+  extensions/git/src/repository.ts:1286 [command: _chat.editSessions.accept] commands.executeCommand('_chat.editSessions.accept', resources);
+  extensions/git/src/repository.ts:1499 [command: _chat.editSessions.accept] commands.executeCommand('_chat.editSessions.accept', resources);
+  src/vs/workbench/browser/actions/quickAccessActions.ts:187 [command: workbench.action.unifiedQuickAccess] await commandService.executeCommand('workbench.action.unifiedQuickAccess');
+  src/vs/workbench/browser/parts/globalCompositeBar.ts:506 [command: _manageTrustedMCPServersForAccount] run: () => this.commandService.executeCommand('_manageTrustedMCPServersForAccount', { providerId, accountLabel: account.label })
+  src/vs/workbench/browser/parts/globalCompositeBar.ts:569 [command: _manageTrustedMCPServersForAccount] run: () => this.commandService.executeCommand('_manageTrustedMCPServersForAccount', { providerId, accountLabel: account.label })
+  src/vs/workbench/contrib/authentication/browser/actions/manageAccountsAction.ts:114 [command: _manageTrustedMCPServersForAccount] action: () => this.commandService.executeCommand('_manageTrustedMCPServersForAccount', { providerId, accountLabel })
+  src/vs/workbench/contrib/terminal/browser/terminalTabsChatEntry.ts:57 [command: workbench.action.terminal.chat.viewHiddenChatTerminals] void this._commandService.executeCommand('workbench.action.terminal.chat.viewHiddenChatTerminals');

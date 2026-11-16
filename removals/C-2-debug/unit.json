@@ -2,7 +2,7 @@
   "id": "C-2-debug",
   "stage": "C",
   "order": 320,
-  "enabled": false,
+  "enabled": true,
   "intent": "デバッガ（実行とデバッグのビュー・ブレークポイント・デバッグコンソール・デバッグのツールバー・アダプターの起動）を消す。サービスの ID（IDebugService・IDebugVisualizerService）は本家の NullDebugService・NullDebugVisualizerService を登録して残し、拡張 API の vscode.debug は何もしない実装にする（edits.patch。extHostRemovedApi.debug.ts）。拡張機能の開発用のホストのデバッグ（IExtensionHostDebugService）とテストの呼び出し履歴の部品は残す",
   "after": ["A-3-debug-extensions"],
   "delete": [

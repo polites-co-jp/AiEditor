@@ -4,7 +4,7 @@
 - 依頼: brief の「3. 関門」「3'.」。相手は蒙恬の `1.146.0-p5-c-all`（R2-7）
 - 結果: **不合格**。原因は C-1-ai。C-2〜C-7 は 1・2 が合格で、3・4 は C-1 の誤りのせいで判定できない
 - 記録: `records/take-in/1.146.0-p5-c-all/`（`gate-p5-c-all.md` が全体。単位ごとに `gate-C-1-ai.md`〜`gate-C-7-breadcrumbs-outline.md`）
-- 直した版の関門は、このファイルの末尾の「r2」「r3c」の節
+- 直した版の関門は、このファイルの末尾の「r2」「r3c」「r4」の節。**最終の版は r4（C-1〜C-7 すべて合格）**
 
 ## 1. 要点
 
@@ -183,3 +183,54 @@
 
 - コード・テスト・台本・docs/ は直していない。`C:\b` は読むだけ（監査の環境の写しの元）。
 - 普段使いのデータは、起動の確かめで6つのフォルダが変わらないこと、スモークの `safety.daily-argv` が3回とも PASS であることで確かめた。local.json・スタートメニュー・PATH・タスクスケジューラ・Notion は変えていない。秘密の場所には触れていない。ネットのログは台本が読んだ直後に消した（`tmp\b\netlog\` は空）。
+
+---
+
+# r4（2026-11-16。C-1 の保留の片づけ。版 `1.146.0-p5-c-all-r4`）
+
+- 依頼: リーダー（タスクの名称「段階 C の版の関門（r4。C-1 の保留の片づけ）」）。相手は蒙恬の `1.146.0-p5-c-all-r4`（HEAD `7fac30e8`。C-1 の edits.patch を `git format-patch` で作り直した版。書き付けの「r4」）
+- 結果: **合格。C-1〜C-7 の全部を合格とする。r4 を最終の版として扱ってよい**
+- 記録: `records/take-in/1.146.0-p5-c-all-r4/gate-p5-c-all-r4.md`（C-1〜C-7 の合否をまとめた）
+
+## R4-1. 要点（リーダーが挙げた5つ）
+
+1. **照らし役 c1〜c7**: 当て直しの記録（`checks.json`）と作業ツリー（`tmp/b/wt/r4`）の14本とも「期待どおり」。
+2. **静的なテスト**:
+   - c1-unit は 60件すべて pass（r3c で保留にした2件も pass）。
+   - `node tests/patch-shape.mjs removals/C-1-ai/edits.patch` は「合う」（終了コード 0）。edits.patch は区画 121・index の行 121。
+   - **網の誤検出で落ちることは、もう無い。** 網の報告は、理由つきの例外1件（`unifiedQuickAccess`）だけになった。r3c の誤検出17件は、曹参が網を「側ごとに登録を見る」形に直して消えた。
+   - 網を緩めて通したのではない。パッチを外した状態（`--bare`）では、r2・r3 の誤りを全部見つける。設定の網は c1-unit の自己検査が試していて、それも通る。
+3. **起動の確かめ**: `result: ok`（commit `7fac30e8`、ワークベンチのしるし3つ、`Uncaught` 0、CLI の導入7つ）。
+4. **スモーク1回**: `baseline-p5-c-all-r3c.json` と比べて、PASS 49 / FAIL 0、新しい誤りなし。r2 の3種の道（ターミナル・検索・git のステージとコミット）も通り、誤りは出ない。Claude Code の組も通った。
+5. **木が r3c と同じ**: `git -C tmp/b/wt/r4 diff --stat 827a712b… 7fac30e8…` が空。ロックファイルの差も r3c と同じ。
+
+absent と通信の監査は、木が同じなので r3c の結果（fail 0、宛先 0、続きの編集の通信なし）をそのまま使う。
+
+## R4-2. 流したもの
+
+| 何 | コマンド（パスは絶対パスで渡した） | 結果 |
+|---|---|---|
+| zip の SHA-256 | `sha256sum E:/develop/self/Team/projects/ai-editor/tmp/b/dist/1.146.0-p5-c-all-r4.zip` | 一致 |
+| 木の同一 | `git -C tmp/b/wt/r4 diff --stat 827a712b63db17ef1326637343927c1d8fd86a0c 7fac30e886f79ebe44e1bac93acd7a86fbbafed8`、`git -C tmp/b/wt/r4 diff --stat HEAD 7fac30e8…`、`git -C tmp/b/wt/r4 status --short --branch` | どちらの差も空。変更は作り直したロックファイル3つだけ |
+| 照らし役（当て直し） | `node tests/c1-check-json.mjs tasks/2026-11-16-p5-c1-product-keys/1.146.0-p5-c-all-r4/checks.json`（c1〜c7） | 7つとも期待どおり |
+| 照らし役（作業ツリー） | `node tests/c1-check-worktree.mjs E:/develop/self/Team/projects/ai-editor/tmp/b/wt/r4`（c1〜c7） | 7つとも期待どおり |
+| ロックファイルの差 | `sha256sum` で r3c と r4 の `lockfile.diff` | 同じ |
+| c1-unit | `node tests/run-all.mjs --no-ps --only c1-unit --save tasks/2026-11-15-p5-stagec-gate/c1-unit-r4.txt` | 60/60 pass |
+| パッチの形 | `node tests/patch-shape.mjs removals/C-1-ai/edits.patch` | 合う |
+| 網の報告 | `node tests/orphans-report.mjs C-1-ai --out …/orphans-C-1-r4.txt`、`--bare --out …/orphans-C-1-bare-r4.txt` | 直した状態は例外の1件だけ。パッチを外すとサービス 33・コマンド 7 を見つける |
+| ほかの静的なテスト | `node tests/run-all.mjs --no-ps --only removals`・`--only smoke`・`--only patch` | 229/229、80/80、17/17 |
+| 起動の確かめ | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/p1-launch-check.ps1 -OutFile tasks/2026-11-15-p5-stagec-gate/launch-check-p5-c-all-r4-ooka.json -Zip <zip> -Dest tmp/b/p2/1.146.0-p5-c-all-r4-ooka -InstallExtension <7つの VSIX>` | `result: ok` |
+| スモーク1回 | `node tests/smoke-run.mjs --build <展開先> --label p5r4-1 --mode built --prime --baseline tmp/b/smoke/baseline-p5-c-all-r3c.json --save-baseline tmp/b/smoke/baseline-p5-c-all-r4.json --timeout 300 --keep-runs 40` | 49/0。`tmp\b\smoke\runs\p5r4-1-261116T090639\` に `.keep` を置いた |
+
+許可の外で止まったものは無い。飛ばしたものも無い。
+
+## R4-3. 次の担当への注意
+
+- **ユーザーへ渡すもの**（brief の5）: zip `tmp\b\dist\1.146.0-p5-c-all-r4.zip` と手の項目。手の項目は `records/take-in/1.146.0-p5-c-all-r2/manual-checks-p5-c-all-r2.md`（C1〜C21）と `records/take-in/1.146.0-p5-c-all-r3c/manual-checks-p5-c-all-r3c.md`（C22）で、版の名前・場所を r4 に読み替える。入れ替えはユーザーが行う。
+- 次の版のスモークの比べの相手は、3回の和の `baseline-p5-c-all-r3c.json` がよい（r4 の `baseline-p5-c-all-r4.json` は1回分）。
+- 片づけを待つもの（蒙恬の書き付け R4-5）: 入れ子の作業ツリー `tmp/b/vscode/tmp/b/wt/c1fix`、試しの状態の `tmp/b/wt/c1fix`、`tmp/b/trial-c1fix/`、前の作業ツリー `wt-r2`・`wt-r3`・`wt-r3b`・`wt-r3c`。私が残したもの: `tmp\b\p2\1.146.0-p5-c-all-r4-ooka\`、`tmp\b\smoke\runs\p5r4-1-*`、`tmp\b\smoke\ext\1.146.0-p5r4-1\`。
+
+## R4-4. 守ったこと
+
+- コード・テスト・台本・docs/ は直していない。`tmp\b\wt\r4` には `git -C … diff`・`status` だけを打った（読むだけ）。`C:\b` は読んでいない。
+- 普段使いのデータは、起動の確かめで6つのフォルダが変わらないこと、スモークの `safety.daily-argv` が PASS であることで確かめた。local.json・スタートメニュー・PATH・タスクスケジューラ・Notion は変えていない。秘密の場所には触れていない。

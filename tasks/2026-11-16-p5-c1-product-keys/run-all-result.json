@@ -1,26 +1,26 @@
-absent.test.mjs                    tests   20  pass   20  fail   0  skip   0
-apply-cli.test.mjs                 tests    7  pass    5  fail   0  skip   2
+absent.test.mjs                    tests   21  pass   20  fail   1  skip   0
+apply-cli.test.mjs                 tests    8  pass    5  fail   1  skip   2
 apply-commits.test.mjs             tests   26  pass   25  fail   1  skip   0
 apply-parts.test.mjs               tests   57  pass   57  fail   0  skip   0
 apply-prune.test.mjs               tests    7  pass    7  fail   0  skip   0
 apply-selfcheck.test.mjs           tests   33  pass   33  fail   0  skip   0
 apply.test.mjs                     tests   33  pass   33  fail   0  skip   0
 build-commit.test.mjs              tests   21  pass   21  fail   0  skip   0
-build-env-branch.test.mjs          tests   29  pass   29  fail   0  skip   0
-build-fixes.test.mjs               tests   17  pass   17  fail   0  skip   0
-build-parts.test.mjs               tests   38  pass   38  fail   0  skip   0
-builtin-l10n.test.mjs              tests   19  pass   19  fail   0  skip   0
+build-env-branch.test.mjs          tests   30  pass   29  fail   1  skip   0
+build-fixes.test.mjs               tests   18  pass   17  fail   1  skip   0
+build-parts.test.mjs               tests   39  pass   38  fail   1  skip   0
+builtin-l10n.test.mjs              tests   20  pass   19  fail   1  skip   0
 c-all-check-json.test.mjs          tests   27  pass   27  fail   0  skip   0
-c1-check-json.test.mjs             tests    8  pass    8  fail   0  skip   0
-c1-mutation.test.mjs               tests   35  pass   35  fail   0  skip   0
+c1-check-json.test.mjs             tests    9  pass    8  fail   1  skip   0
+c1-mutation.test.mjs               tests   36  pass   34  fail   2  skip   0
 c1-round2.test.mjs                 tests   14  pass   14  fail   0  skip   0
-c1-unit.test.mjs                   tests   53  pass   53  fail   0  skip   0
+c1-unit.test.mjs                   tests   60  pass   60  fail   0  skip   0
 c2-check-json.test.mjs             tests   11  pass   11  fail   0  skip   0
-c2-mutation.test.mjs               tests   49  pass   48  fail   1  skip   0
-c2-unit.test.mjs                   tests   59  pass   58  fail   1  skip   0
-c2-worktree.test.mjs               tests   24  pass   23  fail   1  skip   0
-c3-check-json.test.mjs             tests   12  pass   11  fail   1  skip   0
-c3-mutation.test.mjs               tests   44  pass   43  fail   1  skip   0
+c2-mutation.test.mjs               tests   48  pass   48  fail   0  skip   0
+c2-unit.test.mjs                   tests   58  pass   58  fail   0  skip   0
+c2-worktree.test.mjs               tests   23  pass   23  fail   0  skip   0
+c3-check-json.test.mjs             tests   11  pass   11  fail   0  skip   0
+c3-mutation.test.mjs               tests   43  pass   43  fail   0  skip   0
 c3-unit.test.mjs                   tests   28  pass   28  fail   0  skip   0
 c3-worktree.test.mjs               tests   19  pass   19  fail   0  skip   0
 c4-check-json.test.mjs             tests   12  pass   12  fail   0  skip   0
@@ -32,7 +32,7 @@ c5-mutation.test.mjs               tests   62  pass   62  fail   0  skip   0
 c5-unit.test.mjs                   tests   42  pass   42  fail   0  skip   0
 c5-worktree.test.mjs               tests   32  pass   32  fail   0  skip   0
 c6-check-json.test.mjs             tests   15  pass   15  fail   0  skip   0
-c6-mutation.test.mjs               tests   60  pass   59  fail   1  skip   0
+c6-mutation.test.mjs               tests   59  pass   59  fail   0  skip   0
 c6-unit.test.mjs                   tests   30  pass   30  fail   0  skip   0
 c6-worktree.test.mjs               tests   33  pass   33  fail   0  skip   0
 c7-check-json.test.mjs             tests   15  pass   15  fail   0  skip   0
@@ -58,7 +58,7 @@ p1-scripts.test.mjs                tests   34  pass   34  fail   0  skip   0
 p34-selfcheck.test.mjs             tests    1  pass    1  fail   0  skip   0
 removals.test.mjs                  tests  229  pass  229  fail   0  skip   0
 signtool.test.mjs                  tests   17  pass   17  fail   0  skip   0
-smoke.test.mjs                     tests   79  pass   79  fail   0  skip   0
+smoke.test.mjs                     tests   80  pass   80  fail   0  skip   0
 sublime-keys.test.mjs              tests   50  pass   50  fail   0  skip   0
 switch-expand.test.mjs             tests   17  pass   17  fail   0  skip   0
 switch-watch-warn.test.mjs         tests   10  pass   10  fail   0  skip   0
@@ -68,51 +68,68 @@ take-in.test.mjs                   tests   95  pass   95  fail   0  skip   0
 watch.test.mjs                     tests  104  pass  104  fail   0  skip   0
 measure.tests.ps1                  tests  141  pass  141  fail   0  skip   0  exit 0
 netaudit.tests.ps1                 tests  113  pass  113  fail   0  skip   0  exit 0
-TOTAL                              tests 2715  pass 2706  fail   7  skip   2
+TOTAL                              tests 2725  pass 2713  fail  10  skip   2
 
 Failing:
-  apply-commits.test.mjs: [guard] 本物の作業場所が変わった（16か所）
+  absent.test.mjs: [guard] 本物の作業場所が変わった（2か所）
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 変わった logs\1.146.0-p5-c-all-r3b\install.log
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 変わった wt-r3b\1.146.0\node_modules
+  apply-cli.test.mjs: [guard] 本物の作業場所が変わった（1か所）
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 変わった logs\1.146.0-p5-c-all-r3b\install.log
+  apply-commits.test.mjs: [guard] 本物の作業場所が変わった（19か所）
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 変わった cache\localappdata\ms-playwright
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 変わった cache\npm-cache\_logs
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 変わった cache\pnpm-cache\lockfile-verified.jsonl
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 変わった cache\pnpm-store\v11
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 変わった logs\1.146.0-p5-c-all-r3b
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 変わった logs\1.146.0-p5-c-all-r3b\install.log
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 増えた logs\1.146.0-p5-c-all-r3b\lockfile.log
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 増えた logs\1.146.0-p5-c-all-r3b\package.log
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 増えた logs\1.146.0-p5-c-all-r3b\typecheck.log
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 変わった tmp
+  build-env-branch.test.mjs: [guard] 本物の作業場所が変わった（4か所）
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 変わった logs\1.146.0-p5-c-all-r3b\package.log
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 変わった tmp
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 変わった wt-r3b\1.146.0\out-build
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 変わった wt-r3b\1.146.0\out-vscode-min
+  build-fixes.test.mjs: [guard] 本物の作業場所が変わった（5か所）
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 変わった tmp
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 増えた tmp\electron-download-hy1dRc
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 増えた tmp\electron-download-YR0dVG
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 変わった wt-r3b
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 増えた wt-r3b\VSCode-win32-x64
+  build-parts.test.mjs: [guard] 本物の作業場所が変わった（7か所）
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 変わった tmp
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 変わった tmp\electron-download-YR0dVG
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 増えた tmp\electron-download-YR0dVG\SHASUMS256.txt
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 変わった wt-r3b\VSCode-win32-x64
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 増えた wt-r3b\VSCode-win32-x64\bin
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 増えた wt-r3b\VSCode-win32-x64\resources
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 増えた wt-r3b\VSCode-win32-x64\Shuko.VisualElementsManifest.xml
+  builtin-l10n.test.mjs: [guard] 本物の作業場所が変わった（4か所）
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 変わった tmp
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 消えた tmp\electron-download-hy1dRc
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 消えた tmp\electron-download-YR0dVG
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 消えた tmp\electron-download-YR0dVG\SHASUMS256.txt
+  c1-check-json.test.mjs: [guard] 本物の作業場所が変わった（9か所）
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 変わった tmp
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 増えた tmp\20261016-73536-19ww74m.a60a.dll
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 増えた tmp\20261016-73536-1j7ox0f.phv3.dll
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 増えた tmp\20261016-73536-1jt6qrc.2214.dll
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 増えた tmp\20261016-73536-53ixnt.pvio.dll
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 増えた tmp\20261016-73536-95j3pj.ydab.dll
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 増えた tmp\20261016-73536-kl52jf.4zdm7.exe
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 増えた tmp\20261016-73536-u7ey8c.vchac.dll
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 消えた tmp\20261016-73536-12uxa23.1scq.dll
+  c1-mutation.test.mjs: c1-mutation: 壊さない写しは c1-unit.test.mjs が全部通る(対照)
+  c1-mutation.test.mjs: [guard] 本物の作業場所が変わった（291か所）
+      C:\b: 変わった .
       e:\develop\self\Team\projects\ai-editor\tmp\b: 変わった .
-      e:\develop\self\Team\projects\ai-editor\tmp\b: 増えた audit
-      e:\develop\self\Team\projects\ai-editor\tmp\b: 増えた audit\.p0-run-root
-      e:\develop\self\Team\projects\ai-editor\tmp\b: 増えた audit\p5r2-netaudit
-      e:\develop\self\Team\projects\ai-editor\tmp\b: 増えた audit\p5r2-netaudit\ext
-      e:\develop\self\Team\projects\ai-editor\tmp\b: 増えた audit\p5r2-netaudit\user
-      e:\develop\self\Team\projects\ai-editor\tmp\b: 増えた netlog
-      e:\develop\self\Team\projects\ai-editor\tmp\b: 増えた netlog\p5r2-20261116-131710.netlog.json
-      e:\develop\self\Team\projects\ai-editor\tmp\b: 増えた netlog\p5r2-20261116-131710.node-stderr.txt
-      e:\develop\self\Team\projects\ai-editor\tmp\b: 増えた netlog\p5r2-20261116-131710.node-stdout.txt
-  c2-mutation.test.mjs: [guard] 本物の作業場所が変わった（11か所）
       e:\develop\self\Team\projects\ai-editor\tmp\b: 変わった audit
-      e:\develop\self\Team\projects\ai-editor\tmp\b: 増えた audit\p5r2-ledger-netaudit
-      e:\develop\self\Team\projects\ai-editor\tmp\b: 増えた audit\p5r2-ledger-netaudit\ext
-      e:\develop\self\Team\projects\ai-editor\tmp\b: 増えた audit\p5r2-ledger-netaudit\user
-      e:\develop\self\Team\projects\ai-editor\tmp\b: 変わった netlog
-      e:\develop\self\Team\projects\ai-editor\tmp\b: 消えた audit\p5r2-netaudit
-      e:\develop\self\Team\projects\ai-editor\tmp\b: 消えた audit\p5r2-netaudit\ext
-      e:\develop\self\Team\projects\ai-editor\tmp\b: 消えた audit\p5r2-netaudit\user
-      e:\develop\self\Team\projects\ai-editor\tmp\b: 消えた netlog\p5r2-20261116-131710.netlog.json
-      e:\develop\self\Team\projects\ai-editor\tmp\b: 消えた netlog\p5r2-20261116-131710.node-stderr.txt
-  c2-unit.test.mjs: [guard] 本物の作業場所が変わった（6か所）
-      e:\develop\self\Team\projects\ai-editor\tmp\b: 変わった audit\p5r2-ledger-netaudit\ext
-      e:\develop\self\Team\projects\ai-editor\tmp\b: 変わった audit\p5r2-ledger-netaudit\user
-      e:\develop\self\Team\projects\ai-editor\tmp\b: 変わった netlog
-      e:\develop\self\Team\projects\ai-editor\tmp\b: 増えた netlog\p5r2-ledger-20261116-132741.netlog.json
-      e:\develop\self\Team\projects\ai-editor\tmp\b: 増えた netlog\p5r2-ledger-20261116-132741.node-stderr.txt
-      e:\develop\self\Team\projects\ai-editor\tmp\b: 増えた netlog\p5r2-ledger-20261116-132741.node-stdout.txt
-  c2-worktree.test.mjs: [guard] 本物の作業場所が変わった（2か所）
-      e:\develop\self\Team\projects\ai-editor\tmp\b: 変わった netlog\p5r2-ledger-20261116-132741.node-stderr.txt
-      e:\develop\self\Team\projects\ai-editor\tmp\b: 変わった netlog\p5r2-ledger-20261116-132741.node-stdout.txt
-  c3-check-json.test.mjs: [guard] 本物の作業場所が変わった（1か所）
-      e:\develop\self\Team\projects\ai-editor\tmp\b: 変わった netlog\p5r2-ledger-20261116-132741.node-stderr.txt
-  c3-mutation.test.mjs: [guard] 本物の作業場所が変わった（1か所）
-      e:\develop\self\Team\projects\ai-editor\tmp\b: 変わった netlog\p5r2-ledger-20261116-132741.node-stderr.txt
-  c6-mutation.test.mjs: [guard] 本物の作業場所が変わった（8か所）
-      e:\develop\self\Team\projects\ai-editor\tmp\b: 変わった audit
-      e:\develop\self\Team\projects\ai-editor\tmp\b: 変わった netlog
-      e:\develop\self\Team\projects\ai-editor\tmp\b: 消えた audit\p5r2-ledger-netaudit
-      e:\develop\self\Team\projects\ai-editor\tmp\b: 消えた audit\p5r2-ledger-netaudit\ext
-      e:\develop\self\Team\projects\ai-editor\tmp\b: 消えた audit\p5r2-ledger-netaudit\user
-      e:\develop\self\Team\projects\ai-editor\tmp\b: 消えた netlog\p5r2-ledger-20261116-132741.netlog.json
-      e:\develop\self\Team\projects\ai-editor\tmp\b: 消えた netlog\p5r2-ledger-20261116-132741.node-stderr.txt
-      e:\develop\self\Team\projects\ai-editor\tmp\b: 消えた netlog\p5r2-ledger-20261116-132741.node-stdout.txt
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 変わった cache\localappdata\ms-playwright
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 変わった cache\npm-cache\_logs
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 変わった cache\pnpm-cache\lockfile-verified.jsonl
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 変わった cache\pnpm-store\v11
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 変わった dist
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 増えた dist\1.146.0-p5-c-all-r3b.zip
+      e:\develop\self\Team\projects\ai-editor\tmp\b: 増えた dist\1.146.0-p5-c-all-r3c.zip

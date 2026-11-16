@@ -2,7 +2,7 @@
   "id": "C-4-notebook",
   "stage": "C",
   "order": 340,
-  "enabled": false,
+  "enabled": true,
   "intent": "ノートブック（エディタ・セルの実行・カーネル・出力の描画）、対話ウィンドウ、REPL を消す。拡張 API の vscode.notebooks・workspace.notebookDocuments などは何もしない実装にして残す。拡張 API の型と変換・検索・一括編集・コメントが使うノートブックの型とモデル（contrib/notebook/common）は残す",
   "after": ["A-4-notebook-extensions", "B-4-outline-view", "C-1-ai", "C-2-debug"],
   "delete": [

@@ -231,6 +231,56 @@ edits.patch は109ファイル、750行の追加、5417行の削除になった�
   - ほかの名前の増減、残る名前の中身の変化、ほかの節の変化は、今までどおり止める。
   - C-1 を当ててロックファイルを作り直すと、`--lockfile-check` は `ok`（`changedSections: []`、`removedPatches: ["foundry-local-sdk"]`）。
 
+## product.json から外したキーの読み手（2026-11-16、7回目）
+
+段階 C の版 `1.146.0-p5-c-all` の関門で、ワークベンチが立ち上がらず、CLI の `--install-extension` も落ちた（`records/take-in/1.146.0-p5-c-all/gate-C-1-ai.md`）。`productRemove` で外した `defaultChatAgent`・`builtInExtensionsEnabledWithAutoUpdates` を、残る本家のコードが `?.` なしで読んでいたため。裁定「product.json の AI のキーは消す」のまま、読む側を直した（`docs/user-decisions.md` の「段階 C の版の関門で出た点」）。
+
+`productRemove` の6つのキーの読み手を、21単位を当てた木（`src/` 全部と `build/`・`extensions/`・`cli/`。`node_modules` を除く）で全部探した。
+
+| キー | 読み手 | 扱い |
+|---|---|---|
+| `defaultChatAgent` | `services/accounts/browser/defaultAccount.ts`（`toDefaultAccountConfig` の2か所） | 直した。キーが無ければ空の設定（ID・URL は空の文字列、配列は空）にする。既定のアカウントの提供者（`DefaultAccountProvider`）は作らず、`DefaultAccountService` の待ち（`initBarrier`）を最初に開く（開かないと `getDefaultAccount()` などが待ち続ける）。アカウントは常に「無い」になる |
+| 同 | `platform/extensionManagement/common/extensionGalleryService.ts`（並べ替えの1か所、`deprecated` に足す1か所） | 直した。キーが無ければ並べ替えをせず、`deprecated` にも足さない |
+| 同 | `platform/extensionManagement/common/abstractExtensionManagementService.ts`（拡張のパックの外し方）、`workbench/contrib/extensions/browser/extensionsWorkbenchService.ts`（同じ） | 直した。キーが無ければ、ふつうの拡張と同じに扱う |
+| 同 | `configurationRegistry.ts`・`chatEntitlementService.ts`・`extensionsActions.ts`・`extensionEnablementService.ts`・`inlineCompletionsUnification.ts`・`inlineCompletionsModel.ts`・`completionsEnablement.ts`・`scmInput.ts`・`githubService.ts`（2つ） | 直さない。三項・`if`・`?.` で無いときを扱っている |
+| `builtInExtensionsEnabledWithAutoUpdates` | `extensionsScannerService.ts`（`for...of`）、`node/extensionManagementService.ts`・`extensionManagementCLI.ts`（`.some`） | 直した。無ければ空の配列と同じにする（`?? []`・`?.some`） |
+| 同 | `extensionsWorkbenchService.ts`（2か所）・`userDataSync/common/extensionsSync.ts` | 直さない。`?.` で読んでいる |
+| `trustedExtensionAuthAccess` | `authenticationAccessService.ts`・`authenticationUsageService.ts` | 直さない。`Array.isArray`・`typeof`・`?.` で見ている。型も省略できる |
+| `sessionsWindowAllowedExtensions` | `extensionManifestPropertiesService.ts` | 直さない。`new ExtensionIdentifierSet(undefined)` は空の集まり |
+| `voiceWsUrl` | `server/node/webClientServer.ts` | 直さない。値をそのまま渡すだけ |
+| `agentsTelemetryAppName` | `localProcessExtensionHost.ts` | 直さない。`\|\|` の左にあるだけ |
+
+テストのファイル（`extensionsScannerService.test.ts`・`extensionEnablementService.test.ts`・`extensionsActions.test.ts` など）は、値を自分で置くか `!` で読む。直さない。`build/vite`・`build/rspack` の開発用の HTML に値が書いてあるが、ビルドに使わない。
+
+型も直した。`base/common/product.ts` の `IProductConfiguration` で、`builtInExtensionsEnabledWithAutoUpdates` と `defaultChatAgent` を省略できる型（`?:`）にした。本家では省略できない型だったので、`?.` なしで読んでも型検査が通っていた。省略できる型にしておけば、本家が新しい読み手を足したとき、取り込みの型検査で止まる。
+
+## 消した部品の受け手（2026-11-16、8回目。r3）
+
+r2 の版（`1.146.0-p5-c-all-r2`）の関門で、ワークベンチが動いて初めて見える誤りが3種出た（`records/take-in/1.146.0-p5-c-all-r2/gate-C-1-ai.md`）。どれも、C-1 が消した部品が提供していたもの（サービス・設定・コマンド）を、残る部品が使っていた。判断は `docs/user-decisions.md` の「段階 C の版 r2 の関門で出た点」。同じ種類の残りも探して直した。
+
+| 種類 | 残る使い手 | 扱い |
+|---|---|---|
+| サービス `ITerminalChatService` | `contrib/terminal/browser/terminalTabbedView.ts`・`terminalTabsChatEntry.ts`（ターミナルのタブ）。ID は `terminal/browser/terminal.ts` に残り、実装の登録は消した `terminalContrib/chat` にあった | 何もしない `NullTerminalChatService` を `terminal/browser/terminal.contribution.ts` に置いて登録する。道具のセッションに結びついたターミナルは無いので、隠れたチャットのターミナルも無い |
+| サービス `IAgentNetworkFilterService`（r2 では未発見。統合ブラウザを開くと出るはず） | `contrib/browserView/common/browserView.ts`・`electron-browser/features/browserEditorErrorFeatures.ts`。ID と本家の実装は `platform/networkFilter` に残り、ワークベンチでの登録は消した `chat.shared.contribution.ts` にあった（main は `app.ts` で別に登録） | 本家の実装 `AgentNetworkFilterService` を `browserView/electron-browser/browserView.contribution.ts` で登録する。設定（`chat.agent.networkFilter` など）は chat とともに消えたので、フィルターは切れていて、すべての URI を通す |
+| 設定 `search.searchView.semanticSearchBehavior`・`keywordSuggestions` | `contrib/search/browser/searchView.ts` の3か所（`getValue('search').searchView.…`） | `?.` で読む。型 `ISearchConfigurationProperties`（`services/search/common/search.ts`）の `searchView` を省略できる型にし、型検査で見張る |
+| コマンド `_chat.editSessions.accept` | 組み込みの git の拡張（`extensions/git/src/repository.ts` の `add`・`commit`） | 何もしないコマンドとして残す。B-1 の `_aiEdits.*` と同じファイル（`aiEditTelemetryService.ts`）の末尾で登録する |
+| コマンド `_manageTrustedMCPServersForAccount`（r3 の後に見つけた。r3c で直した） | アカウントのメニュー（`browser/parts/globalCompositeBar.ts` の2か所）と「アカウントの管理」（`contrib/authentication/browser/actions/manageAccountsAction.ts`）の「Manage Trusted MCP Servers」。コマンドは C-1 が消した `manageTrustedMcpServersForAccountAction.ts` にあった | 項目を消す（MCP の画面の一部なので、何もしないコマンドで残すより消す方が合う）。認証の提供者が `authorizationServers` を持つときと、動的な認証の提供者（MCP の OAuth）のときに出る項目だった |
+
+探した範囲と、直さなかったもの（21単位の木の `src/vs` と `extensions/`。テストと `vscode-api-tests` などのテスト用の拡張を除く）:
+
+- サービス: C-1 が消したファイルの `registerSingleton` の ID（Agents の窓の分を含めて数百。`C:\b\wt\1.146.0` の消す前の木で拾った）のうち、ID の定義が残るファイルにあるものを探した。`ITerminalChatService`・`IAgentNetworkFilterService` のほかは、`ICopilotHomeService`・`IAgentEditorCommentsBridge`・`ISandboxHelperService`・`IWorkspaceFolderLabelService`・`IEditSessionIdentityService`・`IGitHubCredentialBroker` が残る場所で登録されている。`ITerminalSandboxService` はワークベンチで注入する所が無い（main は `NullTerminalSandboxService`）。`IDiffEditorOptionsService` は登録が Agents の窓だけだったが、ワークベンチで注入する所が無い。ID の定義ごと消えたサービスは、残る所が使えば型検査で止まる。
+- コマンド: 残るコードと組み込みの拡張が呼ぶ・メニューに置くチャットの名のコマンドは、上の1つのほかは次のとおり。`viewHiddenChatTerminals` のほかは直さない。
+  - `workbench.action.chat.open`（`helpActions.ts` の「Ask @vscode」、`editorGroupWatermark.ts` の「Open Chat」）: 条件が `chatSetupHidden == false` で、`NullChatEntitlementService` が `chatSetupHidden` を真にするので出ない
+  - `workbench.action.chat.triggerSetup`（`onboardingTryoutService.ts`）: AI の試しは `sentiment.hidden` で先に隠れる
+  - `workbench.action.terminal.chat.viewHiddenChatTerminals`（`terminalTabsChatEntry.ts`）: 隠れたターミナルが0なので入口は出ないが、定義が消えたので、何もしないコマンドとして `terminal.contribution.ts` に残した（万一呼ばれても「command not found」にしないため。r3b で足した）
+  - `vscode.editorChat.start`（`typescript-language-features` の AI の直し）: `github.copilot-chat` が動いているときだけ出す
+  - `github.copilot.nes.*`（`renameSymbolProcessor.ts`）: Copilot の次の編集の候補の中だけ
+  - `inlineChat.start`（`codeActionController.ts`・`emptyTextEditorHint.ts`）: id を比べるだけ。または前の直しで出さない
+  - `workbench.action.unifiedQuickAccess`（`browser/actions/quickAccessActions.ts` 187行）: 消えた設定（統合の Agents バー）が真のときだけ呼び、`try/catch` でふつうのクイックアクセスに戻る。何もしないコマンドで残すと、戻らずに何も開かなくなるので残さない
+  - `terminal/common/terminal.ts` のシェルに渡さないコマンドの一覧の名前と、`terminalContribExports.ts` の enum: 文字列があるだけで、呼ぶ所が無い
+- 設定: 残るコードが消えた設定を読む所（`chat.*`・`mcp.*`・`chat.tools.terminal.*`・`chat.agent.sandbox.*`・`accessibility.voice.*` など）は、`?? 既定値`・`=== true`・`!値` などで読み、無いと `undefined`（切れている）になる。設定の塊を `.` でたどって落ちるのは、`search.searchView` だけだった。
+- 文脈キー: 残る `when` が使うチャットの文脈キーは `chatSetupHidden`・`chatSetupDisabledInWorkspace` だけ（`NullChatEntitlementService` が値を置く）。組み込みの拡張の `package.json` の `when`・メニュー・`contributes` に、チャットのキーは無い。値の無い文脈キーは偽になるだけで、誤りにならない。
+
 ## 提案中の API の門の照らし合わせ（2026-11-15、6回目）
 
 C-1 が消す拡張ホストのファイルにある `checkProposedApiEnabled`・`isProposedApiEnabled` を、本家 1.146.0 で全部数え、何もしない実装（`extHostRemovedApi.ai.ts`）と突き合わせた。門があるファイルは4つで、`extHostChatAgents2.ts`・`extHostLanguageModels.ts`・`extHostLanguageModelTools.ts`・`extHostMcp.ts`。ほかの消すファイル（`extHostChat{Context,Sessions,Status,Quota,Debug,OutputRenderer,InputNotification,ArtifactIntegrations}.ts`・`extHostCodeMapper.ts`・`extHostAgentEditorComments.ts`・`api/node/extHostMcpNode.ts`）には門が無い。`extHost.api.impl.ts` の `chat`・`lm` の門は、1回目から同じ所に写してある。
