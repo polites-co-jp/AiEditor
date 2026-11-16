@@ -504,3 +504,15 @@
 |---|---|
 | C:\b から tmp\b へ移す作業の写し方 | コマンド（台本を含む）で写す。LLM の機能（Read で読んで Write で書く）で写さない（ユーザーの指示）。写した後は、コマンドで大きさと SHA-256 を照らす |
 | 前に Read・Write で写した `records/phase0/evidence/` の22ファイル（1ファイルは元とバイト単位で違う） | コマンドで写し直す。元の `C:\b\p0` を消すのは、写し直しと照らしが済んでから |
+
+## 記録（2026-11-16、Team の返答で課に求められた点。リーダーの判断）
+
+根拠: `tasks/2026-11-15-move-off-c/permission-response.md` の4節
+
+| 論点 | 扱い |
+|---|---|
+| reflog だけが指す commit（リーダーが1回だけ打つ確かめ） | 2300 個。ほとんどは単位を当てるたびに台本が作る途中の commit（`shuko-apply` の `unit`・`apply` など）で、`removals/` とタグから作り直せる。残す版は `builds/*` と `keep/wt-*` の取り込みで残る。残さない（`tasks/2026-11-16-before-delete-c/brief.md`） |
+| U9: `tmp/b/wt-r2`・`wt-r3`・`wt-r3b`・`wt-r3c`（ずっと使う行 `tmp/b/wt/*` の外） | これからの作業ツリーは `tmp/b/wt/<名前>` の下に作る。外にある4つ（と r4 を外に作ったならそれも）は、関門が済んだら片づけを Team に依頼する（`worktree remove` の名指しの行） |
+| U10: 古い clone の枝のうち取らないもの | `main`（本家の古い main）と、取り込む `builds/*`・`keep/wt-*` 以外は要らない。タグは本家から取り直せる |
+| R22: `take-in.mjs` の `--records-dir` で記録を `records/take-in/` の外へ向けると、判定役が材料を読めない | `--records-dir` を `records/take-in/` の外に向けない決まりにする。台本に、外を指したら止める検査を足す（蒙恬。急がない） |
+| U6: リーダーはフックの対象外なので、リポジトリの直下で `git clean -x` などを打つと `tmp/b`（clone を含む）が消える | リーダーは、リポジトリの直下で `clean`・`checkout`・`reset` を打たない。課の台帳に書いた |
