@@ -20,6 +20,9 @@
 C:/b の形の判定では、フックが判定のときに本物の C:/b の lstat・realpath をする（中身は読まない。判定は有無に依らない）。
 作業ツリーの名前は、実在に頼らない名前（zz-hooktest）にした所がある。
 
+v2-1b（2026-11-17 に当てた段）の大岡越前守の写し直しの2行（bash_exact）と、一覧のファイルの write_paths_deny（3人）は、
+このファイルの後ろの CopyVerifyRealLinesTest・CopyVerifyHookTest が見る（v2-2 で外れる。直し方はその前の注記）。
+
 判定は本物の permissions.json と本物のフックで、tmp/b の偽の木を持つ写しのプロジェクト（git -C tmp/b/vscode の 3c の
 ため）を使う。本物の C:/b・tmp/b・clone では git を走らせない。出典: Team の tasks/2026-11-16-ai-editor-move-off-c-perms/
 perm-tests/test_o_round5.py（FetchLineHookTest）と test_q_round7.py（NamedLinesHookTest）。
@@ -239,6 +242,125 @@ class V22ChecksTest(FetchCase):
         self.blocks(CS, ["pnpm --dir C:/b/wt/p2 run smoketest"])
         self.blocks(OE, ["git -C C:/b/wt/p2 checkout -- pnpm-lock.yaml",
                          "pnpm --dir C:/b/wt/p2 install --lockfile-only --ignore-scripts"])
+
+
+# ---- v2-1b（2026-11-17 に当てた段）: 大岡越前守の写し直し（Team の tasks/2026-11-16-ai-editor-perm-requests-2 の
+# perm-proposal.md 2.1節・4.3節の (D)）。bash_exact の2行と、一覧のファイルを3人（蒙恬・曹参・大岡越前守）の
+# write_paths_deny に足した1行。出典: 同じタスクの perm-tests/test_a_copy_verify.py（HookJudgeTest）。
+# 【v2-2 を当てたときに直す】2行と一覧の deny が外れる。CopyVerifyRealLinesTest は「copy-verify を含む行が無い・
+# 一覧の deny が無い」に、CopyVerifyHookTest.test_two_forms_pass は blocks に変える（止まる側の確かめはそのまま使える）。
+# test_list_file_is_not_writable と test_neighbours_stay_writable は、一覧が3人とも書ける形（write_paths の tasks/ の下）に
+# 直すか外す。v2-3 も同じ。
+
+LIST_FILE = "tasks/2026-11-16-before-delete-c/evidence-copy-list.json"
+COPY_HEAD = f"node scripts/copy-verify.mjs --list {LIST_FILE}"   # 依頼どおりの前方一致の形（当てていない）
+COPY_DRY = f"{COPY_HEAD} --dry-run"
+COPY_RUN = f"{COPY_HEAD} --out tasks/2026-11-16-before-delete-c/copy-verify-run.json"
+
+
+class CopyVerifyRealLinesTest(unittest.TestCase):
+    """本物の permissions.json の、写し直しの行と一覧の deny（フックは通さない）。"""
+
+    def test_copy_verify_lines_are_the_two_exact_lines(self):
+        rows = set()
+        for member in (MT, CS, OE, DR):
+            p = real_permissions(member)
+            for key in ("bash", "bash_exact"):
+                for line in p.get(key, []):
+                    if "copy-verify" in line.lower():
+                        rows.add((member, key, line))
+        self.assertEqual(rows, {(OE, "bash_exact", COPY_DRY), (OE, "bash_exact", COPY_RUN)})
+
+    def test_list_file_is_denied_for_three(self):
+        for member in (MT, CS, OE):
+            with self.subTest(member=member):
+                self.assertIn(LIST_FILE, real_permissions(member).get("write_paths_deny", []))
+        self.assertNotIn(LIST_FILE, real_permissions(DR).get("write_paths_deny", []))
+
+
+class CopyVerifyHookTest(FetchCase):
+    """大岡越前守の2行の判定。決まった2形だけが通り、後ろに足した形・書き方の違う形は止まる。一覧は3人とも書けない。"""
+
+    # 後ろに足した形（2つ目の --list・別の --out・--dry-run の位置の違い・知らない引数）と、依頼どおりの前方一致の形
+    TRAILING = [
+        f"{COPY_HEAD} --list tasks/2026-11-16-before-delete-c/x.json",
+        f"{COPY_HEAD} --dry-run --list tasks/x/y.json",
+        f"{COPY_HEAD} --out tasks/2026-11-16-before-delete-c/brief.md",
+        f"{COPY_HEAD} --dry-run --out tmp/tests/x.json",
+        f"{COPY_HEAD} --out records/x.json",
+        f"{COPY_HEAD} --dry-run --out tasks/2026-11-16-before-delete-c/copy-verify-run.json",
+        f"{COPY_HEAD} --unknown",
+        f"{COPY_DRY} --out tasks/x/y.json",
+        f"{COPY_DRY} --list tasks/x/y.json",
+        f"{COPY_DRY} --dry-run",
+        f"{COPY_RUN} --dry-run",
+        f"{COPY_RUN} --list tasks/x/y.json",
+        f"{COPY_RUN} --out tasks/x/y.json",
+        f"{COPY_RUN} --force",
+        f"node scripts/copy-verify.mjs --dry-run --list {LIST_FILE}",
+        f"node scripts/copy-verify.mjs --out tasks/2026-11-16-before-delete-c/copy-verify-run.json --list {LIST_FILE}",
+        COPY_HEAD,
+        "node scripts/copy-verify.mjs --dry-run",
+        "node scripts/copy-verify.mjs",
+    ]
+    # 書き方の違う形
+    SPELLINGS = [
+        COPY_DRY.replace("tasks/", "./tasks/"),
+        COPY_DRY.replace("tasks/", "TASKS/"),
+        COPY_DRY.replace("scripts/", "./scripts/"),
+        COPY_DRY.replace("scripts/copy-verify.mjs", "scripts\\copy-verify.mjs"),
+        COPY_DRY.replace(LIST_FILE, f'"{LIST_FILE}"'),
+        COPY_DRY.replace(LIST_FILE, f"'{LIST_FILE}'"),
+        COPY_DRY.replace(" --dry-run", "  --dry-run"),
+        COPY_DRY.replace("--list ", "--list="),
+        COPY_RUN.replace("copy-verify-run.json", "copy-verify-run.JSON"),
+        COPY_DRY.replace("node ", "node --require x "),
+        COPY_DRY + "; rm -rf records",
+        COPY_RUN + " > x.json",
+    ]
+
+    def test_two_forms_pass(self):
+        self.passes(OE, [COPY_DRY, COPY_RUN])
+        # フックは断片の前後の空白を落としてから照らす（allowlist.js の断片の分け方）。前後の空白だけの違いは同じ形として通る
+        # （語は増えない）
+        self.passes(OE, [COPY_DRY + " ", " " + COPY_RUN])
+
+    def test_trailing_and_other_spellings_blocked(self):
+        self.blocks(OE, self.TRAILING + self.SPELLINGS)
+
+    def test_other_members_do_not_get_the_lines(self):
+        self.blocks(CS, [COPY_DRY, COPY_RUN])
+        self.blocks(DR, [COPY_DRY, COPY_RUN])
+
+    def test_meng_tian_keeps_scripts_star(self):
+        """蒙恬は前から node scripts/*.mjs を持つ（台本も書ける。残る穴 R1）。v2-1b で変わらない。"""
+        self.passes(MT, [COPY_DRY, f"{COPY_HEAD} --list tasks/x/y.json"])
+
+    def edit(self, member, file_path):
+        return self.ev("Edit", {"file_path": file_path, "old_string": "a", "new_string": "b"}, member)
+
+    def test_list_file_is_not_writable(self):
+        forms = (LIST_FILE, LIST_FILE.upper().replace("TASKS", "tasks"), f"{self.P}\\{LIST_FILE.replace('/', chr(92))}",
+                 f"{self.P_SLASH}/{LIST_FILE}")
+        for member in (MT, CS, OE):
+            for path in forms:
+                with self.subTest(member=member, path=path, tool="Write"):
+                    self.assertBlock(self.write(member, path), "write_paths_deny")
+                if member != OE:  # 大岡越前守の定義に Edit は無い
+                    with self.subTest(member=member, path=path, tool="Edit"):
+                        self.assertBlock(self.edit(member, path), "write_paths_deny")
+
+    def test_neighbours_stay_writable(self):
+        """一覧の隣（大岡越前守の記録・引き継ぎ・写しの結果・.bak）は今までどおり書ける。"""
+        for member, path in (
+            (OE, "tasks/2026-11-16-before-delete-c/copy-verify-ooka.md"),
+            (OE, "tasks/2026-11-16-before-delete-c/evidence-copy-list.json.bak"),
+            (OE, "tasks/2026-11-16-before-delete-c/copy-verify-run.json"),
+            (MT, "tasks/2026-11-16-before-delete-c/handoff-notes-meng-tian.md"),
+            (CS, "tasks/2026-11-16-before-delete-c/handoff-notes-cao-shen.md"),
+        ):
+            with self.subTest(member=member, path=path):
+                self.assertPass(self.write(member, path))
 
 
 if __name__ == "__main__":

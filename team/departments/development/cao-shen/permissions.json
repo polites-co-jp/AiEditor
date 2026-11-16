@@ -36,6 +36,7 @@
   "agents": [],
   "skills": [],
   "write_paths_deny": [
-    "tasks/*/brief.md"
+    "tasks/*/brief.md",
+    "tasks/2026-11-16-before-delete-c/evidence-copy-list.json"
   ]
 }

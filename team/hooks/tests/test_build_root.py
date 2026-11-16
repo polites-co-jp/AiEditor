@@ -28,8 +28,9 @@ MT, CS, OE = "meng-tian", "cao-shen", "ooka-echizen"
 USE = {
     MT: [
         "git -C tmp/b/vscode fetch --tags",
-        "git -C tmp/b/vscode worktree add tmp/b/wt/1.147.0 1.147.0",
-        "git -C tmp/b/vscode worktree remove tmp/b/wt/1.146.0",
+        # v2-1b（2026-11-17）: -C の先からの相対 ../wt/* に直った（v2-1 の tmp/b/wt/… は clone の中を指した）
+        "git -C tmp/b/vscode worktree add ../wt/1.147.0 1.147.0",
+        "git -C tmp/b/vscode worktree remove ../wt/1.146.0",
         "git -C tmp/b/vscode worktree prune",
         "git -C tmp/b/vscode worktree prune -v",                 # prune は前方一致のまま（後ろの語で消える物は増えない。4.5）
         "git -C tmp/b/vscode tag --list",
@@ -131,10 +132,17 @@ class UseCommandsTest(BuildRootCase):
             self.passes(member, commands)
 
     def test_remove_is_exact(self):
-        # worktree remove は bash_exact（後ろに --force・-f を足せない。4.2）
-        self.blocks(MT, ["git -C tmp/b/vscode worktree remove tmp/b/wt/1.146.0 --force",
-                         "git -C tmp/b/vscode worktree remove --force tmp/b/wt/1.146.0",
-                         "git -C tmp/b/vscode worktree remove tmp/b/wt/1.146.0 -f"])
+        # worktree remove は bash_exact（後ろに --force・-f を足せない。4.2）。v2-1b（2026-11-17）で ../wt/* の形に直した
+        # （v2-1 の tmp/b/wt/… の形は行そのものに一致しないので、--force を足しても足さなくても止まり、確かめにならない）
+        self.blocks(MT, ["git -C tmp/b/vscode worktree remove ../wt/1.146.0 --force",
+                         "git -C tmp/b/vscode worktree remove --force ../wt/1.146.0",
+                         "git -C tmp/b/vscode worktree remove ../wt/1.146.0 -f",
+                         "git -C tmp/b/vscode worktree remove -f ../wt/1.146.0"])
+        # 一度だけの行（v2-1b〜v2-2）も完全一致で、後ろ・前に足せない。【v2-3 を当てたときに直す】行が外れるので、
+        # この3形は落ちないが確かめの意味が無くなる。このループを外す（行そのものが止まることは WtR2OutsideRowsTest が見る）
+        for line in ("git -C tmp/b/vscode worktree remove ./tmp/b/wt/c1fix",
+                     "git -C tmp/b/vscode worktree remove ../wt-r2/1.146.0"):
+            self.blocks(MT, [line + " --force", line + " -f", line.replace("remove ", "remove --force ")])
 
 
 class PathFormsTest(BuildRootCase):
@@ -177,18 +185,53 @@ class PathFormsTest(BuildRootCase):
 
 
 class WtR2OutsideRowsTest(BuildRootCase):
-    """tmp/b/wt-r2 は tmp/b/wt/* の外（* は1区切り）。だれも直接の git・pnpm・npx・worktree remove を打てない（R19・U9）。"""
+    """tmp/b/wt-r2 は tmp/b/wt/* の外（* は1区切り）。だれも直接の git・pnpm・npx を打てない（R19・U9）。
+    v2-1b（2026-11-17）から v2-2 までは、蒙恬の一度だけの片づけの行（名指しの worktree remove と、フォルダごとの rm -rf）
+    だけが通る（Team の tasks/2026-11-16-ai-editor-perm-requests-2 の perm-proposal.md 7.1節）。"""
+
+    # 片づけで外す古い作業ツリーのフォルダ（v2-1b〜v2-2 の一度だけの行）
+    OLD_WT_DIRS = ("wt-r2", "wt-r3", "wt-r3b", "wt-r3c")
 
     def test_wt_r2_blocked(self):
         for member, command in (
             (MT, "git -C tmp/b/wt-r2/1.146.0 status"), (MT, "pnpm --dir tmp/b/wt-r2/1.146.0 install"),
-            (MT, "git -C tmp/b/vscode worktree remove tmp/b/wt-r2/1.146.0"),
+            (MT, "git -C tmp/b/vscode worktree remove tmp/b/wt-r2/1.146.0"),   # v2-1 の書き方（一度だけの行は ../wt-r2/…）
             (MT, "git -C tmp/b/vscode worktree add tmp/b/wt-r2/x 1.146.0"),
+            (MT, "git -C tmp/b/vscode worktree add ../wt-r2/x 1.146.0"),      # add は ../wt/* だけ
             (OE, "git -C tmp/b/wt-r2/1.146.0 status"), (OE, "git -C tmp/b/wt-r2/1.146.0 checkout -- pnpm-lock.yaml"),
-            (CS, "pnpm --dir tmp/b/wt-r2/1.146.0 run smoketest"), (MT, "rm -rf tmp/b/wt-r2"),
+            (CS, "pnpm --dir tmp/b/wt-r2/1.146.0 run smoketest"),
+            # v2-1b（2026-11-17）: 「rm -rf tmp/b/wt-r2」は一度だけの片づけで v2-2 まで通るので、test_one_time_cleanup_until_v2_2
+            # へ移した。【v2-3 を当てたときに直す】(MT, "rm -rf tmp/b/wt-r2") をここへ戻す
         ):
             with self.subTest(member=member, command=command):
                 self.assertBlock(self.bash(member, command))
+
+    def test_one_time_cleanup_until_v2_2(self):
+        """一度だけの片づけ（v2-1b〜v2-2）。名指しの remove の5行と、4つのフォルダの rm -rf が蒙恬だけに通る。
+        【v2-3 を当てたときに直す】行が外れるので、passes を blocks に変える（test_one_time_cleanup_variants_blocked は
+        そのまま使える）。"""
+        removes = ["git -C tmp/b/vscode worktree remove ./tmp/b/wt/c1fix"] + [
+            f"git -C tmp/b/vscode worktree remove ../{d}/1.146.0" for d in self.OLD_WT_DIRS]
+        deletes = [f"rm -rf tmp/b/{d}" for d in self.OLD_WT_DIRS] + ["rm -rf tmp/b/wt-r2/1.146.0"]
+        self.passes(MT, removes + deletes)
+        for member in (CS, OE, "di-renjie"):
+            self.blocks(member, removes + deletes)
+
+    def test_one_time_cleanup_variants_blocked(self):
+        """一度だけの行に似た形は、どの段でも止まる。"""
+        self.blocks(MT, [
+            # remove: 似た名前・上る形・広げた形・書き方の違い
+            "git -C tmp/b/vscode worktree remove ../wt-r2/1.146.1", "git -C tmp/b/vscode worktree remove ../wt-r2/x",
+            "git -C tmp/b/vscode worktree remove ../wt-r4/1.146.0", "git -C tmp/b/vscode worktree remove ../wt-r2",
+            "git -C tmp/b/vscode worktree remove ../wt-r2/1.146.0/..", "git -C tmp/b/vscode worktree remove ../wt-r2/../wt/x",
+            "git -C tmp/b/vscode worktree remove ./tmp/b/wt/c1fix2", "git -C tmp/b/vscode worktree remove ./tmp/b/wt/x",
+            "git -C tmp/b/vscode worktree remove tmp/b/wt/c1fix", "git -C tmp/b/vscode worktree remove .\\tmp\\b\\wt\\c1fix",
+            "git -C tmp/b/vscode worktree remove ../WT-R2/1.146.0", "git -C tmp/b/vscode worktree remove ..\\wt-r2\\1.146.0",
+            # rm -rf: 似た名前・祖先・別のフォルダ（tmp/b/wt と、その下の c1fix は消せない）
+            "rm -rf tmp/b/wt-r", "rm -rf tmp/b/wt-r2x", "rm -rf tmp/b/wt-r2x/y", "rm -rf tmp/b/wt-r4", "rm -rf tmp/b/wt",
+            "rm -rf tmp/b/wt/c1fix", "rm -rf tmp/b/vscode", "rm -rf tmp/b/vscode/tmp", "rm -rf tmp/b/wt-r2/..",
+            "rm -rf tmp/b/wt-r2/../wt", "rm -rf ./tmp/b/wt-r2", "rm -rf tmp/b/wt-r*",
+        ])
 
 
 class GitWorkdirGuardTest(BuildRootCase):
@@ -458,8 +501,9 @@ class RealGitShapesTest(BuildRootCase):
                 self.passes(OE, [f"git -C tmp/b/wt/{name} diff"], **self.at(self.p))
         self.assertTrue((b / "wt" / "real-wt" / ".git").is_file())  # 作業ツリーは .git ファイル
         self.passes(MT, ["git -C tmp/b/vscode fetch --tags", "git -C tmp/b/vscode tag --list",
-                         "git -C tmp/b/vscode worktree prune", "git -C tmp/b/vscode worktree remove tmp/b/wt/real-wt"],
+                         "git -C tmp/b/vscode worktree prune", "git -C tmp/b/vscode worktree remove ../wt/real-wt"],
                     **self.at(self.p))
+        # v2-1b（2026-11-17）: 判定だけを見る。git で実際にどれを外すかは test_worktree_effects.py が見る
 
 
 if __name__ == "__main__":

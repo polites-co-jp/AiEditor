@@ -30,7 +30,9 @@
     "git -C tmp/b/wt/* checkout *.*.*",
     "git -C tmp/b/wt/* checkout -- pnpm-lock.yaml",
     "pnpm --dir tmp/b/wt/* install --lockfile-only --ignore-scripts",
-    "node scripts/disk-usage.mjs records=records"
+    "node scripts/disk-usage.mjs records=records",
+    "node scripts/copy-verify.mjs --list tasks/2026-11-16-before-delete-c/evidence-copy-list.json --dry-run",
+    "node scripts/copy-verify.mjs --list tasks/2026-11-16-before-delete-c/evidence-copy-list.json --out tasks/2026-11-16-before-delete-c/copy-verify-run.json"
   ],
   "write_paths": [
     "records/",
@@ -47,6 +49,7 @@
   "agents": [],
   "skills": [],
   "write_paths_deny": [
-    "tasks/*/brief.md"
+    "tasks/*/brief.md",
+    "tasks/2026-11-16-before-delete-c/evidence-copy-list.json"
   ]
 }

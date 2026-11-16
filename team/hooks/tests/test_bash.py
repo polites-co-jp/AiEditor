@@ -35,8 +35,10 @@ class MemberCommandsTest(BuildTreeTestCase):
             "git log --oneline -5",
             "git worktree list",
             "git -C tmp/b/vscode fetch --tags",
-            "git -C tmp/b/vscode worktree add tmp/b/wt/release-1.96",
-            "git -C tmp/b/vscode worktree remove tmp/b/wt/1.96",   # v2-1 から bash_exact（後ろに --force を足せない）
+            # 2026-11-17（v2-1b）: worktree の行は -C の先（tmp/b/vscode）からの相対 ../wt/* に直った（Team の
+            # tasks/2026-11-16-ai-editor-perm-requests-2 の perm-proposal.md 5節）。前の tmp/b/wt/… の2形は BLOCKED へ移した
+            "git -C tmp/b/vscode worktree add ../wt/release-1.96",
+            "git -C tmp/b/vscode worktree remove ../wt/1.96",      # v2-1 から bash_exact（後ろに --force を足せない）
             "git -C tmp/b/vscode worktree prune",
             "git -C tmp/b/vscode tag --list",
             "git -C tmp/b/wt/1.96 status",
@@ -109,6 +111,9 @@ class MemberCommandsTest(BuildTreeTestCase):
     BLOCKED = {
         "meng-tian": [
             "rm -rf tmp/b/wt/x",                          # tmp/b/wt は delete_paths の外
+            # v2-1b（2026-11-17）: v2-1 の形（git が -C の先から読み、clone の中にできる・外す）は止まる
+            "git -C tmp/b/vscode worktree add tmp/b/wt/release-1.96",
+            "git -C tmp/b/vscode worktree remove tmp/b/wt/1.96",
             "git commit -m x",                            # -C tmp/b/wt/* の外では commit できない
             "git push",
             "git -C tmp/b/vscode checkout main",          # checkout は wt/* だけ
@@ -207,6 +212,9 @@ class MemberCommandsTest(BuildTreeTestCase):
             "git -C tmp/b/wt/x format-patch -o C:/Windows/Temp HEAD~1": "format-patch の書き出し",
             "node --check (Remove-Item x)": "括弧",
             "git diff > x.txt": "リダイレクト",
+            # v2-1b（2026-11-17）: v2-1 の worktree の2形は、ほかの検査でなく許可の照合で止まる
+            "git -C tmp/b/vscode worktree add tmp/b/wt/release-1.96": "ホワイトリストに無い",
+            "git -C tmp/b/vscode worktree remove tmp/b/wt/1.96": "ホワイトリストに無い",
         }
         for command, reason in reasons.items():
             with self.subTest(command=command):
@@ -423,8 +431,8 @@ class Stage2RecheckTest(BuildTreeTestCase):
             "git -C tmp/b/vscode fetch --tags",
             "git -C tmp/b/vscode fetch --tags --prune",
             "git -C tmp/b/vscode fetch --tags --update-head-ok",
-            "git -C tmp/b/vscode worktree add tmp/b/wt/x release/1.96",
-            "git -C tmp/b/vscode worktree remove tmp/b/wt/x",
+            "git -C tmp/b/vscode worktree add ../wt/x release/1.96",   # v2-1b（2026-11-17）: tmp/b/wt/x から ../wt/x へ
+            "git -C tmp/b/vscode worktree remove ../wt/x",
             "git -C tmp/b/vscode worktree prune",
             "git -C tmp/b/vscode tag --list",
             "git -C tmp/b/wt/x apply --check patches/p.patch",
@@ -590,9 +598,10 @@ class GitWriteArgsTest(BuildTreeTestCase):
             "git log --oneline --branches -n 3",
             "git show --stat HEAD",
             "git -C tmp/b/vscode fetch --tags --shallow-since=2025-01-01",
-            "git -C tmp/b/vscode worktree add tmp/b/wt/x release/1.96",
-            "git -C tmp/b/vscode worktree add tmp/b/wt/x -b work/x release/1.96",
-            "git -C tmp/b/vscode worktree remove tmp/b/wt/x",
+            # v2-1b（2026-11-17）: tmp/b/wt/x から ../wt/x へ（-C の先からの相対）
+            "git -C tmp/b/vscode worktree add ../wt/x release/1.96",
+            "git -C tmp/b/vscode worktree add ../wt/x -b work/x release/1.96",
+            "git -C tmp/b/vscode worktree remove ../wt/x",
             "git -C tmp/b/vscode worktree prune",
             "git -C tmp/b/vscode tag --list",
             "git -C tmp/b/wt/x status --short --branch",

@@ -6,6 +6,8 @@
 案（2026-11-16。delete_paths・delete_keep をプロジェクト直下からの相対パスでも書けるようにした）:
   E:\\develop\\self\\Team\\tasks\\2026-11-16-ai-editor-move-off-c-perms\\perm-proposal.md
   2回目の改訂（同じ日）: 相対の削除の要素は、直下の下の区切りを3つ以上にした（tmp/b を誤りにする。F5）。
+案（2026-11-16 2通目。e の .. に、git -C の先からの相対で収まる形の例外を足した）:
+  E:\\develop\\self\\Team\\tasks\\2026-11-16-ai-editor-perm-requests-2\\perm-proposal.md
 
 規則（ERROR は終了コード 1。WARN は終了コードに影響しない）:
   a. ERROR JSON として読めない（BOM・NaN・Infinity も読めないとする）。トップレベルがオブジェクトでない。
@@ -24,7 +26,10 @@
      ERROR 区切り（&& || ; | & 改行）、$( ・`・<・>・(・) を含む（allowlist.js が分ける・止めるので一致しない）。
      ERROR * の置き方: ** がある、先頭の語（コマンド名）に * がある、* だけの語がある。
            * は「パスの1区切りの一部」に一致する（/・\\・空白・引用符などを含まず、末尾が . でない）。
-     ERROR .. の区切りを含む語がある（* の外で外へ出る形を許可にしない）。
+     ERROR .. の区切りを含む語がある（* の外で外へ出る形を許可にしない）。ただし、git -C <先> <サブコマンド> の後ろの語で、
+           .. が語の頭にだけ続き、-C の先からの相対として解くと -C の先の最上位の区切り（tmp/ など）の下に収まり、
+           .claude・team・.git にかからないものは許す（git は -C の先へ移ってから後ろのパスを読む。2026-11-16 2通目:
+           git -C tmp/b/vscode worktree add ../wt/*）。-C の先そのもの（-C の値）の .. は今までどおり誤り。
      ERROR 先頭の語が rm（許可＋半角空白の前方一致で、後ろに別のパスを足した形も通る。削除は delete_paths に書く）。
      WARN  中身のある単一引用符 '...' を含む（土台と同じ。ふつうの書き方では一致しない）。
   f. パスの要素（write_paths / write_paths_deny / read_paths）1つ:
@@ -147,6 +152,40 @@ def dir_scoped_issues(entry):
     return issues
 
 
+# e の .. の例外（2026-11-16 2通目）。git は -C の先へ移ってから後ろのパスを読むので、git -C tmp/b/vscode worktree add
+# tmp/b/wt/x は tmp/b/vscode/tmp/b/wt/x に作られる（蒙恬の実地）。正しく効く形は ../wt/x。この形だけを、次の条件で許す。
+#   - 行が git -C <先> <サブコマンド> … の形で、.. を含む語はサブコマンドより後ろ（-C の値そのものではない）
+#   - <先> は相対パスで、英数字と . _ @ + = - と / だけ（* ・. ・.. の区切りを含まない）。サブコマンドは - で始まらない
+#   - 語は相対パス（- ・/ ・\ で始まらず、\ とコロンを含まない）で、.. は語の頭にだけ続く（../wt/* はよく、wt/../x は不可）
+#   - .. の数が <先> の区切りの数より少ない（<先> の最上位の区切りの下に収まる。直下そのものやその外へは出ない）
+#   - 解いた形が .claude・team・.git にかからない
+GIT_C_BASE = re.compile(r"^[A-Za-z0-9_@+=-][A-Za-z0-9._@+=-]*(?:/[A-Za-z0-9._@+=-]+)*$")
+
+
+def git_c_dotdot_ok(words, index):
+    if len(words) < 5 or words[0] != "git" or words[1] != "-C" or index < 4:
+        return False
+    base, sub, word = words[2], words[3], words[index]
+    if sub.startswith("-") or not GIT_C_BASE.match(base):
+        return False
+    base_segs = base.split("/")
+    if any(s in (".", "..") for s in base_segs):
+        return False
+    if word.startswith(("-", "/", "\\")) or "\\" in word or ":" in word:
+        return False
+    segs = word.split("/")
+    lead = 0
+    while lead < len(segs) and segs[lead] == "..":
+        lead += 1
+    rest = segs[lead:]
+    if lead == 0 or not rest or any(s in ("", ".", "..") for s in rest):
+        return False
+    if lead >= len(base_segs):
+        return False
+    resolved = [s.lower() for s in base_segs[: len(base_segs) - lead] + rest]
+    return resolved[0] not in SELF_PROTECTED and ".git" not in resolved
+
+
 def bash_entry_issues(entry, exact=False):
     if entry == "":
         return [(ERROR, "空文字。どのコマンドにも一致しない")]
@@ -176,8 +215,9 @@ def bash_entry_issues(entry, exact=False):
         issues.append((ERROR, "先頭の語（コマンド名）に * がある"))
     if any(w == "*" for w in words):
         issues.append((ERROR, "* だけの語がある（* はパスの1区切りの一部として、/ の後などに置く）"))
-    if any(".." in re.split(r"[\\/]", w) for w in words):
-        issues.append((ERROR, ".. の区切りを含む語がある（外へ出る形を許可にしない）"))
+    if any(".." in re.split(r"[\\/]", w) and not git_c_dotdot_ok(words, i) for i, w in enumerate(words)):
+        issues.append((ERROR, ".. の区切りを含む語がある（外へ出る形を許可にしない。git -C <先> の後ろで、先からの相対として"
+                              "先の最上位の区切りの下に収まる形だけは許す）"))
     if words and words[0] == "rm":
         issues.append((ERROR, "先頭の語が rm。後ろに別のパスを足した形も通る（許可＋半角空白の前方一致）。削除は delete_paths に書く"))
     if not any(level == ERROR for level, _ in issues) and strip_single_quoted(entry) != entry:

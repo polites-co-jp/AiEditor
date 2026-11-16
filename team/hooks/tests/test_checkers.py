@@ -207,6 +207,9 @@ class PermcheckNewKeysTest(unittest.TestCase):
     def test_real_meng_tian_keeps_the_nine_entries(self):
         # 2026-11-16（v2-1）: C:/b の7行を tmp/b に移し、何も無い場所を指していた p2/1.146.0-p1-a1-r3 を外し（U7）、
         # 新しい段階 C の版の3行を足した（U8）。前の名前は test_real_meng_tian_keeps_the_seven_entries（C:/b の7行）
+        # 【v2-1c を当てたときに直す】p5 の前方一致の3行を、r4 を名指しした5行に替えて11行にする。名前を
+        # test_real_meng_tian_keeps_the_eleven_entries に替える（Team の tasks/2026-11-16-ai-editor-perm-requests-2 の
+        # perm-proposal.md 8.2節。v2-2・v2-3 も11行）
         keep = json.loads(self.real("meng-tian"))["delete_keep"]
         expected = ["tmp/b/p2/1.146.0-p2-all", "tmp/b/dist/1.146.0-p2-all.zip", "tmp/b/dist/1.146.0-p1-a1-r3.zip",
                     "tmp/b/smoke/ext/1.146.0-p1-a1-r3", "tmp/b/smoke/ext/1.146.0-p1-a1-r3.marker.json",
@@ -217,9 +220,14 @@ class PermcheckNewKeysTest(unittest.TestCase):
         self.assertFalse([k for k in keep if k.startswith("C:/b")])
 
     def test_real_meng_tian_delete_paths(self):
-        # v2-1 の delete_paths は tmp/b の4行。【v2-2 を当てたときに直す】v2-2 は C:/b の直下の15個を一時に足す
+        # v2-1 の delete_paths は tmp/b の4行。v2-1b（2026-11-17）で、一度だけの片づけの4行（古い作業ツリーのフォルダ）を
+        # 足して8行（Team の tasks/2026-11-16-ai-editor-perm-requests-2 の perm-proposal.md 2.1節）。
+        # 【v2-2 を当てたときに直す】C:/b の直下の15個を一時に足して23行（tmp/b の4行＋一度だけの4行＋C:/b の15行）。
+        # 【v2-3 を当てたときに直す】tmp/b の4行に戻す（ONE_TIME を外す）
         paths = json.loads(self.real("meng-tian"))["delete_paths"]
-        self.assertEqual(sorted(paths), sorted(["tmp/b/p2/", "tmp/b/dist/", "tmp/b/smoke/ext/", "tmp/b/trial-*"]))
+        tmp_b = ["tmp/b/p2/", "tmp/b/dist/", "tmp/b/smoke/ext/", "tmp/b/trial-*"]
+        one_time = ["tmp/b/wt-r2", "tmp/b/wt-r3", "tmp/b/wt-r3b", "tmp/b/wt-r3c"]
+        self.assertEqual(sorted(paths), sorted(tmp_b + one_time))
 
     def test_bad_delete_entries(self):
         for entry in ("", " C:/b/p2/", "C:/", "C:/b/", "C:/b", "C:/b/*", "C:/*/x/", "C:/b*/x/", "b/p2/", "/c/b/p2/",

@@ -200,7 +200,11 @@ class DeleteBlockedTest(DeleteCase):
             "rm -rf tmp/b/trial-",                                 # * は空に一致しない
             "rm -rf tmp/b/trial-/", "rm -rf tmp/b/trial", "rm -rf tmp/b/trialx",
             "rm -rf tmp/b/wt/x", "rm -rf tmp/b/wt", "rm -rf tmp/b/vscode", "rm -rf tmp/b/p1/x", "rm -rf tmp/b/smoke/x",
-            "rm -rf tmp/b/smoke/ext2/x", "rm -rf tmp/b/p2x/y", "rm -rf tmp/b/distx/y", "rm -rf tmp/b/wt-r2/1.146.0",
+            "rm -rf tmp/b/smoke/ext2/x", "rm -rf tmp/b/p2x/y", "rm -rf tmp/b/distx/y",
+            # v2-1b（2026-11-17）: 「rm -rf tmp/b/wt-r2/1.146.0」は一度だけの片づけ（delete_paths の tmp/b/wt-r2。v2-2 まで）で
+            # 通るので外し、似た名前の2形を足した（通る側は test_build_root.WtR2OutsideRowsTest.test_one_time_cleanup_until_v2_2）。
+            # 【v2-3 を当てたときに直す】"rm -rf tmp/b/wt-r2/1.146.0" をここへ戻す
+            "rm -rf tmp/b/wt-r2x/y", "rm -rf tmp/b/wt-r4",
             "rm -rf tmp/b/cache", "rm -rf tmp/b/netlog", "rm -rf C:/Users", "rm -rf E:/develop", "rm -rf tmp/b/local.json",
             "rm -rf docs", "rm -rf scripts/x.mjs", "rm -rf .claude/agents", "rm -rf team", "rm -rf .git",
             "rm -rf tmp/b/p2/x/.git", "rm -rf tmp/b/p2/.git",
@@ -363,7 +367,15 @@ class DeleteKeepTest(DeleteCase):
 class U8KeepTest(DeleteCase):
     """U8（2026-11-16。フェルミの判断で残す側に倒した）: 新しい段階 C の版（p5）を残す版に足した3行
     tmp/b/p2/1.146.0-p5*・tmp/b/dist/1.146.0-p5*・tmp/b/smoke/ext/1.146.0-p5*。v2-1〜v2-3 のどれにもある。
-    出典: Team の tasks/2026-11-16-ai-editor-move-off-c-perms/perm-tests/test_p_round6.py（U8KeepTest）。"""
+    出典: Team の tasks/2026-11-16-ai-editor-move-off-c-perms/perm-tests/test_p_round6.py（U8KeepTest）。
+
+    【v2-1c を当てたときに直す】（Team の tasks/2026-11-16-ai-editor-perm-requests-2 の perm-proposal.md 8.2節）p5 の
+    前方一致の3行が、r4 を名指しした5行（tmp/b/p2/1.146.0-p5-c-all-r4・…-r4-ooka・tmp/b/dist/1.146.0-p5-c-all-r4.zip・
+    tmp/b/smoke/ext/1.146.0-p5r4-1・…-p5r4-1.marker.json）に替わる。test_rows_in_real_permissions は「r4 の5行があり、
+    p5 の3行が無い」に、test_p5_versions_cannot_be_deleted は (1) r4 の5つ（その下・大文字小文字違い・絶対パス・祖先）が
+    消せない、(2) 古い p5 の版（perm-tests/test_e_delete.py の OLD_P5 の25個）が消せる、の2つに分ける。偽の木
+    （hookrun.BUILD_DIRS・BUILD_FILES）に、r4 の5つの名前と古い版の名前（-r3・-r3c・-r3c-ooka・-r3b.zip・p5r3c-* など）を足す。
+    v2-2・v2-3 も同じ（v2-1c の delete_keep を引き継ぐ）。"""
 
     # 2026-11-16 に1階層だけ見た名前（perm-proposal.md の「U8 で足した行」）
     P5_NAMES = {

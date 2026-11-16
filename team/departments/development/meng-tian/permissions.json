@@ -8,7 +8,7 @@
     "git ls-files",
     "git worktree list",
     "git -C tmp/b/vscode fetch --tags",
-    "git -C tmp/b/vscode worktree add tmp/b/wt/*",
+    "git -C tmp/b/vscode worktree add ../wt/*",
     "git -C tmp/b/vscode worktree prune",
     "git -C tmp/b/vscode tag --list",
     "git -C tmp/b/wt/* status",
@@ -46,7 +46,12 @@
     "git -C C:/b/wt/* status"
   ],
   "bash_exact": [
-    "git -C tmp/b/vscode worktree remove tmp/b/wt/*",
+    "git -C tmp/b/vscode worktree remove ../wt/*",
+    "git -C tmp/b/vscode worktree remove ./tmp/b/wt/c1fix",
+    "git -C tmp/b/vscode worktree remove ../wt-r2/1.146.0",
+    "git -C tmp/b/vscode worktree remove ../wt-r3/1.146.0",
+    "git -C tmp/b/vscode worktree remove ../wt-r3b/1.146.0",
+    "git -C tmp/b/vscode worktree remove ../wt-r3c/1.146.0",
     "git -C tmp/b/vscode fetch C:/b/vscode refs/heads/builds/1.146.0-p2-B-1-r2:refs/heads/builds/1.146.0-p2-B-1-r2 refs/heads/builds/1.146.0-p2-B-2-r2:refs/heads/builds/1.146.0-p2-B-2-r2 refs/heads/builds/1.146.0-p2-B-3-r2:refs/heads/builds/1.146.0-p2-B-3-r2 refs/heads/builds/1.146.0-p2-B-4-r2:refs/heads/builds/1.146.0-p2-B-4-r2 refs/heads/builds/1.146.0-p2-B-5-r2:refs/heads/builds/1.146.0-p2-B-5-r2 refs/heads/builds/1.146.0-p2-B-6-r2:refs/heads/builds/1.146.0-p2-B-6-r2 refs/heads/builds/1.146.0-p2-B-7-r2:refs/heads/builds/1.146.0-p2-B-7-r2 refs/heads/builds/1.146.0-p2-all:refs/heads/builds/1.146.0-p2-all",
     "git -C tmp/b/vscode fetch C:/b/wt/1.145.3 HEAD:refs/heads/keep/wt-1.145.3",
     "git -C tmp/b/vscode fetch C:/b/wt/dev-a HEAD:refs/heads/keep/wt-dev-a",
@@ -81,7 +86,8 @@
     "extensions-src/*/test/",
     "scripts/measure.ps1",
     "scripts/netaudit.ps1",
-    "tasks/*/brief.md"
+    "tasks/*/brief.md",
+    "tasks/2026-11-16-before-delete-c/evidence-copy-list.json"
   ],
   "read_paths": [
     "./",
@@ -97,7 +103,11 @@
     "tmp/b/p2/",
     "tmp/b/dist/",
     "tmp/b/smoke/ext/",
-    "tmp/b/trial-*"
+    "tmp/b/trial-*",
+    "tmp/b/wt-r2",
+    "tmp/b/wt-r3",
+    "tmp/b/wt-r3b",
+    "tmp/b/wt-r3c"
   ],
   "delete_keep": [
     "tmp/b/p2/1.146.0-p2-all",
