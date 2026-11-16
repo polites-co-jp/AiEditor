@@ -1,7 +1,2 @@
-copy-verify.test.mjs               tests   44  pass   41  fail   3  skip   0
-TOTAL                              tests   44  pass   41  fail   3  skip   0
-
-Failing:
-  copy-verify.test.mjs: （見張り）途中のフォルダがジャンクションなら、柵の外へ書かない: toRoot の下のジャンクションを通る to は断る(終了コード 2)。柵の外にファイルができない
-  copy-verify.test.mjs: （見張り）元の途中のフォルダがジャンクションで柵の外を指すなら、読まない(終了コード 2)。柵の外のファイルを写し先に写さない
-  copy-verify.test.mjs: （見張り）--out にも柵がある: 元の下・一覧の元や写し先と同じ場所は断る(終了コード 2)。元のファイルを結果の JSON で上書きしない
+copy-verify.test.mjs               tests   52  pass   52  fail   0  skip   0
+TOTAL                              tests   52  pass   52  fail   0  skip   0

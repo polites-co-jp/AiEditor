@@ -4,10 +4,10 @@
 // 背景: ユーザーの裁定（2026-11-16「写し方」）。C:\b から写すのはコマンドで行い、LLM の Read・Write では写さない（Read・Write で写したら、タブが落ちた）。
 // 試しは <リポジトリ>\tmp\tests\ の下だけ（tests/build/helpers.mjs の makeSandbox）。C:\b には触れない。
 //
-// 【落ちる状態でよい検査】名前に「（見張り）」と付けた3件は、大岡越前守の知らせの2点を見張るもの。
-//   台本は今、途中のフォルダのジャンクションを辿って柵の外へ書き、--out には柵が無い。直る（蒙恬）まで、この3件は落ちる。落ちるのは仕様の穴で、テストの誤りではない。
-//   どう直すかは決めない: 台本の側で途中のフォルダを lstat で見て断る、--out を元の下・一覧の元と写し先に置けなくする、などが考えられる。
-//   ここでは「柵の外に書かない」「元を壊さない」という結果だけを見る。
+// 名前に「（見張り）」と付けた件は、大岡越前守の知らせの2点（途中のフォルダのジャンクション・--out に柵が無い）を見張るもの。
+//   最初は台本の穴で落ちていた（2026-11-16）。蒙恬の直し（R4）の後、今は全部通る。以後は、柵を外す退行を捕まえる見張りとして残す。
+//   直し方の形（関数の名前・誤りの文）には頼らず、「柵の外に書かない」「元を壊さない」「終了コード 2」という結果だけを見る。
+//   --out の置き場所の柵（tasks/ と tmp/tests/ の下だけ）は、末尾の「--out の柵」の節が、断るべき6つの場合で見張る。
 // Run: node --test tests/copy-verify.test.mjs
 import test, { before, after } from 'node:test';
 import assert from 'node:assert/strict';
@@ -544,6 +544,107 @@ test('元がシンボリックリンクなら誤り(リンクを写さない)。
   const link = path.join(from, 'link.txt');
   try { fs.symlinkSync(real, link, 'file'); } catch { t.skip('シンボリックリンクを作れない環境'); return; }
   assert.throws(() => validateList(listOf(from, to, [{ from: link, to: path.join(to, 'link.txt') }])), /元がリンク/);
+});
+
+// ===========================================================================
+// --out の柵（tasks/ と tmp/tests/ の下だけ。2026-11-16 の大岡越前守の付記1「直す点」）
+// 断るべき6つの場合は、どれも終了コード 2 で、何も書かない(写し先にも --out にも)。
+// 台本から tasks/・tmp/tests/ の確かめを外すと、1〜3 が落ちる。
+// ===========================================================================
+const TMP = path.join(REPO, 'tmp');
+const uniq = () => `copy-verify-test-out-${process.pid}-${Date.now()}-${++n}.json`;
+/** 断るべき --out で走らせ、終了 2・写し先に何もできない・--out ができないことを見る。cleanup に消す先を渡す(誤って書かれたときのため)。 */
+function expectOutRefused(name, outPath, { cleanup = [outPath], setup } = {}) {
+  const { base, from, to } = mk();
+  const src = write(path.join(from, 'a.txt'), 'source');
+  const ctx = { base, from, to, src };
+  const extra = setup ? setup(ctx) : {};
+  const list = listOf(from, to, [{ from: src, to: path.join(to, 'a.txt') }]);
+  const listFile = writeList(base, list);
+  const listBefore = fs.readFileSync(listFile);
+  const toBefore = snapshot(to);
+  try {
+    const out = typeof outPath === 'function' ? outPath(ctx) : outPath;
+    const r = cli(['--list', listFile, '--out', out]);
+    assert.equal(r.status, 2, `${name}: 断らない(終了 ${r.status})\n${r.stderr}${r.stdout.slice(0, 200)}`);
+    assert.match(r.stderr, /--out/, `${name}: 誤りの文に --out が無い: ${r.stderr}`);
+    assert.deepEqual(snapshot(to), toBefore, `${name}: 写し先に何かできた(写す前に止まるはず)`);
+    assert.ok(!fs.existsSync(path.join(to, 'a.txt')), `${name}: 写した`);
+    assert.ok(Buffer.compare(fs.readFileSync(listFile), listBefore) === 0, `${name}: 一覧のファイルが変わった`);
+    assert.equal(fs.readFileSync(src, 'utf8'), 'source', `${name}: 元が変わった`);
+    return { out, ctx, extra };
+  } finally {
+    for (const c of cleanup.map((x) => (typeof x === 'function' ? x(ctx) : x)).filter(Boolean)) { try { fs.rmSync(c, { force: true }); } catch { /* 無い */ } }
+  }
+}
+
+test('--out の柵 1: tmp/b の下は断る(終了 2。何も書かない)', () => {
+  const out = path.join(TMP, 'b', uniq());
+  expectOutRefused('tmp/b の下', out);
+  assert.ok(!fs.existsSync(out));
+});
+
+test('--out の柵 2: tmp/ の直下は断る(tmp/tests の外)', () => {
+  const out = path.join(TMP, uniq());
+  expectOutRefused('tmp/ の直下', out);
+  assert.ok(!fs.existsSync(out));
+});
+
+test('--out の柵 3: リポジトリの外は断る', () => {
+  const out = path.resolve(REPO, '..', uniq());
+  expectOutRefused('リポジトリの外', out);
+  assert.ok(!fs.existsSync(out));
+});
+
+test('--out の柵 3b: 柵の根そのもの(tasks・tmp/tests)と、リポジトリ直下の別のフォルダも断る', () => {
+  expectOutRefused('tmp/tests そのもの', path.join(TMP, 'tests'), { cleanup: [] });
+  expectOutRefused('tasks そのもの', path.join(REPO, 'tasks'), { cleanup: [] });
+  const out = path.join(REPO, 'scripts', uniq());
+  expectOutRefused('scripts の下', out);
+  assert.ok(!fs.existsSync(out));
+  const out2 = path.join(REPO, 'records', uniq());
+  expectOutRefused('records の下', out2);
+  assert.ok(!fs.existsSync(out2));
+});
+
+test('--out の柵 4: 一覧の写し先と同じ所は断る(写し先が結果の JSON で埋まらない)', () => {
+  expectOutRefused('一覧の写し先と同じ', (c) => path.join(c.to, 'a.txt'), { cleanup: [(c) => path.join(c.to, 'a.txt')] });
+});
+
+test('--out の柵 5: 一覧のファイルと同じ所は断る(一覧が結果の JSON で上書きされない)', () => {
+  const { base, from, to } = mk();
+  const src = write(path.join(from, 'a.txt'), 'source');
+  const listFile = writeList(base, listOf(from, to, [{ from: src, to: path.join(to, 'a.txt') }]));
+  const before = fs.readFileSync(listFile);
+  const r = cli(['--list', listFile, '--out', listFile]);
+  assert.equal(r.status, 2, `断らない(終了 ${r.status})`);
+  assert.match(r.stderr, /--out/);
+  assert.ok(Buffer.compare(fs.readFileSync(listFile), before) === 0, '一覧のファイルが結果の JSON で上書きされた');
+  assert.ok(!fs.existsSync(path.join(to, 'a.txt')), '写した');
+});
+
+test('--out の柵 6: 柵の根から --out の途中にジャンクションがあれば断る(柵の外にファイルができない)。作れない環境では飛ばす', (t) => {
+  const { base } = mk();
+  const outside = path.join(base, 'outside-target');
+  fs.mkdirSync(outside);
+  // sandbox は tmp/tests の下なので、その中のジャンクションは「tmp/tests の根から --out の親までの途中」にある
+  const linkPath = path.join(base, 'jn');
+  const link = junction(outside, linkPath);
+  if (!link) { t.skip('ジャンクションを作れない環境'); return; }
+  try {
+    const out = path.join(linkPath, 'result.json');
+    expectOutRefused('途中にジャンクション', out, { cleanup: [path.join(outside, 'result.json')] });
+    assert.ok(!fs.existsSync(path.join(outside, 'result.json')), 'ジャンクションを辿って書いた');
+  } finally { dropLink(linkPath); }
+});
+
+test('--out の柵(対照): tmp/tests の下の、ふつうの新しい場所なら書ける。親のフォルダも作る', () => {
+  const { base, from, to } = mk();
+  const src = write(path.join(from, 'a.txt'), 'source');
+  const out = path.join(base, 'deep', 'er', 'ok.json');
+  const r = cli(['--list', writeList(base, listOf(from, to, [{ from: src, to: path.join(to, 'a.txt') }])), '--out', out]);
+  assert.equal(r.status, 0, r.stderr);
+  assert.ok(fs.existsSync(out));
 });
 
 test('写し先のファイルがシンボリックリンクなら誤り(リンクの先を上書きしない)。作れない環境では飛ばす', (t) => {
