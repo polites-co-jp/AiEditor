@@ -1,5 +1,2 @@
-C-1-ai: サービス 0・設定 0・コマンド 4
+C-1-ai: サービス 0・設定 0・コマンド 1
   src/vs/workbench/browser/actions/quickAccessActions.ts:187 [command: workbench.action.unifiedQuickAccess] await commandService.executeCommand('workbench.action.unifiedQuickAccess');
-  src/vs/workbench/browser/parts/globalCompositeBar.ts:506 [command: _manageTrustedMCPServersForAccount] run: () => this.commandService.executeCommand('_manageTrustedMCPServersForAccount', { providerId, accountLabel: account.label })
-  src/vs/workbench/browser/parts/globalCompositeBar.ts:569 [command: _manageTrustedMCPServersForAccount] run: () => this.commandService.executeCommand('_manageTrustedMCPServersForAccount', { providerId, accountLabel: account.label })
-  src/vs/workbench/contrib/authentication/browser/actions/manageAccountsAction.ts:114 [command: _manageTrustedMCPServersForAccount] action: () => this.commandService.executeCommand('_manageTrustedMCPServersForAccount', { providerId, accountLabel })

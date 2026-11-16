@@ -1,0 +1,1 @@
+ハンクが合わない: src/vs/workbench/services/chat/common/chatEntitlementService.ts (パッチの 9237 行目の @@ -1647,4 +1647,55 @@ export class ChatEntitlementContext e) 行数が見出しと合わない(残り --1 +0)

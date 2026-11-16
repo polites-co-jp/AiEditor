@@ -527,3 +527,19 @@
 | 写していない5項目（`take-in`・`take-in-trial`・`notion-sync-trial`・`p4-watch`・`tmp`） | 試しの残りなので要らない。`p4-watch\trial\real\responses.json`（GitHub と Open VSX の本物の応答）だけは、コマンドで `tasks/2026-11-16-before-delete-c/kept/` に写して残す |
 | basedpyright・bash-ide の `files.json`（前は Read・Write で写せず、写さない判断にした） | コマンドで写せるようになったので、`records/phase0/evidence/` に写す（写し直しの一覧に足す） |
 | `extensions-src/notion-sync/dev/trial.mts` の既定 `C:\b\notion-sync-trial`、`check-env.ps1` の C: のキャッシュ、`take-in.mjs` の `--records-dir` | 直す（蒙恬。関門の後にまとめる）。消した後に走らせると `C:\b` を作り直すので、`trial.mts` は消す前か直後に直す |
+
+## 裁定（2026-11-16、写し直しを走らせる人）
+
+| 論点 | 裁定 |
+|---|---|
+| 写し直しの台本（`scripts/copy-verify.mjs`）を、`records/` の書き手の大岡越前守が走らせる許可が無い | 大岡越前守に許可を足す（ユーザーの答え「大岡越前守に許可を足す（推奨）」）。Team の開発部への依頼は `tasks/2026-11-16-before-delete-c/permission-requests-2.md`。許可が入るまで C:\b を消す段は待つ |
+
+## 記録（2026-11-16、版 r4 で出た点。リーダーの判断）
+
+根拠: `tasks/2026-11-16-p5-c1-product-keys/handoff-notes-meng-tian.md` の「r4」
+
+| 論点 | 扱い |
+|---|---|
+| C-1 の edits.patch の書式の傷 | `tmp/b/wt/c1fix` で `git format-patch` で丸ごと作り直した（全121区画に `index` の行、空の文脈の行 0、+/- の行は前と同じ）。3方向の当て方が効くことを確かめた。版 `1.146.0-p5-c-all-r4` の木は r3c と同じ |
+| `git -C tmp/b/vscode worktree add tmp/b/wt/<名前>` が `-C` の先からの相対で読まれ、clone の中に入れ子の作業ツリーができた | 許しの書き方を直すよう Team に依頼する（`permission-requests-2.md` の2）。それまで、作業ツリーを作るのは `build.mjs --worktree` に任せ、直接の `worktree add` を打たない |
+| gulp の出力 `tmp/b/wt/VSCode-win32-x64` を `tmp/b/wt/` の下の作業ツリーが共有する | 同時に2つの版をパッケージ化しない |

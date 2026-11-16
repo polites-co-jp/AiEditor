@@ -371,3 +371,115 @@ node scripts/build.mjs 1.146.0 --label 1.146.0-p5-c-all-r3c --worktree tmp/b/wt-
 4. **起動の確かめは3種の誤りの道を通らない**（R3-3 の末尾）。関門のスモークで見てほしい。
 4'. **`tmp\b` の作業ツリーが増えた**: `wt`・`wt-r2`・`wt-r3`・`wt-r3b`・`wt-r3c` の5つが、どれも `node_modules` と gulp の出力を持つ（1つ約 2.5 GB と出力 0.7 GB。build-record の `size`）。E: の空きには余裕があるが、片づけの許可が要る。
 5. **統合ブラウザの網**: `IAgentNetworkFilterService` は、本家で main にも登録があるため網の A では見つからない。「main にあってワークベンチに無い」形は、ほかの単位でも網をすり抜けうる。曹参に伝えたい。
+
+---
+
+# r4（2026-11-16、r3c の関門の後。edits.patch の書式の直し）
+
+- 依頼: リーダーの依頼（C-1 の edits.patch の書式の直しと r4）。関門の記録は `records/take-in/1.146.0-p5-c-all-r3c/gate-C-1-ai.md`、判断は `docs/user-decisions.md` の「段階 C の版 r3c の関門で出た点」
+- 途中で権限の変更が入った（`tasks/2026-11-15-move-off-c/permission-response.md`）。`git -C tmp/b/wt/* format-patch` などが通るようになったので、index の行は台本で計算せず、**作業ツリーで format-patch して作り直す方**を選んだ（git そのものが作るので確か）。作業ツリーは `tmp/b/wt/` の下に作った（r4 は `tmp/b/wt/r4`）。
+- 結果: 完了。edits.patch を format-patch で作り直した（index の行 121/121、空の文脈の行 0、見出しの行数は git が数えた）。3方向の当て方が効くことを確かめた。版 `1.146.0-p5-c-all-r4` を zip まで作り、`p1-launch-check.ps1` は `result: ok`。
+
+## R4-0. 要点
+
+1. `removals/C-1-ai/edits.patch` を、C-1 の edits のコミットを `git -C tmp/b/wt/c1fix format-patch` して丸ごと作り直した。中身（`+` / `-` の行）は前と1行も変えていない（`scripts/patch-compare.mjs` で121区画すべて同じ）。
+2. 書式: 121区画すべてに `index <前>..<後> 100644` の行がある（前は13区画で欠けていた）。ハンクの中の空の行は 0（前は24）。ハンクの見出しの行数は本文と合う。CR は 0。
+3. 3方向: 文脈の行をわざと1つ変えた木に当てると、ふつうの当て方は落ち、`apply --3way` は衝突 0 で当たった（R4-2）。
+4. 版 r4: 21単位すべて `applied: ok`、C-1 の edits は衝突なしで当たった。木の中身は r3c と同じ（`diff --stat 827a712b 7fac30e8` が空）。型検査・package・zip は ok。起動の確かめも ok（ワークベンチの3つのしるし、`Uncaught` 0、7つの VSIX の導入）。
+5. 作業ツリーは新しい置き場所 `tmp/b/wt/r4` を使った（権限の知らせの時点で r4 はまだ作り始めていなかったため）。
+
+## R4-1. edits.patch を作り直した手順
+
+1. 当てるだけの作業ツリーを `build.mjs` で作った。`--to apply` で、21単位を今の edits.patch で当てる（r3c と同じ中身）。
+   ```
+   node scripts/build.mjs 1.146.0 --label c1fix-r4prep --worktree tmp/b/wt/c1fix --to apply --no-branch --take-in-dir tasks/2026-11-16-p5-c1-product-keys/c1fix-r4prep --record tasks/2026-11-16-p5-c1-product-keys/c1fix-r4prep/build-record.json
+   ```
+   `result: ok`。C-1 の ops は `945352129f859ad28ed53ffbf5711f9b5377a79b`、edits は `dc8c21678aa7e3cb0c6929f8e3842e66b82a00f7`（`c1fix-r4prep/checks.json` の `commits`）。
+2. C-1 の edits のコミットを format-patch した。先に試しの場所（`tmp/b/trial-c1fix/`。削除の許可の中）に出して比べ、同じと分かってから本物に書いた。
+   ```
+   git -C tmp/b/wt/c1fix format-patch -1 dc8c21678aa7e3cb0c6929f8e3842e66b82a00f7 --output=E:/develop/self/Team/projects/ai-editor/tmp/b/trial-c1fix/edits.patch
+   git -C tmp/b/wt/c1fix format-patch -1 dc8c21678aa7e3cb0c6929f8e3842e66b82a00f7 --output=E:/develop/self/Team/projects/ai-editor/removals/C-1-ai/edits.patch
+   ```
+   - 件名・作者（`shuko-apply <apply@shuko.invalid>`）・日付（`Sun, 15 Nov 2026 10:50:31 +0900`）・本文は前と同じ（git am がパッチの値をそのまま使うため）。変わったのは先頭の `From <sha>` の行、各区画の `index` の行、空の文脈の行、ハンクの見出しの関数の文字、変更の一覧の桁揃え。
+   - 121 files changed、946 insertions、5457 deletions（手で書いていた数と同じ）。区画は121、どれにも `index <前>..<後> 100644` の行がある。ハンクの中の空の行は 0。CR は 0。末尾は `-- ` と `2.54.0.windows.1`。
+3. 前のパッチ（r3c の時点の本文）と新しいパッチを、台本で区画ごとに比べた。
+   ```
+   node scripts/patch-compare.mjs removals/C-1-ai/edits.patch tmp/b/trial-c1fix/edits.patch   （書く前。a = 手で直した前のもの）
+   node scripts/patch-compare.mjs removals/C-1-ai/edits.patch tmp/b/trial-c1fix/edits.patch   （書いた後。a = 作り直したもの）
+   ```
+   | 項目 | 前のパッチ（a、書く前） | 作り直したもの（b） |
+   |---|---|---|
+   | 区画 | 121 | 121。片方にしか無い区画は無い |
+   | `+` / `-` の行の並び | — | 121区画すべてで a と同じ（`bodyDiffs: []`） |
+   | ハンクの見出しの行数と本文の数 | 合う（空の行を文脈と数えれば。`headerIssues: []`） | 合う |
+   | `index` の行が無い区画 | 13（r2〜r3c で手で足した区画: product.ts、extensionManagement の5つ、manageAccountsAction.ts、browserView.contribution.ts、aiEditTelemetryService.ts、extensionsWorkbenchService.ts、terminal.contribution.ts、defaultAccount.ts、search.ts） | 0 |
+   | ハンクの中の空の行（先頭の空白が落ちた文脈の行） | 24 | 0 |
+
+   書いた後にもう一度比べ、a と b がすべて同じ（index の欠け 0、空の行 0）になったことを見た。
+
+## R4-2. 3方向の当て方が効くこと
+
+`tmp/b/wt/c1fix` を C-1 の ops のコミット（edits の前）に戻し、edits.patch の文脈の行を1つ、わざと変えてから当てた。
+
+1. `git -C tmp/b/wt/c1fix checkout 945352129f859ad28ed53ffbf5711f9b5377a79b`
+2. `src/vs/base/common/product.ts` 267行（product.ts の区画の1つ目のハンクの、後ろの文脈の行）`readonly msftInternalDomains?: string[];` の後ろに `// trial: …` を足し、`git -C tmp/b/wt/c1fix add src/vs/base/common/product.ts`
+3. `git -C tmp/b/wt/c1fix apply --check E:/…/removals/C-1-ai/edits.patch` → `error: patch failed: src/vs/base/common/product.ts:261`（ふつうの当て方では当たらない）
+4. `git -C tmp/b/wt/c1fix apply --3way E:/…/removals/C-1-ai/edits.patch` → 終了コード 0。120区画が `Applied patch to '<path>' cleanly.`（わざと変えた product.ts を含む）。新しいファイル `extHostRemovedApi.ai.ts` だけは前の blob が無いので `Falling back to direct application...` で当たった（新しいファイルはそれで正しい。status で `A`）。衝突（`U`）は 0
+5. `git -C tmp/b/wt/c1fix diff --cached dc8c21678aa7e3cb0c6929f8e3842e66b82a00f7 --stat` → `src/vs/base/common/product.ts | 2 +-` だけ。3方向で当てた結果は、わざと変えた1行のほかは C-1 の edits のコミットと同じ
+
+→ どの区画も、`index` の行の前の blob が本家の clone にあり、3方向の当て方に使える。`git am -3` はこの道（`apply --3way`）を使う。
+
+`tmp/b/wt/c1fix` は、この試しの状態（わざと変えた1行と、3方向で当てた変更が index に入ったまま）で残した。確かめ専用の作業ツリーで、ビルドには使わない。
+
+## R4-B. 版 1.146.0-p5-c-all-r4
+
+作業ツリーは `tmp/b/wt/r4`（新しい置き場所）。
+
+1. 1回目（prepare から）:
+   ```
+   node scripts/build.mjs 1.146.0 --label 1.146.0-p5-c-all-r4 --worktree tmp/b/wt/r4 --take-in-dir tasks/2026-11-16-p5-c1-product-keys/1.146.0-p5-c-all-r4 --record tasks/2026-11-16-p5-c1-product-keys/1.146.0-p5-c-all-r4/build-record.json
+   ```
+   - prepare ok。apply ok（21単位すべて `applied: ok`、errors 0。警告はいつもの C-2 の1件 `debugChatIntegration.ts が本家に無い` だけ）。
+   - C-1 の edits は `git am -3` で衝突なし（`checks.json` の `conflicts: []`）。edits のコミットは `d26dadac8274e94d34e347c02e355c67e0caa9e1`、HEAD は `7fac30e886f79ebe44e1bac93acd7a86fbbafed8`。
+   - `git -C tmp/b/wt/r4 diff --stat dc8c216 d26dadac` は空。r4 で当たった C-1 の edits の結果は、c1fix で format-patch の元にしたコミットと同じ。
+   - `git -C tmp/b/wt/r4 diff --stat 827a712b 7fac30e8` は空。r4 の木は r3c の木（関門で振る舞いが合格したもの）と1バイトも違わない。
+   - install で止まった。`install.log` 1952〜1957行: `failed to rename staging directory "...\tmp\b\wt\r4\build\node_modules\@azure\cosmos_pacquet-stage_..." to "...\@azure\cosmos": concurrent package import did not settle`（`build/` の postinstall の中の pnpm install。`ERR_PNPM_EXECUTOR_LIFECYCLE_SCRIPT_FAILED`）。pnpm が並べて取り込むときの競り合いで、パスの長さの誤りではない。
+2. 2回目（同じ作業ツリーで install から。何も消していない）:
+   ```
+   node scripts/build.mjs 1.146.0 --label 1.146.0-p5-c-all-r4 --worktree tmp/b/wt/r4 --from install --take-in-dir tasks/2026-11-16-p5-c1-product-keys/1.146.0-p5-c-all-r4 --record tasks/2026-11-16-p5-c1-product-keys/1.146.0-p5-c-all-r4/build-record.json
+   ```
+   - `result: ok`。install 286.5秒、lockfile ok（予想の外の削除・追加 0）、typecheck ok（7.6秒。r2〜r3c も 7〜8.4秒）、package 235.7秒、postprocess ok（product.json の commit が HEAD と合う、残りの拡張 0）、zip ok。
+   - zip: `tmp\b\dist\1.146.0-p5-c-all-r4.zip`、219,116,481 バイト、SHA-256 `e3e524699a9994a6507dfa6896eaefb2582ae3fdf75798186c5411e5f91a2e6e`、2037 項目、先頭のフォルダ `Shuko-win32-x64-1.146.0-p5-c-all-r4`。
+   - 枝 `builds/1.146.0-p5-c-all-r4`（`7fac30e8`）を作った。
+3. 起動の確かめ:
+   ```
+   powershell -NoProfile -ExecutionPolicy Bypass -File scripts/p1-launch-check.ps1 -Zip tmp/b/dist/1.146.0-p5-c-all-r4.zip -Dest tmp/b/p2/1.146.0-p5-c-all-r4 -InstallExtension tmp/b/cache/vsix/detachhead.basedpyright-1.40.2,tmp/b/cache/vsix/ms-vscode.powershell-2025.4.0,tmp/b/cache/vsix/mads-hartmann.bash-ide-vscode-1.43.2,tmp/b/cache/vsix/mechatroner.rainbow-csv-3.24.1,tmp/b/cache/vsix/weixu.wx-vsce-dotenv-0.2.3,tmp/b/cache/vsix/tomoki1207.pdf-1.2.2,tmp/b/cache/vsix/MS-CEINTL.vscode-language-pack-ja-1.131.0 -OutFile tasks/2026-11-16-p5-c1-product-keys/launch-check-p5-c-all-r4.json
+   ```
+   - 終了コード 0、`result: ok`。message `started, stayed alive, the workbench came up, stopped; daily editor data folders unchanged`。
+   - `--version` は `1.146.0` / `7fac30e8…` / `x64`。7つの VSIX はすべて `successfully installed`。
+   - ワークベンチの3つのしるしはすべて true。コンソールの `Uncaught` は 0。普段使いのデータのフォルダは変わっていない。
+
+記録（このフォルダ）: `1.146.0-p5-c-all-r4/build-record.json`・`checks.json`・`lockfile.diff`、`launch-check-p5-c-all-r4.json`、`c1fix-r4prep/build-record.json`・`checks.json`。
+
+## R4-3. 曹参の網に合わせたこと
+
+- edits.patch は、今は丸ごと git format-patch の出力なので、1行ずつ読む読み手と見出しで読む読み手のどちらで読んでも同じ `+` / `-` の行になるはず（空の行が無く、見出しの行数も git が数えた）。
+- `scripts/patch-compare.mjs`（新規。読むだけで何も書かない）: 2つのパッチの区画・本文・見出しの行数・index の行・空の文脈の行を比べて JSON で出す。曹参の網が「どのハンクで合わないか」を出す直しの、照らしの相手に使える。入口は `parsePatch(text)`・`compareParsed(a, b)`。終了コード 0 = 本文が同じ、1 = 違う、2 = 引数の誤り。
+
+- 曹参の網（`tests/patch-shape.mjs`）は、私の許可では `node tests/patch-shape.mjs …` を打てないので走らせていない。中身を読むと、見出しの行数と本文の照らし・空の行の扱い・2つの読み手の照らしを見ていた。`patch-compare.mjs` で同じ点（`headerIssues: []`、空の行 0）を確かめた。網を通すのは曹参か大岡越前守にお願いしたい。
+
+## R4-4. テストの入口（曹参へ）
+
+- `node scripts/patch-compare.mjs removals/C-1-ai/edits.patch <比べる相手>` の終了コードは、本文が同じなら 0。自分自身と比べると `indexLines.aMissing: []`、`blankContextLines.a: 0`、`headerIssues: []` になるはず。
+- `tests/patch-shape.mjs` に `removals/C-1-ai/edits.patch` を渡すと、`problems` と `diffs` が空になるはず。
+- `tests/c1-unit.test.mjs` の静的なテスト2件（r3c の関門で保留になったもの）は、空の文脈の行と index の行が原因だったなら、今は通るはず。私の許可では、c1-unit は175秒を超えて裏に回り、出力を読めないので、結果を見ていない。`tests/c1-round2` は 14 pass / 0 fail。
+
+## R4-5. 未解決の点・残したもの
+
+1. **入れ子の作業ツリーを誤って作った。** 権限の知らせの後、最初に `git -C tmp/b/vscode worktree add tmp/b/wt/c1fix …` と打った。`git -C` の先からの相対パスとして読まれたので、`tmp/b/vscode/tmp/b/wt/c1fix` に作業ツリーができてしまった（clone の中の入れ子。このリポジトリそのものには効いていない）。消していない。許しのある `git -C tmp/b/vscode worktree remove tmp/b/wt/*` を打っても、同じく入れ子の側を指すかどうかが確かでないため。後片付けのしかたをリーダーに決めてほしい（例: 許しの形を `git -C tmp/b/vscode worktree add E:/…/tmp/b/wt/*` のような絶対パスにする、または `worktree remove tmp/b/vscode/tmp/b/wt/c1fix` を一度だけ許す）。本物の `tmp/b/wt/c1fix` は、その後 `build.mjs` で作った（build.mjs は絶対パスを渡す）。
+2. `tmp/b/wt/c1fix` は、3方向の試しの状態（R4-2）のまま残っている。ビルドには使わない。
+3. `tmp/b/trial-c1fix/`（`0001-unit-C-1-ai-edits.patch`、`edits.patch`）が残っている。削除の許可の中。
+4. 前の作業ツリー `tmp/b/wt-r2`・`wt-r3`・`wt-r3b`・`wt-r3c` と、それぞれの展開先が残っている（容量のため、いずれ片付けたい）。
+5. gulp の出力 `tmp/b/wt/VSCode-win32-x64` は、`tmp/b/wt/` の下の作業ツリーみなで同じ場所を使う（build.mjs が作業ツリーの隣に置くため）。今は r4 の中身。`tmp/b/wt/` に作業ツリーを並べて同時に package すると取り合いになる。今のところ実害はない。
+6. 1回目の install の失敗（pnpm の `concurrent package import did not settle`）は、install からやり直すと通った。続けて出るようなら、`build/` の postinstall の並べ方を見直す必要がある。今回は1回だけだった。
+7. docs/ との食い違い: 見つけていない。

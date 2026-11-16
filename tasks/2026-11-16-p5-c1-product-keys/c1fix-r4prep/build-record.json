@@ -1,0 +1,267 @@
+{
+  "label": "c1fix-r4prep",
+  "upstream": {
+    "tag": "1.146.0",
+    "commit": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+  },
+  "units": [
+    {
+      "id": "A-1-copilot-extension",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "A-2-accounts-extensions",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "A-3-debug-extensions",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "A-4-notebook-extensions",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "A-5-remote-extensions",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "A-6-themes",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "A-7-unused-extensions",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "B-1-telemetry",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "B-2-onboarding-experiments-surveys",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "B-3-issue-share",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "B-4-outline-view",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "B-5-theme-switching",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "B-6-online-feeds",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "B-7-terminal-suggest",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "C-1-ai",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "C-2-debug",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "C-3-remote",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "C-4-notebook",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "C-5-extension-gallery",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "C-6-settings-sync",
+      "enabled": true,
+      "applied": "ok"
+    },
+    {
+      "id": "C-7-breadcrumbs-outline",
+      "enabled": true,
+      "applied": "ok"
+    }
+  ],
+  "patches": [
+    {
+      "file": "patches/20-product-configuration-defaults.patch",
+      "applied": "ok"
+    },
+    {
+      "file": "patches/30-proxy-direct-without-settings.patch",
+      "applied": "ok"
+    }
+  ],
+  "lockfileDiff": "tasks/2026-11-16-p5-c1-product-keys/c1fix-r4prep/lockfile.diff",
+  "toolchain": null,
+  "durations": {},
+  "zip": null,
+  "extensionsLockSha256": "6b4c3ceae7d6cb407f62bbcbd57ca50267e998975887884cc325fd26a85cce10",
+  "result": "ok",
+  "stoppedAt": null,
+  "dryRun": false,
+  "startedAt": "2026-11-16T07:20:37.085Z",
+  "finishedAt": "2026-11-16T07:35:32.942Z",
+  "paths": {
+    "buildRoot": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b",
+    "worktree": "e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\wt\\c1fix",
+    "packageDir": "e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\wt\\VSCode-win32-x64",
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-16-p5-c1-product-keys\\c1fix-r4prep\\checks.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\removals",
+    "dist": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\dist",
+    "logs": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\logs\\c1fix-r4prep"
+  },
+  "config": {
+    "path": "C:\\Users\\kou_z\\AppData\\Local\\Shuko\\local.json",
+    "exists": false,
+    "buildRootFrom": "default"
+  },
+  "stepsSelected": [
+    "prepare",
+    "apply"
+  ],
+  "envRemovedForChildren": [
+    "ELECTRON_RUN_AS_NODE",
+    "VSCODE_CODE_CACHE_PATH",
+    "VSCODE_CRASH_REPORTER_PROCESS_TYPE",
+    "VSCODE_CWD",
+    "VSCODE_ESM_ENTRYPOINT",
+    "VSCODE_HANDLES_UNCAUGHT_ERRORS",
+    "VSCODE_IPC_HOOK",
+    "VSCODE_NLS_CONFIG",
+    "VSCODE_PID",
+    "VSCODE_PROCESS_TITLE"
+  ],
+  "envRedirectedForChildren": {
+    "all": {
+      "TEMP": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\tmp",
+      "TMP": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\tmp",
+      "pnpm_config_store_dir": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\pnpm-store",
+      "pnpm_config_cache_dir": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\pnpm-cache",
+      "npm_config_cache": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\npm-cache"
+    },
+    "toolchain": {
+      "TEMP": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\tmp",
+      "TMP": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\tmp",
+      "pnpm_config_store_dir": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\pnpm-store",
+      "pnpm_config_cache_dir": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\pnpm-cache",
+      "npm_config_cache": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\npm-cache",
+      "LOCALAPPDATA": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\localappdata"
+    },
+    "toolchainSteps": [
+      "install",
+      "typecheck",
+      "package"
+    ],
+    "layout": {
+      "root": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b",
+      "temp": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\tmp",
+      "localAppData": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\localappdata",
+      "pnpmStore": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\pnpm-store",
+      "pnpmCache": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\pnpm-cache",
+      "npmCache": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\npm-cache",
+      "electronCache": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\localappdata\\electron\\Cache",
+      "nodeGypCache": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\localappdata\\node-gyp\\Cache"
+    }
+  },
+  "sourceVersion": null,
+  "branch": null,
+  "steps": [
+    {
+      "name": "prepare",
+      "status": "ok",
+      "startedAt": "2026-11-16T07:20:37.093Z",
+      "command": "C:\\Program Files\\nodejs\\node.exe e:\\develop\\self\\Team\\projects\\ai-editor\\scripts\\prepare.mjs --tag 1.146.0 --build-root E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b --worktree e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\wt\\c1fix --out e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\wt\\c1fix.prepare.json",
+      "cwd": "e:\\develop\\self\\Team\\projects\\ai-editor",
+      "log": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\logs\\c1fix-r4prep\\prepare.log",
+      "seconds": 659.989,
+      "exitCode": 0,
+      "prepare": {
+        "result": "ok",
+        "worktree": "e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\wt\\c1fix",
+        "tagCommit": "69047191fc427f2f92828279aae1d90d8eeda7ab",
+        "worktreeHead": "69047191fc427f2f92828279aae1d90d8eeda7ab",
+        "worktreeClean": true,
+        "disk": {
+          "cloneGitDir": {
+            "bytes": 2003784695,
+            "gb": 1.87,
+            "files": 274
+          },
+          "cloneCheckout": {
+            "bytes": 728231874,
+            "gb": 0.68,
+            "files": 42455
+          },
+          "worktree": {
+            "bytes": 359848892,
+            "gb": 0.34,
+            "files": 21005
+          },
+          "countedSeconds": 11.904
+        },
+        "record": "e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\wt\\c1fix.prepare.json"
+      }
+    },
+    {
+      "name": "apply",
+      "status": "ok",
+      "startedAt": "2026-11-16T07:31:37.086Z",
+      "command": "C:\\Program Files\\nodejs\\node.exe e:\\develop\\self\\Team\\projects\\ai-editor\\scripts\\apply.mjs e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\wt\\c1fix --label c1fix-r4prep --checks-out e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-16-p5-c1-product-keys\\c1fix-r4prep\\checks.json --removals e:\\develop\\self\\Team\\projects\\ai-editor\\removals --keep e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json --build-root E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b --config C:\\Users\\kou_z\\AppData\\Local\\Shuko\\local.json",
+      "cwd": "e:\\develop\\self\\Team\\projects\\ai-editor",
+      "log": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\logs\\c1fix-r4prep\\apply.log",
+      "seconds": 233.145,
+      "exitCode": 0,
+      "checksResult": "ok"
+    }
+  ],
+  "warnings": [],
+  "applyResult": "ok",
+  "unitsFrom": {
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\tasks\\2026-11-16-p5-c1-product-keys\\c1fix-r4prep\\checks.json",
+    "applyRan": true
+  },
+  "disk": {
+    "worktree": {
+      "bytes": 150343036,
+      "gb": 0.14,
+      "files": 9057
+    },
+    "package": {
+      "bytes": 664189142,
+      "gb": 0.62,
+      "files": 1632
+    },
+    "countedSeconds": 2.352
+  }
+}
