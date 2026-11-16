@@ -1,0 +1,165 @@
+{
+    "checkedAt":  "2026-11-16T20:16:47.5963977+09:00",
+    "zip":  "e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\dist\\1.146.0-p5-c-all-r4.zip",
+    "root":  "",
+    "dest":  "e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p1\\1.146.0-p5-c-all-r4-install-check",
+    "unpack":  {
+                   "done":  true,
+                   "seconds":  6.2
+               },
+    "editor":  {
+                   "root":  "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p1\\1.146.0-p5-c-all-r4-install-check\\Shuko-win32-x64-1.146.0-p5-c-all-r4",
+                   "exe":  "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p1\\1.146.0-p5-c-all-r4-install-check\\Shuko-win32-x64-1.146.0-p5-c-all-r4\\Shuko.exe",
+                   "cli":  "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p1\\1.146.0-p5-c-all-r4-install-check\\Shuko-win32-x64-1.146.0-p5-c-all-r4\\bin\\shuko.cmd",
+                   "productJson":  "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p1\\1.146.0-p5-c-all-r4-install-check\\Shuko-win32-x64-1.146.0-p5-c-all-r4\\resources\\app\\product.json",
+                   "appDirRelative":  "resources\\app",
+                   "nameShort":  "Shuko",
+                   "nameLong":  "Shuko",
+                   "applicationName":  "shuko",
+                   "dataFolderName":  ".shuko",
+                   "version":  "1.146.0",
+                   "commit":  "7fac30e886f79ebe44e1bac93acd7a86fbbafed8",
+                   "portableOk":  true
+               },
+    "cliVersion":  {
+                       "exitCode":  0,
+                       "output":  [
+                                      "1.146.0",
+                                      "7fac30e886f79ebe44e1bac93acd7a86fbbafed8",
+                                      "x64"
+                                  ]
+                   },
+    "installs":  [
+
+                 ],
+    "portable":  {
+                     "path":  "e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p1\\1.146.0-p5-c-all-r4-install-check\\portable",
+                     "entries":  [
+                                     "extensions\\",
+                                     "shared-data\\",
+                                     "user-data\\",
+                                     "argv.json"
+                                 ],
+                     "userData":  "e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p1\\1.146.0-p5-c-all-r4-install-check\\portable\\user-data",
+                     "userSettingsDir":  "e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p1\\1.146.0-p5-c-all-r4-install-check\\portable\\user-data\\User",
+                     "extensions":  "e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p1\\1.146.0-p5-c-all-r4-install-check\\portable\\extensions",
+                     "argvJson":  "e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p1\\1.146.0-p5-c-all-r4-install-check\\portable\\argv.json"
+                 },
+    "started":  {
+                    "pid":  82448,
+                    "aliveAfterCheck":  true,
+                    "exitCode":  null,
+                    "checkSeconds":  10,
+                    "smokeSeconds":  15,
+                    "tree":  "Shuko.exe x7",
+                    "stoppedProcesses":  7
+                },
+    "workbench":  {
+                      "logsFolder":  "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p1\\1.146.0-p5-c-all-r4-install-check\\portable\\user-data\\logs\\20261116T201655",
+                      "rendererLog":  {
+                                          "path":  "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p1\\1.146.0-p5-c-all-r4-install-check\\portable\\user-data\\logs\\20261116T201655\\window1\\renderer.log",
+                                          "exists":  true,
+                                          "bytes":  834
+                                      },
+                      "exthostLog":  {
+                                         "path":  "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p1\\1.146.0-p5-c-all-r4-install-check\\portable\\user-data\\logs\\20261116T201655\\window1\\exthost\\exthost.log",
+                                         "exists":  true,
+                                         "bytes":  987
+                                     },
+                      "chromiumLog":  {
+                                          "path":  "e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p1\\1.146.0-p5-c-all-r4-install-check\\chromium-20261116T201655.log",
+                                          "exists":  true,
+                                          "bytes":  2304
+                                      },
+                      "markers":  {
+                                      "rendererStartedExtHost":  true,
+                                      "extHostStarted":  true,
+                                      "eagerExtensionsActivated":  true
+                                  },
+                      "missing":  [
+
+                                  ],
+                      "consoleUncaught":  {
+                                              "workbenchCount":  0,
+                                              "othersCount":  0,
+                                              "workbench":  [
+
+                                                            ],
+                                              "others":  [
+
+                                                         ]
+                                          },
+                      "ready":  true
+                  },
+    "dailyData":  {
+                      "before":  [
+                                     {
+                                         "path":  "C:\\Users\\kou_z\\AppData\\Roaming\\Code",
+                                         "exists":  false,
+                                         "lastWriteTime":  null
+                                     },
+                                     {
+                                         "path":  "C:\\Users\\kou_z\\AppData\\Roaming\\Code - OSS",
+                                         "exists":  false,
+                                         "lastWriteTime":  null
+                                     },
+                                     {
+                                         "path":  "C:\\Users\\kou_z\\.vscode",
+                                         "exists":  false,
+                                         "lastWriteTime":  null
+                                     },
+                                     {
+                                         "path":  "C:\\Users\\kou_z\\.vscode-oss",
+                                         "exists":  false,
+                                         "lastWriteTime":  null
+                                     },
+                                     {
+                                         "path":  "C:\\Users\\kou_z\\AppData\\Roaming\\Shuko",
+                                         "exists":  true,
+                                         "lastWriteTime":  "2026-11-14T16:33:57.6946105Z"
+                                     },
+                                     {
+                                         "path":  "C:\\Users\\kou_z\\.shuko",
+                                         "exists":  true,
+                                         "lastWriteTime":  "2026-11-16T11:16:08.7767035Z"
+                                     }
+                                 ],
+                      "after":  [
+                                    {
+                                        "path":  "C:\\Users\\kou_z\\AppData\\Roaming\\Code",
+                                        "exists":  false,
+                                        "lastWriteTime":  null
+                                    },
+                                    {
+                                        "path":  "C:\\Users\\kou_z\\AppData\\Roaming\\Code - OSS",
+                                        "exists":  false,
+                                        "lastWriteTime":  null
+                                    },
+                                    {
+                                        "path":  "C:\\Users\\kou_z\\.vscode",
+                                        "exists":  false,
+                                        "lastWriteTime":  null
+                                    },
+                                    {
+                                        "path":  "C:\\Users\\kou_z\\.vscode-oss",
+                                        "exists":  false,
+                                        "lastWriteTime":  null
+                                    },
+                                    {
+                                        "path":  "C:\\Users\\kou_z\\AppData\\Roaming\\Shuko",
+                                        "exists":  true,
+                                        "lastWriteTime":  "2026-11-14T16:33:57.6946105Z"
+                                    },
+                                    {
+                                        "path":  "C:\\Users\\kou_z\\.shuko",
+                                        "exists":  true,
+                                        "lastWriteTime":  "2026-11-16T11:16:08.7767035Z"
+                                    }
+                                ],
+                      "changed":  [
+
+                                  ]
+                  },
+    "result":  "ok",
+    "message":  "started, stayed alive, the workbench came up, stopped; daily editor data folders unchanged"
+}
