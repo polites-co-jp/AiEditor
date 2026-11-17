@@ -63,7 +63,9 @@
     "git -C tmp/b/vscode fetch C:/b/wt/p2 HEAD:refs/heads/keep/wt-p2",
     "git -C tmp/b/vscode fetch C:/b/wt/trial-bwt HEAD:refs/heads/keep/wt-trial-bwt",
     "git -C tmp/b/vscode fetch C:/b/wt/verify-p2 HEAD:refs/heads/keep/wt-verify-p2",
-    "git -C tmp/b/vscode for-each-ref refs/heads/builds refs/heads/keep"
+    "git -C tmp/b/vscode for-each-ref refs/heads/builds refs/heads/keep",
+    "C:/Users/kou_z/AppData/Local/Programs/Shuko/current/bin/shuko.cmd --uninstall-extension=*.*",
+    "powershell -NoProfile -NonInteractive -EncodedCommand JABFAHIAcgBvAHIAQQBjAHQAaQBvAG4AUAByAGUAZgBlAHIAZQBuAGMAZQAgAD0AIAAnAFMAdABvAHAAJwAKACQAbABuAGsAIAA9ACAAJwBDADoAXABVAHMAZQByAHMAXABrAG8AdQBfAHoAXABPAG4AZQBEAHIAaQB2AGUAXADHMLkwrzDIMMMw1zBcAFMAaAB1AGsAbwAuAGwAbgBrACcACgAkAGMAdQByACAAPQAgACcAQwA6AFwAVQBzAGUAcgBzAFwAawBvAHUAXwB6AFwAQQBwAHAARABhAHQAYQBcAEwAbwBjAGEAbABcAFAAcgBvAGcAcgBhAG0AcwBcAFMAaAB1AGsAbwBcAGMAdQByAHIAZQBuAHQAJwAKAFsASQBPAC4ARgBpAGwAZQBdADoAOgBEAGUAbABlAHQAZQAoACQAbABuAGsAKQAKACQAdwBzACAAPQAgAE4AZQB3AC0ATwBiAGoAZQBjAHQAIAAtAEMAbwBtAE8AYgBqAGUAYwB0ACAAVwBTAGMAcgBpAHAAdAAuAFMAaABlAGwAbAAKACQAcwAgAD0AIAAkAHcAcwAuAEMAcgBlAGEAdABlAFMAaABvAHIAdABjAHUAdAAoACQAbABuAGsAKQAKACQAcwAuAFQAYQByAGcAZQB0AFAAYQB0AGgAIAA9ACAAJABjAHUAcgAgACsAIAAnAFwAUwBoAHUAawBvAC4AZQB4AGUAJwAKACQAcwAuAFcAbwByAGsAaQBuAGcARABpAHIAZQBjAHQAbwByAHkAIAA9ACAAJABjAHUAcgAKACQAcwAuAFMAYQB2AGUAKAApAAoAJAByACAAPQAgACQAdwBzAC4AQwByAGUAYQB0AGUAUwBoAG8AcgB0AGMAdQB0ACgAJABsAG4AawApAAoAJwBUAGEAcgBnAGUAdABQAGEAdABoAD0AJwAgACsAIAAkAHIALgBUAGEAcgBnAGUAdABQAGEAdABoAAoAJwBXAG8AcgBrAGkAbgBnAEQAaQByAGUAYwB0AG8AcgB5AD0AJwAgACsAIAAkAHIALgBXAG8AcgBrAGkAbgBnAEQAaQByAGUAYwB0AG8AcgB5AAoAJwBBAHIAZwB1AG0AZQBuAHQAcwA9ACcAIAArACAAJAByAC4AQQByAGcAdQBtAGUAbgB0AHMACgA="
   ],
   "write_paths": [
     "scripts/",
@@ -91,7 +93,8 @@
   ],
   "read_paths": [
     "./",
-    "C:/b/"
+    "C:/b/",
+    "C:/Users/kou_z/AppData/Roaming/Shuko/languagepacks.json"
   ],
   "secret_paths": [
     "%LOCALAPPDATA%/Shuko/watch/",

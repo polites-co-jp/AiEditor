@@ -32,7 +32,8 @@
     "pnpm --dir tmp/b/wt/* install --lockfile-only --ignore-scripts",
     "node scripts/disk-usage.mjs records=records",
     "node scripts/copy-verify.mjs --list tasks/2026-11-16-before-delete-c/evidence-copy-list.json --dry-run",
-    "node scripts/copy-verify.mjs --list tasks/2026-11-16-before-delete-c/evidence-copy-list.json --out tasks/2026-11-16-before-delete-c/copy-verify-run.json"
+    "node scripts/copy-verify.mjs --list tasks/2026-11-16-before-delete-c/evidence-copy-list.json --out tasks/2026-11-16-before-delete-c/copy-verify-run.json",
+    "powershell -NoProfile -NonInteractive -EncodedCommand JABFAHIAcgBvAHIAQQBjAHQAaQBvAG4AUAByAGUAZgBlAHIAZQBuAGMAZQAgAD0AIAAnAFMAdABvAHAAJwAKACQAbABuAGsAIAA9ACAAJwBDADoAXABVAHMAZQByAHMAXABrAG8AdQBfAHoAXABPAG4AZQBEAHIAaQB2AGUAXADHMLkwrzDIMMMw1zBcAFMAaAB1AGsAbwAuAGwAbgBrACcACgBpAGYAIAAoAC0AbgBvAHQAIABbAEkATwAuAEYAaQBsAGUAXQA6ADoARQB4AGkAcwB0AHMAKAAkAGwAbgBrACkAKQAgAHsAIAAnAG0AaQBzAHMAaQBuAGcAJwA7ACAAZQB4AGkAdAAgADMAIAB9AAoAJAByACAAPQAgACgATgBlAHcALQBPAGIAagBlAGMAdAAgAC0AQwBvAG0ATwBiAGoAZQBjAHQAIABXAFMAYwByAGkAcAB0AC4AUwBoAGUAbABsACkALgBDAHIAZQBhAHQAZQBTAGgAbwByAHQAYwB1AHQAKAAkAGwAbgBrACkACgAnAFQAYQByAGcAZQB0AFAAYQB0AGgAPQAnACAAKwAgACQAcgAuAFQAYQByAGcAZQB0AFAAYQB0AGgACgAnAFcAbwByAGsAaQBuAGcARABpAHIAZQBjAHQAbwByAHkAPQAnACAAKwAgACQAcgAuAFcAbwByAGsAaQBuAGcARABpAHIAZQBjAHQAbwByAHkACgA="
   ],
   "write_paths": [
     "records/",
