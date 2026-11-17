@@ -684,3 +684,4 @@
 | 続きの回（`--from`）で、前の回の warnings の日本語パックの1行が写されない | 直さない。前の回の `l10n` は `take-in.json` に写るようにした（蒙恬）ので、判定役は TAKE-IN.md の3節に従って `status` と `reason` を書ける |
 | 検証で出たテストの網の穴 G1〜G3（count の前で落ちたときの `staleOutput`、`judge`・`runCore` の配線、案 b の照らす基準） | 埋める（曹参。`tasks/2026-11-17-r6-test-gaps/`）。T1 の「振る舞いで見る」の残りとして扱う。蒙恬の気づいた2点（ビルドが落ちた続きの回に前の `l10n` が残る、extract の失敗に `reason` が無い）は直さない |
 | G2c の構造の件の正規表現が空白・引用符を固定している（S1。`tasks/2026-11-17-r6-test-gaps/verification-r6-test-gaps.md`） | 今は直さない。誤って通る向きの穴ではなく、書き方を変えたときに落ちるだけなので、そのときに曹参が正規表現を直す |
+| 全体の run-all（3,021 件）の落ち2件（`move-off-c.test.mjs`・`configure.test.mjs`。`records/take-in/1.146.0-p5-c-all-r6/gate-p5-c-all-r6-addendum.md`） | どちらも、動いている日常の Shuko を `configure.ps1` が見つけて止まる環境の都合で、r6 と関係しない。r6 の合格は変わらない。テストが本物の `installRoot` に頼る作り（T3）は曹参が直す（`tasks/2026-11-17-r6-test-isolation/`） |
