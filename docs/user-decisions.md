@@ -681,3 +681,4 @@
 | L1 の直し方（前の回の `records/take-in/<label>/l10n-count.json` は蒙恬の削除の許可の外） | 消さない。`count` の前後でファイルの印（有無・時刻・大きさ）を比べ、この回に書かれていなければ読まずに `failed`（`staleOutput: true`）にする（蒙恬の案を採る） |
 | 判定役（狄仁傑）が前の回の古い `l10n-count.json` を材料として読みうる | 案 b: `staleOutput` のときは `listMaterials` の `skip` でこのファイルを材料から外す（蒙恬）。消す・上書きする案 a は許可が要るので採らない。TAKE-IN.md への注意書き（案 c）だけには頼らない |
 | `--from` の続きで、前の回のファイルが残っていると数え直されない | 直す。数えの条件に「前の記録の `l10n.status` が `failed`」を足す（蒙恬）。条件の書き方を見ている `tests/l10n-r6.test.mjs` は、振る舞いで見る形に合わせる（曹参） |
+| 続きの回（`--from`）で、前の回の warnings の日本語パックの1行が写されない | 直さない。前の回の `l10n` は `take-in.json` に写るようにした（蒙恬）ので、判定役は TAKE-IN.md の3節に従って `status` と `reason` を書ける |
