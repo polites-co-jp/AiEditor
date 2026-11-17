@@ -11,7 +11,7 @@ Shuko の組み込み拡張（ID `shuko.language-pack-ja`）。本体と同じ�
 | `exclusions.json` | 英語のままでよい文言（理由つき） | `add` |
 | `dist/translations/` | 言語パックの訳の束（`main.i18n.json` と `extensions/<ID>.i18n.json`）。sources.json と added/ だけで決まる | `build` |
 | `package.json` | `contributes.localizations`（ja）。translations の一覧は `build` が書く | `build` が translations を書く |
-| `ThirdPartyNotices.txt` | vscode-loc の MIT の表示 | `build` が写す |
+| `ThirdPartyNotices.txt` | 訳の元の出典。`sources.json` の全部（下の層の vscode-loc の commit と Open VSX の VSIX も。束に鍵が入るため）を勝つ順に書き、課が足した訳の置き場所と、vscode-loc の `LICENSE.md`（MIT）の写しを添える | `build` が書く（`scripts/lib/l10n-ja.mjs` の `thirdPartyNotice`。`LICENSE.md` は取得したキャッシュから写す） |
 
 ビルドで写すのは `package.json`・`README.md`・`ThirdPartyNotices.txt`・`dist/`（`scripts/apply.mjs`）。`dist/translations/` の束が無いと apply が止める。
 

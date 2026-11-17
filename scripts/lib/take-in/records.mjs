@@ -47,8 +47,20 @@ export function recordsDirProblem(dir, { repoRoot, cwd = process.cwd() } = {}) {
   return null;
 }
 
+// 判定役の材料から外すもの（判定の出力そのもの）
+export const MATERIAL_SKIP = Object.freeze([/^judge-output\.json$/, /^verdict\.(json|md)$/]);
+
+// 判定役の材料から外すもの（listMaterials の skip に渡す）。l10n は take-in.json の l10n（日本語の数えの記録）。
+// 数えが前の回の l10n-count.json を残したまま、この回に書けなかったとき（l10n.staleOutput === true）だけ、記録のフォルダ直下の
+// l10n-count.json を外し、その古い数を判定役に読ませない（2026-11-17 のリーダーの判断、案 b）。既定の除外は残し、logs\ の下は外さない
+export function l10nMaterialSkip(l10n) {
+  const skip = [...MATERIAL_SKIP];
+  if (l10n && l10n.staleOutput === true) skip.push(/^l10n-count\.json$/);
+  return skip;
+}
+
 // dir の下のファイルを、repoRoot からの相対パス（/ 区切り）で並べる（判定役の Read のため）。大きな物は大きさを添える。
-export function listMaterials(dir, repoRoot, { skip = [/^judge-output\.json$/, /^verdict\.(json|md)$/] } = {}) {
+export function listMaterials(dir, repoRoot, { skip = MATERIAL_SKIP } = {}) {
   const out = [];
   if (!fs.existsSync(dir)) return out;
   const walk = (d) => {

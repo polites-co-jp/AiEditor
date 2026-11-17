@@ -7,9 +7,13 @@ import test, { before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { REPO, makeSandbox, removeSandbox, runNode, writeFile } from './build/helpers.mjs';
+import { listMaterials } from '../scripts/lib/take-in/records.mjs';
 import { thirdPartyNotice, placeholderMismatch, validateAdded } from '../scripts/lib/l10n-ja.mjs';
-import { l10nPlan, summarizeL10nCount } from '../scripts/take-in.mjs';
+// AIED_TAKEIN_MODULE に別のファイルを渡すと、take-in.mjs の代わりにそちらを読む（直す前の版を確かめるとき用）
+const TI = process.env.AIED_TAKEIN_MODULE ? await import(pathToFileURL(path.resolve(process.env.AIED_TAKEIN_MODULE)).href) : await import('../scripts/take-in.mjs');
+const { l10nPlan, summarizeL10nCount } = TI;
 
 const PACK = path.join(REPO, 'extensions-src', 'language-pack-ja');
 const readJson = (p) => JSON.parse(fs.readFileSync(p, 'utf8').replace(/^﻿/, ''));
@@ -159,11 +163,17 @@ test('summarizeL10nCount: result が placeholder なら、終了コードに関�
 test('summarizeL10nCount: 0・5 以外の終了コードは failed', () => {
   for (const c of [1, 2, 3, 127, null]) assert.equal(summarizeL10nCount(c, OUT()).status, 'failed', String(c));
 });
-test('summarizeL10nCount: 結果のファイルが無いときは failed と理由（終了コード 0 でも failed）', () => {
+test('summarizeL10nCount: 結果のファイルが無いときは、終了コードによらず failed と理由（L2。5 でも failed）', () => {
   assert.deepEqual(summarizeL10nCount(0, null), { status: 'failed', exitCode: 0, reason: 'l10n-count.json が無い' });
-  assert.equal(summarizeL10nCount(1, undefined).status, 'failed');
-  assert.equal(summarizeL10nCount(5, null).status, 'untranslated', '5 のとき out が無くても status は終了コードどおり（理由つき）');
-  assert.equal(summarizeL10nCount(5, null).reason, 'l10n-count.json が無い');
+  for (const c of [0, 1, 2, 5, 127, null]) {
+    for (const o of [null, undefined]) {
+      const s = summarizeL10nCount(c, o);
+      assert.equal(s.status, 'failed', `exit ${c}`);
+      assert.equal(s.exitCode, c);
+      assert.equal(s.reason, 'l10n-count.json が無い');
+      assert.ok(s.untranslated == null, '数を持たない');
+    }
+  }
 });
 test('summarizeL10nCount: 項目が欠けていても落ちない（null にする）', () => {
   const s = summarizeL10nCount(0, { });
@@ -186,17 +196,165 @@ test('take-in.mjs: 数えが ok でなくても Stop しない。warnings に1�
   assert.match(block, /採否は止めない/);
   assert.match(block, /ctx\.rec\.l10n = l10n/);
 });
-test('take-in.mjs: runL10nCount は、新しい版の形を読めない・パックが無い・extract が失敗でも、例外にせず failed を返す（ソースの構造の確かめ）', () => {
-  const a = takeInSrc.indexOf('async function runL10nCount');
-  const b = takeInSrc.indexOf('function corePlan', a);
-  const fn = takeInSrc.slice(a, b);
-  assert.ok(!/throw |Stop\(/.test(fn));
-  assert.equal((fn.match(/status: "failed"/g) || []).length >= 3, true);
-  assert.match(fn, /l10n-extract\.log/);
-  assert.match(fn, /l10n-count\.log/);
+// ---- runL10nCount を実際に走らせる（模擬の版・模擬の記録。tmp\tests\ の下） -------------------------------------
+// 本物の l10n-ja.mjs extract → count を、小さな模擬の版（out\nls.*.json と extensions\language-pack-ja だけ）に当てる。
+const run = (...a) => {
+  assert.equal(typeof TI.runL10nCount, 'function', 'take-in.mjs は runL10nCount を export する（テストから走らせるため）');
+  return TI.runL10nCount(...a);
+};
+let seq = 0;
+// 模擬の版。pack: 'ok' = ja の localizations あり（束は空）、'broken' = localizations 無し（count が出力の前に落ちる）、'none' = パック無し、
+// nls: false = extract が落ちる
+function fakeCtx({ pack = 'ok', nls = true } = {}) {
+  const root = path.join(sb, `rc${++seq}`);
+  const editorDir = path.join(root, 'VSCode');
+  const app = path.join(editorDir, 'resources', 'app');
+  writeFile(path.join(app, 'product.json'), JSON.stringify({ nameShort: 'Fake', applicationName: 'fake', version: '1.0.0' }));
+  writeFile(path.join(app, 'package.json'), JSON.stringify({ version: '1.0.0' }));
+  if (nls) {
+    writeFile(path.join(app, 'out', 'nls.keys.json'), JSON.stringify([['vs/fake/mod', ['k1', 'k2']]]));
+    writeFile(path.join(app, 'out', 'nls.messages.json'), JSON.stringify(['One', 'Two']));
+  }
+  const pk = path.join(app, 'extensions', 'language-pack-ja');
+  if (pack !== 'none') {
+    const locs = pack === 'ok' ? [{ languageId: 'ja', translations: [{ id: 'vscode', path: './t.json' }] }] : [];
+    writeFile(path.join(pk, 'package.json'), JSON.stringify({ name: 'language-pack-ja', publisher: 'x', contributes: { localizations: locs } }));
+    writeFile(path.join(pk, 't.json'), JSON.stringify({ contents: {} }));
+  }
+  fs.mkdirSync(path.join(app, 'extensions'), { recursive: true });
+  const recDir = path.join(root, 'rec');
+  fs.mkdirSync(recDir, { recursive: true });
+  return { ctx: { editorDir, buildRoot: path.join(root, 'b'), label: 'fake-r1', recDir, wt: '' }, outFile: path.join(recDir, 'l10n-count.json') };
+}
+const STALE = { result: 'ok', untranslated: 0, total: 99999, excluded: 0, byArea: { stale: true }, placeholderProblems: [] };
+
+test('runL10nCount（走らせる）: 数えが終わると、その回の結果を返し、l10n-count.json に書く（模擬の版は未訳あり = 終了コード 5）', async () => {
+  const { ctx, outFile } = fakeCtx();
+  const r = await run(ctx);
+  assert.equal(r.status, 'untranslated', JSON.stringify(r));
+  assert.equal(r.exitCode, 5);
+  assert.ok(r.untranslated >= 2, '模擬の 2 件は未訳');
+  assert.ok(fs.existsSync(outFile));
+  assert.equal(readJson(outFile).untranslated, r.untranslated, '返した数と書いた数が同じ');
+  assert.ok(r.out.endsWith('l10n-count.json') && !path.isAbsolute(r.out));
+  assert.ok(fs.existsSync(path.join(ctx.recDir, 'logs', 'l10n-extract.log')));
+  assert.ok(fs.existsSync(path.join(ctx.recDir, 'logs', 'l10n-count.log')));
+  assert.ok(fs.existsSync(path.join(ctx.buildRoot, 'take-in', ctx.label, 'l10n-strings.json')), '表は buildRoot の下');
 });
-test('take-in.mjs: 数えるのはビルドが ok のときで、手順 5 を走らせた回か、l10n-count.json がまだ無いとき（続きからでも数え漏れない）', () => {
-  assert.match(takeInSrc, /buildRec && buildRec\.result === "ok" && \(run\(5\) \|\| !fs\.existsSync\(path\.join\(ctx\.recDir, "l10n-count\.json"\)\)\)/);
+test('runL10nCount（走らせる）: 前の回の l10n-count.json があっても、今回の数えの結果で置き換わる', async () => {
+  const { ctx, outFile } = fakeCtx();
+  writeFile(outFile, JSON.stringify(STALE));
+  const r = await run(ctx);
+  assert.equal(r.status, 'untranslated');
+  assert.notEqual(r.total, 99999);
+  assert.notEqual(readJson(outFile).total, 99999);
+});
+test('runL10nCount（走らせる）: 新しい版の形を読めない・パックが無い・extract が失敗でも、例外にせず failed を返す', async () => {
+  const none = fakeCtx({ pack: 'none' });
+  const r1 = await run(none.ctx);
+  assert.equal(r1.status, 'failed');
+  assert.match(r1.reason, /language-pack-ja が無い/);
+  const noLayout = fakeCtx();
+  const r2 = await run({ ...noLayout.ctx, editorDir: path.join(sb, 'no-such-editor') });
+  assert.equal(r2.status, 'failed');
+  assert.match(r2.reason, /新しい版の形を読めない/);
+  const noNls = fakeCtx({ nls: false });
+  const r3 = await run(noNls.ctx);
+  assert.equal(r3.status, 'failed');
+  assert.equal(r3.step, 'extract');
+  assert.notEqual(r3.exitCode, 0);
+  assert.ok(fs.existsSync(path.join(noNls.ctx.recDir, 'logs', 'l10n-extract.log')));
+  assert.ok(!fs.existsSync(noNls.outFile), 'extract が落ちたら count は走らない');
+});
+test('runL10nCount（走らせる）: L1 count が出力を書く前に落ちても、前の回の l10n-count.json の古い数を写さない', async () => {
+  const { ctx, outFile } = fakeCtx({ pack: 'broken' });
+  writeFile(outFile, JSON.stringify(STALE));
+  const r = await run(ctx);
+  assert.equal(r.status, 'failed', JSON.stringify(r));
+  assert.notEqual(r.exitCode, 0);
+  assert.match(r.reason, /l10n-count\.json/, '理由を書く（言い回しは実装に任せる）');
+  for (const k of ['result', 'untranslated', 'total', 'excluded', 'byArea', 'placeholderProblems']) assert.ok(r[k] == null, `${k} に古い値を写さない: ${JSON.stringify(r[k])}`);
+  // 前の回のファイルは消さない（2026-11-17 の裁定）。残っていることを staleOutput で知らせる
+  assert.equal(r.staleOutput, true, '前の回のファイルが残っている印');
+  assert.ok(fs.existsSync(outFile), '前の回のファイルは消さない');
+  assert.equal(readJson(outFile).total, 99999, '前の回のファイルは書き換えない');
+});
+test('runL10nCount（走らせる）: L1 古い出力が無く count が落ちたときも failed。staleOutput は付かない', async () => {
+  const { ctx } = fakeCtx({ pack: 'broken' });
+  const r = await run(ctx);
+  assert.equal(r.status, 'failed');
+  assert.match(r.reason, /l10n-count\.json/);
+  assert.ok(!r.staleOutput);
+});
+test('runL10nCount（runner を模擬）: count が何も書かなければ、終了コード 0 でも古い出力を読まず failed（staleOutput）。書き換えれば読む', async () => {
+  const { ctx, outFile } = fakeCtx();
+  writeFile(outFile, JSON.stringify(STALE));
+  const calls = [];
+  const quiet = async (spec) => { calls.push(spec.args[1]); return { exitCode: 0, output: '' }; };
+  const r = await TI.runL10nCount(ctx, { runner: quiet });
+  assert.deepEqual(calls, ['extract', 'count'], 'extract → count の順に runner で走らせる');
+  assert.equal(r.status, 'failed');
+  assert.equal(r.staleOutput, true);
+  assert.ok(r.untranslated == null && r.total == null && r.result == null, '古い数を写さない');
+  // 同じ runner が、count のときにだけ出力を書き換える
+  const writes = async (spec) => {
+    if (spec.args[1] === 'count') writeFile(outFile, JSON.stringify({ result: 'ok', untranslated: 0, total: 12, excluded: 1, byArea: {}, placeholderProblems: [] }));
+    return { exitCode: spec.args[1] === 'count' ? 0 : 0, output: '' };
+  };
+  const r2 = await TI.runL10nCount(ctx, { runner: writes });
+  assert.equal(r2.status, 'ok');
+  assert.equal(r2.total, 12);
+  assert.ok(!r2.staleOutput);
+});
+test('fileMark・writtenSince: 無い→ある・時刻か大きさが変わった = 書かれた。同じ印・無いまま・消えた = 書かれていない', () => {
+  assert.equal(typeof TI.fileMark, 'function');
+  assert.equal(typeof TI.writtenSince, 'function');
+  const f = path.join(sb, 'mark', 'x.json');
+  const none = TI.fileMark(f);
+  assert.equal(none.exists, false);
+  assert.equal(TI.writtenSince(none, TI.fileMark(f)), false, '無いまま');
+  writeFile(f, '{"a":1}');
+  const m1 = TI.fileMark(f);
+  assert.equal(TI.writtenSince(none, m1), true, '無い → ある');
+  assert.equal(TI.writtenSince(m1, TI.fileMark(f)), false, '同じ印');
+  writeFile(f, '{"a":12345}');
+  assert.equal(TI.writtenSince(m1, TI.fileMark(f)), true, '大きさが変わった');
+  fs.rmSync(f);
+  assert.equal(TI.writtenSince(m1, TI.fileMark(f)), false, '消えた');
+});
+
+// ---- 続きからの数え直しと、判定役の材料（2026-11-17 の裁定。蒙恬が export する関数を想定して書いた） ----------------
+// 想定した入口（実装が違う名前なら、曹参がテストの呼び方を合わせる）:
+//   shouldCountL10n({ buildRec, ranBuild, recDir, prevL10n }) => boolean
+//     buildRec.result === "ok" が前提。ranBuild（手順 5 を走らせた）か、recDir に l10n-count.json が無いか、prevL10n.status === "failed" のとき true
+//   l10nMaterialSkip(l10n) => RegExp[]（listMaterials の skip に渡す。l10n.staleOutput が true のとき l10n-count.json を含む。ほかの除外は変えない）
+test('shouldCountL10n: ビルドが ok のときだけ。手順 5 を走らせた回・出力が無い・前の記録が failed のときは数える。続きで前が ok・untranslated なら数えない', () => {
+  assert.equal(typeof TI.shouldCountL10n, 'function', 'take-in.mjs は shouldCountL10n を export する（条件を振る舞いで見るため）');
+  const withFile = path.join(sb, 'sc-with');
+  const withoutFile = path.join(sb, 'sc-without');
+  writeFile(path.join(withFile, 'l10n-count.json'), JSON.stringify(STALE));
+  fs.mkdirSync(withoutFile, { recursive: true });
+  const ok = { result: 'ok' };
+  const f = (o) => TI.shouldCountL10n({ buildRec: ok, ranBuild: false, recDir: withFile, prevL10n: null, ...o });
+  assert.equal(f({ buildRec: null }), false, 'ビルドの記録が無い');
+  assert.equal(f({ buildRec: { result: 'failed' }, ranBuild: true }), false, 'ビルドが ok でない');
+  assert.equal(f({ ranBuild: true }), true, '手順 5 を走らせた回');
+  assert.equal(f({ recDir: withoutFile }), true, '出力がまだ無い');
+  assert.equal(f({ prevL10n: { status: 'failed' } }), true, '前の記録が failed（古い出力が残っていても数え直す）');
+  assert.equal(f({ prevL10n: { status: 'failed', staleOutput: true } }), true);
+  assert.equal(f({ prevL10n: { status: 'ok' } }), false, '続きで、前が ok');
+  assert.equal(f({ prevL10n: { status: 'untranslated' } }), false, '続きで、前が untranslated');
+  assert.equal(f({ prevL10n: null }), false, '続きで、前の記録に l10n が無い');
+});
+test('l10nMaterialSkip + listMaterials: staleOutput のときだけ l10n-count.json を判定役の材料から外す。ほかの材料と既定の除外は変えない', () => {
+  assert.equal(typeof TI.l10nMaterialSkip, 'function', 'take-in.mjs は l10nMaterialSkip を export する');
+  const dir = path.join(sb, 'mat');
+  for (const f of ['l10n-count.json', 'build-main.json', 'checks.json', 'judge-output.json', 'verdict.json', 'verdict.md', path.join('logs', 'l10n-count.log')]) writeFile(path.join(dir, f), '{}');
+  const names = (l10n) => listMaterials(dir, dir, { skip: TI.l10nMaterialSkip(l10n) }).map((m) => m.path).sort();
+  const normal = names(null);
+  assert.deepEqual(normal, ['build-main.json', 'checks.json', 'l10n-count.json', 'logs/l10n-count.log'], '既定の除外（judge-output・verdict）は残る');
+  for (const l of [undefined, { status: 'ok' }, { status: 'failed' }, { status: 'failed', staleOutput: false }]) assert.deepEqual(names(l), normal, JSON.stringify(l));
+  assert.deepEqual(names({ status: 'failed', staleOutput: true }), ['build-main.json', 'checks.json', 'logs/l10n-count.log'], 'l10n-count.json だけ外れる（ログは別）');
 });
 test('CLI: take-in.mjs core --dry-run の plan.l10n に extract と count が出る。何も書かない', () => {
   const root = path.join(sb, 'dry');

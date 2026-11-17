@@ -33,7 +33,7 @@ import { fetchUpstreamInfo, parseLsRemote } from "./lib/take-in/upstream-info.mj
 import { findPrevFetchDir, prevFetchCandidates, pickFetchedItem, seedFor, decideExtVersion, setLedgerVerdict } from "./lib/take-in/ext.mjs";
 import { writeBack, readWatchStatus } from "./lib/take-in/writeback.mjs";
 import { smokeRunArgs, newBaselinePath, summarizeSmoke, NETAUDIT_SETTINGS, netEnvLayout, netEnvInstallArgs, netauditArgs, netauditPathCheck } from "./lib/take-in/smoke-net.mjs";
-import { listMaterials, buildJudgeRequest, JUDGE_PROMPT, listIssues, composeBuildRecord, factsFrom, auditHosts, recordsDirProblem } from "./lib/take-in/records.mjs";
+import { listMaterials, l10nMaterialSkip, buildJudgeRequest, JUDGE_PROMPT, listIssues, composeBuildRecord, factsFrom, auditHosts, recordsDirProblem } from "./lib/take-in/records.mjs";
 
 const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(SCRIPT_DIR, "..");
@@ -465,7 +465,7 @@ async function repairTypecheck(ctx, buildRec, attempt) {
 
 async function judge(ctx, { facts, notes = [], extra = {} }) {
   const reqPath = path.join(ctx.recDir, "judge-request.md");
-  const materials = [{ path: "TAKE-IN.md", bytes: fs.existsSync(path.join(REPO, "TAKE-IN.md")) ? fs.statSync(path.join(REPO, "TAKE-IN.md")).size : 0 }, ...listMaterials(ctx.recDir, REPO).filter((m) => !m.path.endsWith("judge-request.md"))];
+  const materials = [{ path: "TAKE-IN.md", bytes: fs.existsSync(path.join(REPO, "TAKE-IN.md")) ? fs.statSync(path.join(REPO, "TAKE-IN.md")).size : 0 }, ...listMaterials(ctx.recDir, REPO, { skip: l10nMaterialSkip(ctx.rec.l10n) }).filter((m) => !m.path.endsWith("judge-request.md"))];
   const request = buildJudgeRequest({ kind: ctx.kind, label: ctx.label, tag: ctx.tag, prevTag: ctx.prevTag, materials, facts, issues: listIssues(REPO), notes, ...extra });
   writeText(reqPath, request);
   const inv = buildClaudeInvocation({ kind: "verdict", repoRoot: REPO, prompt: JUDGE_PROMPT(rel(reqPath)), claudePath: ctx.claudePath });
@@ -588,10 +588,11 @@ export function l10nPlan(ctx, appDir = "<app>") {
   };
 }
 
-// count の終了コードと出力を、取り込みの記録の形にする（0 = ok、5 = 未訳あり、1 = 印の不一致か誤り）。採否は止めない
+// count の終了コードと出力を、取り込みの記録の形にする（0 = ok、5 = 未訳あり、1 = 印の不一致か誤り）。採否は止めない。
+// 出力が無ければ、終了コードによらず failed（数が無いので ok とも untranslated とも言えない）
 export function summarizeL10nCount(exitCode, out) {
   const status = exitCode === 0 ? "ok" : exitCode === 5 ? "untranslated" : "failed";
-  if (!out) return { status: exitCode === 0 ? "failed" : status, exitCode, reason: "l10n-count.json が無い" };
+  if (!out) return { status: "failed", exitCode, reason: "l10n-count.json が無い" };
   return {
     status: out.result === "placeholder" ? "failed" : status, exitCode, result: out.result ?? null,
     untranslated: out.untranslated ?? null, total: out.total ?? null, excluded: out.excluded ?? null, byArea: out.byArea ?? null,
@@ -599,21 +600,66 @@ export function summarizeL10nCount(exitCode, out) {
   };
 }
 
-async function runL10nCount(ctx) {
+// 日本語の未訳を数えるか。前提はビルドが ok（buildRec.result === "ok"）。そのうえで、手順 5 を走らせた回（ranBuild）、
+// recDir に l10n-count.json がまだ無いとき、前の回の記録の l10n（prevL10n）が failed のときに数える。最後の条件で、前の回の
+// ファイルが残っていても --from の続きで数え直す（2026-11-17 のリーダーの判断）。前が ok・untranslated・記録なしの続きでは数えない
+export function shouldCountL10n({ buildRec, ranBuild, recDir, prevL10n }) {
+  if (!buildRec || buildRec.result !== "ok") return false;
+  if (ranBuild) return true;
+  if (!fs.existsSync(path.join(recDir, "l10n-count.json"))) return true;
+  return !!prevL10n && prevL10n.status === "failed";
+}
+
+// 判定役の材料から外すもの（scripts/lib/take-in/records.mjs）。テストからも take-in.mjs の名前で引けるように出す
+export { l10nMaterialSkip };
+
+// ファイルの印（有無・更新の時刻・大きさ）。count がこの回に出力を書いたかを見るのに使う
+export function fileMark(file) {
+  try {
+    const st = fs.statSync(file, { bigint: true });
+    return { exists: true, mtimeNs: st.mtimeNs, size: st.size };
+  } catch {
+    return { exists: false, mtimeNs: null, size: null };
+  }
+}
+// count を走らせる前の印と後の印から、この回に書かれた出力かを決める。無い・前と同じ印なら書かれていない
+export function writtenSince(before, after) {
+  if (!after || !after.exists) return false;
+  if (!before || !before.exists) return true;
+  return after.mtimeNs !== before.mtimeNs || after.size !== before.size;
+}
+
+// 読むのは、この回の count が書いた l10n-count.json だけ（2026-11-17 の r6 の関門の L1）。count が出力を書く前に落ちたとき、
+// 前の回の l10n-count.json が残っていても、その古い数を記録と warnings に写さない（出力なしとして failed）。
+// 前の回のファイルは消さない（台本で消してよい場所でないため）。この回に書かれずに前の回のものが残っていれば、
+// どこで落ちても（版の形・パック・extract・count）staleOutput: true を付ける。判定役はそのとき l10n-count.json を材料から外す
+// （l10nMaterialSkip。2026-11-17 のリーダーの判断、案 b）。
+// runner は子を起こす関数（既定は runLogged。テストが模擬に替える）。
+export async function runL10nCount(ctx, { runner = runLogged } = {}) {
+  const out = path.join(ctx.recDir, "l10n-count.json");
+  const leftover = fileMark(out).exists;
+  const withStale = (r) => (leftover ? { ...r, staleOutput: true } : r);
   let layout;
   try {
     layout = resolveEditorLayout(ctx.editorDir);
   } catch (err) {
-    return { status: "failed", reason: `新しい版の形を読めない: ${err.message}` };
+    return withStale({ status: "failed", reason: `新しい版の形を読めない: ${err.message}` });
   }
   if (!fs.existsSync(path.join(layout.appDir, "extensions", "language-pack-ja", "package.json"))) {
-    return { status: "failed", reason: "新しい版に extensions\\language-pack-ja が無い" };
+    return withStale({ status: "failed", reason: "新しい版に extensions\\language-pack-ja が無い" });
   }
   const p = l10nPlan(ctx, layout.appDir);
-  const er = await runLogged({ ...p.extract, logFile: path.join(ctx.recDir, "logs", "l10n-extract.log") });
-  if (er.exitCode !== 0) return { status: "failed", step: "extract", exitCode: er.exitCode };
-  const cr = await runLogged({ ...p.count, logFile: path.join(ctx.recDir, "logs", "l10n-count.log") });
-  return { ...summarizeL10nCount(cr.exitCode, readJsonOrNull(p.out)), strings: p.strings, out: rel(p.out) };
+  const er = await runner({ ...p.extract, logFile: path.join(ctx.recDir, "logs", "l10n-extract.log") });
+  if (er.exitCode !== 0) return withStale({ status: "failed", step: "extract", exitCode: er.exitCode });
+  const before = fileMark(p.out);
+  const cr = await runner({ ...p.count, logFile: path.join(ctx.recDir, "logs", "l10n-count.log") });
+  const fresh = writtenSince(before, fileMark(p.out));
+  const s = summarizeL10nCount(cr.exitCode, fresh ? readJsonOrNull(p.out) : null);
+  if (!fresh && before.exists) {
+    s.staleOutput = true;
+    s.reason = "l10n-count.json がこの回に書かれていない（残っているのは前の回のもの）";
+  }
+  return { ...s, strings: p.strings, out: rel(p.out) };
 }
 
 function corePlan(ctx) {
@@ -697,6 +743,8 @@ async function runCore(a) {
   const prevRec = readJsonOrNull(path.join(ctx.recDir, "take-in.json"));
   if (prevRec && prevRec.commit && !ctx.commit) ctx.commit = prevRec.commit;
   if (prevRec) ctx.rec.repairs = prevRec.repairs || [];
+  // 前の回の日本語の数え（続きから走らせたとき。数え直すかの条件と、判定の材料から外すか（staleOutput）に使う）
+  if (prevRec && prevRec.l10n) ctx.rec.l10n = prevRec.l10n;
   save(ctx);
   const plan = corePlan(ctx);
 
@@ -829,8 +877,9 @@ async function runCore(a) {
   }
 
   // 日本語パックの未訳を数える（手順 5 の後。TAKE-IN.md の4.2。数えるだけで訳さず、採否も止めない）。
-  // 記録は <recDir>\l10n-count.json（判定の材料）と take-in.json の l10n
-  if (buildRec && buildRec.result === "ok" && (run(5) || !fs.existsSync(path.join(ctx.recDir, "l10n-count.json")))) {
+  // 記録は <recDir>\l10n-count.json（判定の材料）と take-in.json の l10n。
+  // 数えるかは shouldCountL10n（手順 5 を走らせた回、l10n-count.json がまだ無いとき、前の回の数えが failed のとき）
+  if (shouldCountL10n({ buildRec, ranBuild: run(5), recDir: ctx.recDir, prevL10n: ctx.rec.l10n })) {
     const l10n = await runL10nCount(ctx);
     ctx.rec.l10n = l10n;
     if (l10n.status !== "ok") {
