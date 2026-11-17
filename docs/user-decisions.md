@@ -671,3 +671,13 @@
 | r5 の記録（ビルドの記録・起動の確かめ・数えの結果） | コミットする。裁定の記録と蒙恬の引き継ぎが根拠として名前を挙げているため |
 | 曹参の古い出力（`audit-r4-newpack*.json`、`audit-r4-pack1131.json`、`extra-exclusions-bundle-escape.json`、`icon-l10n-tests/audit-run-pack1131.json`） | コミットしない |
 | `move-off-c.test.mjs` の落ち1件（動いている日常の Shuko を見て `configure.ps1` が `editor-running` で止まる） | 環境の都合で、今回の変更とは関係しない。扱いを変えない |
+
+## 記録（2026-11-17、r6 の直し（L1）で出た点。リーダーの判断）
+
+根拠: `tasks/2026-11-17-r6-followups/handoff-notes-meng-tian.md`
+
+| 論点 | 扱い |
+|---|---|
+| L1 の直し方（前の回の `records/take-in/<label>/l10n-count.json` は蒙恬の削除の許可の外） | 消さない。`count` の前後でファイルの印（有無・時刻・大きさ）を比べ、この回に書かれていなければ読まずに `failed`（`staleOutput: true`）にする（蒙恬の案を採る） |
+| 判定役（狄仁傑）が前の回の古い `l10n-count.json` を材料として読みうる | 案 b: `staleOutput` のときは `listMaterials` の `skip` でこのファイルを材料から外す（蒙恬）。消す・上書きする案 a は許可が要るので採らない。TAKE-IN.md への注意書き（案 c）だけには頼らない |
+| `--from` の続きで、前の回のファイルが残っていると数え直されない | 直す。数えの条件に「前の記録の `l10n.status` が `failed`」を足す（蒙恬）。条件の書き方を見ている `tests/l10n-r6.test.mjs` は、振る舞いで見る形に合わせる（曹参） |
