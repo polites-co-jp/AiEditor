@@ -374,3 +374,83 @@ test('CLI: take-in.mjs core --dry-run の plan.l10n に extract と count が出
   assert.equal(o.recordDirExists, false);
   assert.ok(!fs.existsSync(path.join(root, 'b')), '何も作らない');
 });
+
+// ---- 網の穴の補い（G1〜G3。2026-11-17。tasks/2026-11-17-r6-test-gaps/） ---------------------------------------------
+// G1: count の前（版の形・パック・extract）で落ちたときも、前の回の l10n-count.json が残っていれば staleOutput: true（追加の直し 5.1）
+test('runL10nCount（走らせる）: G1 count の前（版の形・パック無し・extract）で落ちたときも、前の回のファイルが残っていれば staleOutput。数は写さず、ファイルは消さない', async () => {
+  const none = fakeCtx({ pack: 'none' });
+  const noLayout = fakeCtx();
+  const noNls = fakeCtx({ nls: false });
+  const cases = [
+    ['パック無し', none.ctx, none.outFile, /language-pack-ja が無い/],
+    ['版の形を読めない', { ...noLayout.ctx, editorDir: path.join(sb, 'no-such-editor-g1') }, noLayout.outFile, /新しい版の形を読めない/],
+    ['extract が落ちる', noNls.ctx, noNls.outFile, null],
+  ];
+  for (const [name, ctx, outFile, re] of cases) {
+    writeFile(outFile, JSON.stringify(STALE));
+    const r = await run(ctx);
+    assert.equal(r.status, 'failed', `${name}: ${JSON.stringify(r)}`);
+    assert.equal(r.staleOutput, true, `${name}: 前の回のファイルが残っている印`);
+    if (re) assert.match(r.reason, re, `${name}: reason は元の理由のまま`);
+    else assert.equal(r.step, 'extract', name);
+    for (const k of ['result', 'untranslated', 'total', 'excluded', 'byArea', 'placeholderProblems']) assert.ok(r[k] == null, `${name}: ${k} に古い値を写さない`);
+    assert.equal(readJson(outFile).total, 99999, `${name}: 前の回のファイルは消さず、書き換えない`);
+  }
+});
+test('runL10nCount（走らせる）: G1 前の回のファイルが無ければ、count の前で落ちても staleOutput は付かない', async () => {
+  const none = fakeCtx({ pack: 'none' });
+  const noLayout = fakeCtx();
+  const noNls = fakeCtx({ nls: false });
+  for (const ctx of [none.ctx, { ...noLayout.ctx, editorDir: path.join(sb, 'no-such-editor-g1b') }, noNls.ctx]) {
+    const r = await run(ctx);
+    assert.equal(r.status, 'failed');
+    assert.ok(!r.staleOutput, JSON.stringify(r));
+  }
+});
+
+// G2: 配線。judge・runCore を走らせるには作業ツリー・ビルド・claude が要るので、ソースの構造で確かめる。
+//   - 振る舞いで見る件（上）: shouldCountL10n の真偽、l10nMaterialSkip + listMaterials の外れ方
+//   - 構造で見る件（この下の3件）: judge が listMaterials に l10nMaterialSkip(ctx.rec.l10n) を渡す、runCore が shouldCountL10n に
+//     ranBuild: run(5) と prevL10n: ctx.rec.l10n を渡す、続きの回で前の回の take-in.json の l10n を ctx.rec.l10n に写してから save する
+const bodyOf = (head, until) => {
+  const a = takeInSrc.indexOf(head);
+  assert.ok(a >= 0, `${head} がソースに無い`);
+  const b = takeInSrc.indexOf(until, a);
+  assert.ok(b > a, `${head} の終わり（${until}）が見つからない`);
+  return takeInSrc.slice(a, b);
+};
+test('take-in.mjs（構造）: G2 judge は listMaterials に l10nMaterialSkip(ctx.rec.l10n) を skip として渡す', () => {
+  const body = bodyOf('async function judge(', '\n// ------');
+  assert.match(body, /listMaterials\(\s*ctx\.recDir\s*,\s*REPO\s*,\s*\{\s*skip:\s*l10nMaterialSkip\(\s*ctx\.rec\.l10n\s*\)\s*\}\s*\)/);
+});
+test('take-in.mjs（構造）: G2 runCore は shouldCountL10n に buildRec・ranBuild: run(5)・recDir・prevL10n: ctx.rec.l10n を渡し、その結果で数える', () => {
+  const body = bodyOf('async function runCore(', '\n// ------');
+  const m = body.match(/if\s*\(\s*shouldCountL10n\(\s*\{([^}]*)\}\s*\)\s*\)\s*\{\s*const l10n = await runL10nCount\(ctx\)/);
+  assert.ok(m, 'if (shouldCountL10n({...})) { const l10n = await runL10nCount(ctx) の形');
+  assert.match(m[1], /\bbuildRec\b/);
+  assert.match(m[1], /ranBuild:\s*run\(5\)/);
+  assert.match(m[1], /recDir:\s*ctx\.recDir/);
+  assert.match(m[1], /prevL10n:\s*ctx\.rec\.l10n/);
+  assert.ok(!/run\(5\)\s*\|\|\s*!fs\.existsSync/.test(body), '元の条件（run(5) || !exists）に戻していない');
+});
+test('take-in.mjs（構造）: G2 続きの回は、前の回の take-in.json の l10n を ctx.rec.l10n に写してから save する', () => {
+  const body = bodyOf('async function runCore(', '\n// ------');
+  const read = body.search(/const prevRec = readJsonOrNull\(path\.join\(ctx\.recDir, "take-in\.json"\)\)/);
+  const copy = body.search(/if \(prevRec && prevRec\.l10n\) ctx\.rec\.l10n = prevRec\.l10n;/);
+  assert.ok(read >= 0, '前の回の take-in.json を読む');
+  assert.ok(copy > read, 'prevRec を読んだ後に写す');
+  const save = body.indexOf('save(ctx);', read);
+  assert.ok(save > copy, '写した後に save する（先に save すると前の回の l10n が消える）');
+});
+
+// G3: 照らす基準は「記録のフォルダ（dir）からの相対」。dir と repoRoot が違うフォルダ（本番は dir = records/take-in/<label>、repoRoot = リポジトリ）でも、
+//     dir 直下の l10n-count.json だけが外れる。repoRoot からの相対で照らすと records/take-in/<label>/l10n-count.json になり、外れない
+test('l10nMaterialSkip + listMaterials: G3 dir と repoRoot が違うフォルダでも、dir 直下の l10n-count.json だけが外れる（返す path は repoRoot からの相対）', () => {
+  const repo = path.join(sb, 'mat-repo');
+  const dir = path.join(repo, 'records', 'take-in', 'lbl');
+  for (const f of ['l10n-count.json', 'build-main.json', 'judge-output.json', 'verdict.md', path.join('logs', 'l10n-count.log'), path.join('sub', 'l10n-count.json')]) writeFile(path.join(dir, f), '{}');
+  const P = 'records/take-in/lbl/';
+  const names = (l10n) => listMaterials(dir, repo, { skip: TI.l10nMaterialSkip(l10n) }).map((m) => m.path).sort();
+  assert.deepEqual(names(null), [P + 'build-main.json', P + 'l10n-count.json', P + 'logs/l10n-count.log', P + 'sub/l10n-count.json'], '既定。repoRoot からの相対で返る。judge-output・verdict は外れる');
+  assert.deepEqual(names({ status: 'failed', staleOutput: true }), [P + 'build-main.json', P + 'logs/l10n-count.log', P + 'sub/l10n-count.json'], 'dir 直下の l10n-count.json だけ外れる。logs と sub の下は残る');
+});
