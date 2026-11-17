@@ -11,7 +11,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { REPO, NEW_DEFAULT } from './build/root.mjs';
-import { makeSandbox, removeSandbox, writeFile, runPs } from './build/helpers.mjs';
+import { makeSandbox, removeSandbox, writeFile, runPs, parseJsonOut } from './build/helpers.mjs';
 import { DEFAULTS, resolveLocalConfig } from '../scripts/lib/local-config.mjs';
 import * as build from '../scripts/build.mjs';
 
@@ -93,10 +93,13 @@ test('PowerShell 側の部品（local-config.ps1）の既定も同じ（configur
   const sb = makeSandbox('moc-');
   try {
     const cfg = path.join(sb, 'local.json');
+    // 前の installRoot を一時の場所にしておく（既定の本物の置き場所と、動いている Shuko を見ないため）。
+    writeFile(cfg, JSON.stringify({ installRoot: path.join(sb, 'old-inst') }));
     const r = runPs(path.join(REPO, 'scripts', 'configure.ps1'), ['-ConfigPath', cfg, '-InstallRoot', path.join(sb, 'inst'), '-NoShellIntegration']);
     assert.equal(r.status, 0, r.stderr + r.stdout);
-    const obj = JSON.parse(fs.readFileSync(cfg, 'utf8'));
-    assert.equal(lc(obj.buildRoot), lc(NEW_DEFAULT));
+    // 既存のファイルに buildRoot が無いときは書き足されないので、configure.ps1 が出力する解決後の値を見る。
+    const out = parseJsonOut(r.stdout);
+    assert.equal(lc(out.resolved.buildRoot), lc(NEW_DEFAULT));
   } finally {
     removeSandbox(sb);
   }

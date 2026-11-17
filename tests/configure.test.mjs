@@ -185,7 +185,9 @@ test('-InstallRoot: moves versions, history.txt and backups; current is recreate
 });
 
 test('-InstallRoot: the value is written as the user gave it (a %NAME% is not expanded)', () => {
+  // The old installRoot is a test folder, so the real %LOCALAPPDATA%\Programs\Shuko (and a running Shuko) is never looked at.
   const s = setup();
+  fs.writeFileSync(s.cfg, JSON.stringify({ installRoot: path.join(s.root, 'OldPct'), keepVersions: 3 }));
   const r = s.run('-InstallRoot', '%SHUKO_TEST_BASE%\\Pct', '-NoMove');
   assert.equal(r.status, 0, r.stderr + r.stdout);
   assert.equal(JSON.parse(s.read()).installRoot, '%SHUKO_TEST_BASE%\\Pct');

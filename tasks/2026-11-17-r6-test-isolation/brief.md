@@ -2,7 +2,7 @@
 
 - 担当: cao-shen（曹参）。検証は ooka-echizen（大岡越前守）
 - 依頼日: 2026-11-17
-- 状態: 依頼中
+- 状態: 完了
 
 ## 目的
 
@@ -37,8 +37,10 @@
 
 ## 結果
 
-（リーダーが記入）
+- 曹参が2件を、一時の local.json に一時の installRoot を先に書いてから走る形に直した（scripts/ は変えていない）。
+- 大岡越前守の検証に合格（verification-r6-test-isolation.md）。configure 17/17、move-off-c 26/26。2件は前の installRoot のフォルダを作らないので、エディタを探す処理に入らない（コードで確かめた）。
+- 検証の直後に、リーダーが tasklist で日常の Shuko（Shuko.exe 20 個）が動いていることを見た。動いている状態で通ったと判断した。
 
 ## 未解決
 
-（リーダーが記入）
+- なし。任意の改善（move-off-c の件に sources.buildRoot === "default" を足す）は今は入れない。
