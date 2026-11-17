@@ -32,6 +32,7 @@
   extensions-src/
     mydist/                       自前の組み込み拡張（宣言だけ。04 の6節）
     notion-sync/                  自前の組み込み拡張（05）。ここでビルドして dist/ を作る
+    language-pack-ja/             自前の組み込みの日本語パック（04 の7節。2026-11-17）
   extensions.lock.json            同梱する第三者の拡張の台帳（04）
   scripts/                        Node.js（.mjs）と PowerShell（.ps1）
     prepare.mjs                   作業ツリーの用意
@@ -40,7 +41,10 @@
     take-in.mjs                   取り込みの一連（06）
     adopt.mjs                     判定を見て採ると決めた版の確定（取り込みのブランチを main へ、タグ）
     convert-sublime-keys.mjs      Sublime のキーの一度だけの変換（04 の6.2）
-    make-icons.mjs                assets/ の PNG・ICO を自作の意匠で書き出す
+    make-icons.mjs                assets/ の PNG・ICO・SVG を書き出す（意匠は Claude と VS Code の合成の A。2026-11-17 の裁定）
+    copy-icon-sources.mjs         アイコンの元の絵を icon-src/ へ写す（出どころと SHA-256 を SOURCES.json に記録）
+    icon-src/                     アイコンの元の絵の写し（assets/ の外に置き、作業ツリーへ写さない）
+    l10n-ja.mjs                   日本語パックの取得・文言の表・訳の追加・束の組み立て・数え（04 の7節）
     lock-fetch.mjs / lock-verify.mjs / install-extensions.mjs   台帳（04）
     switch.ps1                    版の切り替え（6節）
     configure.ps1                 PC ごとの設定ファイル local.json の作成・変更（6.1）

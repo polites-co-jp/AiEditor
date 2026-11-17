@@ -11,7 +11,7 @@
 
 - 範囲: `--uninstall-extension <ID>` だけ。`--extensions-dir`・`--user-data-dir` などの別の置き場所を指す引数は要らない（一時の置き場所の試しは、その置き場所ごと作り直すため）。ほかの CLI の操作（`--install-extension` は `install-extensions.mjs` が打つ）は今のまま。
 - 書き方（前方一致の行、`installRoot` を決め打ちにするか、`shuko` だけの形にするか、`bash_exact` で ID ごとにするか）は開発部に任せる。課の台帳の「塞いでいない穴」（台本を通せば許可の外も消せる）は、外す処理を台本に入れないことで守る。
-- 外した後は、`%APPDATA%\Shuko\languagepacks.json` の `ja` が新しいパックを指すことを確かめる（読むだけ。今の許可で足りる見込み。`read_paths` に `%APPDATA%\Shuko\` が無ければ、あわせて足してほしい）。
+- 外した後は、`%APPDATA%\Shuko\languagepacks.json` の `ja` が新しいパックを指すことを確かめる（読むだけ。蒙恬の `read_paths` に `%APPDATA%\Shuko\` が無いので、あわせて足してほしい。2026-11-17 の蒙恬の報告で確かめた）。
 
 ## 2. 知らせ
 
