@@ -1,0 +1,18 @@
+{
+  "note": "アイコンの元の絵の写し。scripts/copy-icon-sources.mjs が書く。make-icons.mjs はこの写しだけを読む",
+  "files": [
+    {
+      "file": "scripts/icon-src/vscode-code-icon.svg",
+      "sha256": "57270d907046995a87bb87c49a9e0ad683e87810718bcfa4c1d7ee6240400e13",
+      "from": "tmp/b/official/vscode-1.146.0/69047191fc/resources/app/out/media/code-icon.svg",
+      "what": "VS Code 1.146.0（公式の Windows 版の展開）のタイトルバーのアイコン"
+    },
+    {
+      "file": "scripts/icon-src/claude-logo.svg",
+      "sha256": "a3101f3047a119aa11825ad9369510f0c472428c8c52d420e31bc62db44a8364",
+      "from": "tmp/b/cache/vsix/anthropic.claude-code-2.1.322@win32-x64/Anthropic.claude-code-2.1.322@win32-x64.vsix!/extension/resources/claude-logo.svg",
+      "fromSha256": "8c0b09c6aefbca3196bcfe87e33b4e531cab3c13b2d9fd43a441562c74c5e4a4",
+      "what": "Claude Code 拡張 2.1.322（Open VSX の win32-x64 の VSIX）の Claude の印"
+    }
+  ]
+}

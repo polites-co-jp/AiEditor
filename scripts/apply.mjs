@@ -164,6 +164,21 @@ export function listPatches(dir) {
 // 自前の組み込み拡張から写すもの（apply-design.md の2.6）。
 const EXT_FILES = [/^package\.json$/, /^package\.nls(\.[^/]+)?\.json$/, /^README\.md$/, /^ThirdPartyNotices\.txt$/, /^LICENSE/];
 const EXT_DIRS = ["dist", "media"];
+// 言語パック（extensions-src/language-pack-ja）の package.json の contributes.localizations の translations が指すファイルのうち、
+// 無いもの（パッケージの中の相対パス）。読めない package.json は ["package.json"]。
+export function languagePackMissingFiles(dir) {
+  let m;
+  try {
+    m = JSON.parse(fs.readFileSync(path.join(dir, "package.json"), "utf8").replace(/^﻿/, ""));
+  } catch {
+    return ["package.json"];
+  }
+  const locs = (m && m.contributes && Array.isArray(m.contributes.localizations)) ? m.contributes.localizations : [];
+  const paths = locs.flatMap((l) => (Array.isArray(l.translations) ? l.translations : []).map((t) => t && t.path)).filter((p) => typeof p === "string");
+  if (!paths.length) return ["contributes.localizations の translations"];
+  return paths.filter((p) => !fs.existsSync(path.join(dir, p)));
+}
+
 function extFilter(rel, dirent) {
   if (rel.includes("/")) return true; // 写すフォルダの中は全部
   return dirent.isDirectory() ? EXT_DIRS.includes(rel) : EXT_FILES.some((re) => re.test(rel));
@@ -403,15 +418,23 @@ function runApply(a) {
     // 5. 自前の組み込み拡張
     const be = { applied: "ok", copied: [], commit: null };
     rec.builtinExtensions = be;
-    for (const name of ["mydist", "notion-sync"]) {
+    for (const name of ["mydist", "notion-sync", "language-pack-ja"]) {
       const src = path.join(a.extensionsSrc, name);
       if (!fs.existsSync(path.join(src, "package.json"))) {
-        if (name === "mydist") throw new StopError("builtinExtensions", name, `${src}/package.json が無い`);
+        // mydist と言語パックは無ければ止める（言語パックを黙って飛ばすと英語のビルドができる。
+        // tasks/2026-11-17-l10n-ja-verify の M1）。notion-sync は無ければ写さずに進む
+        if (name === "mydist" || name === "language-pack-ja") throw new StopError("builtinExtensions", name, `${src}/package.json が無い`);
         continue;
       }
       if (name === "notion-sync" && !fs.existsSync(path.join(src, "dist", "extension.js"))) {
         warn(`notion-sync の dist/extension.js が無い（ビルドしていない）ので写さない`);
         continue;
+      }
+      // 日本語の言語パック（docs/04 の7節）。package.json があるのに訳の束が無ければ止める（写さずに進むと日本語が英語に戻る）。
+      // 束は node scripts/l10n-ja.mjs build が dist/translations/ に作る
+      if (name === "language-pack-ja") {
+        const missing = languagePackMissingFiles(src);
+        if (missing.length) throw new StopError("builtinExtensions", name, `言語パックの訳の束が無い（node scripts/l10n-ja.mjs build で作る）: ${missing.join(", ")}`);
       }
       const dest = path.join(wt, "extensions", name);
       if (!a.dryRun && fs.existsSync(dest)) fs.rmSync(dest, { recursive: true, force: true });

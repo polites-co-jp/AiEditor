@@ -2,7 +2,7 @@
 
 - 担当: meng-tian（蒙恬）
 - 依頼日: 2026-11-17
-- 状態: 依頼中
+- 状態: 完了
 
 ## 目的
 
@@ -48,11 +48,14 @@
 
 ## 結果
 
-（リーダーが記入）
+- 版 `1.146.0-p5-c-all-r6` を作った（r5 は bundle の鍵の直しの前にパッケージ化されたため作り直した）。zip は `tmp\b\dist\1.146.0-p5-c-all-r6.zip`（SHA-256 `a70b0a1c…5f09`）。
+- 組み込みの日本語パック `extensions-src/language-pack-ja/`（足した訳 184、上書き 14、除外 5）、アイコン（A）、apply.mjs の M1、take-in.mjs の自動の数え、TAKE-IN.md の直し。
+- 記録は `handoff-notes-meng-tian.md`、`1.146.0-p5-c-all-r6/`、`l10n-count-r6*.json`。大岡越前守の関門に合格（`tasks/2026-11-17-r6-gate/`）。
 
 ## 未解決
 
-（リーダーが記入）
+- L1〜L3 は `tasks/2026-11-17-r6-followups/` で直す。
+- 入れ替え（古いパックを外す→switch→install-extensions）は、Team の許可が入ってから。
 
 ## 次の担当
 

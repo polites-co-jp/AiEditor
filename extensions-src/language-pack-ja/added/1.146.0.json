@@ -1,0 +1,958 @@
+{
+  "$comment": "課が足した訳（本体 1.146.0 で、公式の訳に無い文言と、override: true は公式の訳が英語のままの文言）。鍵はモジュールと鍵（本体）か拡張の ID と package・bundle の鍵。en は訳したときの英語（変われば訳し直す）。作るのは node scripts/l10n-ja.mjs add",
+  "version": "1.146.0",
+  "core": {
+    "vs/base/browser/ui/icons/iconSelectBox": {
+      "iconSelect.iconName": {
+        "en": "Icon name: {0}",
+        "ja": "アイコン名: {0}"
+      },
+      "iconSelect.icons": {
+        "en": "Icons",
+        "ja": "アイコン"
+      },
+      "iconSelect.search": {
+        "en": "Search icons",
+        "ja": "アイコンの検索"
+      }
+    },
+    "vs/editor/common/config/editorConfigurationSchema": {
+      "diffEditor.experimental.verifyDiffSampleRate": {
+        "en": "The probability (from 0 to 1) that a computed diff is checked for correctness and the result is reported in telemetry.",
+        "ja": "計算された差分の正しさを確認し、その結果をテレメトリで報告する確率 (0 から 1)。"
+      }
+    },
+    "vs/editor/contrib/hover/browser/markerHoverParticipant": {
+      "hint": {
+        "en": "Hint",
+        "ja": "ヒント"
+      }
+    },
+    "vs/platform/actionWidget/browser/actionList": {
+      "actionList.standaloneToggle.disabledReason": {
+        "en": "{0}, {1}",
+        "ja": "{0}、{1}"
+      }
+    },
+    "vs/platform/browserView/electron-main/browserViewMainService": {
+      "browser.closeBeforeNetworkChange": {
+        "en": "Close this workspace's open browser tabs, then open the page again to use the new network setting.",
+        "ja": "新しいネットワーク設定を使用するには、このワークスペースで開いているブラウザー タブを閉じてから、ページをもう一度開いてください。"
+      }
+    },
+    "vs/platform/dialogs/electron-browser/dialog": {
+      "aboutDetailWithoutCopilot": {
+        "en": "Version: {0}\nCommit: {1}\nDate: {2}\nElectron: {3}\nElectronBuildId: {4}\nChromium: {5}\nNode.js: {6}\nV8: {7}\nOS: {8}",
+        "ja": "バージョン: {0}\nコミット: {1}\n日付: {2}\nElectron: {3}\nElectronBuildId: {4}\nChromium: {5}\nNode.js: {6}\nV8: {7}\nOS: {8}"
+      }
+    },
+    "vs/platform/files/common/fileService": {
+      "atomicMoveProvider": {
+        "en": "Atomic moves require the same file system provider.",
+        "ja": "アトミックな移動には、同じファイル システム プロバイダーが必要です。"
+      },
+      "atomicMoveSource": {
+        "en": "Atomic moves only support files.",
+        "ja": "アトミックな移動は、ファイルのみをサポートします。"
+      },
+      "atomicMoveTarget": {
+        "en": "Atomic moves only support replacing files.",
+        "ja": "アトミックな移動は、ファイルの置き換えのみをサポートします。"
+      },
+      "atomicMoveUnsupported": {
+        "en": "The file system provider does not support atomic rename.",
+        "ja": "ファイル システム プロバイダーは、アトミックな名前変更をサポートしていません。"
+      }
+    },
+    "vs/platform/files/node/diskFileSystemProvider": {
+      "atomicRenameSource": {
+        "en": "Atomic renames only support files.",
+        "ja": "アトミックな名前変更は、ファイルのみをサポートします。"
+      },
+      "atomicRenameTarget": {
+        "en": "Atomic renames only support replacing files.",
+        "ja": "アトミックな名前変更は、ファイルの置き換えのみをサポートします。"
+      }
+    },
+    "vs/platform/theme/common/colors/confettiColors": {
+      "confettiColor1": {
+        "en": "The first color used in confetti animations.",
+        "ja": "紙吹雪のアニメーションで使用される 1 番目の色。"
+      },
+      "confettiColor2": {
+        "en": "The second color used in confetti animations.",
+        "ja": "紙吹雪のアニメーションで使用される 2 番目の色。"
+      },
+      "confettiColor3": {
+        "en": "The third color used in confetti animations.",
+        "ja": "紙吹雪のアニメーションで使用される 3 番目の色。"
+      },
+      "confettiColor4": {
+        "en": "The fourth color used in confetti animations.",
+        "ja": "紙吹雪のアニメーションで使用される 4 番目の色。"
+      },
+      "confettiColor5": {
+        "en": "The fifth color used in confetti animations.",
+        "ja": "紙吹雪のアニメーションで使用される 5 番目の色。"
+      },
+      "confettiColor6": {
+        "en": "The sixth color used in confetti animations.",
+        "ja": "紙吹雪のアニメーションで使用される 6 番目の色。"
+      }
+    },
+    "vs/platform/update/common/update.config.contribution": {
+      "restartWhenIdle": {
+        "en": "Controls whether to restart automatically to apply a downloaded update after the screen has been locked for a minute while on power, keeping the machine from going to sleep until then. The restart only happens if every window can be restored exactly as it was, for example when no terminal process, task, debug session, chat request, or agent session is running, and it does not take focus from another application. Only supported on macOS.",
+        "ja": "電源に接続した状態で画面が 1 分間ロックされた後、ダウンロードした更新プログラムを適用するために自動的に再起動するかどうかを制御します。それまでの間、コンピューターはスリープしません。再起動は、すべてのウィンドウを元のとおりに復元できる場合 (たとえば、ターミナル プロセス、タスク、デバッグ セッション、チャット要求、エージェント セッションが 1 つも実行されていない場合) にのみ行われ、ほかのアプリケーションからフォーカスを奪うことはありません。macOS でのみサポートされます。"
+      },
+      "showOutdatedBuildReminder": {
+        "en": "Show a reminder to update once this version of VS Code is two months old. The reminder is shown at most once a month.",
+        "ja": "このバージョンの VS Code が 2 か月経過したら、更新を促すリマインダーを表示します。リマインダーは最大で月に 1 回表示されます。"
+      }
+    },
+    "vs/platform/webContentExtractor/node/sharedWebContentExtractorService": {
+      "imageRequestFailed": {
+        "en": "Image request failed ({0}).",
+        "ja": "画像の要求に失敗しました ({0})。"
+      },
+      "imageTypeUnsupported": {
+        "en": "The response is not a supported image.",
+        "ja": "応答は、サポートされている画像ではありません。"
+      }
+    },
+    "vs/workbench/api/browser/mainThreadGitHub": {
+      "github.clientDisposed": {
+        "en": "The GitHub client has been disposed.",
+        "ja": "GitHub クライアントは破棄されています。"
+      },
+      "github.createRequiresSession": {
+        "en": "Creating a gist requires a client bound to a GitHub session.",
+        "ja": "Gist を作成するには、GitHub セッションにバインドされたクライアントが必要です。"
+      },
+      "github.invalidGist": {
+        "en": "Invalid gist request: {0}",
+        "ja": "Gist の要求が無効です: {0}"
+      },
+      "github.invalidGistFiles": {
+        "en": "A gist must contain at least one file with non-empty names and no path separators.",
+        "ja": "Gist には、名前が空でなく、パスの区切り文字を含まないファイルが少なくとも 1 つ必要です。"
+      },
+      "github.invalidGistId": {
+        "en": "A gist identifier is required.",
+        "ja": "Gist の識別子が必要です。"
+      },
+      "github.invalidHandle": {
+        "en": "The GitHub client could not be created.",
+        "ja": "GitHub クライアントを作成できませんでした。"
+      },
+      "github.sessionUnavailable": {
+        "en": "The selected GitHub session is not available to this extension.",
+        "ja": "選択した GitHub セッションは、この拡張機能では使用できません。"
+      },
+      "github.unknownError": {
+        "en": "The GitHub request failed.",
+        "ja": "GitHub への要求に失敗しました。"
+      }
+    },
+    "vs/workbench/browser/actions/developerActions": {
+      "communicationBlockSource": {
+        "en": "Selected communication block",
+        "ja": "選択した通信ブロック"
+      },
+      "excludedBlockContributions": {
+        "en": "Contributions excluded by a selected whole block",
+        "ja": "選択したブロック全体によって除外された提供内容"
+      },
+      "excludedBlockStatus": {
+        "en": "Excluded by higher-priority {0} block (value omitted)",
+        "ja": "優先度の高い {0} ブロックによって除外されました (値は省略)"
+      }
+    },
+    "vs/workbench/browser/parts/editor/contentPart": {
+      "contentPart": {
+        "en": "Editor",
+        "ja": "エディター"
+      }
+    },
+    "vs/workbench/browser/parts/editor/editor.contribution": {
+      "viewEditor": {
+        "en": "View Editor",
+        "ja": "ビュー エディター"
+      }
+    },
+    "vs/workbench/browser/parts/editor/editorDropTarget": {
+      "movedEditorToPart": {
+        "en": "Moved {0} to {1}",
+        "ja": "{0} を {1} に移動しました"
+      }
+    },
+    "vs/workbench/browser/parts/editor/editorGroupWatermark": {
+      "watermark.chatIcon": {
+        "en": "Icon for opening chat in the editor watermark.",
+        "ja": "エディターの透かしでチャットを開くためのアイコン。"
+      },
+      "watermark.commandsIcon": {
+        "en": "Icon for showing all commands in the editor watermark.",
+        "ja": "エディターの透かしですべてのコマンドを表示するためのアイコン。"
+      },
+      "watermark.debugIcon": {
+        "en": "Icon for starting debugging in the editor watermark.",
+        "ja": "エディターの透かしでデバッグを開始するためのアイコン。"
+      },
+      "watermark.findInFilesIcon": {
+        "en": "Icon for finding in files in the editor watermark.",
+        "ja": "エディターの透かしでフォルダーを指定して検索するためのアイコン。"
+      },
+      "watermark.newFileIcon": {
+        "en": "Icon for creating a file in the editor watermark.",
+        "ja": "エディターの透かしでファイルを作成するためのアイコン。"
+      },
+      "watermark.openFileFolderIcon": {
+        "en": "Icon for opening a file or folder in the editor watermark.",
+        "ja": "エディターの透かしでファイルまたはフォルダーを開くためのアイコン。"
+      },
+      "watermark.openFileIcon": {
+        "en": "Icon for opening a file in the editor watermark.",
+        "ja": "エディターの透かしでファイルを開くためのアイコン。"
+      },
+      "watermark.openFolderIcon": {
+        "en": "Icon for opening a folder in the editor watermark.",
+        "ja": "エディターの透かしでフォルダーを開くためのアイコン。"
+      },
+      "watermark.openRecentIcon": {
+        "en": "Icon for opening a recent workspace in the editor watermark.",
+        "ja": "エディターの透かしで最近使用したワークスペースを開くためのアイコン。"
+      },
+      "watermark.quickOpenIcon": {
+        "en": "Icon for going to a file in the editor watermark.",
+        "ja": "エディターの透かしでファイルに移動するためのアイコン。"
+      },
+      "watermark.settingsIcon": {
+        "en": "Icon for opening settings in the editor watermark.",
+        "ja": "エディターの透かしで設定を開くためのアイコン。"
+      },
+      "watermark.shortcuts": {
+        "en": "Editor Shortcuts",
+        "ja": "エディターのショートカット"
+      },
+      "watermark.terminalIcon": {
+        "en": "Icon for toggling the terminal in the editor watermark.",
+        "ja": "エディターの透かしでターミナルを切り替えるためのアイコン。"
+      }
+    },
+    "vs/workbench/browser/parts/editor/editorPartActions": {
+      "moveEditorToPart": {
+        "en": "Move Editor to Part...",
+        "ja": "エディターをパーツに移動..."
+      },
+      "movedEditorToPart": {
+        "en": "Moved {0} to {1}",
+        "ja": "{0} を {1} に移動しました"
+      },
+      "noOtherPart": {
+        "en": "There is no other part in this window",
+        "ja": "このウィンドウには、ほかのパーツがありません"
+      },
+      "part": {
+        "en": "Part",
+        "ja": "パーツ"
+      },
+      "pickPart": {
+        "en": "Select a part to move '{0}' to",
+        "ja": "'{0}' の移動先のパーツを選択してください"
+      }
+    },
+    "vs/workbench/browser/parts/editor/editorTransferVeto": {
+      "editorTransferVetoDetail": {
+        "en": "Try saving or reverting the editor first and then try again.",
+        "ja": "先にエディターを保存するか元に戻してから、もう一度お試しください。"
+      }
+    },
+    "vs/workbench/browser/parts/partGrid/partGrid": {
+      "copiedEditorsIntoNewPart": {
+        "en": "Copied {0} into a new part",
+        "ja": "{0} を新しいパーツにコピーしました"
+      },
+      "mergedPart": {
+        "en": "Merged {0} into {1}",
+        "ja": "{0} を {1} に結合しました"
+      },
+      "movedEditorsIntoNewPart": {
+        "en": "Moved {0} into a new part",
+        "ja": "{0} を新しいパーツに移動しました"
+      },
+      "movedPart": {
+        "en": "Moved {0}",
+        "ja": "{0} を移動しました"
+      }
+    },
+    "vs/workbench/browser/parts/partGrid/partGridActions": {
+      "moveEditorIntoNewPartAbove": {
+        "en": "Move Editor into New Part Above",
+        "ja": "エディターを上の新しいパーツに移動"
+      },
+      "moveEditorIntoNewPartBelow": {
+        "en": "Move Editor into New Part Below",
+        "ja": "エディターを下の新しいパーツに移動"
+      },
+      "moveEditorIntoNewPartLeft": {
+        "en": "Move Editor into New Part Left",
+        "ja": "エディターを左の新しいパーツに移動"
+      },
+      "moveEditorIntoNewPartRight": {
+        "en": "Move Editor into New Part Right",
+        "ja": "エディターを右の新しいパーツに移動"
+      },
+      "movePartDown": {
+        "en": "Move Part Down",
+        "ja": "パーツを下に移動"
+      },
+      "movePartLeft": {
+        "en": "Move Part Left",
+        "ja": "パーツを左に移動"
+      },
+      "movePartRight": {
+        "en": "Move Part Right",
+        "ja": "パーツを右に移動"
+      },
+      "movePartUp": {
+        "en": "Move Part Up",
+        "ja": "パーツを上に移動"
+      },
+      "movedPart": {
+        "en": "Moved {0}",
+        "ja": "{0} を移動しました"
+      },
+      "noNewPart": {
+        "en": "Editors do not go into new parts in this window",
+        "ja": "このウィンドウでは、エディターを新しいパーツに移動できません"
+      },
+      "partCannotMove": {
+        "en": "The parts of this window do not move",
+        "ja": "このウィンドウのパーツは移動できません"
+      },
+      "partCannotMoveNow": {
+        "en": "{0} does not move as it shows now",
+        "ja": "{0} は、今の表示のままでは移動できません"
+      },
+      "partDidNotMove": {
+        "en": "{0} is already there",
+        "ja": "{0} は既にその位置にあります"
+      }
+    },
+    "vs/workbench/common/agentsColors": {
+      "agentsWindowGraphic.orange": {
+        "en": "Orange used for a project and for code in the graphic that explains the Agents window on the Welcome page.",
+        "ja": "ようこそページでエージェント ウィンドウを説明する図の中で、プロジェクトとコードに使用されるオレンジ色。"
+      }
+    },
+    "vs/workbench/common/contextkeys": {
+      "editorGroupLockActionsHidden": {
+        "en": "Whether the editor group hides the actions that lock and unlock it, as its owner keeps it locked",
+        "ja": "所有者がロックしたままにしているため、エディター グループでロックとロック解除のアクションが非表示になっているかどうか"
+      },
+      "editorPartInPartGrid": {
+        "en": "Whether the editor part is one of the parts of a window that arranges its parts in a grid, where parts move and editors go into new parts",
+        "ja": "エディター パーツが、パーツをグリッドに配置するウィンドウ (パーツを移動でき、エディターを新しいパーツに移動できるウィンドウ) のパーツの 1 つであるかどうか"
+      },
+      "layoutMode": {
+        "en": "How the window shows its chat and its editor parts, either 'chatOnly', 'editorOnly', 'stacked' or 'sideBySide'. Unset in windows without layout modes.",
+        "ja": "ウィンドウでチャットとエディター パーツをどのように表示するか。'chatOnly'、'editorOnly'、'stacked'、'sideBySide' のいずれか。レイアウト モードのないウィンドウでは未設定です。"
+      },
+      "splitLayout": {
+        "en": "How the window arranges its chat and its editor parts while both show, or as they will next show together, either 'stacked' or 'sideBySide'. Unset in windows without layout modes.",
+        "ja": "両方を表示しているとき、または次に一緒に表示するときに、ウィンドウでチャットとエディター パーツをどのように配置するか。'stacked' または 'sideBySide' のいずれか。レイアウト モードのないウィンドウでは未設定です。"
+      },
+      "terminalsPosition": {
+        "en": "Where the part that holds the window's terminals sits, either 'underChat', 'underEditor' or 'fullWidth'. Unset in windows without such a part.",
+        "ja": "ウィンドウのターミナルを保持するパーツの位置。'underChat'、'underEditor'、'fullWidth' のいずれか。そのようなパーツのないウィンドウでは未設定です。"
+      },
+      "terminalsVisible": {
+        "en": "Whether the window shows the part that holds its terminals. Unset in windows without such a part.",
+        "ja": "ウィンドウに、ターミナルを保持するパーツが表示されているかどうか。そのようなパーツのないウィンドウでは未設定です。"
+      }
+    },
+    "vs/workbench/contrib/accessibility/browser/accessibilityConfiguration": {
+      "verbosity.agentsWindowExtensions": {
+        "en": "Provide information about how to access accessibility help when managing which extensions run in the Agents window.",
+        "ja": "エージェント ウィンドウで実行する拡張機能を管理するときに、アクセシビリティ ヘルプにアクセスする方法に関する情報を提供します。"
+      },
+      "verbosity.chatPetJumpGame": {
+        "en": "Provide information about how to access accessibility help when Blobby's jump game is focused.",
+        "ja": "Blobby のジャンプ ゲームにフォーカスがある場合に、アクセシビリティ ヘルプにアクセスする方法に関する情報を提供します。"
+      },
+      "verbosity.inboxNotifications": {
+        "en": "Provide information about how to navigate and act on prioritized notifications in the Inbox view.",
+        "ja": "受信トレイ ビューで、優先順位付けされた通知を移動して操作する方法に関する情報を提供します。"
+      },
+      "verbosity.remotes.description": {
+        "en": "Provide information about how to access accessibility help when managing remotes.",
+        "ja": "リモートを管理するときに、アクセシビリティ ヘルプにアクセスする方法に関する情報を提供します。"
+      },
+      "verbosity.sessionsGetStarted": {
+        "en": "Provide information about how to access accessibility help for the Get Started checklist in the Sessions view.",
+        "ja": "セッション ビューの [はじめに] チェックリストで、アクセシビリティ ヘルプにアクセスする方法に関する情報を提供します。"
+      }
+    },
+    "vs/workbench/contrib/accessibility/browser/editorAccessibilityHelp": {
+      "editor.simpleFileDialogSelectInitialPath": {
+        "en": "In the simple file dialog, the pre-filled path is selected when a screen reader is detected, so typing replaces it. Change this with the files.simpleDialog.selectInitialPath setting.",
+        "ja": "簡易ファイル ダイアログでは、スクリーン リーダーが検出されると、あらかじめ入力されたパスが選択されるため、入力するとパスが置き換えられます。これは files.simpleDialog.selectInitialPath 設定で変更できます。"
+      }
+    },
+    "vs/workbench/contrib/browserView/electron-browser/browserViewWorkbenchService": {
+      "browser.networkProxyUnavailable": {
+        "en": "The browser network proxy did not start. Reload the window and try again.",
+        "ja": "ブラウザーのネットワーク プロキシを開始できませんでした。ウィンドウを再読み込みして、もう一度お試しください。"
+      },
+      "browser.requiredNetworkUnavailable": {
+        "en": "The required remote network is unavailable.",
+        "ja": "必要なリモート ネットワークを使用できません。"
+      },
+      "browser.unknownNetwork": {
+        "en": "This page was opened for another remote ({0}). Open it again from a window connected to that remote.",
+        "ja": "このページは別のリモート ({0}) 用に開かれました。そのリモートに接続されたウィンドウから、もう一度開いてください。"
+      }
+    },
+    "vs/workbench/contrib/browserView/electron-browser/features/browserRemoteFeatures": {
+      "browser.connectedViaHost": {
+        "en": "Connected via {0}",
+        "ja": "{0} 経由で接続済み"
+      },
+      "browser.hostDisconnected": {
+        "en": "{0} is disconnected. Reload the page after it reconnects.",
+        "ja": "{0} は切断されています。再接続した後で、ページを再読み込みしてください。"
+      },
+      "browser.localFallback.global": {
+        "en": "Connected locally. Browsers using global storage load pages from your local network, not from {0}.",
+        "ja": "ローカルで接続しています。グローバル ストレージを使用するブラウザーは、{0} からではなく、ローカル ネットワークからページを読み込みます。"
+      },
+      "browser.localFallback.unsupported": {
+        "en": "{0} does not support browser proxying. Pages load from your local network. Update the agent host to reach its network.",
+        "ja": "{0} はブラウザーのプロキシをサポートしていません。ページはローカル ネットワークから読み込まれます。エージェント ホストのネットワークに接続するには、エージェント ホストを更新してください。"
+      }
+    },
+    "vs/workbench/contrib/browserView/electron-browser/features/browserTabManagementFeatures": {
+      "browser.externalUriOpener": {
+        "en": "Open in Integrated Browser",
+        "ja": "統合ブラウザーで開く"
+      }
+    },
+    "vs/workbench/contrib/codeEditor/browser/emptyTextEditorHint/emptyTextEditorHint": {
+      "emptyTextEditorHintWithInlineChat": {
+        "en": "[[Generate code]] ({0}), or [[select a language]] ({1}). Start typing to dismiss or [[don't show]] this again.",
+        "ja": "[[コードの生成]] ({0}) または [[言語の選択]] ({1})。入力を開始して閉じるか、今後は [[表示しない]] ようにします。",
+        "override": true
+      },
+      "emptyTextEditorHintWithoutInlineChat": {
+        "en": "[[Select a language]] ({0}) to get started. Start typing to dismiss or [[don't show]] this again.",
+        "ja": "[[言語の選択]] ({0}) を使用して作業を開始します。入力を開始して閉じるか、今後は [[表示しない]] ようにします。",
+        "override": true
+      }
+    },
+    "vs/workbench/contrib/extensions/browser/extensionEditor": {
+      "Marketplace Info": {
+        "en": "Marketplace",
+        "ja": "マーケットプレース",
+        "override": true
+      }
+    },
+    "vs/workbench/contrib/extensions/browser/extensionsActions": {
+      "installExtensionStartWithoutEditor": {
+        "en": "Installing extension {0} started.",
+        "ja": "拡張機能 {0} のインストールを開始しました。"
+      },
+      "installed version blocked by marketplace": {
+        "en": "The installed version has been blocked by the Extension Marketplace. Switch to a permitted version.",
+        "ja": "インストールされているバージョンは、拡張機能マーケットプレースによってブロックされています。許可されているバージョンに切り替えてください。"
+      },
+      "installed version blocked by organization policy": {
+        "en": "The installed version is blocked by your organization's policy. Switch to a permitted version.",
+        "ja": "インストールされているバージョンは、組織のポリシーによってブロックされています。許可されているバージョンに切り替えてください。"
+      },
+      "updates blocked by marketplace": {
+        "en": "Updates for this extension have been blocked by the Extension Marketplace.",
+        "ja": "この拡張機能の更新は、拡張機能マーケットプレースによってブロックされています。"
+      },
+      "updates blocked by organization policy": {
+        "en": "Updates for this extension are blocked by your organization's policy.",
+        "ja": "この拡張機能の更新は、組織のポリシーによってブロックされています。"
+      }
+    },
+    "vs/workbench/contrib/extensions/browser/extensionsWorkbenchService": {
+      "disallowed extensions": {
+        "en": "Some extensions are disabled because they are configured not to be allowed.",
+        "ja": "一部の拡張機能は、許可しない構成になっているため無効になっています。",
+        "override": true
+      },
+      "disallowed extensions by policy": {
+        "en": "Some extensions are disabled because they are not allowed by your system administrator.",
+        "ja": "一部の拡張機能は、システム管理者によって許可されていないため無効になっています。",
+        "override": true
+      }
+    },
+    "vs/workbench/contrib/files/browser/fileActions.contribution": {
+      "revealInFilesView": {
+        "en": "Reveal in Files View",
+        "ja": "ファイル ビューで表示"
+      }
+    },
+    "vs/workbench/contrib/files/browser/files.contribution": {
+      "fileNestingPatterns": {
+        "en": "Controls nesting of files in the Explorer. {0} must be set for this to take effect. Each __Item__ represents a parent pattern and may contain a single `*` character that matches any string. Each __Value__ represents a comma separated list of the child patterns that should be shown nested under a given parent. Child patterns may contain several special tokens:\n- `${capture}`: Matches the resolved value of the `*` from the parent pattern\n- `${basename}`: Matches the parent file's basename, the `file` in `file.ts`\n- `${extname}`: Matches the parent file's extension, the `ts` in `file.ts`\n- `${dirname}`: Matches the parent file's directory name, the `src` in `src/file.ts`\n- `*`:  Matches any string, may only be used once per child pattern",
+        "ja": "エクスプローラー内のファイルの入れ子を制御します。この機能を有効にするには、{0} を設定する必要があります。各__Item__は親パターンを表し、任意の文字列に一致する 1 つの `*` 文字を含む場合があります。各__Value__は、指定された親の下に入れ子になっている子パターンのコンマ区切りの一覧を表します。子パターンには、いくつかの特別なトークンが含まれている可能性があります:\n- `${capture}`: 親パターンの `*` の解決された値と一致します\n- `${basename}`: 親ファイルのベース名、`file.ts` の `file` と一致します\n- `${extname}`: 親ファイルの拡張子、`file.ts` の `ts` と一致します\n- `${dirname}`: 親ファイルのディレクトリ名、`src/file.ts` の `src` と一致します\n- `*`: 任意の文字列に一致します。子パターンごとに 1 回のみ使用できます",
+        "override": true
+      },
+      "files.exclude.exception": {
+        "en": "An exception: files and folders that match the glob pattern after the `!`, and everything inside them, are not excluded even if another pattern excludes them. Version control folders such as `.git` stay excluded unless the pattern names them. Set to true or false to enable or disable the exception.",
+        "ja": "例外: `!` の後の glob パターンに一致するファイルとフォルダー、およびその中にあるすべてのものは、ほかのパターンが除外していても除外されません。`.git` などのバージョン管理のフォルダーは、パターンで名前を指定しない限り除外されたままです。例外を有効または無効にするには、true または false に設定します。"
+      },
+      "files.simpleDialog.selectInitialPath": {
+        "en": "Controls whether the pre-filled path in the simple file dialog is selected when the dialog opens.",
+        "ja": "簡易ファイル ダイアログを開いたときに、あらかじめ入力されたパスを選択するかどうかを制御します。"
+      },
+      "files.simpleDialog.selectInitialPath.auto": {
+        "en": "Select the pre-filled path only when a screen reader is detected.",
+        "ja": "スクリーン リーダーが検出された場合にのみ、あらかじめ入力されたパスを選択します。"
+      },
+      "files.simpleDialog.selectInitialPath.off": {
+        "en": "Never select the pre-filled path; place the cursor at its end.",
+        "ja": "あらかじめ入力されたパスを選択せず、カーソルをパスの末尾に置きます。"
+      },
+      "files.simpleDialog.selectInitialPath.on": {
+        "en": "Always select the pre-filled path so typing replaces it.",
+        "ja": "入力するとパスが置き換えられるように、あらかじめ入力されたパスを常に選択します。"
+      }
+    },
+    "vs/workbench/contrib/mediaPreview/browser/activeMediaPreview": {
+      "activeImagePreview": {
+        "en": "Whether the active editor, or the focused side of the active diff editor, is an image preview",
+        "ja": "アクティブなエディター、またはアクティブな差分エディターのフォーカスがある側が、画像プレビューであるかどうか"
+      }
+    },
+    "vs/workbench/contrib/mediaPreview/browser/imagePreviewEditor": {
+      "imagePreview.ariaLabel": {
+        "en": "Image Preview: {0}",
+        "ja": "画像プレビュー: {0}"
+      },
+      "imagePreview.gitLfs": {
+        "en": "The image is stored with Git LFS and is not available for preview.",
+        "ja": "この画像は Git LFS で保存されており、プレビューできません。"
+      },
+      "imagePreview.loadError": {
+        "en": "An error occurred while loading the image.",
+        "ja": "イメージの読み込み中にエラーが発生しました。"
+      },
+      "mediaPreview.openInTextEditor": {
+        "en": "Open in Text Editor",
+        "ja": "テキスト エディターで開く"
+      }
+    },
+    "vs/workbench/contrib/mediaPreview/browser/mediaPlayerEditorInput": {
+      "audioPreview.gitLfs": {
+        "en": "The audio file is stored with Git LFS and is not available for preview.",
+        "ja": "このオーディオ ファイルは Git LFS で保存されており、プレビューできません。"
+      },
+      "audioPreview.loadError": {
+        "en": "An error occurred while loading the audio file.",
+        "ja": "オーディオ ファイルの読み込み中にエラーが発生しました。"
+      },
+      "audioPreview.unsupportedCodec": {
+        "en": "This audio file uses the {0} codec, which can't be played in the audio preview. Open the file in an external application to listen to it.",
+        "ja": "このオーディオ ファイルは {0} コーデックを使用しており、オーディオ プレビューでは再生できません。聞くには、外部アプリケーションでファイルを開いてください。"
+      },
+      "audioPreview.unsupportedUnknownCodec": {
+        "en": "This audio file uses a codec that can't be played in the audio preview. Open the file in an external application to listen to it.",
+        "ja": "このオーディオ ファイルは、オーディオ プレビューでは再生できないコーデックを使用しています。聞くには、外部アプリケーションでファイルを開いてください。"
+      },
+      "mediaPreview.openInTextEditor": {
+        "en": "Open in Text Editor",
+        "ja": "テキスト エディターで開く"
+      },
+      "videoPreview.gitLfs": {
+        "en": "The video file is stored with Git LFS and is not available for preview.",
+        "ja": "このビデオ ファイルは Git LFS で保存されており、プレビューできません。"
+      },
+      "videoPreview.loadError": {
+        "en": "An error occurred while loading the video file.",
+        "ja": "ビデオ ファイルの読み込み中にエラーが発生しました。"
+      },
+      "videoPreview.unsupportedAudioCodec": {
+        "en": "This video's audio uses the {0} codec, which can't be played in the video preview. Open the file in an external application to hear its audio.",
+        "ja": "このビデオの音声は {0} コーデックを使用しており、ビデオ プレビューでは再生できません。音声を聞くには、外部アプリケーションでファイルを開いてください。"
+      },
+      "videoPreview.unsupportedUnknownAudioCodec": {
+        "en": "This video's audio uses a codec that can't be played in the video preview. Open the file in an external application to hear its audio.",
+        "ja": "このビデオの音声は、ビデオ プレビューでは再生できないコーデックを使用しています。音声を聞くには、外部アプリケーションでファイルを開いてください。"
+      }
+    },
+    "vs/workbench/contrib/mediaPreview/browser/mediaPreview.contribution": {
+      "audioPreview.displayName": {
+        "en": "Audio Preview",
+        "ja": "オーディオ プレビュー"
+      },
+      "imagePreview.displayName": {
+        "en": "Image Preview",
+        "ja": "画像プレビュー"
+      },
+      "imagePreviewEditor": {
+        "en": "Image Preview",
+        "ja": "画像プレビュー"
+      },
+      "mediaPreview.video.autoPlay": {
+        "en": "Start playing videos on mute automatically.",
+        "ja": "ビデオをミュートの状態で自動的に再生し始めます。"
+      },
+      "mediaPreview.video.loop": {
+        "en": "Loop videos over again automatically.",
+        "ja": "ビデオを自動的にループ再生します。"
+      },
+      "mediaPreviewConfigurationTitle": {
+        "en": "Media Preview",
+        "ja": "メディア プレビュー"
+      },
+      "videoPreview.displayName": {
+        "en": "Video Preview",
+        "ja": "ビデオ プレビュー"
+      }
+    },
+    "vs/workbench/contrib/mediaPreview/browser/mediaPreviewActions": {
+      "imagePreview": {
+        "en": "Image Preview",
+        "ja": "画像プレビュー"
+      },
+      "imagePreview.copyImage": {
+        "en": "Copy",
+        "ja": "コピー"
+      },
+      "imagePreview.reopenAsPreview": {
+        "en": "Reopen as Image Preview",
+        "ja": "画像プレビューとして再度開く"
+      },
+      "imagePreview.reopenAsText": {
+        "en": "Reopen as Source Text",
+        "ja": "ソース テキストとして再度開く"
+      },
+      "imagePreview.selectZoomLevel": {
+        "en": "Select Zoom Level",
+        "ja": "ズーム レベルの選択"
+      },
+      "imagePreview.selectZoomLevelPlaceholder": {
+        "en": "Select zoom level",
+        "ja": "ズーム レベルの選択"
+      },
+      "imagePreview.zoomIn": {
+        "en": "Zoom In",
+        "ja": "拡大"
+      },
+      "imagePreview.zoomOut": {
+        "en": "Zoom Out",
+        "ja": "縮小"
+      }
+    },
+    "vs/workbench/contrib/mediaPreview/browser/mediaPreviewStatusBar": {
+      "imagePreview.dimensionsStatus": {
+        "en": "Image Dimensions",
+        "ja": "画像のサイズ"
+      },
+      "imagePreview.dimensionsStatusAriaLabel": {
+        "en": "Image Dimensions: {0}",
+        "ja": "画像のサイズ: {0}"
+      },
+      "imagePreview.selectZoomLevel": {
+        "en": "Select Zoom Level",
+        "ja": "ズーム レベルの選択"
+      },
+      "imagePreview.zoomFit": {
+        "en": "Whole Image",
+        "ja": "画像全体"
+      },
+      "imagePreview.zoomStatus": {
+        "en": "Image Zoom",
+        "ja": "イメージのズーム"
+      },
+      "imagePreview.zoomStatusAriaLabel": {
+        "en": "Image Zoom: {0}",
+        "ja": "イメージのズーム: {0}"
+      },
+      "mediaPreview.fileSizeStatus": {
+        "en": "Media File Size",
+        "ja": "メディア ファイルのサイズ"
+      },
+      "mediaPreview.fileSizeStatusAriaLabel": {
+        "en": "File Size: {0}",
+        "ja": "ファイル サイズ: {0}"
+      }
+    },
+    "vs/workbench/contrib/multiDiffEditor/browser/multiDiffEditorAccessibilityHelp": {
+      "multiDiffEditor.fileListHelp.agentsWindowActions": {
+        "en": "Use Toggle Details in the editor toolbar{0} to show or hide the changed files. The Files View & Position submenu in the tab bar's More Actions menu switches between a list and a folder tree, and moves the files to the left or right of the diffs.",
+        "ja": "エディターのツール バーの [詳細の切り替え]{0} を使用して、変更されたファイルを表示または非表示にします。タブ バーの [その他の操作] メニューにある [ファイル ビューと位置] サブメニューで、一覧とフォルダー ツリーを切り替えたり、ファイルを差分の左右に移動したりできます。"
+      },
+      "multiDiffEditor.fileListHelp.editorHeaderActions": {
+        "en": "Use Toggle Files, the last action in the header row above the diffs, to show or hide the changed files.",
+        "ja": "差分の上のヘッダー行の最後のアクションである [ファイルの切り替え] を使用して、変更されたファイルを表示または非表示にします。"
+      }
+    },
+    "vs/workbench/contrib/preferences/browser/settingsLayout": {
+      "zenMode": {
+        "en": "Zen Mode",
+        "ja": "禅モード",
+        "override": true
+      }
+    },
+    "vs/workbench/contrib/preferences/browser/settingsTreeModels": {
+      "agentSandbox.credentialEnvVars.label": {
+        "en": "Masked environment variables",
+        "ja": "マスクされた環境変数"
+      }
+    },
+    "vs/workbench/contrib/sash/browser/sash.contribution": {
+      "sashAutoHideGrippers": {
+        "en": "Controls whether sash grippers between views and editors hide when the mouse is idle and reappear when the mouse moves. Use {0} to configure the delay. Disable to keep grippers visible. Mouse movement inside nested frames embedded in webviews, such as Simple Browser pages, is not detected. Hover and drag feedback is unaffected.",
+        "ja": "ビューとエディターの間のサッシュのグリッパーを、マウスが動いていないときに非表示にし、マウスが動いたときに再表示するかどうかを制御します。遅延は {0} で構成します。グリッパーを常に表示するには、無効にします。Web ビューに埋め込まれた入れ子のフレーム (シンプル ブラウザーのページなど) の中でのマウスの動きは検出されません。ホバーとドラッグのフィードバックには影響しません。"
+      },
+      "sashAutoHideGrippersDelay": {
+        "en": "Controls how long to wait in milliseconds without mouse movement before fading out sash grippers. Applies when {0} is enabled.",
+        "ja": "サッシュのグリッパーをフェードアウトするまで、マウスの動きがない状態で待機する時間をミリ秒単位で制御します。{0} が有効な場合に適用されます。"
+      }
+    },
+    "vs/workbench/contrib/scm/browser/scmViewPane": {
+      "expand all": {
+        "en": "Expand All Repositories",
+        "ja": "すべてのリポジトリを展開",
+        "override": true
+      }
+    },
+    "vs/workbench/contrib/search/browser/anythingQuickAccess": {
+      "openLinkToBottom": {
+        "en": "Open to the Bottom ({0})",
+        "ja": "下に開く ({0})"
+      },
+      "openLinkToSide": {
+        "en": "Open to the Side ({0})",
+        "ja": "横に並べて開く ({0})",
+        "override": true
+      },
+      "openQuickOpenLinkDefault": {
+        "en": "Default",
+        "ja": "既定"
+      },
+      "openQuickOpenLinkWith": {
+        "en": "open link",
+        "ja": "リンクを開く"
+      }
+    },
+    "vs/workbench/contrib/search/browser/search.common.contribution": {
+      "exclude.exception": {
+        "en": "An exception: files and folders that match the glob pattern after the `!`, and everything inside them, are searched even if another pattern excludes them. Version control folders such as `.git` stay excluded unless the pattern names them. Set to true or false to enable or disable the exception.",
+        "ja": "例外: `!` の後の glob パターンに一致するファイルとフォルダー、およびその中にあるすべてのものは、ほかのパターンが除外していても検索されます。`.git` などのバージョン管理のフォルダーは、パターンで名前を指定しない限り除外されたままです。例外を有効または無効にするには、true または false に設定します。"
+      }
+    },
+    "vs/workbench/contrib/terminal/browser/terminalInstance": {
+      "shellIntegration.basic": {
+        "en": "Basic",
+        "ja": "基本",
+        "override": true
+      }
+    },
+    "vs/workbench/contrib/terminal/browser/xterm/decorationStyles": {
+      "terminalPromptCommandSuccess.noDuration": {
+        "en": "Command executed {0}",
+        "ja": "コマンドは {0} に実行されました"
+      }
+    },
+    "vs/workbench/contrib/terminal/common/terminalConfiguration": {
+      "host": {
+        "en": "the name of the remote agent host the terminal runs on.",
+        "ja": "ターミナルが実行されているリモート エージェント ホストの名前。"
+      },
+      "terminal.integrated.windowsReparentConsoleWindow": {
+        "en": "Whether to make the window that shows a terminal the owner of its console window, so dialogs that console applications open, like sign-in prompts, appear in front of VS Code instead of behind it. Requires {0}.",
+        "ja": "ターミナルを表示するウィンドウを、そのコンソール ウィンドウの所有者にするかどうか。これにより、コンソール アプリケーションが開くダイアログ (サインインのプロンプトなど) が、VS Code の背後ではなく前面に表示されます。{0} が必要です。"
+      }
+    },
+    "vs/workbench/contrib/terminal/common/terminalStrings": {
+      "terminalOnHost": {
+        "en": "on {0}",
+        "ja": "{0} 上"
+      },
+      "terminalTitleOnHost": {
+        "en": "{0} on {1}",
+        "ja": "{1} 上の {0}"
+      }
+    },
+    "vs/workbench/contrib/terminalContrib/accessibility/browser/terminal.accessibility.contribution": {
+      "workbench.action.terminal.focusAccessibleBuffer": {
+        "en": "Focus Accessible Terminal View",
+        "ja": "アクセシビリティ対応のターミナル ビューにフォーカス",
+        "override": true
+      }
+    },
+    "vs/workbench/contrib/terminalContrib/accessibility/browser/terminalAccessibilityHelp": {
+      "iconPicker": {
+        "en": "Change Icon opens a searchable icon grid. Enter a name to filter, then press Down Arrow to enter the grid. Arrow keys move between icons, Home and End move to the first and last icon, and Up Arrow from the top row returns to search. Tab and Shift+Tab move between search, the grid, and the Reset to default button below the grid. Press Enter to choose an icon or reset the default terminal icon without changing its color. Escape cancels without changing the icon.",
+        "ja": "[アイコンの変更] を選ぶと、検索できるアイコンのグリッドが開きます。名前を入力して絞り込み、下方向キーを押してグリッドに入ります。方向キーでアイコン間を移動し、Home キーと End キーで最初と最後のアイコンに移動します。最上行で上方向キーを押すと検索に戻ります。Tab キーと Shift+Tab キーで、検索、グリッド、グリッドの下の [既定にリセット] ボタンの間を移動します。Enter キーを押すと、アイコンを選ぶか、色を変えずにターミナルの既定のアイコンに戻します。Esc キーを押すと、アイコンを変えずに取り消します。"
+      }
+    },
+    "vs/workbench/contrib/terminalContrib/autoReplies/browser/terminal.autoReplies.contribution": {
+      "removeTerminalAutoReplies": {
+        "en": "Remove Terminal Auto Replies",
+        "ja": "ターミナルの自動応答を削除"
+      }
+    },
+    "vs/workbench/contrib/update/browser/outdatedBuildReminder": {
+      "outdatedBuildReminder.checkForUpdates": {
+        "en": "Check for Updates",
+        "ja": "更新プログラムの確認"
+      },
+      "outdatedBuildReminder.downloadUpdate": {
+        "en": "Download Update",
+        "ja": "更新プログラムのダウンロード"
+      },
+      "outdatedBuildReminder.installUpdate": {
+        "en": "Install Update",
+        "ja": "更新プログラムのインストール"
+      },
+      "outdatedBuildReminder.message": {
+        "en": "This version of {0} is {1} old. Update to get the latest features and fixes.",
+        "ja": "このバージョンの {0} は {1} 経過しています。最新の機能と修正を入手するには、更新してください。"
+      },
+      "outdatedBuildReminder.openDownloadPage": {
+        "en": "Open Download Page",
+        "ja": "ダウンロード ページを開く"
+      },
+      "outdatedBuildReminder.restartToUpdate": {
+        "en": "Restart to Update",
+        "ja": "再起動して更新"
+      }
+    },
+    "vs/workbench/contrib/update/browser/releaseNotesAccessibilityHelp": {
+      "releaseNotes.help.currentSection": {
+        "en": "The table of contents identifies the current section as you scroll. This does not move keyboard focus.",
+        "ja": "目次では、スクロールに合わせて現在のセクションが示されます。キーボード フォーカスは移動しません。"
+      }
+    },
+    "vs/workbench/contrib/workspace/browser/workspace.contribution": {
+      "resourcesTrustRemoteEnvironment": {
+        "en": "This folder is hosted on the remote agent environment {0}.",
+        "ja": "このフォルダーは、リモート エージェント環境 {0} でホストされています。"
+      },
+      "resourcesTrustRemoteScope": {
+        "en": "Your decision is saved in {0} on this computer and lets agent sessions read, modify, and run commands in this folder on {1}. It does not change any trust settings on the remote environment.",
+        "ja": "この決定はこのコンピューターの {0} に保存され、エージェント セッションが {1} 上のこのフォルダーで読み取り、変更、コマンドの実行を行えるようになります。リモート環境の信頼の設定は変更されません。"
+      },
+      "resourcesTrustUnnamedRemoteEnvironment": {
+        "en": "This folder is hosted on a remote agent environment.",
+        "ja": "このフォルダーは、リモート エージェント環境でホストされています。"
+      },
+      "resourcesTrustUnnamedRemoteScope": {
+        "en": "Your decision is saved in {0} on this computer and lets agent sessions read, modify, and run commands in this folder. It does not change any trust settings on the remote environment.",
+        "ja": "この決定はこのコンピューターの {0} に保存され、エージェント セッションがこのフォルダーで読み取り、変更、コマンドの実行を行えるようになります。リモート環境の信頼の設定は変更されません。"
+      }
+    },
+    "vs/workbench/contrib/workspace/browser/workspaceTrustEditor": {
+      "retryTrustSource": {
+        "en": "Retry Source Check",
+        "ja": "ソースの確認を再試行"
+      },
+      "unresolvedTrustSource": {
+        "en": "The source repository for this workspace could not be verified. You can keep reviewing files in Restricted Mode. Make sure the repository extension is enabled and you are signed in, then retry.",
+        "ja": "このワークスペースのソース リポジトリを確認できませんでした。制限モードでファイルの確認を続けることができます。リポジトリの拡張機能が有効で、サインインしていることを確認してから、再試行してください。"
+      },
+      "workspaceTrustEditorHeaderActions": {
+        "en": "[Configure your settings]({0}) or [learn more](https://aka.ms/vscode-workspace-trust).",
+        "ja": "[設定の構成]({0}) または [詳細情報](https://aka.ms/vscode-workspace-trust)。",
+        "override": true
+      }
+    },
+    "vs/workbench/services/dialogs/browser/simpleFileDialog": {
+      "remoteFileDialog.multiSelectPlaceholder": {
+        "en": "Folder path (use Space to select items)",
+        "ja": "フォルダー パス (項目を選択するには Space キーを使用)"
+      }
+    },
+    "vs/workbench/services/extensions/common/extensionManifestPropertiesService": {
+      "extensions.supportAgentsWindow": {
+        "en": "Override the Agents window support of an extension. Set an extension to `true` to enable it even when it would otherwise be disabled, or to `false` to disable it even when it is supported by default. This does not affect editor windows. Reload the Agents window to apply changes.",
+        "ja": "拡張機能のエージェント ウィンドウのサポートをオーバーライドします。拡張機能を `true` に設定すると、ほかの理由で無効になる場合でも有効になり、`false` に設定すると、既定でサポートされている場合でも無効になります。これはエディター ウィンドウには影響しません。変更を適用するには、エージェント ウィンドウを再読み込みしてください。"
+      }
+    },
+    "vs/workbench/services/extensions/common/extensionsRegistry": {
+      "vscode.extension.activationEvents.onChatArtifactIntegration": {
+        "en": "An activation event emitted when recorded chat artifacts are observed or an agent host that can use artifact integrations connects.",
+        "ja": "記録されたチャットのアーティファクトが検出されたとき、またはアーティファクトの統合を使用できるエージェント ホストが接続したときに生成されるアクティブ化イベント。"
+      }
+    },
+    "vs/workbench/services/files/electron-browser/diskFileSystemProvider": {
+      "fileWatcher": {
+        "en": "File Watcher",
+        "ja": "ファイル ウォッチャー",
+        "override": true
+      }
+    },
+    "vs/workbench/services/policies/common/organizationSupport": {
+      "organizationSupport.contactAdmin": {
+        "en": "Contact Admin",
+        "ja": "管理者に問い合わせる"
+      },
+      "organizationSupport.tooltip": {
+        "en": "Opens your organization's help page ({0})",
+        "ja": "組織のヘルプ ページを開きます ({0})"
+      }
+    },
+    "vs/workbench/services/userDataProfile/browser/iconPicker": {
+      "changeIcon": {
+        "en": "Change icon",
+        "ja": "アイコンの変更"
+      }
+    },
+    "vs/workbench/services/userDataProfile/browser/iconSelectBox": {
+      "resetIcon": {
+        "en": "Reset to default",
+        "ja": "既定にリセット"
+      }
+    },
+    "vs/workbench/services/workspaces/common/workspaceTrust": {
+      "unresolvedWorkspaceTrustSource": {
+        "en": "The source of this workspace could not be determined. Continue in Restricted Mode until its source can be verified.",
+        "ja": "このワークスペースのソースを特定できませんでした。ソースを確認できるまで、制限モードで続行してください。"
+      },
+      "workspaceTrustSourceChanged": {
+        "en": "The repository source must be verified again before updating trust. Try again.",
+        "ja": "信頼を更新する前に、リポジトリのソースをもう一度確認する必要があります。もう一度お試しください。"
+      }
+    }
+  },
+  "extensions": {
+    "vscode.git": {
+      "bundle": {
+        "{0} ({1}) ↔ {0} ({2})": {
+          "en": "{0} ({1}) ↔ {0} ({2})",
+          "ja": "{0} ({1}) ↔ {0} ({2})"
+        },
+        "{0} ↔ {1}": {
+          "en": "{0} ↔ {1}",
+          "ja": "{0} ↔ {1}"
+        }
+      }
+    },
+    "vscode.markdown-language-features": {
+      "package": {
+        "configuration.markdown.editor.renderWhitespace": {
+          "en": "Controls whether the rich Markdown editor shows space and tab indicators where Markdown syntax is revealed.",
+          "ja": "Markdown の構文が表示される位置に、リッチ Markdown エディターでスペースとタブのインジケーターを表示するかどうかを制御します。"
+        }
+      }
+    },
+    "vscode.restructuredtext": {
+      "package": {
+        "displayName": {
+          "en": "reStructuredText Language Basics",
+          "ja": "reStructuredText の基本言語サポート",
+          "override": true
+        }
+      }
+    }
+  }
+}

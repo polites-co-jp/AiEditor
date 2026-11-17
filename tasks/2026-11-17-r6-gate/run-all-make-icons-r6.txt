@@ -1,0 +1,2 @@
+make-icons.test.mjs                tests   33  pass   33  fail   0  skip   0
+TOTAL                              tests   33  pass   33  fail   0  skip   0

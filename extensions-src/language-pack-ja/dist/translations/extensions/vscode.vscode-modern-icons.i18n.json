@@ -1,0 +1,11 @@
+{
+	"version": "1.0.0",
+	"contents": {
+		"package": {
+			"description": "Visual Studio Code 用のモダンなファイル アイコン テーマ",
+			"displayName": "VS Code モダン ファイル アイコン",
+			"themeLabel": "VS Code モダン アイコン"
+		},
+		"bundle": {}
+	}
+}

@@ -1,0 +1,10 @@
+{
+	"version": "1.0.0",
+	"contents": {
+		"package": {
+			"description": "Go ファイル内で構文ハイライト、かっこ一致を提供します。",
+			"displayName": "Go 言語の基礎"
+		},
+		"bundle": {}
+	}
+}

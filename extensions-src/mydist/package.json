@@ -1,6 +1,6 @@
 {
   "name": "mydist",
-  "displayName": "Shuko defaults",
+  "displayName": "Shuko の既定",
   "description": "Shuko の既定の設定とキー割り当て（コードを持たない組み込み拡張）",
   "publisher": "shuko",
   "version": "0.0.1",

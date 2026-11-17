@@ -1,6 +1,6 @@
 {
   "name": "notion-sync",
-  "displayName": "Shuko Notion Sync",
+  "displayName": "Shuko Notion 同期",
   "description": "ユーザーの設定ファイルを Notion の設定ページで複数の PC にそろえる組み込み拡張（docs/05）",
   "publisher": "shuko",
   "version": "0.0.1",

@@ -1,0 +1,470 @@
+{
+  "strings": "e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\l10n\\strings-1.146.0-r5.json",
+  "pack": "e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p2\\1.146.0-p5-c-all-r5\\Shuko-win32-x64-1.146.0-p5-c-all-r5\\resources\\app\\extensions\\language-pack-ja",
+  "total": 15159,
+  "translated": 15152,
+  "excluded": 5,
+  "untranslated": 2,
+  "notJapanese": 162,
+  "byArea": {
+    "core": {
+      "total": 12334,
+      "translated": 12329,
+      "excluded": 5,
+      "untranslated": 0
+    },
+    "package": {
+      "total": 1258,
+      "translated": 1258,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "bundle": {
+      "total": 1545,
+      "translated": 1543,
+      "excluded": 0,
+      "untranslated": 2
+    },
+    "literal": {
+      "total": 22,
+      "translated": 22,
+      "excluded": 0,
+      "untranslated": 0
+    }
+  },
+  "staleExclusions": [],
+  "untranslatedSample": [
+    {
+      "area": "bundle",
+      "owner": "vscode.git",
+      "key": "{0} ({1}) ↔ {0} ({2})",
+      "en": "{0} ({1}) ↔ {0} ({2})"
+    },
+    {
+      "area": "bundle",
+      "owner": "vscode.git",
+      "key": "{0} ↔ {1}",
+      "en": "{0} ↔ {1}"
+    }
+  ],
+  "perOwner": {
+    "vscode": {
+      "total": 12334,
+      "translated": 12329,
+      "excluded": 5,
+      "untranslated": 0
+    },
+    "vscode.bat": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.clojure": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.coffeescript": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.configuration-editing": {
+      "total": 64,
+      "translated": 64,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.cpp": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.csharp": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.css": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.css-language-features": {
+      "total": 350,
+      "translated": 350,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.dart": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.diff": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.docker": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.dotenv": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.emmet": {
+      "total": 67,
+      "translated": 67,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.fsharp": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.git": {
+      "total": 826,
+      "translated": 824,
+      "excluded": 0,
+      "untranslated": 2
+    },
+    "vscode.git-base": {
+      "total": 14,
+      "translated": 14,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.go": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.groovy": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.handlebars": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.hlsl": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.html": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.html-language-features": {
+      "total": 286,
+      "translated": 286,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.ini": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.java": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.javascript": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.json": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.json-language-features": {
+      "total": 188,
+      "translated": 188,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.julia": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "shuko.language-pack-ja": {
+      "total": 3,
+      "translated": 3,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.latex": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.less": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.log": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.lua": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.make": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.markdown": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.markdown-language-features": {
+      "total": 246,
+      "translated": 246,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.markdown-math": {
+      "total": 4,
+      "translated": 4,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.merge-conflict": {
+      "total": 33,
+      "translated": 33,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "shuko.mydist": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "shuko.notion-sync": {
+      "total": 17,
+      "translated": 17,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.npm": {
+      "total": 113,
+      "translated": 113,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.objective-c": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.perl": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.php": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.powershell": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.pug": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.python": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.r": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.razor": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.references-view": {
+      "total": 45,
+      "translated": 45,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.restructuredtext": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.ruby": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.rust": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.scss": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.search-result": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.shaderlab": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.shellscript": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.sql": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.swift": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.theme-defaults": {
+      "total": 13,
+      "translated": 13,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.vscode-theme-seti": {
+      "total": 3,
+      "translated": 3,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.typescript": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.typescript-language-features": {
+      "total": 455,
+      "translated": 455,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.vb": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.xml": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    },
+    "vscode.yaml": {
+      "total": 2,
+      "translated": 2,
+      "excluded": 0,
+      "untranslated": 0
+    }
+  },
+  "placeholderProblems": [],
+  "untranslatedList": [
+    {
+      "area": "bundle",
+      "owner": "vscode.git",
+      "key": "{0} ({1}) ↔ {0} ({2})",
+      "en": "{0} ({1}) ↔ {0} ({2})"
+    },
+    {
+      "area": "bundle",
+      "owner": "vscode.git",
+      "key": "{0} ↔ {1}",
+      "en": "{0} ↔ {1}"
+    }
+  ],
+  "result": "untranslated"
+}

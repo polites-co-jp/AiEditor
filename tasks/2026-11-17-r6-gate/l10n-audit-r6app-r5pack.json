@@ -1,0 +1,2534 @@
+{
+  "tool": "tests/l10n-audit.mjs",
+  "inputs": {
+    "appDir": "E:/develop/self/Team/projects/ai-editor/tmp/b/p2/1.146.0-p5-c-all-r6-ooka/Shuko-win32-x64-1.146.0-p5-c-all-r6/resources/app",
+    "packDir": "E:/develop/self/Team/projects/ai-editor/tmp/b/p2/1.146.0-p5-c-all-r5/Shuko-win32-x64-1.146.0-p5-c-all-r5/resources/app/extensions/language-pack-ja",
+    "packManifest": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p2\\1.146.0-p5-c-all-r5\\Shuko-win32-x64-1.146.0-p5-c-all-r5\\resources\\app\\extensions\\language-pack-ja\\package.json",
+    "packTranslationsDir": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p2\\1.146.0-p5-c-all-r5\\Shuko-win32-x64-1.146.0-p5-c-all-r5\\resources\\app\\extensions\\language-pack-ja\\dist\\translations",
+    "worktree": "E:/develop/self/Team/projects/ai-editor/tmp/b/wt/r6/w",
+    "excludeFile": [
+      "extensions-src/language-pack-ja/exclusions.json"
+    ],
+    "clpDir": null,
+    "packVersion": "1.0.0"
+  },
+  "counting": "本家と同じ引き方: 本体は contents[moduleId][key]、拡張は contents.package[key]・contents.bundle[key]。空・無しは未訳（英語のまま）。直書きは日本語を含めば訳あり。",
+  "core": {
+    "total": 12355,
+    "translated": 12350,
+    "untranslated": 5,
+    "sameAsEnglish": 113,
+    "excluded": 5,
+    "untranslatedOutsideExclusions": 0,
+    "untranslatedKeys": [],
+    "excludedKeys": [
+      {
+        "module": "vs/editor/contrib/hover/browser/markerHoverParticipant",
+        "key": "diagnosticMessage",
+        "message": "{0}: {1}"
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editorGroupWatermark",
+        "key": "watermark.shortcutAriaLabel",
+        "message": "{0} ({1})"
+      },
+      {
+        "module": "vs/workbench/contrib/mediaPreview/browser/mediaPreviewStatusBar",
+        "key": "imagePreview.zoomPercent",
+        "message": "{0}%"
+      },
+      {
+        "module": "vs/workbench/contrib/onboarding/browser/spotlight/spotlightOverlay",
+        "key": "spotlight.endTour.customTooltip",
+        "message": "{0} (Esc)"
+      },
+      {
+        "module": "vs/workbench/contrib/onboarding/browser/spotlight/spotlightOverlay",
+        "key": "spotlight.stepAnnouncement",
+        "message": "{0}: {1}"
+      }
+    ],
+    "sameAsEnglishKeys": [
+      {
+        "module": "vs/base/browser/ui/actionbar/actionViewItems",
+        "key": "titleLabel",
+        "message": "{0} ({1})"
+      },
+      {
+        "module": "vs/base/browser/ui/dialog/dialog",
+        "key": "ok",
+        "message": "OK"
+      },
+      {
+        "module": "vs/base/common/errorMessage",
+        "key": "stackTrace.format",
+        "message": "{0}: {1}"
+      },
+      {
+        "module": "vs/base/common/keybindingLabels",
+        "key": "altKey",
+        "message": "Alt"
+      },
+      {
+        "module": "vs/base/common/keybindingLabels",
+        "key": "altKey.long",
+        "message": "Alt"
+      },
+      {
+        "module": "vs/base/common/keybindingLabels",
+        "key": "ctrlKey",
+        "message": "Ctrl"
+      },
+      {
+        "module": "vs/base/common/keybindingLabels",
+        "key": "ctrlKey.long",
+        "message": "Control"
+      },
+      {
+        "module": "vs/base/common/keybindingLabels",
+        "key": "shiftKey",
+        "message": "Shift"
+      },
+      {
+        "module": "vs/base/common/keybindingLabels",
+        "key": "shiftKey.long",
+        "message": "Shift"
+      },
+      {
+        "module": "vs/base/common/keybindingLabels",
+        "key": "superKey",
+        "message": "Super"
+      },
+      {
+        "module": "vs/base/common/keybindingLabels",
+        "key": "superKey.long",
+        "message": "Super"
+      },
+      {
+        "module": "vs/base/common/keybindingLabels",
+        "key": "windowsKey",
+        "message": "Windows"
+      },
+      {
+        "module": "vs/base/common/keybindingLabels",
+        "key": "windowsKey.long",
+        "message": "Windows"
+      },
+      {
+        "module": "vs/code/node/cliProcessMain",
+        "key": "cli",
+        "message": "CLI"
+      },
+      {
+        "module": "vs/editor/common/languages",
+        "key": "symbolAriaLabel",
+        "message": "{0} ({1})"
+      },
+      {
+        "module": "vs/editor/contrib/gotoSymbol/browser/peek/referencesController",
+        "key": "metaTitle.N",
+        "message": "{0} ({1})"
+      },
+      {
+        "module": "vs/platform/actions/browser/menuEntryActionViewItem",
+        "key": "content",
+        "message": "{0} ({1})"
+      },
+      {
+        "module": "vs/platform/browserView/common/browserView",
+        "key": "browserZoomPercent",
+        "message": "{0}%"
+      },
+      {
+        "module": "vs/platform/files/common/files",
+        "key": "sizeB",
+        "message": "{0}B"
+      },
+      {
+        "module": "vs/platform/files/common/files",
+        "key": "sizeGB",
+        "message": "{0}GB"
+      },
+      {
+        "module": "vs/platform/files/common/files",
+        "key": "sizeKB",
+        "message": "{0}KB"
+      },
+      {
+        "module": "vs/platform/files/common/files",
+        "key": "sizeMB",
+        "message": "{0}MB"
+      },
+      {
+        "module": "vs/platform/files/common/files",
+        "key": "sizeTB",
+        "message": "{0}TB"
+      },
+      {
+        "module": "vs/platform/keybinding/common/abstractKeybindingService",
+        "key": "keybindingLabel",
+        "message": "{0} ({1})"
+      },
+      {
+        "module": "vs/platform/quickinput/browser/commandsQuickAccess",
+        "key": "commandPickAriaLabelWithKeybinding",
+        "message": "{0}, {1}"
+      },
+      {
+        "module": "vs/platform/quickinput/browser/helpQuickAccess",
+        "key": "helpPickAriaLabel",
+        "message": "{0}, {1}"
+      },
+      {
+        "module": "vs/platform/quickinput/browser/quickInput",
+        "key": "ok",
+        "message": "OK"
+      },
+      {
+        "module": "vs/platform/quickinput/browser/quickInput",
+        "key": "quickInput.steps",
+        "message": "{0}/{1}"
+      },
+      {
+        "module": "vs/platform/quickinput/browser/quickInputController",
+        "key": "ok",
+        "message": "OK"
+      },
+      {
+        "module": "vs/platform/request/common/request",
+        "key": "httpConfigurationTitle",
+        "message": "HTTP"
+      },
+      {
+        "module": "vs/workbench/api/browser/mainThreadTask",
+        "key": "task.label",
+        "message": "{0}: {1}"
+      },
+      {
+        "module": "vs/workbench/api/browser/viewsExtensionPoint",
+        "key": "view container id",
+        "message": "ID"
+      },
+      {
+        "module": "vs/workbench/api/browser/viewsExtensionPoint",
+        "key": "view id",
+        "message": "ID"
+      },
+      {
+        "module": "vs/workbench/api/common/configurationExtensionPoint",
+        "key": "setting name",
+        "message": "ID"
+      },
+      {
+        "module": "vs/workbench/browser/actions/quickAccessActions",
+        "key": "quickOpenWithModes",
+        "message": "Quick Open"
+      },
+      {
+        "module": "vs/workbench/browser/parts/compositeBarActions",
+        "key": "numberBadge",
+        "message": "{0} ({1})"
+      },
+      {
+        "module": "vs/workbench/browser/parts/compositeBarActions",
+        "key": "titleKeybinding",
+        "message": "{0} ({1})"
+      },
+      {
+        "module": "vs/workbench/browser/parts/compositePart",
+        "key": "titleTooltip",
+        "message": "{0} ({1})"
+      },
+      {
+        "module": "vs/workbench/browser/parts/dialogs/dialogHandler",
+        "key": "ok",
+        "message": "OK"
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/binaryDiffEditor",
+        "key": "metadataDiff",
+        "message": "{0} ↔ {1}"
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editorQuickAccess",
+        "key": "entryAriaLabelWithGroup",
+        "message": "{0}, {1}"
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editorStatus",
+        "key": "endOfLineCarriageReturnLineFeed",
+        "message": "CRLF"
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editorStatus",
+        "key": "endOfLineLineFeed",
+        "message": "LF"
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editorStatus",
+        "key": "languageDescriptionConfigured",
+        "message": "({0})"
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editorTabsControl",
+        "key": "draggedEditorGroup",
+        "message": "{0} (+{1})"
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editorTypePicker",
+        "key": "editorType.labelWithSource",
+        "message": "{0} - {1}"
+      },
+      {
+        "module": "vs/workbench/common/editor/diffEditorInput",
+        "key": "sideBySideLabels",
+        "message": "{0} ↔ {1}"
+      },
+      {
+        "module": "vs/workbench/common/editor/sideBySideEditorInput",
+        "key": "sideBySideLabels",
+        "message": "{0} - {1}"
+      },
+      {
+        "module": "vs/workbench/contrib/accessibility/browser/accessibleView",
+        "key": "symbolLabel",
+        "message": "({0}) {1}"
+      },
+      {
+        "module": "vs/workbench/contrib/accessibility/browser/accessibleView",
+        "key": "symbolLabelAria",
+        "message": "({0}) {1}"
+      },
+      {
+        "module": "vs/workbench/contrib/authentication/browser/authentication.contribution",
+        "key": "authenticationid",
+        "message": "ID"
+      },
+      {
+        "module": "vs/workbench/contrib/browserView/common/browserSearch",
+        "key": "browser.search.engine.bing",
+        "message": "Bing"
+      },
+      {
+        "module": "vs/workbench/contrib/browserView/common/browserSearch",
+        "key": "browser.search.engine.duckduckgo",
+        "message": "DuckDuckGo"
+      },
+      {
+        "module": "vs/workbench/contrib/browserView/common/browserSearch",
+        "key": "browser.search.engine.google",
+        "message": "Google"
+      },
+      {
+        "module": "vs/workbench/contrib/browserView/common/browserSearch",
+        "key": "browser.search.engine.yahoo",
+        "message": "Yahoo!"
+      },
+      {
+        "module": "vs/workbench/contrib/browserView/electron-browser/features/browserEditorEmulationFeatures",
+        "key": "browser.device.dprLabel",
+        "message": "DPR:"
+      },
+      {
+        "module": "vs/workbench/contrib/browserView/electron-browser/features/browserEditorErrorFeatures",
+        "key": "browser.errorUrlLabel",
+        "message": "URL:"
+      },
+      {
+        "module": "vs/workbench/contrib/bulkEdit/browser/preview/bulkEditTree",
+        "key": "rename.label",
+        "message": "{0} → {1}"
+      },
+      {
+        "module": "vs/workbench/contrib/bulkEdit/browser/preview/bulkEditTree",
+        "key": "title",
+        "message": "{0} - {1}"
+      },
+      {
+        "module": "vs/workbench/contrib/comments/browser/commentsView",
+        "key": "resourceWithRepliesLabel",
+        "message": "{0} {1}"
+      },
+      {
+        "module": "vs/workbench/contrib/customEditor/browser/customEditorDiffInput",
+        "key": "customEditorDiffLabel",
+        "message": "{0} - {1}"
+      },
+      {
+        "module": "vs/workbench/contrib/customEditor/browser/customEditorDiffInput",
+        "key": "customEditorDiffTitle",
+        "message": "{0} ({1})"
+      },
+      {
+        "module": "vs/workbench/contrib/customEditor/browser/customEditorDiffInput",
+        "key": "customEditorSideBySideDiffTitle",
+        "message": "{0} ({1})"
+      },
+      {
+        "module": "vs/workbench/contrib/extensions/browser/extensionEditor",
+        "key": "Readme title",
+        "message": "Readme"
+      },
+      {
+        "module": "vs/workbench/contrib/extensions/browser/extensionEditor",
+        "key": "vsix",
+        "message": "VSIX"
+      },
+      {
+        "module": "vs/workbench/contrib/files/browser/files.contribution",
+        "key": "eol.CRLF",
+        "message": "CRLF"
+      },
+      {
+        "module": "vs/workbench/contrib/files/browser/files.contribution",
+        "key": "eol.LF",
+        "message": "LF"
+      },
+      {
+        "module": "vs/workbench/contrib/imageCarousel/browser/imageCarouselEditor",
+        "key": "imageCarousel.counter",
+        "message": "{0} / {1}"
+      },
+      {
+        "module": "vs/workbench/contrib/languageStatus/browser/languageStatus",
+        "key": "aria.2",
+        "message": "{0}"
+      },
+      {
+        "module": "vs/workbench/contrib/localHistory/browser/localHistoryCommands",
+        "key": "localHistoryCompareToFileEditorLabel",
+        "message": "{0} ({1} • {2}) ↔ {3}"
+      },
+      {
+        "module": "vs/workbench/contrib/localHistory/browser/localHistoryCommands",
+        "key": "localHistoryCompareToPreviousEditorLabel",
+        "message": "{0} ({1} • {2}) ↔ {3} ({4} • {5})"
+      },
+      {
+        "module": "vs/workbench/contrib/localHistory/browser/localHistoryCommands",
+        "key": "localHistoryEditorLabel",
+        "message": "{0} ({1} • {2})"
+      },
+      {
+        "module": "vs/workbench/contrib/markers/browser/markers.contribution",
+        "key": "manyProblems",
+        "message": "10K+"
+      },
+      {
+        "module": "vs/workbench/contrib/preferences/browser/keybindingsEditor",
+        "key": "title",
+        "message": "{0} ({1})"
+      },
+      {
+        "module": "vs/workbench/contrib/preferences/browser/preferencesActions",
+        "key": "languageDescriptionConfigured",
+        "message": "({0})"
+      },
+      {
+        "module": "vs/workbench/contrib/preferences/browser/settingsLayout",
+        "key": "chatMcp",
+        "message": "MCP"
+      },
+      {
+        "module": "vs/workbench/contrib/preferences/browser/settingsWidgets",
+        "key": "okButton",
+        "message": "OK"
+      },
+      {
+        "module": "vs/workbench/contrib/processExplorer/browser/processExplorerControl",
+        "key": "processCpu",
+        "message": "CPU (%)"
+      },
+      {
+        "module": "vs/workbench/contrib/processExplorer/browser/processExplorerControl",
+        "key": "processPid",
+        "message": "PID"
+      },
+      {
+        "module": "vs/workbench/contrib/quickaccess/browser/commandsQuickAccess",
+        "key": "commandWithCategory",
+        "message": "{0}: {1}"
+      },
+      {
+        "module": "vs/workbench/contrib/quickaccess/browser/viewQuickAccess",
+        "key": "terminalTitle",
+        "message": "{0}: {1}"
+      },
+      {
+        "module": "vs/workbench/contrib/snippets/browser/commands/configureSnippets",
+        "key": "detail.label",
+        "message": "({0}) {1}"
+      },
+      {
+        "module": "vs/workbench/contrib/snippets/browser/commands/configureSnippets",
+        "key": "global.1",
+        "message": "({0})"
+      },
+      {
+        "module": "vs/workbench/contrib/snippets/browser/snippetCodeActionProvider",
+        "key": "codeAction",
+        "message": "{0}"
+      },
+      {
+        "module": "vs/workbench/contrib/snippets/browser/snippetCompletionProvider",
+        "key": "detail.snippet",
+        "message": "{0} ({1})"
+      },
+      {
+        "module": "vs/workbench/contrib/terminalContrib/stickyScroll/browser/terminalStickyScrollOverlay",
+        "key": "labelWithKeybinding",
+        "message": "{0} ({1})"
+      },
+      {
+        "module": "vs/workbench/contrib/testing/common/constants",
+        "key": "testing.treeElementLabel",
+        "message": "{0} ({1})"
+      },
+      {
+        "module": "vs/workbench/contrib/timeline/browser/timelinePane",
+        "key": "timeline.aria.item",
+        "message": "{0}: {1}"
+      },
+      {
+        "module": "vs/workbench/contrib/timeline/browser/timelinePane",
+        "key": "timeline.compareSelectedLabel",
+        "message": "{0} ({1}) ↔ {2} ({3})"
+      },
+      {
+        "module": "vs/workbench/contrib/update/browser/releaseNotesTryouts",
+        "key": "releaseNotes.tryout.fallback",
+        "message": "{0} ({1})"
+      },
+      {
+        "module": "vs/workbench/contrib/update/common/updateUtils",
+        "key": "update.bytes",
+        "message": "{0} B"
+      },
+      {
+        "module": "vs/workbench/contrib/update/common/updateUtils",
+        "key": "update.gigabytes",
+        "message": "{0} GB"
+      },
+      {
+        "module": "vs/workbench/contrib/update/common/updateUtils",
+        "key": "update.kilobytes",
+        "message": "{0} KB"
+      },
+      {
+        "module": "vs/workbench/contrib/update/common/updateUtils",
+        "key": "update.megabytes",
+        "message": "{0} MB"
+      },
+      {
+        "module": "vs/workbench/contrib/userDataProfile/browser/userDataProfile",
+        "key": "openShort",
+        "message": "{0}"
+      },
+      {
+        "module": "vs/workbench/electron-browser/parts/dialogs/dialogHandler",
+        "key": "okButton",
+        "message": "OK"
+      },
+      {
+        "module": "vs/workbench/services/actions/common/menusExtensionPoint",
+        "key": "command name",
+        "message": "ID"
+      },
+      {
+        "module": "vs/workbench/services/chat/common/chatEntitlementService",
+        "key": "ok",
+        "message": "OK"
+      },
+      {
+        "module": "vs/workbench/services/chat/common/chatEntitlementService",
+        "key": "plan.businessName",
+        "message": "Copilot Business"
+      },
+      {
+        "module": "vs/workbench/services/chat/common/chatEntitlementService",
+        "key": "plan.eduName",
+        "message": "Copilot Student"
+      },
+      {
+        "module": "vs/workbench/services/chat/common/chatEntitlementService",
+        "key": "plan.enterpriseName",
+        "message": "Copilot Enterprise"
+      },
+      {
+        "module": "vs/workbench/services/chat/common/chatEntitlementService",
+        "key": "plan.freeName",
+        "message": "Copilot Free"
+      },
+      {
+        "module": "vs/workbench/services/chat/common/chatEntitlementService",
+        "key": "plan.maxName",
+        "message": "Copilot Max"
+      },
+      {
+        "module": "vs/workbench/services/chat/common/chatEntitlementService",
+        "key": "plan.proName",
+        "message": "Copilot Pro"
+      },
+      {
+        "module": "vs/workbench/services/chat/common/chatEntitlementService",
+        "key": "plan.proPlusName",
+        "message": "Copilot Pro+"
+      },
+      {
+        "module": "vs/workbench/services/language/common/languageService",
+        "key": "language id",
+        "message": "ID"
+      },
+      {
+        "module": "vs/workbench/services/policies/browser/managedSettingsUpdate.contribution",
+        "key": "managedSettingsUpdate.bannerWithStatus",
+        "message": "{0} {1}"
+      },
+      {
+        "module": "vs/workbench/services/preferences/browser/keybindingsEditorModel",
+        "key": "cat.title",
+        "message": "{0}: {1}"
+      },
+      {
+        "module": "vs/workbench/services/preferences/browser/keybindingsEditorModel",
+        "key": "meta",
+        "message": "meta"
+      },
+      {
+        "module": "vs/workbench/services/progress/browser/progressService",
+        "key": "progress.text2",
+        "message": "{0}: {1}"
+      },
+      {
+        "module": "vs/workbench/services/progress/browser/progressService",
+        "key": "progress.title2",
+        "message": "[{0}]: {1}"
+      },
+      {
+        "module": "vs/workbench/services/progress/browser/progressService",
+        "key": "progress.title3",
+        "message": "[{0}] {1}: {2}"
+      },
+      {
+        "module": "vs/workbench/services/themes/common/colorExtensionPoint",
+        "key": "id",
+        "message": "ID"
+      }
+    ],
+    "englishOnlyKeys": [
+      {
+        "module": "vs/base/common/keybindingLabels",
+        "key": "altKey",
+        "message": "Alt",
+        "translation": "Alt"
+      },
+      {
+        "module": "vs/base/common/keybindingLabels",
+        "key": "altKey.long",
+        "message": "Alt",
+        "translation": "Alt"
+      },
+      {
+        "module": "vs/base/common/keybindingLabels",
+        "key": "ctrlKey",
+        "message": "Ctrl",
+        "translation": "Ctrl"
+      },
+      {
+        "module": "vs/base/common/keybindingLabels",
+        "key": "ctrlKey.long",
+        "message": "Control",
+        "translation": "Control"
+      },
+      {
+        "module": "vs/base/common/keybindingLabels",
+        "key": "shiftKey",
+        "message": "Shift",
+        "translation": "Shift"
+      },
+      {
+        "module": "vs/base/common/keybindingLabels",
+        "key": "shiftKey.long",
+        "message": "Shift",
+        "translation": "Shift"
+      },
+      {
+        "module": "vs/base/common/keybindingLabels",
+        "key": "superKey",
+        "message": "Super",
+        "translation": "Super"
+      },
+      {
+        "module": "vs/base/common/keybindingLabels",
+        "key": "superKey.long",
+        "message": "Super",
+        "translation": "Super"
+      },
+      {
+        "module": "vs/base/common/keybindingLabels",
+        "key": "windowsKey",
+        "message": "Windows",
+        "translation": "Windows"
+      },
+      {
+        "module": "vs/base/common/keybindingLabels",
+        "key": "windowsKey.long",
+        "message": "Windows",
+        "translation": "Windows"
+      },
+      {
+        "module": "vs/code/node/cliProcessMain",
+        "key": "cli",
+        "message": "CLI",
+        "translation": "CLI"
+      },
+      {
+        "module": "vs/editor/common/languages",
+        "key": "Null",
+        "message": "null",
+        "translation": "NULL"
+      },
+      {
+        "module": "vs/platform/request/common/request",
+        "key": "httpConfigurationTitle",
+        "message": "HTTP",
+        "translation": "HTTP"
+      },
+      {
+        "module": "vs/workbench/browser/actions/quickAccessActions",
+        "key": "quickOpenWithModes",
+        "message": "Quick Open",
+        "translation": "Quick Open"
+      },
+      {
+        "module": "vs/workbench/browser/parts/editor/editorStatus",
+        "key": "endOfLineCarriageReturnLineFeed",
+        "message": "CRLF",
+        "translation": "CRLF"
+      },
+      {
+        "module": "vs/workbench/contrib/browserView/common/browserSearch",
+        "key": "browser.search.engine.bing",
+        "message": "Bing",
+        "translation": "Bing"
+      },
+      {
+        "module": "vs/workbench/contrib/browserView/common/browserSearch",
+        "key": "browser.search.engine.duckduckgo",
+        "message": "DuckDuckGo",
+        "translation": "DuckDuckGo"
+      },
+      {
+        "module": "vs/workbench/contrib/browserView/common/browserSearch",
+        "key": "browser.search.engine.google",
+        "message": "Google",
+        "translation": "Google"
+      },
+      {
+        "module": "vs/workbench/contrib/browserView/common/browserSearch",
+        "key": "browser.search.engine.yahoo",
+        "message": "Yahoo!",
+        "translation": "Yahoo!"
+      },
+      {
+        "module": "vs/workbench/contrib/browserView/electron-browser/features/browserEditorEmulationFeatures",
+        "key": "browser.device.dprLabel",
+        "message": "DPR:",
+        "translation": "DPR:"
+      },
+      {
+        "module": "vs/workbench/contrib/browserView/electron-browser/features/browserEditorErrorFeatures",
+        "key": "browser.errorUrlLabel",
+        "message": "URL:",
+        "translation": "URL:"
+      },
+      {
+        "module": "vs/workbench/contrib/extensions/browser/extensionEditor",
+        "key": "Readme title",
+        "message": "Readme",
+        "translation": "Readme"
+      },
+      {
+        "module": "vs/workbench/contrib/extensions/browser/extensionEditor",
+        "key": "vsix",
+        "message": "VSIX",
+        "translation": "VSIX"
+      },
+      {
+        "module": "vs/workbench/contrib/files/browser/files.contribution",
+        "key": "eol.CRLF",
+        "message": "CRLF",
+        "translation": "CRLF"
+      },
+      {
+        "module": "vs/workbench/contrib/preferences/browser/settingsLayout",
+        "key": "chatMcp",
+        "message": "MCP",
+        "translation": "MCP"
+      },
+      {
+        "module": "vs/workbench/contrib/processExplorer/browser/processExplorerControl",
+        "key": "processCpu",
+        "message": "CPU (%)",
+        "translation": "CPU (%)"
+      },
+      {
+        "module": "vs/workbench/contrib/processExplorer/browser/processExplorerControl",
+        "key": "processPid",
+        "message": "PID",
+        "translation": "PID"
+      },
+      {
+        "module": "vs/workbench/contrib/snippets/browser/commands/configureSnippets",
+        "key": "new.global_scope",
+        "message": "global",
+        "translation": "GLOBAL"
+      },
+      {
+        "module": "vs/workbench/contrib/terminalContrib/links/browser/terminalLinkQuickpick",
+        "key": "terminal.integrated.urlLinks",
+        "message": "Url",
+        "translation": "URL"
+      },
+      {
+        "module": "vs/workbench/contrib/update/browser/update",
+        "key": "use insiders",
+        "message": "&&Insiders",
+        "translation": "Insiders(&&I)"
+      },
+      {
+        "module": "vs/workbench/services/chat/common/chatEntitlementService",
+        "key": "plan.businessName",
+        "message": "Copilot Business",
+        "translation": "Copilot Business"
+      },
+      {
+        "module": "vs/workbench/services/chat/common/chatEntitlementService",
+        "key": "plan.eduName",
+        "message": "Copilot Student",
+        "translation": "Copilot Student"
+      },
+      {
+        "module": "vs/workbench/services/chat/common/chatEntitlementService",
+        "key": "plan.enterpriseName",
+        "message": "Copilot Enterprise",
+        "translation": "Copilot Enterprise"
+      },
+      {
+        "module": "vs/workbench/services/chat/common/chatEntitlementService",
+        "key": "plan.freeName",
+        "message": "Copilot Free",
+        "translation": "Copilot Free"
+      },
+      {
+        "module": "vs/workbench/services/chat/common/chatEntitlementService",
+        "key": "plan.maxName",
+        "message": "Copilot Max",
+        "translation": "Copilot Max"
+      },
+      {
+        "module": "vs/workbench/services/chat/common/chatEntitlementService",
+        "key": "plan.proName",
+        "message": "Copilot Pro",
+        "translation": "Copilot Pro"
+      },
+      {
+        "module": "vs/workbench/services/chat/common/chatEntitlementService",
+        "key": "plan.proPlusName",
+        "message": "Copilot Pro+",
+        "translation": "Copilot Pro+"
+      },
+      {
+        "module": "vs/workbench/services/preferences/browser/keybindingsEditorModel",
+        "key": "meta",
+        "message": "meta",
+        "translation": "meta"
+      }
+    ],
+    "keysVsMessagesMismatch": false
+  },
+  "roughEnglishOnly": {
+    "effectiveEnglishOnly": 39,
+    "defaultEnglishOnly": 12200,
+    "note": "日本語（かな・漢字・全角記号）を含まず、英字3字以上の並びを持つ文言の数（リーダーの粗い数えと同じ）。English が正しい文言も含む。"
+  },
+  "clpCrossCheck": null,
+  "extensions": {
+    "vscode.bat": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "bat",
+      "hasPackFile": true
+    },
+    "vscode.clojure": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "clojure",
+      "hasPackFile": true
+    },
+    "vscode.coffeescript": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "coffeescript",
+      "hasPackFile": true
+    },
+    "vscode.configuration-editing": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "configuration-editing",
+      "hasPackFile": true
+    },
+    "vscode.cpp": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "cpp",
+      "hasPackFile": true
+    },
+    "vscode.csharp": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "csharp",
+      "hasPackFile": true
+    },
+    "vscode.css": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "css",
+      "hasPackFile": true
+    },
+    "vscode.css-language-features": {
+      "total": 109,
+      "translated": 109,
+      "untranslated": 0,
+      "sameAsEnglish": 3,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [
+        {
+          "key": "css.title",
+          "message": "CSS"
+        },
+        {
+          "key": "less.title",
+          "message": "LESS"
+        },
+        {
+          "key": "scss.title",
+          "message": "SCSS (Sass)"
+        }
+      ],
+      "englishOnlyKeys": [
+        {
+          "key": "css.title",
+          "message": "CSS",
+          "translation": "CSS"
+        },
+        {
+          "key": "less.title",
+          "message": "LESS",
+          "translation": "LESS"
+        },
+        {
+          "key": "scss.title",
+          "message": "SCSS (Sass)",
+          "translation": "SCSS (Sass)"
+        }
+      ],
+      "dir": "css-language-features",
+      "hasPackFile": true
+    },
+    "vscode.dart": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "dart",
+      "hasPackFile": true
+    },
+    "vscode.diff": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "diff",
+      "hasPackFile": true
+    },
+    "vscode.docker": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "docker",
+      "hasPackFile": true
+    },
+    "vscode.dotenv": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "dotenv",
+      "hasPackFile": true
+    },
+    "vscode.emmet": {
+      "total": 62,
+      "translated": 62,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "emmet",
+      "hasPackFile": true
+    },
+    "vscode.fsharp": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "fsharp",
+      "hasPackFile": true
+    },
+    "vscode.git": {
+      "total": 364,
+      "translated": 364,
+      "untranslated": 0,
+      "sameAsEnglish": 2,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [
+        {
+          "key": "displayName",
+          "message": "Git"
+        },
+        {
+          "key": "submenu.explorer",
+          "message": "Git"
+        }
+      ],
+      "englishOnlyKeys": [
+        {
+          "key": "displayName",
+          "message": "Git",
+          "translation": "Git"
+        },
+        {
+          "key": "submenu.explorer",
+          "message": "Git",
+          "translation": "Git"
+        }
+      ],
+      "dir": "git",
+      "hasPackFile": true
+    },
+    "vscode.git-base": {
+      "total": 3,
+      "translated": 3,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "git-base",
+      "hasPackFile": true
+    },
+    "vscode.go": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "go",
+      "hasPackFile": true
+    },
+    "vscode.groovy": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "groovy",
+      "hasPackFile": true
+    },
+    "vscode.handlebars": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "handlebars",
+      "hasPackFile": true
+    },
+    "vscode.hlsl": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "hlsl",
+      "hasPackFile": true
+    },
+    "vscode.html": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "html",
+      "hasPackFile": true
+    },
+    "vscode.html-language-features": {
+      "total": 36,
+      "translated": 36,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "html-language-features",
+      "hasPackFile": true
+    },
+    "vscode.ini": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "ini",
+      "hasPackFile": true
+    },
+    "vscode.java": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "java",
+      "hasPackFile": true
+    },
+    "vscode.javascript": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "javascript",
+      "hasPackFile": true
+    },
+    "vscode.json": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "json",
+      "hasPackFile": true
+    },
+    "vscode.json-language-features": {
+      "total": 22,
+      "translated": 22,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "json-language-features",
+      "hasPackFile": true
+    },
+    "vscode.julia": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "julia",
+      "hasPackFile": true
+    },
+    "vscode.latex": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "latex",
+      "hasPackFile": true
+    },
+    "vscode.less": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "less",
+      "hasPackFile": true
+    },
+    "vscode.log": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "log",
+      "hasPackFile": true
+    },
+    "vscode.lua": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "lua",
+      "hasPackFile": true
+    },
+    "vscode.make": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "make",
+      "hasPackFile": true
+    },
+    "vscode.markdown": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "markdown-basics",
+      "hasPackFile": true
+    },
+    "vscode.markdown-language-features": {
+      "total": 148,
+      "translated": 148,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "markdown-language-features",
+      "hasPackFile": true
+    },
+    "vscode.markdown-math": {
+      "total": 4,
+      "translated": 4,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "markdown-math",
+      "hasPackFile": true
+    },
+    "vscode.merge-conflict": {
+      "total": 21,
+      "translated": 21,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "merge-conflict",
+      "hasPackFile": true
+    },
+    "vscode.npm": {
+      "total": 38,
+      "translated": 38,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "npm",
+      "hasPackFile": true
+    },
+    "vscode.objective-c": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "objective-c",
+      "hasPackFile": true
+    },
+    "vscode.perl": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "perl",
+      "hasPackFile": true
+    },
+    "vscode.php": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "php",
+      "hasPackFile": true
+    },
+    "vscode.powershell": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "powershell",
+      "hasPackFile": true
+    },
+    "vscode.pug": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "pug",
+      "hasPackFile": true
+    },
+    "vscode.python": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "python",
+      "hasPackFile": true
+    },
+    "vscode.r": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "r",
+      "hasPackFile": true
+    },
+    "vscode.razor": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "razor",
+      "hasPackFile": true
+    },
+    "vscode.references-view": {
+      "total": 29,
+      "translated": 29,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "references-view",
+      "hasPackFile": true
+    },
+    "vscode.restructuredtext": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "restructuredtext",
+      "hasPackFile": true
+    },
+    "vscode.ruby": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "ruby",
+      "hasPackFile": true
+    },
+    "vscode.rust": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "rust",
+      "hasPackFile": true
+    },
+    "vscode.scss": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "scss",
+      "hasPackFile": true
+    },
+    "vscode.search-result": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "search-result",
+      "hasPackFile": true
+    },
+    "vscode.shaderlab": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "shaderlab",
+      "hasPackFile": true
+    },
+    "vscode.shellscript": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "shellscript",
+      "hasPackFile": true
+    },
+    "vscode.sql": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "sql",
+      "hasPackFile": true
+    },
+    "vscode.swift": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "swift",
+      "hasPackFile": true
+    },
+    "vscode.theme-defaults": {
+      "total": 13,
+      "translated": 13,
+      "untranslated": 0,
+      "sameAsEnglish": 2,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [
+        {
+          "key": "darkColorThemeLabel",
+          "message": "Dark (Visual Studio)"
+        },
+        {
+          "key": "lightColorThemeLabel",
+          "message": "Light (Visual Studio)"
+        }
+      ],
+      "englishOnlyKeys": [
+        {
+          "key": "darkColorThemeLabel",
+          "message": "Dark (Visual Studio)",
+          "translation": "Dark (Visual Studio)"
+        },
+        {
+          "key": "lightColorThemeLabel",
+          "message": "Light (Visual Studio)",
+          "translation": "Light (Visual Studio)"
+        }
+      ],
+      "dir": "theme-defaults",
+      "hasPackFile": true
+    },
+    "vscode.vscode-theme-seti": {
+      "total": 3,
+      "translated": 3,
+      "untranslated": 0,
+      "sameAsEnglish": 1,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [
+        {
+          "key": "themeLabel",
+          "message": "Seti (Visual Studio Code)"
+        }
+      ],
+      "englishOnlyKeys": [
+        {
+          "key": "themeLabel",
+          "message": "Seti (Visual Studio Code)",
+          "translation": "Seti (Visual Studio Code)"
+        }
+      ],
+      "dir": "theme-seti",
+      "hasPackFile": true
+    },
+    "vscode.typescript": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "typescript-basics",
+      "hasPackFile": true
+    },
+    "vscode.typescript-language-features": {
+      "total": 308,
+      "translated": 308,
+      "untranslated": 0,
+      "sameAsEnglish": 2,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [
+        {
+          "key": "configuration.codeLens",
+          "message": "CodeLens"
+        },
+        {
+          "key": "typescript.preferences.importModuleSpecifierEnding.label.js",
+          "message": ".js / .ts"
+        }
+      ],
+      "englishOnlyKeys": [
+        {
+          "key": "configuration.codeLens",
+          "message": "CodeLens",
+          "translation": "CodeLens"
+        }
+      ],
+      "dir": "typescript-language-features",
+      "hasPackFile": true
+    },
+    "vscode.vb": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "vb",
+      "hasPackFile": true
+    },
+    "vscode.xml": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "xml",
+      "hasPackFile": true
+    },
+    "vscode.yaml": {
+      "total": 2,
+      "translated": 2,
+      "untranslated": 0,
+      "sameAsEnglish": 0,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0,
+      "untranslatedKeys": [],
+      "excludedKeys": [],
+      "sameAsEnglishKeys": [],
+      "englishOnlyKeys": [],
+      "dir": "yaml",
+      "hasPackFile": true
+    }
+  },
+  "extensionsTotals": {
+    "total": 1258,
+    "translated": 1258,
+    "untranslated": 0,
+    "sameAsEnglish": 10,
+    "excluded": 0,
+    "untranslatedOutsideExclusions": 0
+  },
+  "extensionsWithoutNlsFile": [
+    {
+      "id": "shuko.language-pack-ja",
+      "dir": "language-pack-ja"
+    },
+    {
+      "id": "shuko.mydist",
+      "dir": "mydist"
+    },
+    {
+      "id": "shuko.notion-sync",
+      "dir": "notion-sync"
+    }
+  ],
+  "bundle": {
+    "counted": true,
+    "perExtension": {
+      "vscode.configuration-editing": {
+        "total": 62,
+        "translated": 62,
+        "untranslated": 0,
+        "sameAsEnglish": 2,
+        "excluded": 0,
+        "untranslatedOutsideExclusions": 0,
+        "untranslatedKeys": [],
+        "excludedKeys": [],
+        "sameAsEnglishKeys": [
+          {
+            "key": "GitHub",
+            "message": "GitHub"
+          },
+          {
+            "key": "gist",
+            "message": "gist"
+          }
+        ],
+        "englishOnlyKeys": [
+          {
+            "key": "GitHub",
+            "message": "GitHub",
+            "translation": "GitHub"
+          },
+          {
+            "key": "gist",
+            "message": "gist",
+            "translation": "gist"
+          }
+        ],
+        "dir": "configuration-editing",
+        "hasPackFile": true,
+        "source": {
+          "files": 7,
+          "depFiles": 0,
+          "deps": [],
+          "bundleFiles": 0
+        },
+        "packOnlyKeys": 0
+      },
+      "vscode.css-language-features": {
+        "total": 241,
+        "translated": 241,
+        "untranslated": 0,
+        "sameAsEnglish": 5,
+        "excluded": 0,
+        "untranslatedOutsideExclusions": 0,
+        "untranslatedKeys": [],
+        "excludedKeys": [],
+        "sameAsEnglishKeys": [
+          {
+            "key": "css.builtin.lab",
+            "message": "css.builtin.lab"
+          },
+          {
+            "key": "<undefined>",
+            "message": "<undefined>"
+          },
+          {
+            "key": "@keyframes {0}",
+            "message": "@keyframes {0}"
+          },
+          {
+            "key": "@font-face",
+            "message": "@font-face"
+          },
+          {
+            "key": "'{0}'",
+            "message": "'{0}'"
+          }
+        ],
+        "englishOnlyKeys": [
+          {
+            "key": "css.builtin.lab",
+            "message": "css.builtin.lab",
+            "translation": "css.builtin.lab"
+          },
+          {
+            "key": "<undefined>",
+            "message": "<undefined>",
+            "translation": "<undefined>"
+          },
+          {
+            "key": "@keyframes {0}",
+            "message": "@keyframes {0}",
+            "translation": "@keyframes {0}"
+          },
+          {
+            "key": "@font-face",
+            "message": "@font-face",
+            "translation": "@font-face"
+          }
+        ],
+        "dir": "css-language-features",
+        "hasPackFile": true,
+        "source": {
+          "files": 24,
+          "depFiles": 190,
+          "deps": [
+            "@vscode/l10n",
+            "vscode-css-languageservice",
+            "vscode-jsonrpc",
+            "vscode-languageclient",
+            "vscode-languageserver",
+            "vscode-languageserver-protocol",
+            "vscode-languageserver-textdocument",
+            "vscode-languageserver-types",
+            "vscode-uri"
+          ],
+          "bundleFiles": 0
+        },
+        "packOnlyKeys": 1,
+        "packOnlyKeysSample": [
+          "Creates a Color from red, green, and blue values."
+        ]
+      },
+      "vscode.emmet": {
+        "total": 5,
+        "translated": 5,
+        "untranslated": 0,
+        "sameAsEnglish": 0,
+        "excluded": 0,
+        "untranslatedOutsideExclusions": 0,
+        "untranslatedKeys": [],
+        "excludedKeys": [],
+        "sameAsEnglishKeys": [],
+        "englishOnlyKeys": [],
+        "dir": "emmet",
+        "hasPackFile": true,
+        "source": {
+          "files": 44,
+          "depFiles": 17,
+          "deps": [
+            "@vscode/emmet-helper",
+            "vscode-languageserver-textdocument",
+            "vscode-languageserver-types",
+            "vscode-uri"
+          ],
+          "bundleFiles": 0
+        },
+        "packOnlyKeys": 0
+      },
+      "vscode.git": {
+        "total": 462,
+        "translated": 460,
+        "untranslated": 2,
+        "sameAsEnglish": 4,
+        "excluded": 0,
+        "untranslatedOutsideExclusions": 2,
+        "untranslatedKeys": [
+          {
+            "key": "{0} ({1}) ↔ {0} ({2})",
+            "message": "{0} ({1}) ↔ {0} ({2})"
+          },
+          {
+            "key": "{0} ↔ {1}",
+            "message": "{0} ↔ {1}"
+          }
+        ],
+        "excludedKeys": [],
+        "sameAsEnglishKeys": [
+          {
+            "key": "no",
+            "message": "no"
+          },
+          {
+            "key": "OK",
+            "message": "OK"
+          },
+          {
+            "key": "{0} ({1})",
+            "message": "{0} ({1})"
+          },
+          {
+            "key": "Git: {0}",
+            "message": "Git: {0}"
+          }
+        ],
+        "englishOnlyKeys": [
+          {
+            "key": "Git: {0}",
+            "message": "Git: {0}",
+            "translation": "Git: {0}"
+          }
+        ],
+        "dir": "git",
+        "hasPackFile": true,
+        "source": {
+          "files": 65,
+          "depFiles": 15,
+          "deps": [
+            "@vscode/extension-telemetry",
+            "@vscode/fs-copyfile"
+          ],
+          "bundleFiles": 0
+        },
+        "packOnlyKeys": 2,
+        "packOnlyKeysSample": [
+          "{0} ({1}) ș {0} ({2})",
+          "{0} ș {1}"
+        ]
+      },
+      "vscode.git-base": {
+        "total": 11,
+        "translated": 11,
+        "untranslated": 0,
+        "sameAsEnglish": 1,
+        "excluded": 0,
+        "untranslatedOutsideExclusions": 0,
+        "untranslatedKeys": [],
+        "excludedKeys": [],
+        "sameAsEnglishKeys": [
+          {
+            "key": "URL",
+            "message": "URL"
+          }
+        ],
+        "englishOnlyKeys": [
+          {
+            "key": "URL",
+            "message": "URL",
+            "translation": "URL"
+          }
+        ],
+        "dir": "git-base",
+        "hasPackFile": true,
+        "source": {
+          "files": 11,
+          "depFiles": 0,
+          "deps": [],
+          "bundleFiles": 0
+        },
+        "packOnlyKeys": 0
+      },
+      "vscode.html-language-features": {
+        "total": 250,
+        "translated": 250,
+        "untranslated": 0,
+        "sameAsEnglish": 6,
+        "excluded": 0,
+        "untranslatedOutsideExclusions": 0,
+        "untranslatedKeys": [],
+        "excludedKeys": [],
+        "sameAsEnglishKeys": [
+          {
+            "key": "css.builtin.lab",
+            "message": "css.builtin.lab"
+          },
+          {
+            "key": "<undefined>",
+            "message": "<undefined>"
+          },
+          {
+            "key": "@keyframes {0}",
+            "message": "@keyframes {0}"
+          },
+          {
+            "key": "@font-face",
+            "message": "@font-face"
+          },
+          {
+            "key": "'{0}'",
+            "message": "'{0}'"
+          },
+          {
+            "key": "{0}, '{1}'",
+            "message": "{0}, '{1}'"
+          }
+        ],
+        "englishOnlyKeys": [
+          {
+            "key": "css.builtin.lab",
+            "message": "css.builtin.lab",
+            "translation": "css.builtin.lab"
+          },
+          {
+            "key": "<undefined>",
+            "message": "<undefined>",
+            "translation": "<undefined>"
+          },
+          {
+            "key": "@keyframes {0}",
+            "message": "@keyframes {0}",
+            "translation": "@keyframes {0}"
+          },
+          {
+            "key": "@font-face",
+            "message": "@font-face",
+            "translation": "@font-face"
+          }
+        ],
+        "dir": "html-language-features",
+        "hasPackFile": true,
+        "source": {
+          "files": 46,
+          "depFiles": 237,
+          "deps": [
+            "@vscode/extension-telemetry",
+            "@vscode/l10n",
+            "vscode-css-languageservice",
+            "vscode-html-languageservice",
+            "vscode-jsonrpc",
+            "vscode-languageclient",
+            "vscode-languageserver",
+            "vscode-languageserver-protocol",
+            "vscode-languageserver-textdocument",
+            "vscode-languageserver-types",
+            "vscode-uri"
+          ],
+          "bundleFiles": 0
+        },
+        "packOnlyKeys": 1,
+        "packOnlyKeysSample": [
+          "Creates a Color from red, green, and blue values."
+        ]
+      },
+      "vscode.json-language-features": {
+        "total": 166,
+        "translated": 166,
+        "untranslated": 0,
+        "sameAsEnglish": 1,
+        "excluded": 0,
+        "untranslatedOutsideExclusions": 0,
+        "untranslatedKeys": [],
+        "excludedKeys": [],
+        "sameAsEnglishKeys": [
+          {
+            "key": "<empty>",
+            "message": "<empty>"
+          }
+        ],
+        "englishOnlyKeys": [
+          {
+            "key": "<empty>",
+            "message": "<empty>",
+            "translation": "<empty>"
+          }
+        ],
+        "dir": "json-language-features",
+        "hasPackFile": true,
+        "source": {
+          "files": 21,
+          "depFiles": 193,
+          "deps": [
+            "@vscode/extension-telemetry",
+            "@vscode/l10n",
+            "vscode-json-languageservice",
+            "vscode-jsonrpc",
+            "vscode-languageclient",
+            "vscode-languageserver",
+            "vscode-languageserver-protocol",
+            "vscode-languageserver-textdocument",
+            "vscode-languageserver-types",
+            "vscode-uri"
+          ],
+          "bundleFiles": 0
+        },
+        "packOnlyKeys": 1,
+        "packOnlyKeysSample": [
+          "The schema uses meta-schema features ({0}) that are not yet supported by the validator."
+        ]
+      },
+      "vscode.markdown-language-features": {
+        "total": 117,
+        "translated": 117,
+        "untranslated": 0,
+        "sameAsEnglish": 0,
+        "excluded": 0,
+        "untranslatedOutsideExclusions": 0,
+        "untranslatedKeys": [],
+        "excludedKeys": [],
+        "sameAsEnglishKeys": [],
+        "englishOnlyKeys": [],
+        "dir": "markdown-language-features",
+        "hasPackFile": true,
+        "source": {
+          "files": 111,
+          "depFiles": 278,
+          "deps": [
+            "@vscode/codicons",
+            "@vscode/diff",
+            "@vscode/extension-telemetry",
+            "@vscode/hubrpc",
+            "@vscode/l10n",
+            "@vscode/markdown-editor",
+            "@vscode/markdown-it-katex",
+            "@vscode/observables",
+            "@vscode/web-editors",
+            "vscode-jsonrpc",
+            "vscode-languageclient",
+            "vscode-languageserver",
+            "vscode-languageserver-protocol",
+            "vscode-languageserver-textdocument",
+            "vscode-languageserver-types",
+            "vscode-markdown-languageserver",
+            "vscode-markdown-languageservice",
+            "vscode-uri"
+          ],
+          "bundleFiles": 0
+        },
+        "packOnlyKeys": 2,
+        "packOnlyKeysSample": [
+          "The commit could not be found in an open Git repository. {0}",
+          "The commit could not be revealed in the Source Control Graph."
+        ]
+      },
+      "vscode.merge-conflict": {
+        "total": 12,
+        "translated": 12,
+        "untranslated": 0,
+        "sameAsEnglish": 0,
+        "excluded": 0,
+        "untranslatedOutsideExclusions": 0,
+        "untranslatedKeys": [],
+        "excludedKeys": [],
+        "sameAsEnglishKeys": [],
+        "englishOnlyKeys": [],
+        "dir": "merge-conflict",
+        "hasPackFile": true,
+        "source": {
+          "files": 11,
+          "depFiles": 12,
+          "deps": [
+            "@vscode/extension-telemetry"
+          ],
+          "bundleFiles": 0
+        },
+        "packOnlyKeys": 0
+      },
+      "vscode.npm": {
+        "total": 75,
+        "translated": 75,
+        "untranslated": 0,
+        "sameAsEnglish": 0,
+        "excluded": 0,
+        "untranslatedOutsideExclusions": 0,
+        "untranslatedKeys": [],
+        "excludedKeys": [],
+        "sameAsEnglishKeys": [],
+        "englishOnlyKeys": [],
+        "dir": "npm",
+        "hasPackFile": true,
+        "source": {
+          "files": 17,
+          "depFiles": 5,
+          "deps": [
+            "vscode-uri"
+          ],
+          "bundleFiles": 0
+        },
+        "packOnlyKeys": 0
+      },
+      "vscode.references-view": {
+        "total": 16,
+        "translated": 16,
+        "untranslated": 0,
+        "sameAsEnglish": 0,
+        "excluded": 0,
+        "untranslatedOutsideExclusions": 0,
+        "untranslatedKeys": [],
+        "excludedKeys": [],
+        "sameAsEnglishKeys": [],
+        "englishOnlyKeys": [],
+        "dir": "references-view",
+        "hasPackFile": true,
+        "source": {
+          "files": 12,
+          "depFiles": 0,
+          "deps": [],
+          "bundleFiles": 0
+        },
+        "packOnlyKeys": 0
+      },
+      "vscode.typescript-language-features": {
+        "total": 147,
+        "translated": 147,
+        "untranslated": 0,
+        "sameAsEnglish": 0,
+        "excluded": 0,
+        "untranslatedOutsideExclusions": 0,
+        "untranslatedKeys": [],
+        "excludedKeys": [],
+        "sameAsEnglishKeys": [],
+        "englishOnlyKeys": [],
+        "dir": "typescript-language-features",
+        "hasPackFile": true,
+        "source": {
+          "files": 157,
+          "depFiles": 44,
+          "deps": [
+            "@vscode/extension-telemetry",
+            "@vscode/sync-api-client",
+            "@vscode/sync-api-common",
+            "@vscode/sync-api-service",
+            "@vscode/ts-package-manager",
+            "vscode-tas-client",
+            "vscode-uri"
+          ],
+          "bundleFiles": 0
+        },
+        "packOnlyKeys": 2,
+        "packOnlyKeysSample": [
+          "Try TypeScript 7 Native Preview for significantly faster type checking and language features.",
+          "Use TypeScript Native Preview (Experimental)"
+        ]
+      }
+    },
+    "totals": {
+      "total": 1564,
+      "translated": 1562,
+      "untranslated": 2,
+      "sameAsEnglish": 19,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 2
+    },
+    "skippedFiles": {}
+  },
+  "literals": {
+    "counted": true,
+    "perExtension": {
+      "shuko.mydist": {
+        "total": 2,
+        "translated": 2,
+        "untranslated": 0,
+        "sameAsEnglish": 2,
+        "excluded": 0,
+        "untranslatedOutsideExclusions": 0,
+        "untranslatedKeys": [],
+        "excludedKeys": [],
+        "sameAsEnglishKeys": [
+          {
+            "key": "displayName",
+            "message": "Shuko の既定"
+          },
+          {
+            "key": "description",
+            "message": "Shuko の既定の設定とキー割り当て（コードを持たない組み込み拡張）"
+          }
+        ],
+        "englishOnlyKeys": [],
+        "dir": "mydist",
+        "manifest": "app"
+      },
+      "shuko.notion-sync": {
+        "total": 17,
+        "translated": 17,
+        "untranslated": 0,
+        "sameAsEnglish": 17,
+        "excluded": 0,
+        "untranslatedOutsideExclusions": 0,
+        "untranslatedKeys": [],
+        "excludedKeys": [],
+        "sameAsEnglishKeys": [
+          {
+            "key": "displayName",
+            "message": "Shuko Notion 同期"
+          },
+          {
+            "key": "description",
+            "message": "ユーザーの設定ファイルを Notion の設定ページで複数の PC にそろえる組み込み拡張（docs/05）"
+          },
+          {
+            "key": "contributes.configuration[0].title",
+            "message": "Notion 同期"
+          },
+          {
+            "key": "contributes.configuration[0].properties.notionSync.enabled.description",
+            "message": "Notion との設定の同期を行う。トークン（コマンド「Notion 同期: トークンを設定」）と notionSync.pageId を設定してから true にする。"
+          },
+          {
+            "key": "contributes.configuration[0].properties.notionSync.pageId.description",
+            "message": "同期先の Notion の設定ページの ID（32 桁の16進。ページの URL をそのまま入れてもよい）。秘密ではない。"
+          },
+          {
+            "key": "contributes.configuration[0].properties.notionSync.ignoredSettings.description",
+            "message": "PC ごとの設定のキー。書き出すときに除き、取り込むときは手元の値を残す（settings.json の最上位のキーだけが対象）。"
+          },
+          {
+            "key": "contributes.commands[0].title",
+            "message": "取り込む"
+          },
+          {
+            "key": "contributes.commands[0].category",
+            "message": "Notion 同期"
+          },
+          {
+            "key": "contributes.commands[1].title",
+            "message": "書き出す"
+          },
+          {
+            "key": "contributes.commands[1].category",
+            "message": "Notion 同期"
+          },
+          {
+            "key": "contributes.commands[2].title",
+            "message": "差分を見る"
+          },
+          {
+            "key": "contributes.commands[2].category",
+            "message": "Notion 同期"
+          },
+          {
+            "key": "contributes.commands[3].title",
+            "message": "トークンを設定"
+          },
+          {
+            "key": "contributes.commands[3].category",
+            "message": "Notion 同期"
+          },
+          {
+            "key": "contributes.commands[4].title",
+            "message": "トークンを消す"
+          },
+          {
+            "key": "contributes.commands[4].category",
+            "message": "Notion 同期"
+          },
+          {
+            "key": "contributes.localizations[0].localizedLanguageName",
+            "message": "日本語"
+          }
+        ],
+        "englishOnlyKeys": [],
+        "dir": "notion-sync",
+        "manifest": "app"
+      },
+      "shuko.language-pack-ja": {
+        "total": 3,
+        "translated": 3,
+        "untranslated": 0,
+        "sameAsEnglish": 3,
+        "excluded": 0,
+        "untranslatedOutsideExclusions": 0,
+        "untranslatedKeys": [],
+        "excludedKeys": [],
+        "sameAsEnglishKeys": [
+          {
+            "key": "displayName",
+            "message": "Shuko 日本語パック"
+          },
+          {
+            "key": "description",
+            "message": "本体と同じ版の日本語の言語パック（組み込み拡張）。公式の訳（vscode-loc）に、課が足した訳を合わせたもの"
+          },
+          {
+            "key": "contributes.localizations[0].localizedLanguageName",
+            "message": "日本語"
+          }
+        ],
+        "englishOnlyKeys": [],
+        "dir": "language-pack-ja",
+        "manifest": "app"
+      }
+    },
+    "totals": {
+      "total": 22,
+      "translated": 22,
+      "untranslated": 0,
+      "sameAsEnglish": 22,
+      "excluded": 0,
+      "untranslatedOutsideExclusions": 0
+    }
+  },
+  "packMissingTranslationFiles": [],
+  "invalidExclusions": [],
+  "staleExclusions": [],
+  "totals": {
+    "untranslatedOutsideExclusions": 2,
+    "untranslated": 7,
+    "excluded": 5,
+    "sameAsEnglish": 142
+  },
+  "pass": false
+}

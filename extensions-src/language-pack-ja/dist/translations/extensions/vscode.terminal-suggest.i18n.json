@@ -1,0 +1,12 @@
+{
+	"version": "1.0.0",
+	"contents": {
+		"package": {
+			"description": "zsh、bash、fish terminals のターミナル補完を追加する拡張機能です。",
+			"displayName": "VS Code のターミナルの候補",
+			"terminal.integrated.suggest.clearCachedGlobals": "キャッシュされたグローバルをクリア",
+			"view.name": "ターミナルの候補"
+		},
+		"bundle": {}
+	}
+}

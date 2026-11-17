@@ -1,0 +1,45 @@
+Shuko language-pack-ja - Third Party Notices
+
+This extension contains Japanese translations taken from the following sources. When two sources translate
+the same string, the earlier one in this list is used.
+
+1. microsoft/vscode-loc (https://github.com/microsoft/vscode-loc), commit e0407b9e2508caa96cdb40bb3d109e8aa21843ee, files dated 2026-10-23.
+   License: MIT (LICENSE.md of the repository, reproduced below).
+2. microsoft/vscode-loc (https://github.com/microsoft/vscode-loc), commit 62d5443b567022539ba6e8565b0f43f5f6b3682b, files dated 2026-10-19.
+   License: MIT (LICENSE.md of the repository, reproduced below).
+3. MS-CEINTL.vscode-language-pack-ja 1.131.0 from Open VSX (https://open-vsx.org/api/MS-CEINTL/vscode-language-pack-ja/1.131.0/file/MS-CEINTL.vscode-language-pack-ja-1.131.0.vsix), SHA-256 fae5a90170d48121bd8fe246d7d8ecbdab5bf88f21a0d58c94a3cc3af8c0f601.
+   Its manifest names the repository https://github.com/Microsoft/vscode-loc and the license "SEE MIT LICENSE IN LICENSE.md".
+   The VSIX contains no LICENSE.md; the LICENSE.md of that repository is reproduced below.
+
+Translations added by the Shuko builders (strings that the sources above do not translate, and overrides of
+source translations) are in extensions-src/language-pack-ja/added/*.json of the build repository.
+
+---------------------------------------------------------
+
+microsoft/vscode-loc LICENSE.md (SHA-256 d8428ce0697ff754457dbebb25ff82da1a7f95b281f4fef4cc0cd2fa4586a144):
+
+Visual Studio Code Localization Packs
+
+Copyright (c) Microsoft Corporation
+
+All rights reserved.
+
+MIT License
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE

@@ -1,0 +1,6 @@
+move-off-c-fixes.test.mjs          tests   32  pass   32  fail   0  skip   0
+move-off-c.test.mjs                tests   26  pass   25  fail   1  skip   0
+TOTAL                              tests   58  pass   57  fail   1  skip   0
+
+Failing:
+  move-off-c.test.mjs: PowerShell 側の部品（local-config.ps1）の既定も同じ（configure.ps1 の出力）

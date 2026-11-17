@@ -1,0 +1,2 @@
+﻿"Host","Port","SeenBy","Requests","Resolutions","Answered","NodeLookups","SeenInSampling","Allowed","AllowReason"
+"wpad","80","netlog","0","2","False","0","False","False",""

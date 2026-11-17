@@ -2,7 +2,7 @@
 
 - 担当: cao-shen（曹参）
 - 依頼日: 2026-11-17
-- 状態: 依頼中
+- 状態: 完了
 
 ## 目的
 
@@ -47,11 +47,12 @@
 
 ## 結果
 
-（リーダーが記入）
+- 曹参の独立の網 `tests/l10n-audit.mjs`（bundle と直書きも数える）と、日本語関係のテスト194件（`tests/l10n-*.test.mjs`、`tests/make-icons.test.mjs`）。全部通る。
+- 記録は `handoff-notes-cao-shen.md`、`audit-r4-repopack-r6.json`。
 
 ## 未解決
 
-（リーダーが記入）
+- T1（take-in の3件を振る舞いで見る形に）は `tasks/2026-11-17-r6-followups/` で直す。T2（`~/.shuko/extensions` に頼るテスト）は入れ替えの後。
 
 ## 次の担当
 

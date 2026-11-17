@@ -1,0 +1,10 @@
+{
+	"version": "1.0.0",
+	"contents": {
+		"package": {
+			"description": "ノートブック用の基本的な出力レンダラーを指定する",
+			"displayName": "ビルトイン ノートブック出力レンダラー"
+		},
+		"bundle": {}
+	}
+}

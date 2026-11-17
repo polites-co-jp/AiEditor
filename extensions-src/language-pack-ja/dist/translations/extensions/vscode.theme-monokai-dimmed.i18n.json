@@ -1,0 +1,11 @@
+{
+	"version": "1.0.0",
+	"contents": {
+		"package": {
+			"description": "Visual Studio Code の Monokai dimmed テーマ",
+			"displayName": "Monokai Dimmed テーマ",
+			"themeLabel": "Monokai Dimmed"
+		},
+		"bundle": {}
+	}
+}

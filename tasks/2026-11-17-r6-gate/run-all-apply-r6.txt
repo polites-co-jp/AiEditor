@@ -1,0 +1,7 @@
+apply-cli.test.mjs                 tests    7  pass    5  fail   0  skip   2
+apply-commits.test.mjs             tests   25  pass   25  fail   0  skip   0
+apply-parts.test.mjs               tests   57  pass   57  fail   0  skip   0
+apply-prune.test.mjs               tests    7  pass    7  fail   0  skip   0
+apply-selfcheck.test.mjs           tests   33  pass   33  fail   0  skip   0
+apply.test.mjs                     tests   33  pass   33  fail   0  skip   0
+TOTAL                              tests  162  pass  160  fail   0  skip   2

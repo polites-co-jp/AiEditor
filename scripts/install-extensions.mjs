@@ -33,7 +33,8 @@
 //
 // 書き出している関数（テストの入口。build-switch-design.md の4節）:
 //   isLanguagePack, orderForInstall, vsixCachePath, parseListedExtensions, compareInstalled,
-//   scanJsonc, setArgvLocale, argvPathFor, DAILY_DATA_FOLDERS, portableProblem, ensurePortableDir
+//   scanJsonc, setArgvLocale, argvPathFor, DAILY_DATA_FOLDERS, portableProblem, ensurePortableDir,
+//   RETIRED_EXTENSIONS, retiredNotes（台帳から外して組み込みに置き換えた拡張の説明。tasks/2026-11-17-l10n-ja）
 
 import fs from "node:fs";
 import path from "node:path";
@@ -48,6 +49,20 @@ const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(SCRIPT_DIR, "..");
 
 export const DAILY_DATA_FOLDERS = Object.freeze([".vscode", ".vscode-oss", ".vscode-insiders"]);
+
+// 台帳から外し、組み込みの拡張に置き換えた拡張（小文字の ID → 説明）。入っていれば、台帳に無い拡張として止めるときに説明を添える
+// （この道具は消さない。消すかは 4 の手順どおり人が決める）。
+export const RETIRED_EXTENSIONS = Object.freeze({
+  "ms-ceintl.vscode-language-pack-ja":
+    "組み込みの日本語パック shuko.language-pack-ja（本体と同じ版）に置き換えた（docs/04 の7節）。入ったままだと、言語パックの一覧（languagepacks.json）で組み込みのパックより後に読まれて上書きし、古い 1.131.0 の訳に戻る。外すには <CLI> --uninstall-extension MS-CEINTL.vscode-language-pack-ja",
+});
+
+// 台帳に無い拡張のうち、置き換えた拡張の説明。[{ id, version, note }]
+export function retiredNotes(extra) {
+  return (Array.isArray(extra) ? extra : [])
+    .filter((e) => e && Object.prototype.hasOwnProperty.call(RETIRED_EXTENSIONS, String(e.id).toLowerCase()))
+    .map((e) => ({ id: e.id, version: e.version, note: RETIRED_EXTENSIONS[String(e.id).toLowerCase()] }));
+}
 
 // ---------------------------------------------------------------------------
 // 純粋な関数
@@ -407,7 +422,10 @@ async function main() {
     res.installed = installed;
     res.compare = cmp;
     if (cmp.extra.length) {
-      finish("extra-extensions", 3, `台帳に無い拡張が入っている（消すかはユーザーが決める。argv.json は書いていない）: ${cmp.extra.map((x) => `${x.id}@${x.version}`).join(", ")}`);
+      const retired = retiredNotes(cmp.extra);
+      if (retired.length) res.retired = retired;
+      const hint = retired.length ? `。うち置き換えた拡張: ${retired.map((x) => `${x.id}（${x.note}）`).join(" / ")}` : "";
+      finish("extra-extensions", 3, `台帳に無い拡張が入っている（消すかはユーザーが決める。argv.json は書いていない）: ${cmp.extra.map((x) => `${x.id}@${x.version}`).join(", ")}${hint}`);
     }
     if (cmp.missing.length || cmp.versionMismatch.length) {
       throw new Error(`入れた結果が台帳と合わない: 無い ${cmp.missing.join(", ") || "なし"} / 版の違い ${cmp.versionMismatch.map((x) => `${x.id} ${x.installed}≠${x.ledger}`).join(", ") || "なし"}`);

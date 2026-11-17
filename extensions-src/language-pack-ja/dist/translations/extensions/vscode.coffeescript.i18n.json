@@ -1,0 +1,10 @@
+{
+	"version": "1.0.0",
+	"contents": {
+		"package": {
+			"description": "CoffeScript ファイル内でスニペット、構文ハイライト、かっこ一致、折りたたみを提供します。",
+			"displayName": "CoffeeScript の基本言語サポート"
+		},
+		"bundle": {}
+	}
+}

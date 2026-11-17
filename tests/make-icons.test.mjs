@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import zlib from 'node:zlib';
-import { crc32, encodePng, encodeIco, renderIcon, makeIconFiles } from '../scripts/make-icons.mjs';
+import { crc32, encodePng, encodeIco, renderIcon, makeIconFiles, makeSvgFiles, DEFAULT_VARIANT, VARIANTS, resolveVariant } from '../scripts/make-icons.mjs';
 import { REPO, makeSandbox, removeSandbox, runNode } from './build/helpers.mjs';
 
 let sb;
@@ -162,7 +162,7 @@ test('encodeIco: a single entry', () => {
 });
 
 // ---- renderIcon -------------------------------------------------------------------------
-test('renderIcon: length size*size*4, transparent corners, a white pixel near the centre', () => {
+test('renderIcon: length size*size*4, transparent corners, an opaque pixel near the centre (any design)', () => {
   for (const size of [16, 32, 48, 64, 150, 256]) {
     const px = renderIcon(size);
     assert.equal(px.length, size * size * 4, String(size));
@@ -170,16 +170,13 @@ test('renderIcon: length size*size*4, transparent corners, a white pixel near th
     for (const [x, y] of [[0, 0], [size - 1, 0], [0, size - 1], [size - 1, size - 1]]) {
       assert.equal(alpha(x, y), 0, `corner ${x},${y} of ${size}`);
     }
-    let white = 0;
+    let opaque = 0;
     const lo = Math.floor(size * 0.25);
     const hi = Math.ceil(size * 0.75);
     for (let y = lo; y < hi; y++) {
-      for (let x = lo; x < hi; x++) {
-        const o = (y * size + x) * 4;
-        if (px[o] === 255 && px[o + 1] === 255 && px[o + 2] === 255 && px[o + 3] === 255) white++;
-      }
+      for (let x = lo; x < hi; x++) if (alpha(x, y) === 255) opaque++;
     }
-    assert.ok(white > 0, `no white pixel in the middle of ${size}`);
+    assert.ok(opaque > 0, `no opaque pixel in the middle of ${size}`);
   }
 });
 test('renderIcon: deterministic', () => {
@@ -246,6 +243,189 @@ test('makeIconFiles: the files under assets/ are exactly what the script produce
     assert.ok(fs.existsSync(onDisk), `${onDisk} is missing; run node scripts/make-icons.mjs`);
     assert.ok(fs.readFileSync(onDisk).equals(d), `${p} on disk differs from makeIconFiles()`);
   }
+});
+
+// ---- design: Claude + VS Code composite (2026-11-17 decision; holds for any candidate) ----------------------
+// The checks look at what the script writes with `--out <dir>` (ICO, PNGs, SVGs), so they do not depend on the candidate.
+// Which candidate: env ICON_TEST_ARGS_LIST = a ';'-separated list of extra argument strings, one run each,
+// e.g. "--variant a;--variant b;--variant c" (default: one run with no extra argument = the script's default design).
+// 2026-11-17 の裁定: 既定は候補 A（center-spark）。環境変数が無いときは「引数なし（= 既定）」と「--variant center-spark」の2回走らせる。
+const ARGS_LIST = (process.env.ICON_TEST_ARGS_LIST ?? '').split(';').map((s) => s.trim().split(/\s+/).filter(Boolean));
+if (ARGS_LIST.length === 0 || (ARGS_LIST.length === 1 && ARGS_LIST[0].length === 0)) ARGS_LIST.splice(0, ARGS_LIST.length, [], ['--variant', 'center-spark']);
+
+// VS Code blue family (#007ACC, #0065A9, #1F9CF0, #75BEFF ...) and Claude orange family (#D97757 ...).
+const isBlue = (r, g, b) => b >= 120 && b - r >= 60 && b >= g;
+const isOrange = (r, g, b) => r >= 170 && r - b >= 70 && r - g >= 40 && g >= b;
+
+function countColors(rgba, minAlpha = 200) {
+  let blue = 0;
+  let orange = 0;
+  let opaque = 0;
+  let clear = 0;
+  for (let i = 0; i < rgba.length; i += 4) {
+    const a = rgba[i + 3];
+    if (a === 0) clear++;
+    if (a < minAlpha) continue;
+    opaque++;
+    if (isBlue(rgba[i], rgba[i + 1], rgba[i + 2])) blue++;
+    if (isOrange(rgba[i], rgba[i + 1], rgba[i + 2])) orange++;
+  }
+  return { blue, orange, opaque, clear, total: rgba.length / 4 };
+}
+
+function icoImages(ico) {
+  assert.ok(ico.subarray(0, 4).equals(Buffer.from([0, 0, 1, 0])));
+  const n = ico.readUInt16LE(4);
+  const out = [];
+  for (let i = 0; i < n; i++) {
+    const e = 6 + i * 16;
+    const size = ico[e] || 256;
+    const bytes = ico.readUInt32LE(e + 8);
+    const off = ico.readUInt32LE(e + 12);
+    out.push({ size, png: ico.subarray(off, off + bytes) });
+  }
+  return out;
+}
+
+// Minimal well-formedness check for the SVGs we write: tags balance, one <svg> root, no text or script.
+function checkSvg(text, label) {
+  const body = text.replace(/^﻿/, '').replace(/<\?xml[\s\S]*?\?>/g, '').replace(/<!--[\s\S]*?-->/g, '').trim();
+  assert.ok(/^<svg[\s>]/.test(body), `${label}: root is <svg>`);
+  assert.ok(/<\/svg>\s*$/.test(body), `${label}: ends with </svg>`);
+  const stack = [];
+  const re = /<(\/?)([A-Za-z][\w:.-]*)((?:"[^"]*"|'[^']*'|[^>"'])*?)(\/?)>/g;
+  let m;
+  while ((m = re.exec(body))) {
+    const [, close, name, , self] = m;
+    if (close) assert.equal(stack.pop(), name, `${label}: </${name}> closes the open tag`);
+    else if (!self) stack.push(name);
+  }
+  assert.deepEqual(stack, [], `${label}: every tag is closed`);
+  assert.ok(/viewBox="[^"]+"/.test(body) || /width="\d+/.test(body), `${label}: has a size (viewBox or width)`);
+  assert.ok(!/<(script|text|foreignObject)\b/i.test(body), `${label}: no script, text or foreignObject (no product names in the picture)`);
+  assert.ok(!/(href|src)\s*=\s*["']https?:/i.test(body), `${label}: no external reference`);
+  return body;
+}
+
+function walk(dir) {
+  const out = [];
+  for (const n of fs.readdirSync(dir, { withFileTypes: true })) {
+    const p = path.join(dir, n.name);
+    if (n.isDirectory()) out.push(...walk(p));
+    else out.push(p);
+  }
+  return out;
+}
+
+ARGS_LIST.forEach((extra, idx) => {
+  const label = extra.length ? extra.join(' ') : '(default)';
+  const dirName = `design-${idx}`;
+  const outDir = () => path.join(sb, dirName);
+  let ran = false;
+  const ensure = () => {
+    if (ran) return;
+    const r = runNode(['scripts/make-icons.mjs', '--out', outDir(), ...extra]);
+    assert.equal(r.status, 0, `${label}: ${r.stderr}${r.stdout}`);
+    ran = true;
+  };
+
+  test(`design ${label}: code.ico has exactly the seven sizes, each a PNG of that size`, () => {
+    ensure();
+    const ico = fs.readFileSync(path.join(outDir(), 'resources', 'win32', 'code.ico'));
+    const imgs = icoImages(ico);
+    assert.deepEqual(imgs.map((i) => i.size), [16, 24, 32, 48, 64, 128, 256]);
+    for (const i of imgs) {
+      const d = decodePng(Buffer.from(i.png));
+      assert.deepEqual([d.w, d.h], [i.size, i.size]);
+    }
+  });
+  test(`design ${label}: 70x70 and 150x150 PNGs have the right size`, () => {
+    ensure();
+    for (const s of [70, 150]) {
+      const d = decodePng(fs.readFileSync(path.join(outDir(), 'resources', 'win32', `code_${s}x${s}.png`)));
+      assert.deepEqual([d.w, d.h], [s, s]);
+    }
+  });
+  test(`design ${label}: 256 px has both VS Code blue and Claude orange pixels, in quantity; not blank, not a full square`, () => {
+    ensure();
+    const ico = fs.readFileSync(path.join(outDir(), 'resources', 'win32', 'code.ico'));
+    const d = decodePng(Buffer.from(icoImages(ico).find((i) => i.size === 256).png));
+    const c = countColors(d.rgba);
+    assert.ok(c.blue >= 256, `blue pixels ${c.blue}`);
+    assert.ok(c.orange >= 256, `orange pixels ${c.orange}`);
+    assert.ok(c.clear > 0 && c.opaque > c.total * 0.1, `opaque ${c.opaque}, clear ${c.clear}`);
+    // The orange must be near #D97757 in the strongest cluster: the most common orange pixel is within 40 of it.
+    const counts = new Map();
+    for (let i = 0; i < d.rgba.length; i += 4) {
+      if (d.rgba[i + 3] === 255 && isOrange(d.rgba[i], d.rgba[i + 1], d.rgba[i + 2])) {
+        const k = (d.rgba[i] << 16) | (d.rgba[i + 1] << 8) | d.rgba[i + 2];
+        counts.set(k, (counts.get(k) ?? 0) + 1);
+      }
+    }
+    const top = [...counts.entries()].sort((a, b) => b[1] - a[1])[0];
+    assert.ok(top, 'an opaque orange pixel exists');
+    const [r, g, b] = [(top[0] >> 16) & 255, (top[0] >> 8) & 255, top[0] & 255];
+    assert.ok(Math.abs(r - 0xd9) + Math.abs(g - 0x77) + Math.abs(b - 0x57) <= 60, `most common orange is #${top[0].toString(16)}, far from #D97757`);
+  });
+  test(`design ${label}: both elements are still visible at 16 and 32 px (and in the 150 px tile)`, () => {
+    ensure();
+    const ico = fs.readFileSync(path.join(outDir(), 'resources', 'win32', 'code.ico'));
+    const imgs = icoImages(ico);
+    for (const [size, min] of [[16, 3], [32, 10]]) {
+      const c = countColors(decodePng(Buffer.from(imgs.find((i) => i.size === size).png)).rgba, 128);
+      assert.ok(c.blue >= min, `${size}px: blue ${c.blue} < ${min}`);
+      assert.ok(c.orange >= min, `${size}px: orange ${c.orange} < ${min}`);
+    }
+    const t = countColors(decodePng(fs.readFileSync(path.join(outDir(), 'resources', 'win32', 'code_150x150.png'))).rgba);
+    assert.ok(t.blue >= 100 && t.orange >= 100, `150px: blue ${t.blue}, orange ${t.orange}`);
+  });
+  test(`design ${label}: output is deterministic (a second run gives the same bytes)`, () => {
+    ensure();
+    const second = path.join(sb, `${dirName}-again`);
+    const r = runNode(['scripts/make-icons.mjs', '--out', second, ...extra]);
+    assert.equal(r.status, 0, r.stderr + r.stdout);
+    const a = walk(outDir()).map((p) => path.relative(outDir(), p)).sort();
+    const b = walk(second).map((p) => path.relative(second, p)).sort();
+    assert.deepEqual(a, b);
+    for (const rel of a) assert.ok(fs.readFileSync(path.join(outDir(), rel)).equals(fs.readFileSync(path.join(second, rel))), rel);
+  });
+  test(`design ${label}: SVGs - code-icon.svg and the four letterpress files are well-formed; code-icon.svg has both a blue and an orange fill`, () => {
+    ensure();
+    const svgs = walk(outDir()).filter((p) => p.endsWith('.svg'));
+    const names = svgs.map((p) => path.basename(p)).sort();
+    assert.deepEqual(names, ['code-icon.svg', 'letterpress-dark.svg', 'letterpress-hcDark.svg', 'letterpress-hcLight.svg', 'letterpress-light.svg'].sort());
+    for (const p of svgs) checkSvg(fs.readFileSync(p, 'utf8'), path.basename(p));
+    const code = fs.readFileSync(svgs.find((p) => path.basename(p) === 'code-icon.svg'), 'utf8');
+    const hexes = [...code.matchAll(/#([0-9a-fA-F]{6})\b/g)].map((m) => [parseInt(m[1].slice(0, 2), 16), parseInt(m[1].slice(2, 4), 16), parseInt(m[1].slice(4, 6), 16)]);
+    assert.ok(hexes.some(([r, g, b]) => isBlue(r, g, b)), 'a blue colour (VS Code family) in code-icon.svg');
+    assert.ok(hexes.some(([r, g, b]) => isOrange(r, g, b)), 'an orange colour (#D97757 family) in code-icon.svg');
+  });
+});
+
+// ---- 既定は候補 A（center-spark）で、assets/ はその出力と同じ ------------------------------------------------
+test('既定の意匠は候補 A（center-spark）。短い名前 a も同じ', () => {
+  assert.equal(DEFAULT_VARIANT, 'center-spark');
+  assert.equal(resolveVariant('a'), 'center-spark');
+  assert.ok(VARIANTS.includes(DEFAULT_VARIANT));
+});
+test('assets/ の下の SVG・ICO・PNG はすべて、台本の既定の出力と同じバイト列（--check と同じ照らし）', () => {
+  const all = [...makeIconFiles(), ...makeSvgFiles()];
+  assert.equal(all.length, 3 + 5);
+  for (const { rel, data } of all) {
+    const onDisk = path.join(REPO, 'assets', ...rel.split(/[\\/]/));
+    assert.ok(fs.existsSync(onDisk), `${rel} が assets/ に無い（node scripts/make-icons.mjs を走らせる）`);
+    assert.ok(fs.readFileSync(onDisk).equals(Buffer.from(data)), `${rel} が台本の出力と違う`);
+  }
+});
+test('CLI: --check は assets/ が台本の出力と同じなら終了コード 0', () => {
+  const r = runNode(['scripts/make-icons.mjs', '--check']);
+  assert.equal(r.status, 0, r.stderr + r.stdout);
+  assert.ok(!/違う:/.test(r.stdout), r.stdout);
+});
+test('CLI: --check は違うファイルがあれば 1（別の意匠と比べる）。知らない意匠は 2', () => {
+  const r = runNode(['scripts/make-icons.mjs', '--check', '--variant', 'spark-badge']);
+  assert.equal(r.status, 1, '既定でない意匠と assets/ は同じでない');
+  assert.equal(runNode(['scripts/make-icons.mjs', '--variant', 'no-such-design', '--out', path.join(sb, 'bad-variant')]).status, 2);
 });
 
 // ---- command line -----------------------------------------------------------------------

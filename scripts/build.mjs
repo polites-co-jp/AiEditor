@@ -79,7 +79,8 @@ const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(SCRIPT_DIR, "..");
 
 export const STEPS = Object.freeze(["prepare", "apply", "install", "lockfile", "typecheck", "package", "postprocess", "zip"]);
-export const OWN_EXTENSIONS = Object.freeze(["mydist", "notion-sync"]);
+// language-pack-ja は日本語の言語パック（docs/04 の7節）。無ければ apply.mjs が止める（ここでは必須にしない）
+export const OWN_EXTENSIONS = Object.freeze(["mydist", "notion-sync", "language-pack-ja"]);
 
 // ---------------------------------------------------------------------------
 // 純粋な関数
@@ -345,7 +346,7 @@ export function parseExcludedExtensions(tsText) {
 //   removed:  当てた単位が消した拡張の名前（extensions/<名前>）
 //   keep:     keep.json の名前
 //   excluded: 本家が同梱しない名前（build/lib/extensions.ts の excludedExtensions。無ければ []）
-//   own:      自前の組み込み拡張（mydist は必須、notion-sync は任意）
+//   own:      自前の組み込み拡張（mydist は必須、notion-sync・language-pack-ja は任意。language-pack-ja の有無は apply.mjs が見る）
 // 返り値: { ok, residual, missingKeep, notShipped, missingOwn, unexpected }
 //   residual    = removed のうち出力に残っているもの（誤り）
 //   missingKeep = keep のうち出力に無く、excluded でもないもの（誤り）

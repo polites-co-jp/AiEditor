@@ -1,0 +1,10 @@
+{
+	"version": "1.0.0",
+	"contents": {
+		"package": {
+			"description": "Razor ファイル内で構文ハイライト、かっこ一致、折りたたみを提供します。",
+			"displayName": "Razor の基本言語サポート"
+		},
+		"bundle": {}
+	}
+}

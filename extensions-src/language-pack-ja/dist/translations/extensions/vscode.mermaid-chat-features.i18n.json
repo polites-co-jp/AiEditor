@@ -1,0 +1,17 @@
+{
+	"version": "1.0.0",
+	"contents": {
+		"package": {
+			"config.enabled.description": "チャット応答で Mermaid ダイアグラム レンダリング用のツールを有効にします。",
+			"description": "組み込みのチャットに、Mermaid ダイアグラムのサポートを追加します。",
+			"displayName": "Mermaid チャット機能"
+		},
+		"bundle": {
+			"Mermaid Diagram": "Mermaid ダイアグラム",
+			"Open in Editor": "エディターで開く",
+			"Reset Zoom": "ズームのリセット",
+			"Zoom In": "拡大",
+			"Zoom Out": "縮小"
+		}
+	}
+}

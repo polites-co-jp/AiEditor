@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 // 毎週の取り込み（docs/06 の3・4・6・7節）。本体の新しいタグ、または同梱する拡張の新しい版を、今使っている版に触らずに
 // ブランチ take-in/<label> と記録 records/take-in/<label>/ に取り込み、claude -p（判定役 狄仁傑）に判定させる。
-// 入れ替えはユーザーが行う（adopt.mjs → switch.ps1）。
+// 入れ替えは判定の後に課が行う（adopt.mjs → switch.ps1。2026-11-16 の裁定。前は「ユーザーが行う」）。
+// 本体（core）では、手順 5 のビルドの後に日本語パックの未訳を数え（l10n-ja.mjs extract → count）、
+// <recDir>\l10n-count.json と take-in.json の l10n に書く（数えるだけ。採否は止めない。TAKE-IN.md の4節）。
 //
 // 使い方（詳しくは tasks/2026-11-14-p3-take-in/take-in-design.md）:
 //   node scripts/take-in.mjs core <tag> [--label <label>] [--commit <sha>] [--prev-tag <tag>] [--from <手順>] [--to <手順>]
@@ -573,6 +575,47 @@ function netPreviousFor(ctx) {
   return null;
 }
 
+// 日本語パックの文言の表と未訳の数え（l10n-ja.mjs extract → count）。表は大きいので <buildRoot>\take-in\<label>\ に置き、
+// 数えた結果だけを記録（l10n-count.json）に書く。判定役は TAKE-IN.md の3節でこれを読む。
+export function l10nPlan(ctx, appDir = "<app>") {
+  const strings = path.join(ctx.buildRoot, "take-in", ctx.label, "l10n-strings.json");
+  const script = path.join(SCRIPT_DIR, "l10n-ja.mjs");
+  return {
+    strings,
+    out: path.join(ctx.recDir, "l10n-count.json"),
+    extract: { cmd: NODE, args: [script, "extract", "--app", appDir, "--worktree", ctx.wt, "--label", ctx.label, "--out", strings], cwd: REPO },
+    count: { cmd: NODE, args: [script, "count", "--strings", strings, "--pack", appDir === "<app>" ? "<app>\\extensions\\language-pack-ja" : path.join(appDir, "extensions", "language-pack-ja"), "--out", path.join(ctx.recDir, "l10n-count.json")], cwd: REPO },
+  };
+}
+
+// count の終了コードと出力を、取り込みの記録の形にする（0 = ok、5 = 未訳あり、1 = 印の不一致か誤り）。採否は止めない
+export function summarizeL10nCount(exitCode, out) {
+  const status = exitCode === 0 ? "ok" : exitCode === 5 ? "untranslated" : "failed";
+  if (!out) return { status: exitCode === 0 ? "failed" : status, exitCode, reason: "l10n-count.json が無い" };
+  return {
+    status: out.result === "placeholder" ? "failed" : status, exitCode, result: out.result ?? null,
+    untranslated: out.untranslated ?? null, total: out.total ?? null, excluded: out.excluded ?? null, byArea: out.byArea ?? null,
+    placeholderProblems: Array.isArray(out.placeholderProblems) ? out.placeholderProblems.length : null,
+  };
+}
+
+async function runL10nCount(ctx) {
+  let layout;
+  try {
+    layout = resolveEditorLayout(ctx.editorDir);
+  } catch (err) {
+    return { status: "failed", reason: `新しい版の形を読めない: ${err.message}` };
+  }
+  if (!fs.existsSync(path.join(layout.appDir, "extensions", "language-pack-ja", "package.json"))) {
+    return { status: "failed", reason: "新しい版に extensions\\language-pack-ja が無い" };
+  }
+  const p = l10nPlan(ctx, layout.appDir);
+  const er = await runLogged({ ...p.extract, logFile: path.join(ctx.recDir, "logs", "l10n-extract.log") });
+  if (er.exitCode !== 0) return { status: "failed", step: "extract", exitCode: er.exitCode };
+  const cr = await runLogged({ ...p.count, logFile: path.join(ctx.recDir, "logs", "l10n-count.log") });
+  return { ...summarizeL10nCount(cr.exitCode, readJsonOrNull(p.out)), strings: p.strings, out: rel(p.out) };
+}
+
 function corePlan(ctx) {
   const a = ctx.args;
   const common = [...(a.config ? ["--config", a.config] : []), "--build-root", ctx.buildRoot];
@@ -591,6 +634,8 @@ function corePlan(ctx) {
       cwd: REPO,
     },
     build: { cmd: NODE, args: [path.join(SCRIPT_DIR, "build.mjs"), ctx.tag, "--label", ctx.label, "--commit", ctx.commit || "<ls-remote>", "--from", "install", "--force-zip", "--record", path.join(ctx.recDir, "build-main.json"), "--removals", path.join(ctx.bwt, "removals"), "--keep", path.join(ctx.bwt, "builtin", "keep.json"), "--take-in-dir", ctx.recDir, "--worktree", ctx.wt, ...common], cwd: REPO },
+    // 日本語パックの未訳を数える（TAKE-IN.md の4.2。数えるだけで訳さない。2026-11-17 のリーダーの判断）。<app> は新しい版の resources\app
+    l10n: l10nPlan(ctx),
     expand: { cmd: "powershell", args: ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", path.join(SCRIPT_DIR, "switch.ps1"), ctx.label, "-Zip", path.join(ctx.buildRoot, "dist", `${ctx.label}.zip`), "-Sha256", "<build の sha256>", "-ExpandOnly", ...(a.config ? ["-ConfigPath", a.config] : []), ...(a.installRoot ? ["-InstallRoot", a.installRoot] : [])], supported: switchSupportsExpandOnly() },
     smoke: smokeRunArgs({ editorDir: "<editor>", label: ctx.label, currentBaseline: smokeBaselineFor(ctx), newBaseline: newBaselinePath(path.join(ctx.buildRoot, "smoke"), ctx.label) })
       .map((r) => ({ n: r.n, cmd: NODE, args: [path.join(REPO, "tests", "smoke-run.mjs"), ...r.args], cwd: REPO })),
@@ -781,6 +826,18 @@ async function runCore(a) {
   if (!ctx.editorDir) {
     const prevExpand = path.join(ctx.installRoot, "versions", ctx.label);
     ctx.editorDir = fs.existsSync(prevExpand) ? prevExpand : buildRec && buildRec.paths ? buildRec.paths.packageDir : path.join(path.dirname(ctx.wt), "VSCode-win32-x64");
+  }
+
+  // 日本語パックの未訳を数える（手順 5 の後。TAKE-IN.md の4.2。数えるだけで訳さず、採否も止めない）。
+  // 記録は <recDir>\l10n-count.json（判定の材料）と take-in.json の l10n
+  if (buildRec && buildRec.result === "ok" && (run(5) || !fs.existsSync(path.join(ctx.recDir, "l10n-count.json")))) {
+    const l10n = await runL10nCount(ctx);
+    ctx.rec.l10n = l10n;
+    if (l10n.status !== "ok") {
+      const detail = l10n.untranslated != null ? `除外の外の未訳 ${l10n.untranslated}` : l10n.reason || `${l10n.step || "count"} の終了コード ${l10n.exitCode}`;
+      ctx.rec.warnings.push(`日本語パック: ${l10n.status}（${detail}）。採否は止めない。入れ替えの前に課が訳を足す（TAKE-IN.md の4節）`);
+    }
+    save(ctx);
   }
 
   // 手順 6（docs/06 の9節: 今の版の基準と比べたうえで、--prime の3回の和を新しい版の基準として残す）

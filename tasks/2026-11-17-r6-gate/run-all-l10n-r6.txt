@@ -1,0 +1,7 @@
+builtin-l10n.test.mjs              tests   19  pass   19  fail   0  skip   0
+l10n-audit-more.test.mjs           tests   42  pass   42  fail   0  skip   0
+l10n-audit.test.mjs                tests   14  pass   14  fail   0  skip   0
+l10n-lib.test.mjs                  tests   61  pass   61  fail   0  skip   0
+l10n-r6.test.mjs                   tests   22  pass   22  fail   0  skip   0
+l10n-repo.test.mjs                 tests   55  pass   55  fail   0  skip   0
+TOTAL                              tests  213  pass  213  fail   0  skip   0

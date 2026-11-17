@@ -1,0 +1,11 @@
+{
+	"version": "1.0.0",
+	"contents": {
+		"package": {
+			"description": "Visual Studio Code の Abyss テーマ",
+			"displayName": "Abyss テーマ",
+			"themeLabel": "Abyss"
+		},
+		"bundle": {}
+	}
+}

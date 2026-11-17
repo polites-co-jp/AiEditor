@@ -1,0 +1,11 @@
+{
+	"version": "1.0.0",
+	"contents": {
+		"package": {
+			"description": "Visual Studio Code の Quiet light テーマ",
+			"displayName": "Quiet Light テーマ",
+			"themeLabel": "Quiet Light"
+		},
+		"bundle": {}
+	}
+}

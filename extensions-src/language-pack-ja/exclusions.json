@@ -1,0 +1,50 @@
+{
+  "$comment": "英語のままでよい文言（理由つき）。数えるときは、ここにある鍵で、記録した英語（en）が今の英語と同じものを「除外」とし、未訳に数えない。英語が変わったら見直す（未訳に数える）。曹参の網 tests/l10n-audit.mjs の --exclude でも同じファイルを読む（module・extension・key・reason）。書くのは node scripts/l10n-ja.mjs add",
+  "reasons": {
+    "format": "書式の印（{0} など）と記号・キーの名前だけで、訳す言葉が無い。公式の訳も同じ文言のまま（例: {0}: {1}、{0} ({1})、{0}%）",
+    "proper-noun": "固有名詞・製品名だけ",
+    "code": "コード・コマンド・設定の名前だけ"
+  },
+  "exclusions": [
+    {
+      "module": "vs/editor/contrib/hover/browser/markerHoverParticipant",
+      "key": "diagnosticMessage",
+      "en": "{0}: {1}",
+      "reason": "format",
+      "since": "1.146.0",
+      "note": "{0}: {1}（診断の出どころと本文）。公式の訳も同じ文言"
+    },
+    {
+      "module": "vs/workbench/browser/parts/editor/editorGroupWatermark",
+      "key": "watermark.shortcutAriaLabel",
+      "en": "{0} ({1})",
+      "reason": "format",
+      "since": "1.146.0",
+      "note": "{0} ({1})。公式の訳も同じ文言"
+    },
+    {
+      "module": "vs/workbench/contrib/mediaPreview/browser/mediaPreviewStatusBar",
+      "key": "imagePreview.zoomPercent",
+      "en": "{0}%",
+      "reason": "format",
+      "since": "1.146.0",
+      "note": "{0}%。公式の訳も同じ文言"
+    },
+    {
+      "module": "vs/workbench/contrib/onboarding/browser/spotlight/spotlightOverlay",
+      "key": "spotlight.endTour.customTooltip",
+      "en": "{0} (Esc)",
+      "reason": "format",
+      "since": "1.146.0",
+      "note": "{0} (Esc)。Esc はキーの名前"
+    },
+    {
+      "module": "vs/workbench/contrib/onboarding/browser/spotlight/spotlightOverlay",
+      "key": "spotlight.stepAnnouncement",
+      "en": "{0}: {1}",
+      "reason": "format",
+      "since": "1.146.0",
+      "note": "{0}: {1}。公式の訳も同じ文言"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "$comment": "公式の訳（vscode-loc PR #2450）の印の誤り5件の上書き（2026-11-17 のリーダーの判断。docs/user-decisions.md「記録（2026-11-17、版 r5 のビルドで出た点）」）。公式の訳を元に、印だけを英語に合わせた",
+  "override": {
+    "vs/workbench/contrib/codeEditor/browser/emptyTextEditorHint/emptyTextEditorHint#emptyTextEditorHintWithInlineChat": "[[コードの生成]] ({0}) または [[言語の選択]] ({1})。入力を開始して閉じるか、今後は [[表示しない]] ようにします。",
+    "vs/workbench/contrib/codeEditor/browser/emptyTextEditorHint/emptyTextEditorHint#emptyTextEditorHintWithoutInlineChat": "[[言語の選択]] ({0}) を使用して作業を開始します。入力を開始して閉じるか、今後は [[表示しない]] ようにします。",
+    "vs/workbench/contrib/files/browser/files.contribution#fileNestingPatterns": "エクスプローラー内のファイルの入れ子を制御します。この機能を有効にするには、{0} を設定する必要があります。各__Item__は親パターンを表し、任意の文字列に一致する 1 つの `*` 文字を含む場合があります。各__Value__は、指定された親の下に入れ子になっている子パターンのコンマ区切りの一覧を表します。子パターンには、いくつかの特別なトークンが含まれている可能性があります:\n- `${capture}`: 親パターンの `*` の解決された値と一致します\n- `${basename}`: 親ファイルのベース名、`file.ts` の `file` と一致します\n- `${extname}`: 親ファイルの拡張子、`file.ts` の `ts` と一致します\n- `${dirname}`: 親ファイルのディレクトリ名、`src/file.ts` の `src` と一致します\n- `*`: 任意の文字列に一致します。子パターンごとに 1 回のみ使用できます",
+    "vs/workbench/contrib/search/browser/anythingQuickAccess#openLinkToSide": "横に並べて開く ({0})",
+    "vs/workbench/contrib/workspace/browser/workspaceTrustEditor#workspaceTrustEditorHeaderActions": "[設定の構成]({0}) または [詳細情報](https://aka.ms/vscode-workspace-trust)。"
+  }
+}

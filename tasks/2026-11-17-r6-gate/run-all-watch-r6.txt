@@ -1,0 +1,3 @@
+switch-watch-warn.test.mjs         tests   10  pass   10  fail   0  skip   0
+watch.test.mjs                     tests  104  pass  104  fail   0  skip   0
+TOTAL                              tests  114  pass  114  fail   0  skip   0

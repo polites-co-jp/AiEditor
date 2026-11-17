@@ -35,7 +35,7 @@ export const HIGHLIGHT_WORDS = [
   "tas-",
 ];
 
-export const OWN_EXTENSIONS = ["mydist", "notion-sync"];
+export const OWN_EXTENSIONS = ["mydist", "notion-sync", "language-pack-ja"];
 const DEP_SECTIONS = ["dependencies", "devDependencies", "optionalDependencies"];
 
 function isPlainObject(v) {

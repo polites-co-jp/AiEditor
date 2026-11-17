@@ -77,6 +77,7 @@
   ],
   "own": [
     { "name": "mydist", "reason": "自前の組み込み拡張（既定の設定とキー割り当て）。apply.mjs が extensions/mydist に写す（docs/02 の4.1）" },
-    { "name": "notion-sync", "reason": "自前の組み込み拡張（設定の同期）。ビルドしてあれば apply.mjs が extensions/notion-sync に写す（docs/02 の4.1、docs/05）" }
+    { "name": "notion-sync", "reason": "自前の組み込み拡張（設定の同期）。ビルドしてあれば apply.mjs が extensions/notion-sync に写す（docs/02 の4.1、docs/05）" },
+    { "name": "language-pack-ja", "reason": "自前の組み込み拡張（本体と同じ版の日本語の言語パック。docs/04 の7節）。訳の束（dist/translations）は node scripts/l10n-ja.mjs build で作り、apply.mjs が extensions/language-pack-ja に写す。束が無ければ apply.mjs が止める" }
   ]
 }

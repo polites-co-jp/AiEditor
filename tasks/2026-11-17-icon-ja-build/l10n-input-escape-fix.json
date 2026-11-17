@@ -1,0 +1,7 @@
+{
+  "$comment": "git の bundle の2件。実行時の鍵（↔）の訳。公式の訳（vscode-loc）は l10n-dev の読み誤りで鍵が ș になっていて引けない。本体の同じ形の文言（metadataDiff・sideBySideLabels など）の公式の訳にそろえ、記号のまま",
+  "translate": {
+    "vscode.git#{0} ↔ {1}": "{0} ↔ {1}",
+    "vscode.git#{0} ({1}) ↔ {0} ({2})": "{0} ({1}) ↔ {0} ({2})"
+  }
+}

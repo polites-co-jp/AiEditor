@@ -1,0 +1,10 @@
+{
+	"version": "1.0.0",
+	"contents": {
+		"package": {
+			"description": "プロンプトと指示ドキュメントの構文ハイライト表示。",
+			"displayName": "プロンプト言語の基本"
+		},
+		"bundle": {}
+	}
+}

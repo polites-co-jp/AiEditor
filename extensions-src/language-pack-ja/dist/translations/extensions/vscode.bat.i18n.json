@@ -1,0 +1,10 @@
+{
+	"version": "1.0.0",
+	"contents": {
+		"package": {
+			"description": "Windows batch ファイル内でスニペット、構文ハイライト、かっこ一致、折りたたみを提供します。",
+			"displayName": "Windows バッチ言語の基礎"
+		},
+		"bundle": {}
+	}
+}

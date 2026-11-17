@@ -656,3 +656,18 @@
 | 取り込みで `count` の出力を `records/take-in/<label>/` に置く手順（蒙恬は `records/` に書けない） | 許可は足さない。`take-in.mjs` がビルドの後に `extract` と `count` を自動で走らせ、記録に書く形にする（数えるだけで、訳さない） |
 | `TAKE-IN.md` の「入れ替えはユーザーが行う」 | 2026-11-16 の裁定（課が行う）に合わせて直す（蒙恬） |
 | 使い捨ての `scripts/l10n-probe.mjs` と `tmp/` の要約のファイル | コミットしない（`tmp/` は git の外） |
+
+## 記録（2026-11-17、版 r6 の関門。リーダーの判断）
+
+根拠: `records/take-in/1.146.0-p5-c-all-r6/gate-p5-c-all-r6.md`、`tasks/2026-11-17-r6-gate/handoff-notes-ooka-echizen.md`
+
+大岡越前守の判定は合格。版 `1.146.0-p5-c-all-r6` を日常の版 r4 と入れ替えてよい。入れ替えは、古い日本語パックを外す許可が蒙恬に入ってから行う（Team に依頼中。`tasks/2026-11-17-l10n-ja/permission-requests.md`）。
+
+| 論点 | 扱い |
+|---|---|
+| 直すべき小さな点 L1〜L3（蒙恬）、T1（曹参） | 入れ替えを止めない。次の取り込みの前に直す（`tasks/2026-11-17-r6-followups/`）。L1: `runL10nCount` が前の回の `l10n-count.json` を写す。L2: 出力が無いときは `failed` にする。L3: `language-pack-ja/README.md` の古い説明。T1: take-in の3件を振る舞いで見るテストに替える |
+| T2（古い 1.131.0 のパックで不合格を見るテストが `~/.shuko/extensions` を読む） | 入れ替えの後に曹参が直す（キャッシュの VSIX か模擬のパックに替える） |
+| D1（`docs/install.md` の拡張の数と言語パック、`--version` の commit） | 入れ替えのときにリーダーが直す |
+| r5 の記録（ビルドの記録・起動の確かめ・数えの結果） | コミットする。裁定の記録と蒙恬の引き継ぎが根拠として名前を挙げているため |
+| 曹参の古い出力（`audit-r4-newpack*.json`、`audit-r4-pack1131.json`、`extra-exclusions-bundle-escape.json`、`icon-l10n-tests/audit-run-pack1131.json`） | コミットしない |
+| `move-off-c.test.mjs` の落ち1件（動いている日常の Shuko を見て `configure.ps1` が `editor-running` で止まる） | 環境の都合で、今回の変更とは関係しない。扱いを変えない |

@@ -27,8 +27,7 @@
         "mads-hartmann.bash-ide-vscode": true,
         "mechatroner.rainbow-csv": true,
         "weixu.wx-vsce-dotenv": true,
-        "tomoki1207.pdf": true,
-        "MS-CEINTL.vscode-language-pack-ja": true
+        "tomoki1207.pdf": true
       },
       "telemetry.telemetryLevel": "off",
       "update.mode": "none",
