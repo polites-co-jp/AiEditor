@@ -84,7 +84,7 @@
 
 ### 4.2 未決（そのときに諮る）
 
-1. **エディタの名前**: Microsoft・Visual Studio・Claude の名称は使わない（裁定）。アイコンは 2026-11-17 に決まった（Claude と VS Code のアイコンを合わせた意匠）。名前が決まったら、product.json の上書き（[02](02-repository-and-build.md) の3節）、`mydist` の publisher、ToDo のプロジェクト、`local.json` の置き場所と `installRoot` の既定値の名前を直す。
+1. **エディタの名前**（2026-11-18 に決定: 少名毘古那、ローマ字 Sukuna。改名の移行は `tasks/2026-11-18-rename-sukuna-survey/` から進める）: Microsoft・Visual Studio・Claude の名称は使わない（裁定）。アイコンは 2026-11-17 に決まった（Claude と VS Code のアイコンを合わせた意匠）。名前が決まったら、product.json の上書き（[02](02-repository-and-build.md) の3節）、`mydist` の publisher、ToDo のプロジェクト、`local.json` の置き場所と `installRoot` の既定値の名前を直す。
 2. **Phase 1 の後に、ビルドが重すぎるか**: 所要時間とディスクの実測を添えて諮る。重すぎるなら、予備案（VSCodium の zip の後処理）にするかも諮る（裁定）。
 3. **Phase 0 の結果しだいで諮ること**:
    - .env の2つの拡張が、どちらもエラー表示を持たないか、両方とも持つとき（[07](07-phases.md) の 0-3）。

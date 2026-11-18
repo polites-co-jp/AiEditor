@@ -1,6 +1,6 @@
 # 開発部（development） AiEditor 課
 
-AiEditor（仮称 Shuko）のビルドリポジトリを作り、保守する課。このリポジトリ（`projects/ai-editor/`）だけを担当する。
+AiEditor（名前は Sukuna。2026-11-18 に決定、改名の移行が済むまで実装は仮称 Shuko）のビルドリポジトリを作り、保守する課。このリポジトリ（`projects/ai-editor/`）だけを担当する。
 
 ## 所属
 
