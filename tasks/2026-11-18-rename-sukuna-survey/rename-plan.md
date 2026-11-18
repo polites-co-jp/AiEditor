@@ -11,7 +11,7 @@
 - 識別子は ASCII の `Sukuna`・`sukuna` にそろえる案（2節）。ほかの製品とのぶつかりは見つからなかった（Open VSX に名前空間 `sukuna` は無い。Sukuna という名前のエディタも見つからない）。
 - 移行は**並べて入れる**案を推す（3節）。新しい Sukuna を別の場所（`%LOCALAPPDATA%\Programs\Sukuna`・`%APPDATA%\Sukuna` など）に入れ、日常の Shuko は消さずに残す。Sukuna を確かめてから、ユーザーの答えを待って Shuko を引退させる。戻すときは、残っている Shuko を起動するだけで済む。
 - 本体の作り直しが要る（product.json の名前・パッチの中の印・組み込み拡張の ID が変わるため）。ビルド約 20 分と関門を1回通す。
-- ユーザーに諮る論点は6つ（6節）。
+- ユーザーに諮る論点は6つ（6節）。2026-11-18 に答えが出た（6.1）。論点3だけが推奨と違い、写しの台本は課（蒙恬）が打つ。移行の前に確かめる問いの案は8節。
 
 ## 1. 影響の範囲
 
@@ -141,10 +141,10 @@
 |---|---|---|---|---|
 | `local.json`（`%LOCALAPPDATA%\Shuko\local.json`） | 写さない。改名した `configure.ps1` を引数なしで打つと、`%LOCALAPPDATA%\Sukuna\local.json` を既定の値（`installRoot` = `%LOCALAPPDATA%\Programs\Sukuna`、`builderRepo` = このリポジトリ、`buildRoot` = `tmp\b`、`keepVersions` 3）で作る。今の `local.json` に既定と違う値があれば、移行の前に `configure.ps1`（引数なし。今の値を出すだけ）で控え、同じ値を `-KeepVersions` などで入れる | 課（2026-11-16 の裁定。`configure.ps1` は手順書の1で課が打つ） | 止めない | 新しいファイルを消す。古いファイルは触っていない |
 | 版のフォルダ（`%LOCALAPPDATA%\Programs\Shuko`） | 移さない。新しく作った Sukuna の zip を `switch.ps1 1.146.0-1 -Zip <zip> -Sha256 <hex>` で `%LOCALAPPDATA%\Programs\Sukuna\versions\1.146.0-1` に展開し、`current` を作る | 課（2026-11-16 の裁定。版の入れ替えは課） | 止めない（場所が別。`switch.ps1` が見る「動いている版」は新しい場所の `current` だけ） | 新しい場所を消す（ユーザー。課の削除の許可の外） |
-| ユーザーのデータ（`%APPDATA%\Shuko`） | 移行の台本（新しく作る。4節の手順2）で `%APPDATA%\Sukuna` へ**写す**（移さない）。除くもの（案）: `Cache`・`CachedData`・`Code Cache`・`GPUCache`・`CachedExtensionVSIXs`・`logs`・`Crashpad`・`clp`・`languagepacks.json`（どれも作り直されるか、古い版の場所を指す）。`Local State` は写す（下の注）。`User\globalStorage\shuko.notion-sync\` は `sukuna.notion-sync\` という名前で写す（同期の基準 `sync-base.json` を引き継ぐため） | **論点3**（推奨はユーザーが台本を1回打つ） | **止める**（`state.vscdb` が書きかけにならないように。台本は Shuko が動いていれば止まる） | `%APPDATA%\Sukuna` を消す。元の `%APPDATA%\Shuko` は触っていない |
-| 拡張（`%USERPROFILE%\.shuko\extensions`） | 写さない。台帳から入れ直す（`install-extensions.mjs`。VSIX は `<buildRoot>\cache\vsix\` にあるので取り直さない）。`extensions.json` に古い場所の絶対パスが入っている恐れがあるため（未確認）。`argv.json` だけは移行の台本で `%USERPROFILE%\.sukuna\argv.json` に写し、手で足した項目を残す（`install-extensions.mjs` は `locale` だけを書き足す） | 課（2026-11-16・11-17 の裁定。拡張の導入は課）。`argv.json` の写しは移行の台本 | 止めない（Sukuna を閉じておく） | `%USERPROFILE%\.sukuna` を消す |
-| 検知の状態とトークン（`%LOCALAPPDATA%\Shuko\watch\`） | 移行の台本で `state.json`・`notion-token.dpapi`（・`watch.log`）を `%LOCALAPPDATA%\Sukuna\watch\` へ写す。DPAPI の暗号はユーザーに結び付き、ファイルの場所には結び付かないので、写しても読める（`ConvertFrom-SecureString` の DPAPI）。`state.json` を写さないと、開いている ToDo のページ ID を失い、検知が「プロジェクト = Sukuna」で探して古い「Shuko」の ToDo を見つけられず、同じ ToDo を作り直す（docs/06 の2.3 の重複を避ける3） | ユーザー（秘密の場所。エージェントは開かない決まり）。写さずに `set-token.ps1` でトークンを入れ直す道もある | 止めない（タスクの 6:00 の実行と重ねない） | 新しい `watch\` を消す。古いものは触っていない |
-| 予備の秘密の場所（`%LOCALAPPDATA%\Shuko\secrets\`） | 台本は使っていない。あれば同じく写す | ユーザー | 止めない | 同上 |
+| ユーザーのデータ（`%APPDATA%\Shuko`） | 移行の台本（新しく作る。4節の手順2）で `%APPDATA%\Sukuna` へ**写す**（移さない）。除くもの（案）: `Cache`・`CachedData`・`Code Cache`・`GPUCache`・`CachedExtensionVSIXs`・`logs`・`Crashpad`・`clp`・`languagepacks.json`（どれも作り直されるか、古い版の場所を指す）。`Local State` は写す（下の注）。`User\globalStorage\shuko.notion-sync\` は `sukuna.notion-sync\` という名前で写す（同期の基準 `sync-base.json` を引き継ぐため） | 蒙恬が台本を打つ（2026-11-18 の裁定「改名の進め方」。課が打つ。許可は `permission-requests.md` の1.5） | **止める**。Shuko を全部閉じるのはユーザーにお願いする（`state.vscdb` が書きかけにならないように。台本は Shuko が動いていれば止まる） | `%APPDATA%\Sukuna` を消す。元の `%APPDATA%\Shuko` は触っていない |
+| 拡張（`%USERPROFILE%\.shuko\extensions`） | 写さない。台帳から入れ直す（`install-extensions.mjs`。VSIX は `<buildRoot>\cache\vsix\` にあるので取り直さない）。`extensions.json` に古い場所の絶対パスが入っている恐れがあるため（未確認）。`argv.json` だけは移行の台本で `%USERPROFILE%\.sukuna\argv.json` に写し、手で足した項目を残す（`install-extensions.mjs` は `locale` だけを書き足す） | 課（2026-11-16・11-17 の裁定。拡張の導入は課）。`argv.json` の写しは移行の台本（蒙恬が打つ） | 止めない（Sukuna を閉じておく） | `%USERPROFILE%\.sukuna` を消す |
+| 検知の状態とトークン（`%LOCALAPPDATA%\Shuko\watch\`） | 移行の台本で `state.json`・`notion-token.dpapi`（・`watch.log`）を `%LOCALAPPDATA%\Sukuna\watch\` へ写す。DPAPI の暗号はユーザーに結び付き、ファイルの場所には結び付かないので、写しても読める（`ConvertFrom-SecureString` の DPAPI）。`state.json` を写さないと、開いている ToDo のページ ID を失い、検知が「プロジェクト = Sukuna」で探して古い「Shuko」の ToDo を見つけられず、同じ ToDo を作り直す（docs/06 の2.3 の重複を避ける3） | 蒙恬が台本を打つ（2026-11-18 の裁定）。台本はファイルを写すだけで、エージェントは中身を開かない（出力はファイルの名前・有無・大きさだけ。トークンの中身も、そのハッシュも出さない） | 止めない（タスクの 6:00 の実行と重ねない） | 新しい `watch\` を消す。古いものは触っていない |
+| 予備の秘密の場所（`%LOCALAPPDATA%\Shuko\secrets\`） | 台本は使っていない。あれば同じく写す | 蒙恬が台本を打つ（同上） | 止めない | 同上 |
 | スタートメニューのショートカット | 改名した `start-menu-shortcut.ps1` を1回打つ（`Sukuna.lnk`、ID `Sukuna.Editor`）。古い `Shuko.lnk` は引退まで残す | ユーザー（2026-11-16 の裁定、2026-11-18 の裁定「台本はユーザーが1回実行」） | 止めない | `Sukuna.lnk` を消す |
 | デスクトップのショートカット | `Sukuna.lnk` を作る（今の許可の行は `Shuko.lnk` 決め打ち。新しい行が要る。`permission-requests.md` の1.2） | 蒙恬（2026-11-17 の裁定。許可が入ってから） | 止めない | ユーザーが消す |
 | PATH | ユーザーの `Path` に `%LOCALAPPDATA%\Programs\Sukuna\current\bin` を足す。古い `...\Shuko\current\bin` は引退まで残してよい（コマンドの名前が `shuko` と `sukuna` で別なので、ぶつからない） | ユーザー（2026-11-16 の裁定。手の手順） | 止めない | 足した行を消す |
@@ -162,7 +162,7 @@
 1. （課）改名のコミットを入れる直前に、今の値を控える: `configure.ps1`（引数なし）、`switch.ps1 -List`。
 2. （リーダー）改名のコミットを入れる。この時から、課の道具と検知は Sukuna の場所を見る。**以下を同じ日のうちに行う**（検知のタスクが登録済みなら、次の 6:00 の前。登録前なら急がない）。
 3. （課）`configure.ps1` で新しい `local.json`。`switch.ps1 1.146.0-1 -Zip ...` で新しい版のフォルダ。
-4. （ユーザー）Shuko を全部閉じて、移行の台本を打つ（まず `-DryRun` で写すものの一覧を見る。次に本番）。
+4. （ユーザー）Shuko を全部閉じて、課に知らせる。（蒙恬）移行の台本を打つ。まず一覧（`-List`。何も書かない）で写すものを出し、リーダーが確かめてから本番（`-Apply`）を打つ。Shuko が動いていれば台本は止まるので、そのときはユーザーに閉じてもらってやり直す。
 5. （課）`install-extensions.mjs`（`--dry-run` の後に本番）。
 6. （ユーザー）`start-menu-shortcut.ps1`、PATH を足す、`register-task.ps1`（新）と古いタスクの `-Unregister`。
 7. （蒙恬）デスクトップの `Sukuna.lnk`（許可が入っていれば）。
@@ -195,7 +195,7 @@
 1. `product.overlay.json` の12キーと独自キー、`scripts/`・`tools/watch/` の場所の値・ID・UA・作者・関数の名前、`extensions-src/` の publisher と `displayName`、`TAKE-IN.md`・`package.json`・`assets/README.md`。
 2. パッチの注釈と作者: 全部の `removals/*/edits.patch` と `patches/*.patch` を同じ規則で置き換え（`From:` の行、`// Shuko (`・`* Shuko (`・`// Shuko:` の注釈、件名の `shuko:`、`shukoConfigurationDefaults`）→ 新しい作業ツリーに当て直し → 単位ごとの edits のコミットから `format-patch` で作り直して `index` の行を正す。置き換えの前後の差が「`Shuko`→`Sukuna` と `index` の行」だけであることを照らす。
 3. notion-sync と日本語パックを作り直す（`pnpm --dir extensions-src/notion-sync run build` は `dist/` を作り直すので、`dist/i18n/sukuna.notion-sync.ja.i18n.json` ができ、古い束は消える。日本語パックの `dist/` は ID を含まないので変わらない見込み）。
-4. 移行の台本 `scripts/migrate-from-shuko.ps1`（新規。名前は案）: 3.2 の表の「移行の台本」の行だけを行う。既定は `-DryRun` 相当の一覧だけで、本番は `-Apply` を付けたときだけ。元の場所には書かない・消さない。Shuko が動いていれば止まる。移す先に `User\` や `argv.json` や `watch\` の中身があれば、混ぜずに止まる。写した後に、ファイルの数と大きさを照らして出す。改名の後にも `Shuko` を書くのはこの台本だけになる。
+4. 移行の台本 `scripts/migrate/migrate-from-shuko.ps1`（新規。名前と置き場所は案。一般の許可の行 `scripts/*.ps1` に当たらないように下のフォルダに置く案。`permission-requests.md` の1.5）: 3.2 の表の「移行の台本」の行だけを行う。引数なしは何もせずに使い方を出す。`-List` は写すものの一覧だけで何も書かない。本番は `-Apply` を付けたときだけ。打つのは蒙恬（2026-11-18 の裁定）。場所は台本の中で環境変数から決め、コマンドの文字列に出さない（フックの秘密の検査に当たらないように）。試しは `-SandboxRoot tmp/b/trial-migrate` で6つの場所をすべて模擬に置き換えて打つ（`<buildRoot>\trial-*` の下でなければ止める）。失敗しても何も消さず、作ったものの一覧を出して止まる（書く先は削除の許可の外。片づけはユーザー）。出力はファイルの名前・有無・数・大きさだけで、秘密のファイル（`notion-token.dpapi` など）は中身もハッシュも出さない。元の場所には書かない・消さない。Shuko が動いていれば止まる。移す先に `User\` や `argv.json` や `watch\` の中身があれば、混ぜずに止まる。写した後に、ファイルの数と大きさを照らして出す。改名の後にも `Shuko` を書くのはこの台本だけになる。
 5. `start-menu-shortcut.ps1` の実行ファイルとショートカットの名前を、版の `product.json` の `nameShort` から求める形にする（今は `Shuko.exe`・`Shuko.lnk` の決め打ち。ほかの台本と同じ作りにそろえる提案）。
 
 ### 2b の内訳（曹参）
@@ -219,7 +219,7 @@
 | `removals/*/edits.patch` の `From:` | `From: sukuna-apply <apply@sukuna.invalid>` |
 | `scripts/start-menu-shortcut.ps1 -InstallRoot <模擬> -ShortcutPath <tmp>\Sukuna.lnk` | `TargetPath=<模擬>\current\Sukuna.exe`、`AppUserModelId=Sukuna.Editor` |
 | `tools/watch/register-task.ps1 -DryRun` | `register-task: task \Sukuna\watch` |
-| `scripts/migrate-from-shuko.ps1`（場所の引数で模擬を渡す） | 4節の2a の4の振る舞い |
+| `scripts/migrate/migrate-from-shuko.ps1 -SandboxRoot <テストの一時の場所> -List`・`-Apply`（テストは `node --test` から起こすので、場所は `tmp/b/trial-migrate` でなくてよい。台本の「`<buildRoot>\trial-*` の下に限る」の照らしは、テストのときだけ外せる形にするか、テストの場所をそこに置く。2a で決める） | 4節の2a の4の振る舞い。出力の JSON に秘密のファイルの中身・ハッシュが無いこと |
 
 関数名・引数・出力の形は、2a で作ったときに引き継ぎの文書に確定させる。
 
@@ -240,6 +240,16 @@
 - 過去の記録（`tasks/`・`records/`・`docs/user-decisions.md`）は直さない。
 - 版のラベルは `1.146.0-p5-c-all-r7`、新しい場所での版の名前は `1.146.0-1`。
 
+### 6.1 答え（2026-11-18。`docs/user-decisions.md` の「裁定（2026-11-18、改名の進め方）」）
+
+| # | 答え | この文書で直した所 |
+|---|---|---|
+| 1 | すべて `Sukuna`（推奨どおり）。漢字は使わない | — |
+| 2 | 並べて入れる（推奨どおり） | — |
+| 3 | **課が打つ**（推奨と違う）。台本は蒙恬が作り、蒙恬が打つ。エージェントが秘密の中身を開かない決まりは変えない（台本がファイルを写すだけ） | 3.2 の表の「誰」、3.3 の手順4、4節の 2a の4。許可は `permission-requests.md` の1.5 に足した |
+| 4・5・6 | 全部 Sukuna に（推奨どおり）。内部の印・publisher（`sukuna`）・ToDo の値（`Sukuna`）も変える。notion-sync のトークンはユーザーが1回入れ直す。開いている「Shuko」の ToDo は書き換えない | — |
+| 諮らずに進める点 | 案のまま | — |
+
 ## 7. 確かめたことと出典
 
 - 数: `Grep`（大文字と小文字を区別しない）で、`docs/`・`scripts/`・`tools/`・`removals/`・`patches/`・`extensions-src/`・`builtin/`・`assets/`・`tests/`・`team/`・`.claude/`・ルートのファイル・`tasks/`・`records/` を数えた。`builtin/` は 0。`tmp/` の下は探していない。
@@ -250,3 +260,20 @@
 - Open VSX の名前空間: `https://open-vsx.org/api/sukuna` が 404（2026-11-18）。
 - 同じ名前のエディタ: Web の検索で見つからなかった（2026-11-18）。
 - 台本の読み: `scripts/configure.ps1`（`-InstallRoot` のショートカットと PATH の向け直しは、旧の `current` の下を指すものの頭だけを付け替える）、`scripts/switch.ps1`（実行ファイルとデータの場所を版の product.json から求める）、`scripts/start-menu-shortcut.ps1`（`Shuko.exe`・`Shuko.lnk` は決め打ち）、`scripts/lib/notion-todo.mjs`（重複を探す条件にプロジェクトを使う）、`extensions-src/notion-sync/src/extension.mts`（秘密と `globalStorage\<ID>\sync-base.json`）、`extensions-src/notion-sync/build.mjs`（40 行で `dist/` を消して作り直す）、`team/hooks/allowlist.js`（秘密の場所は無い場所でも親をたどって登録できる。`realize`）。
+
+## 8. 移行の前にユーザーに確かめる問い（案）
+
+課から見えない点を確かめる。どれも事実を聞く問いなので、推奨は付けない。答えで 3.3 の段取りが変わる。
+
+1. **問い**: 「更新の検知のタスク（手順書の7。タスクスケジューラの `\Shuko\watch`）は、もう登録しましたか」
+   - 「登録した」→ 改名のコミットを入れた日のうちに、次の 6:00 より前に移行を済ませます（古いタスクも新しい場所を読むため）。手順6で、古いタスクを外して新しいタスクを登録してもらいます。
+   - 「まだ」→ 移行の日を急ぎません。手順6では、新しいタスク `\Sukuna\watch` の登録だけをしてもらいます（いつ登録するかは今までどおりユーザーの都合）。
+   - 「分からない」→ `Get-ScheduledTask -TaskPath '\Shuko\'` を打って、出た結果を知らせてもらいます。
+2. **問い**: 「スタートメニューの Shuko のショートカットと、ユーザーの PATH の `...\Shuko\current\bin` は登録しましたか」
+   - 「両方した」→ 手順6で Sukuna の分を両方作ってもらい、引退のときに古い2つを消してもらいます。
+   - 「スタートメニューだけ」・「PATH だけ」→ 登録した側は同じです。登録していない側は、Sukuna の分を作るかどうかをそのときに選んでもらいます。
+   - 「どちらもまだ」→ 手順6は Sukuna の分を初めて作る手順になります。引退のときに消す古いものはありません。
+3. **問い**: 「日常の Shuko は、日本語を直した版（r6）に入れ替わっていますか（『ヘルプ』→『バージョン情報』の commit で分かります）」
+   - 課が `switch.ps1 -List`（今の許可で打てる）で今の版のラベルを見て、それで分かれば、この問いは出しません。
+   - 「入れ替わっている」→ そのまま進めます。並べて入れるので、Sukuna の手順は変わりません。
+   - 「まだ」→ 入れ替えずに Sukuna へ移ります（Sukuna の新しい版は r6 の中身を含みます）。古い日本語パックを Shuko から外す作業は要らなくなります。戻すときは、日本語が一部英語の r4 の Shuko に戻ることになります。
