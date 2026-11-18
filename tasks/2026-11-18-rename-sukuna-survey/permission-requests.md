@@ -156,3 +156,8 @@ $r = (New-Object -ComObject WScript.Shell).CreateShortcut($lnk)
 - 課の台本が使う今の許可（`powershell -NoProfile -ExecutionPolicy Bypass -File scripts/*.ps1`、`node scripts/*.mjs`）で、`configure.ps1`・`switch.ps1`・`install-extensions.mjs` は改名の後も打てる（場所は台本の中で決まり、コマンドの文字列に出ない）。
 - このリポジトリの外（Team の側）に、AiEditor の Shuko の行を写したテストや記録（例: Team の `tasks/2026-11-17-ai-editor-shortcut-l10n-perms/perm-tests/`）があれば、同じく直す必要があるかを見てほしい。課からは読めない。
 - 段1が入るまで、移行は始めない（`rename-plan.md` の4節の順6）。実装の改名・テスト・ビルド・関門は先に進める。
+
+## 4. あわせて頼むこと（権限ではない。リーダーが追記 2026-11-18）
+
+- `.claude/agents/vlad-tepes.md` の8行「AiEditor（仮称 Shuko）」を「AiEditor（Sukuna）」に直してほしい。メンバーの定義なので課では書き換えない。曹参の名前の残りの検査（`tests/rename-leftovers.test.mjs`）が、直るまでこの行を拾う。
+- 段1のテストで AiEditor の Shuko の行を写したもの（Team の側）があれば、あわせて見てほしい（3節の3つ目と同じ）。
