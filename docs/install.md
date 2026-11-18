@@ -111,25 +111,42 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/switch.ps1 1.146.0-1
 
 ## 3. スタートメニューと PATH に登録する
 
-この登録をする台本はありません。下の手順で1回だけ手で行います。`configure.ps1 -InstallRoot` が場所を変えるときに向け直すのは、この形で作ったものだけです（ユーザーの「プログラム」フォルダの直下のショートカットと、ユーザーの PATH）。
+スタートメニューは台本で、PATH は手で、1回だけ登録します。`configure.ps1 -InstallRoot` が場所を変えるときに向け直すのは、この形で作ったものだけです（ユーザーの「プログラム」フォルダの直下のショートカットと、ユーザーの PATH）。
 
 ### 3.1 スタートメニュー
 
-普通の PowerShell の窓で実行します。`$root` は手順1の `installRoot` です（既定の場所なら、そのままで構いません）。
+台本 `scripts/start-menu-shortcut.ps1` で、スタートメニューに Shuko のショートカットを1つ作ります。このショートカットには、Shuko の窓と同じアプリの ID（AppUserModelID。`product.json` の `win32AppUserModelId`、今は `Shuko.Editor`）が付きます。ID が付いたショートカットがスタートメニューに無いと、Windows はタスクバーのボタンを右クリックしたときのメニュー（ジャンプリスト）に「New Window」（新しい窓を開く）を出しません（2026-11-18 の裁定）。
+
+普通の PowerShell の窓で、このリポジトリの直下から1行実行します（管理者は要りません。通信しません）。
 
 ```powershell
-$root = "$env:LOCALAPPDATA\Programs\Shuko"
-$lnk  = Join-Path ([Environment]::GetFolderPath('Programs')) 'Shuko.lnk'
-$ws   = New-Object -ComObject WScript.Shell
-$s    = $ws.CreateShortcut($lnk)
-$s.TargetPath       = "$root\current\Shuko.exe"
-$s.WorkingDirectory = "$root\current"
-$s.Save()
-$ws.CreateShortcut($lnk).TargetPath
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/start-menu-shortcut.ps1
 ```
 
-- 最後の行が `...\Programs\Shuko\current\Shuko.exe` を出せば済んでいます。`current` を通したパスであることが大事です。`versions\1.146.0-1` を直に指していると、版を切り替えてもショートカットが古い版を開きます。そうなっていたら知らせてください。
-- ショートカットは、サブフォルダを作らず、「プログラム」フォルダ（`%APPDATA%\Microsoft\Windows\Start Menu\Programs`）の直下に置きます。
+- 置き場所は `local.json` の `installRoot`（手順1）から読みます。既定の場所なら、引数は要りません。
+- ショートカットは「プログラム」フォルダ（`%APPDATA%\Microsoft\Windows\Start Menu\Programs`）の直下の `Shuko.lnk` です。同じ名前のものがあれば作り直します（手で付けた引数やアイコンは消えます）。ほかのショートカットには触れません。
+- `current\Shuko.exe` が無いときは何も作らずに止まります（終了コード 1。手順2の `switch.ps1` が済んでいるかを確かめます）。
+
+出力の見方。次の3行が出て、終了コードが 0 なら済んでいます。
+
+```
+TargetPath=C:\Users\<ユーザー>\AppData\Local\Programs\Shuko\current\Shuko.exe
+WorkingDirectory=C:\Users\<ユーザー>\AppData\Local\Programs\Shuko\current
+AppUserModelId=Shuko.Editor
+```
+
+- `TargetPath` が `current` を通したパスであることが大事です。`versions\1.146.0-1` を直に指していると、版を切り替えてもショートカットが古い版を開きます。
+- `AppUserModelId=` が空、または `Shuko.Editor` でないなら、ジャンプリストは出ません。知らせてください。
+- 3行の前後に `[start-menu-shortcut] ...` で始まる行が出ますが、誤りではありません。前の行はどこから値を読んだか、最後の行 `[start-menu-shortcut] ok. ...` は済んだ知らせです。読み直した値が期待と違うと、3行の後に `read-back differs: ...` を出して終了コード 2 で終わります。そのときは知らせてください。
+- 書かずに今の中身だけを見るときは、末尾に `-Read` を付けます。
+
+作った後に確かめます。
+
+1. 開いている Shuko の窓を全部閉じ、スタートメニューの「Shuko」から開き直します（ID は窓を開くときに結び付くので、作る前から開いていた窓では出ないことがあります）。
+2. タスクバーの Shuko のボタンを右クリックします。メニューの上の方に「New Window」（日本語の表示では訳された名前で出ることがある）が出て、選ぶと新しい窓が開けば済んでいます。
+3. 出ないときは、Shuko を閉じて1分ほど待ってから開き直します（Windows がスタートメニューの変更を読み直すのに時間がかかることがあります）。それでも出なければ知らせてください。
+
+置き場所を変えた（`configure.ps1 -InstallRoot`）後も、このショートカットは向け直され、ID は残ります。デスクトップのショートカット（ID は付いていない）は向け直されないので、置き場所を変えたら作り直します。
 
 ### 3.2 ユーザーの PATH
 

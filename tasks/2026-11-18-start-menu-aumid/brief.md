@@ -2,7 +2,7 @@
 
 - 担当: meng-tian（蒙恬）
 - 依頼日: 2026-11-18
-- 状態: 依頼中
+- 状態: 完了
 
 ## 目的
 
@@ -53,7 +53,7 @@
 
 ## 結果
 
-（未記入）
+採る。見立ては裏付けられた（上流の「New Window」は残り、どの単位も外していない）。`scripts/start-menu-shortcut.ps1` と部品 `scripts/lib/shell-link.ps1` を作り、`configure.ps1` に `-ProgramsDir` を足した（ID のための直しは要らなかった。向け直しと取り消しの後も ID は残る）。大岡越前守の検証で台本は合格（`tasks/2026-11-18-start-menu-aumid-verify/`）。差し替え案の出力の順の書き方1点は、リーダーが install.md の 3.1 に写すときに直した。手元の確かめの台本 `scripts/trial-start-menu-aumid.ps1` はコミットしない。
 
 ## 未解決
 

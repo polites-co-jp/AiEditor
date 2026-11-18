@@ -2,7 +2,7 @@
 
 - 担当: meng-tian（蒙恬）。許可が入ってから依頼する
 - 依頼日: 2026-11-17
-- 状態: 依頼中（許可は 2026-11-18 に入った。`permission-response.md`。蒙恬に依頼済み）
+- 状態: 完了（2026-11-18）
 
 ## 目的
 
@@ -38,7 +38,7 @@
 
 ## 結果
 
-（未記入）
+蒙恬が許可の「作る行」を1回打ち、デスクトップに `Shuko.lnk` を作った（`TargetPath=C:\Users\kou_z\AppData\Local\Programs\Shuko\current\Shuko.exe`、`WorkingDirectory=...\current`、引数なし）。大岡越前守が「読む行」で同じ値を確かめた（`tasks/2026-11-18-start-menu-aumid-verify/verification-start-menu-aumid.md` の5）。ID は付いていない。ジャンプリストに要る ID はスタートメニューのショートカットに付ける（2026-11-18 の裁定）。
 
 ## 未解決
 

@@ -2,7 +2,7 @@
 
 - 担当: cao-shen（曹参）
 - 依頼日: 2026-11-18
-- 状態: 依頼中
+- 状態: 完了
 
 ## 目的
 
@@ -43,7 +43,7 @@
 
 ## 結果
 
-（未記入）
+採る。`tests/start-menu-shortcut.test.mjs`（12件）と `tests/configure.test.mjs` の末尾の2件（`-ProgramsDir` で向け直しと取り消しの後も ID が残る）。2つを合わせた31件がすべて通る。ID は独立の読み手（`Shell.Application` の `ExtendedProperty`）で読む。初めの1件の落ちは、テストが overlay の最上位を読んでいた誤りで、`set.` の下を読むよう直した。`configure.test.mjs` の冒頭の注釈のずれは、次にこのテストに触れるときに直す。
 
 ## 未解決
 

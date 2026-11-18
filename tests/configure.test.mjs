@@ -7,7 +7,7 @@ import test, { before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
-import { spawn } from 'node:child_process';
+import { spawn, spawnSync } from 'node:child_process';
 import { REPO, makeSandbox, removeSandbox, writeFile, runPs, parseJsonOut, isJunctionTo } from './build/helpers.mjs';
 
 const CONFIGURE = path.join(REPO, 'scripts', 'configure.ps1');
@@ -276,4 +276,109 @@ test('-InstallRoot twice (A -> B -> A): history survives both moves', () => {
   assert.equal(fs.readFileSync(path.join(A, 'history.txt'), 'utf8'), '2026-11-14T00:00:00+09:00\t-\t1.146.0-1\n');
   assert.ok(isJunctionTo(path.join(A, 'current'), path.join(A, 'versions', '1.146.0-1')));
   assert.equal(JSON.parse(s.read()).installRoot, A);
+});
+
+// ---- step 5 (Start menu shortcuts) with -ProgramsDir: the real Start menu is never touched. ----
+// The ID is read by this test's own reader (Shell.Application ExtendedProperty), not by scripts/lib/shell-link.ps1.
+// PATH step: the old root is a test folder, so no entry of the real user PATH matches; the real HKCU\Environment Path
+// is compared before and after to show it was not written.
+const START_MENU = path.join(REPO, 'scripts', 'start-menu-shortcut.ps1');
+const SM_ID = 'Test.Aumid';
+
+function psFile(name, lines) {
+  const p = path.join(sb, name);
+  if (!fs.existsSync(p)) writeFile(p, lines.join('\r\n') + '\r\n');
+  return p;
+}
+function readLnk(lnk) {
+  const reader = psFile('read-lnk.ps1', [
+    'param([string]$Path)',
+    '$ErrorActionPreference = "Stop"',
+    '$s = (New-Object -ComObject WScript.Shell).CreateShortcut($Path)',
+    '$item = (New-Object -ComObject Shell.Application).NameSpace((Split-Path -Parent $Path)).ParseName((Split-Path -Leaf $Path))',
+    '$id = $item.ExtendedProperty("System.AppUserModel.ID")',
+    '[pscustomobject]@{ target = $s.TargetPath; workdir = $s.WorkingDirectory; id = $(if ($null -eq $id) { $null } else { "$id" }) } | ConvertTo-Json -Compress',
+  ]);
+  const r = runPs(reader, ['-Path', lnk]);
+  assert.equal(r.status, 0, 'reader: ' + r.stderr + r.stdout);
+  return JSON.parse(r.stdout.trim().split(/\r?\n/).pop());
+}
+function makePlainLnk(lnk, target) {
+  const mk = psFile('mk-plain.ps1', [
+    'param([string]$Path, [string]$Target)',
+    '$s = (New-Object -ComObject WScript.Shell).CreateShortcut($Path)',
+    '$s.TargetPath = $Target',
+    '$s.Save()',
+  ]);
+  const r = runPs(mk, ['-Path', lnk, '-Target', target]);
+  assert.equal(r.status, 0, r.stderr + r.stdout);
+}
+const realUserPath = () => spawnSync('reg', ['query', 'HKCU\\Environment', '/v', 'Path'], { encoding: 'utf8' }).stdout;
+const sameP = (a, b) => path.resolve(a).toLowerCase() === path.resolve(b).toLowerCase();
+const snapFile = (p) => ({ b: fs.readFileSync(p), m: fs.statSync(p).mtimeMs });
+
+// Fake install at A, an ID-carrying Shuko.lnk and a plain Other.lnk in a test Programs folder.
+function setupShell() {
+  const s = setup();
+  const A = path.join(s.root, 'A');
+  const B = path.join(s.root, 'B');
+  const programs = path.join(s.root, 'programs');
+  makeInstall(A);
+  fs.mkdirSync(programs, { recursive: true });
+  fs.writeFileSync(s.cfg, JSON.stringify({ installRoot: A, keepVersions: 3 }));
+  const lnk = path.join(programs, 'Shuko.lnk');
+  const mk = runPs(START_MENU, ['-InstallRoot', A, '-ShortcutPath', lnk, '-AppUserModelId', SM_ID]);
+  assert.equal(mk.status, 0, 'make shortcut: ' + mk.stderr + mk.stdout);
+  const other = path.join(programs, 'Other.lnk');
+  makePlainLnk(other, path.join(REPO, 'package.json'));
+  const runShell = (...args) => {
+    const r = runPs(CONFIGURE, [...args, '-ConfigPath', s.cfg, '-ProgramsDir', programs], { env: { SHUKO_TEST_BASE: s.root } });
+    let json = null;
+    try {
+      json = parseJsonOut(r.stdout);
+    } catch {
+      /* no JSON */
+    }
+    return { ...r, json };
+  };
+  return { ...s, A, B, programs, lnk, other, runShell };
+}
+
+test('-ProgramsDir: re-pointing keeps System.AppUserModel.ID; other .lnk files and the real user PATH are not touched', () => {
+  const s = setupShell();
+  const before = readLnk(s.lnk);
+  assert.equal(before.id, SM_ID);
+  assert.ok(sameP(before.target, path.join(s.A, 'current', 'Shuko.exe')));
+  const o0 = snapFile(s.other);
+  const pathBefore = realUserPath();
+  const r = s.runShell('-InstallRoot', s.B);
+  assert.equal(r.status, 0, r.stderr + r.stdout);
+  const v = readLnk(s.lnk);
+  assert.ok(sameP(v.target, path.join(s.B, 'current', 'Shuko.exe')), v.target);
+  assert.ok(sameP(v.workdir, path.join(s.B, 'current')), v.workdir);
+  assert.equal(v.id, SM_ID, 'ID kept after re-pointing');
+  const o1 = snapFile(s.other);
+  assert.ok(o1.b.equals(o0.b) && o1.m === o0.m, 'Other.lnk changed');
+  assert.deepEqual(fs.readdirSync(s.programs).sort(), ['Other.lnk', 'Shuko.lnk']);
+  assert.equal(realUserPath(), pathBefore, 'real user PATH was written');
+  assert.equal(r.json.userPath?.changed, false);
+});
+
+test('-ProgramsDir: after an undo (local.json write fails) the shortcut is back at the old root and keeps its ID', () => {
+  const s = setupShell();
+  const o0 = snapFile(s.other);
+  const pathBefore = realUserPath();
+  fs.mkdirSync(s.cfg + '.tmp'); // a folder where the temp file goes: writing local.json fails
+  const r = s.runShell('-InstallRoot', s.B);
+  assert.equal(r.status, 1, r.stderr + r.stdout);
+  assert.equal(r.json.result, 'error');
+  const v = readLnk(s.lnk);
+  assert.ok(sameP(v.target, path.join(s.A, 'current', 'Shuko.exe')), v.target);
+  assert.ok(sameP(v.workdir, path.join(s.A, 'current')), v.workdir);
+  assert.equal(v.id, SM_ID, 'ID kept after the undo');
+  const o1 = snapFile(s.other);
+  assert.ok(o1.b.equals(o0.b) && o1.m === o0.m, 'Other.lnk changed');
+  assert.equal(JSON.parse(s.read()).installRoot, s.A, 'local.json unchanged');
+  assert.ok(isJunctionTo(path.join(s.A, 'current'), path.join(s.A, 'versions', '1.146.0-1')));
+  assert.equal(realUserPath(), pathBefore, 'real user PATH was written');
 });

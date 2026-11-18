@@ -21,6 +21,10 @@
      6. rewrites local.json last. If any step fails, the moves are undone and local.json is kept.
 
   -ConfigPath : another local.json (trials and tests). The default is %LOCALAPPDATA%\Shuko\local.json.
+  -ProgramsDir : another folder in place of the Start menu Programs folder in step 5 (trials and tests:
+     a temporary folder, so the real Start menu is not written). The default is
+     [Environment]::GetFolderPath('Programs'). It changes only where shortcuts are looked for; the user
+     PATH step is the same.
 
   Prints one JSON object (what was done) to stdout.
   Exit codes: 0 ok, 1 error, 3 an editor process is running from the install root.
@@ -40,7 +44,8 @@ param(
     [string]$BuilderRepo,
     [switch]$NoMove,
     [switch]$NoShellIntegration,
-    [string]$ConfigPath
+    [string]$ConfigPath,
+    [string]$ProgramsDir
 )
 
 $ErrorActionPreference = 'Stop'
@@ -337,7 +342,7 @@ if ($InstallRoot) {
             } else {
                 $oldCur = (Join-Path $oldRoot 'current')
                 $newCur = (Join-Path $newRoot 'current')
-                $programs = [Environment]::GetFolderPath('Programs')
+                if ($ProgramsDir) { $programs = [IO.Path]::GetFullPath($ProgramsDir) } else { $programs = [Environment]::GetFolderPath('Programs') }
                 if ($programs -and (Test-Path -LiteralPath $programs)) {
                     $shell = New-Object -ComObject WScript.Shell
                     foreach ($lnk in @(Get-ChildItem -LiteralPath $programs -Filter '*.lnk' -File)) {
