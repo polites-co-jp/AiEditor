@@ -31,11 +31,11 @@
 
 ## 結果
 
-完了（2026-11-19）。ビルド1回で ok（20分14秒）。zip `tmp\dist.146.0-p5-c-all-r7.zip`、SHA-256 `5b7ea8850c09af457068bf814b0bef113e9280095f8b72ffa4963f8268e451d1`、版の commit `b76374c6`（枝 `builds/1.146.0-p5-c-all-r7`）。実行ファイルは `Sukuna.exe`、CLI は `bin\sukuna.cmd`、組み込み拡張は `sukuna.*` の3つ。product.json は `rename-plan.md` の2節どおり。zip の中に `shuko` は無い。起動の確かめと日本語の数え（未訳 0）は ok。合否は関門（`tasks/2026-11-19-r7-gate/`）で出す。
+完了（2026-11-19）。ビルド1回で ok（20分14秒）。zip `tmp\b\dist\1.146.0-p5-c-all-r7.zip`、SHA-256 `5b7ea8850c09af457068bf814b0bef113e9280095f8b72ffa4963f8268e451d1`、版の commit `b76374c6`（枝 `builds/1.146.0-p5-c-all-r7`）。実行ファイルは `Sukuna.exe`、CLI は `bin\sukuna.cmd`、組み込み拡張は `sukuna.*` の3つ。product.json は `rename-plan.md` の2節どおり。zip の中に `shuko` は無い。起動の確かめと日本語の数え（未訳 0）は ok。合否は関門（`tasks/2026-11-19-r7-gate/`）で出す。
 
 ## 未解決
 
-`tests/l10n-audit-more.test.mjs` の実物のテストが作業ツリーを `tmp\wt7` と決め打ちしている（実際は `tmp\wt7\w`）。関門では環境変数で渡す。テストの既定は、次に曹参が触れるときに直す。作業ツリー `tmp\wtn` は移行が済むまで残す。使い捨ての `scripts/trial-r7-verify.mjs` はコミットしない。
+`tests/l10n-audit-more.test.mjs` の実物のテストが作業ツリーを `tmp\b\wt\r7` と決め打ちしている（実際は `tmp\b\wt\r7\w`）。関門では環境変数で渡す。テストの既定は、次に曹参が触れるときに直す。作業ツリー `tmp\b\wt\rn` は移行が済むまで残す。使い捨ての `scripts/trial-r7-verify.mjs` はコミットしない。
 
 ## 次の担当
 
