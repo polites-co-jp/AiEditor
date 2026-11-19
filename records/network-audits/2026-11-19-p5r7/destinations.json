@@ -1,0 +1,32 @@
+﻿{
+    "Meta":  {
+                 "Label":  "p5r7",
+                 "Exe":  "E:/develop/self/Team/projects/ai-editor/tmp/b/p2/1.146.0-p5-c-all-r7-ooka/Sukuna-win32-x64-1.146.0-p5-c-all-r7/Sukuna.exe",
+                 "ExeVersion":  "1.146.0",
+                 "EnvDir":  "tasks/2026-11-14-p2-gates/netaudit-env",
+                 "DurationSeconds":  600,
+                 "IntervalSeconds":  2,
+                 "Samples":  300,
+                 "StartedAt":  "2026-11-19T11:47:53.0871107+09:00",
+                 "DnsEntries":  0,
+                 "DailyArgvTouched":  [
+
+                                      ],
+                 "RunDataLeftOver":  [
+
+                                     ],
+                 "Allowlist":  "E:\\develop\\self\\Team\\projects\\ai-editor\\records\\network-allowlist.json",
+                 "AllowlistMissing":  false,
+                 "Previous":  "records/network-audits/2026-11-17-p5r6",
+                 "NetLogPath":  "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\netlog\\p5r7-20261119-114753.netlog.json",
+                 "NetLogEvents":  76,
+                 "NetLogComplete":  true,
+                 "NetLogFilesRemoved":  true,
+                 "NetLogFilesStuck":  [
+
+                                      ]
+             },
+    "Destinations":  [
+
+                     ]
+}

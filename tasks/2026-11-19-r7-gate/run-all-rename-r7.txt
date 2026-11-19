@@ -1,0 +1,6 @@
+rename-entries.test.mjs            tests   10  pass   10  fail   0  skip   0
+rename-leftovers.test.mjs          tests    5  pass    4  fail   1  skip   0
+TOTAL                              tests   15  pass   14  fail   1  skip   0
+
+Failing:
+  rename-leftovers.test.mjs: リーダーの 2c の分（.claude/）に古い名前が残っていない（Team の開発部が直すまで落ちる）

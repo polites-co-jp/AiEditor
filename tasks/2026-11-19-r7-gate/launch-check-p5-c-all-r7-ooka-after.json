@@ -1,0 +1,165 @@
+{
+    "checkedAt":  "2026-11-19T14:56:43.5314967+09:00",
+    "zip":  "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\dist\\1.146.0-p5-c-all-r7.zip",
+    "root":  "",
+    "dest":  "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p2\\1.146.0-p5-c-all-r7-ooka",
+    "unpack":  {
+                   "done":  false,
+                   "reason":  "already unpacked"
+               },
+    "editor":  {
+                   "root":  "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p2\\1.146.0-p5-c-all-r7-ooka\\Sukuna-win32-x64-1.146.0-p5-c-all-r7",
+                   "exe":  "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p2\\1.146.0-p5-c-all-r7-ooka\\Sukuna-win32-x64-1.146.0-p5-c-all-r7\\Sukuna.exe",
+                   "cli":  "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p2\\1.146.0-p5-c-all-r7-ooka\\Sukuna-win32-x64-1.146.0-p5-c-all-r7\\bin\\sukuna.cmd",
+                   "productJson":  "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p2\\1.146.0-p5-c-all-r7-ooka\\Sukuna-win32-x64-1.146.0-p5-c-all-r7\\resources\\app\\product.json",
+                   "appDirRelative":  "resources\\app",
+                   "nameShort":  "Sukuna",
+                   "nameLong":  "Sukuna",
+                   "applicationName":  "sukuna",
+                   "dataFolderName":  ".sukuna",
+                   "version":  "1.146.0",
+                   "commit":  "b76374c6fc633747549a7b1a44a1a5364c7fe8f2",
+                   "portableOk":  true
+               },
+    "cliVersion":  {
+                       "exitCode":  0,
+                       "output":  [
+                                      "1.146.0",
+                                      "b76374c6fc633747549a7b1a44a1a5364c7fe8f2",
+                                      "x64"
+                                  ]
+                   },
+    "installs":  [
+
+                 ],
+    "portable":  {
+                     "path":  "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p2\\1.146.0-p5-c-all-r7-ooka\\portable",
+                     "entries":  [
+                                     "extensions\\",
+                                     "shared-data\\",
+                                     "user-data\\",
+                                     "argv.json"
+                                 ],
+                     "userData":  "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p2\\1.146.0-p5-c-all-r7-ooka\\portable\\user-data",
+                     "userSettingsDir":  "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p2\\1.146.0-p5-c-all-r7-ooka\\portable\\user-data\\User",
+                     "extensions":  "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p2\\1.146.0-p5-c-all-r7-ooka\\portable\\extensions",
+                     "argvJson":  "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p2\\1.146.0-p5-c-all-r7-ooka\\portable\\argv.json"
+                 },
+    "started":  {
+                    "pid":  75360,
+                    "aliveAfterCheck":  true,
+                    "exitCode":  null,
+                    "checkSeconds":  10,
+                    "smokeSeconds":  15,
+                    "tree":  "Sukuna.exe x7",
+                    "stoppedProcesses":  7
+                },
+    "workbench":  {
+                      "logsFolder":  "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p2\\1.146.0-p5-c-all-r7-ooka\\portable\\user-data\\logs\\20261119T145644",
+                      "rendererLog":  {
+                                          "path":  "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p2\\1.146.0-p5-c-all-r7-ooka\\portable\\user-data\\logs\\20261119T145644\\window1\\renderer.log",
+                                          "exists":  true,
+                                          "bytes":  376
+                                      },
+                      "exthostLog":  {
+                                         "path":  "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p2\\1.146.0-p5-c-all-r7-ooka\\portable\\user-data\\logs\\20261119T145644\\window1\\exthost\\exthost.log",
+                                         "exists":  true,
+                                         "bytes":  980
+                                     },
+                      "chromiumLog":  {
+                                          "path":  "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\p2\\1.146.0-p5-c-all-r7-ooka\\chromium-20261119T145644.log",
+                                          "exists":  true,
+                                          "bytes":  1324
+                                      },
+                      "markers":  {
+                                      "rendererStartedExtHost":  true,
+                                      "extHostStarted":  true,
+                                      "eagerExtensionsActivated":  true
+                                  },
+                      "missing":  [
+
+                                  ],
+                      "consoleUncaught":  {
+                                              "workbenchCount":  0,
+                                              "othersCount":  0,
+                                              "workbench":  [
+
+                                                            ],
+                                              "others":  [
+
+                                                         ]
+                                          },
+                      "ready":  true
+                  },
+    "dailyData":  {
+                      "before":  [
+                                     {
+                                         "path":  "C:\\Users\\kou_z\\AppData\\Roaming\\Code",
+                                         "exists":  false,
+                                         "lastWriteTime":  null
+                                     },
+                                     {
+                                         "path":  "C:\\Users\\kou_z\\AppData\\Roaming\\Code - OSS",
+                                         "exists":  false,
+                                         "lastWriteTime":  null
+                                     },
+                                     {
+                                         "path":  "C:\\Users\\kou_z\\.vscode",
+                                         "exists":  false,
+                                         "lastWriteTime":  null
+                                     },
+                                     {
+                                         "path":  "C:\\Users\\kou_z\\.vscode-oss",
+                                         "exists":  false,
+                                         "lastWriteTime":  null
+                                     },
+                                     {
+                                         "path":  "C:\\Users\\kou_z\\AppData\\Roaming\\Sukuna",
+                                         "exists":  false,
+                                         "lastWriteTime":  null
+                                     },
+                                     {
+                                         "path":  "C:\\Users\\kou_z\\.sukuna",
+                                         "exists":  false,
+                                         "lastWriteTime":  null
+                                     }
+                                 ],
+                      "after":  [
+                                    {
+                                        "path":  "C:\\Users\\kou_z\\AppData\\Roaming\\Code",
+                                        "exists":  false,
+                                        "lastWriteTime":  null
+                                    },
+                                    {
+                                        "path":  "C:\\Users\\kou_z\\AppData\\Roaming\\Code - OSS",
+                                        "exists":  false,
+                                        "lastWriteTime":  null
+                                    },
+                                    {
+                                        "path":  "C:\\Users\\kou_z\\.vscode",
+                                        "exists":  false,
+                                        "lastWriteTime":  null
+                                    },
+                                    {
+                                        "path":  "C:\\Users\\kou_z\\.vscode-oss",
+                                        "exists":  false,
+                                        "lastWriteTime":  null
+                                    },
+                                    {
+                                        "path":  "C:\\Users\\kou_z\\AppData\\Roaming\\Sukuna",
+                                        "exists":  false,
+                                        "lastWriteTime":  null
+                                    },
+                                    {
+                                        "path":  "C:\\Users\\kou_z\\.sukuna",
+                                        "exists":  false,
+                                        "lastWriteTime":  null
+                                    }
+                                ],
+                      "changed":  [
+
+                                  ]
+                  },
+    "result":  "ok",
+    "message":  "started, stayed alive, the workbench came up, stopped; daily editor data folders unchanged"
+}

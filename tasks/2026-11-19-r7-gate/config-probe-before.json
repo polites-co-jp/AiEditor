@@ -1,0 +1,199 @@
+{
+  "label": "1.146.0-p5-c-all-r7",
+  "upstream": {
+    "tag": "1.146.0",
+    "commit": "69047191fc427f2f92828279aae1d90d8eeda7ab"
+  },
+  "units": [],
+  "patches": [],
+  "lockfileDiff": "records/take-in/1.146.0-p5-c-all-r7/lockfile.diff",
+  "toolchain": {
+    "node": "24.22.1",
+    "electron": "43.8.6",
+    "packageManager": "pnpm 12.16.0",
+    "packageManagerDeclared": "pnpm@12.16.0",
+    "nvmrc": "24.22.1",
+    "nodeOfBuildScript": "v24.22.1"
+  },
+  "durations": {},
+  "zip": null,
+  "extensionsLockSha256": "27ad0e1b8ee24a93a2f7edce87c360f29da1e7429c0b3b27374cb81f33a6db70",
+  "result": "dry-run",
+  "stoppedAt": null,
+  "dryRun": true,
+  "startedAt": "2026-11-19T02:46:01.321Z",
+  "finishedAt": "2026-11-19T02:46:01.640Z",
+  "paths": {
+    "buildRoot": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b",
+    "worktree": "e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\wt\\r7\\w",
+    "packageDir": "e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\wt\\r7\\VSCode-win32-x64",
+    "checks": "e:\\develop\\self\\Team\\projects\\ai-editor\\records\\take-in\\1.146.0-p5-c-all-r7\\checks.json",
+    "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+    "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\removals",
+    "dist": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\dist",
+    "logs": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\logs\\1.146.0-p5-c-all-r7"
+  },
+  "config": {
+    "path": "C:\\Users\\kou_z\\AppData\\Local\\Sukuna\\local.json",
+    "exists": false,
+    "buildRootFrom": "default"
+  },
+  "stepsSelected": [
+    "prepare",
+    "apply",
+    "install",
+    "lockfile",
+    "typecheck",
+    "package",
+    "postprocess",
+    "zip"
+  ],
+  "envRemovedForChildren": [
+    "ELECTRON_RUN_AS_NODE",
+    "VSCODE_CODE_CACHE_PATH",
+    "VSCODE_CRASH_REPORTER_PROCESS_TYPE",
+    "VSCODE_CWD",
+    "VSCODE_ESM_ENTRYPOINT",
+    "VSCODE_HANDLES_UNCAUGHT_ERRORS",
+    "VSCODE_IPC_HOOK",
+    "VSCODE_L10N_BUNDLE_LOCATION",
+    "VSCODE_NLS_CONFIG",
+    "VSCODE_PID",
+    "VSCODE_PROCESS_TITLE"
+  ],
+  "envRedirectedForChildren": {
+    "all": {
+      "TEMP": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\tmp",
+      "TMP": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\tmp",
+      "pnpm_config_store_dir": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\pnpm-store",
+      "pnpm_config_cache_dir": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\pnpm-cache",
+      "npm_config_cache": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\npm-cache"
+    },
+    "toolchain": {
+      "TEMP": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\tmp",
+      "TMP": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\tmp",
+      "pnpm_config_store_dir": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\pnpm-store",
+      "pnpm_config_cache_dir": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\pnpm-cache",
+      "npm_config_cache": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\npm-cache",
+      "LOCALAPPDATA": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\localappdata"
+    },
+    "toolchainSteps": [
+      "install",
+      "typecheck",
+      "package"
+    ],
+    "layout": {
+      "root": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b",
+      "temp": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\tmp",
+      "localAppData": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\localappdata",
+      "pnpmStore": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\pnpm-store",
+      "pnpmCache": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\pnpm-cache",
+      "npmCache": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\npm-cache",
+      "electronCache": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\localappdata\\electron\\Cache",
+      "nodeGypCache": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\cache\\localappdata\\node-gyp\\Cache"
+    }
+  },
+  "sourceVersion": {
+    "name": "BUILD_SOURCEVERSION",
+    "value": "b76374c6fc633747549a7b1a44a1a5364c7fe8f2",
+    "source": "worktree HEAD",
+    "worktree": "e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\wt\\r7\\w",
+    "readAt": "dry-run",
+    "steps": [
+      "typecheck",
+      "package"
+    ],
+    "error": null,
+    "uncommittedEntries": 3,
+    "checksHeadCommit": null,
+    "matchesChecksHead": null
+  },
+  "branch": null,
+  "steps": [],
+  "warnings": [
+    "dry-run の sourceVersion は apply の前の HEAD。実際に渡すのは apply の後の HEAD"
+  ],
+  "plan": {
+    "prepare": {
+      "command": "C:\\Program Files\\nodejs\\node.exe e:\\develop\\self\\Team\\projects\\ai-editor\\scripts\\prepare.mjs --tag 1.146.0 --build-root E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b --worktree e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\wt\\r7\\w --out e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\wt\\r7\\w.prepare.json",
+      "cwd": "e:\\develop\\self\\Team\\projects\\ai-editor"
+    },
+    "apply": {
+      "command": "C:\\Program Files\\nodejs\\node.exe e:\\develop\\self\\Team\\projects\\ai-editor\\scripts\\apply.mjs e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\wt\\r7\\w --label 1.146.0-p5-c-all-r7 --checks-out e:\\develop\\self\\Team\\projects\\ai-editor\\records\\take-in\\1.146.0-p5-c-all-r7\\checks.json --removals e:\\develop\\self\\Team\\projects\\ai-editor\\removals --keep e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json --build-root E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b --config C:\\Users\\kou_z\\AppData\\Local\\Sukuna\\local.json",
+      "cwd": "e:\\develop\\self\\Team\\projects\\ai-editor"
+    },
+    "install": {
+      "command": "pnpm install --no-frozen-lockfile",
+      "cwd": "e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\wt\\r7\\w"
+    },
+    "lockfile": {
+      "command": "C:\\Program Files\\nodejs\\node.exe e:\\develop\\self\\Team\\projects\\ai-editor\\scripts\\apply.mjs e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\wt\\r7\\w --label 1.146.0-p5-c-all-r7 --lockfile-check --checks-out e:\\develop\\self\\Team\\projects\\ai-editor\\records\\take-in\\1.146.0-p5-c-all-r7\\checks.json --diff-out e:\\develop\\self\\Team\\projects\\ai-editor\\records\\take-in\\1.146.0-p5-c-all-r7\\lockfile.diff --removals e:\\develop\\self\\Team\\projects\\ai-editor\\removals --build-root E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b --config C:\\Users\\kou_z\\AppData\\Local\\Sukuna\\local.json",
+      "cwd": "e:\\develop\\self\\Team\\projects\\ai-editor"
+    },
+    "typecheck": {
+      "command": "pnpm run typecheck-client",
+      "cwd": "e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\wt\\r7\\w",
+      "env": {
+        "BUILD_SOURCEVERSION": "b76374c6fc633747549a7b1a44a1a5364c7fe8f2"
+      }
+    },
+    "package": {
+      "command": "pnpm run gulp vscode-win32-x64-min",
+      "cwd": "e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\wt\\r7\\w",
+      "env": {
+        "BUILD_SOURCEVERSION": "b76374c6fc633747549a7b1a44a1a5364c7fe8f2"
+      },
+      "pathPrepended": "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\x64"
+    },
+    "branch": {
+      "name": "builds/1.146.0-p5-c-all-r7",
+      "command": "git -C e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\wt\\r7\\w branch --force --no-track builds/1.146.0-p5-c-all-r7 b76374c6fc633747549a7b1a44a1a5364c7fe8f2"
+    },
+    "postprocess": {
+      "packageDir": "e:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\wt\\r7\\VSCode-win32-x64",
+      "keep": "e:\\develop\\self\\Team\\projects\\ai-editor\\builtin\\keep.json",
+      "removals": "e:\\develop\\self\\Team\\projects\\ai-editor\\removals"
+    },
+    "zip": {
+      "tar": "C:\\WINDOWS\\System32\\tar.exe",
+      "zip": "E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\dist\\1.146.0-p5-c-all-r7.zip"
+    }
+  },
+  "checksBeforeRun": {
+    "signtool": {
+      "found": true,
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\x64\\signtool.exe",
+      "source": "WindowsKits"
+    },
+    "applyMjs": true,
+    "keepJson": true,
+    "worktree": true,
+    "packageDir": true,
+    "tarExe": true,
+    "zipExists": true,
+    "unitsEnabled": [
+      "A-1-copilot-extension",
+      "A-2-accounts-extensions",
+      "A-3-debug-extensions",
+      "A-4-notebook-extensions",
+      "A-5-remote-extensions",
+      "A-6-themes",
+      "A-7-unused-extensions",
+      "B-1-telemetry",
+      "B-2-onboarding-experiments-surveys",
+      "B-3-issue-share",
+      "B-4-outline-view",
+      "B-5-theme-switching",
+      "B-6-online-feeds",
+      "B-7-terminal-suggest",
+      "C-1-ai",
+      "C-2-debug",
+      "C-3-remote",
+      "C-4-notebook",
+      "C-5-extension-gallery",
+      "C-6-settings-sync",
+      "C-7-breadcrumbs-outline"
+    ],
+    "unitsTotal": 21
+  }
+}

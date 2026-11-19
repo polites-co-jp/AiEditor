@@ -1,0 +1,3 @@
+move-off-c-fixes.test.mjs          tests   32  pass   32  fail   0  skip   0
+move-off-c.test.mjs                tests   26  pass   26  fail   0  skip   0
+TOTAL                              tests   58  pass   58  fail   0  skip   0

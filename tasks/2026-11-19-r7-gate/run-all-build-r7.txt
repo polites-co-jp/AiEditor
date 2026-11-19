@@ -1,0 +1,6 @@
+build-commit.test.mjs              tests   21  pass   21  fail   0  skip   0
+build-env-branch.test.mjs          tests   29  pass   29  fail   0  skip   0
+build-fixes.test.mjs               tests   17  pass   17  fail   0  skip   0
+build-parts.test.mjs               tests   38  pass   38  fail   0  skip   0
+move-build-root.test.mjs           tests   32  pass   32  fail   0  skip   0
+TOTAL                              tests  137  pass  137  fail   0  skip   0

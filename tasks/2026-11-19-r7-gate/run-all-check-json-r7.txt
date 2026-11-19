@@ -1,0 +1,9 @@
+c-all-check-json.test.mjs          tests   27  pass   27  fail   0  skip   0
+c1-check-json.test.mjs             tests    8  pass    8  fail   0  skip   0
+c2-check-json.test.mjs             tests   11  pass   11  fail   0  skip   0
+c3-check-json.test.mjs             tests   11  pass   11  fail   0  skip   0
+c4-check-json.test.mjs             tests   12  pass   12  fail   0  skip   0
+c5-check-json.test.mjs             tests   12  pass   12  fail   0  skip   0
+c6-check-json.test.mjs             tests   15  pass   15  fail   0  skip   0
+c7-check-json.test.mjs             tests   15  pass   15  fail   0  skip   0
+TOTAL                              tests  111  pass  111  fail   0  skip   0

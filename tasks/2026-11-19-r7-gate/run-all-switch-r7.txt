@@ -1,0 +1,4 @@
+switch-expand.test.mjs             tests   17  pass   17  fail   0  skip   0
+switch-watch-warn.test.mjs         tests   10  pass   10  fail   0  skip   0
+switch.test.mjs                    tests   22  pass   22  fail   0  skip   0
+TOTAL                              tests   49  pass   49  fail   0  skip   0

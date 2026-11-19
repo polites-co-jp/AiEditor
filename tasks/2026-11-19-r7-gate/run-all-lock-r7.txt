@@ -1,0 +1,3 @@
+lock.test.mjs                      tests  115  pass  115  fail   0  skip   0
+lockfile-patched.test.mjs          tests   17  pass   17  fail   0  skip   0
+TOTAL                              tests  132  pass  132  fail   0  skip   0

@@ -1,0 +1,2 @@
+smoke.test.mjs                     tests   80  pass   80  fail   0  skip   0
+TOTAL                              tests   80  pass   80  fail   0  skip   0

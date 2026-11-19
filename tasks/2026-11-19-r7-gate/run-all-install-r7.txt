@@ -1,0 +1,4 @@
+install-doc.test.mjs               tests    4  pass    4  fail   0  skip   0
+install-ext.test.mjs               tests   46  pass   46  fail   0  skip   0
+install-portable.test.mjs          tests   13  pass   13  fail   0  skip   0
+TOTAL                              tests   63  pass   63  fail   0  skip   0

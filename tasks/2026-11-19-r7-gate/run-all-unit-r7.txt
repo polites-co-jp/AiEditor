@@ -1,0 +1,8 @@
+c1-unit.test.mjs                   tests   60  pass   60  fail   0  skip   0
+c2-unit.test.mjs                   tests   58  pass   58  fail   0  skip   0
+c3-unit.test.mjs                   tests   28  pass   28  fail   0  skip   0
+c4-unit.test.mjs                   tests   55  pass   55  fail   0  skip   0
+c5-unit.test.mjs                   tests   42  pass   42  fail   0  skip   0
+c6-unit.test.mjs                   tests   30  pass   30  fail   0  skip   0
+c7-unit.test.mjs                   tests   26  pass   26  fail   0  skip   0
+TOTAL                              tests  299  pass  299  fail   0  skip   0
