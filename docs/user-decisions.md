@@ -761,3 +761,15 @@
 | 日常のエディタが動いていると、スモークの `safety.daily-argv` が偽の FAIL になりうる | 移行は止めない。検知のタスクを登録して毎週の取り込みを自動で回し始める前に、曹参が直す |
 | `configure.test.mjs`・`move-off-c.test.mjs` が、日常の Sukuna が動くと落ちる（T3） | 前と同じ既知の形。直さない |
 | 実行ファイルの版の情報（UTF-16）を誰も見ていない（M1） | 移行の後の手の確かめ（U6）で見る |
+
+## 裁定（2026-11-20、Sukuna で Claude Code 拡張が起動しない件）
+
+ユーザーの知らせ「Sukuna で開いたときに Claude 拡張が起動しない。Trust にしても駄目」への問いと答え。根拠: `tasks/2026-11-20-sukuna-migrate/brief.md`
+
+課から確かめた事実（リーダー。2026-11-20）: ユーザーは r7 を `E:\application\sukuna` に置いて起動していた。`%USERPROFILE%\.sukuna\extensions` は空（`extensions.json` だけ）で、起動のログにも `anthropic.claude-code` は出ていない。`%LOCALAPPDATA%\Sukuna`（`local.json`）と `%LOCALAPPDATA%\Programs\Sukuna` は無い。原因は信頼の設定ではなく、`rename-plan.md` の3.3 の順3〜5（新しい `local.json` と版のフォルダ、移行の台本、拡張の導入）がまだ済んでいないこと。先に起動したので、`%APPDATA%\Sukuna\User` と `%USERPROFILE%\.sukuna\argv.json` が空に近い中身でできており、このままでは移行の台本は混ぜずに止まる。権限の段1（2026-11-18 承認）は、まだ Team の開発部で当てられていない（蒙恬の許可に移行の台本の行と Sukuna の秘密の場所が無い）。
+
+| 論点 | 裁定 |
+|---|---|
+| 直し方 | **計画どおり移行する**（ユーザーの答え「計画どおり移行する（推奨）」）。ユーザーが Shuko と Sukuna を閉じ、今日できた `%APPDATA%\Sukuna` と `%USERPROFILE%\.sukuna` を別の名前に変えて退ける。その後、課が移行の台本（`-List` → リーダーの確かめ → `-Apply`）と `install-extensions.mjs`（`--dry-run` → 本番）を打つ。別案（拡張だけすぐ入れる。設定とログイン情報は引き継がない）は採らない |
+| Sukuna の置き場所 | **設計どおり `%LOCALAPPDATA%\Programs\Sukuna`**（ユーザーの答え「設計どおりの場所へ（推奨）」）。課が `configure.ps1` で `local.json` を作り、`switch.ps1` で r7 を展開する。`E:\application\sukuna` は使わなくなり、ユーザーが消す。別案（`E:\application\sukuna` を `installRoot` にする）は採らない |
+| 移行が済むまでの間 | Shuko を使い続ける（Shuko の Claude Code 拡張は動く）。リーダーの判断 |
