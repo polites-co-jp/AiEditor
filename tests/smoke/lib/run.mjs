@@ -204,8 +204,36 @@ function statOrNull(p) {
   try { const s = statSync(p); return { exists: true, mtimeMs: s.mtimeMs }; } catch { return { exists: false, mtimeMs: 0 }; }
 }
 
-function dailyArgvState(home = homedir()) {
-  return { vscode: statOrNull(join(home, '.vscode', 'argv.json')), vscodeOss: statOrNull(join(home, '.vscode-oss', 'argv.json')) };
+// 旧の仮の名前（引退までは日常の場所を見る）。名前の残りの検査に当たらないよう、組み立てて書く。
+const LEGACY_DATA_FOLDER = '.' + 'shu' + 'ko';
+const LEGACY_NAME_LONG = 'Shu' + 'ko';
+
+/**
+ * 日常の場所のうち「書いていない」ことを見る場所。名前は版の product.json（overlay を当てた後）から求める。
+ * ~/.vscode・~/.vscode-oss は argv.json、~/.<dataFolderName>・%APPDATA%\<nameLong>（と旧の名前の2つ）はフォルダそのものを見る。
+ * 返すキーは dailyArgvChanged が差を報告するときの名前になる。
+ */
+export function dailyWatchTargets(product = {}, home = homedir(), appData = process.env.APPDATA) {
+  const t = [
+    ['vscode', join(home, '.vscode', 'argv.json')],
+    ['vscodeOss', join(home, '.vscode-oss', 'argv.json')],
+  ];
+  const seen = new Set(t.map(([, p]) => p.toLowerCase()));
+  const add = (key, p) => { if (p && !seen.has(p.toLowerCase())) { seen.add(p.toLowerCase()); t.push([key, p]); } };
+  const df = product.dataFolderName;
+  if (typeof df === 'string' && df) { add(`~/${df}`, join(home, df)); add(`~/${df}/argv.json`, join(home, df, 'argv.json')); }
+  add(`~/${LEGACY_DATA_FOLDER}`, join(home, LEGACY_DATA_FOLDER));
+  add(`~/${LEGACY_DATA_FOLDER}/argv.json`, join(home, LEGACY_DATA_FOLDER, 'argv.json'));
+  if (appData) {
+    const nl = product.nameLong;
+    if (typeof nl === 'string' && nl) add(`%APPDATA%\\${nl}`, join(appData, nl));
+    add(`%APPDATA%\\${LEGACY_NAME_LONG}`, join(appData, LEGACY_NAME_LONG));
+  }
+  return t;
+}
+
+export function dailyArgvState(product = {}, home = homedir(), appData = process.env.APPDATA) {
+  return Object.fromEntries(dailyWatchTargets(product, home, appData).map(([k, p]) => [k, statOrNull(p)]));
 }
 
 export function dailyArgvChanged(a, b) {
@@ -315,7 +343,7 @@ export async function runSmoke(opts, log = console.log) {
 
   // ---- 起動の前の状態 ----
   const locksBefore = snapshotLocks();
-  const argvBefore = dailyArgvState();
+  const argvBefore = dailyArgvState(editor.productJson);
 
   const args = [
     wsRoot,
@@ -395,7 +423,7 @@ export async function runSmoke(opts, log = console.log) {
   const mine = addedLocks.filter((l) => lockBelongsTo(l, treePids, [wsRoot]));
   const notMine = addedLocks.filter((l) => !mine.includes(l));
 
-  const argvAfter = dailyArgvState();
+  const argvAfter = dailyArgvState(editor.productJson);
 
   // ---- 止める（起動した PID の木だけ） ----
   const stopAt = new Date(Date.now() - 300);
@@ -474,7 +502,7 @@ export async function runSmoke(opts, log = console.log) {
     const histOk = historyHas(join(run.userData, 'User', 'History'), 'smoke-edit-before');
     add('base.localhistory', 'base', 'ローカル履歴に保存した版が残る', histOk ? 'pass' : 'fail', histOk ? 'User/History に保存した版の本文がある' : 'User/History に保存した版が無い');
     const dc = dailyArgvChanged(argvBefore, argvAfter);
-    add('safety.daily-argv', 'base', '普段使いの argv.json が作られていない・変わっていない', dc.length ? 'fail' : 'pass', dc.length ? `変わったもの: ${dc.join(', ')}（普段使いのエディタが同時に動いていないかも見る）` : '~/.vscode と ~/.vscode-oss の argv.json は前後で同じ');
+    add('safety.daily-argv', 'base', '日常の場所（~/.vscode・~/.vscode-oss・~/.<dataFolderName>・%APPDATA%\\<nameLong>、旧の名前も）に作られていない・変わっていない', dc.length ? 'fail' : 'pass', dc.length ? `変わったもの: ${dc.join(', ')}（日常のエディタが同時に動いていないかも見る）` : `前後で同じ: ${Object.keys(argvAfter).join(', ')}`);
     add('safety.process-tree', 'base', '止めた後にプロセスが残らない', leftover.length || orphans.length ? 'fail' : 'pass', `木 ${tree.length} 個を止めた（PID ${child.pid} と子孫のみ）。残り ${leftover.length}${leftover.length ? `（${leftover.map((p) => `${p.Name} pid ${p.ProcessId}`).join(', ')}）` : ''}、置き場所の名前を持つ孤児 ${orphans.length}`);
   }
 

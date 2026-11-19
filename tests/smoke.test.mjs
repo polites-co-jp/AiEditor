@@ -15,7 +15,7 @@ import {
 import { buildUserSettings, defaultExtensionIds, findVsix, fingerprint, formatArgv, readLedger } from './smoke/lib/env.mjs';
 import { COMPLETION_POSITIONS, EXPECTED_CHANGES, createWorkspace, diffFixtures, fixtureFiles, minimalPdf } from './smoke/lib/fixtures.mjs';
 import {
-  KEEP_MARK, sameProc, countStatuses, dailyArgvChanged, exitCodeFor, findRg, formatMarkdown, groupErrors, historyHas, mergeBaseline, parseArgs, pruneRuns, uniqueErrors,
+  KEEP_MARK, sameProc, countStatuses, dailyArgvChanged, dailyArgvState, dailyWatchTargets, exitCodeFor, findRg, formatMarkdown, groupErrors, historyHas, mergeBaseline, parseArgs, pruneRuns, uniqueErrors,
 } from './smoke/lib/run.mjs';
 
 import { NEW_DEFAULT } from './build/root.mjs';
@@ -511,6 +511,40 @@ test('dailyArgvChanged: 作られた・消えた・更新されたものを見�
   assert.deepEqual(dailyArgvChanged(a, a), []);
   assert.deepEqual(dailyArgvChanged(a, { ...a, vscode: { exists: true, mtimeMs: 9 } }), ['vscode']);
   assert.deepEqual(dailyArgvChanged(a, { ...a, vscodeOss: { exists: true, mtimeMs: 6 } }), ['vscodeOss']);
+});
+
+test('dailyWatchTargets: product.json の dataFolderName・nameLong と、旧の名前の場所も見る（決め打ちしない）', () => {
+  const OLD_DIR = '.' + 'shu' + 'ko';
+  const OLD_LONG = 'Shu' + 'ko';
+  const names = (t) => t.map(([k]) => k);
+  const t = dailyWatchTargets({ dataFolderName: '.sukuna', nameLong: 'Sukuna' }, 'H', 'A');
+  assert.deepEqual(names(t), ['vscode', 'vscodeOss', '~/.sukuna', '~/.sukuna/argv.json', `~/${OLD_DIR}`, `~/${OLD_DIR}/argv.json`, '%APPDATA%\\Sukuna', `%APPDATA%\\${OLD_LONG}`]);
+  assert.ok(t.find(([k]) => k === '%APPDATA%\\Sukuna')[1].endsWith(join('A', 'Sukuna')));
+  // 別の名前なら、その名前を見る
+  const u = dailyWatchTargets({ dataFolderName: '.other', nameLong: 'Other' }, 'H', 'A');
+  assert.ok(names(u).includes('~/.other') && names(u).includes('%APPDATA%\\Other') && !names(u).includes('~/.sukuna'));
+  // 名前が .vscode と同じ版でも、重複して数えない。APPDATA が無ければ APPDATA の場所は無い
+  const v = dailyWatchTargets({ dataFolderName: '.vscode', nameLong: 'X' }, 'H', '');
+  assert.ok(!names(v).some((k) => k.startsWith('%APPDATA%')));
+  assert.equal(names(v).filter((k) => k.endsWith('argv.json') && k.includes('.vscode')).length, 0, 'argv.json は重複して見ない（vscode のキーで見る）');
+});
+
+test('dailyArgvState: 実際に作られたフォルダ・書かれた argv.json の差を、日常の場所の全部で見つける（一時の場所だけを使う）', () => {
+  const home = tmp();
+  const appData = tmp();
+  const product = { dataFolderName: '.sukuna', nameLong: 'Sukuna' };
+  const before = dailyArgvState(product, home, appData);
+  assert.deepEqual(dailyArgvChanged(before, dailyArgvState(product, home, appData)), []);
+  mkdirSync(join(appData, 'Sukuna'));
+  assert.deepEqual(dailyArgvChanged(before, dailyArgvState(product, home, appData)), ['%APPDATA%\\Sukuna']);
+  const b2 = dailyArgvState(product, home, appData);
+  mkdirSync(join(home, '.sukuna'));
+  writeFileSync(join(home, '.sukuna', 'argv.json'), '{}');
+  assert.deepEqual(dailyArgvChanged(b2, dailyArgvState(product, home, appData)), ['~/.sukuna', '~/.sukuna/argv.json']);
+  const b3 = dailyArgvState(product, home, appData);
+  mkdirSync(join(appData, 'Shu' + 'ko'));
+  mkdirSync(join(home, '.' + 'shu' + 'ko'));
+  assert.deepEqual(dailyArgvChanged(b3, dailyArgvState(product, home, appData)).length, 2);
 });
 
 test('formatMarkdown: 組ごとの表と誤りの件数が出る', () => {

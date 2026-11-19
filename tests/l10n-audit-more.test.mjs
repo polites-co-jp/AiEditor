@@ -5,7 +5,7 @@
 //   - --pack に拡張のルート・dist/translations を渡したとき、package.json の translations で引く（載っていない拡張はパックに無い）
 //   - --pack の既定は extensions-src/language-pack-ja
 //   - sameAsEnglish・英字だけの訳の鍵の一覧
-//   - 実物（r4 の出力と作業ツリー、新しいパック）で pass: true
+//   - 実物（最新の版の出力と作業ツリー、新しいパック）で pass: true
 // 仕様: docs/04-bundled-extensions.md の7節、検証 tasks/2026-11-17-l10n-ja-verify/verification-l10n-ja.md の6節。
 // Run: node --test tests/l10n-audit-more.test.mjs
 import test, { before, after } from 'node:test';
@@ -441,17 +441,39 @@ test('CLI: --worktree・--exclude（複数）・--require-bundle・--literals �
 });
 
 // ---------------------------------------------------------------------------------------------------------------
-// 実物（日常の版 r4 の出力と作業ツリー、新しいパック）。無ければ飛ばす
+// 実物（最新の版の出力と作業ツリー、新しいパック）。無ければ飛ばす
 // ---------------------------------------------------------------------------------------------------------------
-// 2026-11-18 の改名: 日常の場所と、古い名前で作った r4 の出力は読まない。新しい名前で作る r7 の出力（無ければ飛ばす）。
+// 2026-11-18 の改名: 日常の場所と、古い名前で作った出力（r4 など）は読まない。新しい名前で作る出力のうち、最新の rN（無ければ飛ばす）。
 // 日常の場所の実物は、環境変数 AIED_AUDIT_APP・AIED_AUDIT_WT・AIED_AUDIT_OLD_PACK で明示したときだけ使う。
-const R7 = path.join(REPO, 'tmp', 'b', 'p2', '1.146.0-p5-c-all-r7', 'Sukuna-win32-x64-1.146.0-p5-c-all-r7', 'resources', 'app');
-const realApp = process.env.AIED_AUDIT_APP || R7;
-const realWt = process.env.AIED_AUDIT_WT || path.join(REPO, 'tmp', 'b', 'wt', 'r7');
-const haveReal = fs.existsSync(path.join(realApp, 'out', 'nls.keys.json')) && fs.existsSync(path.join(realWt, 'extensions'));
+// 既定は、tmp/b/p2/<版>/<名前>-win32-x64-<版>/resources/app のうち、末尾の rN（<版> の最後の -rN）が最大のもの（最新の版を決め打ちしない）。
+// その作業ツリーは tmp/b/wt/rN/w（実際の置き方。w の下に extensions がある）。
+function latestReal() {
+  const p2 = path.join(REPO, 'tmp', 'b', 'p2');
+  let best = null;
+  let labels = [];
+  try { labels = fs.readdirSync(p2); } catch { return null; }
+  for (const label of labels) {
+    const m = /-r(\d+)$/.exec(label);
+    if (!m) continue;
+    let subs = [];
+    try { subs = fs.readdirSync(path.join(p2, label)); } catch { continue; }
+    const dir = subs.find((d) => d.endsWith(`-win32-x64-${label}`));
+    if (!dir) continue;
+    const app = path.join(p2, label, dir, 'resources', 'app');
+    if (!fs.existsSync(path.join(app, 'out', 'nls.keys.json'))) continue;
+    const n = Number(m[1]);
+    if (!best || n > best.n) best = { n, label, app, wt: path.join(REPO, 'tmp', 'b', 'wt', `r${n}`, 'w') };
+  }
+  return best;
+}
+const LATEST = latestReal();
+const realApp = process.env.AIED_AUDIT_APP || LATEST?.app || '';
+const realWt = process.env.AIED_AUDIT_WT || LATEST?.wt || '';
+const realLabel = LATEST?.label ?? '最新の版';
+const haveReal = Boolean(realApp && realWt) && fs.existsSync(path.join(realApp, 'out', 'nls.keys.json')) && fs.existsSync(path.join(realWt, 'extensions'));
 const realExclusions = path.join(DEFAULT_PACK, 'exclusions.json');
 
-test('実物: 新しいパックと r4 の文言（本体・package・bundle・直書き）で、除外の外の未訳が本体・package・直書きは 0。bundle の件数は 1,500 件以上', { skip: !haveReal && '実物（r4 の出力と作業ツリー）が無い' }, () => {
+test(`実物: 新しいパックと最新の版（${realLabel}）の文言（本体・package・bundle・直書き）で、除外の外の未訳が本体・package・直書きは 0。bundle の件数は 1,500 件以上`, { skip: !haveReal && `実物（${realLabel} の出力と作業ツリー ${realWt}）が無い` }, () => {
   const r = auditL10n({ appDir: realApp, packDir: DEFAULT_PACK, excludeFile: realExclusions, worktree: realWt });
   assert.equal(r.core.total, 12355);
   assert.equal(r.core.untranslatedOutsideExclusions, 0, JSON.stringify(r.core.untranslatedKeys.slice(0, 5)));
