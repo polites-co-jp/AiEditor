@@ -1,5 +1,5 @@
 // 削除の単位（removals/*/unit.json）・builtin/keep.json・product.overlay.json の形の検査。
-// 仕様: docs/03 の3.1（unit.json）・4節（残す組み込み拡張）・6節（未分類の検出）、docs/02 の3節（shukoConfigurationDefaults）。
+// 仕様: docs/03 の3.1（unit.json）・4節（残す組み込み拡張）・6節（未分類の検出）、docs/02 の3節（sukunaConfigurationDefaults）。
 // 蒙恬の成果物（removals/・builtin/keep.json・product.overlay.json）がまだ無いときは「無い」と書いて飛ばす。
 // 本家 1.146.0 のソースは常設の clone（C:/b/vscode）のタグから git show / ls-tree で読む（作業ツリーはビルドで変わるため読まない）。読めなければ飛ばす。
 // Run: node --test tests/removals.test.mjs
@@ -263,9 +263,9 @@ test('overlay: set と remove を持ち、同じキーが両方に無い', { ski
   assert.deepEqual(both, []);
 });
 
-test('overlay: shukoConfigurationDefaults の extensions.allowed が、台帳（extensions.lock.json）の ID とちょうど一致する', { skip: noOverlay }, () => {
+test('overlay: sukunaConfigurationDefaults の extensions.allowed が、台帳（extensions.lock.json）の ID とちょうど一致する', { skip: noOverlay }, () => {
   const o = readJson(OVERLAY);
-  const allowed = o.set?.shukoConfigurationDefaults?.['extensions.allowed'];
+  const allowed = o.set?.sukunaConfigurationDefaults?.['extensions.allowed'];
   assert.ok(allowed && typeof allowed === 'object', 'extensions.allowed が無い');
   assert.equal(allowed['*'], false, '"*" は false（台帳に無い拡張は入れない）');
   const ledger = readJson(join(REPO, 'extensions.lock.json')).map((e) => e.id);
@@ -276,8 +276,8 @@ test('overlay: shukoConfigurationDefaults の extensions.allowed が、台帳（
   for (const k of keys) assert.equal(allowed[k], true, `${k} が true でない`);
 });
 
-test('overlay: shukoConfigurationDefaults の他の既定が docs/02 の3節の値と同じ', { skip: noOverlay }, () => {
-  const d = readJson(OVERLAY).set?.shukoConfigurationDefaults ?? {};
+test('overlay: sukunaConfigurationDefaults の他の既定が docs/02 の3節の値と同じ', { skip: noOverlay }, () => {
+  const d = readJson(OVERLAY).set?.sukunaConfigurationDefaults ?? {};
   assert.equal(d['telemetry.telemetryLevel'], 'off');
   assert.equal(d['update.mode'], 'none');
   assert.equal(d['workbench.enableExperiments'], false);

@@ -711,7 +711,7 @@ async function runCore(a) {
   ctx.claudePath = resolveClaudePath(a) || "claude";
   ctx.rec.label = ctx.label;
   Object.assign(ctx.rec, { tag: a.tag, prevTag: ctx.prevTag, branch: ctx.branch, paths: { recDir: rel(ctx.recDir), builderWorktree: ctx.bwt, worktree: ctx.wt, buildRoot: ctx.buildRoot, installRoot: ctx.installRoot }, currentLabel: ctx.currentLabel, claudePath: ctx.claudePath });
-  const watch = readWatchStatus({ statePath: a.watchState || path.join(process.env.LOCALAPPDATA || "", "Shuko", "watch", "state.json") });
+  const watch = readWatchStatus({ statePath: a.watchState || path.join(process.env.LOCALAPPDATA || "", "Sukuna", "watch", "state.json") });
   ctx.rec.watch = watch;
   if (watch.warn) log(`警告: ${watch.message}`);
   if (ctx.prevTag === a.tag) throw new Stop(`タグ ${a.tag} は main の upstream.json と同じ（取り込むものが無い）`, 3);
@@ -1010,7 +1010,7 @@ async function runExt(a) {
   const runDir = path.join(ctx.buildRoot, "take-in", "ext", a.id, stamp());
   const fetchArgs = [path.join(SCRIPT_DIR, "lock-fetch.mjs"), "--lock", ledgerPath, "--only", a.id, "--out", runDir, ...(a.security ? ["--security", a.id] : []), ...(a.now ? ["--now", a.now] : [])];
   if (a.version) fetchArgs.push("--seed", path.join(runDir, "seed.json"));
-  const watch = readWatchStatus({ statePath: a.watchState || path.join(process.env.LOCALAPPDATA || "", "Shuko", "watch", "state.json") });
+  const watch = readWatchStatus({ statePath: a.watchState || path.join(process.env.LOCALAPPDATA || "", "Sukuna", "watch", "state.json") });
   ctx.rec.watch = watch;
   if (watch.warn) log(`警告: ${watch.message}`);
   let editorVersion = null;

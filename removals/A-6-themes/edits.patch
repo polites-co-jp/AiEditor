@@ -1,5 +1,5 @@
-From 3af43f1ff1dacc851d0c94c38941530a5e385223 Mon Sep 17 00:00:00 2001
-From: shuko-apply <apply@shuko.invalid>
+From ca7e15dbebe5312859fcee72f1614300f88183dd Mon Sep 17 00:00:00 2001
+From: sukuna-apply <apply@sukuna.invalid>
 Date: Sat, 14 Nov 2026 00:14:12 +0900
 Subject: [PATCH] unit A-6-themes: edits
 
@@ -22,7 +22,7 @@ index 6173ac76a8b..febbb9f5ea8 100644
 -import solarized_light from '../../../../../../extensions/theme-solarized-light/themes/solarized-light-color-theme.json' with { type: 'json' };
  import { mainWindow } from '../../../../base/browser/window.js';
  /* eslint-enable local/code-import-patterns */
-
+ 
 @@ -315,11 +310,6 @@ const themeJsonModules: Record<string, string> = {
  	'/extensions/theme-defaults/themes/light_modern.json': toThemeJsonText(light_modern),
  	'/extensions/theme-defaults/themes/light_plus.json': toThemeJsonText(light_plus),
@@ -33,7 +33,7 @@ index 6173ac76a8b..febbb9f5ea8 100644
 -	'/extensions/theme-solarized-dark/themes/solarized-dark-color-theme.json': toThemeJsonText(solarized_dark),
 -	'/extensions/theme-solarized-light/themes/solarized-light-color-theme.json': toThemeJsonText(solarized_light),
  };
-
+ 
  const fixtureExtensionResourceLoaderService = new class implements IExtensionResourceLoaderService {
 @@ -394,11 +384,6 @@ const additionalThemeVariants = {
  	visualStudioLight: { label: 'VisualStudioLight', background: 'light', theme: createBuiltInTheme('/extensions/theme-defaults/themes/light_vs.json', ThemeTypeSelector.VS) },
@@ -46,7 +46,7 @@ index 6173ac76a8b..febbb9f5ea8 100644
 -	solarizedLight: { label: 'SolarizedLight', background: 'light', theme: createBuiltInTheme('/extensions/theme-solarized-light/themes/solarized-light-color-theme.json', ThemeTypeSelector.VS, 'theme-solarized-light') },
  } as const satisfies Record<string, ComponentFixtureThemeVariant>;
  export type ComponentFixtureAdditionalTheme = keyof typeof additionalThemeVariants;
-
---
+ 
+-- 
 2.54.0.windows.1
 

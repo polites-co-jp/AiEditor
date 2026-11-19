@@ -95,11 +95,11 @@ export const CACHE_CANDIDATES = Object.freeze([
   { name: "corepack", base: "LOCALAPPDATA", sub: ["node", "corepack"], owner: "shared", how: "COREPACK_HOME" },
   { name: "electron-gyp", base: "USERPROFILE", sub: [".electron-gyp"], owner: "shared", how: "@electron/rebuild などの既定（本家の 1.146.0 は使わない見込み）" },
   { name: "node-gyp-home", base: "USERPROFILE", sub: [".node-gyp"], owner: "shared", how: "古い node-gyp の既定" },
-  { name: "shuko-dotdir", base: "USERPROFILE", sub: [".shuko"], owner: "build", how: "手順書の試しで漏れた拡張（ユーザーが消す）" },
-  { name: "shuko-appdata", base: "APPDATA", sub: ["Shuko"], owner: "build", how: "手順書の試しのログ（ユーザーが消す）" },
+  { name: "sukuna-dotdir", base: "USERPROFILE", sub: [".sukuna"], owner: "build", how: "手順書の試しで漏れた拡張（ユーザーが消す）" },
+  { name: "sukuna-appdata", base: "APPDATA", sub: ["Sukuna"], owner: "build", how: "手順書の試しのログ（ユーザーが消す）" },
   { name: "os-temp", base: "TEMP", sub: [], owner: "shared", how: "TEMP/TMP（全体の大きさ。ビルドの分だけは切り分けられない）" },
-  { name: "shuko-local", base: "LOCALAPPDATA", sub: ["Shuko"], owner: "build", how: "local.json と検知の状態・秘密（docs/06 の2.4。移さない）" },
-  { name: "shuko-install", base: "LOCALAPPDATA", sub: ["Programs", "Shuko"], owner: "daily", how: "普段使いのエディタの版のフォルダ（installRoot。対象外）" },
+  { name: "sukuna-local", base: "LOCALAPPDATA", sub: ["Sukuna"], owner: "build", how: "local.json と検知の状態・秘密（docs/06 の2.4。移さない）" },
+  { name: "sukuna-install", base: "LOCALAPPDATA", sub: ["Programs", "Sukuna"], owner: "daily", how: "普段使いのエディタの版のフォルダ（installRoot。対象外）" },
 ]);
 
 export function expandCandidate(c, env = process.env) {

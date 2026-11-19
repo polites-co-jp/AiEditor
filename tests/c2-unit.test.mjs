@@ -105,8 +105,8 @@ test('C-2: edits.patch の件名が [PATCH] unit C-2-debug: edits（applyEdits �
   assert.match(patchText, /^Subject: \[PATCH\] unit C-2-debug: edits$/m);
 });
 
-test('C-2: edits.patch の作者が shuko-apply <apply@shuko.invalid>（コミットの作者の取り決め）', { skip: noPatch }, () => {
-  assert.match(patchText, /^From: shuko-apply <apply@shuko\.invalid>$/m);
+test('C-2: edits.patch の作者が sukuna-apply <apply@sukuna.invalid>（コミットの作者の取り決め）', { skip: noPatch }, () => {
+  assert.match(patchText, /^From: sukuna-apply <apply@sukuna\.invalid>$/m);
 });
 
 test('C-2: unit.json の id・stage・after（A-3 だけ。C-1 を前提にしない）', { skip: noUnit }, () => {

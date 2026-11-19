@@ -39,7 +39,7 @@ node tests/c7-check-json.mjs C:/b/logs/c7-gate/checks-b.json
 | 記録の最上位の `warnings` | C-2 の `delete: ...debugChatIntegration.ts が本家に無い（改名の恐れ）` の1件だけ。想定済み | 同じ |
 | `checks.remnants.status`・`checks.absentStrings.status` | `ok`（C-7 の11項目すべて記録があり、`hitCount` が 0。注入の外し損ねを守る `@IOutlineService`・`notifyOutlineChanged`・`showBreadcrumbs`・`BreadcrumbsControlFactory` を含む） | 同じ |
 | `checks.commitIdentity.status`・`checks.registeredKeys.status` | `ok` | `ok` |
-| `commits` | `unit C-7-breadcrumbs-outline: ops` → `unit C-7-breadcrumbs-outline: edits`。前提の単位の edits の後。作者はどれも `shuko-apply <apply@shuko.invalid>` | 同じ |
+| `commits` | `unit C-7-breadcrumbs-outline: ops` → `unit C-7-breadcrumbs-outline: edits`。前提の単位の edits の後。作者はどれも `sukuna-apply <apply@sukuna.invalid>` | 同じ |
 | 作業ツリーの未コミットの変更 | 0（2の型検査の記録の `sourceVersion.uncommittedEntries`） | 同じ |
 
 C-7 の edits に衝突が出る、C-7 の `warnings` が出る、のどれかなら、枠のファイル（`editorHeaderControl.ts` など4つ）か、C-1 の edits.patch と重なる3ファイルで、ほかの単位との重なりが増えている。蒙恬に返す（docs/03 の5.3）。

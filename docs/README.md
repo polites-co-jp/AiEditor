@@ -1,8 +1,8 @@
-# Shuko（仮称）設計資料
+# Sukuna 設計資料
 
 Claude Code でのコーディングに特化した、省メモリの VS Code 派生エディタ（Windows 専用、利用者は1人）の設計資料。実装する人がこの資料だけを読んで Phase 0 に着手できるように書いた。
 
-- 名前は「少名毘古那（Sukuna）」に決まった（2026-11-18 の裁定。[user-decisions.md](user-decisions.md)）。改名の移行が済むまで、本文と実装の「Shuko」は仮の名前のまま残す。Microsoft・Visual Studio・Claude の名称は使わない。アイコンは Claude と VS Code のアイコンを合わせた意匠にする（2026-11-17 の裁定）。
+- 名前は「少名毘古那（Sukuna）」に決まった（2026-11-18 の裁定。[user-decisions.md](user-decisions.md)）。前の仮の名前は「Shuko」。過去の記録と、引退までの日常の旧版（`%LOCALAPPDATA%\Programs\Shuko` など）にはその名前が残る。改名の段取りは `tasks/2026-11-18-rename-sukuna-survey/rename-plan.md`。Microsoft・Visual Studio・Claude の名称は使わない。アイコンは Claude と VS Code のアイコンを合わせた意匠にする（2026-11-17 の裁定）。
 - 本文の `<editor>` は決まった名前（applicationName）に置き換えて読む。
 
 ## 読む順
@@ -19,7 +19,7 @@ Claude Code でのコーディングに特化した、省メモリの VS Code �
 | 8 | [06-update-watch-and-take-in.md](06-update-watch-and-take-in.md) | 本体と拡張の新版の検知、Notion の ToDo への書き込み、毎週の取り込みと検証、入れ替えと戻し方 | Phase 3 の前 |
 | 9 | [08-risks-and-open-items.md](08-risks-and-open-items.md) | リスク、実機で確かめること、調べること、決定済みの論点と未決の論点、別案 | 各 Phase の終わりに見直す |
 | 10 | [build-env-setup.md](build-env-setup.md) | この Windows にビルドの道具（Build Tools・Node.js・pnpm・setuptools）を入れる手順 | Phase 1 の前（ユーザーが行う） |
-| 11 | [install.md](install.md) | ビルドした zip から Shuko を日常の利用に入れる手順（local.json・切り替え・スタートメニューと PATH・拡張・外部ツール・Notion・更新の検知・戻し方） | Phase 4（ユーザーが行う） |
+| 11 | [install.md](install.md) | ビルドした zip から Sukuna を日常の利用に入れる手順（local.json・切り替え・スタートメニューと PATH・拡張・外部ツール・Notion・更新の検知・戻し方） | Phase 4（ユーザーが行う） |
 
 `sources/` には設計の根拠にした調査メモがある（2026-11-12 取得）。
 - `sources/research-vscode-source.md`: 本家 1.146.0 のソース、ビルド、VSCodium

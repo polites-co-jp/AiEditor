@@ -56,8 +56,8 @@ const mini = (kind) => {
       commitIdentity: { status: 'ok', items: [] },
     },
     commits: [
-      ...(kind === 'b' ? [{ subject: 'unit C-1-ai: ops', author: 'shuko-apply <apply@shuko.invalid>' }, { subject: 'unit C-1-ai: edits', author: 'shuko-apply <apply@shuko.invalid>' }] : []),
-      { subject: 'unit C-2-debug: ops', author: 'shuko-apply <apply@shuko.invalid>' }, { subject: 'unit C-2-debug: edits', author: 'shuko-apply <apply@shuko.invalid>' },
+      ...(kind === 'b' ? [{ subject: 'unit C-1-ai: ops', author: 'sukuna-apply <apply@sukuna.invalid>' }, { subject: 'unit C-1-ai: edits', author: 'sukuna-apply <apply@sukuna.invalid>' }] : []),
+      { subject: 'unit C-2-debug: ops', author: 'sukuna-apply <apply@sukuna.invalid>' }, { subject: 'unit C-2-debug: edits', author: 'sukuna-apply <apply@sukuna.invalid>' },
     ],
   };
 };
@@ -142,7 +142,7 @@ test('c2-check: 食い違いを見つける（result・単位の欠け・余計�
     ['registeredKeys', 'a', (j) => { j.checks.registeredKeys.status = 'fail'; }, /registeredKeys/],
     ['commitIdentity', 'a', (j) => { j.checks.commitIdentity.status = 'fail'; }, /commitIdentity/],
     ['コミットの並び(ops が edits の後)', 'a', (j) => { j.commits.reverse(); }, /並びが違う/],
-    ['コミットの作者', 'a', (j) => { j.commits[0].author = 'someone <a@b.invalid>'; }, /作者が shuko-apply でない/],
+    ['コミットの作者', 'a', (j) => { j.commits[0].author = 'someone <a@b.invalid>'; }, /作者が sukuna-apply でない/],
     ['b でコミットの並び(C-1 の edits が C-2 の後)', 'b', (j) => { const i = j.commits.findIndex((c) => c.subject === 'unit C-1-ai: edits'); const [c] = j.commits.splice(i, 1); j.commits.push(c); }, /C-1 の edits が C-2 の ops の後/],
   ];
   for (const [name, kind, mutate, re] of cases) {

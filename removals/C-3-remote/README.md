@@ -49,9 +49,9 @@ A・B の14単位と C-1 と C-3 の ops を当てた作業ツリーで、型検
 
 | ファイル | 直し方 |
 |---|---|
-| `src/vs/workbench/api/browser/viewsExtensionPoint.ts` | `contrib/remote/browser/remoteExplorer.js` の import の1行を消し、import の並びの後に同じ値の定数 `const REMOTE = 'workbench.view.remote';` を置いた（コメント `// Shuko (C-3-remote): ...`）。使う所（`canMoveView`・`workspace`・`getViewContainer('remote')`）は変えていない |
+| `src/vs/workbench/api/browser/viewsExtensionPoint.ts` | `contrib/remote/browser/remoteExplorer.js` の import の1行を消し、import の並びの後に同じ値の定数 `const REMOTE = 'workbench.view.remote';` を置いた（コメント `// Sukuna (C-3-remote): ...`）。使う所（`canMoveView`・`workspace`・`getViewContainer('remote')`）は変えていない |
 
-- edits.patch は1ファイル、5行の追加、1行の削除。件名は `unit C-3-remote: edits`、作者は `shuko-apply <apply@shuko.invalid>`。
+- edits.patch は1ファイル、5行の追加、1行の削除。件名は `unit C-3-remote: edits`、作者は `sukuna-apply <apply@sukuna.invalid>`。
 - 拡張 API は変えていない。`extHost.api.impl.ts`・`extHost.protocol.ts` に触れず、`api/common/extHostRemovedApi.remote.ts` も作っていない（残す `mainThreadTunnelService.ts`・`extHostTunnelService.ts` が `workspace.openTunnel` などをそのまま受ける）。
 - `unit.json` は `"patch": "edits.patch"` を足しただけ。`delete`・`removeLines`・`kept`・`checks` は下準備のまま。
 

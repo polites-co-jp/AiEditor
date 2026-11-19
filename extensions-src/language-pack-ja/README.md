@@ -1,6 +1,6 @@
 # language-pack-ja（本体と同じ版の日本語の言語パック）
 
-Shuko の組み込み拡張（ID `shuko.language-pack-ja`）。本体と同じ版の文言に合わせた日本語の言語パック。docs/04 の7節。調べと作り方は `tasks/2026-11-17-l10n-ja/l10n-design.md`。
+Sukuna の組み込み拡張（ID `sukuna.language-pack-ja`）。本体と同じ版の文言に合わせた日本語の言語パック。docs/04 の7節。調べと作り方は `tasks/2026-11-17-l10n-ja/l10n-design.md`。
 
 ## 中身
 

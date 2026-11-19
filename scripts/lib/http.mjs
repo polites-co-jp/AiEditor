@@ -7,7 +7,7 @@ import { createHash } from "node:crypto";
 import { Readable, Transform } from "node:stream";
 import { pipeline } from "node:stream/promises";
 
-export const USER_AGENT = "shuko-build/0.1 (+lock-fetch)";
+export const USER_AGENT = "sukuna-build/0.1 (+lock-fetch)";
 
 async function withRetry(label, fn, tries = 3) {
   let lastErr;

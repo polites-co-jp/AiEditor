@@ -3,7 +3,7 @@
   The defaults and the expansion rules live here and in scripts/lib/local-config.mjs; keep both the same.
 
   Rules:
-    - The file is %LOCALAPPDATA%\Shuko\local.json. Functions accept another path (trials, tests).
+    - The file is %LOCALAPPDATA%\Sukuna\local.json. Functions accept another path (trials, tests).
     - No file / no key -> default value.
     - Not JSON, top level not an object, unknown key, wrong type -> throw (never fall back to a default).
     - Key names are case-sensitive ("InstallRoot" is an unknown key).
@@ -15,14 +15,14 @@
 
   Dot-source it:   . (Join-Path $PSScriptRoot 'lib\local-config.ps1')
   Functions (test entry points; see tasks/2026-11-13-p2-build-switch/build-switch-design.md section 2):
-    Get-ShukoLocalConfigPath
-    Expand-ShukoEnv -Value <string>
-    Test-ShukoLocalConfig -Config <object>          -> string[] of errors (empty when valid)
-    Read-ShukoLocalConfig -Path <file>              -> ordered hashtable of the raw values ({} when the file is missing)
-    Resolve-ShukoLocalConfig [-ConfigPath] [-Overrides @{}]
+    Get-SukunaLocalConfigPath
+    Expand-SukunaEnv -Value <string>
+    Test-SukunaLocalConfig -Config <object>          -> string[] of errors (empty when valid)
+    Read-SukunaLocalConfig -Path <file>              -> ordered hashtable of the raw values ({} when the file is missing)
+    Resolve-SukunaLocalConfig [-ConfigPath] [-Overrides @{}]
                                                     -> object: installRoot keepVersions builderRepo buildRoot sources configPath configExists
-    Write-ShukoLocalConfig -Path <file> -Values <IDictionary>   (validates, writes UTF-8 without BOM via a temp file)
-    ConvertTo-ShukoLocalConfigJson -Values <IDictionary>        -> the JSON text that Write- writes
+    Write-SukunaLocalConfig -Path <file> -Values <IDictionary>   (validates, writes UTF-8 without BOM via a temp file)
+    ConvertTo-SukunaLocalConfigJson -Values <IDictionary>        -> the JSON text that Write- writes
 
   Run directly to print the resolved values (trials):
     powershell -NoProfile -ExecutionPolicy Bypass -File scripts/lib/local-config.ps1 [-ConfigPath <file>]
@@ -32,28 +32,28 @@
         variables of the same names.
 #>
 
-$script:ShukoLocalKeys = @('installRoot', 'keepVersions', 'builderRepo', 'buildRoot')
-$script:ShukoLocalPathKeys = @('installRoot', 'buildRoot', 'builderRepo')
+$script:SukunaLocalKeys = @('installRoot', 'keepVersions', 'builderRepo', 'buildRoot')
+$script:SukunaLocalPathKeys = @('installRoot', 'buildRoot', 'builderRepo')
 # The repository root (two levels above scripts\lib) with an upper-case drive letter, and the default
 # build root <repo>\tmp\b (decision 2026-11-15: nothing on C:; tmp/ is git-ignored). Same as
 # REPO_ROOT / DEFAULT_BUILD_ROOT in local-config.mjs. $PSCommandPath is this file even when dot-sourced.
-$script:ShukoRepoRoot = [IO.Path]::GetFullPath((Join-Path (Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSCommandPath))) '.'))
-$script:ShukoRepoRoot = $script:ShukoRepoRoot.TrimEnd('\')
-if ($script:ShukoRepoRoot -match '^[a-z]:') { $script:ShukoRepoRoot = $script:ShukoRepoRoot.Substring(0, 1).ToUpperInvariant() + $script:ShukoRepoRoot.Substring(1) }
-$script:ShukoDefaultBuildRoot = Join-Path (Join-Path $script:ShukoRepoRoot 'tmp') 'b'
-$script:ShukoLocalDefaults = [ordered]@{
-    installRoot  = '%LOCALAPPDATA%\Programs\Shuko'
+$script:SukunaRepoRoot = [IO.Path]::GetFullPath((Join-Path (Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSCommandPath))) '.'))
+$script:SukunaRepoRoot = $script:SukunaRepoRoot.TrimEnd('\')
+if ($script:SukunaRepoRoot -match '^[a-z]:') { $script:SukunaRepoRoot = $script:SukunaRepoRoot.Substring(0, 1).ToUpperInvariant() + $script:SukunaRepoRoot.Substring(1) }
+$script:SukunaDefaultBuildRoot = Join-Path (Join-Path $script:SukunaRepoRoot 'tmp') 'b'
+$script:SukunaLocalDefaults = [ordered]@{
+    installRoot  = '%LOCALAPPDATA%\Programs\Sukuna'
     keepVersions = 3
     builderRepo  = $null
-    buildRoot    = $script:ShukoDefaultBuildRoot
+    buildRoot    = $script:SukunaDefaultBuildRoot
 }
 
-function Get-ShukoLocalConfigPath {
+function Get-SukunaLocalConfigPath {
     if (-not $env:LOCALAPPDATA) { throw 'LOCALAPPDATA is not set; cannot locate local.json' }
-    return (Join-Path $env:LOCALAPPDATA 'Shuko\local.json')
+    return (Join-Path $env:LOCALAPPDATA 'Sukuna\local.json')
 }
 
-function Expand-ShukoEnv {
+function Expand-SukunaEnv {
     param([Parameter(Mandatory)][AllowEmptyString()][string]$Value)
     $ms = [regex]::Matches($Value, '%([^%]+)%')
     $out = $Value
@@ -66,12 +66,12 @@ function Expand-ShukoEnv {
     return $out
 }
 
-function Test-ShukoAbsolutePath {
+function Test-SukunaAbsolutePath {
     param([string]$Path)
     return ($Path -match '^[A-Za-z]:[\\/]') -or ($Path -match '^[\\/]{2}[^\\/]+[\\/][^\\/]+')
 }
 
-function Test-ShukoLocalConfig {
+function Test-SukunaLocalConfig {
     <# Returns the list of errors (empty when valid). Accepts a PSCustomObject (ConvertFrom-Json) or an IDictionary. #>
     param($Config)
     $errors = @()
@@ -87,11 +87,11 @@ function Test-ShukoLocalConfig {
         return @('top level is not a JSON object')
     }
     foreach ($n in $names) {
-        if ($script:ShukoLocalKeys -cnotcontains $n) {
-            $errors += "${n}: unknown key (allowed: $($script:ShukoLocalKeys -join ', '); case-sensitive)"
+        if ($script:SukunaLocalKeys -cnotcontains $n) {
+            $errors += "${n}: unknown key (allowed: $($script:SukunaLocalKeys -join ', '); case-sensitive)"
         }
     }
-    foreach ($k in $script:ShukoLocalPathKeys) {
+    foreach ($k in $script:SukunaLocalPathKeys) {
         if ($names -cnotcontains $k) { continue }
         $v = & $get $k
         if ($k -eq 'builderRepo' -and $null -eq $v) { continue }
@@ -105,7 +105,7 @@ function Test-ShukoLocalConfig {
     return , $errors
 }
 
-function Read-ShukoLocalConfig {
+function Read-SukunaLocalConfig {
     <# Raw values of the file (no defaults, no expansion), validated. Empty ordered hashtable when missing. #>
     param([Parameter(Mandatory)][string]$Path)
     $out = [ordered]@{}
@@ -117,39 +117,39 @@ function Read-ShukoLocalConfig {
     } catch {
         throw "$Path is not valid JSON: $($_.Exception.Message)"
     }
-    $errors = Test-ShukoLocalConfig -Config $obj
+    $errors = Test-SukunaLocalConfig -Config $obj
     if ($errors.Count -gt 0) { throw "$Path has errors: $($errors -join ' / ')" }
     foreach ($p in $obj.PSObject.Properties) { $out[$p.Name] = $p.Value }
     return $out
 }
 
-function ConvertTo-ShukoLocalPath {
+function ConvertTo-SukunaLocalPath {
     param([string]$Key, [string]$Raw)
-    $e = Expand-ShukoEnv -Value $Raw
-    if (-not (Test-ShukoAbsolutePath $e)) { throw "${Key}: the expanded value is not an absolute path: $e" }
+    $e = Expand-SukunaEnv -Value $Raw
+    if (-not (Test-SukunaAbsolutePath $e)) { throw "${Key}: the expanded value is not an absolute path: $e" }
     $n = [IO.Path]::GetFullPath($e)
     if ($n -match '^[A-Za-z]:\\$') { return $n }
     return $n.TrimEnd('\', '/')
 }
 
-function Resolve-ShukoLocalConfig {
+function Resolve-SukunaLocalConfig {
     param([string]$ConfigPath, [System.Collections.IDictionary]$Overrides = @{})
-    if (-not $ConfigPath) { $ConfigPath = Get-ShukoLocalConfigPath }
+    if (-not $ConfigPath) { $ConfigPath = Get-SukunaLocalConfigPath }
     $exists = Test-Path -LiteralPath $ConfigPath -PathType Leaf
-    $data = Read-ShukoLocalConfig -Path $ConfigPath
+    $data = Read-SukunaLocalConfig -Path $ConfigPath
     $ov = [ordered]@{}
     foreach ($k in $Overrides.Keys) { if ($null -ne $Overrides[$k] -and '' -ne $Overrides[$k]) { $ov[$k] = $Overrides[$k] } }
-    $ovErrors = Test-ShukoLocalConfig -Config $ov
+    $ovErrors = Test-SukunaLocalConfig -Config $ov
     if ($ovErrors.Count -gt 0) { throw "option errors: $($ovErrors -join ' / ')" }
 
     $res = [ordered]@{}
     $sources = [ordered]@{}
-    foreach ($k in $script:ShukoLocalKeys) {
+    foreach ($k in $script:SukunaLocalKeys) {
         if ($ov.Contains($k)) { $v = $ov[$k]; $sources[$k] = 'option' }
         elseif ($data.Contains($k) -and $null -ne $data[$k]) { $v = $data[$k]; $sources[$k] = 'local.json' }
-        else { $v = $script:ShukoLocalDefaults[$k]; $sources[$k] = 'default' }
-        if ($script:ShukoLocalPathKeys -contains $k) {
-            if ($null -eq $v) { $res[$k] = $null } else { $res[$k] = ConvertTo-ShukoLocalPath -Key $k -Raw ([string]$v) }
+        else { $v = $script:SukunaLocalDefaults[$k]; $sources[$k] = 'default' }
+        if ($script:SukunaLocalPathKeys -contains $k) {
+            if ($null -eq $v) { $res[$k] = $null } else { $res[$k] = ConvertTo-SukunaLocalPath -Key $k -Raw ([string]$v) }
         } else {
             $res[$k] = [int]$v
         }
@@ -160,7 +160,7 @@ function Resolve-ShukoLocalConfig {
     return [pscustomobject]$res
 }
 
-function ConvertTo-ShukoJsonString {
+function ConvertTo-SukunaJsonString {
     param([AllowNull()][string]$Value)
     if ($null -eq $Value) { return 'null' }
     $sb = New-Object System.Text.StringBuilder
@@ -176,26 +176,26 @@ function ConvertTo-ShukoJsonString {
     return $sb.ToString()
 }
 
-function ConvertTo-ShukoLocalConfigJson {
+function ConvertTo-SukunaLocalConfigJson {
     <# Keys in the documented order; 2-space indent; LF line ends; ends with a newline. #>
     param([Parameter(Mandatory)][System.Collections.IDictionary]$Values)
     $lines = @()
-    foreach ($k in $script:ShukoLocalKeys) {
+    foreach ($k in $script:SukunaLocalKeys) {
         if (-not $Values.Contains($k)) { continue }
         $v = $Values[$k]
         if ($k -eq 'keepVersions') { $txt = ([int]$v).ToString([Globalization.CultureInfo]::InvariantCulture) }
-        else { $txt = ConvertTo-ShukoJsonString $v }
-        $lines += ('  ' + (ConvertTo-ShukoJsonString $k) + ': ' + $txt)
+        else { $txt = ConvertTo-SukunaJsonString $v }
+        $lines += ('  ' + (ConvertTo-SukunaJsonString $k) + ': ' + $txt)
     }
     if ($lines.Count -eq 0) { return "{}`n" }
     return "{`n" + ($lines -join ",`n") + "`n}`n"
 }
 
-function Write-ShukoLocalConfig {
+function Write-SukunaLocalConfig {
     param([Parameter(Mandatory)][string]$Path, [Parameter(Mandatory)][System.Collections.IDictionary]$Values)
-    $errors = Test-ShukoLocalConfig -Config $Values
+    $errors = Test-SukunaLocalConfig -Config $Values
     if ($errors.Count -gt 0) { throw "refusing to write $Path : $($errors -join ' / ')" }
-    $text = ConvertTo-ShukoLocalConfigJson -Values $Values
+    $text = ConvertTo-SukunaLocalConfigJson -Values $Values
     $dir = Split-Path -Parent $Path
     if ($dir -and -not (Test-Path -LiteralPath $dir)) { New-Item -ItemType Directory -Force -Path $dir | Out-Null }
     $tmp = $Path + '.tmp'
@@ -216,7 +216,7 @@ if ($MyInvocation.InvocationName -ne '.') {
         else { Write-Error "unknown argument: $($args[$i])"; exit 1 }
     }
     try {
-        Resolve-ShukoLocalConfig -ConfigPath $cfgPath | ConvertTo-Json -Depth 5
+        Resolve-SukunaLocalConfig -ConfigPath $cfgPath | ConvertTo-Json -Depth 5
     } catch {
         Write-Host "[local-config] $($_.Exception.Message)"
         exit 1

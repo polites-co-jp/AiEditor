@@ -41,7 +41,7 @@
 
 ## edits.patch で直した点（2026-11-15）
 
-edits.patch は25ファイル（新規1）、211行の追加、907行の削除（2026-11-15 の2回目の後）。件名は `unit C-4-notebook: edits`、作者は `shuko-apply <apply@shuko.invalid>`。
+edits.patch は25ファイル（新規1）、211行の追加、907行の削除（2026-11-15 の2回目の後）。件名は `unit C-4-notebook: edits`、作者は `sukuna-apply <apply@sukuna.invalid>`。
 
 ### 拡張 API
 

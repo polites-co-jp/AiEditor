@@ -117,9 +117,9 @@ test('C-7: unit.json の patch が edits.patch で、ファイルがあり、空
   assert.ok(patchText.length > 0 && sections.length > 0);
 });
 
-test('C-7: edits.patch の件名が [PATCH] unit C-7-breadcrumbs-outline: edits、作者が shuko-apply <apply@shuko.invalid>', { skip: noPatch }, () => {
+test('C-7: edits.patch の件名が [PATCH] unit C-7-breadcrumbs-outline: edits、作者が sukuna-apply <apply@sukuna.invalid>', { skip: noPatch }, () => {
   assert.match(patchText, /^Subject: \[PATCH\] unit C-7-breadcrumbs-outline: edits$/m);
-  assert.match(patchText, /^From: shuko-apply <apply@shuko\.invalid>$/m);
+  assert.match(patchText, /^From: sukuna-apply <apply@sukuna\.invalid>$/m);
 });
 
 test('C-7: unit.json の id・stage・after（B-4・C-1・C-4 の3つ）。order は前提にした単位より後', { skip: noUnit }, () => {

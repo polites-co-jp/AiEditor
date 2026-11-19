@@ -74,7 +74,7 @@ test('resolveBuildRoot: 共通の部品と同じ規則（知らないキー・�
     ['k', '{"foo": 1}'],
     ['c', '{"InstallRoot": "C:\\\\x"}'],
     ['t', '{"keepVersions": "3"}'],
-    ['e', '{"buildRoot": "%NO_SUCH_VAR_SHUKO%\\\\x"}'],
+    ['e', '{"buildRoot": "%NO_SUCH_VAR_SUKUNA%\\\\x"}'],
     ['r', '{"buildRoot": "relative\\\\x"}'],
     ['j', '{"buildRoot": "C:\\\\b",}'],
   ]) {
@@ -151,7 +151,7 @@ const NEW = 'C:\\new\\current\\bin';
 const PATH_CASES = [
   { name: '前の bin を新しい bin に。ほかの項目と %VAR% の形は残す', raw: '%USERPROFILE%\\bin;C:\\old\\current\\bin;C:\\x', expect: '%USERPROFILE%\\bin;C:\\new\\current\\bin;C:\\x' },
   { name: '大文字小文字と末尾の \\ を問わない', raw: 'C:\\x;C:\\OLD\\current\\bin\\', expect: 'C:\\x;C:\\new\\current\\bin' },
-  { name: '%FOO%\\current\\bin は FOO を展開して一致すれば置き換える', raw: 'C:\\x;%SHUKO_T_FOO%\\current\\bin', env: { SHUKO_T_FOO: 'C:\\old' }, expect: 'C:\\x;C:\\new\\current\\bin' },
+  { name: '%FOO%\\current\\bin は FOO を展開して一致すれば置き換える', raw: 'C:\\x;%SUKUNA_T_FOO%\\current\\bin', env: { SUKUNA_T_FOO: 'C:\\old' }, expect: 'C:\\x;C:\\new\\current\\bin' },
   { name: '一致が無ければ null（変えない）', raw: 'C:\\a;C:\\b;%USERPROFILE%\\bin', expect: null },
   { name: 'Raw が空なら null', raw: '', expect: null },
   { name: '別の版の bin（前の bin の一部）は置き換えない', raw: 'C:\\old\\current\\bin2;C:\\old\\current', expect: null },

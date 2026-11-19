@@ -142,7 +142,7 @@ test('extensionBundleStrings: l10n.t(`..${}..`) のあるファイルは捨て�
 // ---------------------------------------------------------------------------------------------------------------
 // auditL10n（模擬の本体・作業ツリー・パック）
 // ---------------------------------------------------------------------------------------------------------------
-// 模擬: 本体 2 文言、拡張 vscode.git（package 2・bundle 3）、自前の拡張 shuko.mydist（直書き）
+// 模擬: 本体 2 文言、拡張 vscode.git（package 2・bundle 3）、自前の拡張 sukuna.mydist（直書き）
 function fixture(name, { bundleTr, pack, own } = {}) {
   const base = path.join(sb, name);
   const app = path.join(base, 'app');
@@ -371,54 +371,54 @@ test('englishOnlyKeys: 訳が日本語を含めば入らない。英字3字未�
 // ---- 自前の直書き（literal）----------------------------------------------------------------------------------------
 test('manifestDisplayStrings: displayName・description・コマンド・設定の表示の文字列を拾い、%key%・id・コマンド名・設定の鍵は拾わない', () => {
   const r = manifestDisplayStrings({
-    name: 'mydist', displayName: 'Shuko defaults', description: '%d%', publisher: 'shuko',
+    name: 'mydist', displayName: 'Sukuna defaults', description: '%d%', publisher: 'sukuna',
     contributes: {
-      commands: [{ command: 'x.y', title: 'Open', category: 'Shuko' }],
-      configuration: { title: 'Shuko', properties: { description: { type: 'string', description: 'The description property', default: 'not a label', enum: ['a'], enumDescriptions: ['A one'] } } },
+      commands: [{ command: 'x.y', title: 'Open', category: 'Sukuna' }],
+      configuration: { title: 'Sukuna', properties: { description: { type: 'string', description: 'The description property', default: 'not a label', enum: ['a'], enumDescriptions: ['A one'] } } },
       keybindings: [{ command: 'x.y', key: 'ctrl+x', when: 'editorFocus' }],
     },
   });
   assert.deepEqual(r, {
-    displayName: 'Shuko defaults',
+    displayName: 'Sukuna defaults',
     'contributes.commands[0].title': 'Open',
-    'contributes.commands[0].category': 'Shuko',
-    'contributes.configuration[0].title': 'Shuko',
+    'contributes.commands[0].category': 'Sukuna',
+    'contributes.configuration[0].title': 'Sukuna',
     'contributes.configuration[0].properties.description.description': 'The description property',
     'contributes.configuration[0].properties.description.enumDescriptions[0]': 'A one',
   });
 });
 test('直書き（literal）: 日本語を含めば訳あり、英語だけなら未訳で不合格。言語パック自身の表示も数える', () => {
-  const f = fixture('lit1', { own: { name: 'mydist', publisher: 'shuko', displayName: 'Shuko の既定', description: 'Only English here' } });
+  const f = fixture('lit1', { own: { name: 'mydist', publisher: 'sukuna', displayName: 'Sukuna の既定', description: 'Only English here' } });
   const r = audit(f);
-  const lit = r.literals.perExtension['shuko.mydist'];
+  const lit = r.literals.perExtension['sukuna.mydist'];
   assert.equal(lit.total, 2);
   assert.equal(lit.translated, 1);
   assert.deepEqual(lit.untranslatedKeys, [{ key: 'description', message: 'Only English here' }]);
   assert.equal(r.pass, false);
-  const f2 = fixture('lit2', { own: { name: 'mydist', publisher: 'shuko', displayName: 'Shuko の既定', description: '%d%' } });
+  const f2 = fixture('lit2', { own: { name: 'mydist', publisher: 'sukuna', displayName: 'Sukuna の既定', description: '%d%' } });
   assert.equal(audit(f2).pass, true);
 });
 test('直書き（literal）の除外（section: literal）が効く', () => {
-  const f = fixture('lit3', { own: { name: 'mydist', publisher: 'shuko', displayName: 'Shuko の既定', description: 'Only English here' } });
+  const f = fixture('lit3', { own: { name: 'mydist', publisher: 'sukuna', displayName: 'Sukuna の既定', description: 'Only English here' } });
   const file = path.join(f.base, 'ex.json');
-  w(file, { exclusions: [{ extension: 'shuko.mydist', section: 'literal', key: 'description', en: 'Only English here', reason: 'r' }] });
+  w(file, { exclusions: [{ extension: 'sukuna.mydist', section: 'literal', key: 'description', en: 'Only English here', reason: 'r' }] });
   const r = audit(f, { excludeFile: file });
   assert.equal(r.literals.totals.excluded, 1);
   assert.equal(r.pass, true);
 });
 test('直書き（literal）: 出力に language-pack-ja がある版（auto）は出力の写しを読む。無い版は extensions-src を読む。literalsFrom で選べる', () => {
-  const f = fixture('lit4', { own: { name: 'mydist', publisher: 'shuko', displayName: '日本語の src', description: '日本語の src の説明' } });
-  w(path.join(f.app, 'extensions', 'mydist', 'package.json'), { name: 'mydist', publisher: 'shuko', displayName: 'English in app' });
+  const f = fixture('lit4', { own: { name: 'mydist', publisher: 'sukuna', displayName: '日本語の src', description: '日本語の src の説明' } });
+  w(path.join(f.app, 'extensions', 'mydist', 'package.json'), { name: 'mydist', publisher: 'sukuna', displayName: 'English in app' });
   let r = audit(f); // app に language-pack-ja が無い → src
-  assert.equal(r.literals.perExtension['shuko.mydist'].manifest, 'extensions-src');
-  assert.equal(r.literals.perExtension['shuko.mydist'].untranslated, 0);
+  assert.equal(r.literals.perExtension['sukuna.mydist'].manifest, 'extensions-src');
+  assert.equal(r.literals.perExtension['sukuna.mydist'].untranslated, 0);
   r = audit(f, { literalsFrom: 'app' });
-  assert.equal(r.literals.perExtension['shuko.mydist'].manifest, 'app');
-  assert.equal(r.literals.perExtension['shuko.mydist'].untranslated, 1);
-  w(path.join(f.app, 'extensions', 'language-pack-ja', 'package.json'), { name: 'language-pack-ja', publisher: 'shuko', displayName: '日本語' });
+  assert.equal(r.literals.perExtension['sukuna.mydist'].manifest, 'app');
+  assert.equal(r.literals.perExtension['sukuna.mydist'].untranslated, 1);
+  w(path.join(f.app, 'extensions', 'language-pack-ja', 'package.json'), { name: 'language-pack-ja', publisher: 'sukuna', displayName: '日本語' });
   r = audit(f); // app に language-pack-ja がある → app
-  assert.equal(r.literals.perExtension['shuko.mydist'].manifest, 'app');
-  assert.equal(r.literals.perExtension['shuko.mydist'].untranslated, 1);
+  assert.equal(r.literals.perExtension['sukuna.mydist'].manifest, 'app');
+  assert.equal(r.literals.perExtension['sukuna.mydist'].untranslated, 1);
 });
 
 // ---- CLI --------------------------------------------------------------------------------------------------------
@@ -443,9 +443,11 @@ test('CLI: --worktree・--exclude（複数）・--require-bundle・--literals �
 // ---------------------------------------------------------------------------------------------------------------
 // 実物（日常の版 r4 の出力と作業ツリー、新しいパック）。無ければ飛ばす
 // ---------------------------------------------------------------------------------------------------------------
-const R4 = path.join(REPO, 'tmp', 'b', 'p2', '1.146.0-p5-c-all-r4', 'Shuko-win32-x64-1.146.0-p5-c-all-r4', 'resources', 'app');
-const realApp = process.env.AIED_AUDIT_APP || R4;
-const realWt = process.env.AIED_AUDIT_WT || path.join(REPO, 'tmp', 'b', 'wt', 'r4');
+// 2026-11-18 の改名: 日常の場所と、古い名前で作った r4 の出力は読まない。新しい名前で作る r7 の出力（無ければ飛ばす）。
+// 日常の場所の実物は、環境変数 AIED_AUDIT_APP・AIED_AUDIT_WT・AIED_AUDIT_OLD_PACK で明示したときだけ使う。
+const R7 = path.join(REPO, 'tmp', 'b', 'p2', '1.146.0-p5-c-all-r7', 'Sukuna-win32-x64-1.146.0-p5-c-all-r7', 'resources', 'app');
+const realApp = process.env.AIED_AUDIT_APP || R7;
+const realWt = process.env.AIED_AUDIT_WT || path.join(REPO, 'tmp', 'b', 'wt', 'r7');
 const haveReal = fs.existsSync(path.join(realApp, 'out', 'nls.keys.json')) && fs.existsSync(path.join(realWt, 'extensions'));
 const realExclusions = path.join(DEFAULT_PACK, 'exclusions.json');
 
@@ -483,11 +485,11 @@ test('実物: git の「↔」の2件（\\u2194 の鍵）は、除外でなく�
 });
 test('実物: 古い 1.131.0 のパックでは、bundle を含めて未訳が残り不合格（網が落ちるべきときに落ちる）', {
   skip: (() => {
-    const p = path.join(process.env.USERPROFILE ?? '', '.shuko', 'extensions', 'ms-ceintl.vscode-language-pack-ja-1.131.0');
-    return !(haveReal && fs.existsSync(path.join(p, 'translations', 'main.i18n.json'))) && '古いパック・実物が無い';
+    const p = process.env.AIED_AUDIT_OLD_PACK ?? '';
+    return !(haveReal && p && fs.existsSync(path.join(p, 'translations', 'main.i18n.json'))) && '古いパック（AIED_AUDIT_OLD_PACK）・実物が無い';
   })(),
 }, () => {
-  const p = path.join(process.env.USERPROFILE ?? '', '.shuko', 'extensions', 'ms-ceintl.vscode-language-pack-ja-1.131.0');
+  const p = process.env.AIED_AUDIT_OLD_PACK;
   const r = auditL10n({ appDir: realApp, packDir: p, worktree: realWt });
   assert.equal(r.pass, false);
   assert.ok(r.core.untranslatedOutsideExclusions >= 500);

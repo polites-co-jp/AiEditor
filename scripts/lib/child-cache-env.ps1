@@ -20,10 +20,10 @@
 
   Dot-source it:   . (Join-Path $PSScriptRoot 'lib\child-cache-env.ps1')
   Functions (test entry points):
-    Get-ShukoChildCacheEnv -BuildRoot <dir> [-BaseNames <string[]>]
+    Get-SukunaChildCacheEnv -BuildRoot <dir> [-BaseNames <string[]>]
         -> ordered hashtable { name = folder }. -BaseNames: the names of the base environment (default: the
            names in the current process). Throws when -BuildRoot is not an absolute path (drive letter or UNC).
-    Set-ShukoChildCacheEnv -BuildRoot <dir> [-CreateTemp]
+    Set-SukunaChildCacheEnv -BuildRoot <dir> [-CreateTemp]
         -> ordered hashtable { vars = <the hashtable above>; replaced = <names that already existed, sorted>;
            createdTemp = <folder or $null> }. Sets the variables in the current process. -CreateTemp creates
            <buildRoot>\tmp when it is missing (no other folder is created; pnpm and npm create their own).
@@ -31,7 +31,7 @@
   NOTE: ASCII only on purpose (Windows PowerShell 5.1 reads BOM-less scripts as ANSI).
 #>
 
-$script:ShukoIfPresentVars = [ordered]@{
+$script:SukunaIfPresentVars = [ordered]@{
     'ELECTRON_CACHE'           = 'cache\localappdata\electron\Cache'
     'electron_config_cache'    = 'cache\localappdata\electron\Cache'
     'ELECTRON_BUILDER_CACHE'   = 'cache\electron-builder'
@@ -40,7 +40,7 @@ $script:ShukoIfPresentVars = [ordered]@{
     'COREPACK_HOME'            = 'cache\localappdata\node\corepack'
 }
 
-function Get-ShukoChildCacheEnv {
+function Get-SukunaChildCacheEnv {
     param(
         [Parameter(Mandatory = $true)][string]$BuildRoot,
         [string[]]$BaseNames
@@ -60,19 +60,19 @@ function Get-ShukoChildCacheEnv {
         pnpm_config_cache_dir = (& $j 'cache\pnpm-cache')
         npm_config_cache      = (& $j 'cache\npm-cache')
     }
-    foreach ($k in $script:ShukoIfPresentVars.Keys) {
+    foreach ($k in $script:SukunaIfPresentVars.Keys) {
         $hit = @($BaseNames | Where-Object { $_ -ieq $k })
-        if ($hit.Count -gt 0) { $out[$k] = (& $j $script:ShukoIfPresentVars[$k]) }
+        if ($hit.Count -gt 0) { $out[$k] = (& $j $script:SukunaIfPresentVars[$k]) }
     }
     return $out
 }
 
-function Set-ShukoChildCacheEnv {
+function Set-SukunaChildCacheEnv {
     param(
         [Parameter(Mandatory = $true)][string]$BuildRoot,
         [switch]$CreateTemp
     )
-    $vars = Get-ShukoChildCacheEnv -BuildRoot $BuildRoot
+    $vars = Get-SukunaChildCacheEnv -BuildRoot $BuildRoot
     $names = @(Get-ChildItem Env: | ForEach-Object { $_.Name })
     $replaced = @()
     foreach ($k in $vars.Keys) {

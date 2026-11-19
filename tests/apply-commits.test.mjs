@@ -1,7 +1,7 @@
 // edits.patch と patches/ のコミットの名前、取り込みで見る main の import（MAIN_FILES）、commitIdentity、
 // mydist の既定の外し方（pruneConfigurationDefaults の apply.mjs からの使われ方）のテスト。
 // 仕様: docs/03 の5.1・5.2・6節、docs/06 の4節、tasks/2026-11-13-p2-apply/apply-design.md、
-//       tasks/2026-11-13-p2-units-b/handoff-notes.md（件名は `unit <id>: edits`、From: は shuko-apply <apply@shuko.invalid>）、
+//       tasks/2026-11-13-p2-units-b/handoff-notes.md（件名は `unit <id>: edits`、From: は sukuna-apply <apply@sukuna.invalid>）、
 //       tasks/2026-11-13-p2-apply/handoff-notes.md の追記3・4。
 // 本家のソースは常設の clone（<buildRoot>/vscode。tests/build/root.mjs）のタグから読む。通しの試し（apply.mjs を本当に当てる）は、そこから新しい作業ツリーを
 // 試しの入れ物（<リポジトリ>\tmp\tests\acw-<pid>。<buildRoot>\wt には作らない）に作って行い、終わったら消す。clone が無ければ飛ぶ。
@@ -14,7 +14,7 @@ import { spawnSync } from 'node:child_process';
 import { MAIN_FILES, checkUpstreamAdditions } from '../scripts/lib/apply/checks.mjs';
 import { REPO, makeSandbox, removeSandbox, sandboxBase, writeFile, runNode } from './build/helpers.mjs';
 
-const IDENT = 'shuko-apply <apply@shuko.invalid>';
+const IDENT = 'sukuna-apply <apply@sukuna.invalid>';
 import { UPSTREAM_REPO as UP_DEFAULT } from './build/root.mjs';
 const UP_REPO = UP_DEFAULT; // 常設の clone（<buildRoot>/vscode。tests/build/root.mjs）
 const UP_TAG = process.env.AIED_UPSTREAM_TAG || '1.146.0';
@@ -228,7 +228,7 @@ test('apply.mjs（単位を当てない）: mydist の既定は1つも外さな�
   assert.ok('workbench.startupEditor' in copied.contributes.configurationDefaults, 'B-2 を当てていないので既定は残る');
 });
 
-test('apply.mjs: 作者が違うパッチ（From: が shuko-apply でない）が入ると commitIdentity が warn（止めはしない）', { skip: e2eSkip, timeout: 1200000 }, () => {
+test('apply.mjs: 作者が違うパッチ（From: が sukuna-apply でない）が入ると commitIdentity が warn（止めはしない）', { skip: e2eSkip, timeout: 1200000 }, () => {
   assert.ok(wt, '前のテストが作業ツリーを作っていない');
   resetWorktree(wt);
   // 作者が違うパッチを作る
@@ -246,7 +246,7 @@ test('apply.mjs: 作者が違うパッチ（From: が shuko-apply でない）�
   assert.equal(j.checks.commitIdentity.status, 'warn');
   assert.ok(j.checks.commitIdentity.items.length >= 1);
   assert.ok(j.checks.commitIdentity.items.some((c) => /Someone Else/.test(c.author)), JSON.stringify(j.checks.commitIdentity.items));
-  assert.ok(j.checks.commitIdentity.items.every((c) => c.committer === IDENT), 'コミッターは apply.mjs が shuko-apply にする');
+  assert.ok(j.checks.commitIdentity.items.every((c) => c.committer === IDENT), 'コミッターは apply.mjs が sukuna-apply にする');
   assert.ok(j.warnings.some((w) => /コミットの名前/.test(w)), '警告に出る');
   assert.ok(!j.stoppedAt, '止めない');
 });

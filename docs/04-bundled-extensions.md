@@ -100,9 +100,9 @@
 4. 台帳に無い拡張が入っていたら、一覧を出して止める（消すかはユーザーが決める）。
 5. `argv.json` に `"locale": "ja"` を書く（7節）。ファイルの末尾は `\n}` で終える（既存の中身を書き換えるときも同じ）。エディタは初めての起動で末尾の2文字を切って `enable-crash-reporter` などを足すため、`}` の後に改行があると壊れた JSON になり、`locale` が効かなくなる（Phase 0 で実際に起きた）。
 
-- 拡張の置き場所はユーザーごとに1つ（推定 `%USERPROFILE%\.shuko\extensions`）。版のフォルダを切り替えても拡張はそのまま。`switch.ps1` は、切り替える先の本体の版が台帳の `engines` を満たすかを確かめ、満たさなければ止まる。
+- 拡張の置き場所はユーザーごとに1つ（推定 `%USERPROFILE%\.sukuna\extensions`）。版のフォルダを切り替えても拡張はそのまま。`switch.ps1` は、切り替える先の本体の版が台帳の `engines` を満たすかを確かめ、満たさなければ止まる。
 - **戻し方**: 台帳はビルドリポジトリの git にある。`install-extensions.mjs --rev <コミット>` で、その時点の台帳の版を入れ直す。前の版の VSIX はキャッシュに残す。
-- `extensions.allowed`（1.96 から。拡張の ID ごと、または版ごとに許可を列挙できる。範囲指定は不可）[一次] https://code.visualstudio.com/docs/enterprise/extensions を、`{"*": false, "<台帳の ID>": true, ...}` にする。application スコープなので `mydist` の既定では入らず、product.json の `shukoConfigurationDefaults` と小さなパッチで既定にする（[02](02-repository-and-build.md) の3節。2026-11-13）。ID だけを載せ、版は台帳で固定する（版まで載せると拡張の差し替えのたびに本体の再ビルドが要るため）。VSIX の手動インストールにも効き、パッケージ内の ID で判定する（同ページ）。CLI の `--install-extension` に効くかは、Phase 0 の 0-8 の自動の部分で確かめた（効く。`tasks/2026-11-13-p0-envs-mydist-keys/extensions-allowed.md`）。組み込み拡張が対象外かと、画面の「VSIX からインストール」に効くかは、Phase 2 の自作のビルドで確かめる。`configurationDefaults` では既定にできない（application スコープ。6.1 の注）。
+- `extensions.allowed`（1.96 から。拡張の ID ごと、または版ごとに許可を列挙できる。範囲指定は不可）[一次] https://code.visualstudio.com/docs/enterprise/extensions を、`{"*": false, "<台帳の ID>": true, ...}` にする。application スコープなので `mydist` の既定では入らず、product.json の `sukunaConfigurationDefaults` と小さなパッチで既定にする（[02](02-repository-and-build.md) の3節。2026-11-13）。ID だけを載せ、版は台帳で固定する（版まで載せると拡張の差し替えのたびに本体の再ビルドが要るため）。VSIX の手動インストールにも効き、パッケージ内の ID で判定する（同ページ）。CLI の `--install-extension` に効くかは、Phase 0 の 0-8 の自動の部分で確かめた（効く。`tasks/2026-11-13-p0-envs-mydist-keys/extensions-allowed.md`）。組み込み拡張が対象外かと、画面の「VSIX からインストール」に効くかは、Phase 2 の自作のビルドで確かめる。`configurationDefaults` では既定にできない（application スコープ。6.1 の注）。
 
 ## 6. 自前の組み込み拡張 `mydist`
 
@@ -128,7 +128,7 @@
 | `workbench.settings.enableNaturalLanguageSearch` | `false` | 設定の検索の通信を止める（同上） | — |
 | `claudeCode.environmentVariables` | `[{"name": "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC", "value": "1"}, {"name": "CLAUDE_CODE_DISABLE_OFFICIAL_MARKETPLACE_AUTOINSTALL", "value": "1"}]` | CLI の付帯の通信を止める（裁定 2026-11-13）。前者は自動更新・テレメトリ・エラーの報告・フィードバック・リリースノートなど、後者は公式のプラグインのマーケットプレイスの自動登録（前者で止まらない分。リーダーの判断で、裁定の「付帯の通信」に当てはめた）[一次] https://code.claude.com/docs/en/env-vars 。WebFetch の宛先の安全確認（`api.anthropic.com`）は Claude の作業の一部で安全のためのものなので止めない。設定は machine スコープで、既定が効くのは起動の処理の順による見込み（Phase 2 で実物で確かめ、毎週の取り込みでも見る）。ユーザー設定にこの配列を書くと丸ごと置き換わる（[05](05-settings-sync.md) の注意） | — |
 
-- 拡張の `configurationDefaults` で既定にできるのは、machine-overridable・window・resource・language-overridable のスコープの設定だけ。**application スコープの設定は既定にできない**（警告を出して捨てる。組み込み拡張も同じ）[一次] 本家 1.146.0 の `src/vs/workbench/api/common/configurationExtensionPoint.ts`（`tasks/2026-11-13-p1-ledger-mydist-decisions/doc-corrections.md` の1）。上の表のうち `extensions.allowed`・`telemetry.telemetryLevel`・`update.mode`・`workbench.enableExperiments`・`extensions.autoUpdate`・`extensions.autoCheckUpdates` の6件が当たる。この6件は、product.json の独自のキー `shukoConfigurationDefaults` に値を置き、それを既定として登録する小さなパッチ（1か所）で既定を変える（2026-11-13 リーダーの判断。`tasks/2026-11-13-p1-ledger-mydist-decisions/app-scope-options.md` の案B-2。[02](02-repository-and-build.md) の3節）。product.json には設定の既定を入れる仕組みが無く、設定ごとにソースの既定を書き換える案は6か所に散って壊れやすいため。`chat.disableAIFeatures`（window）は効く。
+- 拡張の `configurationDefaults` で既定にできるのは、machine-overridable・window・resource・language-overridable のスコープの設定だけ。**application スコープの設定は既定にできない**（警告を出して捨てる。組み込み拡張も同じ）[一次] 本家 1.146.0 の `src/vs/workbench/api/common/configurationExtensionPoint.ts`（`tasks/2026-11-13-p1-ledger-mydist-decisions/doc-corrections.md` の1）。上の表のうち `extensions.allowed`・`telemetry.telemetryLevel`・`update.mode`・`workbench.enableExperiments`・`extensions.autoUpdate`・`extensions.autoCheckUpdates` の6件が当たる。この6件は、product.json の独自のキー `sukunaConfigurationDefaults` に値を置き、それを既定として登録する小さなパッチ（1か所）で既定を変える（2026-11-13 リーダーの判断。`tasks/2026-11-13-p1-ledger-mydist-decisions/app-scope-options.md` の案B-2。[02](02-repository-and-build.md) の3節）。product.json には設定の既定を入れる仕組みが無く、設定ごとにソースの既定を書き換える案は6か所に散って壊れやすいため。`chat.disableAIFeatures`（window）は効く。
 - `files.watcherExclude` を広げるとメモリが大きく減ったという報告がある（[二次] Stack Overflow の回答へのコメント。版不明）。Phase 2 で、`node_modules` などを足した既定を測って決める。
 
 ### 6.2 Sublime Text のキー割り当て
@@ -142,23 +142,23 @@
 
 ### 6.3 その他
 
-- `package.json` の `name` は `mydist`、`publisher` は `vscode` 以外の自分の名前（仮 `shuko`）。
+- `package.json` の `name` は `mydist`、`publisher` は `vscode` 以外の自分の名前（`sukuna`。2026-11-18 に仮の `shuko` から改名）。
 - `notion-sync` は別の組み込み拡張（[05](05-settings-sync.md)）。
 
 ## 7. 日本語化
 
-- 表示言語は `argv.json` の `"locale": "ja"` で決める（`argv.json` の場所は `%USERPROFILE%\<product の dataFolderName>\argv.json`。`dataFolderName` を `.shuko` にすれば `%USERPROFILE%\.shuko\argv.json`。環境変数 `VSCODE_PORTABLE` があれば `<VSCODE_PORTABLE>\argv.json`。`--user-data-dir` は関係しない [一次] 本家 1.146.0 の `src/mainImpl.ts` の `getArgvConfigPath`（Phase 0 で確認）。Phase 1 で実際の場所を確かめる）。
+- 表示言語は `argv.json` の `"locale": "ja"` で決める（`argv.json` の場所は `%USERPROFILE%\<product の dataFolderName>\argv.json`。`dataFolderName` を `.sukuna` にすれば `%USERPROFILE%\.sukuna\argv.json`。環境変数 `VSCODE_PORTABLE` があれば `<VSCODE_PORTABLE>\argv.json`。`--user-data-dir` は関係しない [一次] 本家 1.146.0 の `src/mainImpl.ts` の `getArgvConfigPath`（Phase 0 で確認）。Phase 1 で実際の場所を確かめる）。
 - 裁定（2026-11-17）: 未訳の部分を英語のまま残さず、日本語にする。前の裁定（2026-11-12「未訳の部分が英語になるのを受け入れる。目立つなら改めて諮る」）を改めた。
 - 2026-11-17 の状態（リーダーが読んで確かめた）: Open VSX の `MS-CEINTL.vscode-language-pack-ja` 1.131.0（engines ^1.131.0）を入れ、`languagepacks.json` に登録されて効いている。本体 1.146.0 の文言 12,355 件のうち約 650 件が英語のまま（1.132〜1.146 で増えた文言）。Open VSX の最新は 1.131.0 で、本体より古い。
 - 作り方（2026-11-17。詳細は `tasks/2026-11-17-l10n-ja/l10n-design.md`）:
-  1. **入れ方**: 自前の組み込みの拡張 `shuko.language-pack-ja`（`extensions-src/language-pack-ja/`）にし、mydist・notion-sync と同じく `apply.mjs` が本体の `extensions/` に写す。`contributes.localizations` の `ja` に、本体（`vscode`）と組み込みの拡張ごとの訳の束を並べる。組み込みの拡張も言語パックの一覧（`languagepacks.json`）に載り、`extensions.allowed` には止められない（本家 1.146.0 の `languagePacks.ts`・`extensionsScannerService.ts`。notion-sync が前例）。
+  1. **入れ方**: 自前の組み込みの拡張 `sukuna.language-pack-ja`（`extensions-src/language-pack-ja/`）にし、mydist・notion-sync と同じく `apply.mjs` が本体の `extensions/` に写す。`contributes.localizations` の `ja` に、本体（`vscode`）と組み込みの拡張ごとの訳の束を並べる。組み込みの拡張も言語パックの一覧（`languagepacks.json`）に載り、`extensions.allowed` には止められない（本家 1.146.0 の `languagePacks.ts`・`extensionsScannerService.ts`。notion-sync が前例）。
   2. **Open VSX のパックとは置き換える**: 同じ翻訳の ID は後から読んだ拡張が勝ち、読む順は組み込みが先・ユーザーの拡張が後なので、`MS-CEINTL.vscode-language-pack-ja` が入ったままだと古い訳に戻る。台帳と `extensions.allowed` から外し、入れ替えのときに入っている拡張も外す（外す許可は Team に依頼。`tasks/2026-11-17-l10n-ja/permission-requests.md`）。
   3. **訳の元**（`sources.json`。先に書いた元が勝つ）: vscode-loc（MIT）の PR #2450（Microsoft の自動の書き出し、head `e0407b9e`、2026-10-23。未マージ）→ vscode-loc の main → Open VSX の 1.131.0。commit を40桁で、ファイルごとの SHA-256 も固定する。取得は `scripts/l10n-ja.mjs fetch`（置き場所は `<buildRoot>\cache\l10n\`）。
   4. **足した訳**（`added/<本体の版>.json`）: 公式の訳に無い文言と、公式の訳が英語のままの文言（上書き）を、鍵（`core.<moduleId>.<key>`・`extensions.<ID>.package|bundle.<key>`）で引ける形で置く。値は `{ en, ja }` で、`en` が今の英語と違えば作り直しが止まる。訳語は公式の訳の言い回しにそろえる。
   5. **除外**（`exclusions.json`）: 英語のままでよい文言を1件ずつ理由（`format`・`proper-noun`・`code`）つきで載せる。規則での除外は使わない。
   6. **組む**: `scripts/l10n-ja.mjs build` が `sources.json` と `added/` から `dist/translations/` を作る（本家の言語パックと同じ形。dist はリポジトリに入れる）。
   7. **数える**: `scripts/l10n-ja.mjs count`（本体・package・bundle・直書き。足した訳の書式の印（数・`&&`・`$(name)`・Markdown のリンクの先）も照らし、不一致があれば終了コード 1）と、曹参の独立の網 `tests/l10n-audit.mjs`。合格は「除外の外の未訳 0」。bundle の英語は、ソースの `\uXXXX` を実行時と同じ文字に直してから読む（`@vscode/l10n-dev` 0.0.35 が `↔` を読み違えるため。2026-11-17）。取り込みでは `take-in.mjs` がビルドの後に `extract` と `count` を走らせて記録に書く。
-  - 1.146.0（版 `1.146.0-p5-c-all-r4` の文言）の結果: 全体 15,159 件（本体 12,334、組み込み拡張の package 1,258・bundle 1,545、自前の拡張の直書き 22）。公式の訳 14,941、課が足した訳 182、上書き 9、除外 5（書式の印だけ）、除外の外の未訳 0。Shuko のパッチが足した文言は1件（`aboutDetailWithoutCopilot`）。
+  - 1.146.0（版 `1.146.0-p5-c-all-r4` の文言）の結果: 全体 15,159 件（本体 12,334、組み込み拡張の package 1,258・bundle 1,545、自前の拡張の直書き 22）。公式の訳 14,941、課が足した訳 182、上書き 9、除外 5（書式の印だけ）、除外の外の未訳 0。Sukuna のパッチが足した文言は1件（`aboutDetailWithoutCopilot`）。
   - 版 `1.146.0-p5-c-all-r6`（2026-11-17 の関門に合格）の結果: 全体 15,159 件で、除外の外の未訳 0（蒙恬の `count`）。`added/1.146.0.json` は足した訳 184、上書き 14（公式の訳の誤り5件と、bundle の `\uXXXX` の鍵の分を足した）。曹参の網（`--require-bundle --strict`）でも未訳 0（数え方が違うので件数は本体 12,355・package 1,258・bundle 1,564・直書き 22）。記録は `records/take-in/1.146.0-p5-c-all-r6/`。
 - 本体の版が上がったら（毎週の取り込み）、訳の元を新しくし、増えた文言を訳してからパックを作り直す（`TAKE-IN.md`）。訳すのは蒙恬で、今は自動にしない。未訳が残っても取り込みの採否は止めない（判定に未訳の数を書く。急ぐセキュリティの修正では英語が残ったまま入れ替えて、後で訳を足してよい）。別の検知の項目（vscode-loc の見張り）は足さない（2026-11-17 のリーダーの判断）。
 - 対象の外: 台帳のほかの拡張（Claude Code・PowerShell など）の表示。拡張が日本語の訳を持たなければ英語のまま。VSIX は改変しない（1節）。
@@ -166,15 +166,15 @@
 
 ## 8. 拡張を足すとき（代行の依頼）
 
-裁定（2026-11-17）: ユーザーは拡張を自分で入れない。Claude へのプロンプトで課に代行を頼む。課は拡張を取得し、スリム化した Shuko に合うかを確かめ、要れば整えてから台帳に載せて入れる。
+裁定（2026-11-17）: ユーザーは拡張を自分で入れない。Claude へのプロンプトで課に代行を頼む。課は拡張を取得し、スリム化した Sukuna に合うかを確かめ、要れば整えてから台帳に載せて入れる。
 
 1. **受け付け**（リーダー）: ユーザーが、このリポジトリで起動した `claude`（リーダー）に、拡張の名前か Open VSX の URL と、何に使うかを伝える。リーダーが `tasks/<日付>-ext-<名前>/brief.md` を書く。
 2. **取得と検証**（蒙恬）: Open VSX から取る（Marketplace からは取らない。1節）。4節の検証の項目1〜9を通す。Open VSX に無い、`verified` でない、寝かせる期間に満たないときは、リーダーがユーザーに諮る。
-3. **スリム化した Shuko に合うかの確かめ**（蒙恬）:
+3. **スリム化した Sukuna に合うかの確かめ**（蒙恬）:
    - manifest を見る。消した機能（[03](03-removal-design.md)）に依存する印: `contributes` の `debuggers`・`breakpoints`・`notebooks`・`notebookRenderer`・`chatParticipants`・`languageModelTools`・`languageModelChatProviders`・`mcpServerDefinitionProviders`、`enabledApiProposals`、`extensionDependencies`（依存する拡張も同じ手順で足す）、`engines.vscode` が今の本体の版を満たすか。
    - 一時的な置き場所で入れて動かす（4節の10）。拡張が起動し、新しい誤りが出ないこと。消した機能の API は何もしない実装なので、呼んでも止まらないが、その機能は働かない。
 4. **整える**: 消した機能に依存して働かない部分があるときは、扱いをリーダーがユーザーに諮る（入れない／働かない部分を承知で入れる／包み直す（ライセンスが改変を許すものだけ。Claude Code は対象外）／消した機能を戻す）。VSIX を改変するのは、ユーザーが選んだときだけ。
-5. **台帳に載せる**（蒙恬）: `extensions.lock.json` に足し、`product.overlay.json` の `shukoConfigurationDefaults` の `extensions.allowed` に ID を足す。`extensions.allowed` は product.json の既定なので、新しい ID は本体を作り直さないと入れられない。急がなければ毎週の取り込みの版に乗せ、急ぐときは作り直す。
+5. **台帳に載せる**（蒙恬）: `extensions.lock.json` に足し、`product.overlay.json` の `sukunaConfigurationDefaults` の `extensions.allowed` に ID を足す。`extensions.allowed` は product.json の既定なので、新しい ID は本体を作り直さないと入れられない。急がなければ毎週の取り込みの版に乗せ、急ぐときは作り直す。
 6. **テストと検証**: 曹参が台帳と `extensions.allowed` の照合などのテストを直し、大岡越前守が検証とスモーク（拡張が起動し、新しい誤りが無い）で合否を出す。
 7. **入れる**（蒙恬）: 作り直した版に入れ替え（`switch.ps1`）、`install-extensions.mjs` で台帳の拡張を入れる。リーダーがコミットし、ユーザーに報告する。
 

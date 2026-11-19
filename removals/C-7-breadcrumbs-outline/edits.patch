@@ -1,5 +1,5 @@
-From 1547dc3ec3f873da2645a13c4c3e298d061ac576 Mon Sep 17 00:00:00 2001
-From: shuko-apply <apply@shuko.invalid>
+From 877321cdc02edbce86f044950d21df7097dda714 Mon Sep 17 00:00:00 2001
+From: sukuna-apply <apply@sukuna.invalid>
 Date: Sun, 15 Nov 2026 17:19:45 +0900
 Subject: [PATCH] unit C-7-breadcrumbs-outline: edits
 
@@ -418,7 +418,7 @@ index e9b0ce3e0b1..c069fb49c45 100644
  
  export interface IEditorPartOptionsChangeEvent {
 diff --git a/src/vs/workbench/contrib/codeEditor/browser/quickaccess/gotoSymbolQuickAccess.ts b/src/vs/workbench/contrib/codeEditor/browser/quickaccess/gotoSymbolQuickAccess.ts
-index 213ff405ade..95c9d547a63 100644
+index 1ef45047f02..ebac7ec9d99 100644
 --- a/src/vs/workbench/contrib/codeEditor/browser/quickaccess/gotoSymbolQuickAccess.ts
 +++ b/src/vs/workbench/contrib/codeEditor/browser/quickaccess/gotoSymbolQuickAccess.ts
 @@ -5,7 +5,7 @@
@@ -482,7 +482,7 @@ index 213ff405ade..95c9d547a63 100644
  	) {
  		super(languageFeaturesService, outlineModelService, {
 @@ -138,141 +118,6 @@ export class GotoSymbolQuickAccessProvider extends AbstractGotoSymbolQuickAccess
- 	// Shuko (C-1-ai): attaching a symbol to chat and the chat outline picks are removed with contrib/chat.
+ 	// Sukuna (C-1-ai): attaching a symbol to chat and the chat outline picks are removed with contrib/chat.
  
  	//#endregion
 -
@@ -644,7 +644,7 @@ index 87f2c9a83df..8be8c97bb7c 100644
  		configurationService = new TestConfigurationService({
  			workbench: { editor: { enablePreview: true, enablePreviewFromQuickOpen: true, openSideBySideDirection: 'right' } },
 diff --git a/src/vs/workbench/test/browser/componentFixtures/editor/tabs.fixture.ts b/src/vs/workbench/test/browser/componentFixtures/editor/tabs.fixture.ts
-index 374b2d987d4..4972d2716d2 100644
+index ec1b718d48e..c86fda95cdb 100644
 --- a/src/vs/workbench/test/browser/componentFixtures/editor/tabs.fixture.ts
 +++ b/src/vs/workbench/test/browser/componentFixtures/editor/tabs.fixture.ts
 @@ -24,8 +24,6 @@ import { ContextKeyService } from '../../../../../platform/contextkey/browser/co

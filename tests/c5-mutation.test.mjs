@@ -65,7 +65,7 @@ test('c5-mutation: 壊さない写しは c5-unit.test.mjs が全部通る(対照
 // [名前, 壊し方, 落ちるはずのテスト名, 本家を要するか]
 const CASES = [
   ['件名が違う', ({ patch, unit }) => ({ patch: sub(patch, 'Subject: [PATCH] unit C-5-extension-gallery: edits', 'Subject: [PATCH] unit C-5-extension-gallery: other'), unit }), /件名/],
-  ['作者が違う', ({ patch, unit }) => ({ patch: sub(patch, /^From: shuko-apply <apply@shuko\.invalid>/m, 'From: someone <a@b.invalid>'), unit }), /作者/],
+  ['作者が違う', ({ patch, unit }) => ({ patch: sub(patch, /^From: sukuna-apply <apply@sukuna\.invalid>/m, 'From: someone <a@b.invalid>'), unit }), /作者/],
   ['patch の指定が消える', ({ patch, unit }) => { const { patch: _p, ...rest } = unit; return { patch, unit: rest }; }, /patch が edits\.patch/],
   ['after に C-2 が入る(C-2 を前提にしてしまう)', ({ patch, unit }) => ({ patch, unit: { ...unit, after: ['C-1-ai', 'C-2-debug'] } }), /after/],
   ['after から C-1 が消える', ({ patch, unit }) => ({ patch, unit: { ...unit, after: [] } }), /after/],
@@ -110,7 +110,7 @@ const CASES = [
   ['右クリックのメニューが残る', ({ patch, unit }) => ({ patch: sub(patch, /^-(\t\t\t\tid: MenuId\.ExplorerContext,)/m, ' $1'), unit }), /右クリックのメニュー/],
   ['installFromVSIX の登録が消える', ({ patch, unit }) => ({ patch: sub(patch, /^ (\t\t\tid: INSTALL_EXTENSION_FROM_VSIX_COMMAND_ID,)$/m, '-$1'), unit }), /右クリックのメニュー/],
   ['ドロップが残る', ({ patch, unit }) => ({ patch: sub(patch, /^-(\t\tthis\._register\(new DragAndDropObserver\(this\.root, \{)/m, ' $1'), unit }), /ドロップ/],
-  ['ドロップの導入の呼び出しが残る', ({ patch, unit }) => ({ patch: sub(patch, /^\+(\/\/ Shuko \(C-5-extension-gallery\): the Marketplace access badge)/m, '+\t\tvoid INSTALL_EXTENSION_FROM_VSIX_COMMAND_ID; DragAndDropObserver;\n+$1'), unit }), /ドロップ/],
+  ['ドロップの導入の呼び出しが残る', ({ patch, unit }) => ({ patch: sub(patch, /^\+(\/\/ Sukuna \(C-5-extension-gallery\): the Marketplace access badge)/m, '+\t\tvoid INSTALL_EXTENSION_FROM_VSIX_COMMAND_ID; DragAndDropObserver;\n+$1'), unit }), /ドロップ/],
   ['ext install の Quick Access が残る', ({ patch, unit }) => ({ patch: sub(patch, /^-(\tstatic PREFIX = 'ext install ';)/m, ' $1'), unit }), /Quick Access を外す/],
   ['`ext ` の Quick Access が消える', ({ patch, unit }) => ({ patch: sub(patch, /^ (export class ManageExtensionsQuickAccessProvider)/m, '-$1'), unit }), /Quick Access を外す/],
   ['popular のコマンドが残る', ({ patch, unit }) => ({ patch: sub(patch, "-\t\t\tid: 'workbench.extensions.action.showPopularExtensions',", " \t\t\tid: 'workbench.extensions.action.showPopularExtensions',"), unit }), /ビューとコマンドを外す/],

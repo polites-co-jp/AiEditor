@@ -24,7 +24,7 @@
 
 ## edits.patch で直した点（2026-11-15）
 
-11ファイル（新規2）、245行の追加、1,170行の削除（2回目の後）。件名は `unit C-5-extension-gallery: edits`、作者は `shuko-apply <apply@shuko.invalid>`。
+11ファイル（新規2）、245行の追加、1,170行の削除（2回目の後）。件名は `unit C-5-extension-gallery: edits`、作者は `sukuna-apply <apply@sukuna.invalid>`。
 
 | ファイル | 直し方 |
 |---|---|
@@ -60,7 +60,7 @@
 - 拡張のビューのうち、入っている拡張・有効・無効・組み込み・古い・最近更新・非対応・非推奨・再起動が要るもの、動作中の拡張の一覧（`runtimeExtensionsEditor`）、拡張の有効・無効・アンインストールの操作。
 - 内部のコマンド `workbench.extensions.command.installFromVSIX`（与えた VSIX を入れる）。メニューは無い。拡張の API のコマンド `workbench.extensions.installExtension`（VSIX の URI を受ける）も残る。画面からの導入（右クリック・ドロップ）は2回目に消した。
 - ギャラリーがあるときだけ出る画面（`CONTEXT_HAS_GALLERY` の条件つき）: 「拡張のインストール」「更新の確認」「すべて更新」「注目」「最近公開」「分類」「特定の版のインストール」「プレリリースへの切り替え」（判断を仰ぐ点の2）。マニフェストの状態は常に `Unavailable` なので、条件は常に偽で出ない。
-- 設定 `extensions.autoUpdate`・`extensions.autoCheckUpdates`（`product.overlay.json` の `shukoConfigurationDefaults` が既定を置く）は消さない。`extensions.gallery.serviceUrl`・`extensions.gallery.authProvider`（`included: false`。ポリシーだけで置ける）の登録も残す（判断を仰ぐ点の3）。
+- 設定 `extensions.autoUpdate`・`extensions.autoCheckUpdates`（`product.overlay.json` の `sukunaConfigurationDefaults` が既定を置く）は消さない。`extensions.gallery.serviceUrl`・`extensions.gallery.authProvider`（`included: false`。ポリシーだけで置ける）の登録も残す（判断を仰ぐ点の3）。
 - `contrib/extensions/common/extensions.ts` の `IWorkspaceRecommendedExtensionsView`・`WORKSPACE_RECOMMENDATIONS_VIEW_ID`・`SELECT_INSTALL_VSIX_EXTENSION_COMMAND_ID`: 型と定数だけ。使い手の一部を消したが、共通のファイルに触れないために残した。`SELECT_INSTALL_VSIX_EXTENSION_COMMAND_ID` は `PromptExtensionInstallFailureAction` の「VSIX からインストール」のボタンが読むが、ボタンはギャラリーの拡張（`extension.gallery`）のときだけ出るので、出ない。
 - `terminalContrib/wslRecommendation`（WSL の拡張のおすすめ）: product.json の `exeBasedExtensionTips` が無いと何もしない。1.146.0 の OSS の product.json には無い。
 

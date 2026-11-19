@@ -22,7 +22,7 @@
 //   node tests/l10n-audit.mjs [--app <resources/app>] [--pack <言語パック>] [--worktree <作業ツリー>]
 //                             [--exclude <除外の一覧.json>] [--clp <clp/<id>.ja>] [--out <出力.json>]
 //                             [--strict] [--require-bundle]
-//   --app  既定: %LOCALAPPDATA%\Programs\Shuko\versions\1.146.0-1\resources\app
+//   --app  既定: %LOCALAPPDATA%\Programs\Sukuna\versions\1.146.0-1\resources\app
 //   --pack 既定: <リポジトリ>\extensions-src\language-pack-ja（拡張のルート。package.json の translations で引く）
 //          拡張のルート（package.json がある）、translations/ そのもの、dist/translations のどれでもよい。
 //   --worktree  bundle の英語を拾う作業ツリー（extensions/<名前>/ のソースがある所）。
@@ -671,7 +671,7 @@ function main(argv) {
     else { console.error(`不明な引数: ${a}`); return 2; }
   }
   const local = process.env.LOCALAPPDATA ?? '';
-  const appDir = opt.app ?? path.join(local, 'Programs', 'Shuko', 'versions', '1.146.0-1', 'resources', 'app');
+  const appDir = opt.app ?? path.join(local, 'Programs', 'Sukuna', 'versions', '1.146.0-1', 'resources', 'app');
   const packDir = opt.pack ?? DEFAULT_PACK;
   let res;
   try {

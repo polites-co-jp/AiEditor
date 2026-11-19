@@ -10,6 +10,7 @@
 import { readFileSync, existsSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { authorName, expectedAuthor } from './build/commit-author.mjs';
 
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const readJson = (p) => JSON.parse(readFileSync(p, 'utf8').replace(/^﻿/, ''));
@@ -117,7 +118,7 @@ export function checkApply(j, unitJson) {
   if (j.checks?.registeredKeys && j.checks.registeredKeys.status !== 'ok') bad.push(`checks.registeredKeys が ok でない: ${j.checks.registeredKeys.status}`);
   if (j.checks?.commitIdentity && j.checks.commitIdentity.status !== 'ok') bad.push(`checks.commitIdentity が ok でない: ${j.checks.commitIdentity.status} ${JSON.stringify(j.checks.commitIdentity.items ?? []).slice(0, 200)}`);
 
-  // コミットの並び: C-2 の ops → edits（b は C-1 の edits の後）。作者は shuko-apply
+  // コミットの並び: C-2 の ops → edits（b は C-1 の edits の後）。作者は sukuna-apply
   const commits = j.commits ?? [];
   if (commits.length) {
     const subj = commits.map((c) => c.subject);
@@ -127,7 +128,8 @@ export function checkApply(j, unitJson) {
     else if (iOps > iEdits) bad.push('commits の並びが違う（C-2 の ops が edits の後）');
     if (withC1 && subj.indexOf('unit C-1-ai: edits') > iOps) bad.push('commits の並びが違う（C-1 の edits が C-2 の ops の後）');
     for (const c of commits.filter((x) => /^unit C-2-debug:/.test(x.subject))) {
-      if (c.author !== 'shuko-apply <apply@shuko.invalid>') bad.push(`${c.subject} の作者が shuko-apply でない: ${c.author}`);
+      const want = expectedAuthor(j);
+      if (c.author !== want) bad.push(`${c.subject} の作者が ${authorName(want)} でない: ${c.author}`);
     }
   }
 

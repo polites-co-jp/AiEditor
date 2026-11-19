@@ -63,7 +63,7 @@ const dbg = 'src/vs/workbench/contrib/debug/';
 // [名前, 壊し方, 落ちるはずのテスト名, 本家を要するか]
 const CASES = [
   ['件名が違う', ({ patch, unit }) => ({ patch: sub(patch, 'Subject: [PATCH] unit C-2-debug: edits', 'Subject: [PATCH] unit C-2-debug: other'), unit }), /件名/],
-  ['作者が違う', ({ patch, unit }) => ({ patch: sub(patch, /^From: shuko-apply <apply@shuko\.invalid>/m, 'From: someone <a@b.invalid>'), unit }), /作者/],
+  ['作者が違う', ({ patch, unit }) => ({ patch: sub(patch, /^From: sukuna-apply <apply@sukuna\.invalid>/m, 'From: someone <a@b.invalid>'), unit }), /作者/],
   ['patch の指定が消える', ({ patch, unit }) => { const { patch: _p, ...rest } = unit; return { patch, unit: rest }; }, /patch が edits\.patch/],
   ['after に C-1 が入る(C-1 を前提にしてしまう)', ({ patch, unit }) => ({ patch, unit: { ...unit, after: ['A-3-debug-extensions', 'C-1-ai'] } }), /after/],
   ['startDebugging が true で resolve する', ({ patch, unit }) => ({ patch: sub(patch, 'return Promise.resolve(false);', 'return Promise.resolve(true);'), unit }), /startDebugging/],

@@ -1,4 +1,4 @@
-// 更新の検知の状態（state.json）とログ（watch.log）の書き方。置き場所は %LOCALAPPDATA%\Shuko\watch\（docs/06 の2.1）。
+// 更新の検知の状態（state.json）とログ（watch.log）の書き方。置き場所は %LOCALAPPDATA%\Sukuna\watch\（docs/06 の2.1）。
 // 読み方と場所の決め方は取り込みも使うので scripts/lib/notion-todo.mjs（readWatchState・watchStatePath）にある。
 //
 // 書き出している関数（テストの入口。tasks/2026-11-14-p4-watch/watch-design.md の3節と4節）:

@@ -32,7 +32,7 @@ export interface BaseStore {
 }
 
 /**
- * 拡張の globalStorageUri（<User>/globalStorage/shuko.notion-sync）の2つ上が User フォルダ。
+ * 拡張の globalStorageUri（<User>/globalStorage/sukuna.notion-sync）の2つ上が User フォルダ。
  * 拡張ホストは既定のプロファイルの globalStorageHome を渡す（1.146.0 の localProcessExtensionHost.ts の 540 行、
  * extHostStoragePaths.ts の 90 行、userDataProfile.ts の 196 行）。プロファイルを切り替えていても既定のプロファイルの User を指す。
  */
@@ -41,7 +41,7 @@ export function userDirFromGlobalStorage(globalStoragePath: string): string {
 }
 
 /**
- * User フォルダ（例 %APPDATA%\Shuko\User）の同期の対象を読み書きする。
+ * User フォルダ（例 %APPDATA%\Sukuna\User）の同期の対象を読み書きする。
  * 名前は isSyncableName を通ったものだけを受け付ける（User フォルダの外へ書かない）。
  */
 export function userDirFileStore(userDir: string): FileStore {

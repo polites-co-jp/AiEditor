@@ -29,7 +29,7 @@ import { createNotionClient, readNotionToken } from "./notion-client.mjs";
 
 // docs/06 の2.3。ユーザーの今の ToDo データベースのデータソース ID（秘密ではない）。
 export const TODO_DATA_SOURCE_ID = "7949c589-2ebd-4419-be83-30c123be7fec";
-export const PROJECT_NAME = "Shuko";
+export const PROJECT_NAME = "Sukuna";
 export const RICH_TEXT_LIMIT = 2000;
 export const WATCH_STALE_MS = 3 * 24 * 60 * 60 * 1000;
 
@@ -287,11 +287,11 @@ export async function upsertTodo({ notion, dataSourceId = TODO_DATA_SOURCE_ID, r
   return { pageId: created.id, action: "created", priority: todo.priority, due: todo.due };
 }
 
-// ---- 検知の状態（%LOCALAPPDATA%\Shuko\watch\。docs/06 の2.1。設定にしない固定の場所） ----
+// ---- 検知の状態（%LOCALAPPDATA%\Sukuna\watch\。docs/06 の2.1。設定にしない固定の場所） ----
 
 export function watchDir(env = process.env) {
   if (!env.LOCALAPPDATA) throw new Error("環境変数 LOCALAPPDATA が無い");
-  return path.win32.join(env.LOCALAPPDATA, "Shuko", "watch");
+  return path.win32.join(env.LOCALAPPDATA, "Sukuna", "watch");
 }
 export function watchStatePath(env = process.env) {
   return path.win32.join(watchDir(env), "state.json");
@@ -378,7 +378,7 @@ export async function appendTakeInResult({ notion, pageId, ...rest }) {
 
 // 取り込みから呼ぶ入口。例外を投げず、書けなければ { ok: false, reason } を返す（取り込みは止めない。判定に書く）。
 //   kind: "core" | "ext"、extId: 拡張の ID（ext のとき）
-//   stateFile・tokenFile: 既定は %LOCALAPPDATA%\Shuko\watch\ の state.json・notion-token.dpapi
+//   stateFile・tokenFile: 既定は %LOCALAPPDATA%\Sukuna\watch\ の state.json・notion-token.dpapi
 //   notion: 差し替えのクライアント（試し・テスト）。無ければトークンを読んで作る
 //   readToken: トークンを読む関数の差し替え（既定 readNotionToken）
 export async function writeBackTakeIn({

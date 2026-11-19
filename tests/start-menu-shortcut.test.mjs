@@ -2,7 +2,7 @@
 // Spec: tasks/2026-11-18-start-menu-aumid/brief.md items 2 and 3; docs/user-decisions.md
 // "裁定（2026-11-18、タスクバーの右クリックの「New Window」）".
 // Everything runs on a fake installRoot and .lnk files in <repo>\tmp\tests\. The real Start menu, the desktop and
-// %LOCALAPPDATA%\Programs\Shuko are never touched (-ShortcutPath is always passed).
+// %LOCALAPPDATA%\Programs\Sukuna are never touched (-ShortcutPath is always passed).
 // The ID is read by the test's own reader (Shell.Application ExtendedProperty), not by the script's -Read.
 // Run: node --test tests/start-menu-shortcut.test.mjs
 import test, { before, after } from 'node:test';
@@ -60,16 +60,16 @@ function makePlainLnk(p, target, workdir) {
 }
 const same = (a, b) => path.resolve(a).toLowerCase() === path.resolve(b).toLowerCase();
 
-// A fake installRoot: current\Shuko.exe (empty) and current\resources\app\product.json (optional).
+// A fake installRoot: current\Sukuna.exe (empty) and current\resources\app\product.json (optional).
 function setup({ productId = 'Test.FromProduct', exe = true, junction = false } = {}) {
   const root = path.join(sb, `r${++n}`);
   const real = junction ? path.join(root, 'versions', '1.0.0-1') : path.join(root, 'current');
   fs.mkdirSync(real, { recursive: true });
-  if (exe) fs.writeFileSync(path.join(real, 'Shuko.exe'), '');
-  if (productId !== null) writeFile(path.join(real, 'resources', 'app', 'product.json'), JSON.stringify({ nameShort: 'Shuko', win32AppUserModelId: productId }));
+  if (exe) fs.writeFileSync(path.join(real, 'Sukuna.exe'), '');
+  if (productId !== null) writeFile(path.join(real, 'resources', 'app', 'product.json'), JSON.stringify({ nameShort: 'Sukuna', win32AppUserModelId: productId }));
   else fs.mkdirSync(path.join(real, 'resources', 'app'), { recursive: true });
   if (junction) fs.symlinkSync(real, path.join(root, 'current'), 'junction');
-  const lnk = path.join(root, 'menu', 'Shuko.lnk');
+  const lnk = path.join(root, 'menu', 'Sukuna.lnk');
   fs.mkdirSync(path.dirname(lnk), { recursive: true });
   return { root, lnk, cur: path.join(root, 'current') };
 }
@@ -81,10 +81,10 @@ test('writes target, working folder and the ID from product.json; prints the thr
   assert.equal(r.status, 0, r.stderr + r.stdout);
   assert.ok(fs.existsSync(s.lnk));
   const v = readLnk(s.lnk);
-  assert.ok(same(v.target, path.join(s.cur, 'Shuko.exe')), v.target);
+  assert.ok(same(v.target, path.join(s.cur, 'Sukuna.exe')), v.target);
   assert.ok(same(v.workdir, s.cur), v.workdir);
   assert.equal(v.id, 'Test.FromProduct');
-  assert.match(r.stdout, /^TargetPath=.*Shuko\.exe\s*$/im);
+  assert.match(r.stdout, /^TargetPath=.*Sukuna\.exe\s*$/im);
   assert.match(r.stdout, /^WorkingDirectory=.*current\s*$/im);
   assert.match(r.stdout, /^AppUserModelId=Test\.FromProduct\s*$/im);
 });
@@ -94,7 +94,7 @@ test('current as a junction: the shortcut points at current\\, never at versions
   const r = run(s);
   assert.equal(r.status, 0, r.stderr + r.stdout);
   const v = readLnk(s.lnk);
-  assert.ok(same(v.target, path.join(s.cur, 'Shuko.exe')), v.target);
+  assert.ok(same(v.target, path.join(s.cur, 'Sukuna.exe')), v.target);
   assert.ok(same(v.workdir, s.cur), v.workdir);
   assert.ok(!/versions/i.test(v.target + v.workdir));
   assert.equal(v.id, 'Test.FromProduct');
@@ -113,7 +113,7 @@ test('no product.json: the value of product.overlay.json is used', () => {
   const r = run(s);
   assert.equal(r.status, 0, r.stderr + r.stdout);
   assert.equal(readLnk(s.lnk).id, OVERLAY_ID);
-  assert.equal(OVERLAY_ID, 'Shuko.Editor');
+  assert.equal(OVERLAY_ID, 'Sukuna.Editor');
 });
 
 test('-Read does not write: bytes and mtime of the .lnk are unchanged, and the three values are printed', () => {
@@ -125,13 +125,13 @@ test('-Read does not write: bytes and mtime of the .lnk are unchanged, and the t
   assert.equal(r.status, 0, r.stderr + r.stdout);
   assert.ok(fs.readFileSync(s.lnk).equals(bytes0), 'content changed');
   assert.equal(fs.statSync(s.lnk).mtimeMs, m0, 'mtime changed');
-  assert.match(r.stdout, /Shuko\.exe/i);
+  assert.match(r.stdout, /Sukuna\.exe/i);
   assert.match(r.stdout, /Test\.FromProduct/);
 });
 
 test('-Read on a plain shortcut does not add an ID (nothing is written)', () => {
   const s = setup();
-  makePlainLnk(s.lnk, path.join(s.cur, 'Shuko.exe'), s.cur);
+  makePlainLnk(s.lnk, path.join(s.cur, 'Sukuna.exe'), s.cur);
   const bytes0 = fs.readFileSync(s.lnk);
   const m0 = fs.statSync(s.lnk).mtimeMs;
   run(s, '-Read'); // exit code is not specified for a shortcut without an ID
@@ -146,14 +146,14 @@ test('-Read with no .lnk: does not create one', () => {
   assert.ok(!fs.existsSync(s.lnk));
 });
 
-test('current\\Shuko.exe missing: exit non-zero and no .lnk is created', () => {
+test('current\\Sukuna.exe missing: exit non-zero and no .lnk is created', () => {
   const s = setup({ exe: false });
   const r = run(s);
   assert.notEqual(r.status, 0, r.stdout);
   assert.ok(!fs.existsSync(s.lnk));
 });
 
-test('current\\Shuko.exe missing: an existing .lnk is left as it is', () => {
+test('current\\Sukuna.exe missing: an existing .lnk is left as it is', () => {
   const s = setup({ exe: false });
   makePlainLnk(s.lnk, path.join(sb, 'old', 'x.exe'), path.join(sb, 'old'));
   const bytes0 = fs.readFileSync(s.lnk);
@@ -166,17 +166,17 @@ test('overwrites an existing .lnk of the same name; other .lnk files in the fold
   const s = setup();
   const dir = path.dirname(s.lnk);
   const other1 = path.join(dir, 'Other.lnk');
-  const other2 = path.join(dir, 'Shuko Old.lnk');
+  const other2 = path.join(dir, 'Sukuna Old.lnk');
   makePlainLnk(s.lnk, path.join(sb, 'old', 'x.exe'), path.join(sb, 'old'));
   makePlainLnk(other1, path.join(sb, 'o1', 'a.exe'), path.join(sb, 'o1'));
-  makePlainLnk(other2, path.join(s.cur, 'Shuko.exe'), s.cur);
+  makePlainLnk(other2, path.join(s.cur, 'Sukuna.exe'), s.cur);
   const snap = (p) => ({ b: fs.readFileSync(p), m: fs.statSync(p).mtimeMs });
   const a1 = snap(other1);
   const a2 = snap(other2);
   const r = run(s);
   assert.equal(r.status, 0, r.stderr + r.stdout);
   const v = readLnk(s.lnk);
-  assert.ok(same(v.target, path.join(s.cur, 'Shuko.exe')), v.target);
+  assert.ok(same(v.target, path.join(s.cur, 'Sukuna.exe')), v.target);
   assert.equal(v.id, 'Test.FromProduct');
   for (const [p, a] of [[other1, a1], [other2, a2]]) {
     const b = snap(p);
@@ -184,7 +184,7 @@ test('overwrites an existing .lnk of the same name; other .lnk files in the fold
     assert.equal(b.m, a.m, p + ' mtime changed');
   }
   assert.ok(!readLnk(other2).id, 'other shortcut got an ID');
-  assert.deepEqual(fs.readdirSync(dir).sort(), ['Other.lnk', 'Shuko Old.lnk', 'Shuko.lnk']);
+  assert.deepEqual(fs.readdirSync(dir).sort(), ['Other.lnk', 'Sukuna Old.lnk', 'Sukuna.lnk']);
 });
 
 test('running twice gives the same values (idempotent)', () => {

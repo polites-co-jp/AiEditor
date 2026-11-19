@@ -36,7 +36,7 @@ test('thirdPartyNotice: 訳の元を勝つ順に番号つきで出す（vscode-l
   const i3 = t.indexOf('3. MS-CEINTL.vscode-language-pack-ja 1.131.0');
   assert.ok(i1 >= 0 && i2 > i1 && i3 > i2, '1・2・3 の順');
   assert.match(t, /License: MIT/);
-  assert.ok(t.startsWith('Shuko language-pack-ja - Third Party Notices'));
+  assert.ok(t.startsWith('Sukuna language-pack-ja - Third Party Notices'));
 });
 test('thirdPartyNotice: vsix は URL・SHA-256・repository・license の文と、VSIX に LICENSE.md が無い旨', () => {
   const t = thirdPartyNotice(SRC, []);

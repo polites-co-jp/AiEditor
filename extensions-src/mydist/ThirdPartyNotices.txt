@@ -1,4 +1,4 @@
-Shuko mydist - Third Party Notices
+Sukuna mydist - Third Party Notices
 
 The keybindings in package.json (contributes.keybindings) are converted from
 ms-vscode.sublime-keybindings 4.1.10 (https://open-vsx.org/api/ms-vscode/sublime-keybindings/4.1.10/file/ms-vscode.sublime-keybindings-4.1.10.vsix).

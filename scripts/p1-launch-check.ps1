@@ -73,7 +73,7 @@ $ErrorActionPreference = 'Stop'
 
 # <buildRoot> from local.json (default <repo>\tmp\b; decision 2026-11-15, nothing on C:). Before: C:\b.
 . (Join-Path $PSScriptRoot 'lib\local-config.ps1')
-$buildRoot = (Resolve-ShukoLocalConfig).buildRoot
+$buildRoot = (Resolve-SukunaLocalConfig).buildRoot
 $p1Root = Join-Path $buildRoot 'p1'
 # -Dest may be under <buildRoot>\p1 (Phase 1) or <buildRoot>\p2 (Phase 2 builds, unpacked for the gate checks;
 # tasks/2026-11-14-p2-builds). The default stays <buildRoot>\p1.

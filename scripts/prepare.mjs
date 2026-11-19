@@ -8,7 +8,7 @@
 //                            [--worktree <dir>] [--out <json>] [--no-size]
 //     --tag / --commit  既定は upstream.json の tag / commit
 //     --build-root      既定は local.json の buildRoot、無ければ <リポジトリ>\tmp\b（2026-11-15 までは C:\b。docs/02 の6.1。共通の部品 scripts/lib/local-config.mjs の規則）
-//     --config          local.json の場所（試し。既定 %LOCALAPPDATA%\Shuko\local.json）
+//     --config          local.json の場所（試し。既定 %LOCALAPPDATA%\Sukuna\local.json）
 //     --worktree        作業ツリーの場所（既定 <build-root>/wt/<tag>）。build.mjs --worktree はこれを渡す
 //     --out             記録の JSON の書き出し先（既定 <作業ツリー>.prepare.json。既定の作業ツリーなら <build-root>/wt/<tag>.prepare.json）
 //     --no-size         ディスクの大きさを数えない
@@ -46,7 +46,7 @@ function parseArgs(argv) {
 }
 
 // docs/02 の6.1: オプション → local.json → 既定値（<リポジトリ>\tmp\b）。規則は共通の部品（scripts/lib/local-config.mjs）に任せる
-// （読めない・知らないキー・型の違い・相対パスは止める）。configPath を省くと %LOCALAPPDATA%\Shuko\local.json。
+// （読めない・知らないキー・型の違い・相対パスは止める）。configPath を省くと %LOCALAPPDATA%\Sukuna\local.json。
 export function resolveBuildRoot(cliValue, { configPath } = {}) {
   return resolveLocalConfig({ configPath: configPath || undefined, overrides: { buildRoot: cliValue || undefined } }).buildRoot;
 }

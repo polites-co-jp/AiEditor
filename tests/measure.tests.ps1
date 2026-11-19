@@ -504,6 +504,18 @@ try {
         $after2 = @(Get-DailyArgvState -ProfileRoot $tmp2)
         Assert-Equal @(Compare-DailyArgvState -Before $after -After $after2).Count 1 'rewritten'
     }
+    Test-Case 'daily argv: the list covers .shuko (until retirement) and .sukuna (rename 2026-11-18)' {
+        $paths = @(Get-DailyArgvState -ProfileRoot $tmp2 | ForEach-Object { $_.Path })
+        foreach ($d in @('.vscode', '.vscode-oss', '.shuko', '.sukuna')) {
+            Assert-True (@($paths | Where-Object { $_ -like "*\$d\argv.json" }).Count -eq 1) "list has $d"
+        }
+        $before = @(Get-DailyArgvState -ProfileRoot $tmp2)
+        New-Item -ItemType Directory -Force -Path (Join-Path $tmp2 '.sukuna') | Out-Null
+        Set-Content -LiteralPath (Join-Path $tmp2 '.sukuna\argv.json') -Value '{}'
+        $bad = @(Compare-DailyArgvState -Before $before -After @(Get-DailyArgvState -ProfileRoot $tmp2))
+        Assert-True ($bad.Count -eq 1 -and $bad[0] -like '*.sukuna\argv.json') 'a created .sukuna argv.json is reported'
+        Remove-Item -LiteralPath (Join-Path $tmp2 '.sukuna') -Recurse -Force
+    }
     Test-Case 'env record: p0-env.json is read (editor.exe, data.*); absent gives null' {
         Assert-True ($null -eq (Read-P0EnvRecord (Join-Path $tmp2 'nowhere'))) ''
         $d = Join-Path $tmp2 'envx'

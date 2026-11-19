@@ -29,7 +29,7 @@ C-6 の前のこのビルドで、条件なしに登録されていたのは次�
 
 ## edits.patch で直した点（2026-11-15）
 
-5ファイル、4行の追加、115行の削除。件名は `unit C-6-settings-sync: edits`、作者は `shuko-apply <apply@shuko.invalid>`。
+5ファイル、4行の追加、115行の削除。件名は `unit C-6-settings-sync: edits`、作者は `sukuna-apply <apply@sukuna.invalid>`。
 
 | ファイル | 直し方 | 理由 |
 |---|---|---|

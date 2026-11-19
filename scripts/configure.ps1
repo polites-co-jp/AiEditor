@@ -20,7 +20,7 @@
         -NoShellIntegration skips this step (trials);
      6. rewrites local.json last. If any step fails, the moves are undone and local.json is kept.
 
-  -ConfigPath : another local.json (trials and tests). The default is %LOCALAPPDATA%\Shuko\local.json.
+  -ConfigPath : another local.json (trials and tests). The default is %LOCALAPPDATA%\Sukuna\local.json.
   -ProgramsDir : another folder in place of the Start menu Programs folder in step 5 (trials and tests:
      a temporary folder, so the real Start menu is not written). The default is
      [Environment]::GetFolderPath('Programs'). It changes only where shortcuts are looked for; the user
@@ -31,7 +31,7 @@
 
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts/configure.ps1
-  powershell -NoProfile -ExecutionPolicy Bypass -File scripts/configure.ps1 -InstallRoot D:\Apps\Shuko
+  powershell -NoProfile -ExecutionPolicy Bypass -File scripts/configure.ps1 -InstallRoot D:\Apps\Sukuna
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts/configure.ps1 -ConfigPath <buildRoot>\trial-install\local.json -InstallRoot <buildRoot>\trial-install\B -NoShellIntegration
 
   NOTE: this file is ASCII only on purpose (Windows PowerShell 5.1 reads BOM-less scripts as ANSI).
@@ -52,7 +52,7 @@ $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'lib\local-config.ps1')
 
 $repo = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
-if (-not $ConfigPath) { $ConfigPath = Get-ShukoLocalConfigPath }
+if (-not $ConfigPath) { $ConfigPath = Get-SukunaLocalConfigPath }
 $ConfigPath = [IO.Path]::GetFullPath($ConfigPath)
 
 $summary = [ordered]@{ configPath = $ConfigPath; actions = @(); result = 'error' }
@@ -160,11 +160,11 @@ function Set-UserPathRaw {
     $k = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey('Environment', $true)
     if ($null -eq $k) { throw 'HKCU\Environment not found' }
     try { $k.SetValue('Path', $Value, $Kind) } finally { $k.Close() }
-    if (-not ('ShukoEnvBroadcast' -as [type])) {
+    if (-not ('SukunaEnvBroadcast' -as [type])) {
         Add-Type -TypeDefinition @'
 using System;
 using System.Runtime.InteropServices;
-public static class ShukoEnvBroadcast {
+public static class SukunaEnvBroadcast {
     [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
     public static extern IntPtr SendMessageTimeout(IntPtr hWnd, uint Msg, UIntPtr wParam, string lParam, uint fuFlags, uint uTimeout, out UIntPtr lpdwResult);
     public static void Send() {
@@ -174,7 +174,7 @@ public static class ShukoEnvBroadcast {
 }
 '@
     }
-    [ShukoEnvBroadcast]::Send()
+    [SukunaEnvBroadcast]::Send()
 }
 
 function Invoke-UndoStep {
@@ -207,7 +207,7 @@ function Invoke-Undo {
 
 # --- read the current file (throws on errors: never silently fall back) ---
 try {
-    $raw = Read-ShukoLocalConfig -Path $ConfigPath
+    $raw = Read-SukunaLocalConfig -Path $ConfigPath
 } catch {
     Out-Summary -Result 'error' -Message $_.Exception.Message -Code 1
 }
@@ -220,14 +220,14 @@ $new = [ordered]@{}
 if ($exists) {
     foreach ($k in $raw.Keys) { $new[$k] = $raw[$k] }
 } else {
-    foreach ($k in $script:ShukoLocalDefaults.Keys) { $new[$k] = $script:ShukoLocalDefaults[$k] }
+    foreach ($k in $script:SukunaLocalDefaults.Keys) { $new[$k] = $script:SukunaLocalDefaults[$k] }
     $new['builderRepo'] = $repo
 }
 
 if (-not $changing) {
     if (-not $exists) {
         try {
-            Write-ShukoLocalConfig -Path $ConfigPath -Values $new
+            Write-SukunaLocalConfig -Path $ConfigPath -Values $new
         } catch {
             Out-Summary -Result 'error' -Message $_.Exception.Message -Code 1
         }
@@ -235,7 +235,7 @@ if (-not $changing) {
     }
     $summary.values = $new
     try {
-        $summary.resolved = Resolve-ShukoLocalConfig -ConfigPath $ConfigPath
+        $summary.resolved = Resolve-SukunaLocalConfig -ConfigPath $ConfigPath
     } catch {
         Out-Summary -Result 'error' -Message $_.Exception.Message -Code 1
     }
@@ -250,20 +250,20 @@ try {
         $summary.actions += "keepVersions = $KeepVersions"
     }
     if ($BuildRoot) {
-        [void](ConvertTo-ShukoLocalPath -Key 'buildRoot' -Raw $BuildRoot)
+        [void](ConvertTo-SukunaLocalPath -Key 'buildRoot' -Raw $BuildRoot)
         $new['buildRoot'] = $BuildRoot
         $summary.actions += "buildRoot = $BuildRoot (nothing under the old build root is moved)"
     }
     if ($BuilderRepo) {
-        $br = ConvertTo-ShukoLocalPath -Key 'builderRepo' -Raw $BuilderRepo
+        $br = ConvertTo-SukunaLocalPath -Key 'builderRepo' -Raw $BuilderRepo
         if (-not (Test-Path -LiteralPath (Join-Path $br 'extensions.lock.json'))) { throw "builderRepo has no extensions.lock.json: $br" }
         $new['builderRepo'] = $BuilderRepo
         $summary.actions += "builderRepo = $BuilderRepo"
     }
     # every path value that will be written must expand to an absolute path
-    foreach ($k in $script:ShukoLocalPathKeys) {
+    foreach ($k in $script:SukunaLocalPathKeys) {
         if ($k -eq 'installRoot' -and $InstallRoot) { continue }
-        if ($new.Contains($k) -and $null -ne $new[$k]) { [void](ConvertTo-ShukoLocalPath -Key $k -Raw ([string]$new[$k])) }
+        if ($new.Contains($k) -and $null -ne $new[$k]) { [void](ConvertTo-SukunaLocalPath -Key $k -Raw ([string]$new[$k])) }
     }
 } catch {
     Out-Summary -Result 'error' -Message $_.Exception.Message -Code 1
@@ -273,9 +273,9 @@ try {
 $undo = New-Object System.Collections.ArrayList
 if ($InstallRoot) {
     try {
-        $before = Resolve-ShukoLocalConfig -ConfigPath $ConfigPath
+        $before = Resolve-SukunaLocalConfig -ConfigPath $ConfigPath
         $oldRoot = $before.installRoot
-        $newRoot = ConvertTo-ShukoLocalPath -Key 'installRoot' -Raw $InstallRoot
+        $newRoot = ConvertTo-SukunaLocalPath -Key 'installRoot' -Raw $InstallRoot
         $summary.oldInstallRoot = $oldRoot
         $summary.newInstallRoot = $newRoot
         if ($oldRoot -ieq $newRoot) {
@@ -383,7 +383,7 @@ if ($InstallRoot) {
 
 # 6. local.json last
 try {
-    Write-ShukoLocalConfig -Path $ConfigPath -Values $new
+    Write-SukunaLocalConfig -Path $ConfigPath -Values $new
 } catch {
     $err = $_.Exception.Message
     $summary.undo = Invoke-Undo $undo
@@ -391,5 +391,5 @@ try {
 }
 $summary.actions += 'wrote local.json'
 $summary.values = $new
-try { $summary.resolved = Resolve-ShukoLocalConfig -ConfigPath $ConfigPath } catch { $summary.resolveError = $_.Exception.Message }
+try { $summary.resolved = Resolve-SukunaLocalConfig -ConfigPath $ConfigPath } catch { $summary.resolveError = $_.Exception.Message }
 Out-Summary -Result 'ok' -Code 0

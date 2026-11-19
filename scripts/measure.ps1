@@ -349,6 +349,7 @@ function Assert-SafeDataPath {
         $bad += (Join-Path $env:USERPROFILE '.vscode')
         $bad += (Join-Path $env:USERPROFILE '.vscode-oss')
         $bad += (Join-Path $env:USERPROFILE '.shuko')
+        $bad += (Join-Path $env:USERPROFILE '.sukuna')
     }
     foreach ($b in $bad) {
         $bb = $b.TrimEnd('\')
@@ -376,7 +377,7 @@ function Get-DefaultBuildRoot {
     $root = $PSScriptRoot
     if (-not $root) { $root = Split-Path -Parent $PSCommandPath }
     . (Join-Path $root 'lib\local-config.ps1')
-    return (Resolve-ShukoLocalConfig -ConfigPath $ConfigPath).buildRoot
+    return (Resolve-SukunaLocalConfig -ConfigPath $ConfigPath).buildRoot
 }
 
 function Get-DefaultWorkRoot {
@@ -651,7 +652,7 @@ function Get-DailyArgvState {
     <# State of the daily editor argv.json files, which a measured run must never read-create or change. #>
     param([string]$ProfileRoot = $env:USERPROFILE)
     $res = @()
-    foreach ($d in @('.vscode', '.vscode-oss', '.shuko')) {
+    foreach ($d in @('.vscode', '.vscode-oss', '.shuko', '.sukuna')) {
         $f = Join-Path $ProfileRoot "$d\argv.json"
         $e = Test-Path -LiteralPath $f
         $t = $null
@@ -999,7 +1000,7 @@ function Invoke-Measure {
         "- files opened: $($OpenFiles -join ', ')",
         "- warm-up runs discarded: $Warmup; counted runs: $Runs; milestone: $Milestone",
         '- primary metric (docs/07 3.4): private bytes total, claude.exe and its descendants NOT included',
-        "- daily argv.json (~\.vscode, ~\.vscode-oss, ~\.shuko) created or changed during the run: $(if ($dailyTouched.Count -gt 0) { 'YES - ' + ($dailyTouched -join ', ') } else { 'no' })", '',
+        "- daily argv.json (~\.vscode, ~\.vscode-oss, ~\.shuko, ~\.sukuna) created or changed during the run: $(if ($dailyTouched.Count -gt 0) { 'YES - ' + ($dailyTouched -join ', ') } else { 'no' })", '',
         '| metric | median | min | max | range |', '|---|---|---|---|---|')
     foreach ($k in $metrics.Keys) {
         $st = $metrics[$k].Stats

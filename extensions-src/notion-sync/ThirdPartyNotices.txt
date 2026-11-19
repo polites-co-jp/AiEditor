@@ -1,4 +1,4 @@
-notion-sync（Shuko の組み込み拡張）の dist/extension.js は、次の第三者のソフトウェアを含む。
+notion-sync（Sukuna の組み込み拡張）の dist/extension.js は、次の第三者のソフトウェアを含む。
 
 --------------------------------------------------------------------------------
 jsonc-parser 3.3.1

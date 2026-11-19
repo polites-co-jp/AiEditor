@@ -131,8 +131,8 @@ test('C-4: edits.patch の件名が [PATCH] unit C-4-notebook: edits（applyEdit
   assert.match(patchText, /^Subject: \[PATCH\] unit C-4-notebook: edits$/m);
 });
 
-test('C-4: edits.patch の作者が shuko-apply <apply@shuko.invalid>（コミットの作者の取り決め）', { skip: noPatch }, () => {
-  assert.match(patchText, /^From: shuko-apply <apply@shuko\.invalid>$/m);
+test('C-4: edits.patch の作者が sukuna-apply <apply@sukuna.invalid>（コミットの作者の取り決め）', { skip: noPatch }, () => {
+  assert.match(patchText, /^From: sukuna-apply <apply@sukuna\.invalid>$/m);
 });
 
 test('C-4: unit.json の id・stage・after（A-4・B-4・C-1・C-2。C-3 は前提にしない）。order は前提にした単位より後', { skip: noUnit }, () => {
@@ -320,7 +320,7 @@ test('C-4: extHost.api.impl.ts の変更はノートブックの行だけ（消�
     flush();
   }
   assert.deepEqual(stray, [], 'ノートブックと関係の無い塊を消している');
-  assert.deepEqual(s.added.filter((l) => !/removedNotebookApi|createRemovedNotebookApi|^\s*\/\/ Shuko \(C-4-notebook\)|import \{ score \}|return score\(interalSelector, document\.uri, document\.languageId, true, undefined, undefined\);|^\s*$/.test(l)), [], '想定外の行を足している');
+  assert.deepEqual(s.added.filter((l) => !/removedNotebookApi|createRemovedNotebookApi|^\s*\/\/ Sukuna \(C-4-notebook\)|import \{ score \}|return score\(interalSelector, document\.uri, document\.languageId, true, undefined, undefined\);|^\s*$/.test(l)), [], '想定外の行を足している');
   assert.equal(s.added.filter((l) => /createRemovedNotebookApi/.test(l)).length, 2, 'createRemovedNotebookApi は import と呼び出しの2回');
   assert.ok(s.added.some((l) => /\.\.\.removedNotebookApi\.window,/.test(l)));
   assert.ok(s.added.some((l) => /\.\.\.removedNotebookApi\.workspace,/.test(l)));
@@ -481,7 +481,7 @@ test('C-4 検索: 全文検索のテキスト検索は ripgrep のまま。searc
 test('C-4 検索: FileMatchImpl.createMatches に足すのは context の足し込み1行（this.addContext(this.rawMatch.results)）だけ。消した NotebookCompatibleFileMatch が足していた行', { skip: noPatch }, () => {
   const s = section('searchTreeModel/fileMatch.ts');
   assert.ok(s);
-  assert.deepEqual(s.added.map((l) => l.trim()), ['// Shuko (C-4-notebook): the removed NotebookCompatibleFileMatch added the context lines here', 'this.addContext(this.rawMatch.results);']);
+  assert.deepEqual(s.added.map((l) => l.trim()), ['// Sukuna (C-4-notebook): the removed NotebookCompatibleFileMatch added the context lines here', 'this.addContext(this.rawMatch.results);']);
   assert.ok(s.removed.some((l) => /FindMatchDecorationModel/.test(l)));
   assert.ok(s.removed.some((l) => /_findMatchDecorationModel\?\.clearCurrentFindMatchDecoration\(\)/.test(l)));
   // 消す行にテキスト検索の部分は無い

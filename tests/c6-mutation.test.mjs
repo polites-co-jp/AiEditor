@@ -67,7 +67,7 @@ test('c6-mutation: 壊さない写しは c6-unit.test.mjs が全部通る(対照
 // [名前, 壊し方, 落ちるはずのテスト名, 本家を要するか]
 const CASES = [
   ['件名が違う', ({ patch, unit }) => ({ patch: sub(patch, 'Subject: [PATCH] unit C-6-settings-sync: edits', 'Subject: [PATCH] unit C-6-settings-sync: other'), unit }), /件名/],
-  ['作者が違う', ({ patch, unit }) => ({ patch: sub(patch, /^From: shuko-apply <apply@shuko\.invalid>/m, 'From: someone <a@b.invalid>'), unit }), /作者/],
+  ['作者が違う', ({ patch, unit }) => ({ patch: sub(patch, /^From: sukuna-apply <apply@sukuna\.invalid>/m, 'From: someone <a@b.invalid>'), unit }), /作者/],
   ['patch の指定が消える', ({ patch, unit }) => { const { patch: _p, ...rest } = unit; return { patch, unit: rest }; }, /patch が edits\.patch/],
   ['after に C-2 が入る(C-2 を前提にしてしまう)', ({ patch, unit }) => ({ patch, unit: { ...unit, after: ['C-1-ai', 'C-2-debug'] } }), /after/],
   ['after から C-1 が消える', ({ patch, unit }) => ({ patch, unit: { ...unit, after: [] } }), /after/],

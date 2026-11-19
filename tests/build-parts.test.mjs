@@ -62,7 +62,7 @@ test('nextLabel: the tag "1.146.0" does not match labels of "1.146.01" or a pref
 
 // ---- zipFolderName ----------------------------------------------------------------------
 test('zipFolderName', () => {
-  assert.equal(zipFolderName('Shuko', '1.146.0-1'), 'Shuko-win32-x64-1.146.0-1');
+  assert.equal(zipFolderName('Sukuna', '1.146.0-1'), 'Sukuna-win32-x64-1.146.0-1');
   assert.equal(zipFolderName('Code - OSS', '1.146.0-1'), 'Code-OSS-win32-x64-1.146.0-1');
   assert.equal(zipFolderName('Code', '1.146.0-t1'), 'Code-win32-x64-1.146.0-t1');
   // dots and alphanumerics stay
@@ -205,15 +205,15 @@ test('findAppDir: nothing found or two found throws', () => {
 });
 test('resolveEditorLayout: reads product.json and package.json, finds exe and cli', () => {
   const d = path.join(sb, 'layout');
-  makeFakeEditor(d, { version: '1.146.0', nameShort: 'Shuko', applicationName: 'shuko', dataFolderName: '.shuko' });
+  makeFakeEditor(d, { version: '1.146.0', nameShort: 'Sukuna', applicationName: 'sukuna', dataFolderName: '.sukuna' });
   const r = resolveEditorLayout(d);
-  assert.equal(r.nameShort, 'Shuko');
-  assert.equal(r.applicationName, 'shuko');
-  assert.equal(r.dataFolderName, '.shuko');
+  assert.equal(r.nameShort, 'Sukuna');
+  assert.equal(r.applicationName, 'sukuna');
+  assert.equal(r.dataFolderName, '.sukuna');
   assert.equal(r.version, '1.146.0');
   assert.equal(r.commit, '69047191fc427f2f92828279aae1d90d8eeda7ab');
-  assert.ok(String(r.exe).toLowerCase().endsWith('shuko.exe'));
-  assert.ok(String(r.cli).toLowerCase().endsWith(path.join('bin', 'shuko.cmd').toLowerCase()));
+  assert.ok(String(r.exe).toLowerCase().endsWith('sukuna.exe'));
+  assert.ok(String(r.cli).toLowerCase().endsWith(path.join('bin', 'sukuna.cmd').toLowerCase()));
   assert.ok(fs.existsSync(r.exe) && fs.existsSync(r.cli));
 });
 test('resolveEditorLayout: the version comes from resources\\app\\package.json, product.json is the fallback', () => {

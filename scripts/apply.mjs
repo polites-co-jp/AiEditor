@@ -63,7 +63,7 @@ export function parseArgs(argv) {
     extensionsSrc: path.join(REPO, "extensions-src"),
     manifests: null, // 既定は <buildRoot>\cache\vsix（docs/02 の8節）。buildRoot は --build-root → local.json → <リポジトリ>\tmp\b
     buildRoot: null,
-    config: null, // local.json の場所（既定 %LOCALAPPDATA%\Shuko\local.json）。build.mjs は自分の --config を渡す
+    config: null, // local.json の場所（既定 %LOCALAPPDATA%\Sukuna\local.json）。build.mjs は自分の --config を渡す
     lock: path.join(REPO, "extensions.lock.json"),
     keepConflict: false,
     lockfileCheck: false,
@@ -476,7 +476,7 @@ function runApply(a) {
     ? skippedCheck("途中で止めた")
     : checkRegisteredKeys({ worktree: wt, baseProduct, overlay, mydistManifest: effectiveMydist, lock, manifestsDir: a.manifests });
   if (a.dryRun && rec.checks.registeredKeys.status === "fail") {
-    // dry-run は patches/ を当てないので、パッチが足すキー（shukoConfigurationDefaults など）は見つからない
+    // dry-run は patches/ を当てないので、パッチが足すキー（sukunaConfigurationDefaults など）は見つからない
     rec.checks.registeredKeys.status = "warn";
     rec.checks.registeredKeys.reason = "dry-run ではパッチを当てないので、パッチが足すキーは missing になる。本番の実行で確かめる";
   }
@@ -488,7 +488,7 @@ function runApply(a) {
   rec.checks.lockfile = { status: "pending", reason: "依存の導入の後に --lockfile-check（build.mjs は checkLockfiles）で埋める" };
 
   // コミットの名前（docs/03 の5.2）: apply.mjs が作ったコミットと、edits.patch・patches/ から入ったコミットの作者・コミッターが
-  // shuko-apply <apply@shuko.invalid> か。違えば警告（パッチの From: を直す）
+  // sukuna-apply <apply@sukuna.invalid> か。違えば警告（パッチの From: を直す）
   if (a.dryRun) rec.checks.commitIdentity = skippedCheck("dry-run");
   else {
     rec.commits = G.listCommits(wt, rec.baseCommit);

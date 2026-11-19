@@ -23,7 +23,7 @@
 //     <tag>              本家のタグ（upstream.json の tag と違えば --commit が要る。prepare.mjs の規則）
 //     --label            版のラベル。既定 <tag>-<n>（n は records/builds/<tag>-*.json の最大＋1）
 //     --build-root       既定 local.json の buildRoot（scripts/lib/local-config.mjs の規則）
-//     --config           local.json の場所（試し。既定 %LOCALAPPDATA%\Shuko\local.json）
+//     --config           local.json の場所（試し。既定 %LOCALAPPDATA%\Sukuna\local.json）
 //     --record           記録の場所（既定 records/builds/<label>.json）
 //     --dry-run          何も走らせず、計画（手順ごとのコマンド・場所）を記録の形で出す。--record を渡したときだけ書く
 //     --from / --to      この手順から / この手順まで（途中からの再開と試し）
@@ -368,7 +368,7 @@ export function checkBuiltinExtensions({ present = [], removed = [], keep = [], 
 
 // zip の中の最上位のフォルダの名前。nameShort の空白などは - にする（"Code - OSS" → "Code-OSS"）。
 export function zipFolderName(nameShort, label) {
-  const n = String(nameShort || "Shuko").replace(/[^A-Za-z0-9.]+/g, "-").replace(/^-+|-+$/g, "");
+  const n = String(nameShort || "Sukuna").replace(/[^A-Za-z0-9.]+/g, "-").replace(/^-+|-+$/g, "");
   return `${n}-win32-x64-${label}`;
 }
 

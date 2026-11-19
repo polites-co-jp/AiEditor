@@ -212,7 +212,7 @@ test('normalizePageId: 32 桁・ハイフン付き・URL（クエリと # を含
   const want = '0123abcd-4567-89ab-cdef-0123456789ab';
   assert.equal(normalizePageId('0123ABCD456789ABCDEF0123456789AB'), want);
   assert.equal(normalizePageId(want), want);
-  assert.equal(normalizePageId('https://www.notion.so/Shuko-0123abcd456789abcdef0123456789ab?pvs=4#abc'), want);
+  assert.equal(normalizePageId('https://www.notion.so/Sukuna-0123abcd456789abcdef0123456789ab?pvs=4#abc'), want);
   assert.equal(normalizePageId('not an id'), null);
   assert.equal(normalizePageId(''), null);
 });
@@ -663,7 +663,7 @@ test('sharedForm: settings.json だけ ignored を除く。ほかは canonicaliz
 
 // ---- 手元のファイルの置き場所 (docs/05 の2節) ----
 test('userDirFromGlobalStorage: globalStorageUri の2つ上が User フォルダ', () => {
-  assert.equal(userDirFromGlobalStorage(path.join('C:', 'u', 'User', 'globalStorage', 'shuko.notion-sync')), path.join('C:', 'u', 'User'));
+  assert.equal(userDirFromGlobalStorage(path.join('C:', 'u', 'User', 'globalStorage', 'sukuna.notion-sync')), path.join('C:', 'u', 'User'));
 });
 test('userDirFileStore: 同期の対象だけを list し、対象でない名前・User の外へ出る名前の書き込みは例外。write は途中のファイルを残さない', async () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'p34-user-'));

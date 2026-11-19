@@ -8,12 +8,12 @@
   ConvertFrom-SecureString without a key uses DPAPI of the current user, so only this user on this PC
   can read the file back (scripts/lib/read-secret.ps1).
 
-  Default file: %LOCALAPPDATA%\Shuko\watch\notion-token.dpapi (fixed place, docs/06 section 2.1).
+  Default file: %LOCALAPPDATA%\Sukuna\watch\notion-token.dpapi (fixed place, docs/06 section 2.1).
   The file is written to "<file>.tmp" first and then moved into place. After saving, the script reads
   the file back with scripts/lib/read-secret.ps1 and reports only the length.
 
 .PARAMETER Path
-  Another file to write (trials). Default: %LOCALAPPDATA%\Shuko\watch\notion-token.dpapi
+  Another file to write (trials). Default: %LOCALAPPDATA%\Sukuna\watch\notion-token.dpapi
 .PARAMETER Force
   Overwrite an existing file (renewing the token).
 
@@ -33,7 +33,7 @@ $ErrorActionPreference = 'Stop'
 
 if (-not $Path) {
     if (-not $env:LOCALAPPDATA) { throw 'LOCALAPPDATA is not set' }
-    $Path = Join-Path $env:LOCALAPPDATA 'Shuko\watch\notion-token.dpapi'
+    $Path = Join-Path $env:LOCALAPPDATA 'Sukuna\watch\notion-token.dpapi'
 }
 $Path = [IO.Path]::GetFullPath($Path)
 

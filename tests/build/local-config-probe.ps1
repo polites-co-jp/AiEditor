@@ -14,7 +14,7 @@ try {
         $o = $OverridesJson | ConvertFrom-Json
         foreach ($p in $o.PSObject.Properties) { $ov[$p.Name] = $p.Value }
     }
-    $r = Resolve-ShukoLocalConfig -ConfigPath $ConfigPath -Overrides $ov
+    $r = Resolve-SukunaLocalConfig -ConfigPath $ConfigPath -Overrides $ov
     $out = [ordered]@{ ok = $true; value = $r }
     Write-Output ($out | ConvertTo-Json -Depth 6 -Compress)
     exit 0

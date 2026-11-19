@@ -81,8 +81,8 @@ test('C-1: edits.patch の件名が [PATCH] unit C-1-ai: edits（applyEdits が�
   assert.match(patchText, /^Subject: \[PATCH\] unit C-1-ai: edits$/m);
 });
 
-test('C-1: edits.patch の作者が shuko-apply（コミットの作者の取り決め）', { skip: noPatch }, () => {
-  assert.match(patchText, /^From: shuko-apply /m);
+test('C-1: edits.patch の作者が sukuna-apply（コミットの作者の取り決め）', { skip: noPatch }, () => {
+  assert.match(patchText, /^From: sukuna-apply /m);
 });
 
 test('C-1: kept に MCP の認証の3つのサービスがある（理由つき。2026-11-15 の判断）', { skip: noUnit }, () => {

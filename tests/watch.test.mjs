@@ -426,7 +426,7 @@ test('checkTodoSchema: 項目の欠け・型違い・選択肢の欠けを見つ
 
 // ---- 重複を避ける (docs/06 の2.3) ----
 const todoCore = (c) => buildCoreTodo(c, { now: NOW, timeZone: TZ });
-test('upsertTodo: 無ければ作る。作った ToDo は 状態 Not started・種別 ToDo・期限の形式 終了日のみ・プロジェクト Shuko、開始日時・終了日時は書かない', async () => {
+test('upsertTodo: 無ければ作る。作った ToDo は 状態 Not started・種別 ToDo・期限の形式 終了日のみ・プロジェクト Sukuna、開始日時・終了日時は書かない', async () => {
   const notion = makeNotion();
   const r = await upsertTodo({ notion, todo: todoCore(core()) });
   assert.equal(r.action, 'created');
@@ -434,7 +434,7 @@ test('upsertTodo: 無ければ作る。作った ToDo は 状態 Not started・�
   assert.equal(prop(p, '状態').status.name, 'Not started');
   assert.equal(prop(p, '種別').select.name, 'ToDo');
   assert.equal(prop(p, '期限の形式').select.name, '終了日のみ');
-  assert.equal(plain(prop(p, 'プロジェクト').rich_text), 'Shuko');
+  assert.equal(plain(prop(p, 'プロジェクト').rich_text), 'Sukuna');
   assert.equal(plain(prop(p, 'タスク').title), '取り込みの検証: 本体 1.147.0');
   assert.ok(!('開始日時' in p.properties) && !('終了日時' in p.properties));
 });

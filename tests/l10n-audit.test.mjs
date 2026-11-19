@@ -24,9 +24,9 @@ function fixture(name, { pack } = {}) {
   w(path.join(app, 'out', 'nls.messages.json'), msgs);
   w(path.join(app, 'extensions', 'git', 'package.json'), { name: 'git', publisher: 'vscode' });
   w(path.join(app, 'extensions', 'git', 'package.nls.json'), { 'cmd.clone': 'Clone', 'cmd.pull': { message: 'Pull', comment: ['x'] }, displayName: 'Git' });
-  w(path.join(app, 'extensions', 'zzz', 'package.json'), { name: 'zzz', publisher: 'shuko' });
+  w(path.join(app, 'extensions', 'zzz', 'package.json'), { name: 'zzz', publisher: 'sukuna' });
   w(path.join(app, 'extensions', 'zzz', 'package.nls.json'), { title: 'Zzz Title' });
-  w(path.join(app, 'extensions', 'plain', 'package.json'), { name: 'plain', publisher: 'shuko' });
+  w(path.join(app, 'extensions', 'plain', 'package.json'), { name: 'plain', publisher: 'sukuna' });
   const root = path.join(sb, name, 'pack');
   w(path.join(root, 'translations', 'main.i18n.json'), pack ?? {
     version: '1.0.0',
@@ -72,12 +72,12 @@ test('拡張: package.nls.json の鍵を、パックの contents.package で引�
   assert.equal(git.translated, 2);
   assert.deepEqual(git.untranslatedKeys, [{ key: 'cmd.pull', message: 'Pull' }]);
   assert.equal(git.hasPackFile, true);
-  const zzz = r.extensions['shuko.zzz'];
+  const zzz = r.extensions['sukuna.zzz'];
   assert.equal(zzz.hasPackFile, false);
   assert.equal(zzz.untranslated, 1);
   assert.equal(r.extensionsTotals.total, 4);
   assert.equal(r.extensionsTotals.untranslated, 2);
-  assert.deepEqual(r.extensionsWithoutNlsFile.map((x) => x.id), ['shuko.plain']);
+  assert.deepEqual(r.extensionsWithoutNlsFile.map((x) => x.id), ['sukuna.plain']);
 });
 test('拡張のファイルの場所は contributes.localizations で引く（名前の規則と違っても引ける）', () => {
   const { app, root } = fixture('extmap');
@@ -136,10 +136,10 @@ test('全部訳せていれば合格。パックの余分な項目（使われ�
   const { app, root } = fixture('full', { pack: full });
   const gitPack = path.join(root, 'translations', 'extensions', 'vscode.git.i18n.json');
   w(gitPack, { contents: { package: { 'cmd.clone': 'a', 'cmd.pull': 'b', displayName: 'c' } } });
-  const zzz = path.join(root, 'translations', 'extensions', 'shuko.zzz.i18n.json');
+  const zzz = path.join(root, 'translations', 'extensions', 'sukuna.zzz.i18n.json');
   w(zzz, { contents: { package: { title: 'ズズ' } } });
   const pj = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
-  pj.contributes.localizations[0].translations.push({ id: 'shuko.zzz', path: './translations/extensions/shuko.zzz.i18n.json' });
+  pj.contributes.localizations[0].translations.push({ id: 'sukuna.zzz', path: './translations/extensions/sukuna.zzz.i18n.json' });
   w(path.join(root, 'package.json'), pj);
   const r = auditL10n({ appDir: app, packDir: root });
   assert.equal(r.core.total, 5);
@@ -171,10 +171,11 @@ test('CLI: --out に JSON を書き、--strict は未訳があれば 1、無け�
   assert.equal(r.status, 2);
 });
 
-// ---- 実物（この PC の日常の版と 1.131.0 のパック）。無ければ飛ばす ----------------------------
-const realApp = path.join(process.env.LOCALAPPDATA ?? '', 'Programs', 'Shuko', 'versions', '1.146.0-1', 'resources', 'app');
-const realPack = path.join(os.homedir(), '.shuko', 'extensions', 'ms-ceintl.vscode-language-pack-ja-1.131.0');
-const haveReal = fs.existsSync(path.join(realApp, 'out', 'nls.keys.json')) && fs.existsSync(path.join(realPack, 'translations', 'main.i18n.json'));
+// ---- 実物（1.146.0 の本体と 1.131.0 のパック）。日常の場所（%LOCALAPPDATA%\Programs\…・~\.…）は読まない（2026-11-18 の改名で模擬に替えた）。
+// 場所は環境変数 AIED_AUDIT_REAL_APP（…\resources\app）と AIED_AUDIT_REAL_PACK（1.131.0 のパックのフォルダ）で渡す。渡さなければ飛ばす ----
+const realApp = process.env.AIED_AUDIT_REAL_APP ?? '';
+const realPack = process.env.AIED_AUDIT_REAL_PACK ?? '';
+const haveReal = !!realApp && !!realPack && fs.existsSync(path.join(realApp, 'out', 'nls.keys.json')) && fs.existsSync(path.join(realPack, 'translations', 'main.i18n.json'));
 test('実物: 1.146.0 の本体 12,355 件を、1.131.0 のパックで数える。リーダーの粗い数え（約650）と大きく食い違わない', { skip: !haveReal && '実物が無い' }, () => {
   const r = auditL10n({ appDir: realApp, packDir: realPack });
   assert.equal(r.core.total, 12355);

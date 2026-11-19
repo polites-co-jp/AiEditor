@@ -1,4 +1,4 @@
-Shuko language-pack-ja - Third Party Notices
+Sukuna language-pack-ja - Third Party Notices
 
 This extension contains Japanese translations taken from the following sources. When two sources translate
 the same string, the earlier one in this list is used.
@@ -11,7 +11,7 @@ the same string, the earlier one in this list is used.
    Its manifest names the repository https://github.com/Microsoft/vscode-loc and the license "SEE MIT LICENSE IN LICENSE.md".
    The VSIX contains no LICENSE.md; the LICENSE.md of that repository is reproduced below.
 
-Translations added by the Shuko builders (strings that the sources above do not translate, and overrides of
+Translations added by the Sukuna builders (strings that the sources above do not translate, and overrides of
 source translations) are in extensions-src/language-pack-ja/added/*.json of the build repository.
 
 ---------------------------------------------------------

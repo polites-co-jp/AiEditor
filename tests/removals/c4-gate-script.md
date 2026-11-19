@@ -37,7 +37,7 @@ node tests/c4-check-json.mjs C:/b/logs/c4-gate/checks-b.json
 | `checks.remnants.status` | `ok` | `ok` |
 | `checks.absentStrings.status` | `ok`（C-4 の16項目すべて記録があり、`hitCount` が 0） | 同じ |
 | `checks.commitIdentity.status`・`checks.registeredKeys.status` | `ok` | `ok` |
-| `commits` | `unit C-4-notebook: ops` → `unit C-4-notebook: edits`。C-1・C-2 の edits の後。作者はどれも `shuko-apply <apply@shuko.invalid>` | 同じ。C-3 の edits の後 |
+| `commits` | `unit C-4-notebook: ops` → `unit C-4-notebook: edits`。C-1・C-2 の edits の後。作者はどれも `sukuna-apply <apply@sukuna.invalid>` | 同じ。C-3 の edits の後 |
 | 作業ツリーの未コミットの変更 | 0（2の型検査の記録の `sourceVersion.uncommittedEntries`。`git status` は使わない） | 同じ |
 
 C-4 の edits に衝突が出る、C-4 の `warnings` が出る、のどれかなら、ほかの単位との重なりが増えている。蒙恬に返す（docs/03 の5.3: `extHost.protocol.ts` の ID の行は `removeLines`、C-3 が直す `viewsExtensionPoint.ts` に C-4 は触れない）。

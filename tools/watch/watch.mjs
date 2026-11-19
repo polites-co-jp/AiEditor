@@ -16,7 +16,7 @@
 //                                                   取り込みの判定の要約を ToDo に書き戻す（取り込みの時に書けなかったときの手直し）
 // オプション:
 //   --config <local.json>  --builder-repo <dir>  --install-root <dir>   場所の設定（docs/02 の6.1。オプションが優先）
-//   --state-dir <dir>      state.json・watch.log の場所（既定 %LOCALAPPDATA%\Shuko\watch。試しでは必ず別の場所を渡す）
+//   --state-dir <dir>      state.json・watch.log の場所（既定 %LOCALAPPDATA%\Sukuna\watch。試しでは必ず別の場所を渡す）
 //   --token-file <file>    DPAPI のトークン（既定 <state-dir>\notion-token.dpapi）
 //   --data-source <id>     ToDo のデータソース ID（既定 docs/06 の2.3 の ID）
 //   --fixtures <file>      GitHub・Open VSX・リリースノートの応答を差し替える JSON（{ "<url>": { status, json | text } | { error } }）

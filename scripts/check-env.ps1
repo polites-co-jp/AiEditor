@@ -37,7 +37,7 @@ $ErrorActionPreference = 'Continue'
 # 2026-11-15, nothing on C:; before that C:\b).
 if (-not $BuildRoot) {
     . (Join-Path $PSScriptRoot 'lib\local-config.ps1')
-    $BuildRoot = (Resolve-ShukoLocalConfig).buildRoot
+    $BuildRoot = (Resolve-SukunaLocalConfig).buildRoot
 }
 $buildRootExistedAtStart = (Test-Path -LiteralPath $BuildRoot)
 
@@ -47,7 +47,7 @@ $buildRootExistedAtStart = (Test-Path -LiteralPath $BuildRoot)
 # (decision 2026-11-15; tasks/2026-11-16-small-fixes/). Only this process changes; the user's settings do not.
 # <buildRoot>\tmp is created when missing (a TEMP that does not exist breaks some tools).
 . (Join-Path $PSScriptRoot 'lib\child-cache-env.ps1')
-$childEnv = Set-ShukoChildCacheEnv -BuildRoot $BuildRoot -CreateTemp
+$childEnv = Set-SukunaChildCacheEnv -BuildRoot $BuildRoot -CreateTemp
 
 function Invoke-Capture([string]$exe, [string[]]$argv) {
     # Runs a command and returns @{ ok; exit; out }. Never throws.

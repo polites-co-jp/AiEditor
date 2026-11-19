@@ -239,8 +239,8 @@ test('setArgvLocale: broken text (unclosed) throws', () => {
 // ---- argvPathFor ------------------------------------------------------------------------
 test('argvPathFor: --argv wins, then --portable, then %USERPROFILE%\\<dataFolderName>', () => {
   const env = { USERPROFILE: 'C:\\Users\\t' };
-  assert.equal(path.normalize(argvPathFor({ argv: 'D:\\x\\argv.json', portable: 'D:\\p', dataFolderName: '.shuko', env })).toLowerCase(), path.normalize('D:\\x\\argv.json').toLowerCase());
-  const p = path.normalize(argvPathFor({ portable: 'D:\\p', dataFolderName: '.shuko', env })).toLowerCase();
+  assert.equal(path.normalize(argvPathFor({ argv: 'D:\\x\\argv.json', portable: 'D:\\p', dataFolderName: '.sukuna', env })).toLowerCase(), path.normalize('D:\\x\\argv.json').toLowerCase());
+  const p = path.normalize(argvPathFor({ portable: 'D:\\p', dataFolderName: '.sukuna', env })).toLowerCase();
   assert.ok(p.startsWith(path.normalize('D:\\p').toLowerCase()) && p.endsWith('argv.json'), p);
-  assert.equal(path.normalize(argvPathFor({ dataFolderName: '.shuko', env })).toLowerCase(), path.normalize('C:\\Users\\t\\.shuko\\argv.json').toLowerCase());
+  assert.equal(path.normalize(argvPathFor({ dataFolderName: '.sukuna', env })).toLowerCase(), path.normalize('C:\\Users\\t\\.sukuna\\argv.json').toLowerCase());
 });

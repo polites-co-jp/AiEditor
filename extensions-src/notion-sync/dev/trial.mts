@@ -285,7 +285,7 @@ export async function main(): Promise<boolean> {
     const root = await makeTrialRunDir(await defaultTrialRoot());
     console.log(`流れ16: 本物のファイル（${path.join(root, "User")}）で取り込み・書き出し`);
     const userDir = path.join(root, "User");
-    const globalStorage = path.join(userDir, "globalStorage", "shuko.notion-sync");
+    const globalStorage = path.join(userDir, "globalStorage", "sukuna.notion-sync");
     await fsp.mkdir(path.join(userDir, "snippets"), { recursive: true });
     await fsp.writeFile(path.join(userDir, "settings.json"), '{\r\n\t"terminal.integrated.defaultProfile.windows": "cmd"\r\n}\r\n');
     const C = mk("PC-C", userDirFileStore(userDir), fileBaseStore(path.join(globalStorage, "sync-base.json")));

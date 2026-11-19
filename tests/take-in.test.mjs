@@ -483,5 +483,5 @@ test('TAKE-IN.md: docs/06 の7.2 の規約（単位の意図を変えない・�
   const r = spawnSync(process.execPath, ['-e', `process.stdout.write(require('fs').readFileSync(${JSON.stringify(join(REPO, 'TAKE-IN.md'))},'utf8'))`], { encoding: 'utf8' });
   const t = r.stdout;
   assert.ok(t.length > 0, 'TAKE-IN.md が無い');
-  for (const w of ['intent', '要判断', '最小', 'switch.ps1', 'install-extensions', 'shuko-apply', 'apply@shuko.invalid']) assert.ok(t.includes(w), w);
+  for (const w of ['intent', '要判断', '最小', 'switch.ps1', 'install-extensions', 'sukuna-apply', 'apply@sukuna.invalid']) assert.ok(t.includes(w), w);
 });

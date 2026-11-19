@@ -1,0 +1,837 @@
+{
+  "ranAt": "2026-11-18T14:49:09.296Z",
+  "files": 79,
+  "pass": 2746,
+  "fail": 27,
+  "skipped": 7,
+  "results": [
+    {
+      "file": "absent.test.mjs",
+      "status": 0,
+      "pass": 20,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 190,
+      "failed": []
+    },
+    {
+      "file": "apply-cli.test.mjs",
+      "status": 0,
+      "pass": 5,
+      "fail": 0,
+      "skipped": 2,
+      "ms": 424,
+      "failed": []
+    },
+    {
+      "file": "apply-commits.test.mjs",
+      "status": 0,
+      "pass": 25,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 122342,
+      "failed": []
+    },
+    {
+      "file": "apply-parts.test.mjs",
+      "status": 0,
+      "pass": 57,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 183,
+      "failed": []
+    },
+    {
+      "file": "apply-prune.test.mjs",
+      "status": 0,
+      "pass": 7,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 192,
+      "failed": []
+    },
+    {
+      "file": "apply-selfcheck.test.mjs",
+      "status": 0,
+      "pass": 33,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 172,
+      "failed": []
+    },
+    {
+      "file": "apply.test.mjs",
+      "status": 0,
+      "pass": 33,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 173,
+      "failed": []
+    },
+    {
+      "file": "build-commit.test.mjs",
+      "status": 0,
+      "pass": 21,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 2275,
+      "failed": []
+    },
+    {
+      "file": "build-env-branch.test.mjs",
+      "status": 0,
+      "pass": 29,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 11836,
+      "failed": []
+    },
+    {
+      "file": "build-fixes.test.mjs",
+      "status": 0,
+      "pass": 17,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 1091,
+      "failed": []
+    },
+    {
+      "file": "build-parts.test.mjs",
+      "status": 0,
+      "pass": 38,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 1433,
+      "failed": []
+    },
+    {
+      "file": "builtin-l10n.test.mjs",
+      "status": 0,
+      "pass": 19,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 167,
+      "failed": []
+    },
+    {
+      "file": "c-all-check-json.test.mjs",
+      "status": 1,
+      "pass": 23,
+      "fail": 4,
+      "skipped": 0,
+      "ms": 164,
+      "failed": [
+        {
+          "name": "c2-check: 実際の21単位の記録(checks-21.json・typecheck-21.json)は、組 c として期待どおり。壊すと食い違いが出る",
+          "error": "|-"
+        },
+        {
+          "name": "c3-check: 実際の21単位の記録(checks-21.json・typecheck-21.json)は、組 c として期待どおり。壊すと食い違いが出る",
+          "error": "|-"
+        },
+        {
+          "name": "c4-check: 実際の21単位の記録(checks-21.json・typecheck-21.json)は、組 c として期待どおり。壊すと食い違いが出る",
+          "error": "|-"
+        },
+        {
+          "name": "c5-check: 実際の21単位の記録(checks-21.json・typecheck-21.json)は、組 c として期待どおり。壊すと食い違いが出る",
+          "error": "|-"
+        }
+      ]
+    },
+    {
+      "file": "c1-check-json.test.mjs",
+      "status": 0,
+      "pass": 8,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 193,
+      "failed": []
+    },
+    {
+      "file": "c1-mutation.test.mjs",
+      "status": null,
+      "pass": null,
+      "fail": null,
+      "skipped": null,
+      "ms": 1800023,
+      "failed": []
+    },
+    {
+      "file": "c1-round2.test.mjs",
+      "status": 0,
+      "pass": 14,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 1330,
+      "failed": []
+    },
+    {
+      "file": "c1-unit.test.mjs",
+      "status": 0,
+      "pass": 60,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 226112,
+      "failed": []
+    },
+    {
+      "file": "c2-check-json.test.mjs",
+      "status": 1,
+      "pass": 9,
+      "fail": 2,
+      "skipped": 0,
+      "ms": 439,
+      "failed": [
+        {
+          "name": "c2-check: 蒙恬の当て直し a(15単位)の記録と型検査の記録は、食い違いが無い",
+          "error": "|-"
+        },
+        {
+          "name": "c2-check: 蒙恬の当て直し b(16単位。C-1 の後に C-2)の記録と型検査の記録は、食い違いが無い。警告は debugChatIntegration.ts の1件だけ",
+          "error": "|-"
+        }
+      ]
+    },
+    {
+      "file": "c2-mutation.test.mjs",
+      "status": 0,
+      "pass": 48,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 85166,
+      "failed": []
+    },
+    {
+      "file": "c2-unit.test.mjs",
+      "status": 0,
+      "pass": 58,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 11231,
+      "failed": []
+    },
+    {
+      "file": "c2-worktree.test.mjs",
+      "status": 0,
+      "pass": 23,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 9740,
+      "failed": []
+    },
+    {
+      "file": "c3-check-json.test.mjs",
+      "status": 1,
+      "pass": 8,
+      "fail": 3,
+      "skipped": 0,
+      "ms": 225,
+      "failed": [
+        {
+          "name": "c3-check: 蒙恬の当て直し a(16単位。C-1 と C-3)の記録と型検査の記録は、食い違いが無い",
+          "error": "|-"
+        },
+        {
+          "name": "c3-check: 蒙恬の当て直し b(17単位。C-1、C-2、C-3 の順)の記録と型検査の記録は、食い違いが無い。警告は C-2 の1件だけ",
+          "error": "|-"
+        },
+        {
+          "name": "c3-check: コマンドとして走らせると、実際の記録で 0、壊した引数で 2、別の組の型検査で 1。--stopped も走る",
+          "error": "|-"
+        }
+      ]
+    },
+    {
+      "file": "c3-mutation.test.mjs",
+      "status": 0,
+      "pass": 43,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 97459,
+      "failed": []
+    },
+    {
+      "file": "c3-unit.test.mjs",
+      "status": 0,
+      "pass": 28,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 10378,
+      "failed": []
+    },
+    {
+      "file": "c3-worktree.test.mjs",
+      "status": 0,
+      "pass": 19,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 3814,
+      "failed": []
+    },
+    {
+      "file": "c4-check-json.test.mjs",
+      "status": 1,
+      "pass": 9,
+      "fail": 3,
+      "skipped": 0,
+      "ms": 262,
+      "failed": [
+        {
+          "name": "c4-check: 蒙恬の当て直し a(17単位。C-1・C-2・C-4)の記録と型検査の記録は、食い違いが無い",
+          "error": "|-"
+        },
+        {
+          "name": "c4-check: 蒙恬の当て直し b(18単位。C-1、C-2、C-3、C-4 の順)の記録と型検査の記録は、食い違いが無い。警告は C-2 の1件だけ",
+          "error": "|-"
+        },
+        {
+          "name": "c4-check: コマンドとして走らせると、実際の記録で 0、壊した引数で 2、別の組の型検査で 1。--stopped も走る",
+          "error": "|-"
+        }
+      ]
+    },
+    {
+      "file": "c4-mutation.test.mjs",
+      "status": 0,
+      "pass": 64,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 104067,
+      "failed": []
+    },
+    {
+      "file": "c4-unit.test.mjs",
+      "status": 0,
+      "pass": 55,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 9576,
+      "failed": []
+    },
+    {
+      "file": "c4-worktree.test.mjs",
+      "status": 0,
+      "pass": 26,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 17905,
+      "failed": []
+    },
+    {
+      "file": "c5-check-json.test.mjs",
+      "status": 1,
+      "pass": 9,
+      "fail": 3,
+      "skipped": 0,
+      "ms": 238,
+      "failed": [
+        {
+          "name": "c5-check: 蒙恬の当て直し a(16単位。C-1 と C-5)の2回目の記録と型検査の記録は、食い違いが無い。警告は無い",
+          "error": "|-"
+        },
+        {
+          "name": "c5-check: 蒙恬の当て直し b(19単位。C-1〜C-5 の順)の2回目の記録と型検査の記録は、食い違いが無い。警告は C-2 の1件だけ",
+          "error": "|-"
+        },
+        {
+          "name": "c5-check: コマンドとして走らせると、実際の記録で 0、壊した引数で 2、別の組の型検査で 1。--stopped も走る",
+          "error": "|-"
+        }
+      ]
+    },
+    {
+      "file": "c5-mutation.test.mjs",
+      "status": 0,
+      "pass": 62,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 110596,
+      "failed": []
+    },
+    {
+      "file": "c5-unit.test.mjs",
+      "status": 0,
+      "pass": 42,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 33577,
+      "failed": []
+    },
+    {
+      "file": "c5-worktree.test.mjs",
+      "status": 0,
+      "pass": 32,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 10814,
+      "failed": []
+    },
+    {
+      "file": "c6-check-json.test.mjs",
+      "status": 1,
+      "pass": 10,
+      "fail": 5,
+      "skipped": 0,
+      "ms": 350,
+      "failed": [
+        {
+          "name": "c6-check: 蒙恬の当て直し a(16単位。C-1 と C-6)の記録と型検査の記録は、食い違いが無い。警告は無い",
+          "error": "|-"
+        },
+        {
+          "name": "c6-check: 蒙恬の当て直し b(20単位。C-1〜C-6 の順)の記録と型検査の記録は、食い違いが無い。警告は C-2 の1件だけ",
+          "error": "|-"
+        },
+        {
+          "name": "c6-check: 実記録の 21 単位(組 c。C-1〜C-7)の当て直しと型検査は、C-6 として期待どおり。警告は C-2 の1件",
+          "error": "|-"
+        },
+        {
+          "name": "c6-check: 実記録の C-1 を外した記録(checks-c6-noc1.json)は「止まる」で期待どおり。コマンドも 0",
+          "error": "|-"
+        },
+        {
+          "name": "c6-check: コマンドとして走らせると、実際の記録で 0、壊した引数で 2、別の組の型検査で 1。--stopped も走る",
+          "error": "|-"
+        }
+      ]
+    },
+    {
+      "file": "c6-mutation.test.mjs",
+      "status": 0,
+      "pass": 59,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 94819,
+      "failed": []
+    },
+    {
+      "file": "c6-unit.test.mjs",
+      "status": 0,
+      "pass": 30,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 6896,
+      "failed": []
+    },
+    {
+      "file": "c6-worktree.test.mjs",
+      "status": 0,
+      "pass": 33,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 28811,
+      "failed": []
+    },
+    {
+      "file": "c7-check-json.test.mjs",
+      "status": 1,
+      "pass": 11,
+      "fail": 4,
+      "skipped": 0,
+      "ms": 438,
+      "failed": [
+        {
+          "name": "c7-check: 蒙恬の当て直し a(18単位。C-1・C-2・C-4・C-7)の記録と型検査の記録は、食い違いが無い。警告は C-2 の1件",
+          "error": "|-"
+        },
+        {
+          "name": "c7-check: 蒙恬の当て直し b(21単位。C-1〜C-7 の順)の記録と型検査の記録は、食い違いが無い。警告は C-2 の1件",
+          "error": "|-"
+        },
+        {
+          "name": "c7-check: 実記録の 21 単位(checks-21.json・typecheck-21.json)は当て直しとして期待どおり。成功した記録は「止まる」としては食い違い",
+          "error": "|-"
+        },
+        {
+          "name": "c7-check: コマンドとして走らせると、実際の記録で 0、壊した引数で 2、別の組の型検査で 1。--stopped も走る",
+          "error": "|-"
+        }
+      ]
+    },
+    {
+      "file": "c7-mutation.test.mjs",
+      "status": 0,
+      "pass": 59,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 93243,
+      "failed": []
+    },
+    {
+      "file": "c7-unit.test.mjs",
+      "status": 0,
+      "pass": 26,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 7389,
+      "failed": []
+    },
+    {
+      "file": "c7-worktree.test.mjs",
+      "status": 0,
+      "pass": 31,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 36227,
+      "failed": []
+    },
+    {
+      "file": "cli-run.test.mjs",
+      "status": 0,
+      "pass": 14,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 3415,
+      "failed": []
+    },
+    {
+      "file": "configure.test.mjs",
+      "status": 0,
+      "pass": 19,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 25317,
+      "failed": []
+    },
+    {
+      "file": "copy-verify.test.mjs",
+      "status": 0,
+      "pass": 52,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 3587,
+      "failed": []
+    },
+    {
+      "file": "install-doc.test.mjs",
+      "status": 0,
+      "pass": 4,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 2256,
+      "failed": []
+    },
+    {
+      "file": "install-ext.test.mjs",
+      "status": 0,
+      "pass": 46,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 169,
+      "failed": []
+    },
+    {
+      "file": "install-portable.test.mjs",
+      "status": 0,
+      "pass": 13,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 4118,
+      "failed": []
+    },
+    {
+      "file": "l10n-audit-more.test.mjs",
+      "status": 0,
+      "pass": 38,
+      "fail": 0,
+      "skipped": 4,
+      "ms": 1081,
+      "failed": []
+    },
+    {
+      "file": "l10n-audit.test.mjs",
+      "status": 0,
+      "pass": 13,
+      "fail": 0,
+      "skipped": 1,
+      "ms": 602,
+      "failed": []
+    },
+    {
+      "file": "l10n-lib.test.mjs",
+      "status": 0,
+      "pass": 61,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 164,
+      "failed": []
+    },
+    {
+      "file": "l10n-r6.test.mjs",
+      "status": 0,
+      "pass": 35,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 1531,
+      "failed": []
+    },
+    {
+      "file": "l10n-repo.test.mjs",
+      "status": 0,
+      "pass": 55,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 5024,
+      "failed": []
+    },
+    {
+      "file": "local-config.test.mjs",
+      "status": 0,
+      "pass": 46,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 21459,
+      "failed": []
+    },
+    {
+      "file": "lock.test.mjs",
+      "status": 0,
+      "pass": 115,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 184,
+      "failed": []
+    },
+    {
+      "file": "lockfile-patched.test.mjs",
+      "status": 0,
+      "pass": 17,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 180,
+      "failed": []
+    },
+    {
+      "file": "make-icons.test.mjs",
+      "status": 0,
+      "pass": 33,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 3530,
+      "failed": []
+    },
+    {
+      "file": "migrate-from-shuko.test.mjs",
+      "status": 0,
+      "pass": 20,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 26030,
+      "failed": []
+    },
+    {
+      "file": "move-build-root.test.mjs",
+      "status": 0,
+      "pass": 32,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 23615,
+      "failed": []
+    },
+    {
+      "file": "move-off-c-fixes.test.mjs",
+      "status": 0,
+      "pass": 32,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 16683,
+      "failed": []
+    },
+    {
+      "file": "move-off-c.test.mjs",
+      "status": 1,
+      "pass": 25,
+      "fail": 1,
+      "skipped": 0,
+      "ms": 780,
+      "failed": [
+        {
+          "name": "scripts/ と tools/ は OS の一時フォルダ（os.tmpdir・GetTempPath・$env:TEMP）を使わない",
+          "error": "|-"
+        }
+      ]
+    },
+    {
+      "file": "notion-sync.test.mjs",
+      "status": 0,
+      "pass": 101,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 283,
+      "failed": []
+    },
+    {
+      "file": "p1-launch-logs.test.mjs",
+      "status": 0,
+      "pass": 8,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 8654,
+      "failed": []
+    },
+    {
+      "file": "p1-launch-workbench.test.mjs",
+      "status": 0,
+      "pass": 8,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 401,
+      "failed": []
+    },
+    {
+      "file": "p1-scripts.test.mjs",
+      "status": 0,
+      "pass": 34,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 16234,
+      "failed": []
+    },
+    {
+      "file": "p34-selfcheck.test.mjs",
+      "status": 0,
+      "pass": 1,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 169,
+      "failed": []
+    },
+    {
+      "file": "removals.test.mjs",
+      "status": 0,
+      "pass": 229,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 8956,
+      "failed": []
+    },
+    {
+      "file": "rename-entries.test.mjs",
+      "status": 0,
+      "pass": 10,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 1240,
+      "failed": []
+    },
+    {
+      "file": "rename-leftovers.test.mjs",
+      "status": 1,
+      "pass": 2,
+      "fail": 2,
+      "skipped": 0,
+      "ms": 282,
+      "failed": [
+        {
+          "name": "除く場所の外に古い名前が残っていない",
+          "error": "|-"
+        },
+        {
+          "name": "リーダーの 2c の分（CLAUDE.md・.claude/）に古い名前が残っていない（リーダーが直すまで落ちる）",
+          "error": "|-"
+        }
+      ]
+    },
+    {
+      "file": "signtool.test.mjs",
+      "status": 0,
+      "pass": 17,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 9366,
+      "failed": []
+    },
+    {
+      "file": "small-fixes.test.mjs",
+      "status": 0,
+      "pass": 30,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 16808,
+      "failed": []
+    },
+    {
+      "file": "smoke.test.mjs",
+      "status": 0,
+      "pass": 80,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 1060,
+      "failed": []
+    },
+    {
+      "file": "start-menu-shortcut.test.mjs",
+      "status": 0,
+      "pass": 12,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 16816,
+      "failed": []
+    },
+    {
+      "file": "sublime-keys.test.mjs",
+      "status": 0,
+      "pass": 50,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 194,
+      "failed": []
+    },
+    {
+      "file": "switch-expand.test.mjs",
+      "status": 0,
+      "pass": 17,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 37237,
+      "failed": []
+    },
+    {
+      "file": "switch-watch-warn.test.mjs",
+      "status": 0,
+      "pass": 10,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 13890,
+      "failed": []
+    },
+    {
+      "file": "switch.test.mjs",
+      "status": 0,
+      "pass": 22,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 50736,
+      "failed": []
+    },
+    {
+      "file": "take-in-more.test.mjs",
+      "status": 0,
+      "pass": 43,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 80613,
+      "failed": []
+    },
+    {
+      "file": "take-in.test.mjs",
+      "status": 0,
+      "pass": 95,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 639,
+      "failed": []
+    },
+    {
+      "file": "watch.test.mjs",
+      "status": 0,
+      "pass": 104,
+      "fail": 0,
+      "skipped": 0,
+      "ms": 2951,
+      "failed": []
+    }
+  ]
+}

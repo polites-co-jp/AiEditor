@@ -17,7 +17,7 @@ const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const readJson = (p) => JSON.parse(readFileSync(p, 'utf8').replace(/^﻿/, ''));
 const clone = (o) => JSON.parse(JSON.stringify(o));
 const hex = (c) => c.repeat(40);
-const AUTHOR = 'shuko-apply <apply@shuko.invalid>';
+const AUTHOR = 'sukuna-apply <apply@sukuna.invalid>';
 const C2_FILE = 'src/vs/workbench/contrib/debug/browser/debugChatIntegration.ts';
 
 const ALL_C = ['C-1-ai', 'C-2-debug', 'C-3-remote', 'C-4-notebook', 'C-5-extension-gallery', 'C-6-settings-sync', 'C-7-breadcrumbs-outline'];

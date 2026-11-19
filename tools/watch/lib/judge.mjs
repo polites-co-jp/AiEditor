@@ -313,7 +313,7 @@ export function buildFailureTodo({ failingSince, errors = [], now = new Date(), 
   const detail = [
     `GitHub・Open VSX の取得が ${failingSince} から失敗している（${failingDays(failingSince, now, timeZone)}日目）。`,
     `直近の誤り: ${errors.slice(0, 5).join(" / ") || "不明"}`,
-    "ログ: %LOCALAPPDATA%\\Shuko\\watch\\watch.log",
+    "ログ: %LOCALAPPDATA%\\Sukuna\\watch\\watch.log",
   ].join("\n");
   return {
     kind: "failure",

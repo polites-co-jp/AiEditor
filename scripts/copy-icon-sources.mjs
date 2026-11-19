@@ -9,7 +9,7 @@
 //
 // 使い方:
 //   node scripts/copy-icon-sources.mjs [--build-root <dir>]
-//     --build-root の既定は local.json（%LOCALAPPDATA%\Shuko\local.json）の buildRoot（無ければ <リポジトリ>\tmp\b）。
+//     --build-root の既定は local.json（%LOCALAPPDATA%\Sukuna\local.json）の buildRoot（無ければ <リポジトリ>\tmp\b）。
 //   make-icons.mjs はこの写しだけを読む（ビルドのたびに tmp\b や拡張のフォルダを読まない）。
 //   写しの置き場所が assets/ の外なのは、apply.mjs が assets/ の下を作業ツリーへ写すため。
 

@@ -1,5 +1,5 @@
-From 582bd5eb3af3eacddc8cce9ef3559ba6220047e1 Mon Sep 17 00:00:00 2001
-From: shuko-apply <apply@shuko.invalid>
+From 668468ddc9b1b4ec3a6da420e95b9628d6ab2370 Mon Sep 17 00:00:00 2001
+From: sukuna-apply <apply@sukuna.invalid>
 Date: Sun, 15 Nov 2026 11:41:25 +0900
 Subject: [PATCH] unit C-3-remote: edits
 
@@ -8,7 +8,7 @@ Subject: [PATCH] unit C-3-remote: edits
  1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/src/vs/workbench/api/browser/viewsExtensionPoint.ts b/src/vs/workbench/api/browser/viewsExtensionPoint.ts
-index 833787070f3..9be3d3ca598 100644
+index 833787070f3..ec9cd29d1eb 100644
 --- a/src/vs/workbench/api/browser/viewsExtensionPoint.ts
 +++ b/src/vs/workbench/api/browser/viewsExtensionPoint.ts
 @@ -24,13 +24,17 @@ import { IWorkbenchContribution, WorkbenchPhase, registerWorkbenchContribution2
@@ -22,7 +22,7 @@ index 833787070f3..9be3d3ca598 100644
  import { isProposedApiEnabled } from '../../services/extensions/common/extensions.js';
  import { ExtensionMessageCollector, ExtensionsRegistry, IExtensionPoint, IExtensionPointUser } from '../../services/extensions/common/extensionsRegistry.js';
  
-+// Shuko (C-3-remote): the remote explorer (contrib/remote) is removed. Same value as VIEWLET_ID in
++// Sukuna (C-3-remote): the remote explorer (contrib/remote) is removed. Same value as VIEWLET_ID in
 +// contrib/remote/browser/remoteExplorer.ts. The container is no longer registered, so views that
 +// extensions contribute to 'remote' go to the Explorer with the existing warning.
 +const REMOTE = 'workbench.view.remote';

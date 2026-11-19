@@ -6,26 +6,26 @@
 
   Dot-source it:   . (Join-Path $PSScriptRoot 'lib\shell-link.ps1')
   Functions:
-    Read-ShukoShortcut -Path <lnk>
+    Read-SukunaShortcut -Path <lnk>
         -> object: path targetPath workingDirectory arguments appUserModelId ('' when not set)
            Opens the file read-only (STGM_READ); never saves it.
-    Write-ShukoShortcut -Path <lnk> -TargetPath <exe> -WorkingDirectory <dir> -AppUserModelId <id>
+    Write-SukunaShortcut -Path <lnk> -TargetPath <exe> -WorkingDirectory <dir> -AppUserModelId <id>
         Creates a new shortcut object (nothing of an old file at Path is kept) and saves it over Path.
-    Set-ShukoShortcutAppUserModelId -Path <lnk> -AppUserModelId <id>
+    Set-SukunaShortcutAppUserModelId -Path <lnk> -AppUserModelId <id>
         Loads an existing shortcut, sets only the ID (everything else is kept) and saves it.
 
   NOTE: this file is ASCII only on purpose (Windows PowerShell 5.1 reads BOM-less scripts as ANSI).
   NOTE: no param() block on purpose (dot-sourced).
 #>
 
-if (-not ('ShukoShellLink' -as [type])) {
+if (-not ('SukunaShellLink' -as [type])) {
     Add-Type -TypeDefinition @'
 using System;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 
-public static class ShukoShellLink {
+public static class SukunaShellLink {
     [ComImport, Guid("00021401-0000-0000-C000-000000000046")]
     private class CShellLink { }
 
@@ -165,9 +165,9 @@ public static class ShukoShellLink {
 '@
 }
 
-function Read-ShukoShortcut {
+function Read-SukunaShortcut {
     param([Parameter(Mandatory)][string]$Path)
-    $v = [ShukoShellLink]::Read($Path)
+    $v = [SukunaShellLink]::Read($Path)
     return [pscustomobject][ordered]@{
         path             = $Path
         targetPath       = $v[0]
@@ -177,17 +177,17 @@ function Read-ShukoShortcut {
     }
 }
 
-function Write-ShukoShortcut {
+function Write-SukunaShortcut {
     param(
         [Parameter(Mandatory)][string]$Path,
         [Parameter(Mandatory)][string]$TargetPath,
         [Parameter(Mandatory)][string]$WorkingDirectory,
         [Parameter(Mandatory)][string]$AppUserModelId
     )
-    [ShukoShellLink]::Write($Path, $TargetPath, $WorkingDirectory, $AppUserModelId)
+    [SukunaShellLink]::Write($Path, $TargetPath, $WorkingDirectory, $AppUserModelId)
 }
 
-function Set-ShukoShortcutAppUserModelId {
+function Set-SukunaShortcutAppUserModelId {
     param([Parameter(Mandatory)][string]$Path, [Parameter(Mandatory)][string]$AppUserModelId)
-    [ShukoShellLink]::SetAppUserModelId($Path, $AppUserModelId)
+    [SukunaShellLink]::SetAppUserModelId($Path, $AppUserModelId)
 }

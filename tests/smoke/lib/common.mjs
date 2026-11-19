@@ -404,7 +404,7 @@ export function splitByCutoff(errors, cutoff) {
 /** 前の版との比べのために、誤りの文面から揺れる部分（時刻・PID・ポート・作業場所・乱数）を落とす。 */
 export function normalizeError(message) {
   return String(message)
-    // 開発者ツールのコンソールの行: source: vscode-file://vscode-app/e:/…/Shuko-win32-x64-<版の名前>/…/workbench.desktop.main.js (1847)
+    // 開発者ツールのコンソールの行: source: vscode-file://vscode-app/e:/…/Sukuna-win32-x64-<版の名前>/…/workbench.desktop.main.js (1847)
     // 置き場所(版の名前を含む)と、ビルドで変わる行番号(CONSOLE:1847]・(1847))を外す。置き場所の違う版どうしで同じ誤りを同じと見るため
     .replace(/vscode-(?:file|webview):\/\/[^\s"'`)\]]+(?: \(\d+\))?/g, '<uri>')
     .replace(/\b[A-Za-z]:\/[^\s"'`)\]]+/g, '<path>')

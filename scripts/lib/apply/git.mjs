@@ -6,8 +6,8 @@ import path from "node:path";
 import { spawnSync } from "node:child_process";
 
 // コミットの名前（docs/03 の5.2。2026-11-14 リーダーの判断）。apply.mjs が作るコミットも、edits.patch・patches/ の作者もこれにそろえる。
-export const COMMIT_NAME = "shuko-apply";
-export const COMMIT_EMAIL = "apply@shuko.invalid";
+export const COMMIT_NAME = "sukuna-apply";
+export const COMMIT_EMAIL = "apply@sukuna.invalid";
 export const COMMIT_IDENT = `${COMMIT_NAME} <${COMMIT_EMAIL}>`;
 export const COMMIT_IDENTITY = ["-c", `user.name=${COMMIT_NAME}`, "-c", `user.email=${COMMIT_EMAIL}`];
 

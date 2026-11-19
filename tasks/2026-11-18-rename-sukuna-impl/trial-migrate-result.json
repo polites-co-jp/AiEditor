@@ -1,0 +1,146 @@
+{
+    "ranAt":  "2026-11-18T22:53:47.4723870+09:00",
+    "passed":  19,
+    "failed":  0,
+    "results":  [
+                    {
+                        "name":  "no-args-usage-exit2",
+                        "ok":  true,
+                        "detail":  {
+                                       "exit":  2
+                                   }
+                    },
+                    {
+                        "name":  "list-and-apply-exit2",
+                        "ok":  true,
+                        "detail":  {
+                                       "exit":  2
+                                   }
+                    },
+                    {
+                        "name":  "unknown-arg-exit2",
+                        "ok":  true,
+                        "detail":  {
+                                       "exit":  2
+                                   }
+                    },
+                    {
+                        "name":  "configpath-without-sandbox-exit2",
+                        "ok":  true,
+                        "detail":  {
+                                       "exit":  2
+                                   }
+                    },
+                    {
+                        "name":  "sandbox-outside-trial-exit2",
+                        "ok":  true,
+                        "detail":  {
+                                       "err":  "[migrate-from-shuko] SandboxRoot must be \u003cbuildRoot\u003e\\trial-\u003cname\u003e or below it (buildRoot: E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b): E:\\develop\\self\\Team\\projects\\ai-editor\\tmp\\b\\notrial\r\nusage: powershell -NoProfile -ExecutionPolicy Bypass -File scripts/migrate/migrate-from-shuko.ps1 -List | -Apply [-SandboxRoot \u003cdir\u003e [-ConfigPath \u003clocal.json\u003e]]\r\n  -List   plan only (writes nothing)   -Apply  copy (only when nothing blocks)\r\n  copies %APPDATA%\\Shuko -\u003e %APPDATA%\\Sukuna (no caches/logs), ~\\.shuko\\argv.json -\u003e ~\\.sukuna\\argv.json,\r\n  %LOCALAPPDATA%\\Shuko\\watch|secrets -\u003e %LOCALAPPDATA%\\Sukuna\\watch|secrets. Exit: 0 ok, 1 failed, 2 usage, 3 blocked.",
+                                       "exit":  2
+                                   }
+                    },
+                    {
+                        "name":  "sandbox-dotdot-exit2",
+                        "ok":  true,
+                        "detail":  {
+                                       "exit":  2
+                                   }
+                    },
+                    {
+                        "name":  "list-ok-writes-nothing",
+                        "ok":  true,
+                        "detail":  {
+                                       "err":  "",
+                                       "exit":  0
+                                   }
+                    },
+                    {
+                        "name":  "list-has-no-marker",
+                        "ok":  true,
+                        "detail":  null
+                    },
+                    {
+                        "name":  "apply-ok",
+                        "ok":  true,
+                        "detail":  {
+                                       "err":  "",
+                                       "exit":  0
+                                   }
+                    },
+                    {
+                        "name":  "apply-copied-the-right-set",
+                        "ok":  true,
+                        "detail":  null
+                    },
+                    {
+                        "name":  "apply-bytes-same",
+                        "ok":  true,
+                        "detail":  null
+                    },
+                    {
+                        "name":  "apply-source-untouched",
+                        "ok":  true,
+                        "detail":  null
+                    },
+                    {
+                        "name":  "apply-has-no-marker",
+                        "ok":  true,
+                        "detail":  null
+                    },
+                    {
+                        "name":  "second-apply-blocked-exit3",
+                        "ok":  true,
+                        "detail":  {
+                                       "kinds":  [
+                                                     "appdata",
+                                                     "argv",
+                                                     "watch"
+                                                 ],
+                                       "exit":  3
+                                   }
+                    },
+                    {
+                        "name":  "argv-exists-blocked",
+                        "ok":  true,
+                        "detail":  {
+                                       "exit":  3
+                                   }
+                    },
+                    {
+                        "name":  "empty-dest-ok",
+                        "ok":  true,
+                        "detail":  {
+                                       "err":  "",
+                                       "exit":  0
+                                   }
+                    },
+                    {
+                        "name":  "path-too-long-blocked",
+                        "ok":  true,
+                        "detail":  {
+                                       "srcLen":  259,
+                                       "kinds":  [
+                                                     "pathTooLong"
+                                                 ],
+                                       "exit":  3
+                                   }
+                    },
+                    {
+                        "name":  "running-blocked",
+                        "ok":  true,
+                        "detail":  {
+                                       "kinds":  [
+                                                     "running"
+                                                 ],
+                                       "exit":  3
+                                   }
+                    },
+                    {
+                        "name":  "nothing-to-copy-ok",
+                        "ok":  true,
+                        "detail":  {
+                                       "exit":  0
+                                   }
+                    }
+                ]
+}

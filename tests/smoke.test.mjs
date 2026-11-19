@@ -111,10 +111,10 @@ test('resolveEditor: 版つきの配置（公式の zip）で、exe はルート
 test('resolveEditor: 平らな配置（VSCodium 型）も読める', () => {
   const root = tmp();
   try {
-    fakeEditor(root, { layout: 'flat', nameShort: 'Shuko' });
+    fakeEditor(root, { layout: 'flat', nameShort: 'Sukuna' });
     const e = resolveEditor(root);
-    assert.equal(e.exe, join(root, 'Shuko.exe'));
-    assert.equal(e.nameShort, 'Shuko');
+    assert.equal(e.exe, join(root, 'Sukuna.exe'));
+    assert.equal(e.nameShort, 'Sukuna');
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
@@ -226,7 +226,7 @@ test('extractChromiumErrors: CONSOLE は devtools-console、それ以外の ERRO
 
 // 2026-11-16 の段階 C の版(1.146.0-p5-c-all)の chromium.log の、ただ1行の誤り(records/take-in/1.146.0-p5-c-all/gate-C-1-ai.md)。
 // 「INFO:CONSOLE:<行>]」の形(括弧でなくコロン)で出て、前は拾わず errors.new が PASS になった。
-const REAL_LINE = '[59188:1116/115143.357:INFO:CONSOLE:1847] "Uncaught (in promise) TypeError: Cannot read properties of undefined (reading \'chatExtensionId\')", source: vscode-file://vscode-app/e:/develop/self/Team/projects/ai-editor/tmp/b/p2/1.146.0-p5-c-all/Shuko-win32-x64-1.146.0-p5-c-all/resources/app/out/vs/workbench/workbench.desktop.main.js (1847)';
+const REAL_LINE = '[59188:1116/115143.357:INFO:CONSOLE:1847] "Uncaught (in promise) TypeError: Cannot read properties of undefined (reading \'chatExtensionId\')", source: vscode-file://vscode-app/e:/develop/self/Team/projects/ai-editor/tmp/b/p2/1.146.0-p5-c-all/Sukuna-win32-x64-1.146.0-p5-c-all/resources/app/out/vs/workbench/workbench.desktop.main.js (1847)';
 
 test('extractChromiumErrors: INFO:CONSOLE で出る Uncaught TypeError(今回の実際の行)を devtools-console として拾う', () => {
   const e = extractChromiumErrors(REAL_LINE);
@@ -270,8 +270,8 @@ test('errors.new の鍵: 実際の行の誤りは、前の版の鍵に無けれ�
 });
 
 test('normalizeError / errorKeys: devtools-console の誤りの鍵から、版の置き場所のパスと行番号を外す(置き場所の違う版どうしで同じ誤りは同じ鍵)', () => {
-  const a = '[59188:1116/115143.357:INFO:CONSOLE:1847] "Uncaught (in promise) TypeError: Cannot read properties of undefined (reading \'x\')", source: vscode-file://vscode-app/e:/develop/self/Team/projects/ai-editor/tmp/b/p2/1.146.0-p5-c-all/Shuko-win32-x64-1.146.0-p5-c-all/resources/app/out/vs/workbench/workbench.desktop.main.js (1847)';
-  const b = '[7:1116/130000.000:INFO:CONSOLE:1902] "Uncaught (in promise) TypeError: Cannot read properties of undefined (reading \'x\')", source: vscode-file://vscode-app/c:/z/other/Shuko-win32-x64-1.146.0-p5-c-all-r3/resources/app/out/vs/workbench/workbench.desktop.main.js (1902)';
+  const a = '[59188:1116/115143.357:INFO:CONSOLE:1847] "Uncaught (in promise) TypeError: Cannot read properties of undefined (reading \'x\')", source: vscode-file://vscode-app/e:/develop/self/Team/projects/ai-editor/tmp/b/p2/1.146.0-p5-c-all/Sukuna-win32-x64-1.146.0-p5-c-all/resources/app/out/vs/workbench/workbench.desktop.main.js (1847)';
+  const b = '[7:1116/130000.000:INFO:CONSOLE:1902] "Uncaught (in promise) TypeError: Cannot read properties of undefined (reading \'x\')", source: vscode-file://vscode-app/c:/z/other/Sukuna-win32-x64-1.146.0-p5-c-all-r3/resources/app/out/vs/workbench/workbench.desktop.main.js (1902)';
   const ka = [...errorKeys(extractChromiumErrors(a))];
   const kb = [...errorKeys(extractChromiumErrors(b))];
   assert.equal(ka.length, 1);

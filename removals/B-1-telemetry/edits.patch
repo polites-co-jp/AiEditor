@@ -1,9 +1,9 @@
-From 508f32a1dab1e5da310798ee4f5cd56e9c452016 Mon Sep 17 00:00:00 2001
-From: shuko-apply <apply@shuko.invalid>
+From b2744a74daa5e3e832ba097baee615c4aba36641 Mon Sep 17 00:00:00 2001
+From: sukuna-apply <apply@sukuna.invalid>
 Date: Sat, 14 Nov 2026 00:14:43 +0900
 Subject: [PATCH] unit B-1-telemetry: edits
 
-Replace the 1DS appenders with implementations that send nothing, and keep the AI edit telemetry service id with an implementation that records nothing. Keep the _aiEdits.* command ids that the git extension calls, with no-op handlers. Part of Shuko removal unit B-1-telemetry.
+Replace the 1DS appenders with implementations that send nothing, and keep the AI edit telemetry service id with an implementation that records nothing. Keep the _aiEdits.* command ids that the git extension calls, with no-op handlers. Part of Sukuna removal unit B-1-telemetry.
 ---
  .../platform/telemetry/browser/1dsAppender.ts |  10 +-
  .../platform/telemetry/common/1dsAppender.ts  | 160 ++----------------
@@ -12,15 +12,15 @@ Replace the 1DS appenders with implementations that send nothing, and keep the A
  4 files changed, 47 insertions(+), 256 deletions(-)
 
 diff --git a/src/vs/platform/telemetry/browser/1dsAppender.ts b/src/vs/platform/telemetry/browser/1dsAppender.ts
-index 184da1d0a9a..b4661d9e9d6 100644
+index 184da1d0a9a..63bbf6c990b 100644
 --- a/src/vs/platform/telemetry/browser/1dsAppender.ts
 +++ b/src/vs/platform/telemetry/browser/1dsAppender.ts
 @@ -5,20 +5,14 @@
-
+ 
  import { AbstractOneDataSystemAppender, IAppInsightsCore } from '../common/1dsAppender.js';
-
+ 
 -
-+// Shuko (B-1-telemetry): sends nothing. The request to the 1DS health endpoint is removed.
++// Sukuna (B-1-telemetry): sends nothing. The request to the 1DS health endpoint is removed.
  export class OneDataSystemWebAppender extends AbstractOneDataSystemAppender {
  	constructor(
  		isInternalTelemetry: boolean,
@@ -39,13 +39,13 @@ index 184da1d0a9a..b4661d9e9d6 100644
  	}
  }
 diff --git a/src/vs/platform/telemetry/common/1dsAppender.ts b/src/vs/platform/telemetry/common/1dsAppender.ts
-index 9298c26e970..00deeaf02e5 100644
+index 9298c26e970..64f5dfe9b9e 100644
 --- a/src/vs/platform/telemetry/common/1dsAppender.ts
 +++ b/src/vs/platform/telemetry/common/1dsAppender.ts
 @@ -3,164 +3,30 @@
   *  Licensed under the MIT License. See License.txt in the project root for license information.
   *--------------------------------------------------------------------------------------------*/
-
+ 
 -import type { IExtendedConfiguration, IExtendedTelemetryItem, ITelemetryItem, ITelemetryUnloadState } from '@microsoft/1ds-core-js';
 -import type { IChannelConfiguration, IXHROverride, PostChannel } from '@microsoft/1ds-post-js';
 -import { importAMDNodeModule } from '../../../amdX.js';
@@ -53,9 +53,9 @@ index 9298c26e970..00deeaf02e5 100644
 -import { mixin } from '../../../base/common/objects.js';
 -import { isWeb } from '../../../base/common/platform.js';
 -import { ITelemetryAppender, validateTelemetryData } from './telemetryUtils.js';
-+// Shuko (B-1-telemetry): the 1DS sender is replaced with an implementation that sends nothing.
++// Sukuna (B-1-telemetry): the 1DS sender is replaced with an implementation that sends nothing.
 +// It has no endpoint and no key, and does not load @microsoft/1ds-core-js or @microsoft/1ds-post-js.
-
+ 
 -// Interface type which is a subset of @microsoft/1ds-core-js AppInsightsCore.
 -// Allows us to more easily build mock objects for testing as the interface is quite large and we only need a few properties.
 +import { ITelemetryAppender } from './telemetryUtils.js';
@@ -128,10 +128,10 @@ index 9298c26e970..00deeaf02e5 100644
 +	track(item: unknown): void;
 +	unload(isAsync: boolean, unloadComplete: (unloadState: unknown) => void): void;
  }
-
+ 
 -// TODO @lramos15 maybe make more in line with src/vs/platform/telemetry/browser/appInsightsAppender.ts with caching support
  export abstract class AbstractOneDataSystemAppender implements ITelemetryAppender {
-
+ 
 -	protected _aiCoreOrKey: IAppInsightsCore | string | undefined;
 -	private _asyncAiCore: Promise<IAppInsightsCore> | null;
 -	protected readonly endPointUrl = endpointUrl;
@@ -165,7 +165,7 @@ index 9298c26e970..00deeaf02e5 100644
 +		_defaultData: { [key: string]: unknown } | null,
 +		_iKeyOrClientFactory: string | (() => IAppInsightsCore),
 +	) { }
-
+ 
 -		if (typeof this._aiCoreOrKey !== 'string') {
 -			callback(this._aiCoreOrKey);
 -			return;
@@ -205,7 +205,7 @@ index 9298c26e970..00deeaf02e5 100644
 -		} catch { }
 -	}
 +	log(_eventName: string, _data?: unknown): void { }
-
+ 
  	flush(): Promise<void> {
 -		if (this._aiCoreOrKey) {
 -			return new Promise(resolve => {
@@ -221,13 +221,13 @@ index 9298c26e970..00deeaf02e5 100644
  	}
  }
 diff --git a/src/vs/platform/telemetry/node/1dsAppender.ts b/src/vs/platform/telemetry/node/1dsAppender.ts
-index 0fdbbd1a732..1389aaa36e5 100644
+index 0fdbbd1a732..fefe2427dd0 100644
 --- a/src/vs/platform/telemetry/node/1dsAppender.ts
 +++ b/src/vs/platform/telemetry/node/1dsAppender.ts
 @@ -3,115 +3,19 @@
   *  Licensed under the MIT License. See License.txt in the project root for license information.
   *--------------------------------------------------------------------------------------------*/
-
+ 
 -import type { IPayloadData, IXHROverride } from '@microsoft/1ds-post-js';
 -import { streamToBuffer } from '../../../base/common/buffer.js';
 -import { CancellationToken } from '../../../base/common/cancellation.js';
@@ -235,7 +235,7 @@ index 0fdbbd1a732..1389aaa36e5 100644
 -import { IRequestService, NO_FETCH_TELEMETRY } from '../../request/common/request.js';
 +import { IRequestService } from '../../request/common/request.js';
  import { AbstractOneDataSystemAppender, IAppInsightsCore } from '../common/1dsAppender.js';
-
+ 
 -type OnCompleteFunc = (status: number, headers: { [headerName: string]: string }, response?: string) => void;
 -
 -interface IResponseData {
@@ -321,9 +321,9 @@ index 0fdbbd1a732..1389aaa36e5 100644
 -}
 -
 -
-+// Shuko (B-1-telemetry): sends nothing. No request is made, with or without the request service.
++// Sukuna (B-1-telemetry): sends nothing. No request is made, with or without the request service.
  export class OneDataSystemAppender extends AbstractOneDataSystemAppender {
-
+ 
  	constructor(
 -		requestService: IRequestService | undefined,
 +		_requestService: IRequestService | undefined,
@@ -346,7 +346,7 @@ index 0fdbbd1a732..1389aaa36e5 100644
  	}
  }
 diff --git a/src/vs/workbench/contrib/editTelemetry/browser/telemetry/aiEditTelemetry/aiEditTelemetryService.ts b/src/vs/workbench/contrib/editTelemetry/browser/telemetry/aiEditTelemetry/aiEditTelemetryService.ts
-index 72f6bedb0ff..a0306222d0e 100644
+index 72f6bedb0ff..c7a9ce1f788 100644
 --- a/src/vs/workbench/contrib/editTelemetry/browser/telemetry/aiEditTelemetry/aiEditTelemetryService.ts
 +++ b/src/vs/workbench/contrib/editTelemetry/browser/telemetry/aiEditTelemetry/aiEditTelemetryService.ts
 @@ -6,6 +6,8 @@
@@ -355,15 +355,15 @@ index 72f6bedb0ff..a0306222d0e 100644
  import { createDecorator } from '../../../../../../platform/instantiation/common/instantiation.js';
 +import { InstantiationType, registerSingleton } from '../../../../../../platform/instantiation/common/extensions.js';
 +import { CommandsRegistry } from '../../../../../../platform/commands/common/commands.js';
-
+ 
  export const IAiEditTelemetryService = createDecorator<IAiEditTelemetryService>('aiEditTelemetryService');
-
+ 
 @@ -103,3 +105,28 @@ export interface IEditTelemetryCodeRejectedData extends IEditTelemetryBaseData {
  	/** User explicitly rejected/undid the suggestion (when presentation is `highlightedEdit`) or pressed Escape (when feature is `inlineSuggestion`) */
  	| 'reject';
  }
 +
-+// Shuko (B-1-telemetry): the rest of contrib/editTelemetry is removed. This file keeps the service id and
++// Sukuna (B-1-telemetry): the rest of contrib/editTelemetry is removed. This file keeps the service id and
 +// registers an implementation that records and sends nothing, for the parts that still inject the service
 +// (the extension API in mainThreadLanguageFeatures, and chat until C-1).
 +class NullAiEditTelemetryService implements IAiEditTelemetryService {
@@ -380,12 +380,13 @@ index 72f6bedb0ff..a0306222d0e 100644
 +
 +registerSingleton(IAiEditTelemetryService, NullAiEditTelemetryService, InstantiationType.Delayed);
 +
-+// Shuko (B-1-telemetry): the git extension calls these commands when it stages, discards and commits. The removed
++// Sukuna (B-1-telemetry): the git extension calls these commands when it stages, discards and commits. The removed
 +// parts of contrib/editTelemetry registered them (no-op fallbacks in editTelemetryContribution.ts, the tracking ones
 +// in aiContributionFeature.ts). Keep the ids with the upstream no-op behaviour: no AI edits are tracked, so there is
 +// nothing to clear, and the commit message never gets the AI co-author trailer.
 +CommandsRegistry.registerCommand('_aiEdits.hasAiContributions', () => false);
 +CommandsRegistry.registerCommand('_aiEdits.clearAiContributions', () => { });
 +CommandsRegistry.registerCommand('_aiEdits.clearAllAiContributions', () => { });
---
+-- 
 2.54.0.windows.1
+

@@ -18,7 +18,7 @@ const strings = () => ({
   core: { 'vs/a': { k1: 'Open File', k2: 'Save' }, 'vs/b': { k1: 'Close' } },
   extensions: {
     'vscode.git': { folder: 'git', own: false, package: { 'cmd.clone': 'Clone', displayName: 'Git' }, bundle: { 'Pull from {0}': 'Pull from {0}' } },
-    'shuko.mydist': { folder: 'mydist', own: true, package: {}, bundle: {}, literal: { displayName: 'Shuko の既定', description: 'Defaults only' } },
+    'sukuna.mydist': { folder: 'mydist', own: true, package: {}, bundle: {}, literal: { displayName: 'Sukuna の既定', description: 'Defaults only' } },
   },
 });
 
@@ -80,18 +80,18 @@ test('recordFromL10nJson・recordFromPackageNls: オブジェクトでない入�
 // ---- manifestLiterals -----------------------------------------------------------------------------------------
 test('manifestLiterals: %key% は拾わない。画面に出る直書きの文字列だけを、場所の名前つきで拾う', () => {
   const lit = manifestLiterals({
-    displayName: 'Shuko の既定',
+    displayName: 'Sukuna の既定',
     description: '%description%',
     contributes: {
-      commands: [{ command: 'x.open', title: '開く', category: 'Shuko' }, { command: 'x.t', title: '%x.t%' }],
+      commands: [{ command: 'x.open', title: '開く', category: 'Sukuna' }, { command: 'x.t', title: '%x.t%' }],
       configuration: { title: '設定', properties: { 'x.a': { description: 'A の説明', markdownDescription: '**A**' }, 'x.b': { description: '%x.b%' } } },
       localizations: [{ languageId: 'ja', localizedLanguageName: '日本語' }],
     },
   });
   assert.deepEqual(lit, {
-    displayName: 'Shuko の既定',
+    displayName: 'Sukuna の既定',
     'commands.x.open.title': '開く',
-    'commands.x.open.category': 'Shuko',
+    'commands.x.open.category': 'Sukuna',
     'configuration[0].title': '設定',
     'configuration.x.a.description': 'A の説明',
     'configuration.x.a.markdownDescription': '**A**',
@@ -112,7 +112,7 @@ test('flattenStrings: area（core・package・bundle・literal）ごとの平ら
   assert.deepEqual(by('core'), ['vs/a#k1', 'vs/a#k2', 'vs/b#k1']);
   assert.deepEqual(by('package'), ['vscode.git#cmd.clone', 'vscode.git#displayName']);
   assert.deepEqual(by('bundle'), ['vscode.git#Pull from {0}']);
-  assert.deepEqual(by('literal'), ['shuko.mydist#description', 'shuko.mydist#displayName']);
+  assert.deepEqual(by('literal'), ['sukuna.mydist#description', 'sukuna.mydist#displayName']);
   assert.equal(flat.length, 3 + 2 + 1 + 2);
   assert.deepEqual(flat.find((t) => t.area === 'core' && t.key === 'k2'), { area: 'core', owner: 'vs/a', key: 'k2', en: 'Save' });
 });
@@ -126,7 +126,7 @@ test('countStrings: core・拡張の件数と合計。literal があれば拡張
   assert.equal(c.extensions, 2 + 1 + 2);
   assert.equal(c.total, 3 + 5);
   assert.deepEqual(c.perExtension['vscode.git'], { package: 2, bundle: 1 });
-  assert.deepEqual(c.perExtension['shuko.mydist'], { package: 0, bundle: 0, literal: 2 });
+  assert.deepEqual(c.perExtension['sukuna.mydist'], { package: 0, bundle: 0, literal: 2 });
   assert.deepEqual(countStrings({}), { core: 0, extensions: 0, total: 0, perExtension: {} });
 });
 
@@ -241,8 +241,8 @@ test('buildPack: 層も足した訳も無ければ空のパック', () => {
   assert.deepEqual(r.provenance, {});
 });
 test('buildPack: 自前の拡張の直書き（literal）だけの表からは、パックに何も入らない（直書きは言語パックで訳さない）', () => {
-  const strs = { extensions: { 'shuko.mydist': { package: {}, bundle: {}, literal: { displayName: 'Shuko の既定' } } } };
-  const r = buildPack({ strings: strs, layers: [layer('o', { extensions: { 'shuko.other': { package: { p: 'ぴ' } } } })] });
+  const strs = { extensions: { 'sukuna.mydist': { package: {}, bundle: {}, literal: { displayName: 'Sukuna の既定' } } } };
+  const r = buildPack({ strings: strs, layers: [layer('o', { extensions: { 'sukuna.other': { package: { p: 'ぴ' } } } })] });
   assert.deepEqual(r.pack, { core: {}, extensions: {} });
   assert.deepEqual(r.provenance, {});
 });
@@ -254,7 +254,7 @@ const EXC = () => ({
     { module: 'vs/a', key: 'k2', en: 'Save', reason: 'format' },
     { extension: 'vscode.git', section: 'bundle', key: 'Pull from {0}', en: 'Pull from {0}', reason: 'format' },
     { extension: 'vscode.git', section: 'package', key: 'displayName', en: 'Git', reason: 'proper-noun', note: 'メモ' },
-    { extension: 'shuko.mydist', section: 'literal', key: 'description', en: 'Defaults only', reason: 'proper-noun' },
+    { extension: 'sukuna.mydist', section: 'literal', key: 'description', en: 'Defaults only', reason: 'proper-noun' },
   ],
 });
 test('exclusionTree: lookup で引ける木にする（本体・拡張の package・bundle・literal）', () => {
@@ -262,7 +262,7 @@ test('exclusionTree: lookup で引ける木にする（本体・拡張の packag
   assert.deepEqual(lookup(t, 'core', 'vs/a', 'k2'), { en: 'Save', reason: 'format', note: undefined });
   assert.equal(lookup(t, 'bundle', 'vscode.git', 'Pull from {0}').reason, 'format');
   assert.equal(lookup(t, 'package', 'vscode.git', 'displayName').note, 'メモ');
-  assert.equal(lookup(t, 'literal', 'shuko.mydist', 'description').en, 'Defaults only');
+  assert.equal(lookup(t, 'literal', 'sukuna.mydist', 'description').en, 'Defaults only');
   assert.equal(lookup(t, 'package', 'vscode.git', 'Pull from {0}'), undefined, 'section が違えば別の鍵');
 });
 test('exclusionTree: section を省いた拡張の項目は package に入る。key の無い項目・不正な入力は読み飛ばす', () => {
@@ -336,7 +336,7 @@ test('coverage: パックに空でない訳があれば訳あり、無い・空�
   const c = coverage({ strings: strings(), pack, exclusions: ex });
   assert.equal(c.total, 3 + 2 + 1 + 2);
   const names = c.untranslatedList.map((t) => `${t.area}:${t.owner}#${t.key}`).sort();
-  assert.deepEqual(names, ['bundle:vscode.git#Pull from {0}', 'core:vs/a#k2', 'literal:shuko.mydist#description'].sort());
+  assert.deepEqual(names, ['bundle:vscode.git#Pull from {0}', 'core:vs/a#k2', 'literal:sukuna.mydist#description'].sort());
   assert.equal(c.excluded, 2);
   assert.equal(c.translated, c.total - c.untranslated - c.excluded);
   assert.deepEqual(c.staleExclusions, [{ area: 'bundle', owner: 'vscode.git', key: 'Pull from {0}', recordedEn: 'Pull (old wording)', en: 'Pull from {0}' }]);
@@ -363,8 +363,8 @@ test('coverage: 除外の英語が今と違えば未訳に数え、staleExclusio
   assert.equal(c.staleExclusions[0].recordedEn, 'Old wording');
 });
 test('coverage: literal は日本語を含めば訳あり、英語だけなら未訳（パックは見ない）。literal の除外も効く', () => {
-  const s = { extensions: { 'shuko.x': { package: {}, bundle: {}, literal: { a: 'Shuko の既定', b: 'English only', c: 'Also English' } } } };
-  const ex = { exclusions: [{ extension: 'shuko.x', section: 'literal', key: 'c', en: 'Also English', reason: 'r' }] };
+  const s = { extensions: { 'sukuna.x': { package: {}, bundle: {}, literal: { a: 'Sukuna の既定', b: 'English only', c: 'Also English' } } } };
+  const ex = { exclusions: [{ extension: 'sukuna.x', section: 'literal', key: 'c', en: 'Also English', reason: 'r' }] };
   const c = coverage({ strings: s, pack: { core: {}, extensions: {} }, exclusions: ex });
   assert.equal(c.byArea.literal.total, 3);
   assert.equal(c.byArea.literal.translated, 1);

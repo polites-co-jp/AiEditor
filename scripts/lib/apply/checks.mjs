@@ -215,7 +215,7 @@ export function readLockManifests(lock, manifestsDir) {
   return { found, missing };
 }
 
-// overlay の set のキーと、mydist の既定・shukoConfigurationDefaults の設定のキーが、本家で登録されているか。
+// overlay の set のキーと、mydist の既定・sukunaConfigurationDefaults の設定のキーが、本家で登録されているか。
 export function checkRegisteredKeys({ worktree, baseProduct, overlay, mydistManifest, lock, manifestsDir }) {
   // product.json のキー
   const product = [];

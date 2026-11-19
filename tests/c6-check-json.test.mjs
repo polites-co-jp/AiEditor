@@ -23,7 +23,7 @@ const TA = join(TRIAL, 'build-typecheck-verify-a.json');
 const TB = join(TRIAL, 'build-typecheck-verify-b.json');
 const clone = (o) => JSON.parse(JSON.stringify(o));
 const hex = (c) => c.repeat(40);
-const AUTHOR = 'shuko-apply <apply@shuko.invalid>';
+const AUTHOR = 'sukuna-apply <apply@sukuna.invalid>';
 
 // 最小の記録（実物が無いときと、壊す元）
 const mini = (kind) => {
@@ -145,7 +145,7 @@ test('c6-check: 食い違いを見つける（result・単位の欠け・余計�
     ['registeredKeys', 'a', (j) => { j.checks.registeredKeys.status = 'fail'; }, /registeredKeys/],
     ['commitIdentity', 'a', (j) => { j.checks.commitIdentity.status = 'fail'; }, /commitIdentity/],
     ['コミットの並び(ops が edits の後)', 'a', (j) => { const n = j.commits.length; [j.commits[n - 1], j.commits[n - 2]] = [j.commits[n - 2], j.commits[n - 1]]; }, /並びが違う/],
-    ['コミットの作者', 'a', (j) => { j.commits[j.commits.length - 1].author = 'someone <a@b.invalid>'; }, /作者が shuko-apply でない/],
+    ['コミットの作者', 'a', (j) => { j.commits[j.commits.length - 1].author = 'someone <a@b.invalid>'; }, /作者が sukuna-apply でない/],
     ['b でコミットの並び(C-5 の edits が C-6 の ops の後)', 'b', (j) => { const i = j.commits.findIndex((c) => c.subject === 'unit C-5-extension-gallery: edits'); const [c] = j.commits.splice(i, 1); j.commits.push(c); }, /C-5-extension-gallery の edits が C-6 の ops の後/],
   ];
   for (const [name, kind, mutate, re] of cases) {

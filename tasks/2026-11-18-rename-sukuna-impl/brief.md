@@ -2,7 +2,7 @@
 
 - 担当: meng-tian（蒙恬）
 - 依頼日: 2026-11-18
-- 状態: 依頼中
+- 状態: 完了
 
 ## 目的
 
@@ -36,11 +36,11 @@
 
 ## 結果
 
-（リーダーが記入）
+完了（2026-11-19、大岡越前守の検証に合格）。名前の置き換え 66 ファイル・412 か所、パッチ15本の作り直し（中身の行は名前のほかに変わらない。`patch-regen-check.json`）、移行の台本 `scripts/migrate/migrate-from-shuko.ps1`、`start-menu-shortcut.ps1` の名前を版から求める作り。改名の前の今の値の控え（`rename-plan.md` の3.3の手順1）はリーダーが行った: `%LOCALAPPDATA%\Shuko\local.json` は既定の値のまま（`installRoot` `%LOCALAPPDATA%\Programs\Shuko`、`keepVersions` 3、`builderRepo` このリポジトリ、`buildRoot` `tmp`）。`history.txt` は 2026-11-16 の `1.146.0-1` の1行だけ。
 
 ## 未解決
 
-（リーダーが記入）
+移行の台本の本番は権限の段1（1.1・1.5）が入ってから。`scripts/move-survey.mjs` の説明の文が改名の後と合わない（使っていない道具。直さない）。手元の道具（`scripts/trial-*`）はコミットしない。
 
 ## 次の担当
 

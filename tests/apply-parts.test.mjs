@@ -380,11 +380,11 @@ test('classify: addedDependencies は区分が移っただけのものを数え�
 // ---------------------------------------------------------------------------
 // keys
 // ---------------------------------------------------------------------------
-test('keys: settingKeysToCheck は mydist の configurationDefaults（言語の上書き [x] を除く）と overlay の shukoConfigurationDefaults', need('keys', 'settingKeysToCheck'), () => {
+test('keys: settingKeysToCheck は mydist の configurationDefaults（言語の上書き [x] を除く）と overlay の sukunaConfigurationDefaults', need('keys', 'settingKeysToCheck'), () => {
   const mydist = { contributes: { configurationDefaults: { 'editor.a': 1, '[python]': { 'editor.b': 2 } } } };
-  const overlay = { set: { shukoConfigurationDefaults: { 'telemetry.telemetryLevel': 'off' } } };
+  const overlay = { set: { sukunaConfigurationDefaults: { 'telemetry.telemetryLevel': 'off' } } };
   const r = M('keys').settingKeysToCheck(mydist, overlay);
-  assert.deepEqual(r.map((x) => `${x.from}:${x.key}`).sort(), ['mydist:editor.a', 'shukoConfigurationDefaults:telemetry.telemetryLevel']);
+  assert.deepEqual(r.map((x) => `${x.from}:${x.key}`).sort(), ['mydist:editor.a', 'sukunaConfigurationDefaults:telemetry.telemetryLevel']);
 });
 
 test('keys: configurationPropertyKeys はオブジェクトでも配列でも properties のキーを返す。literalIncluded は3種の引用符', need('keys', 'configurationPropertyKeys'), () => {

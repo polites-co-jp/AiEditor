@@ -1,0 +1,218 @@
+{
+    "tool":  "migrate-from-shuko",
+    "mode":  "apply",
+    "sandbox":  true,
+    "result":  "ok",
+    "written":  true,
+    "running":  [
+
+                ],
+    "blockers":  [
+
+                 ],
+    "locations":  [
+                      {
+                          "kind":  "appdata",
+                          "from":  "\u003csandbox\u003e\\Users\\sandbox\\AppData\\Roaming\\Shuko",
+                          "to":  "\u003csandbox\u003e\\Users\\sandbox\\AppData\\Roaming\\Sukuna",
+                          "sourceExists":  true,
+                          "destState":  "absent",
+                          "files":  6,
+                          "dirs":  4,
+                          "bytes":  93,
+                          "entries":  [
+                                          {
+                                              "name":  "Backups",
+                                              "type":  "dir",
+                                              "files":  0,
+                                              "bytes":  0
+                                          },
+                                          {
+                                              "name":  "Local State",
+                                              "type":  "file",
+                                              "files":  1,
+                                              "bytes":  33
+                                          },
+                                          {
+                                              "name":  "User",
+                                              "type":  "dir",
+                                              "files":  5,
+                                              "bytes":  60
+                                          }
+                                      ],
+                          "excluded":  [
+                                           {
+                                               "name":  "Cache",
+                                               "type":  "dir"
+                                           },
+                                           {
+                                               "name":  "code.lock",
+                                               "type":  "file"
+                                           },
+                                           {
+                                               "name":  "languagepacks.json",
+                                               "type":  "file"
+                                           },
+                                           {
+                                               "name":  "logs",
+                                               "type":  "dir"
+                                           }
+                                       ],
+                          "renamed":  [
+                                          {
+                                              "from":  "User\\globalStorage\\shuko.notion-sync",
+                                              "to":  "User\\globalStorage\\sukuna.notion-sync"
+                                          }
+                                      ],
+                          "userFiles":  [
+                                            {
+                                                "name":  "User\\keybindings.json",
+                                                "type":  "file",
+                                                "bytes":  2
+                                            },
+                                            {
+                                                "name":  "User\\settings.json",
+                                                "type":  "file",
+                                                "bytes":  25
+                                            },
+                                            {
+                                                "name":  "User\\globalStorage\\state.vscdb",
+                                                "type":  "file",
+                                                "bytes":  21
+                                            },
+                                            {
+                                                "name":  "User\\globalStorage\\storage.json",
+                                                "type":  "file",
+                                                "bytes":  2
+                                            },
+                                            {
+                                                "name":  "User\\globalStorage\\shuko.notion-sync\\sync-base.json",
+                                                "type":  "file",
+                                                "bytes":  10
+                                            }
+                                        ]
+                      },
+                      {
+                          "kind":  "argv",
+                          "from":  "\u003csandbox\u003e\\Users\\sandbox\\.shuko\\argv.json",
+                          "to":  "\u003csandbox\u003e\\Users\\sandbox\\.sukuna\\argv.json",
+                          "sourceExists":  true,
+                          "destState":  "absent",
+                          "files":  1,
+                          "dirs":  0,
+                          "bytes":  18,
+                          "entries":  [
+                                          {
+                                              "name":  "argv.json",
+                                              "type":  "file",
+                                              "bytes":  18
+                                          }
+                                      ],
+                          "excluded":  [
+
+                                       ],
+                          "renamed":  [
+
+                                      ]
+                      },
+                      {
+                          "kind":  "watch",
+                          "from":  "\u003csandbox\u003e\\Users\\sandbox\\AppData\\Local\\Shuko\\watch",
+                          "to":  "\u003csandbox\u003e\\Users\\sandbox\\AppData\\Local\\Sukuna\\watch",
+                          "sourceExists":  true,
+                          "destState":  "absent",
+                          "files":  3,
+                          "dirs":  0,
+                          "bytes":  84,
+                          "entries":  [
+                                          {
+                                              "name":  "notion-token.dpapi",
+                                              "type":  "file",
+                                              "bytes":  18
+                                          },
+                                          {
+                                              "name":  "state.json",
+                                              "type":  "file",
+                                              "bytes":  65
+                                          },
+                                          {
+                                              "name":  "watch.log",
+                                              "type":  "file",
+                                              "bytes":  1
+                                          }
+                                      ],
+                          "excluded":  [
+
+                                       ],
+                          "renamed":  [
+
+                                      ]
+                      },
+                      {
+                          "kind":  "secrets",
+                          "from":  "\u003csandbox\u003e\\Users\\sandbox\\AppData\\Local\\Shuko\\secrets",
+                          "to":  "\u003csandbox\u003e\\Users\\sandbox\\AppData\\Local\\Sukuna\\secrets",
+                          "sourceExists":  false,
+                          "destState":  "absent",
+                          "files":  0,
+                          "dirs":  0,
+                          "bytes":  0,
+                          "entries":  [
+
+                                      ],
+                          "excluded":  [
+
+                                       ],
+                          "renamed":  [
+
+                                      ]
+                      }
+                  ],
+    "writtenTo":  [
+                      "\u003csandbox\u003e\\Users\\sandbox\\AppData\\Roaming\\Sukuna",
+                      "\u003csandbox\u003e\\Users\\sandbox\\.sukuna\\argv.json",
+                      "\u003csandbox\u003e\\Users\\sandbox\\AppData\\Local\\Sukuna\\watch"
+                  ],
+    "copied":  [
+                   {
+                       "kind":  "appdata",
+                       "files":  6,
+                       "dirs":  4,
+                       "bytes":  93,
+                       "expectedFiles":  6,
+                       "expectedDirs":  4,
+                       "expectedBytes":  93,
+                       "verified":  true,
+                       "mismatches":  [
+
+                                      ]
+                   },
+                   {
+                       "kind":  "argv",
+                       "files":  1,
+                       "dirs":  0,
+                       "bytes":  18,
+                       "expectedFiles":  1,
+                       "expectedDirs":  0,
+                       "expectedBytes":  18,
+                       "verified":  true,
+                       "mismatches":  [
+
+                                      ]
+                   },
+                   {
+                       "kind":  "watch",
+                       "files":  3,
+                       "dirs":  0,
+                       "bytes":  84,
+                       "expectedFiles":  3,
+                       "expectedDirs":  0,
+                       "expectedBytes":  84,
+                       "verified":  true,
+                       "mismatches":  [
+
+                                      ]
+                   }
+               ],
+    "createdCount":  18
+}

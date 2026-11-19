@@ -1,8 +1,8 @@
 {
   "name": "notion-sync",
-  "displayName": "Shuko Notion 同期",
+  "displayName": "Sukuna Notion 同期",
   "description": "ユーザーの設定ファイルを Notion の設定ページで複数の PC にそろえる組み込み拡張（docs/05）",
-  "publisher": "shuko",
+  "publisher": "sukuna",
   "version": "0.0.1",
   "private": true,
   "license": "MIT",
@@ -83,8 +83,8 @@
         "localizedLanguageName": "日本語",
         "translations": [
           {
-            "id": "shuko.notion-sync",
-            "path": "./dist/i18n/shuko.notion-sync.ja.i18n.json"
+            "id": "sukuna.notion-sync",
+            "path": "./dist/i18n/sukuna.notion-sync.ja.i18n.json"
           }
         ]
       }

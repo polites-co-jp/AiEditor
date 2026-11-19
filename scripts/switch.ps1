@@ -32,7 +32,7 @@
   never point the trial at the daily editor data).
 
   Update watch (docs/06 2.3): in every mode, before anything else, it reads lastSuccessAt of the update
-  watch state (-WatchState; default %LOCALAPPDATA%\Shuko\watch\state.json), the same way as readWatchStatus
+  watch state (-WatchState; default %LOCALAPPDATA%\Sukuna\watch\state.json), the same way as readWatchStatus
   in scripts/lib/take-in/writeback.mjs. It prints one line to stderr and puts "watch" in the JSON:
     [switch] update watch last succeeded: <lastSuccessAt>                       (age <= 3 days)
     [switch] WARNING: update watch has not succeeded for <n> day(s) (last <lastSuccessAt>)   (age > 3 days)
@@ -217,7 +217,7 @@ function Get-JunctionTarget {
     return $t
 }
 
-function Get-ShukoEditorInfo {
+function Get-SukunaEditorInfo {
     <# Finds resources\app (directly under the folder, or under one <commit10>\ folder: docs/02 4 step 7),
        the exe (<nameShort>.exe) and the CLI (bin\<applicationName>.cmd) of an unpacked version. #>
     param([Parameter(Mandatory)][string]$Root)
@@ -257,7 +257,7 @@ function Get-EditorProcessesUnder {
 
 function Expand-VersionZip {
     <# Unpacks a zip into <versions>\<label> with System32 tar.exe (bsdtar). If the zip has one top
-       folder (Shuko-win32-x64-<label>), its content becomes the version folder. #>
+       folder (Sukuna-win32-x64-<label>), its content becomes the version folder. #>
     param([string]$ZipPath, [string]$VersionsDir, [string]$Name)
     $tar = Join-Path $env:SystemRoot 'System32\tar.exe'
     if (-not (Test-Path -LiteralPath $tar)) { throw "tar.exe not found: $tar" }
@@ -321,7 +321,7 @@ function Read-History {
 
 # Update watch freshness (docs/06 2.3): shown first, in every mode; a warning only, never a stop.
 if (-not $WatchState) {
-    if ($env:LOCALAPPDATA) { $WatchState = Join-Path $env:LOCALAPPDATA 'Shuko\watch\state.json' }
+    if ($env:LOCALAPPDATA) { $WatchState = Join-Path $env:LOCALAPPDATA 'Sukuna\watch\state.json' }
 }
 try {
     $watchStatus = Get-WatchStatus -StatePath $WatchState
@@ -332,7 +332,7 @@ $summary.watch = $watchStatus
 Write-WatchStatus $watchStatus
 
 try {
-    $cfg = Resolve-ShukoLocalConfig -ConfigPath $ConfigPath -Overrides @{ installRoot = $InstallRoot }
+    $cfg = Resolve-SukunaLocalConfig -ConfigPath $ConfigPath -Overrides @{ installRoot = $InstallRoot }
 } catch {
     Out-Summary -Result 'error' -Message $_.Exception.Message -Code 1
 }
@@ -364,7 +364,7 @@ try {
         $summary.keepVersions = $cfg.keepVersions
         $summary.versions = @($versionNames | Sort-Object -Property @{ Expression = { Get-LabelSortKey $_ } } | ForEach-Object {
                 $info = $null
-                try { $info = Get-ShukoEditorInfo (Join-Path $versionsDir $_) } catch { }
+                try { $info = Get-SukunaEditorInfo (Join-Path $versionsDir $_) } catch { }
                 [ordered]@{ label = $_; version = $(if ($info) { $info.version } else { $null }); current = ($_ -eq $currentLabel) }
             })
         $summary.history = @($history | Select-Object -Last 10)
@@ -394,7 +394,7 @@ try {
     }
 
     $targetDir = Join-Path $versionsDir $Label
-    $info = Get-ShukoEditorInfo $targetDir
+    $info = Get-SukunaEditorInfo $targetDir
     $summary.target = [ordered]@{ dir = $targetDir; version = $info.version; commit = $info.commit; exe = $info.exe; cli = $info.cli; versionedFolder = $info.versionedFolder }
 
     if ($ExpandOnly) {
@@ -434,7 +434,7 @@ try {
     # 3. backup of the user data
     if (-not $UserDataDir) {
         $nameShort = $info.nameShort
-        if ($currentLabel) { try { $nameShort = (Get-ShukoEditorInfo (Join-Path $versionsDir $currentLabel)).nameShort } catch { } }
+        if ($currentLabel) { try { $nameShort = (Get-SukunaEditorInfo (Join-Path $versionsDir $currentLabel)).nameShort } catch { } }
         $base = $env:VSCODE_APPDATA
         if (-not $base) { $base = $env:APPDATA }
         $UserDataDir = Join-Path $base $nameShort

@@ -1,7 +1,7 @@
 // Runs scripts/configure.ps1 with arguments in a test location and checks stdout JSON, exit code and local.json.
 // Spec: docs/02 section 6.1 ("場所を変える"); build-switch-design.md section 6.
 // Every run passes -ConfigPath (a file in the test folder) and -NoShellIntegration, so the real
-// %LOCALAPPDATA%\Shuko\local.json, the Start menu shortcuts and the user PATH are never touched.
+// %LOCALAPPDATA%\Sukuna\local.json, the Start menu shortcuts and the user PATH are never touched.
 // Run: node --test tests/configure.test.mjs
 import test, { before, after } from 'node:test';
 import assert from 'node:assert/strict';
@@ -25,7 +25,7 @@ function setup(initialConfig = null) {
   if (initialConfig !== null) fs.writeFileSync(cfg, typeof initialConfig === 'string' ? initialConfig : JSON.stringify(initialConfig, null, 2) + '\n');
   const run = (...args) => {
     // -NoShellIntegration always: this suite must not look at or change shortcuts or PATH.
-    const r = runPs(CONFIGURE, [...args, '-ConfigPath', cfg, '-NoShellIntegration'], { env: { SHUKO_TEST_BASE: root } });
+    const r = runPs(CONFIGURE, [...args, '-ConfigPath', cfg, '-NoShellIntegration'], { env: { SUKUNA_TEST_BASE: root } });
     let json = null;
     try {
       json = parseJsonOut(r.stdout);
@@ -40,7 +40,7 @@ function setup(initialConfig = null) {
 
 // A fake install root with versions, history, backups and a current junction.
 function makeInstall(dir, label = '1.146.0-1') {
-  writeFile(path.join(dir, 'versions', label, 'Shuko.exe'), 'MZ');
+  writeFile(path.join(dir, 'versions', label, 'Sukuna.exe'), 'MZ');
   writeFile(path.join(dir, 'versions', label, 'resources', 'app', 'product.json'), '{}');
   writeFile(path.join(dir, 'history.txt'), `2026-11-14T00:00:00+09:00\t-\t${label}\n`);
   writeFile(path.join(dir, 'backups', '20261114-000000', 'User', 'settings.json'), '{"x":1}');
@@ -62,7 +62,7 @@ test('no arguments and no file: creates local.json with defaults; builderRepo is
   assert.deepEqual(keys, ['installRoot', 'keepVersions', 'builderRepo', 'buildRoot']);
   assert.ok(text.startsWith('{\n  "installRoot"'));
   const obj = JSON.parse(text);
-  assert.equal(obj.installRoot, '%LOCALAPPDATA%\\Programs\\Shuko', 'written without expanding %LOCALAPPDATA%');
+  assert.equal(obj.installRoot, '%LOCALAPPDATA%\\Programs\\Sukuna', 'written without expanding %LOCALAPPDATA%');
   assert.equal(obj.keepVersions, 3);
   assert.equal(path.resolve(obj.buildRoot).toLowerCase(), path.join(REPO, 'tmp', 'b').toLowerCase(), 'buildRoot の既定はプロジェクトの tmp\\b（2026-11-15 の裁定）');
   assert.equal(path.resolve(obj.builderRepo).toLowerCase(), REPO.toLowerCase());
@@ -83,7 +83,7 @@ test('no arguments and an existing file: only reports the resolved values; the f
 });
 
 test('an invalid existing file: exit 1, the file is left as it is', () => {
-  for (const text of ['{"InstallRoot": "C:\\\\x"}', '{"keepVersions": "3"}', '{"keepVersions": 2,}', '{"installRoot": "%NO_SUCH_VAR_SHUKO%\\\\x"}']) {
+  for (const text of ['{"InstallRoot": "C:\\\\x"}', '{"keepVersions": "3"}', '{"keepVersions": 2,}', '{"installRoot": "%NO_SUCH_VAR_SUKUNA%\\\\x"}']) {
     const s = setup(text);
     const r = s.run();
     assert.equal(r.status, 1, text + r.stderr + r.stdout);
@@ -158,7 +158,7 @@ test('-InstallRoot with -NoMove: only local.json changes; the old location is le
   const r = s.run('-InstallRoot', B, '-NoMove');
   assert.equal(r.status, 0, r.stderr + r.stdout);
   assert.equal(JSON.parse(s.read()).installRoot, B);
-  assert.ok(fs.existsSync(path.join(A, 'versions', '1.146.0-1', 'Shuko.exe')));
+  assert.ok(fs.existsSync(path.join(A, 'versions', '1.146.0-1', 'Sukuna.exe')));
   assert.ok(fs.existsSync(path.join(A, 'history.txt')));
   assert.ok(isJunctionTo(path.join(A, 'current'), path.join(A, 'versions', '1.146.0-1')));
   assert.ok(!fs.existsSync(path.join(B, 'versions')), 'nothing is moved to B');
@@ -173,7 +173,7 @@ test('-InstallRoot: moves versions, history.txt and backups; current is recreate
   const r = s.run('-InstallRoot', B);
   assert.equal(r.status, 0, r.stderr + r.stdout);
   assert.equal(r.json.result, 'ok');
-  assert.ok(fs.existsSync(path.join(B, 'versions', '1.146.0-1', 'Shuko.exe')));
+  assert.ok(fs.existsSync(path.join(B, 'versions', '1.146.0-1', 'Sukuna.exe')));
   assert.equal(fs.readFileSync(path.join(B, 'history.txt'), 'utf8'), '2026-11-14T00:00:00+09:00\t-\t1.146.0-1\n');
   assert.ok(fs.existsSync(path.join(B, 'backups', '20261114-000000', 'User', 'settings.json')));
   assert.ok(isJunctionTo(path.join(B, 'current'), path.join(B, 'versions', '1.146.0-1')), 'junction points into B');
@@ -185,12 +185,12 @@ test('-InstallRoot: moves versions, history.txt and backups; current is recreate
 });
 
 test('-InstallRoot: the value is written as the user gave it (a %NAME% is not expanded)', () => {
-  // The old installRoot is a test folder, so the real %LOCALAPPDATA%\Programs\Shuko (and a running Shuko) is never looked at.
+  // The old installRoot is a test folder, so the real %LOCALAPPDATA%\Programs\Sukuna (and a running Sukuna) is never looked at.
   const s = setup();
   fs.writeFileSync(s.cfg, JSON.stringify({ installRoot: path.join(s.root, 'OldPct'), keepVersions: 3 }));
-  const r = s.run('-InstallRoot', '%SHUKO_TEST_BASE%\\Pct', '-NoMove');
+  const r = s.run('-InstallRoot', '%SUKUNA_TEST_BASE%\\Pct', '-NoMove');
   assert.equal(r.status, 0, r.stderr + r.stdout);
-  assert.equal(JSON.parse(s.read()).installRoot, '%SHUKO_TEST_BASE%\\Pct');
+  assert.equal(JSON.parse(s.read()).installRoot, '%SUKUNA_TEST_BASE%\\Pct');
   assert.equal(r.json.resolved.installRoot.toLowerCase(), path.join(s.root, 'Pct').toLowerCase());
 });
 
@@ -204,13 +204,13 @@ test('-InstallRoot: a new location inside the old one, or the old inside the new
     const r = s.run('-InstallRoot', path.join(s.root, newName));
     assert.equal(r.status, 1, `${oldName} -> ${newName}: ` + r.stderr + r.stdout);
     assert.equal(s.read(), before);
-    assert.ok(fs.existsSync(path.join(A, 'versions', '1.146.0-1', 'Shuko.exe')), 'old location is intact');
+    assert.ok(fs.existsSync(path.join(A, 'versions', '1.146.0-1', 'Sukuna.exe')), 'old location is intact');
     assert.ok(isJunctionTo(path.join(A, 'current'), path.join(A, 'versions', '1.146.0-1')));
   }
 });
 
 test('-InstallRoot: a UNC path is refused; so is a relative path', () => {
-  for (const bad of ['\\\\localhost\\c$\\shuko-tests-unc', '//localhost/c$/shuko-tests-unc', 'relative\\x']) {
+  for (const bad of ['\\\\localhost\\c$\\sukuna-tests-unc', '//localhost/c$/sukuna-tests-unc', 'relative\\x']) {
     const s = setup();
     const A = path.join(s.root, 'A');
     makeInstall(A);
@@ -234,7 +234,7 @@ test('-InstallRoot: a same-named item already in the new location stops the move
   const r = s.run('-InstallRoot', B);
   assert.notEqual(r.status, 0, r.stderr + r.stdout);
   assert.equal(s.read(), before, 'local.json is as before');
-  assert.ok(fs.existsSync(path.join(A, 'versions', '1.146.0-1', 'Shuko.exe')), 'old versions are intact');
+  assert.ok(fs.existsSync(path.join(A, 'versions', '1.146.0-1', 'Sukuna.exe')), 'old versions are intact');
   assert.ok(fs.existsSync(path.join(A, 'history.txt')));
   assert.ok(fs.existsSync(path.join(B, 'versions', 'other', 'x.txt')), 'the existing item is untouched');
 });
@@ -244,9 +244,9 @@ test('-InstallRoot: a process running from the old location stops it (exit 3); n
   const A = path.join(s.root, 'A');
   const B = path.join(s.root, 'B');
   makeInstall(A);
-  fs.copyFileSync(process.execPath, path.join(A, 'versions', '1.146.0-1', 'Shuko.exe'));
+  fs.copyFileSync(process.execPath, path.join(A, 'versions', '1.146.0-1', 'Sukuna.exe'));
   fs.writeFileSync(s.cfg, JSON.stringify({ installRoot: A }));
-  const child = spawn(path.join(A, 'current', 'Shuko.exe'), ['-e', 'setTimeout(()=>{}, 60000)'], { stdio: 'ignore', windowsHide: true });
+  const child = spawn(path.join(A, 'current', 'Sukuna.exe'), ['-e', 'setTimeout(()=>{}, 60000)'], { stdio: 'ignore', windowsHide: true });
   t.after(() => {
     try {
       child.kill();
@@ -317,7 +317,7 @@ const realUserPath = () => spawnSync('reg', ['query', 'HKCU\\Environment', '/v',
 const sameP = (a, b) => path.resolve(a).toLowerCase() === path.resolve(b).toLowerCase();
 const snapFile = (p) => ({ b: fs.readFileSync(p), m: fs.statSync(p).mtimeMs });
 
-// Fake install at A, an ID-carrying Shuko.lnk and a plain Other.lnk in a test Programs folder.
+// Fake install at A, an ID-carrying Sukuna.lnk and a plain Other.lnk in a test Programs folder.
 function setupShell() {
   const s = setup();
   const A = path.join(s.root, 'A');
@@ -326,13 +326,13 @@ function setupShell() {
   makeInstall(A);
   fs.mkdirSync(programs, { recursive: true });
   fs.writeFileSync(s.cfg, JSON.stringify({ installRoot: A, keepVersions: 3 }));
-  const lnk = path.join(programs, 'Shuko.lnk');
+  const lnk = path.join(programs, 'Sukuna.lnk');
   const mk = runPs(START_MENU, ['-InstallRoot', A, '-ShortcutPath', lnk, '-AppUserModelId', SM_ID]);
   assert.equal(mk.status, 0, 'make shortcut: ' + mk.stderr + mk.stdout);
   const other = path.join(programs, 'Other.lnk');
   makePlainLnk(other, path.join(REPO, 'package.json'));
   const runShell = (...args) => {
-    const r = runPs(CONFIGURE, [...args, '-ConfigPath', s.cfg, '-ProgramsDir', programs], { env: { SHUKO_TEST_BASE: s.root } });
+    const r = runPs(CONFIGURE, [...args, '-ConfigPath', s.cfg, '-ProgramsDir', programs], { env: { SUKUNA_TEST_BASE: s.root } });
     let json = null;
     try {
       json = parseJsonOut(r.stdout);
@@ -348,18 +348,18 @@ test('-ProgramsDir: re-pointing keeps System.AppUserModel.ID; other .lnk files a
   const s = setupShell();
   const before = readLnk(s.lnk);
   assert.equal(before.id, SM_ID);
-  assert.ok(sameP(before.target, path.join(s.A, 'current', 'Shuko.exe')));
+  assert.ok(sameP(before.target, path.join(s.A, 'current', 'Sukuna.exe')));
   const o0 = snapFile(s.other);
   const pathBefore = realUserPath();
   const r = s.runShell('-InstallRoot', s.B);
   assert.equal(r.status, 0, r.stderr + r.stdout);
   const v = readLnk(s.lnk);
-  assert.ok(sameP(v.target, path.join(s.B, 'current', 'Shuko.exe')), v.target);
+  assert.ok(sameP(v.target, path.join(s.B, 'current', 'Sukuna.exe')), v.target);
   assert.ok(sameP(v.workdir, path.join(s.B, 'current')), v.workdir);
   assert.equal(v.id, SM_ID, 'ID kept after re-pointing');
   const o1 = snapFile(s.other);
   assert.ok(o1.b.equals(o0.b) && o1.m === o0.m, 'Other.lnk changed');
-  assert.deepEqual(fs.readdirSync(s.programs).sort(), ['Other.lnk', 'Shuko.lnk']);
+  assert.deepEqual(fs.readdirSync(s.programs).sort(), ['Other.lnk', 'Sukuna.lnk']);
   assert.equal(realUserPath(), pathBefore, 'real user PATH was written');
   assert.equal(r.json.userPath?.changed, false);
 });
@@ -373,7 +373,7 @@ test('-ProgramsDir: after an undo (local.json write fails) the shortcut is back 
   assert.equal(r.status, 1, r.stderr + r.stdout);
   assert.equal(r.json.result, 'error');
   const v = readLnk(s.lnk);
-  assert.ok(sameP(v.target, path.join(s.A, 'current', 'Shuko.exe')), v.target);
+  assert.ok(sameP(v.target, path.join(s.A, 'current', 'Sukuna.exe')), v.target);
   assert.ok(sameP(v.workdir, path.join(s.A, 'current')), v.workdir);
   assert.equal(v.id, SM_ID, 'ID kept after the undo');
   const o1 = snapFile(s.other);

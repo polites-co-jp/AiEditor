@@ -1,5 +1,5 @@
-From c448c24793ebd5fc02c56ca57a7a3843f430007e Mon Sep 17 00:00:00 2001
-From: shuko-apply <apply@shuko.invalid>
+From 9addf9bf57a7f6b2a52d0ade1d2b182eccef4a2f Mon Sep 17 00:00:00 2001
+From: sukuna-apply <apply@sukuna.invalid>
 Date: Sun, 15 Nov 2026 11:25:45 +0900
 Subject: [PATCH] unit C-2-debug: edits
 
@@ -17,10 +17,10 @@ Remove the references to the debugger - run and debug view, breakpoints, debug c
  create mode 100644 src/vs/workbench/api/common/extHostRemovedApi.debug.ts
 
 diff --git a/src/vs/workbench/api/common/extHost.api.impl.ts b/src/vs/workbench/api/common/extHost.api.impl.ts
-index c42da7f6e97..84f1fbf9cce 100644
+index 5c96f3154c4..b6233a36300 100644
 --- a/src/vs/workbench/api/common/extHost.api.impl.ts
 +++ b/src/vs/workbench/api/common/extHost.api.impl.ts
-@@ -52,7 +52,7 @@ import { createExtHostComments } from './extHostComments.js';
+@@ -43,7 +43,7 @@ import { createExtHostComments } from './extHostComments.js';
  import { ExtHostConfigProvider, IExtHostConfiguration } from './extHostConfiguration.js';
  import { ExtHostCustomEditors } from './extHostCustomEditors.js';
  import { IExtHostDataChannels } from './extHostDataChannels.js';
@@ -29,7 +29,7 @@ index c42da7f6e97..84f1fbf9cce 100644
  import { IExtHostDecorations } from './extHostDecorations.js';
  import { ExtHostDiagnostics } from './extHostDiagnostics.js';
  import { ExtHostDialogs } from './extHostDialogs.js';
-@@ -212,7 +212,6 @@ export function createApiFactoryAndRegisterActors(accessor: ServicesAccessor): I
+@@ -195,7 +195,6 @@ export function createApiFactoryAndRegisterActors(accessor: ServicesAccessor): I
  	const extHostCommands = rpcProtocol.set(ExtHostContext.ExtHostCommands, accessor.get(IExtHostCommands));
  	const extHostTerminalService = rpcProtocol.set(ExtHostContext.ExtHostTerminalService, accessor.get(IExtHostTerminalService));
  	const extHostTerminalShellIntegration = rpcProtocol.set(ExtHostContext.ExtHostTerminalShellIntegration, accessor.get(IExtHostTerminalShellIntegration));
@@ -37,7 +37,7 @@ index c42da7f6e97..84f1fbf9cce 100644
  	const extHostSearch = rpcProtocol.set(ExtHostContext.ExtHostSearch, accessor.get(IExtHostSearch));
  	const extHostTask = rpcProtocol.set(ExtHostContext.ExtHostTask, accessor.get(IExtHostTask));
  	const extHostOutputService = rpcProtocol.set(ExtHostContext.ExtHostOutputService, accessor.get(IExtHostOutputService));
-@@ -1553,73 +1552,7 @@ export function createApiFactoryAndRegisterActors(accessor: ServicesAccessor): I
+@@ -1522,73 +1521,7 @@ export function createApiFactoryAndRegisterActors(accessor: ServicesAccessor): I
  		};
  
  		// namespace: debug
@@ -113,10 +113,10 @@ index c42da7f6e97..84f1fbf9cce 100644
  		const tasks: typeof vscode.tasks = {
  			registerTaskProvider: (type: string, provider: vscode.TaskProvider) => {
 diff --git a/src/vs/workbench/api/common/extHost.protocol.ts b/src/vs/workbench/api/common/extHost.protocol.ts
-index 6f681cd86e7..0d9853991d9 100644
+index 5b7d6ea2bd3..6130ac9c4fa 100644
 --- a/src/vs/workbench/api/common/extHost.protocol.ts
 +++ b/src/vs/workbench/api/common/extHost.protocol.ts
-@@ -2286,52 +2286,6 @@ export interface MainThreadDocumentDiffShape extends IDisposable {
+@@ -1779,52 +1779,6 @@ export interface MainThreadDocumentDiffShape extends IDisposable {
  	$computeDocumentDiff(originalUri: UriComponents, modifiedUri: UriComponents, ignoreTrimWhitespace: boolean, maxComputationTimeMs: number, computeMoves: boolean): Promise<IDocumentDiffResultDto | null>;
  }
  
@@ -169,7 +169,7 @@ index 6f681cd86e7..0d9853991d9 100644
  export interface IOpenUriOptions {
  	readonly allowTunneling?: boolean;
  	readonly allowContributedOpeners?: boolean | string;
-@@ -3363,113 +3317,6 @@ export interface ExtHostTaskShape {
+@@ -2702,113 +2656,6 @@ export interface ExtHostTaskShape {
  	$findExecutable(command: string, cwd?: string, paths?: string[]): Promise<string | undefined>;
  }
  
@@ -285,7 +285,7 @@ index 6f681cd86e7..0d9853991d9 100644
  	readonly uri: UriComponents;
 diff --git a/src/vs/workbench/api/common/extHostRemovedApi.debug.ts b/src/vs/workbench/api/common/extHostRemovedApi.debug.ts
 new file mode 100644
-index 00000000000..be8017d15bc
+index 00000000000..5d4831860b3
 --- /dev/null
 +++ b/src/vs/workbench/api/common/extHostRemovedApi.debug.ts
 @@ -0,0 +1,109 @@
@@ -301,7 +301,7 @@ index 00000000000..be8017d15bc
 +import { checkProposedApiEnabled } from '../../services/extensions/common/extensions.js';
 +
 +/**
-+ * Shuko (C-2-debug): the debugger (run and debug view, breakpoints, debug console, debug adapters)
++ * Sukuna (C-2-debug): the debugger (run and debug view, breakpoints, debug console, debug adapters)
 + * is removed. The extension API entry point `vscode.debug` stays, but does nothing:
 + * there is never an active session, registrations return a disposable that does nothing,
 + * `startDebugging` resolves to `false`, the debug console swallows its output and events never fire.
@@ -399,7 +399,7 @@ index 00000000000..be8017d15bc
 +	};
 +}
 diff --git a/src/vs/workbench/contrib/debug/browser/debug.service.contribution.ts b/src/vs/workbench/contrib/debug/browser/debug.service.contribution.ts
-index 93038daa11f..5d6d5458ca4 100644
+index 93038daa11f..928f1994ca8 100644
 --- a/src/vs/workbench/contrib/debug/browser/debug.service.contribution.ts
 +++ b/src/vs/workbench/contrib/debug/browser/debug.service.contribution.ts
 @@ -4,9 +4,12 @@
@@ -410,7 +410,7 @@ index 93038daa11f..5d6d5458ca4 100644
  import { IDebugService } from '../common/debug.js';
 -import { IDebugVisualizerService, DebugVisualizerService } from '../common/debugVisualizers.js';
 +import { IDebugVisualizerService } from '../common/debugVisualizers.js';
-+// Shuko (C-2-debug): the debugger is removed. The service IDs stay for the parts that remain
++// Sukuna (C-2-debug): the debugger is removed. The service IDs stay for the parts that remain
 +// (testing, tasks, accessibility signals, extensions view, notebooks), backed by the
 +// do-nothing implementations that upstream uses for the Agents window.
 +import { NullDebugService, NullDebugVisualizerService } from '../common/nullDebugService.js';
@@ -420,10 +420,10 @@ index 93038daa11f..5d6d5458ca4 100644
 +registerSingleton(IDebugService, NullDebugService, InstantiationType.Delayed);
 +registerSingleton(IDebugVisualizerService, NullDebugVisualizerService, InstantiationType.Delayed);
 diff --git a/src/vs/workbench/contrib/notebook/browser/controller/editActions.ts b/src/vs/workbench/contrib/notebook/browser/controller/editActions.ts
-index c8debe80afe..dea8d12079a 100644
+index 4ab9ce86a19..fb2c86b7c37 100644
 --- a/src/vs/workbench/contrib/notebook/browser/controller/editActions.ts
 +++ b/src/vs/workbench/contrib/notebook/browser/controller/editActions.ts
-@@ -374,9 +374,6 @@ registerAction2(class ClearAllCellOutputsAction extends NotebookAction {
+@@ -366,9 +366,6 @@ registerAction2(class ClearAllCellOutputsAction extends NotebookAction {
  		if (clearExecutionMetadataEdits.length) {
  			context.notebookEditor.textModel.applyEdits(clearExecutionMetadataEdits, true, undefined, () => undefined, undefined, computeUndoRedo);
  		}
@@ -434,7 +434,7 @@ index c8debe80afe..dea8d12079a 100644
  });
  
 diff --git a/src/vs/workbench/contrib/notebook/browser/notebook.contribution.ts b/src/vs/workbench/contrib/notebook/browser/notebook.contribution.ts
-index ada0cfb0bb2..cb71b8c173c 100644
+index 61858745981..c1f9421eba9 100644
 --- a/src/vs/workbench/contrib/notebook/browser/notebook.contribution.ts
 +++ b/src/vs/workbench/contrib/notebook/browser/notebook.contribution.ts
 @@ -19,10 +19,9 @@ import { Extensions, IConfigurationPropertySchema, IConfigurationRegistry } from
@@ -449,7 +449,7 @@ index ada0cfb0bb2..cb71b8c173c 100644
  import { IEditorSerializer, IEditorFactoryRegistry, EditorExtensions } from '../../../common/editor.js';
  import { EditorInput } from '../../../common/editor/editorInput.js';
  import { NotebookEditor } from './notebookEditor.js';
-@@ -886,7 +885,6 @@ class NotebookLanguageSelectorScoreRefine {
+@@ -885,7 +884,6 @@ class NotebookLanguageSelectorScoreRefine {
  	}
  }
  
@@ -457,7 +457,7 @@ index ada0cfb0bb2..cb71b8c173c 100644
  registerWorkbenchContribution2(NotebookContribution.ID, NotebookContribution, WorkbenchPhase.BlockStartup);
  registerWorkbenchContribution2(CellContentProvider.ID, CellContentProvider, WorkbenchPhase.BlockStartup);
  registerWorkbenchContribution2(CellInfoContentProvider.ID, CellInfoContentProvider, WorkbenchPhase.BlockStartup);
-@@ -1261,22 +1259,6 @@ configurationRegistry.registerConfiguration({
+@@ -1260,22 +1258,6 @@ configurationRegistry.registerConfiguration({
  			type: 'boolean',
  			default: true
  		},
@@ -481,7 +481,7 @@ index ada0cfb0bb2..cb71b8c173c 100644
  			markdownDescription: nls.localize('notebook.cellFailureDiagnostics', "Show available diagnostics for cell failures."),
  			type: 'boolean',
 diff --git a/src/vs/workbench/contrib/replNotebook/browser/repl.contribution.ts b/src/vs/workbench/contrib/replNotebook/browser/repl.contribution.ts
-index 7f0774765b2..2baae3fceba 100644
+index 0035cc21c3b..c98d6d63ec5 100644
 --- a/src/vs/workbench/contrib/replNotebook/browser/repl.contribution.ts
 +++ b/src/vs/workbench/contrib/replNotebook/browser/repl.contribution.ts
 @@ -22,7 +22,7 @@ import { IConfigurationService } from '../../../../platform/configuration/common
@@ -501,7 +501,7 @@ index 7f0774765b2..2baae3fceba 100644
  import { IWorkingCopyIdentifier } from '../../../services/workingCopy/common/workingCopy.js';
  import { IWorkingCopyEditorHandler, IWorkingCopyEditorService } from '../../../services/workingCopy/common/workingCopyEditorService.js';
  import { ResourceNotebookCellEdit } from '../../bulkEdit/browser/bulkCellEdits.js';
-@@ -482,14 +481,3 @@ async function executeReplInput(
+@@ -475,14 +474,3 @@ async function executeReplInput(
  }
  
  AccessibleViewRegistry.register(new ReplEditorAccessibleView());
@@ -517,10 +517,10 @@ index 7f0774765b2..2baae3fceba 100644
 -	}
 -});
 diff --git a/src/vs/workbench/workbench.common.main.ts b/src/vs/workbench/workbench.common.main.ts
-index b6951d9a8dd..e35a81b5a95 100644
+index b0a9c42b075..5c01a93f173 100644
 --- a/src/vs/workbench/workbench.common.main.ts
 +++ b/src/vs/workbench/workbench.common.main.ts
-@@ -288,6 +288,7 @@ import './contrib/scm/browser/quickDiff.contribution.js';
+@@ -264,6 +264,7 @@ import './contrib/scm/browser/quickDiff.contribution.js';
  import './contrib/scm/browser/scm.service.contribution.js';
  
  // Debug

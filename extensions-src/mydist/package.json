@@ -1,8 +1,8 @@
 {
   "name": "mydist",
-  "displayName": "Shuko の既定",
-  "description": "Shuko の既定の設定とキー割り当て（コードを持たない組み込み拡張）",
-  "publisher": "shuko",
+  "displayName": "Sukuna の既定",
+  "description": "Sukuna の既定の設定とキー割り当て（コードを持たない組み込み拡張）",
+  "publisher": "sukuna",
   "version": "0.0.1",
   "private": true,
   "license": "MIT",

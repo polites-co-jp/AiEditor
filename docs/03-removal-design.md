@@ -167,7 +167,7 @@ Phase 2 の作業で表から変えた点（2026-11-14）: B-1 に `terminalCont
 ### 5.2 パッチの作り方と直し方
 
 - 作り方: 作業ツリーで前の単位までを当てた状態から、`ops` のコミットを作り、型検査の誤りを直してコミットする。`git format-patch -1 <edits のコミット> --stdout > removals/<id>/edits.patch`。
-- edits のコミットは `git -c user.name=shuko-apply -c user.email=apply@shuko.invalid commit` で作る。利用者の名前とメールをパッチの `From:` に残さないため（2026-11-14 リーダーの判断。`tasks/2026-11-13-p2-apply/doc-corrections.md` の4）。修理のときの `claude -p` も同じ（`TAKE-IN.md` の規約）。
+- edits のコミットは `git -c user.name=sukuna-apply -c user.email=apply@sukuna.invalid commit` で作る。利用者の名前とメールをパッチの `From:` に残さないため（2026-11-14 リーダーの判断。`tasks/2026-11-13-p2-apply/doc-corrections.md` の4）。修理のときの `claude -p` も同じ（`TAKE-IN.md` の規約）。
 - `git rerere` を有効にしておく（`git config rerere.enabled true`）。3-way で当てるので、前後の行がずれても大半は自動で当たる。常設の clone は前のタグを持っているので、3-way の基底が見つかる。
 - 取り込みで当たらなかったとき: 作業ツリーで衝突を解き、同じ手順で `edits.patch` を書き戻す。`TAKE-IN.md` の規約（本家側の変更を採る、消す意図が消えたら単位の README を直す）に従う。
 

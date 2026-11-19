@@ -172,8 +172,8 @@ test('通信の監査の環境: netEnvLayout は <envDir>\\user（VSCODE_PORTABL
   assert.equal(L.settings, path.join('C:\\e', 'user', 'user-data', 'User', 'settings.json'));
 });
 test('netEnvInstallArgs: 新しい版の CLI で、--portable・--extensions-dir・--argv を一時の環境に向け、台帳と出力を渡す。buildRoot・config は渡したときだけ', () => {
-  const a = netEnvInstallArgs({ cli: 'X:\\bin\\shuko.cmd', envDir: 'C:\\e', lock: 'L.json', out: 'O.json' });
-  assert.equal(valueOf(a, '--cli'), 'X:\\bin\\shuko.cmd');
+  const a = netEnvInstallArgs({ cli: 'X:\\bin\\sukuna.cmd', envDir: 'C:\\e', lock: 'L.json', out: 'O.json' });
+  assert.equal(valueOf(a, '--cli'), 'X:\\bin\\sukuna.cmd');
   assert.equal(valueOf(a, '--portable'), path.join('C:\\e', 'user'));
   assert.equal(valueOf(a, '--extensions-dir'), path.join('C:\\e', 'ext'));
   assert.equal(valueOf(a, '--argv'), path.join('C:\\e', 'user', 'argv.json'));

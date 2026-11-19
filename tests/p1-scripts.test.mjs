@@ -177,7 +177,7 @@ const BR = path.join(sb, 'fake-build-root');
 const BR_RE = BR.replace(/[\\^$.*+?()[\]{}|]/g, '\\$&');
 function launch(args) {
   const la = path.join(sb, 'localappdata');
-  writeFile(path.join(la, 'Shuko', 'local.json'), JSON.stringify({ buildRoot: BR }));
+  writeFile(path.join(la, 'Sukuna', 'local.json'), JSON.stringify({ buildRoot: BR }));
   const r = runPs(LAUNCH, args, { timeout: 60000, env: { LOCALAPPDATA: la } });
   return r;
 }
@@ -273,7 +273,7 @@ test('p1-launch-check.ps1: <buildRoot>\\p2\\..\\p3\\<x> は正規化して p3 �
 test('p1-launch-check.ps1: local.json の buildRoot が <buildRoot> になる（C:\\b 決め打ちでない）', () => {
   const la = path.join(sb, 'localappdata-cfg');
   const other = path.join(sb, 'other-build-root');
-  writeFile(path.join(la, 'Shuko', 'local.json'), JSON.stringify({ buildRoot: other }));
+  writeFile(path.join(la, 'Sukuna', 'local.json'), JSON.stringify({ buildRoot: other }));
   const zip = path.join(sb, 'j.zip');
   writeFile(zip, 'PK');
   const r = runPs(LAUNCH, ['-Zip', zip, '-Dest', path.join(sb, 'elsewhere')], { timeout: 60000, env: { LOCALAPPDATA: la } });

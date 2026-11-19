@@ -224,7 +224,7 @@ function applyToMydist(r, sublime) {
   writeJson(pkgPath, pkg);
   if (sublime.license) {
     const notice = [
-      'Shuko mydist - Third Party Notices',
+      'Sukuna mydist - Third Party Notices',
       '',
       'The keybindings in package.json (contributes.keybindings) are converted from',
       `${SUBLIME.namespace}.${SUBLIME.name} ${SUBLIME.version} (${sublime.url}).`,

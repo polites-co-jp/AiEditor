@@ -16,7 +16,7 @@ after(() => removeSandbox(sb));
 const BR = () => path.join(sb, 'fake-build-root');
 function run(args) {
   const la = path.join(sb, 'localappdata');
-  writeFile(path.join(la, 'Shuko', 'local.json'), JSON.stringify({ buildRoot: BR() }));
+  writeFile(path.join(la, 'Sukuna', 'local.json'), JSON.stringify({ buildRoot: BR() }));
   return runPs(LAUNCH, args, { timeout: 90000, env: { LOCALAPPDATA: la } });
 }
 let n = 0;

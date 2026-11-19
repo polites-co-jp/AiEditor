@@ -1,8 +1,8 @@
 {
   "name": "language-pack-ja",
-  "displayName": "Shuko 日本語パック",
+  "displayName": "Sukuna 日本語パック",
   "description": "本体と同じ版の日本語の言語パック（組み込み拡張）。公式の訳（vscode-loc）に、課が足した訳を合わせたもの",
-  "publisher": "shuko",
+  "publisher": "sukuna",
   "version": "1.146.0",
   "private": true,
   "license": "MIT",

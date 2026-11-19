@@ -22,15 +22,15 @@ const PATH_PROBE = path.join(REPO, 'tests', 'build', 'path-entries-probe.ps1');
 const LNK_PROBE = path.join(REPO, 'tests', 'build', 'shortcut-probe.ps1');
 
 // ---- PATH: %LOCALAPPDATA% の形 --------------------------------------------------------------
-test('Update-PathEntries: %LOCALAPPDATA%\\Programs\\Shuko\\current\\bin の形の項目を、展開した前の bin と一致させて置き換える', () => {
+test('Update-PathEntries: %LOCALAPPDATA%\\Programs\\Sukuna\\current\\bin の形の項目を、展開した前の bin と一致させて置き換える', () => {
   const fakeLocal = path.join(sb, 'LocalAppData');
-  const oldBin = path.join(fakeLocal, 'Programs', 'Shuko', 'current', 'bin');
+  const oldBin = path.join(fakeLocal, 'Programs', 'Sukuna', 'current', 'bin');
   const cases = [
-    { raw: '%LOCALAPPDATA%\\Programs\\Shuko\\current\\bin;C:\\x', old: oldBin, new: 'D:\\S\\current\\bin', env: { LOCALAPPDATA: fakeLocal } },
+    { raw: '%LOCALAPPDATA%\\Programs\\Sukuna\\current\\bin;C:\\x', old: oldBin, new: 'D:\\S\\current\\bin', env: { LOCALAPPDATA: fakeLocal } },
     // 大文字小文字違いの変数名と、末尾の \ でも一致する
-    { raw: 'C:\\x;%localappdata%\\Programs\\Shuko\\current\\bin\\', old: oldBin, new: 'D:\\S\\current\\bin', env: { LOCALAPPDATA: fakeLocal } },
+    { raw: 'C:\\x;%localappdata%\\Programs\\Sukuna\\current\\bin\\', old: oldBin, new: 'D:\\S\\current\\bin', env: { LOCALAPPDATA: fakeLocal } },
     // 別の場所の LOCALAPPDATA なら一致しない（null）
-    { raw: '%LOCALAPPDATA%\\Programs\\Shuko\\current\\bin;C:\\x', old: oldBin, new: 'D:\\S\\current\\bin', env: { LOCALAPPDATA: path.join(sb, 'Other') } },
+    { raw: '%LOCALAPPDATA%\\Programs\\Sukuna\\current\\bin;C:\\x', old: oldBin, new: 'D:\\S\\current\\bin', env: { LOCALAPPDATA: path.join(sb, 'Other') } },
   ];
   const file = path.join(sb, 'path-local-cases.json');
   writeFile(file, JSON.stringify(cases));
@@ -49,11 +49,11 @@ test('configure.ps1 手順5: 「プログラム」の直下の .lnk だけを向
   const newRoot = path.join(sb, 'new');
   const oc = path.join(oldRoot, 'current');
   const spec = [
-    { rel: 'Shuko.lnk', target: path.join(oc, 'Shuko.exe'), workdir: oc },
-    { rel: 'Shuko Bin.lnk', target: path.join(oc, 'bin', 'shuko.cmd') },
-    { rel: path.join('Sub', 'Shuko in Sub.lnk'), target: path.join(oc, 'Shuko.exe') },
+    { rel: 'Sukuna.lnk', target: path.join(oc, 'Sukuna.exe'), workdir: oc },
+    { rel: 'Sukuna Bin.lnk', target: path.join(oc, 'bin', 'sukuna.cmd') },
+    { rel: path.join('Sub', 'Sukuna in Sub.lnk'), target: path.join(oc, 'Sukuna.exe') },
     { rel: 'Other.lnk', target: path.join(sb, 'elsewhere', 'Other.exe') },
-    { rel: 'Similar.lnk', target: path.join(oldRoot, 'current2', 'Shuko.exe') },
+    { rel: 'Similar.lnk', target: path.join(oldRoot, 'current2', 'Sukuna.exe') },
   ];
   const specFile = path.join(sb, 'lnk-spec.json');
   writeFile(specFile, JSON.stringify(spec));
@@ -63,12 +63,12 @@ test('configure.ps1 手順5: 「プログラム」の直下の .lnk だけを向
   const by = Object.fromEntries(out.shortcuts.map((s) => [s.rel, s]));
   const nc = path.join(newRoot, 'current');
   const eq = (a, b) => assert.equal(String(a).toLowerCase(), String(b).toLowerCase());
-  eq(by['Shuko.lnk'].target, path.join(nc, 'Shuko.exe'));
-  eq(by['Shuko.lnk'].workdir, nc);
-  eq(by['Shuko Bin.lnk'].target, path.join(nc, 'bin', 'shuko.cmd'));
-  eq(by[path.join('Sub', 'Shuko in Sub.lnk')].target, path.join(oc, 'Shuko.exe'));
+  eq(by['Sukuna.lnk'].target, path.join(nc, 'Sukuna.exe'));
+  eq(by['Sukuna.lnk'].workdir, nc);
+  eq(by['Sukuna Bin.lnk'].target, path.join(nc, 'bin', 'sukuna.cmd'));
+  eq(by[path.join('Sub', 'Sukuna in Sub.lnk')].target, path.join(oc, 'Sukuna.exe'));
   eq(by['Other.lnk'].target, path.join(sb, 'elsewhere', 'Other.exe'));
-  eq(by['Similar.lnk'].target, path.join(oldRoot, 'current2', 'Shuko.exe'));
+  eq(by['Similar.lnk'].target, path.join(oldRoot, 'current2', 'Sukuna.exe'));
   const shortcutUndo = out.undo.filter((u) => u.kind === 'shortcut');
   assert.equal(shortcutUndo.length, 2, '戻しの記録は向け直した2つだけ');
   assert.equal(out.actions.filter((a) => a.startsWith('shortcut ')).length, 2);

@@ -31,8 +31,8 @@ records/take-in/1.147.0-1/verdict.md（合格・条件付き・不合格）
 - `tools/watch/watch.mjs`（Node.js。ビルドに Node が要るので前提が増えない）。LLM は使わない。決まった処理だけで判断する。
 - Windows のタスクスケジューラで毎日1回動かす（例 6:00）。予定の時刻に PC が止まっていたときに備え、`-StartWhenAvailable`（"Task Scheduler can start the task at any time after its scheduled time has passed."）を付ける [一次・要照合] https://learn.microsoft.com/en-us/powershell/module/scheduledtasks/new-scheduledtasksettingsset 。
 - 登録は `tools/watch/register-task.ps1` が行う（`New-ScheduledTaskTrigger -Daily`、`New-ScheduledTaskSettingsSet -StartWhenAvailable`、`Register-ScheduledTask`）。「ユーザーがログオンしているときだけ実行」にする。トークンの復号（2.4）がそのユーザーの権限で要るため。
-- 状態とログ: `%LOCALAPPDATA%\Shuko\watch\state.json`、`watch.log`（固定の場所）。
-- ビルドリポジトリの場所（台帳を読むため）と版のフォルダの場所（今の版を知るため）は、PC ごとの設定ファイル `%LOCALAPPDATA%\Shuko\local.json` の `builderRepo`・`installRoot` から読む（道具ごとに使うキーは [02](02-repository-and-build.md) の6.1 の表のとおり。検知のプログラムはタスクスケジューラから動くので、ビルドリポジトリの場所を `builderRepo` で知る）。
+- 状態とログ: `%LOCALAPPDATA%\Sukuna\watch\state.json`、`watch.log`（固定の場所）。
+- ビルドリポジトリの場所（台帳を読むため）と版のフォルダの場所（今の版を知るため）は、PC ごとの設定ファイル `%LOCALAPPDATA%\Sukuna\local.json` の `builderRepo`・`installRoot` から読む（道具ごとに使うキーは [02](02-repository-and-build.md) の6.1 の表のとおり。検知のプログラムはタスクスケジューラから動くので、ビルドリポジトリの場所を `builderRepo` で知る）。
 
 ### 2.2 取得するもの
 
@@ -60,7 +60,7 @@ records/take-in/1.147.0-1/verdict.md（合格・条件付き・不合格）
 | 優先度 | select（高 / 中 / 低） | セキュリティ修正あり: `高`。本体のその他と Claude Code 拡張: `中`。ほかの拡張: `低`（裁定） |
 | 期限 | date | セキュリティ修正あり: 検知の翌日。それ以外: 検知の7日後（裁定） |
 | 期限の形式 | select（From-To / 終了日のみ） | `終了日のみ` |
-| プロジェクト | rich_text | `Shuko`（仮の名前。名前が決まったら直す） |
+| プロジェクト | rich_text | `Sukuna`（2026-11-18 に仮の `Shuko` から改名。改名の前に開いた ToDo は `Shuko` のまま、`state.json` のページ ID で更新を続ける） |
 | 詳細・メモ | rich_text（2000 文字まで） | 今の版 → 新しい版、セキュリティ修正の件数と重さ、起動するコマンド（例 `node scripts/take-in.mjs core 1.147.0`） |
 | 開始日時・終了日時 | date | 書かない |
 
@@ -81,7 +81,7 @@ records/take-in/1.147.0-1/verdict.md（合格・条件付き・不合格）
 ### 2.4 トークンの置き場所
 
 - 裁定: 専用の Notion の内部インテグレーションを作り、**ToDo データベースだけ**に接続する。設定の同期（[05](05-settings-sync.md)）のインテグレーションとは分ける。作るにはワークスペースのオーナーの権限が要る [一次] https://developers.notion.com/docs/authorization 。
-- 保管（裁定）: DPAPI で暗号化したファイル `%LOCALAPPDATA%\Shuko\watch\notion-token.dpapi`。
+- 保管（裁定）: DPAPI で暗号化したファイル `%LOCALAPPDATA%\Sukuna\watch\notion-token.dpapi`。
   - 入れる: `tools/watch/set-token.ps1` が `Read-Host -AsSecureString | ConvertFrom-SecureString | Set-Content <path>` を行う。鍵を指定しない `ConvertFrom-SecureString` は DPAPI を使う（"If no key is specified, the Windows Data Protection API (DPAPI) is used"。Windows PowerShell 5.1 と PowerShell 7 で同じ文）[一次・要照合] https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.security/convertfrom-securestring 。
   - 読む: `scripts/lib/read-secret.ps1` が `ConvertTo-SecureString` で戻し、標準出力に出す。`watch.mjs` は `powershell.exe -NoProfile -NonInteractive -File` で呼び、値をメモリにだけ持つ。ログに出さない。
   - DPAPI の保護が「今のユーザーに結びつく」ことは公式ページに明記が無い（未確認）。Phase 4 で、別のユーザーで復号できないことを確かめる。
@@ -200,7 +200,7 @@ Claude Code の項目は、裁定の「実機の動作で判断する」に当�
 台本の細目は設計の書き物を正とする: 取り込み `tasks/2026-11-14-p3-take-in/take-in-design.md`、検知 `tasks/2026-11-14-p4-watch/watch-design.md`。この資料と食い違ったら、設計の書き物に合わせてこの資料を直す。
 
 - 版のフォルダへの展開: 取り込みは `switch.ps1 <label> -Zip <zip> -Sha256 <sha> -ExpandOnly` で展開と確かめだけを行い、`current`・`history.txt`・`backups` に触らない。切り替えはユーザーが行う（裁定）。
-- 修理の `claude -p` の道具: 読む・探す・編集（`Read,Glob,Grep,Edit,Write`）だけ。Bash は渡さない。`git status`・`git diff` の中身は台本が依頼文に入れ、git の操作（`add`・`am --continue`・`format-patch`・`commit`）は台本が `shuko-apply` の名前で行う。`--strict-mcp-config` を付け、作業ツリーの `.mcp.json` のサーバーにつながない。
+- 修理の `claude -p` の道具: 読む・探す・編集（`Read,Glob,Grep,Edit,Write`）だけ。Bash は渡さない。`git status`・`git diff` の中身は台本が依頼文に入れ、git の操作（`add`・`am --continue`・`format-patch`・`commit`）は台本が `sukuna-apply` の名前で行う。`--strict-mcp-config` を付け、作業ツリーの `.mcp.json` のサーバーにつながない。
 - 修理の追加の作業場所: 取り込みのブランチ `take-in/<label>` の作業ツリー（`<buildRoot>\take-in\<label>\repo`。main から作る）。修理はそこの `removals/`・`patches/` を直し、main の作業ツリーは変えない。
 - 判定の形（7.3）に `kind`・`reasons`・`materialsRead`・`missingMaterials`・`userChecksBeforeSwitch`・`markdown` を足す。判定に要る材料（ビルド・スモーク・通信の監査の記録など）が足りないときは、合格にしない。
 - 記録 `records/take-in/<label>/` は判定役が読めるよう main の作業ツリーに書き、`adopt.mjs` がマージの後に記録のコミットを作る。プッシュはしない（ユーザーかリーダーが行う）。

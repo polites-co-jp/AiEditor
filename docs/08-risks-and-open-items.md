@@ -78,13 +78,13 @@
 | Notion のインテグレーション | 2つに分ける（設定の同期用は設定ページだけ、更新の検知用は ToDo データベースだけ） | [05](05-settings-sync.md) の7節、[06](06-update-watch-and-take-in.md) の2.4 |
 | 取り込みの結果の書き戻し | 書き戻す。ToDo の本文に判定の要約を足し、状態を `In progress` にする | [06](06-update-watch-and-take-in.md) の4節・6節 |
 | ToDo の優先度・期限 | セキュリティ修正あり: 高・翌日。それ以外: 期限はすべて7日後で、優先度は本体と Claude Code 拡張が中、ほかの拡張が低 | [06](06-update-watch-and-take-in.md) の2.3 |
-| 版のフォルダの場所 | 設定で変えられるようにする。設計で、PC ごとの設定ファイル `%LOCALAPPDATA%\Shuko\local.json` の `installRoot`（既定 `%LOCALAPPDATA%\Programs\Shuko`）とし、切り替え・取り込み・拡張の導入・計測・更新の検知の道具が共通の部品で読むことにした | [02](02-repository-and-build.md) の6.1 |
+| 版のフォルダの場所 | 設定で変えられるようにする。設計で、PC ごとの設定ファイル `%LOCALAPPDATA%\Sukuna\local.json` の `installRoot`（既定 `%LOCALAPPDATA%\Programs\Sukuna`）とし、切り替え・取り込み・拡張の導入・計測・更新の検知の道具が共通の部品で読むことにした | [02](02-repository-and-build.md) の6.1 |
 | 言語パックが本体より古い点 | 未訳の部分が英語になるのを受け入れる。目立つなら改めて諮る。→ 2026-11-17 に改めた: 未訳を残さず日本語にする | [04](04-bundled-extensions.md) の7節、[07](07-phases.md) の 0-7 |
 | Microsoft 発行の拡張（日本語パック・PowerShell）を Open VSX から使う法的な確認 | 個人利用として、確認せずに使う。リスクはユーザーが受け入れる | [00](00-overview.md) の5節、[04](04-bundled-extensions.md) の7節、1節 |
 
 ### 4.2 未決（そのときに諮る）
 
-1. **エディタの名前**（2026-11-18 に決定: 少名毘古那、ローマ字 Sukuna。改名の移行は `tasks/2026-11-18-rename-sukuna-survey/` から進める）: Microsoft・Visual Studio・Claude の名称は使わない（裁定）。アイコンは 2026-11-17 に決まった（Claude と VS Code のアイコンを合わせた意匠）。名前が決まったら、product.json の上書き（[02](02-repository-and-build.md) の3節）、`mydist` の publisher、ToDo のプロジェクト、`local.json` の置き場所と `installRoot` の既定値の名前を直す。
+1. **エディタの名前**（2026-11-18 に決定: 少名毘古那、ローマ字 Sukuna。改名の移行は `tasks/2026-11-18-rename-sukuna-survey/` から進める）: Microsoft・Visual Studio・Claude の名称は使わない（裁定）。アイコンは 2026-11-17 に決まった（Claude と VS Code のアイコンを合わせた意匠）。改名で直したもの: product.json の上書き（[02](02-repository-and-build.md) の3節）、組み込み拡張の publisher、ToDo のプロジェクト、`local.json` の置き場所と `installRoot` の既定値、CLI・データの場所・タスクスケジューラ・ショートカットの名前、パッチの作者と注釈、独自キー、権限とフックの行（一覧は `rename-plan.md` の1節）。残りは移行と、旧版の引退の後の権限の段2。
 2. **Phase 1 の後に、ビルドが重すぎるか**: 所要時間とディスクの実測を添えて諮る。重すぎるなら、予備案（VSCodium の zip の後処理）にするかも諮る（裁定）。
 3. **Phase 0 の結果しだいで諮ること**:
    - .env の2つの拡張が、どちらもエラー表示を持たないか、両方とも持つとき（[07](07-phases.md) の 0-3）。

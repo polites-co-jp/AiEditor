@@ -364,7 +364,7 @@ export function decodeUnicodeEscapes(src) {
 // 下の層（vscode-loc の main、Open VSX の VSIX）も、束に鍵が入るので出典に書く（2026-11-17 のリーダーの判断）。
 export function thirdPartyNotice(sources, licenses) {
   const lines = [
-    "Shuko language-pack-ja - Third Party Notices",
+    "Sukuna language-pack-ja - Third Party Notices",
     "",
     "This extension contains Japanese translations taken from the following sources. When two sources translate",
     "the same string, the earlier one in this list is used.",
@@ -385,7 +385,7 @@ export function thirdPartyNotice(sources, licenses) {
   });
   lines.push(
     "",
-    "Translations added by the Shuko builders (strings that the sources above do not translate, and overrides of",
+    "Translations added by the Sukuna builders (strings that the sources above do not translate, and overrides of",
     "source translations) are in extensions-src/language-pack-ja/added/*.json of the build repository.",
   );
   const seen = new Set();

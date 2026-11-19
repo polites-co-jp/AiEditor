@@ -27,7 +27,7 @@
 
 ## edits.patch で直した点（2026-11-15）
 
-edits.patch は8ファイル（新規1）、121行の追加、261行の削除。件名は `unit C-2-debug: edits`、作者は `shuko-apply`。直したのは消した部品への参照だけ。
+edits.patch は8ファイル（新規1）、121行の追加、261行の削除。件名は `unit C-2-debug: edits`、作者は `sukuna-apply`。直したのは消した部品への参照だけ。
 
 | ファイル | 直し方 |
 |---|---|

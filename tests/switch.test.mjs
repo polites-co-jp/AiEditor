@@ -1,7 +1,7 @@
 // Runs scripts/switch.ps1 with arguments in a test location and checks the JSON on stdout and the exit code.
 // Spec: docs/02 section 6, 6.1; build-switch-design.md section 5.
 // Only test locations are used (-InstallRoot, -ConfigPath, -UserDataDir, -LedgerPath under a fresh folder).
-// The real %LOCALAPPDATA%\Shuko\local.json, the Start menu and PATH are not touched.
+// The real %LOCALAPPDATA%\Sukuna\local.json, the Start menu and PATH are not touched.
 // Run: node --test tests/switch.test.mjs
 import test, { before, after } from 'node:test';
 import assert from 'node:assert/strict';
@@ -249,7 +249,7 @@ test('layout: official nested layout (resources\\app under the commit-prefix fol
 
 test('a folder without exe / cli stops with exit 1', () => {
   const s = setup({ labels: ['1.146.0-1'] });
-  fs.rmSync(path.join(s.ver('1.146.0-1'), 'Shuko.exe'));
+  fs.rmSync(path.join(s.ver('1.146.0-1'), 'Sukuna.exe'));
   const r = s.run('1.146.0-1');
   assert.equal(r.status, 1, r.stderr + r.stdout);
   assert.equal(r.json.result, 'error');
@@ -269,23 +269,23 @@ function sha256(f) {
 test('-Zip: expands into versions\\<label> (single top folder is stripped), checks -Sha256, then switches', () => {
   const s = setup({});
   const src = path.join(s.root, 'src');
-  makeFakeEditor(path.join(src, 'Shuko-win32-x64-1.146.0-5'));
+  makeFakeEditor(path.join(src, 'Sukuna-win32-x64-1.146.0-5'));
   const zip = path.join(s.root, 'a.zip');
-  makeZip(zip, src, 'Shuko-win32-x64-1.146.0-5');
+  makeZip(zip, src, 'Sukuna-win32-x64-1.146.0-5');
   const r = s.run('1.146.0-5', '-Zip', zip, '-Sha256', sha256(zip));
   assert.equal(r.status, 0, r.stderr + r.stdout);
   assert.equal(r.json.result, 'ok');
-  assert.ok(fs.existsSync(path.join(s.ver('1.146.0-5'), 'Shuko.exe')), 'content of the top folder is the version folder');
-  assert.ok(fs.existsSync(path.join(s.ver('1.146.0-5'), 'bin', 'shuko.cmd')));
+  assert.ok(fs.existsSync(path.join(s.ver('1.146.0-5'), 'Sukuna.exe')), 'content of the top folder is the version folder');
+  assert.ok(fs.existsSync(path.join(s.ver('1.146.0-5'), 'bin', 'sukuna.cmd')));
   assert.ok(isJunctionTo(s.current, s.ver('1.146.0-5')));
 });
 
 test('-Zip: a wrong -Sha256 stops before expanding anything', () => {
   const s = setup({});
   const src = path.join(s.root, 'src');
-  makeFakeEditor(path.join(src, 'Shuko-win32-x64-1.146.0-5'));
+  makeFakeEditor(path.join(src, 'Sukuna-win32-x64-1.146.0-5'));
   const zip = path.join(s.root, 'a.zip');
-  makeZip(zip, src, 'Shuko-win32-x64-1.146.0-5');
+  makeZip(zip, src, 'Sukuna-win32-x64-1.146.0-5');
   const r = s.run('1.146.0-5', '-Zip', zip, '-Sha256', '0'.repeat(64));
   assert.equal(r.status, 1, r.stderr + r.stdout);
   assert.equal(r.json.result, 'error');
@@ -297,9 +297,9 @@ test('-Zip: a version folder that already exists stops (nothing overwritten)', (
   const s = setup({ labels: ['1.146.0-5'] });
   writeFile(path.join(s.ver('1.146.0-5'), 'marker.txt'), 'keep');
   const src = path.join(s.root, 'src');
-  makeFakeEditor(path.join(src, 'Shuko-win32-x64-1.146.0-5'));
+  makeFakeEditor(path.join(src, 'Sukuna-win32-x64-1.146.0-5'));
   const zip = path.join(s.root, 'a.zip');
-  makeZip(zip, src, 'Shuko-win32-x64-1.146.0-5');
+  makeZip(zip, src, 'Sukuna-win32-x64-1.146.0-5');
   const r = s.run('1.146.0-5', '-Zip', zip);
   assert.equal(r.status, 1, r.stderr + r.stdout);
   assert.equal(fs.readFileSync(path.join(s.ver('1.146.0-5'), 'marker.txt'), 'utf8'), 'keep');
@@ -310,9 +310,9 @@ test('a process running from current\\ stops the switch (exit 3, "editor-running
   const s = setup({ labels: ['1.146.0-1', '1.146.0-2'] });
   s.run('1.146.0-1');
   // a harmless "editor": a copy of node.exe named like the exe of the version, started through the junction
-  const exe = path.join(s.ver('1.146.0-1'), 'Shuko.exe');
+  const exe = path.join(s.ver('1.146.0-1'), 'Sukuna.exe');
   fs.copyFileSync(process.execPath, exe);
-  const child = spawn(path.join(s.current, 'Shuko.exe'), ['-e', 'setTimeout(()=>{}, 60000)'], { stdio: 'ignore', windowsHide: true });
+  const child = spawn(path.join(s.current, 'Sukuna.exe'), ['-e', 'setTimeout(()=>{}, 60000)'], { stdio: 'ignore', windowsHide: true });
   t.after(() => {
     try {
       child.kill();

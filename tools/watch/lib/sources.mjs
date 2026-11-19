@@ -20,7 +20,7 @@ export const GITHUB_RELEASES_URL = "https://api.github.com/repos/microsoft/vscod
 export const GITHUB_ADVISORIES_URL =
   "https://api.github.com/repos/microsoft/vscode/security-advisories?state=published&sort=published&direction=desc&per_page=50";
 export const OPEN_VSX_API = "https://open-vsx.org/api";
-const USER_AGENT = "shuko-watch/0.1";
+const USER_AGENT = "sukuna-watch/0.1";
 const GITHUB_HEADERS = { Accept: "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28", "User-Agent": USER_AGENT };
 
 // リリースノートのページ（docs/06 の2.2）。https://code.visualstudio.com/updates/v1_<minor>

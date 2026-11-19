@@ -43,7 +43,7 @@ import {
 const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(SCRIPT_DIR, "..");
 export const PACK_SRC = path.join(REPO, "extensions-src", "language-pack-ja");
-export const PACK_ID = "shuko.language-pack-ja";
+export const PACK_ID = "sukuna.language-pack-ja";
 
 // ---------------------------------------------------------------------------
 // 小さな道具

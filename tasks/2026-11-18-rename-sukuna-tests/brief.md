@@ -2,7 +2,7 @@
 
 - 担当: cao-shen（曹参）
 - 依頼日: 2026-11-18
-- 状態: 依頼中
+- 状態: 完了
 
 ## 目的
 
@@ -33,11 +33,11 @@
 
 ## 結果
 
-（リーダーが記入）
+完了（2026-11-19、大岡越前守の再検証に合格）。tests/ の73ファイルの改名、新しいテスト（rename-entries 10、rename-leftovers 6、migrate-from-shuko 20、commit-author 2）、作者の照らしを記録の `startedAt` で新旧に分けた（`tests/build/commit-author.mjs`）。検証の差し戻し2点（tmp に模擬を作る、新しいファイルの古い名前）を直した。
 
 ## 未解決
 
-（リーダーが記入）
+rename-leftovers の `.claude/` の1件は Team の開発部が `vlad-tepes.md` を直すまで落ちる。NOT_COMMITTED の前方一致が追跡済みのファイルにも効く点（大岡越前守の指摘。合否に効かない）は、次に曹参がこのテストに触れるときに直す。移行の台本のテストの「数の照らし」の空振りと、`reparsePoint`・`runningUnknown` の場合のテストの欠け（指摘5）は足さない。
 
 ## 次の担当
 

@@ -1,7 +1,7 @@
 // Shared helpers for tests/build-*.test.mjs, tests/local-config.test.mjs, tests/install-ext.test.mjs,
 // tests/switch.test.mjs, tests/configure.test.mjs and tests/make-icons.test.mjs.
 // Test fixtures go under a fresh folder in <repo>\tmp\tests\ (git-ignored; nothing goes to C: or the OS temp folder).
-// Nothing here touches %LOCALAPPDATA%\Shuko, the Start menu or PATH.
+// Nothing here touches %LOCALAPPDATA%\Sukuna, the Start menu or PATH.
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -102,7 +102,7 @@ export function parseJsonOut(stdout) {
 }
 
 // A fake editor folder in the layout of an official / own build (flat: resources\app at the top).
-export function makeFakeEditor(dir, { version = '1.146.0', nameShort = 'Shuko', applicationName = 'shuko', dataFolderName = '.shuko', commit = '69047191fc427f2f92828279aae1d90d8eeda7ab', nested = false, exeBytes = 'MZ' } = {}) {
+export function makeFakeEditor(dir, { version = '1.146.0', nameShort = 'Sukuna', applicationName = 'sukuna', dataFolderName = '.sukuna', commit = '69047191fc427f2f92828279aae1d90d8eeda7ab', nested = false, exeBytes = 'MZ' } = {}) {
   const appRoot = nested ? path.join(dir, commit.slice(0, 10)) : dir;
   const app = path.join(appRoot, 'resources', 'app');
   writeFile(path.join(dir, `${nameShort}.exe`), exeBytes);

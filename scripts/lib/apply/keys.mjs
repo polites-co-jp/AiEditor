@@ -22,8 +22,8 @@ export function settingKeysToCheck(mydistManifest, overlay) {
   };
   const defaults = isPlainObject(mydistManifest) && isPlainObject(mydistManifest.contributes) ? mydistManifest.contributes.configurationDefaults : null;
   if (isPlainObject(defaults)) for (const k of Object.keys(defaults)) push(k, "mydist");
-  const scd = isPlainObject(overlay) && isPlainObject(overlay.set) ? overlay.set.shukoConfigurationDefaults : null;
-  if (isPlainObject(scd)) for (const k of Object.keys(scd)) push(k, "shukoConfigurationDefaults");
+  const scd = isPlainObject(overlay) && isPlainObject(overlay.set) ? overlay.set.sukunaConfigurationDefaults : null;
+  if (isPlainObject(scd)) for (const k of Object.keys(scd)) push(k, "sukunaConfigurationDefaults");
   return out;
 }
 

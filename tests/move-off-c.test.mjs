@@ -93,7 +93,7 @@ test('PowerShell 側の部品（local-config.ps1）の既定も同じ（configur
   const sb = makeSandbox('moc-');
   try {
     const cfg = path.join(sb, 'local.json');
-    // 前の installRoot を一時の場所にしておく（既定の本物の置き場所と、動いている Shuko を見ないため）。
+    // 前の installRoot を一時の場所にしておく（既定の本物の置き場所と、動いている Sukuna を見ないため）。
     writeFile(cfg, JSON.stringify({ installRoot: path.join(sb, 'old-inst') }));
     const r = runPs(path.join(REPO, 'scripts', 'configure.ps1'), ['-ConfigPath', cfg, '-InstallRoot', path.join(sb, 'inst'), '-NoShellIntegration']);
     assert.equal(r.status, 0, r.stderr + r.stdout);

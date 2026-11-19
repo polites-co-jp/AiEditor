@@ -26,7 +26,7 @@
 設定ページ1枚。中身は次の順に並べる。
 
 ```
-（ページの題名）Shuko の設定
+（ページの題名）Sukuna の設定
   見出し2  manifest
   コード（json）  {"schema":1,"rev":42,"files":{"settings.json":{"sha256":"...","updatedAt":"2026-11-12T09:00:00Z","machine":"DESKTOP-A"}, ...}}
   見出し2  settings.json

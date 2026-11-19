@@ -1,7 +1,7 @@
-From 75bbb9089a036bb79c2b91b93f026c3cad4c1ef6 Mon Sep 17 00:00:00 2001
-From: shuko-apply <apply@shuko.invalid>
+From 4e4b6c58599fedb2e0c8e5a777a027dcd6b701fc Mon Sep 17 00:00:00 2001
+From: sukuna-apply <apply@sukuna.invalid>
 Date: Sat, 14 Nov 2026 00:18:14 +0900
-Subject: [PATCH] shuko: register product.json shukoConfigurationDefaults as
+Subject: [PATCH] sukuna: register product.json sukunaConfigurationDefaults as
  configuration defaults
 
 Application scoped settings cannot be defaulted from an extension. Read the defaults from product.json and register them right after the configuration registry is created, so that every process sees them.
@@ -10,22 +10,23 @@ Application scoped settings cannot be defaulted from an extension. Read the defa
  1 file changed, 7 insertions(+)
 
 diff --git a/src/vs/platform/configuration/common/configurationRegistry.ts b/src/vs/platform/configuration/common/configurationRegistry.ts
-index 3dd2e4d8a4a..0d93e0ad229 100644
+index 3dd2e4d8a4a..a24d1716246 100644
 --- a/src/vs/platform/configuration/common/configurationRegistry.ts
 +++ b/src/vs/platform/configuration/common/configurationRegistry.ts
 @@ -1179,6 +1179,13 @@ export function getDefaultValue(type: string | string[] | undefined) {
  const configurationRegistry = new ConfigurationRegistry();
  Registry.add(Extensions.Configuration, configurationRegistry);
-
-+// Shuko: register the defaults in product.json `shukoConfigurationDefaults` (application scoped settings included).
+ 
++// Sukuna: register the defaults in product.json `sukunaConfigurationDefaults` (application scoped settings included).
 +// Registered without a source, so they apply in every process that reads the configuration registry.
-+const shukoConfigurationDefaults = (product as typeof product & { readonly shukoConfigurationDefaults?: IStringDictionary<unknown> }).shukoConfigurationDefaults;
-+if (types.isObject(shukoConfigurationDefaults)) {
-+	configurationRegistry.registerDefaultConfigurations([{ overrides: shukoConfigurationDefaults }]);
++const sukunaConfigurationDefaults = (product as typeof product & { readonly sukunaConfigurationDefaults?: IStringDictionary<unknown> }).sukunaConfigurationDefaults;
++if (types.isObject(sukunaConfigurationDefaults)) {
++	configurationRegistry.registerDefaultConfigurations([{ overrides: sukunaConfigurationDefaults }]);
 +}
 +
  export function validateProperty(property: string, schema: IRegisteredConfigurationPropertySchema, extensionId?: string): string | null {
  	if (!property.trim()) {
  		return nls.localize('config.property.empty', "Cannot register an empty property");
---
+-- 
 2.54.0.windows.1
+

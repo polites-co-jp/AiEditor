@@ -180,11 +180,11 @@ async function runProbe(settingKeys, { extensions = [] } = {}) {
 }
 
 test('probe: 登録の無い対照のキーは false、確かに在るキー（editor.fontSize）は true（inspect が常にオブジェクトを返しても）', async () => {
-  const s = await runProbe(['zzzShukoControl.never.registered', 'editor.fontSize', 'debug.console.fontSize']);
-  assert.equal(s.settings['zzzShukoControl.never.registered'], false);
+  const s = await runProbe(['zzzSukunaControl.never.registered', 'editor.fontSize', 'debug.console.fontSize']);
+  assert.equal(s.settings['zzzSukunaControl.never.registered'], false);
   assert.equal(s.settings['editor.fontSize'], true);
   assert.equal(s.settings['debug.console.fontSize'], true);
-  assert.equal(s.settingsVia['zzzShukoControl.never.registered'], 'none');
+  assert.equal(s.settingsVia['zzzSukunaControl.never.registered'], 'none');
   assert.equal(s.done, true);
 });
 

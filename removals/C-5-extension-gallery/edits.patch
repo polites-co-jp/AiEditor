@@ -1,5 +1,5 @@
-From cd9cf41db57b7aa96929cf3cf811d25b19d149f7 Mon Sep 17 00:00:00 2001
-From: shuko-apply <apply@shuko.invalid>
+From cc9a0d7be92f4e2e5b6798940c37c51d07e2d5de Mon Sep 17 00:00:00 2001
+From: sukuna-apply <apply@sukuna.invalid>
 Date: Sun, 15 Nov 2026 12:58:37 +0900
 Subject: [PATCH] unit C-5-extension-gallery: edits
 
@@ -20,7 +20,7 @@ Subject: [PATCH] unit C-5-extension-gallery: edits
  create mode 100644 src/vs/workbench/services/extensionRecommendations/common/nullExtensionRecommendations.ts
 
 diff --git a/src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts b/src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts
-index 89cc7389e4a..62b185526e2 100644
+index 380ce16269c..f5bf2ae13bc 100644
 --- a/src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts
 +++ b/src/vs/code/electron-utility/sharedProcess/sharedProcessMain.ts
 @@ -29,9 +29,9 @@ import { DownloadService } from '../../../platform/download/common/downloadServi
@@ -36,7 +36,7 @@ index 89cc7389e4a..62b185526e2 100644
  import { IExtensionRecommendationNotificationService } from '../../../platform/extensionRecommendations/common/extensionRecommendations.js';
  import { IFileService } from '../../../platform/files/common/files.js';
 diff --git a/src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts b/src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts
-index 3a548831a6e..ada565bc17f 100644
+index 0e515a1b478..ca4d72d8cb8 100644
 --- a/src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts
 +++ b/src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts
 @@ -8,9 +8,7 @@ import { CancellationToken } from '../../../../base/common/cancellation.js';
@@ -111,7 +111,7 @@ index 3a548831a6e..ada565bc17f 100644
  registerSingleton(IExtensionsWorkbenchService, ExtensionsWorkbenchService, InstantiationType.Eager /* Auto updates extensions */);
 -registerSingleton(IExtensionRecommendationNotificationService, ExtensionRecommendationNotificationService, InstantiationType.Delayed);
 -registerSingleton(IExtensionRecommendationsService, ExtensionRecommendationsService, InstantiationType.Eager /* Prompts recommendations in the background */);
-+// Shuko (C-5-extension-gallery): recommendations are removed; the remaining extension views inject these services.
++// Sukuna (C-5-extension-gallery): recommendations are removed; the remaining extension views inject these services.
 +registerSingleton(IExtensionRecommendationNotificationService, NullExtensionRecommendationNotificationService, InstantiationType.Delayed);
 +registerSingleton(IExtensionRecommendationsService, NullExtensionRecommendationsService, InstantiationType.Delayed);
 +registerSingleton(IExtensionIgnoredRecommendationsService, NullExtensionIgnoredRecommendationsService, InstantiationType.Delayed);
@@ -150,7 +150,7 @@ index 3a548831a6e..ada565bc17f 100644
  		this.registerGlobalActions();
  		this.registerContextMenuActions();
 -		this.registerQuickAccessProvider();
-+		// Shuko (C-5-extension-gallery): the `ext install ` quick access (install or search the gallery) is removed.
++		// Sukuna (C-5-extension-gallery): the `ext install ` quick access (install or search the gallery) is removed.
  	}
  
  	private async updateExtensionGalleryStatusContexts(): Promise<void> {
@@ -207,7 +207,7 @@ index 3a548831a6e..ada565bc17f 100644
 -			},
 -			run: () => this.extensionsWorkbenchService.openSearch('@recommended:languages ')
 -		});
-+		// Shuko (C-5-extension-gallery): the recommended keymap and language extensions commands are removed with recommendations.
++		// Sukuna (C-5-extension-gallery): the recommended keymap and language extensions commands are removed with recommendations.
  
  		this.registerExtensionAction({
  			id: 'workbench.extensions.action.checkForUpdates',
@@ -243,7 +243,7 @@ index 3a548831a6e..ada565bc17f 100644
 -				}
 -			}
 -		});
-+		// Shuko (C-5-extension-gallery): installing extensions from the UI is removed ("Install from VSIX..." and the
++		// Sukuna (C-5-extension-gallery): installing extensions from the UI is removed ("Install from VSIX..." and the
 +		// Explorer context menu). Extensions are installed with the `--install-extension` command line; the command
 +		// below that installs given VSIX resources stays, without a menu.
  
@@ -299,7 +299,7 @@ index 3a548831a6e..ada565bc17f 100644
 -			},
 -			run: () => this.extensionsWorkbenchService.openSearch('@recommended ')
 -		});
-+		// Shuko (C-5-extension-gallery): the popular and recommended extensions commands are removed with the gallery.
++		// Sukuna (C-5-extension-gallery): the popular and recommended extensions commands are removed with the gallery.
  
  		this.registerExtensionAction({
  			id: 'workbench.extensions.action.recentlyPublishedExtensions',
@@ -338,7 +338,7 @@ index 3a548831a6e..ada565bc17f 100644
 -			}],
 -			run: () => runAction(this.instantiationService.createInstance(ConfigureWorkspaceFolderRecommendedExtensionsAction, ConfigureWorkspaceFolderRecommendedExtensionsAction.ID, ConfigureWorkspaceFolderRecommendedExtensionsAction.LABEL))
 -		});
-+		// Shuko (C-5-extension-gallery): installing and configuring the workspace recommendations (.vscode/extensions.json) is removed.
++		// Sukuna (C-5-extension-gallery): installing and configuring the workspace recommendations (.vscode/extensions.json) is removed.
  
  		this.registerExtensionAction({
  			id: InstallSpecificVersionOfExtensionAction.ID,
@@ -472,7 +472,7 @@ index 3a548831a6e..ada565bc17f 100644
 -			},
 -			run: () => runAction(this.instantiationService.createInstance(ConfigureWorkspaceRecommendedExtensionsAction, ConfigureWorkspaceRecommendedExtensionsAction.ID, ConfigureWorkspaceRecommendedExtensionsAction.LABEL))
 -		});
-+		// Shuko (C-5-extension-gallery): ignoring recommendations and editing the workspace recommendations are removed.
++		// Sukuna (C-5-extension-gallery): ignoring recommendations and editing the workspace recommendations are removed.
  
  		this.registerExtensionAction({
  			id: 'workbench.extensions.action.manageTrustedPublishers',
@@ -481,7 +481,7 @@ index 3a548831a6e..ada565bc17f 100644
  workbenchRegistry.registerWorkbenchContribution(UnsupportedExtensionsMigrationContrib, LifecyclePhase.Eventually);
  workbenchRegistry.registerWorkbenchContribution(TrustedPublishersInitializer, LifecyclePhase.Eventually);
 -workbenchRegistry.registerWorkbenchContribution(ExtensionMarketplaceStatusUpdater, LifecyclePhase.Eventually);
-+// Shuko (C-5-extension-gallery): the Marketplace account (sign in, access badge) is removed.
++// Sukuna (C-5-extension-gallery): the Marketplace account (sign in, access badge) is removed.
  if (isWeb) {
  	workbenchRegistry.registerWorkbenchContribution(ExtensionStorageCleaner, LifecyclePhase.Eventually);
  }
@@ -510,7 +510,7 @@ index 3a548831a6e..ada565bc17f 100644
  	.registerConfigurationMigrations([{
  		key: AutoUpdateConfigurationKey,
 diff --git a/src/vs/workbench/contrib/extensions/browser/extensionsActions.ts b/src/vs/workbench/contrib/extensions/browser/extensionsActions.ts
-index 26a2aa64129..f4af5c9d5c6 100644
+index 26a2aa64129..e9502601299 100644
 --- a/src/vs/workbench/contrib/extensions/browser/extensionsActions.ts
 +++ b/src/vs/workbench/contrib/extensions/browser/extensionsActions.ts
 @@ -8,20 +8,18 @@ import { localize, localize2 } from '../../../../nls.js';
@@ -765,13 +765,13 @@ index 26a2aa64129..f4af5c9d5c6 100644
 -			});
 -	}
 -}
-+// Shuko (C-5-extension-gallery): ignoring recommendations and configuring the workspace recommendations
++// Sukuna (C-5-extension-gallery): ignoring recommendations and configuring the workspace recommendations
 +// (.vscode/extensions.json) are removed with recommendations.
  
  export class ExtensionStatusLabelAction extends Action implements IExtensionContainer {
  
 diff --git a/src/vs/workbench/contrib/extensions/browser/extensionsQuickAccess.ts b/src/vs/workbench/contrib/extensions/browser/extensionsQuickAccess.ts
-index 05166b41268..6fd3b3d4e77 100644
+index 05166b41268..4141282c6d4 100644
 --- a/src/vs/workbench/contrib/extensions/browser/extensionsQuickAccess.ts
 +++ b/src/vs/workbench/contrib/extensions/browser/extensionsQuickAccess.ts
 @@ -5,86 +5,10 @@
@@ -858,12 +858,12 @@ index 05166b41268..6fd3b3d4e77 100644
 -		}
 -	}
 -}
-+// Shuko (C-5-extension-gallery): the `ext install ` quick access (install or search the gallery) is removed.
++// Sukuna (C-5-extension-gallery): the `ext install ` quick access (install or search the gallery) is removed.
  
  export class ManageExtensionsQuickAccessProvider extends PickerQuickAccessProvider<IPickerQuickAccessItem> {
  
 diff --git a/src/vs/workbench/contrib/extensions/browser/extensionsViewlet.ts b/src/vs/workbench/contrib/extensions/browser/extensionsViewlet.ts
-index a58e047cc6f..f076c5a5722 100644
+index d33390ac49f..e3a104e1cab 100644
 --- a/src/vs/workbench/contrib/extensions/browser/extensionsViewlet.ts
 +++ b/src/vs/workbench/contrib/extensions/browser/extensionsViewlet.ts
 @@ -12,19 +12,19 @@ import { IWorkbenchContribution } from '../../../common/contributions.js';
@@ -922,7 +922,7 @@ index a58e047cc6f..f076c5a5722 100644
  
 -		/* Recommendations views */
 -		viewDescriptors.push(...this.createRecommendedExtensionsViewDescriptors());
-+		/* Shuko (C-5-extension-gallery): the recommendations views are removed with recommendations. */
++		/* Sukuna (C-5-extension-gallery): the recommendations views are removed with recommendations. */
  
  		/* Built-in extensions views */
  		viewDescriptors.push(...this.createBuiltinExtensionsViewDescriptors());
@@ -950,7 +950,7 @@ index a58e047cc6f..f076c5a5722 100644
 -			),
 -			order: -1,
 -		});
-+		// Shuko (C-5-extension-gallery): the Marketplace access view (sign in to a private Marketplace) is removed.
++		// Sukuna (C-5-extension-gallery): the Marketplace access view (sign in to a private Marketplace) is removed.
  
  		const viewRegistry = Registry.as<IViewsRegistry>(Extensions.ViewsRegistry);
  		viewRegistry.registerViews(viewDescriptors, this.container);
@@ -1001,7 +1001,7 @@ index a58e047cc6f..f076c5a5722 100644
 -			order: 3,
 -			canToggleVisibility: true
 -		});
-+		/* Shuko (C-5-extension-gallery): the default popular and recommended views are removed with the gallery. */
++		/* Sukuna (C-5-extension-gallery): the default popular and recommended views are removed with the gallery. */
  
  		/* Installed views shall be default in multi server window  */
  		if (servers.length === 1) {
@@ -1018,7 +1018,7 @@ index a58e047cc6f..f076c5a5722 100644
 -			ctorDescriptor: new SyncDescriptor(SearchMarketplaceExtensionsView, [{}]),
 -			when: ContextKeyExpr.and(ContextKeyExpr.has('searchMarketplaceExtensions'), CONTEXT_HAS_GALLERY)
 -		});
-+		/* Shuko (C-5-extension-gallery): the view used for searching the Marketplace is removed with the gallery. */
++		/* Sukuna (C-5-extension-gallery): the view used for searching the Marketplace is removed with the gallery. */
  
  		/*
  		 * View used for searching all installed extensions
@@ -1111,7 +1111,7 @@ index a58e047cc6f..f076c5a5722 100644
 -				}
 -			}
 -		}));
-+		// Shuko (C-5-extension-gallery): installing extensions by dropping VSIX files on the view is removed.
++		// Sukuna (C-5-extension-gallery): installing extensions by dropping VSIX files on the view is removed.
  
  		super.create(append(this.root, $('.extensions')));
  
@@ -1175,9 +1175,9 @@ index a58e047cc6f..f076c5a5722 100644
 -		}
 -	}
 -}
-+// Shuko (C-5-extension-gallery): the Marketplace access badge (sign in to a private Marketplace) is removed.
++// Sukuna (C-5-extension-gallery): the Marketplace access badge (sign in to a private Marketplace) is removed.
 diff --git a/src/vs/workbench/contrib/extensions/browser/extensionsViews.ts b/src/vs/workbench/contrib/extensions/browser/extensionsViews.ts
-index f97859a2d68..c29ea5496d8 100644
+index f97859a2d68..5e291373186 100644
 --- a/src/vs/workbench/contrib/extensions/browser/extensionsViews.ts
 +++ b/src/vs/workbench/contrib/extensions/browser/extensionsViews.ts
 @@ -8,7 +8,7 @@ import { Disposable, DisposableStore, toDisposable } from '../../../../base/comm
@@ -1219,7 +1219,7 @@ index f97859a2d68..c29ea5496d8 100644
 -	}
 -
 -}
-+// Shuko (C-5-extension-gallery): the default popular extensions view is removed with the gallery.
++// Sukuna (C-5-extension-gallery): the default popular extensions view is removed with the gallery.
  
  export class ServerInstalledExtensionsView extends ExtensionsListView {
  
@@ -1336,12 +1336,12 @@ index f97859a2d68..c29ea5496d8 100644
 -	}
 -
 -}
-+// Shuko (C-5-extension-gallery): the Marketplace search view and the recommended extensions views are removed.
++// Sukuna (C-5-extension-gallery): the Marketplace search view and the recommended extensions views are removed.
  
  export class PreferredExtensionsPagedModel implements IPagedModel<IExtension> {
  
 diff --git a/src/vs/workbench/contrib/extensions/electron-browser/extensions.contribution.ts b/src/vs/workbench/contrib/extensions/electron-browser/extensions.contribution.ts
-index 3c84a6ef243..1b3f2391f21 100644
+index 3c84a6ef243..bb6a16ec1d5 100644
 --- a/src/vs/workbench/contrib/extensions/electron-browser/extensions.contribution.ts
 +++ b/src/vs/workbench/contrib/extensions/electron-browser/extensions.contribution.ts
 @@ -6,12 +6,9 @@
@@ -1369,13 +1369,13 @@ index 3c84a6ef243..1b3f2391f21 100644
  		super();
  
 -		sharedProcessService.registerChannel('extensionRecommendationNotification', new ExtensionRecommendationNotificationServiceChannel(extensionRecommendationNotificationService));
-+		// Shuko (C-5-extension-gallery): the executable based tips of the shared process are removed, so the
++		// Sukuna (C-5-extension-gallery): the executable based tips of the shared process are removed, so the
 +		// recommendation notification channel they sent to is not registered.
  
  		this._register(registerAction2(OpenExtensionsFolderAction));
  		this._register(registerAction2(CleanUpExtensionsFolderAction));
 diff --git a/src/vs/workbench/services/extensionManagement/common/extensionGalleryService.ts b/src/vs/workbench/services/extensionManagement/common/extensionGalleryService.ts
-index 5b4ece05a57..e90789cdd59 100644
+index 5b4ece05a57..c6c54b0a73b 100644
 --- a/src/vs/workbench/services/extensionManagement/common/extensionGalleryService.ts
 +++ b/src/vs/workbench/services/extensionManagement/common/extensionGalleryService.ts
 @@ -3,34 +3,9 @@
@@ -1415,11 +1415,11 @@ index 5b4ece05a57..e90789cdd59 100644
 -}
 -
 -registerSingleton(IExtensionGalleryService, WorkbenchExtensionGalleryService, InstantiationType.Delayed);
-+// Shuko (C-5-extension-gallery): the workbench gallery service is replaced by one that never makes a request.
++// Sukuna (C-5-extension-gallery): the workbench gallery service is replaced by one that never makes a request.
 +registerSingleton(IExtensionGalleryService, NoopExtensionGalleryService, InstantiationType.Delayed);
 diff --git a/src/vs/workbench/services/extensionManagement/common/noopExtensionGalleryService.ts b/src/vs/workbench/services/extensionManagement/common/noopExtensionGalleryService.ts
 new file mode 100644
-index 00000000000..8a09162018a
+index 00000000000..287677f885a
 --- /dev/null
 +++ b/src/vs/workbench/services/extensionManagement/common/noopExtensionGalleryService.ts
 @@ -0,0 +1,87 @@
@@ -1435,7 +1435,7 @@ index 00000000000..8a09162018a
 +import { IExtensionManifest, TargetPlatform } from '../../../../platform/extensions/common/extensions.js';
 +
 +/**
-+ * Shuko (C-5-extension-gallery): the extension gallery (Marketplace search, popular and
++ * Sukuna (C-5-extension-gallery): the extension gallery (Marketplace search, popular and
 + * recommended extensions, updates from the Marketplace) is removed from the workbench. This
 + * gallery service never makes a request: it is never enabled, queries and lookups are empty,
 + * and downloading is refused. Extensions are installed from VSIX files (the `--install-extension`
@@ -1511,7 +1511,7 @@ index 00000000000..8a09162018a
 +	}
 +}
 diff --git a/src/vs/workbench/services/extensionManagement/electron-browser/extensionGalleryManifestService.ts b/src/vs/workbench/services/extensionManagement/electron-browser/extensionGalleryManifestService.ts
-index 89dc830698b..15b9cdef13b 100644
+index 89dc830698b..fb680a2fbf0 100644
 --- a/src/vs/workbench/services/extensionManagement/electron-browser/extensionGalleryManifestService.ts
 +++ b/src/vs/workbench/services/extensionManagement/electron-browser/extensionGalleryManifestService.ts
 @@ -3,68 +3,23 @@
@@ -1579,7 +1579,7 @@ index 89dc830698b..15b9cdef13b 100644
 -}
  
 +/**
-+ * Shuko (C-5-extension-gallery): the Marketplace account (signing in to a private Marketplace configured with
++ * Sukuna (C-5-extension-gallery): the Marketplace account (signing in to a private Marketplace configured with
 + * `extensions.gallery.serviceUrl`) is removed. The manifest only comes from product.json, which has no
 + * `extensionsGallery`, so it is `null`. It is still sent to the shared process and the remote server, which
 + * wait for it before installing extensions (VSIX included).
@@ -1780,7 +1780,7 @@ index 89dc830698b..15b9cdef13b 100644
  registerSingleton(IExtensionGalleryManifestService, WorkbenchExtensionGalleryManifestService, InstantiationType.Eager);
 diff --git a/src/vs/workbench/services/extensionRecommendations/common/nullExtensionRecommendations.ts b/src/vs/workbench/services/extensionRecommendations/common/nullExtensionRecommendations.ts
 new file mode 100644
-index 00000000000..4d02aca2061
+index 00000000000..95bfc5f226d
 --- /dev/null
 +++ b/src/vs/workbench/services/extensionRecommendations/common/nullExtensionRecommendations.ts
 @@ -0,0 +1,98 @@
@@ -1796,7 +1796,7 @@ index 00000000000..4d02aca2061
 +import { IExtensionIgnoredRecommendationsService, IExtensionRecommendationReason, IExtensionRecommendationsService, IgnoredRecommendationChangeNotification } from './extensionRecommendations.js';
 +
 +/**
-+ * Shuko (C-5-extension-gallery): extension recommendations (workspace, file, executable, keymap,
++ * Sukuna (C-5-extension-gallery): extension recommendations (workspace, file, executable, keymap,
 + * language and remote based), their notifications and the ignored recommendations are removed.
 + * The services stay registered because the remaining extension views inject them; there are
 + * never any recommendations, nothing is ignored and nothing is prompted.

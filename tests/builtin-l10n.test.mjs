@@ -17,21 +17,21 @@ after(() => removeSandbox(sb));
 
 const REAL = JSON.parse(fs.readFileSync(path.join(REPO, 'extensions-src', 'notion-sync', 'package.json'), 'utf8'));
 const clone = (o) => JSON.parse(JSON.stringify(o));
-const GOOD_PATH = './dist/i18n/shuko.notion-sync.ja.i18n.json';
+const GOOD_PATH = './dist/i18n/sukuna.notion-sync.ja.i18n.json';
 function manifest(localizations) {
-  const m = { name: 'notion-sync', publisher: 'shuko', contributes: {} };
+  const m = { name: 'notion-sync', publisher: 'sukuna', contributes: {} };
   if (localizations !== undefined) m.contributes.localizations = localizations;
   return m;
 }
-const good = () => manifest([{ languageId: 'ja', languageName: 'Japanese', localizedLanguageName: '日本語', translations: [{ id: 'shuko.notion-sync', path: GOOD_PATH }] }]);
+const good = () => manifest([{ languageId: 'ja', languageName: 'Japanese', localizedLanguageName: '日本語', translations: [{ id: 'sukuna.notion-sync', path: GOOD_PATH }] }]);
 
 // ---- extensionId / ownTranslations / emptyBundleText ---------------------------------------
 test('extensionId: publisher.name', () => {
-  assert.equal(extensionId(REAL), 'shuko.notion-sync');
+  assert.equal(extensionId(REAL), 'sukuna.notion-sync');
   assert.equal(extensionId({ publisher: 'a', name: 'b' }), 'a.b');
 });
 test('ownTranslations: 実物の manifest は ja・自分の ID・./dist/i18n/ の下の path 1件', () => {
-  assert.deepEqual(ownTranslations(REAL), [{ languageId: 'ja', id: 'shuko.notion-sync', path: GOOD_PATH }]);
+  assert.deepEqual(ownTranslations(REAL), [{ languageId: 'ja', id: 'sukuna.notion-sync', path: GOOD_PATH }]);
 });
 test('ownTranslations: 他人の ID の項目は数えない。localizations が無くても落ちない', () => {
   const m = good();
@@ -61,7 +61,7 @@ test('checkBuiltinLocalizations: 自分の ID の項目が無い → 誤り（�
   m.contributes.localizations[0].translations[0].id = 'vscode.git';
   const e = checkBuiltinLocalizations(m);
   assert.ok(e.length >= 1);
-  assert.ok(e.some((s) => s.includes('shuko.notion-sync')), e.join('\n'));
+  assert.ok(e.some((s) => s.includes('sukuna.notion-sync')), e.join('\n'));
 });
 test('checkBuiltinLocalizations: path が dist/ の外 → 誤り（../ ・media/ ・拡張の直下・絶対パス・\\ 区切りの ..）', () => {
   for (const p of ['../x.json', './media/x.json', 'media/x.json', './x.json', './dist/../x.json', '.\\dist\\..\\x.json', '/dist/x.json']) {
@@ -114,19 +114,19 @@ test('checkBuiltinLocalizations(root): ファイルが無い → 誤り（path �
 });
 test('checkBuiltinLocalizations(root): JSON でない → 誤り', () => {
   const root = path.join(sb, 'badjson');
-  writeFile(path.join(root, 'dist', 'i18n', 'shuko.notion-sync.ja.i18n.json'), '{ not json');
+  writeFile(path.join(root, 'dist', 'i18n', 'sukuna.notion-sync.ja.i18n.json'), '{ not json');
   assert.ok(checkBuiltinLocalizations(good(), root).length >= 1);
 });
 test('checkBuiltinLocalizations(root): contents.bundle が無い・オブジェクトでない・null → 誤り', () => {
   for (const [i, body] of [{ version: '1.0.0', contents: { package: {} } }, { contents: { bundle: 'x' } }, { contents: { bundle: null } }, {}, []].entries()) {
     const root = path.join(sb, 'nobundle' + i);
-    writeFile(path.join(root, 'dist', 'i18n', 'shuko.notion-sync.ja.i18n.json'), JSON.stringify(body));
+    writeFile(path.join(root, 'dist', 'i18n', 'sukuna.notion-sync.ja.i18n.json'), JSON.stringify(body));
     assert.ok(checkBuiltinLocalizations(good(), root).length >= 1, JSON.stringify(body));
   }
 });
 test('checkBuiltinLocalizations(root): contents.bundle が空のオブジェクトなら通る', () => {
   const root = path.join(sb, 'okbundle');
-  writeFile(path.join(root, 'dist', 'i18n', 'shuko.notion-sync.ja.i18n.json'), emptyBundleText());
+  writeFile(path.join(root, 'dist', 'i18n', 'sukuna.notion-sync.ja.i18n.json'), emptyBundleText());
   assert.deepEqual(checkBuiltinLocalizations(good(), root), []);
 });
 
@@ -135,7 +135,7 @@ test('writeBuiltinTranslations: 書いた相対パスを返し、中身は空の
   const root = path.join(sb, 'write');
   const m = good();
   const written = writeBuiltinTranslations(m, root);
-  assert.deepEqual(written, ['dist/i18n/shuko.notion-sync.ja.i18n.json']);
+  assert.deepEqual(written, ['dist/i18n/sukuna.notion-sync.ja.i18n.json']);
   const f = path.join(root, ...written[0].split('/'));
   assert.equal(fs.readFileSync(f, 'utf8'), emptyBundleText());
   assert.deepEqual(checkBuiltinLocalizations(m, root), []);

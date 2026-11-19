@@ -43,7 +43,7 @@ const item = (json, name) => json.items.find((x) => x.name === name);
 // 元（--from）の偽の作業場所。PLAN の項目のうち、試しに使うものだけを作る。
 function makeSource(from) {
   writeFile(path.join(from, 'dist', '1.146.0-p2-all.zip'), 'ZIPDATA-p2-all');
-  writeFile(path.join(from, 'p2', '1.146.0-p2-all', 'Shuko.exe'), 'EXE');
+  writeFile(path.join(from, 'p2', '1.146.0-p2-all', 'Sukuna.exe'), 'EXE');
   writeFile(path.join(from, 'p2', '1.146.0-p2-all', 'resources', 'app', 'product.json'), '{"a":1}');
   writeFile(path.join(from, 'smoke', 'baseline-1.json'), '{"b":1}');
   writeFile(path.join(from, 'smoke', 'baseline-2.json'), '{"b":2}');
@@ -231,7 +231,7 @@ test('上書きしない・違えば problem: 写し先に違う中身（同じ�
   // file（SHA-256 も照らす）: 同じ大きさで中身が違う
   writeFile(path.join(to, 'dist', '1.146.0-p2-all.zip'), 'ZIPDATA-p2-XXX');
   // dir: 大きさが違う
-  writeFile(path.join(to, 'p2', '1.146.0-p2-all', 'Shuko.exe'), 'EXE-DIFFERENT-SIZE');
+  writeFile(path.join(to, 'p2', '1.146.0-p2-all', 'Sukuna.exe'), 'EXE-DIFFERENT-SIZE');
   writeFile(path.join(to, 'p2', '1.146.0-p2-all', 'resources', 'app', 'product.json'), '{"a":1}');
   const r = run(['--from', from, '--to', to, '--only', 'dist-p2-all,p2-all']);
   assert.equal(r.status, 1, r.stderr + r.stdout);
@@ -240,7 +240,7 @@ test('上書きしない・違えば problem: 写し先に違う中身（同じ�
   assert.equal(item(r.json, 'p2-all').status, 'problem');
   assert.match(item(r.json, 'dist-p2-all').problems.join(' '), /上書きしない/);
   assert.equal(fs.readFileSync(path.join(to, 'dist', '1.146.0-p2-all.zip'), 'utf8'), 'ZIPDATA-p2-XXX', '上書きしていない');
-  assert.equal(fs.readFileSync(path.join(to, 'p2', '1.146.0-p2-all', 'Shuko.exe'), 'utf8'), 'EXE-DIFFERENT-SIZE', '上書きしていない');
+  assert.equal(fs.readFileSync(path.join(to, 'p2', '1.146.0-p2-all', 'Sukuna.exe'), 'utf8'), 'EXE-DIFFERENT-SIZE', '上書きしていない');
 });
 
 test('verifySame: 数・大きさ・SHA-256 の違いを見つける', () => {
@@ -409,7 +409,7 @@ test('--to を省くと local.json の buildRoot、無ければ <リポジトリ
   assert.equal(item(j, 'p2-all').status, 'planned');
   // local.json の buildRoot が勝つ
   const other = fresh('other-root');
-  writeFile(path.join(la, 'Shuko', 'local.json'), JSON.stringify({ buildRoot: other }));
+  writeFile(path.join(la, 'Sukuna', 'local.json'), JSON.stringify({ buildRoot: other }));
   const r2 = runNode([SCRIPT, '--from', from, '--dry-run', '--only', 'p2-all'], { env: { LOCALAPPDATA: la } });
   assert.equal(JSON.parse(r2.stdout.slice(r2.stdout.search(/^\{/m))).to.toLowerCase(), other.toLowerCase());
 });
@@ -436,14 +436,14 @@ test('dir の SHA-256: 写し先に同じ大きさで中身だけ違うファイ
   const from = fresh('from');
   const to = fresh('to');
   makeSource(from);
-  // 元の Shuko.exe は 'EXE'（3 バイト）。同じ大きさで中身が違うもの
-  writeFile(path.join(to, ...P2, 'Shuko.exe'), 'EXX');
+  // 元の Sukuna.exe は 'EXE'（3 バイト）。同じ大きさで中身が違うもの
+  writeFile(path.join(to, ...P2, 'Sukuna.exe'), 'EXX');
   writeFile(path.join(to, ...P2, 'resources', 'app', 'product.json'), '{"a":1}');
   const r = run(['--from', from, '--to', to, '--only', 'p2-all']);
   assert.equal(r.status, 1, r.stderr + r.stdout);
   assert.equal(item(r.json, 'p2-all').status, 'problem');
   assert.match(item(r.json, 'p2-all').problems.join(' '), /SHA-256|上書きしない/);
-  assert.equal(fs.readFileSync(path.join(to, ...P2, 'Shuko.exe'), 'utf8'), 'EXX', '上書きしていない');
+  assert.equal(fs.readFileSync(path.join(to, ...P2, 'Sukuna.exe'), 'utf8'), 'EXX', '上書きしていない');
 });
 
 test('dir の SHA-256: 写した後の照らし（verifySame）が、同じ大きさで中身が違う dir のファイルを見つける', () => {
@@ -457,7 +457,7 @@ test('dir の SHA-256: 写した後の照らし（verifySame）が、同じ大�
     fs.copyFileSync(f.src, f.dst);
   }
   assert.equal(verifySame(it, selectFiles(it, from, to)).ok, true, '全部同じなら ok');
-  fs.writeFileSync(path.join(to, ...P2, 'Shuko.exe'), 'EXX'); // 同じ 3 バイト
+  fs.writeFileSync(path.join(to, ...P2, 'Sukuna.exe'), 'EXX'); // 同じ 3 バイト
   const v = verifySame(it, selectFiles(it, from, to));
   assert.equal(v.ok, false, 'dir でも SHA-256 を照らす');
   assert.match(v.problems.join(' '), /SHA-256 が違う/);
@@ -484,7 +484,7 @@ test('続き: 途中で止まった写し先（一部だけ写してある）は
   const from = fresh('from');
   const to = fresh('to');
   makeSource(from);
-  const exe = path.join(to, ...P2, 'Shuko.exe');
+  const exe = path.join(to, ...P2, 'Sukuna.exe');
   writeFile(exe, 'EXE'); // 元と同じ
   const old = new Date(2020, 0, 1);
   fs.utimesSync(exe, old, old); // 上書きされたら更新時刻が変わる
@@ -513,12 +513,12 @@ test('続き: 写し先に違うファイルが1つでもあれば problem。無
   const from = fresh('from');
   const to = fresh('to');
   makeSource(from);
-  writeFile(path.join(to, ...P2, 'Shuko.exe'), 'EXX'); // 同じ大きさで中身が違う。product.json は無い
+  writeFile(path.join(to, ...P2, 'Sukuna.exe'), 'EXX'); // 同じ大きさで中身が違う。product.json は無い
   const r = run(['--from', from, '--to', to, '--only', 'p2-all']);
   assert.equal(r.status, 1, r.stderr + r.stdout);
   assert.equal(item(r.json, 'p2-all').status, 'problem');
   assert.ok(!fs.existsSync(path.join(to, ...P2, 'resources', 'app', 'product.json')), '違うものがあるときは何も写さない');
-  assert.equal(fs.readFileSync(path.join(to, ...P2, 'Shuko.exe'), 'utf8'), 'EXX', '上書きしない');
+  assert.equal(fs.readFileSync(path.join(to, ...P2, 'Sukuna.exe'), 'utf8'), 'EXX', '上書きしない');
 });
 
 test('続き: 途中で切れたファイル（元より小さい）は「違うもの」。problem で止まり、上書きもしない', () => {
@@ -550,7 +550,7 @@ test('続き: dry-run は何も写さず、飛ばす数と写す数（existing�
   const from = fresh('from');
   const to = fresh('to');
   makeSource(from);
-  writeFile(path.join(to, ...P2, 'Shuko.exe'), 'EXE');
+  writeFile(path.join(to, ...P2, 'Sukuna.exe'), 'EXE');
   const fp = fingerprint(to);
   const r = run(['--from', from, '--to', to, '--only', 'p2-all', '--dry-run']);
   assert.equal(r.status, 0, r.stderr + r.stdout);

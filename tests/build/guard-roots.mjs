@@ -16,7 +16,7 @@ export function guardedRoots(extra = []) {
   try {
     const la = process.env.LOCALAPPDATA;
     if (la) {
-      const p = path.join(la, 'Shuko', 'local.json');
+      const p = path.join(la, 'Sukuna', 'local.json');
       if (fs.existsSync(p)) {
         const j = JSON.parse(fs.readFileSync(p, 'utf8').replace(/^\uFEFF/, ''));
         if (j && typeof j.buildRoot === 'string' && j.buildRoot) roots.push(j.buildRoot);

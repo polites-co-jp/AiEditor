@@ -130,8 +130,8 @@ test('C-6: edits.patch の件名が [PATCH] unit C-6-settings-sync: edits（appl
   assert.match(patchText, /^Subject: \[PATCH\] unit C-6-settings-sync: edits$/m);
 });
 
-test('C-6: edits.patch の作者が shuko-apply <apply@shuko.invalid>（コミットの作者の取り決め）', { skip: noPatch }, () => {
-  assert.match(patchText, /^From: shuko-apply <apply@shuko\.invalid>$/m);
+test('C-6: edits.patch の作者が sukuna-apply <apply@sukuna.invalid>（コミットの作者の取り決め）', { skip: noPatch }, () => {
+  assert.match(patchText, /^From: sukuna-apply <apply@sukuna\.invalid>$/m);
 });
 
 test('C-6: unit.json の id・stage・after（C-1 だけ。C-2〜C-5 は前提にしない）。order は C-1 より後', { skip: noUnit }, () => {

@@ -38,7 +38,7 @@ node tests/c6-check-json.mjs C:/b/logs/c6-gate/checks-b.json
 | `checks.remnants.status` | `ok` | `ok` |
 | `checks.absentStrings.status` | `ok`（C-6 の9項目すべて記録があり、`hitCount` が 0。注入の外し損ねを守る `IUserDataSyncWorkbenchService`（preferences・relauncher）、`SyncControls`、`onDidTurnOnSync` を含む） | 同じ |
 | `checks.commitIdentity.status`・`checks.registeredKeys.status` | `ok` | `ok` |
-| `commits` | `unit C-6-settings-sync: ops` → `unit C-6-settings-sync: edits`。C-1 の edits の後。作者はどれも `shuko-apply <apply@shuko.invalid>` | 同じ。C-2〜C-5 の edits の後 |
+| `commits` | `unit C-6-settings-sync: ops` → `unit C-6-settings-sync: edits`。C-1 の edits の後。作者はどれも `sukuna-apply <apply@sukuna.invalid>` | 同じ。C-2〜C-5 の edits の後 |
 | 作業ツリーの未コミットの変更 | 0（2の型検査の記録の `sourceVersion.uncommittedEntries`。`git status` は使わない） | 同じ |
 
 C-6 の edits に衝突が出る、C-6 の `warnings` が出る、のどれかなら、ほかの単位との重なりが増えている。蒙恬に返す（docs/03 の5.3: C-6 は `workbench.*.main.ts` の行を removeLines の3行だけで消し、ほかの単位の edits.patch と同じファイルに触れない）。

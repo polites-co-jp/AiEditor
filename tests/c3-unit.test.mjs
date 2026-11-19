@@ -98,8 +98,8 @@ test('C-3: edits.patch の件名が [PATCH] unit C-3-remote: edits（applyEdits 
   assert.match(patchText, /^Subject: \[PATCH\] unit C-3-remote: edits$/m);
 });
 
-test('C-3: edits.patch の作者が shuko-apply <apply@shuko.invalid>（コミットの作者の取り決め）', { skip: noPatch }, () => {
-  assert.match(patchText, /^From: shuko-apply <apply@shuko\.invalid>$/m);
+test('C-3: edits.patch の作者が sukuna-apply <apply@sukuna.invalid>（コミットの作者の取り決め）', { skip: noPatch }, () => {
+  assert.match(patchText, /^From: sukuna-apply <apply@sukuna\.invalid>$/m);
 });
 
 test('C-3: unit.json の id・stage・after（A-5 と C-1。C-2 は前提にしない）。order は前提にした単位より後', { skip: noUnit }, () => {
@@ -285,7 +285,7 @@ test('C-3: edits.patch の直しは、remoteExplorer.js の import の1行を消
   assert.equal(s.added.filter((l) => l.trim() === CONST_LINE).length, 1, `${CONST_LINE} がちょうど1行でない`);
   const other = s.added.filter((l) => l.trim() !== CONST_LINE && l.trim() !== '' && !l.trim().startsWith('//'));
   assert.deepEqual(other, [], '定数とコメント以外を足している');
-  assert.ok(s.added.some((l) => /^\/\/ Shuko \(C-3-remote\)/.test(l)), '// Shuko (C-3-remote) のコメントが無い');
+  assert.ok(s.added.some((l) => /^\/\/ Sukuna \(C-3-remote\)/.test(l)), '// Sukuna (C-3-remote) のコメントが無い');
 });
 
 test('C-3: 置いた定数の値が、本家 remoteExplorer.ts の VIEWLET_ID と同じ。消す import は本家にあり、REMOTE は本家で3か所以上使われる', { skip: skipUpPatch }, () => {

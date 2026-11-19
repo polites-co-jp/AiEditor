@@ -1,6 +1,6 @@
 # mydist
 
-Shuko の既定の設定とキー割り当てを持つ、コードの無い組み込み拡張（docs/04 の6節）。`main` を持たず、`package.json` の宣言だけで働く。
+Sukuna の既定の設定とキー割り当てを持つ、コードの無い組み込み拡張（docs/04 の6節）。`main` を持たず、`package.json` の宣言だけで働く。
 
 - `contributes.configurationDefaults`: 既定の設定（docs/04 の6.1）。`chat.disableAIFeatures`、`workbench.colorTheme`、`breadcrumbs.enabled`、`workbench.startupEditor: "none"` と、下に書いた項目。
   - 入れられるのは machine-overridable・window・resource・language-overridable のスコープの設定だけ。application スコープの設定は、本体が警告を出して捨てる（本家 1.146.0 の `src/vs/workbench/api/common/configurationExtensionPoint.ts` 216〜233行）。そのため 6.1 の表のうち `extensions.allowed`・`telemetry.telemetryLevel`・`update.mode`・`workbench.enableExperiments`・`extensions.autoUpdate`・`extensions.autoCheckUpdates` はここに書かない（Phase 0 の試作にあった `extensions.allowed` と `telemetry.telemetryLevel` は 2026-11-13 に外した）。既定を変える方法は `tasks/2026-11-13-p1-ledger-mydist-decisions/app-scope-options.md`。

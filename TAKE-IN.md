@@ -11,7 +11,7 @@
 5. 拡張の圧縮された JS を読まない。拡張の判断は manifest・ファイルの一覧・ハッシュ・署名・実機の結果だけで行う。
 6. 本家が足した部品（未分類の組み込み拡張、新しい contrib など）は、残すか、どの単位で消すかを提案するだけにする。自分で単位に入れない。
 7. 材料に無い事実を推測で補わない。足りなければ足りないと書く。
-8. コミットの名前は `shuko-apply <apply@shuko.invalid>` にする（docs/03 の5.2）。利用者の名前とメールをパッチの `From:` に残さないため。修理では git の操作（`add`・`am --continue`・`commit`・`format-patch`）を台本が行い、台本がこの名前を使う。自分で git の操作をしない。
+8. コミットの名前は `sukuna-apply <apply@sukuna.invalid>` にする（docs/03 の5.2）。利用者の名前とメールをパッチの `From:` に残さないため。修理では git の操作（`add`・`am --continue`・`commit`・`format-patch`）を台本が行い、台本がこの名前を使う。自分で git の操作をしない。
 
 ## 2. 修理（手順 3・5）
 
@@ -40,7 +40,7 @@
 
 ## 4. 日本語パック（本体の版が上がったとき）
 
-日本語の言語パックは自前の組み込み拡張 `extensions-src/language-pack-ja/`（`shuko.language-pack-ja`）。本体と同じ版の文言を、公式の訳（vscode-loc。MIT）と課が足した訳（`added/<版>.json`）で埋める。作り方は `tasks/2026-11-17-l10n-ja/l10n-design.md`、台本は `scripts/l10n-ja.mjs`（純粋な部品は `scripts/lib/l10n-ja.mjs`）、正本の決まりは docs/04 の7節。
+日本語の言語パックは自前の組み込み拡張 `extensions-src/language-pack-ja/`（`sukuna.language-pack-ja`）。本体と同じ版の文言を、公式の訳（vscode-loc。MIT）と課が足した訳（`added/<版>.json`）で埋める。作り方は `tasks/2026-11-17-l10n-ja/l10n-design.md`、台本は `scripts/l10n-ja.mjs`（純粋な部品は `scripts/lib/l10n-ja.mjs`）、正本の決まりは docs/04 の7節。
 
 未訳を数えること（4.2 の2・3）は、`take-in.mjs` がビルドの後に自動で行う。訳を足して作り直すこと（4.2 の1・4〜8）は、課（蒙恬）が手で行う。修理（2節）と判定（3節）の `claude -p` は、訳を作らず、`extensions-src/language-pack-ja/` を書き換えない（2026-11-17 のリーダーの判断: 訳すのは蒙恬で、自動にしない。数えるのは台本）。
 
@@ -88,4 +88,4 @@
 ### 4.3 入れ替えのときに見ること
 
 - 古い Open VSX の日本語パック（`MS-CEINTL.vscode-language-pack-ja`）が利用者の拡張に入っていれば外す（入ったままだと、後から読まれる古い訳が勝つ）。外す操作は許可を持つ者が行う。
-- `%APPDATA%\Shuko\languagepacks.json` の `ja` の `translations.vscode` が、新しい版の `resources\app\extensions\language-pack-ja\dist\translations\main.i18n.json` を指すことを確かめる。言語パックの一覧は起動のたびに作り直されるので、日本語になるのは入れ替えた後の2回目の起動からの見込み。
+- `%APPDATA%\Sukuna\languagepacks.json` の `ja` の `translations.vscode` が、新しい版の `resources\app\extensions\language-pack-ja\dist\translations\main.i18n.json` を指すことを確かめる。言語パックの一覧は起動のたびに作り直されるので、日本語になるのは入れ替えた後の2回目の起動からの見込み。

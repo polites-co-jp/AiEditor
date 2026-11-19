@@ -18,7 +18,7 @@
 .PARAMETER BuilderRepo  overrides builderRepo of local.json
 .PARAMETER At           daily start time, "HH:mm" (default 06:00)
 .PARAMETER TaskName     default "watch"
-.PARAMETER TaskPath     default "\Shuko\"
+.PARAMETER TaskPath     default "\Sukuna\"
 .PARAMETER NodePath     node.exe to use (default: the one found on PATH now)
 .PARAMETER DryRun       print only
 .PARAMETER Unregister   remove the task
@@ -36,7 +36,7 @@ param(
     [string]$BuilderRepo,
     [string]$At = '06:00',
     [string]$TaskName = 'watch',
-    [string]$TaskPath = '\Shuko\',
+    [string]$TaskPath = '\Sukuna\',
     [string]$NodePath,
     [switch]$DryRun,
     [switch]$Unregister
@@ -59,7 +59,7 @@ if ($At -notmatch '^([01]\d|2[0-3]):[0-5]\d$') { throw "-At must be HH:mm (got '
 
 $overrides = @{}
 if ($BuilderRepo) { $overrides['builderRepo'] = $BuilderRepo }
-$cfg = Resolve-ShukoLocalConfig -ConfigPath $ConfigPath -Overrides $overrides
+$cfg = Resolve-SukunaLocalConfig -ConfigPath $ConfigPath -Overrides $overrides
 if (-not $cfg.builderRepo) {
     throw 'builderRepo is not set in local.json. Run scripts\configure.ps1 in the build repository first, or pass -BuilderRepo.'
 }
@@ -82,7 +82,7 @@ $trigger = New-ScheduledTaskTrigger -Daily -At $time
 $settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries `
     -MultipleInstances IgnoreNew -ExecutionTimeLimit (New-TimeSpan -Minutes 30)
 $principal = New-ScheduledTaskPrincipal -UserId $userId -LogonType Interactive -RunLevel Limited
-$description = 'Shuko update watcher (docs/06 section 2). Writes Notion ToDo items for new VS Code / extension versions.'
+$description = 'Sukuna update watcher (docs/06 section 2). Writes Notion ToDo items for new VS Code / extension versions.'
 
 Write-Host "register-task: task      $TaskPath$TaskName"
 Write-Host "register-task: run       $NodePath $argument"

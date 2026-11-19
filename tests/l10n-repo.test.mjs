@@ -38,9 +38,9 @@ after(() => removeSandbox(sb));
 const pj = readJson(path.join(PACK, 'package.json'));
 const loc = pj.contributes.localizations.find((l) => l.languageId === 'ja');
 
-test('パックの package.json: shuko.language-pack-ja（組み込みの拡張）。ja の localizations があり、vscode の項目がある', () => {
+test('パックの package.json: sukuna.language-pack-ja（組み込みの拡張）。ja の localizations があり、vscode の項目がある', () => {
   assert.equal(`${pj.publisher}.${pj.name}`, PACK_ID);
-  assert.equal(PACK_ID, 'shuko.language-pack-ja');
+  assert.equal(PACK_ID, 'sukuna.language-pack-ja');
   assert.ok(loc, 'ja の localizations');
   assert.ok(loc.translations.some((t) => t.id === 'vscode'), 'vscode の項目');
   assert.equal(loc.localizedLanguageName, '日本語');
@@ -279,7 +279,7 @@ function runApplyOn({ withMydist = true, langPack }) {
   const base = path.join(sb, `apply-${++repoSeq}`);
   const wt = sharedWorktree();
   const ext = path.join(base, 'ext');
-  if (withMydist) w(path.join(ext, 'mydist', 'package.json'), '{"name":"mydist","publisher":"shuko","version":"0.0.1","displayName":"Shuko の既定"}\n');
+  if (withMydist) w(path.join(ext, 'mydist', 'package.json'), '{"name":"mydist","publisher":"sukuna","version":"0.0.1","displayName":"Sukuna の既定"}\n');
   if (langPack) langPack(ext);
   for (const d of ['removals', 'patches', 'manifests']) fs.mkdirSync(path.join(base, d), { recursive: true });
   w(path.join(base, 'overlay.json'), '{}');
@@ -344,14 +344,14 @@ test('retiredNotes: 古い日本語パックの ID（大文字小文字を問わ
     assert.equal(r.length, 1, id);
     assert.equal(r[0].id, id);
     assert.equal(r[0].version, '1.131.0');
-    assert.match(r[0].note, /shuko\.language-pack-ja/);
+    assert.match(r[0].note, /sukuna\.language-pack-ja/);
     assert.match(r[0].note, /--uninstall-extension MS-CEINTL\.vscode-language-pack-ja/);
   }
 });
 test('retiredNotes: ほかの拡張の ID には付かない（似た名前・別の言語のパック・サフィックスつきも付けない）', () => {
   const extra = [
     { id: 'anthropic.claude-code', version: '1' }, { id: 'ms-ceintl.vscode-language-pack-fr', version: '1' },
-    { id: 'ms-ceintl.vscode-language-pack-ja.extra', version: '1' }, { id: 'x.language-pack-ja', version: '1' }, { id: 'shuko.language-pack-ja', version: '1' },
+    { id: 'ms-ceintl.vscode-language-pack-ja.extra', version: '1' }, { id: 'x.language-pack-ja', version: '1' }, { id: 'sukuna.language-pack-ja', version: '1' },
   ];
   assert.deepEqual(retiredNotes(extra), []);
 });
@@ -444,7 +444,7 @@ test('readBuiltPack: package.json の translations が指す所から読む。ja
 // resolveInput
 const STR = () => ({
   core: { 'vs/a': { k1: 'Open', 'dup': 'Same' }, 'vs/b': { dup: 'Same' } },
-  extensions: { 'vscode.git': { package: { p: 'Pull {0}' }, bundle: { 'Fetch': 'Fetch' } }, 'shuko.mydist': { package: {}, bundle: {}, literal: { displayName: 'Shuko' } } },
+  extensions: { 'vscode.git': { package: { p: 'Pull {0}' }, bundle: { 'Fetch': 'Fetch' } }, 'sukuna.mydist': { package: {}, bundle: {}, literal: { displayName: 'Sukuna' } } },
 });
 test('resolveInput: owner#key を文言の表で引き、場所（area）と英語を決める。override は override: true になる', () => {
   const r = resolveInput(STR(), { translate: { 'vs/a#k1': '開く', 'vscode.git#p': '{0} を取得' }, override: { 'vscode.git#Fetch': 'フェッチ' }, exclude: { 'vs/b#dup': { reason: 'format', note: 'n' } } });
@@ -469,7 +469,7 @@ test('resolveInput: 当たる行が2件以上（owner#key が同じ別の area�
   assert.match(r.errors[0], /2 件/);
 });
 test('resolveInput: 自前の拡張の直書き（literal）には訳を足せない', () => {
-  const r = resolveInput(STR(), { translate: { 'shuko.mydist#displayName': '日本語' } });
+  const r = resolveInput(STR(), { translate: { 'sukuna.mydist#displayName': '日本語' } });
   assert.equal(r.errors.length, 1);
   assert.match(r.errors[0], /直書き/);
   assert.deepEqual(r.translate, []);

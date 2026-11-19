@@ -2,7 +2,7 @@
 // 仕様: brief tasks/2026-11-15-install-doc-fix/brief.md の「やること（蒙恬）」1、docs/04 の5節。
 // 本物のエディタは起動しない。偽の CLI（node で動く .cmd）を使い、エディタの configurePortable
 // （1.146.0 の src/bootstrap-node.ts）と同じ「場所が在るときだけポータブルとして扱い、無ければ黙って普段の場所に入れる」を真似る。
-// 普段の場所の代わりに、サンドボックスの USERPROFILE の下の .shuko を使う（本物の %USERPROFILE% には触れない）。
+// 普段の場所の代わりに、サンドボックスの USERPROFILE の下の .sukuna を使う（本物の %USERPROFILE% には触れない）。
 // Run: node --test tests/install-portable.test.mjs
 import test, { before, after } from 'node:test';
 import assert from 'node:assert/strict';
@@ -48,11 +48,11 @@ if (args.includes('--install-extension')) {
 `;
 
 // 偽のエディタ（偽の CLI つき）、台帳 1 件、キャッシュ済みの VSIX を用意する。
-function setup({ dataFolderName = '.shuko' } = {}) {
+function setup({ dataFolderName = '.sukuna' } = {}) {
   const root = path.join(sb, `t${++n}`);
   const editor = path.join(root, 'ed');
   makeFakeEditor(editor, { dataFolderName });
-  const cli = path.join(editor, 'bin', 'shuko.cmd');
+  const cli = path.join(editor, 'bin', 'sukuna.cmd');
   writeFile(path.join(editor, 'bin', 'fake-cli.mjs'), FAKE_CLI_MJS);
   writeFile(cli, `@echo off\r\n"${process.execPath}" "%~dp0fake-cli.mjs" %*\r\nexit /b %errorlevel%\r\n`);
 

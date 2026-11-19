@@ -1,5 +1,5 @@
-From dc8c21678aa7e3cb0c6929f8e3842e66b82a00f7 Mon Sep 17 00:00:00 2001
-From: shuko-apply <apply@shuko.invalid>
+From 8f98587d3cdf9206ddbb236795ff1c46346fdaed Mon Sep 17 00:00:00 2001
+From: sukuna-apply <apply@sukuna.invalid>
 Date: Sun, 15 Nov 2026 10:50:31 +0900
 Subject: [PATCH] unit C-1-ai: edits
 
@@ -130,7 +130,7 @@ Remove the references to the built-in AI - chat, inline chat, language models, t
  create mode 100644 src/vs/workbench/api/common/extHostRemovedApi.ai.ts
 
 diff --git a/build/gulpfile.ts b/build/gulpfile.ts
-index 120838f77e3..847f0edf6bb 100644
+index 120838f77e3..f6a678e059f 100644
 --- a/build/gulpfile.ts
 +++ b/build/gulpfile.ts
 @@ -13,9 +13,7 @@ import * as compilation from './lib/compilation.ts';
@@ -140,7 +140,7 @@ index 120838f77e3..847f0edf6bb 100644
 -import { agentHostCryptoOutDir, bundleAgentHostCrypto } from './next/agentHostCrypto.ts';
 -
 -const bundleAgentHostCryptoTask = task.define('bundle-agent-host-crypto', () => bundleAgentHostCrypto({ outDir: `out/${agentHostCryptoOutDir}` }));
-+// Shuko (C-1-ai): the agent host credential crypto bundle (build/next/agentHostCrypto.ts) is removed with the agent host.
++// Sukuna (C-1-ai): the agent host credential crypto bundle (build/next/agentHostCrypto.ts) is removed with the agent host.
  
  // Extension point names
  task.task(compilation.compileExtensionPointNamesTask);
@@ -163,7 +163,7 @@ index 120838f77e3..847f0edf6bb 100644
  
  // All
 diff --git a/build/gulpfile.vscode.ts b/build/gulpfile.vscode.ts
-index d63c744894d..760949fc2d4 100644
+index d63c744894d..8e557e397a3 100644
 --- a/build/gulpfile.vscode.ts
 +++ b/build/gulpfile.vscode.ts
 @@ -24,13 +24,12 @@ import { getProductionDependencies } from './lib/dependencies.ts';
@@ -175,7 +175,7 @@ index d63c744894d..760949fc2d4 100644
  import { checkApiProposalNamesTask, copyCodiconsTask } from './lib/compilation.ts';
 -import { ensureCopilotPlatformPackage, getCopilotExcludeFilter, getCopilotRuntimePrebuildFiles, getCopilotRuntimeVersion, getCopilotTgrepExcludeFilter, getRipgrepExcludeFilter, prepareBuiltInCopilotRipgrepShim, renderCopilotShimLauncher } from './lib/copilot.ts';
 -import { getLockedVersion } from './lib/pnpmLock.ts';
-+// Shuko (C-1-ai): the Copilot runtime (@github/copilot-sdk), the agent SDKs and the dictation runtime are removed,
++// Sukuna (C-1-ai): the Copilot runtime (@github/copilot-sdk), the agent SDKs and the dictation runtime are removed,
 +// so only the ripgrep filter is still used from this file.
 +import { getRipgrepExcludeFilter } from './lib/copilot.ts';
  import { ensureOSProxyResolverPlatformPackage, getOSProxyResolverExcludeFilter, getOSProxyResolverPlatformFiles } from './lib/osProxyResolver.ts';
@@ -243,7 +243,7 @@ index d63c744894d..760949fc2d4 100644
 -				if (dictationRuntime) {
 -					json.dictationRuntime = dictationRuntime;
 -				}
-+				// Shuko (C-1-ai): copilotVersions, agentSdks and dictationRuntime are not stamped (the runtimes are removed).
++				// Sukuna (C-1-ai): copilotVersions, agentSdks and dictationRuntime are not stamped (the runtimes are removed).
  				return json;
  			}))
  			.pipe(es.through(function (file) {
@@ -253,7 +253,7 @@ index d63c744894d..760949fc2d4 100644
  			.pipe(util.cleanNodeModules(path.join(import.meta.dirname, `.moduleignore.${process.platform}`)));
 -		ensureCopilotPlatformPackage(platform, arch);
 -		const copilotRuntimePrebuilds = gulp.src(getCopilotRuntimePrebuildFiles(platform, arch), { base: '.', dot: true, allowEmpty: true });
-+		// Shuko (C-1-ai): the Copilot runtime packages and foundry-local-sdk are no longer dependencies.
++		// Sukuna (C-1-ai): the Copilot runtime packages and foundry-local-sdk are no longer dependencies.
  		ensureOSProxyResolverPlatformPackage(platform, arch);
  		const osProxyResolverPlatformPackage = gulp.src(getOSProxyResolverPlatformFiles(platform, arch), { base: '.', dot: true, allowEmpty: true });
 -		const deps = es.merge(cleanedDeps, copilotRuntimePrebuilds, osProxyResolverPlatformPackage)
@@ -274,7 +274,7 @@ index d63c744894d..760949fc2d4 100644
 -				// The Dev Container CLI is spawned as an external Node process,
 -				// so its bundled entrypoint must be available outside the ASAR.
 -				'**/@devcontainers/cli/**',
-+				// Shuko (C-1-ai): the Copilot SDK runtime and the Dev Container CLI (used only by the agent host) are removed.
++				// Sukuna (C-1-ai): the Copilot SDK runtime and the Dev Container CLI (used only by the agent host) are removed.
  				'**/node-pty/build/Release/*',
  				'**/node-pty/build/Release/conpty/*',
  				'**/node-pty/lib/worker/conoutSocketWorker.js',
@@ -295,7 +295,7 @@ index d63c744894d..760949fc2d4 100644
 -					this.emit('data', file);
 -				}))
 -				.pipe(rename(f => { f.dirname = 'bin/copilot-shim'; f.basename = 'copilot'; f.extname = ''; })));
-+			// Shuko (C-1-ai): the Copilot CLI launcher (bin/copilot-shim) is not shipped.
++			// Sukuna (C-1-ai): the Copilot CLI launcher (bin/copilot-shim) is not shipped.
  
  			result = es.merge(result, gulp.src('.build/policies/win32/**', { base: '.build/policies/win32' })
  				.pipe(rename(f => f.dirname = `policies/${f.dirname}`)));
@@ -305,7 +305,7 @@ index d63c744894d..760949fc2d4 100644
  			glob('**/*explorer_command*.dll', { cwd }),
 -			// TODO@anthonykim1 Remove once @github/copilot ships OneAuthInterop.dll with complete version information.
 -			glob('**/OneAuthInterop.dll', { cwd }),
-+			// Shuko (C-1-ai): OneAuthInterop.dll came with @github/copilot, which is removed.
++			// Sukuna (C-1-ai): OneAuthInterop.dll came with @github/copilot, which is removed.
  		])).flatMap(o => o);
  		const packageJson = JSON.parse(await fs.promises.readFile(path.join(cwd, versionedResourcesFolder, 'resources', 'app', 'package.json'), 'utf8'));
  		const product = JSON.parse(await fs.promises.readFile(path.join(cwd, versionedResourcesFolder, 'resources', 'app', 'product.json'), 'utf8'));
@@ -329,7 +329,7 @@ index d63c744894d..760949fc2d4 100644
 -		prepareBuiltInCopilotRipgrepShim(platform, arch, builtInCopilotExtensionDir, appNodeModulesDir);
 -	};
 -}
-+// Shuko (C-1-ai): prepareCopilotRipgrepShimTask is removed (no built-in Copilot extension and no Copilot SDK).
++// Sukuna (C-1-ai): prepareCopilotRipgrepShimTask is removed (no built-in Copilot extension and no Copilot SDK).
  
  function generateNodeCompileCacheTask(platform: string, destinationFolderName: string) {
  	const outputDirectory = path.join(path.dirname(root), destinationFolderName);
@@ -350,7 +350,7 @@ index d63c744894d..760949fc2d4 100644
  			writeISODate('out-build'),
  			esbuildBundleTask,
 diff --git a/build/next/index.ts b/build/next/index.ts
-index f8e7ac322fa..deb99b2306f 100644
+index f8e7ac322fa..c822feb62dd 100644
 --- a/build/next/index.ts
 +++ b/build/next/index.ts
 @@ -20,8 +20,7 @@ import product from '../../product.json' with { type: 'json' };
@@ -359,7 +359,7 @@ index f8e7ac322fa..deb99b2306f 100644
  import { runBuildFast } from './build-fast.ts';
 -import { bundleDevTunnelsWeb, devTunnelsWebOutDir } from './devTunnelsWeb.ts';
 -import { agentHostCryptoOutDir, bundleAgentHostCrypto } from './agentHostCrypto.ts';
-+// Shuko (C-1-ai): the agent host credential crypto bundle (agentHostCrypto.ts) is removed with the agent host.
++// Sukuna (C-1-ai): the agent host credential crypto bundle (agentHostCrypto.ts) is removed with the agent host.
  import { copyFile, mapWithConcurrency, MAX_CONCURRENT_FILE_OPERATIONS, transpileFile } from './transpile.ts';
  import { copyResources } from './resources.ts';
  import { optimizeSvgFiles } from './svg.ts';
@@ -371,7 +371,7 @@ index f8e7ac322fa..deb99b2306f 100644
 -const webOnlyEntryPoints = [
 -	sessionsWebEntryPoint,
 -];
-+// Shuko (C-1-ai): the Agents window (src/vs/sessions) is removed, so there is no web-only entry point.
++// Sukuna (C-1-ai): the Agents window (src/vs/sessions) is removed, so there is no web-only entry point.
 +const webOnlyEntryPoints: string[] = [];
  
  const keyboardMapEntryPoints = [
@@ -403,7 +403,7 @@ index f8e7ac322fa..deb99b2306f 100644
 -			sourceMapBaseUrl: sourceMapBaseUrl ? `${sourceMapBaseUrl}/${devTunnelsWebOutDir}` : undefined,
 -		});
 -	}
-+	// Shuko (C-1-ai): the agent host crypto bundle (agent host credentials) and the dev tunnels web bundle
++	// Sukuna (C-1-ai): the agent host crypto bundle (agent host credentials) and the dev tunnels web bundle
 +	// (Agents window web entry point) are removed with the agent host and the Agents window.
  
  	// Finish emitted assets and copied resources before packaging computes integrity data.
@@ -425,7 +425,7 @@ index f8e7ac322fa..deb99b2306f 100644
  				}
  				break;
 diff --git a/src/server-main.ts b/src/server-main.ts
-index 0da02622aee..af0cc5b941c 100644
+index 0da02622aee..4d16c9997bf 100644
 --- a/src/server-main.ts
 +++ b/src/server-main.ts
 @@ -45,16 +45,8 @@ const shouldSpawnCli = parsedArgs.help || parsedArgs.version || extensionLookupA
@@ -442,7 +442,7 @@ index 0da02622aee..af0cc5b941c 100644
 -		process.exitCode = 1;
 -	}
 -} else if (shouldSpawnCli) {
-+// Shuko (C-1-ai): the agent host (platform/agentHost) is removed, so `--agent-host-ca` is gone.
++// Sukuna (C-1-ai): the agent host (platform/agentHost) is removed, so `--agent-host-ca` is gone.
 +if (shouldSpawnCli) {
  	loadCode(nlsConfiguration).then((mod) => {
  		mod.spawnCli();
@@ -470,7 +470,7 @@ index 37cbeefd169..4216599f432 100644
  	readonly chatSessionRecommendations?: IChatSessionRecommendation[];
  	readonly emergencyAlertUrl?: string;
 diff --git a/src/vs/code/electron-main/app.ts b/src/vs/code/electron-main/app.ts
-index 9d266151594..c4d7611c991 100644
+index 9d266151594..cbf108e5623 100644
 --- a/src/vs/code/electron-main/app.ts
 +++ b/src/vs/code/electron-main/app.ts
 @@ -135,20 +135,12 @@ import { ILocalPtyService, LocalReconnectConstants, TerminalIpcChannels, Termina
@@ -508,7 +508,7 @@ index 9d266151594..c4d7611c991 100644
 -		const agentHostStarter = appInstantiationService.createInstance(ElectronAgentHostStarter, { machineId, sqmId, devDeviceId });
 -		// This manager self-disposes after its lifecycle join; CodeApplication disposes before later shutdown listeners run.
 -		const agentHostProcessManager = appInstantiationService.createInstance(AgentHostProcessManager, agentHostStarter, process.platform);
-+		// Shuko (C-1-ai): the agent host (platform/agentHost) is removed.
++		// Sukuna (C-1-ai): the agent host (platform/agentHost) is removed.
  
  		// Metered connection telemetry
  		appInstantiationService.invokeFunction(accessor => {
@@ -750,7 +750,7 @@ index e2973e07d2f..b134dd1cabe 100644
  		else if (this.argv['telemetry']) {
  			console.log(await buildTelemetryMessage(environmentService.appRoot, environmentService.extensionsPath));
 diff --git a/src/vs/platform/dialogs/electron-browser/dialog.ts b/src/vs/platform/dialogs/electron-browser/dialog.ts
-index 71d2a8a906a..b3864b626ac 100644
+index 71d2a8a906a..539ff713712 100644
 --- a/src/vs/platform/dialogs/electron-browser/dialog.ts
 +++ b/src/vs/platform/dialogs/electron-browser/dialog.ts
 @@ -10,9 +10,7 @@ import { IOSProperties } from '../../native/common/native.js';
@@ -760,7 +760,7 @@ index 71d2a8a906a..b3864b626ac 100644
 -function formatCopilotVersion(version: string | undefined): string {
 -	return version?.replace(/^(?<core>\d+\.\d+\.\d+)-(?:canary|unstable)(?=[.+-]|$)/, '$<core>').replace(/\.unsigned$/, '') || 'Unknown';
 -}
-+// Shuko (C-1-ai): the Copilot runtime and SDK are removed, so the About dialog no longer lists their versions.
++// Sukuna (C-1-ai): the Copilot runtime and SDK are removed, so the About dialog no longer lists their versions.
  
  export function createNativeAboutDialogDetails(productService: IProductService, osProps: IOSProperties): { title: string; details: string; detailsToCopy: string } {
  	let version = productService.version;
@@ -774,7 +774,7 @@ index 71d2a8a906a..b3864b626ac 100644
  	const getDetails = (useAgo: boolean): string => {
 -		return localize({ key: 'aboutDetail', comment: ['Electron, Chromium, Node.js, V8 and Copilot are product names that need no translation'] },
 -			"Version: {0}\nCommit: {1}\nDate: {2}\nElectron: {3}\nElectronBuildId: {4}\nChromium: {5}\nNode.js: {6}\nV8: {7}\n@github/copilot: {8}\n@github/copilot-sdk: {9}\nOS: {10}",
-+		// Shuko (C-1-ai): a new key, so that a language pack's translation of 'aboutDetail' (which has the two Copilot lines) is not used.
++		// Sukuna (C-1-ai): a new key, so that a language pack's translation of 'aboutDetail' (which has the two Copilot lines) is not used.
 +		return localize({ key: 'aboutDetailWithoutCopilot', comment: ['Electron, Chromium, Node.js and V8 are product names that need no translation'] },
 +			"Version: {0}\nCommit: {1}\nDate: {2}\nElectron: {3}\nElectronBuildId: {4}\nChromium: {5}\nNode.js: {6}\nV8: {7}\nOS: {8}",
  			version,
@@ -803,7 +803,7 @@ index 833dd7b449a..5f4ef9b834c 100644
  		}
  		checked.push(extension);
 diff --git a/src/vs/platform/extensionManagement/common/extensionGalleryService.ts b/src/vs/platform/extensionManagement/common/extensionGalleryService.ts
-index 37a7d8c36c2..44510e9d655 100644
+index 37a7d8c36c2..d1d3f628ec2 100644
 --- a/src/vs/platform/extensionManagement/common/extensionGalleryService.ts
 +++ b/src/vs/platform/extensionManagement/common/extensionGalleryService.ts
 @@ -1231,7 +1231,7 @@ export abstract class AbstractExtensionGalleryService implements IExtensionGalle
@@ -819,7 +819,7 @@ index 37a7d8c36c2..44510e9d655 100644
  			}
  		}
  
-+		// Shuko (C-1-ai): product.json has no defaultChatAgent, so there is nothing to mark as deprecated here.
++		// Sukuna (C-1-ai): product.json has no defaultChatAgent, so there is nothing to mark as deprecated here.
 +		if (!this.productService.defaultChatAgent) {
 +			return { malicious, deprecated, search, autoUpdate };
 +		}
@@ -866,7 +866,7 @@ index 6eefd7163db..85cb785b21a 100644
  			}
  			const builtinExtension = builtinExtensions.find(e => areSameExtensions(e.identifier, userExtension.identifier));
 diff --git a/src/vs/platform/protocol/electron-main/protocolMainService.ts b/src/vs/platform/protocol/electron-main/protocolMainService.ts
-index 15e27593953..99e3ed81612 100644
+index 15e27593953..8c444802458 100644
 --- a/src/vs/platform/protocol/electron-main/protocolMainService.ts
 +++ b/src/vs/platform/protocol/electron-main/protocolMainService.ts
 @@ -6,7 +6,7 @@
@@ -885,13 +885,13 @@ index 15e27593953..99e3ed81612 100644
 -		const isSessionsWorkbench = (pathBasename === 'sessions.html' || pathBasename === 'sessions-dev.html')
 -			&& path === normalize(join(this.environmentService.appRoot, 'out/vs/sessions/electron-browser', pathBasename));
 -		if (pathBasename === 'workbench.html' || pathBasename === 'workbench-dev.html' || isSessionsWorkbench) {
-+		// Shuko (C-1-ai): the Agents window page (vs/sessions/electron-browser/sessions.html) is removed.
++		// Sukuna (C-1-ai): the Agents window page (vs/sessions/electron-browser/sessions.html) is removed.
 +		if (pathBasename === 'workbench.html' || pathBasename === 'workbench-dev.html') {
  			headers = {
  				...headers,
  				...DocumentPolicyheaders
 diff --git a/src/vs/platform/remote/test/electron-browser/electronRemoteResourceLoader.test.ts b/src/vs/platform/remote/test/electron-browser/electronRemoteResourceLoader.test.ts
-index cf4094dbbac..3f56fd79254 100644
+index cf4094dbbac..53c36dad22a 100644
 --- a/src/vs/platform/remote/test/electron-browser/electronRemoteResourceLoader.test.ts
 +++ b/src/vs/platform/remote/test/electron-browser/electronRemoteResourceLoader.test.ts
 @@ -15,7 +15,8 @@ import { IMainProcessService } from '../../../ipc/common/mainProcessService.js';
@@ -899,7 +899,7 @@ index cf4094dbbac..3f56fd79254 100644
  import { createBrowserResourceUriProvider, ElectronRemoteResourceLoader } from '../../electron-browser/electronRemoteResourceLoader.js';
  import { BrowserResourceService } from '../../../files/browser/browserResourceService.js';
 -import { AGENT_HOST_SCHEME, toAgentHostUri } from '../../../agentHost/common/agentHostUri.js';
-+// Shuko (C-1-ai): platform/agentHost is removed; same value as its AGENT_HOST_SCHEME. The resources are plain URIs of that scheme.
++// Sukuna (C-1-ai): platform/agentHost is removed; same value as its AGENT_HOST_SCHEME. The resources are plain URIs of that scheme.
 +const AGENT_HOST_SCHEME = 'vscode-agent-host';
  
  suite('ElectronRemoteResourceLoader', () => {
@@ -932,7 +932,7 @@ index cf4094dbbac..3f56fd79254 100644
  			assert.deepStrictEqual({ statusCode: response.statusCode, message: decodeBase64(response.body).toString() }, { statusCode, message: error.message });
  		});
 diff --git a/src/vs/platform/windows/electron-main/windowImpl.ts b/src/vs/platform/windows/electron-main/windowImpl.ts
-index 8f69473fb8f..b560f01fa8c 100644
+index 8f69473fb8f..5c84009c6df 100644
 --- a/src/vs/platform/windows/electron-main/windowImpl.ts
 +++ b/src/vs/platform/windows/electron-main/windowImpl.ts
 @@ -1360,9 +1360,9 @@ export class CodeWindow extends BaseWindow implements ICodeWindow {
@@ -942,13 +942,13 @@ index 8f69473fb8f..b560f01fa8c 100644
 -		} else if (configuration.isSessionsWindow) {
 -			windowUrl = FileAccess.asBrowserUri(`vs/sessions/electron-browser/sessions${this.environmentMainService.isBuilt ? '' : '-dev'}.html`).toString(true);
  		} else {
-+			// Shuko (C-1-ai): the Agents window page (vs/sessions/electron-browser/sessions.html) is removed,
++			// Sukuna (C-1-ai): the Agents window page (vs/sessions/electron-browser/sessions.html) is removed,
 +			// so a window for the agent sessions workspace loads the regular workbench.
  			windowUrl = FileAccess.asBrowserUri(`vs/code/electron-browser/workbench/workbench${this.environmentMainService.isBuilt ? '' : '-dev'}.html`).toString(true);
  		}
  		this._win.loadURL(windowUrl);
 diff --git a/src/vs/platform/windows/electron-main/windowsMainService.ts b/src/vs/platform/windows/electron-main/windowsMainService.ts
-index 44dcb40eb95..d8139e338fe 100644
+index 44dcb40eb95..489189caff2 100644
 --- a/src/vs/platform/windows/electron-main/windowsMainService.ts
 +++ b/src/vs/platform/windows/electron-main/windowsMainService.ts
 @@ -58,8 +58,6 @@ import { IAuxiliaryWindowsMainService } from '../../auxiliaryWindow/electron-mai
@@ -992,7 +992,7 @@ index 44dcb40eb95..d8139e338fe 100644
 -			const emptyWorkspaceContent = JSON.stringify({ folders: [] }, null, '\t');
 -			await this.fileService.writeFile(agentSessionsWorkspaceUri, VSBuffer.fromString(emptyWorkspaceContent));
 +	async openAgentsWindow(openConfig: IOpenConfiguration, _folderUri?: URI, _reveal?: URI | 'new', _source?: AgentsWindowOpenSource, _folderUriIsDefault = false, _draft?: IAgentsWindowDraft, _onboardingSessionResource?: URI, _revealRemoteAuthority?: string): Promise<ICodeWindow[]> {
-+		// Shuko (C-1-ai): the Agents window (src/vs/sessions) is removed. Requests to open it (the --agents
++		// Sukuna (C-1-ai): the Agents window (src/vs/sessions) is removed. Requests to open it (the --agents
 +		// flag, agents links, the native host and the onboarding handoff) open nothing, except on startup,
 +		// where a regular window opens so that the application does not run without a window.
 +		this.logService.info('windowsManager#openAgentsWindow: the Agents window is not part of this build');
@@ -1015,7 +1015,7 @@ index 44dcb40eb95..d8139e338fe 100644
  
  	async open(openConfig: IOpenConfiguration): Promise<ICodeWindow[]> {
 diff --git a/src/vs/platform/workspaces/electron-main/workspacesHistoryMainService.ts b/src/vs/platform/workspaces/electron-main/workspacesHistoryMainService.ts
-index 7027a315e19..6ef93979efb 100644
+index 7027a315e19..b56327a2881 100644
 --- a/src/vs/platform/workspaces/electron-main/workspacesHistoryMainService.ts
 +++ b/src/vs/platform/workspaces/electron-main/workspacesHistoryMainService.ts
 @@ -10,7 +10,6 @@ import { Emitter, Event as CommonEvent } from '../../../base/common/event.js';
@@ -1042,13 +1042,13 @@ index 7027a315e19..6ef93979efb 100644
 -				iconIndex: 0
 -			});
 -		}
-+		// Shuko (C-1-ai): no Agents Window task. The Agents window is removed, and chat.disableAIFeatures
++		// Sukuna (C-1-ai): no Agents Window task. The Agents window is removed, and chat.disableAIFeatures
 +		// is no longer registered, so its value would read as "AI enabled" here.
  
  		jumpList.push({
  			type: 'tasks',
 diff --git a/src/vs/server/node/serverServices.ts b/src/vs/server/node/serverServices.ts
-index ed077663ba1..3a48d9b42f0 100644
+index ed077663ba1..9a610bd7d0c 100644
 --- a/src/vs/server/node/serverServices.ts
 +++ b/src/vs/server/node/serverServices.ts
 @@ -3,19 +3,16 @@
@@ -1291,7 +1291,7 @@ index ed077663ba1..3a48d9b42f0 100644
 -	services.set(IMcpResourceScannerService, new SyncDescriptor(McpResourceScannerService));
 -	services.set(IMcpGalleryService, new SyncDescriptor(McpGalleryService));
 -	services.set(IMcpManagementService, new SyncDescriptor(McpManagementService));
-+	// Shuko (C-1-ai): the agent host wiring and MCP are removed with platform/agentHost and platform/mcp.
++	// Sukuna (C-1-ai): the agent host wiring and MCP are removed with platform/agentHost and platform/mcp.
  
  	instantiationService.invokeFunction(accessor => {
 -		const mcpManagementService = accessor.get(IMcpManagementService);
@@ -1318,7 +1318,7 @@ index ed077663ba1..3a48d9b42f0 100644
  		remoteExtensionsScanner.whenExtensionsReady().then(() => extensionManagementService.cleanUp());
  
 diff --git a/src/vs/workbench/api/browser/mainThreadAuthentication.ts b/src/vs/workbench/api/browser/mainThreadAuthentication.ts
-index 6aaccb13dbb..095b8d130cb 100644
+index 6aaccb13dbb..b07b2a450d3 100644
 --- a/src/vs/workbench/api/browser/mainThreadAuthentication.ts
 +++ b/src/vs/workbench/api/browser/mainThreadAuthentication.ts
 @@ -31,10 +31,8 @@ import { IDynamicAuthenticationProviderStorageService } from '../../services/aut
@@ -1337,7 +1337,7 @@ index 6aaccb13dbb..095b8d130cb 100644
  				// fallback — so an explicit setting is the most reliable source. Typically delivered via
  				// enterprise policy; developers may hand-edit settings.json for local testing.
 -				const configuredIdp = this.configurationService.getValue<IMcpEnterpriseManagedAuthIdpConfig | undefined>(mcpEnterpriseManagedAuthIdpSection) ?? {};
-+				// Shuko (C-1-ai): contrib/mcp is removed; the setting id and shape are inlined here.
++				// Sukuna (C-1-ai): contrib/mcp is removed; the setting id and shape are inlined here.
 +				const configuredIdp = this.configurationService.getValue<{ readonly clientId?: string; readonly clientSecret?: string } | undefined>('mcp.enterpriseManagedAuth.idp') ?? {};
  				const configuredClientId = configuredIdp.clientId?.trim() || undefined;
  				const configuredClientSecret = configuredIdp.clientSecret?.trim() || undefined;
@@ -1347,13 +1347,13 @@ index 6aaccb13dbb..095b8d130cb 100644
  		}
  		const trimmed = value.trim();
 -		const key = mcpOAuthClientSecretStorageKey(resource, resourceClientId);
-+		// Shuko (C-1-ai): contrib/mcp is removed; same key as its mcpOAuthClientSecretStorageKey.
++		// Sukuna (C-1-ai): contrib/mcp is removed; same key as its mcpOAuthClientSecretStorageKey.
 +		const key = `mcp.oauth.clientSecret:${resource}:${resourceClientId}`;
  		try {
  			if (trimmed.length === 0) {
  				// Blank-on-confirm means "no client secret" (e.g. token_endpoint_auth_method=none).
 diff --git a/src/vs/workbench/api/browser/mainThreadBrowserTunnelProxy.ts b/src/vs/workbench/api/browser/mainThreadBrowserTunnelProxy.ts
-index 7a7ec40c445..f80d98f5c78 100644
+index 7a7ec40c445..b1fc97debd7 100644
 --- a/src/vs/workbench/api/browser/mainThreadBrowserTunnelProxy.ts
 +++ b/src/vs/workbench/api/browser/mainThreadBrowserTunnelProxy.ts
 @@ -4,14 +4,20 @@
@@ -1369,7 +1369,7 @@ index 7a7ec40c445..f80d98f5c78 100644
  import { ExtensionHostKind } from '../../services/extensions/common/extensionHostKind.js';
  import { ExtHostBrowserTunnelProxyShape, ExtHostContext, MainContext, MainThreadBrowserTunnelProxyShape } from '../common/extHost.protocol.js';
  
-+/** Shuko (C-1-ai): platform/agentHost is removed, so there are no agent host networks and no connection is ever opened here. */
++/** Sukuna (C-1-ai): platform/agentHost is removed, so there are no agent host networks and no connection is ever opened here. */
 +interface INetworkConnection extends IDisposable {
 +	read(): Promise<VSBuffer | undefined>;
 +	write(data: VSBuffer): Promise<void>;
@@ -2976,7 +2976,7 @@ index 1795f73e933..702888b031d 100644
  	ExtHostBrowsers: createProxyIdentifier<ExtHostBrowsersShape>('ExtHostBrowsers'),
  };
 diff --git a/src/vs/workbench/api/common/extHostApiCommands.ts b/src/vs/workbench/api/common/extHostApiCommands.ts
-index 2785bbd7290..d593b1682e4 100644
+index 2785bbd7290..bf5d1469d0e 100644
 --- a/src/vs/workbench/api/common/extHostApiCommands.ts
 +++ b/src/vs/workbench/api/common/extHostApiCommands.ts
 @@ -9,7 +9,6 @@ import { Schemas, matchesSomeScheme } from '../../../base/common/network.js';
@@ -3039,7 +3039,7 @@ index 2785bbd7290..d593b1682e4 100644
 -			}
 -		)
 -	)
-+	// Shuko (C-1-ai): 'vscode.editorChat.start' (inline chat) and 'vscode.extensionPromptFileProvider' (chat prompt files) are removed with contrib/inlineChat and contrib/chat.
++	// Sukuna (C-1-ai): 'vscode.editorChat.start' (inline chat) and 'vscode.extensionPromptFileProvider' (chat prompt files) are removed with contrib/inlineChat and contrib/chat.
  ];
  
 -type InlineChatEditorApiArg = {
@@ -3097,7 +3097,7 @@ index 42008549e96..7994a8bdc0e 100644
  		const secrets = extensionInternalStore.add(new ExtensionSecrets(extensionDescription, this._secretState));
 diff --git a/src/vs/workbench/api/common/extHostRemovedApi.ai.ts b/src/vs/workbench/api/common/extHostRemovedApi.ai.ts
 new file mode 100644
-index 00000000000..0e38b67884e
+index 00000000000..f3cbcaa44b4
 --- /dev/null
 +++ b/src/vs/workbench/api/common/extHostRemovedApi.ai.ts
 @@ -0,0 +1,455 @@
@@ -3115,7 +3115,7 @@ index 00000000000..0e38b67884e
 +import { ChatInputNotificationSeverity } from './extHostTypes.js';
 +
 +/**
-+ * Shuko (C-1-ai): the built-in AI (chat, inline chat, language models, language model tools, MCP,
++ * Sukuna (C-1-ai): the built-in AI (chat, inline chat, language models, language model tools, MCP,
 + * agent sessions) is removed. The extension API entry points `vscode.chat`, `vscode.lm` and the AI
 + * members of `vscode.window`, `vscode.workspace` and `vscode.interactive` stay, but do nothing:
 + * registrations return a disposable that does nothing, queries return nothing, events never fire.
@@ -5509,7 +5509,7 @@ index 8dd173e2409..70114941eba 100644
  		this.stopReason = stopReason;
  		this.systemMessage = systemMessage;
 diff --git a/src/vs/workbench/api/node/extHostBrowserTunnelProxy.ts b/src/vs/workbench/api/node/extHostBrowserTunnelProxy.ts
-index 828b1063b8c..e62df9a6a72 100644
+index 828b1063b8c..693e37d8a8b 100644
 --- a/src/vs/workbench/api/node/extHostBrowserTunnelProxy.ts
 +++ b/src/vs/workbench/api/node/extHostBrowserTunnelProxy.ts
 @@ -11,7 +11,8 @@ import { IAddress, IAddressProvider, IConnectionOptions, connectRemoteAgentTunne
@@ -5517,13 +5517,13 @@ index 828b1063b8c..e62df9a6a72 100644
  import { IRemoteSocketFactoryService } from '../../../platform/remote/common/remoteSocketFactoryService.js';
  import { nodeSocketFactory } from '../../../platform/remote/node/nodeSocketFactory.js';
 -import { agentHostTcpMaxConnections } from '../../../platform/agentHost/common/agentHostTcpConnection.js';
-+// Shuko (C-1-ai): platform/agentHost is removed; same value as its agentHostTcpMaxConnections.
++// Sukuna (C-1-ai): platform/agentHost is removed; same value as its agentHostTcpMaxConnections.
 +const agentHostTcpMaxConnections = 256;
  import { ITunnelConnectFn, TunnelProxy } from '../../../platform/tunnel/node/tunnelProxy.js';
  import { createTunnelStream, ITunnelStream, takeRemoteTunnelStream } from '../../../platform/tunnel/node/tunnelStream.js';
  import { ITunnelProxyInfo } from '../../../platform/tunnel/common/tunnelProxy.js';
 diff --git a/src/vs/workbench/api/test/browser/extHostTypeConverter.test.ts b/src/vs/workbench/api/test/browser/extHostTypeConverter.test.ts
-index 8157d22988c..bd98d64ec6b 100644
+index 8157d22988c..734ddd45c3a 100644
 --- a/src/vs/workbench/api/test/browser/extHostTypeConverter.test.ts
 +++ b/src/vs/workbench/api/test/browser/extHostTypeConverter.test.ts
 @@ -5,18 +5,12 @@
@@ -5656,9 +5656,9 @@ index 8157d22988c..bd98d64ec6b 100644
 -		});
 -	});
 -});
-+// Shuko (C-1-ai): the ChatAgentResult and ChatAgentRequest suites are removed with the chat converters.
++// Sukuna (C-1-ai): the ChatAgentResult and ChatAgentRequest suites are removed with the chat converters.
 diff --git a/src/vs/workbench/api/test/common/extHostTypeConverters.test.ts b/src/vs/workbench/api/test/common/extHostTypeConverters.test.ts
-index 51ed4ede6a3..b3c92f3364c 100644
+index 51ed4ede6a3..564e6922663 100644
 --- a/src/vs/workbench/api/test/common/extHostTypeConverters.test.ts
 +++ b/src/vs/workbench/api/test/common/extHostTypeConverters.test.ts
 @@ -6,24 +6,13 @@
@@ -5870,11 +5870,11 @@ index 51ed4ede6a3..b3c92f3364c 100644
 -			});
 -		});
 -	});
-+	// Shuko (C-1-ai): the tests of the chat converters (ChatPromptReference, ChatRequestModeInstructions,
++	// Sukuna (C-1-ai): the tests of the chat converters (ChatPromptReference, ChatRequestModeInstructions,
 +	// ChatToolInvocationPart) are removed with the converters.
  });
 diff --git a/src/vs/workbench/browser/actions/developerActions.ts b/src/vs/workbench/browser/actions/developerActions.ts
-index 8fa55a16dd2..31c7e1c7f97 100644
+index 8fa55a16dd2..fe493fdc62c 100644
 --- a/src/vs/workbench/browser/actions/developerActions.ts
 +++ b/src/vs/workbench/browser/actions/developerActions.ts
 @@ -21,7 +21,7 @@ import { IConfigurationService } from '../../../platform/configuration/common/co
@@ -5992,7 +5992,7 @@ index 8fa55a16dd2..31c7e1c7f97 100644
 -					content += `*Agent runtime diagnostics unavailable: ${markdownText(message)}*\n\n`;
 -				}
 -			}
-+			// Shuko (C-1-ai): the agent host is removed, so there is no agent runtime to query.
++			// Sukuna (C-1-ai): the agent host is removed, so there is no agent runtime to query.
 +			summary.agentRuntime = 'Agent Host removed';
  		} catch (error) {
  			content += `*Error rendering managed settings diagnostics: ${markdownText(getErrorMessage(error))}*\n\n`;
@@ -6049,7 +6049,7 @@ index 8fa55a16dd2..31c7e1c7f97 100644
 -			summary.chatHarnessEnforcement = `Unavailable (${message})`;
 -			content += `*Error resolving chat harness enforcement: ${markdownText(message)}*\n\n`;
 -		}
-+		// Shuko (C-1-ai): the chat harness enforcement section is removed with the agent host.
++		// Sukuna (C-1-ai): the chat harness enforcement section is removed with the agent host.
 +		summary.chatHarnessEnforcement = 'Agent Host removed';
  
  		// Authentication diagnostics
@@ -6064,7 +6064,7 @@ index 8fa55a16dd2..31c7e1c7f97 100644
  			markdownTable(
  				['Diagnostic', 'Result'],
 diff --git a/src/vs/workbench/browser/actions/policyDiagnosticsMarkdown.ts b/src/vs/workbench/browser/actions/policyDiagnosticsMarkdown.ts
-index 9189910a23a..6d10e3ed15c 100644
+index 9189910a23a..da24611de23 100644
 --- a/src/vs/workbench/browser/actions/policyDiagnosticsMarkdown.ts
 +++ b/src/vs/workbench/browser/actions/policyDiagnosticsMarkdown.ts
 @@ -5,42 +5,8 @@
@@ -6107,12 +6107,12 @@ index 9189910a23a..6d10e3ed15c 100644
 -	content += localize('policyReadiness.harnessPolicy', "ChatEditorPreferCopilotHarness controls chat.editor.preferCopilotHarness: enabling it prefers Copilot when a new chat would otherwise use Local. It is a preference, not a harness lock; disabling it does not require Local or prohibit explicit or remembered Copilot choices. Existing sessions and the enterprise-required sandbox behavior are unchanged. Requiring a particular harness needs a separate enforcement contract, not an inference from this readiness report.") + '\n\n';
 -	return content;
 -}
-+// Shuko (C-1-ai): the Agent Host policy readiness section is removed with platform/agentHost.
++// Sukuna (C-1-ai): the Agent Host policy readiness section is removed with platform/agentHost.
  
  export function policyDiagnosticsReport(readiness: string, diagnosticSections: string): string {
  	return '# VS Code Policy Diagnostics\n\n' +
 diff --git a/src/vs/workbench/browser/layout.ts b/src/vs/workbench/browser/layout.ts
-index 0c06ee52d36..275b0e8cda1 100644
+index 0c06ee52d36..8fb7caf499e 100644
 --- a/src/vs/workbench/browser/layout.ts
 +++ b/src/vs/workbench/browser/layout.ts
 @@ -16,7 +16,6 @@ import { Position, Parts, PartOpensMaximizedOptions, IWorkbenchLayoutService, po
@@ -6136,14 +6136,14 @@ index 0c06ee52d36..275b0e8cda1 100644
 -			) {
 -				return false;
 -			}
-+			// Shuko (C-1-ai): new users get no special case. Upstream shows the auxiliary bar (the chat) to new users
++			// Sukuna (C-1-ai): new users get no special case. Upstream shows the auxiliary bar (the chat) to new users
 +			// unless AI features are disabled; the built-in AI is removed and chat.disableAIFeatures is no longer
 +			// registered, so it would read as "AI enabled".
  
  			// Existing users: respect visibility setting
  			switch (configuration.value) {
 diff --git a/src/vs/workbench/browser/parts/globalCompositeBar.ts b/src/vs/workbench/browser/parts/globalCompositeBar.ts
-index d0f5bd1bd21..bafb4e96a29 100644
+index d0f5bd1bd21..a8f278f80cc 100644
 --- a/src/vs/workbench/browser/parts/globalCompositeBar.ts
 +++ b/src/vs/workbench/browser/parts/globalCompositeBar.ts
 @@ -50,7 +50,6 @@ import { IBaseActionViewItemOptions } from '../../../base/browser/ui/actionbar/a
@@ -6183,7 +6183,7 @@ index d0f5bd1bd21..bafb4e96a29 100644
 -						});
 -						providerSubMenuActions.push(manageMCPAction);
 -					}
-+					// Shuko (C-1-ai): no "Manage Trusted MCP Servers" here or below. MCP is removed, and so is the command it ran.
++					// Sukuna (C-1-ai): no "Manage Trusted MCP Servers" here or below. MCP is removed, and so is the command it ran.
  					if (account.canSignOut) {
  						providerSubMenuActions.push(toAction({
  							id: 'signOut',
@@ -6367,7 +6367,7 @@ index c1504a9ba2b..583cb939b9e 100644
  	}
  	return;
 diff --git a/src/vs/workbench/contrib/authentication/browser/actions/manageAccountsAction.ts b/src/vs/workbench/contrib/authentication/browser/actions/manageAccountsAction.ts
-index 2316e89d8b8..fd7551d72b2 100644
+index 2316e89d8b8..266fc75e9dc 100644
 --- a/src/vs/workbench/contrib/authentication/browser/actions/manageAccountsAction.ts
 +++ b/src/vs/workbench/contrib/authentication/browser/actions/manageAccountsAction.ts
 @@ -94,7 +94,7 @@ class ManageAccountsActionImpl {
@@ -6390,12 +6390,12 @@ index 2316e89d8b8..fd7551d72b2 100644
 -			});
 -		}
 -
-+		// Shuko (C-1-ai): no "Manage Trusted MCP Servers" item. MCP is removed, and so is the command it ran.
++		// Sukuna (C-1-ai): no "Manage Trusted MCP Servers" item. MCP is removed, and so is the command it ran.
  		if (await canSignOut()) {
  			items.push({
  				label: localize('signOut', "Sign Out"),
 diff --git a/src/vs/workbench/contrib/browserView/electron-browser/browserView.contribution.ts b/src/vs/workbench/contrib/browserView/electron-browser/browserView.contribution.ts
-index b260ca4dd92..babf6f53db5 100644
+index b260ca4dd92..e4244ece34e 100644
 --- a/src/vs/workbench/contrib/browserView/electron-browser/browserView.contribution.ts
 +++ b/src/vs/workbench/contrib/browserView/electron-browser/browserView.contribution.ts
 @@ -21,6 +21,7 @@ import { BrowserViewWorkbenchService } from './browserViewWorkbenchService.js';
@@ -6411,11 +6411,11 @@ index b260ca4dd92..babf6f53db5 100644
  registerSingleton(IBrowserViewWorkbenchService, BrowserViewWorkbenchService, InstantiationType.Delayed);
  registerSingleton(IBrowserViewCDPService, BrowserViewCDPService, InstantiationType.Delayed);
 +
-+// Shuko (C-1-ai): the integrated browser (browserView.ts, browserEditorErrorFeatures.ts) injects this service, which only
++// Sukuna (C-1-ai): the integrated browser (browserView.ts, browserEditorErrorFeatures.ts) injects this service, which only
 +// the removed chat registered in the workbench. Its settings are gone with chat, so the filter is off and allows every URI.
 +registerSingleton(IAgentNetworkFilterService, AgentNetworkFilterService, InstantiationType.Delayed);
 diff --git a/src/vs/workbench/contrib/browserView/electron-browser/browserViewWorkbenchService.ts b/src/vs/workbench/contrib/browserView/electron-browser/browserViewWorkbenchService.ts
-index 1fe4bcbbc84..09a1f12261e 100644
+index 1fe4bcbbc84..dea81a4ae48 100644
 --- a/src/vs/workbench/contrib/browserView/electron-browser/browserViewWorkbenchService.ts
 +++ b/src/vs/workbench/contrib/browserView/electron-browser/browserViewWorkbenchService.ts
 @@ -24,24 +24,17 @@ import { BrowserEditorInput, IBrowserEditorInputData } from '../common/browserEd
@@ -6460,7 +6460,7 @@ index 1fe4bcbbc84..09a1f12261e 100644
 -			),
 -		),
 -	)!;
-+	// Shuko (C-1-ai): sharing a browser with chat needs the built-in AI, which is removed.
++	// Sukuna (C-1-ai): sharing a browser with chat needs the built-in AI, which is removed.
 +	private static readonly _sharingAvailableContext = ContextKeyExpr.false();
  
  	private _isSharingAvailable: boolean = false;
@@ -6496,7 +6496,7 @@ index 1fe4bcbbc84..09a1f12261e 100644
  		// only open in the foreground if the session's widget is currently visible
  		// and not the active editor in the target group.
  		const [group] = await this.instantiationService.invokeFunction(findGroup, { editor: view, options: editorOptions }, targetGroup);
-+		// Shuko (C-1-ai): chat sessions are removed, so a browser opened by an agent always opens in the background.
++		// Sukuna (C-1-ai): chat sessions are removed, so a browser opened by an agent always opens in the background.
  		if (owner.type === 'agent') {
 -			const sessionResource = URI.parse(owner.sessionId);
 -			const widget = this.chatWidgetService.getWidgetBySessionResource(sessionResource);
@@ -6520,7 +6520,7 @@ index 1fe4bcbbc84..09a1f12261e 100644
  			networkProxies: this._getNetworkProxies(),
  			trustedFileRoots: this._getTrustedFileRoots(),
 diff --git a/src/vs/workbench/contrib/browserView/electron-browser/features/browserWelcomeFeature.ts b/src/vs/workbench/contrib/browserView/electron-browser/features/browserWelcomeFeature.ts
-index 62a4c272e93..48c7433d60a 100644
+index 62a4c272e93..77785aff36c 100644
 --- a/src/vs/workbench/contrib/browserView/electron-browser/features/browserWelcomeFeature.ts
 +++ b/src/vs/workbench/contrib/browserView/electron-browser/features/browserWelcomeFeature.ts
 @@ -6,7 +6,6 @@
@@ -6536,7 +6536,7 @@ index 62a4c272e93..48c7433d60a 100644
  		super(editor);
  
 -		const chatEnabled = contextKeyService.getContextKeyValue<boolean>(ChatContextKeys.enabled.key);
-+		// Shuko (C-1-ai): chat is removed, so the chat hint is never shown.
++		// Sukuna (C-1-ai): chat is removed, so the chat hint is never shown.
  		this._container = createBrowserWelcome(
  			localize('browser.welcomeTitle', "Browser"),
 -			chatEnabled
@@ -6593,7 +6593,7 @@ index 58ac7361212..1c8c4291a46 100644
  		const model = new class extends mock<IBrowserViewModel>() { override dispose() { } };
  		let attempts = 0;
 diff --git a/src/vs/workbench/contrib/codeEditor/browser/emptyTextEditorHint/emptyTextEditorHint.ts b/src/vs/workbench/contrib/codeEditor/browser/emptyTextEditorHint/emptyTextEditorHint.ts
-index 3d1899f8ec7..70084078481 100644
+index 3d1899f8ec7..70834d1d84b 100644
 --- a/src/vs/workbench/contrib/codeEditor/browser/emptyTextEditorHint/emptyTextEditorHint.ts
 +++ b/src/vs/workbench/contrib/codeEditor/browser/emptyTextEditorHint/emptyTextEditorHint.ts
 @@ -27,9 +27,6 @@ import { ChangeLanguageAction } from '../../../../browser/parts/editor/editorSta
@@ -6654,7 +6654,7 @@ index 3d1899f8ec7..70084078481 100644
  		}
  
 -		const hasEditorAgents = Boolean(this.chatAgentService.getDefaultAgent(ChatAgentLocation.EditorInline));
-+		// Shuko (C-1-ai): inline chat is removed, so only the default hint is shown.
++		// Sukuna (C-1-ai): inline chat is removed, so only the default hint is shown.
  		const shouldRenderDefaultHint = model?.uri.scheme === Schemas.untitled && languageId === PLAINTEXT_LANGUAGE_ID;
 -		return hasEditorAgents || shouldRenderDefaultHint;
 +		return shouldRenderDefaultHint;
@@ -6674,13 +6674,13 @@ index 3d1899f8ec7..70084078481 100644
  
  	private getHint() {
 -		const hasInlineChatProvider = this.chatAgentService.getActivatedAgents().filter(candidate => candidate.locations.includes(ChatAgentLocation.EditorInline)).length > 0;
-+		// Shuko (C-1-ai): inline chat is removed.
++		// Sukuna (C-1-ai): inline chat is removed.
 +		const hasInlineChatProvider: boolean = false;
  
  		const hintHandler: IContentActionHandler = {
  			disposables: this._store,
 diff --git a/src/vs/workbench/contrib/codeEditor/browser/quickaccess/gotoSymbolQuickAccess.ts b/src/vs/workbench/contrib/codeEditor/browser/quickaccess/gotoSymbolQuickAccess.ts
-index 717e52a00ec..213ff405ade 100644
+index 717e52a00ec..1ef45047f02 100644
 --- a/src/vs/workbench/contrib/codeEditor/browser/quickaccess/gotoSymbolQuickAccess.ts
 +++ b/src/vs/workbench/contrib/codeEditor/browser/quickaccess/gotoSymbolQuickAccess.ts
 @@ -5,11 +5,11 @@
@@ -6755,7 +6755,7 @@ index 717e52a00ec..213ff405ade 100644
 -		}
 -		return picks;
 -	}
-+	// Shuko (C-1-ai): attaching a symbol to chat and the chat outline picks are removed with contrib/chat.
++	// Sukuna (C-1-ai): attaching a symbol to chat and the chat outline picks are removed with contrib/chat.
  
  	//#endregion
  
@@ -6889,7 +6889,7 @@ index 3e67ae929f4..a41f00d3ac7 100644
  				group: 'debug',
  				order: 1
 diff --git a/src/vs/workbench/contrib/editTelemetry/browser/telemetry/aiEditTelemetry/aiEditTelemetryService.ts b/src/vs/workbench/contrib/editTelemetry/browser/telemetry/aiEditTelemetry/aiEditTelemetryService.ts
-index a0306222d0e..fd0de88aef2 100644
+index c7a9ce1f788..11237471535 100644
 --- a/src/vs/workbench/contrib/editTelemetry/browser/telemetry/aiEditTelemetry/aiEditTelemetryService.ts
 +++ b/src/vs/workbench/contrib/editTelemetry/browser/telemetry/aiEditTelemetry/aiEditTelemetryService.ts
 @@ -130,3 +130,8 @@ registerSingleton(IAiEditTelemetryService, NullAiEditTelemetryService, Instantia
@@ -6897,12 +6897,12 @@ index a0306222d0e..fd0de88aef2 100644
  CommandsRegistry.registerCommand('_aiEdits.clearAiContributions', () => { });
  CommandsRegistry.registerCommand('_aiEdits.clearAllAiContributions', () => { });
 +
-+// Shuko (C-1-ai): the git extension also calls this one after it stages and commits (extensions/git/src/repository.ts).
++// Sukuna (C-1-ai): the git extension also calls this one after it stages and commits (extensions/git/src/repository.ts).
 +// The removed chat registered it to accept the pending chat edits of those files. There are no chat edits any more, so
 +// keep the id and do nothing (same form as the B-1 ones above).
 +CommandsRegistry.registerCommand('_chat.editSessions.accept', () => { });
 diff --git a/src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts b/src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts
-index ddc9d0000a2..3a548831a6e 100644
+index ddc9d0000a2..0e515a1b478 100644
 --- a/src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts
 +++ b/src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts
 @@ -48,7 +48,7 @@ import { IUserDataProfilesService } from '../../../../platform/userDataProfile/c
@@ -6947,7 +6947,7 @@ index ddc9d0000a2..3a548831a6e 100644
 -					this.extensionsWorkbenchService.checkForUpdates(),
 -					this.pluginInstallService.updateAllPlugins({ silent: true }, CancellationToken.None),
 -				]);
-+				// Shuko (C-1-ai): agent plugins are removed with contrib/chat, so only extensions are checked.
++				// Sukuna (C-1-ai): agent plugins are removed with contrib/chat, so only extensions are checked.
 +				await this.extensionsWorkbenchService.checkForUpdates();
  				const outdated = this.extensionsWorkbenchService.outdated;
  				if (outdated.length) {
@@ -6975,7 +6975,7 @@ index ddc9d0000a2..3a548831a6e 100644
 -		this._register(toolsService.vscodeToolSet.addTool(SearchExtensionsToolData));
 -	}
 -}
-+// Shuko (C-1-ai): the extension search tool for language models is removed with contrib/chat.
++// Sukuna (C-1-ai): the extension search tool for language models is removed with contrib/chat.
  
  const workbenchRegistry = Registry.as<IWorkbenchContributionsRegistry>(WorkbenchExtensions.Workbench);
  workbenchRegistry.registerWorkbenchContribution(ExtensionsContributions, LifecyclePhase.Restored);
@@ -6988,7 +6988,7 @@ index ddc9d0000a2..3a548831a6e 100644
  registerAction2(class ExtensionsGallerySignInAction extends Action2 {
  	constructor() {
 diff --git a/src/vs/workbench/contrib/extensions/browser/extensionsViewlet.ts b/src/vs/workbench/contrib/extensions/browser/extensionsViewlet.ts
-index 604c40cda78..a58e047cc6f 100644
+index 604c40cda78..d33390ac49f 100644
 --- a/src/vs/workbench/contrib/extensions/browser/extensionsViewlet.ts
 +++ b/src/vs/workbench/contrib/extensions/browser/extensionsViewlet.ts
 @@ -71,9 +71,7 @@ import { StandardKeyboardEvent } from '../../../../base/browser/keyboardEvent.js
@@ -7035,7 +7035,7 @@ index 604c40cda78..a58e047cc6f 100644
  		}
  	}
  
-+	// Shuko (C-1-ai): MCP and the customizations marketplace are removed, so the MCP search notification is never shown.
++	// Sukuna (C-1-ai): MCP and the customizations marketplace are removed, so the MCP search notification is never shown.
  	private isMcpSearchNotificationEligible(): boolean {
 -		return this.searchMarketplaceExtensionsContextKey.get() === true
 -			&& Query.parse(this.searchBox?.getValue() ?? '').containsMcpTerm()
@@ -7082,7 +7082,7 @@ index a87bd94a723..4e04dd444a3 100644
  				if (packExtension.local && !extensionsToUninstall.some(e => areSameExtensions(e.extension.identifier, packExtension.identifier))) {
  					extensionsToUninstall.push({ extension: packExtension.local });
 diff --git a/src/vs/workbench/contrib/files/test/electron-browser/fileActions.contribution.test.ts b/src/vs/workbench/contrib/files/test/electron-browser/fileActions.contribution.test.ts
-index ef371971062..2914562a0d3 100644
+index ef371971062..2e8cfd1ff50 100644
 --- a/src/vs/workbench/contrib/files/test/electron-browser/fileActions.contribution.test.ts
 +++ b/src/vs/workbench/contrib/files/test/electron-browser/fileActions.contribution.test.ts
 @@ -8,7 +8,8 @@ import { Schemas } from '../../../../../base/common/network.js';
@@ -7090,7 +7090,7 @@ index ef371971062..2914562a0d3 100644
  import { ensureNoDisposablesAreLeakedInTestSuite } from '../../../../../base/test/common/utils.js';
  import { isIMenuItem, MenuId, MenuRegistry } from '../../../../../platform/actions/common/actions.js';
 -import { AGENT_HOST_SCHEME } from '../../../../../platform/agentHost/common/agentHostUri.js';
-+// Shuko (C-1-ai): platform/agentHost is removed; same value as its AGENT_HOST_SCHEME.
++// Sukuna (C-1-ai): platform/agentHost is removed; same value as its AGENT_HOST_SCHEME.
 +const AGENT_HOST_SCHEME = 'vscode-agent-host';
  import { MockContextKeyService } from '../../../../../platform/keybinding/test/common/mockKeybindingService.js';
  import { IsSessionsWindowContext, ResourceContextKey } from '../../../../common/contextkeys.js';
@@ -7153,7 +7153,7 @@ index ea60a983f1a..c4447123df7 100644
  import { LifecyclePhase } from '../../../services/lifecycle/common/lifecycle.js';
  import { IClipboardService } from '../../../../platform/clipboard/common/clipboardService.js';
 diff --git a/src/vs/workbench/contrib/notebook/browser/contrib/cellDiagnostics/cellDiagnosticEditorContrib.ts b/src/vs/workbench/contrib/notebook/browser/contrib/cellDiagnostics/cellDiagnosticEditorContrib.ts
-index 5494fe02d06..ac1781e0e03 100644
+index 5494fe02d06..11df8baab95 100644
 --- a/src/vs/workbench/contrib/notebook/browser/contrib/cellDiagnostics/cellDiagnosticEditorContrib.ts
 +++ b/src/vs/workbench/contrib/notebook/browser/contrib/cellDiagnostics/cellDiagnosticEditorContrib.ts
 @@ -13,8 +13,6 @@ import { INotebookEditor, INotebookEditorContribution } from '../../notebookBrow
@@ -7186,13 +7186,13 @@ index 5494fe02d06..ac1781e0e03 100644
  	private hasNotebookAgent(): boolean {
 -		const agents = this.chatAgentService.getAgents();
 -		return !!agents.find(agent => agent.locations.includes(ChatAgentLocation.Notebook));
-+		// Shuko (C-1-ai): chat agents are removed, so there is never a notebook agent.
++		// Sukuna (C-1-ai): chat agents are removed, so there is never a notebook agent.
 +		return false;
  	}
  
  	private updateEnabled() {
 diff --git a/src/vs/workbench/contrib/notebook/browser/contrib/cellDiagnostics/cellDiagnosticsActions.ts b/src/vs/workbench/contrib/notebook/browser/contrib/cellDiagnostics/cellDiagnosticsActions.ts
-index 78193183da7..da1737ca556 100644
+index 78193183da7..0e84569a5b6 100644
 --- a/src/vs/workbench/contrib/notebook/browser/contrib/cellDiagnostics/cellDiagnosticsActions.ts
 +++ b/src/vs/workbench/contrib/notebook/browser/contrib/cellDiagnostics/cellDiagnosticsActions.ts
 @@ -15,8 +15,6 @@ import { KeybindingWeight } from '../../../../../../platform/keybinding/common/k
@@ -7265,9 +7265,9 @@ index 78193183da7..da1737ca556 100644
 -		}
 -	}
 -});
-+// Shuko (C-1-ai): "Fix Cell Error" (inline chat) and "Explain Cell Error" (chat) are removed with contrib/inlineChat and contrib/chat.
++// Sukuna (C-1-ai): "Fix Cell Error" (inline chat) and "Explain Cell Error" (chat) are removed with contrib/inlineChat and contrib/chat.
 diff --git a/src/vs/workbench/contrib/notebook/browser/contrib/cellDiagnostics/diagnosticCellStatusBarContrib.ts b/src/vs/workbench/contrib/notebook/browser/contrib/cellDiagnostics/diagnosticCellStatusBarContrib.ts
-index 195b4b23646..65d29b86b9b 100644
+index 195b4b23646..a53c4ab6d29 100644
 --- a/src/vs/workbench/contrib/notebook/browser/contrib/cellDiagnostics/diagnosticCellStatusBarContrib.ts
 +++ b/src/vs/workbench/contrib/notebook/browser/contrib/cellDiagnostics/diagnosticCellStatusBarContrib.ts
 @@ -15,8 +15,6 @@ import { registerNotebookContribution } from '../../notebookEditorExtensions.js'
@@ -7292,7 +7292,7 @@ index 195b4b23646..65d29b86b9b 100644
  	private hasNotebookAgent(): boolean {
 -		const agents = this.chatAgentService.getAgents();
 -		return !!agents.find(agent => agent.locations.includes(ChatAgentLocation.Notebook));
-+		// Shuko (C-1-ai): chat agents are removed, so there is never a notebook agent.
++		// Sukuna (C-1-ai): chat agents are removed, so there is never a notebook agent.
 +		return false;
  	}
  
@@ -7328,7 +7328,7 @@ index cc43314944a..933723e21a6 100644
  		);
  
 diff --git a/src/vs/workbench/contrib/notebook/browser/contrib/navigation/arrow.ts b/src/vs/workbench/contrib/notebook/browser/contrib/navigation/arrow.ts
-index 4c8432c86f8..b92b06f8a15 100644
+index 4c8432c86f8..dec365908df 100644
 --- a/src/vs/workbench/contrib/notebook/browser/contrib/navigation/arrow.ts
 +++ b/src/vs/workbench/contrib/notebook/browser/contrib/navigation/arrow.ts
 @@ -5,7 +5,6 @@
@@ -7364,7 +7364,7 @@ index 4c8432c86f8..b92b06f8a15 100644
 -			const newFocusMode = newCell.cellKind === CellKind.Markup && newCell.getEditState() === CellEditState.Preview ? 'container' : 'editor';
 -			await editor.focusNotebookCell(newCell, newFocusMode, { focusEditorLine: 1 });
 -		}
-+		// Shuko (C-1-ai): inline chat is removed, so there is no inline chat widget to focus first.
++		// Sukuna (C-1-ai): inline chat is removed, so there is no inline chat widget to focus first.
 +		const newCell = editor.cellAt(idx + 1);
 +		const newFocusMode = newCell.cellKind === CellKind.Markup && newCell.getEditState() === CellEditState.Preview ? 'container' : 'editor';
 +		await editor.focusNotebookCell(newCell, newFocusMode, { focusEditorLine: 1 });
@@ -7450,7 +7450,7 @@ index 852f234ca14..43270f2f93a 100644
  				primary: KeyMod.Shift | KeyCode.Enter,
  				weight: NOTEBOOK_EDITOR_WIDGET_ACTION_WEIGHT
 diff --git a/src/vs/workbench/contrib/notebook/browser/diff/inlineDiff/notebookOriginalModelRefFactory.ts b/src/vs/workbench/contrib/notebook/browser/diff/inlineDiff/notebookOriginalModelRefFactory.ts
-index 91655a29370..305a3604278 100644
+index 91655a29370..083399fa669 100644
 --- a/src/vs/workbench/contrib/notebook/browser/diff/inlineDiff/notebookOriginalModelRefFactory.ts
 +++ b/src/vs/workbench/contrib/notebook/browser/diff/inlineDiff/notebookOriginalModelRefFactory.ts
 @@ -4,7 +4,7 @@
@@ -7466,7 +7466,7 @@ index 91655a29370..305a3604278 100644
  import { ITextModelService } from '../../../../../../editor/common/services/resolverService.js';
  
  
-+/** Shuko (C-1-ai): contrib/chat is removed; only the part of its IModifiedFileEntry used here. */
++/** Sukuna (C-1-ai): contrib/chat is removed; only the part of its IModifiedFileEntry used here. */
 +interface IModifiedFileEntry {
 +	readonly originalURI: URI;
 +}
@@ -7643,7 +7643,7 @@ index e86461ec95b..5254675c93a 100644
  		services.stubInstance(CellContextKeyPart, emptyPart);
  		services.stubInstance(CellExecutionPart, emptyPart);
 diff --git a/src/vs/workbench/contrib/policyExport/electron-browser/policyExport.contribution.ts b/src/vs/workbench/contrib/policyExport/electron-browser/policyExport.contribution.ts
-index ef64ec2ee66..8acc3948426 100644
+index ef64ec2ee66..7294c2c969a 100644
 --- a/src/vs/workbench/contrib/policyExport/electron-browser/policyExport.contribution.ts
 +++ b/src/vs/workbench/contrib/policyExport/electron-browser/policyExport.contribution.ts
 @@ -22,7 +22,6 @@ import { ExportedPolicyDataDto } from '../common/policyDto.js';
@@ -7665,12 +7665,12 @@ index ef64ec2ee66..8acc3948426 100644
 -					}
 -					policy.agentHost = { status: support.status };
 -				}
-+				// Shuko (C-1-ai): the Agent Host support status of each policy is removed with platform/agentHost.
++				// Sukuna (C-1-ai): the Agent Host support status of each policy is removed with platform/agentHost.
  
  				const disclaimerComment = `/** THIS FILE IS AUTOMATICALLY GENERATED USING \`npm run export-policy-data\`. DO NOT MODIFY IT MANUALLY. **/`;
  				const policyDataFileContent = `${disclaimerComment}\n${JSON.stringify(policyData, null, 4)}\n`;
 diff --git a/src/vs/workbench/contrib/preferences/browser/preferencesRenderers.ts b/src/vs/workbench/contrib/preferences/browser/preferencesRenderers.ts
-index bac9714fe6c..aa3c3edf66b 100644
+index bac9714fe6c..24c78c0368e 100644
 --- a/src/vs/workbench/contrib/preferences/browser/preferencesRenderers.ts
 +++ b/src/vs/workbench/contrib/preferences/browser/preferencesRenderers.ts
 @@ -46,8 +46,9 @@ import { IPreferencesEditorModel, IPreferencesService, ISetting, ISettingsEditor
@@ -7679,7 +7679,7 @@ index bac9714fe6c..aa3c3edf66b 100644
  import { EXPERIMENTAL_INDICATOR_DESCRIPTION, PREVIEW_INDICATOR_DESCRIPTION } from '../common/preferences.js';
 -import { mcpConfigurationSection } from '../../mcp/common/mcpConfiguration.js';
 -import { McpCommandIds } from '../../mcp/common/mcpCommandIds.js';
-+// Shuko (C-1-ai): contrib/mcp is removed; same value as its mcpConfigurationSection. The warning about MCP servers
++// Sukuna (C-1-ai): contrib/mcp is removed; same value as its mcpConfigurationSection. The warning about MCP servers
 +// in user settings (McpSettingsRenderer) is removed, because the commands it offered no longer exist.
 +const mcpConfigurationSection = 'mcp';
  
@@ -7835,7 +7835,7 @@ index bac9714fe6c..aa3c3edf66b 100644
  	private static readonly supportedKeys = ['folders', 'tasks', 'launch', mcpConfigurationSection, 'extensions', 'settings', 'remoteAuthority', 'transient'];
  
 diff --git a/src/vs/workbench/contrib/preferences/test/browser/preferencesRenderers.test.ts b/src/vs/workbench/contrib/preferences/test/browser/preferencesRenderers.test.ts
-index b136c069e76..00e96b45763 100644
+index b136c069e76..cadf5fa58e0 100644
 --- a/src/vs/workbench/contrib/preferences/test/browser/preferencesRenderers.test.ts
 +++ b/src/vs/workbench/contrib/preferences/test/browser/preferencesRenderers.test.ts
 @@ -19,9 +19,13 @@ import { MarkerService } from '../../../../../platform/markers/common/markerServ
@@ -7845,7 +7845,7 @@ index b136c069e76..00e96b45763 100644
 -import { getDefaultModelPolicyDescription } from '../../../chat/common/modelSelection.js';
  import { UserSettingsRenderer } from '../../browser/preferencesRenderers.js';
  
-+// Shuko (C-1-ai): contrib/chat is removed; a local setting-specific description stands in for its getDefaultModelPolicyDescription.
++// Sukuna (C-1-ai): contrib/chat is removed; a local setting-specific description stands in for its getDefaultModelPolicyDescription.
 +function getDefaultModelPolicyDescription(policyValue: unknown, configuredValue: unknown): string {
 +	return `Policy value "${String(policyValue)}" overrides "${String(configuredValue)}".`;
 +}
@@ -7854,7 +7854,7 @@ index b136c069e76..00e96b45763 100644
  	const store = ensureNoDisposablesAreLeakedInTestSuite();
  
 diff --git a/src/vs/workbench/contrib/preferences/test/browser/settingsTree.test.ts b/src/vs/workbench/contrib/preferences/test/browser/settingsTree.test.ts
-index 38453e36378..10130bab30d 100644
+index 38453e36378..f0fbb8371c4 100644
 --- a/src/vs/workbench/contrib/preferences/test/browser/settingsTree.test.ts
 +++ b/src/vs/workbench/contrib/preferences/test/browser/settingsTree.test.ts
 @@ -31,7 +31,6 @@ import { TestContextMenuService, workbenchInstantiationService } from '../../../
@@ -7870,13 +7870,13 @@ index 38453e36378..10130bab30d 100644
  	const registry = Registry.as<IConfigurationRegistry>(Extensions.Configuration);
  	assert.ok(terminalContribConfiguration);
 -	const configurationNode = { id: 'sandboxRendererPresentationTest', properties: Object.fromEntries(Object.entries({ ...terminalContribConfiguration, ...chatNetworkDomainConfigurationProperties }).filter(([, property]) => property.managedSettingsPresentation)) };
-+	// Shuko (C-1-ai): contrib/chat (chatNetworkDomainConfigurationProperties) is removed.
++	// Sukuna (C-1-ai): contrib/chat (chatNetworkDomainConfigurationProperties) is removed.
 +	const configurationNode = { id: 'sandboxRendererPresentationTest', properties: Object.fromEntries(Object.entries({ ...terminalContribConfiguration }).filter(([, property]) => property.managedSettingsPresentation)) };
  	suiteSetup(() => registry.registerConfiguration(configurationNode));
  	suiteTeardown(() => registry.deregisterConfigurations([configurationNode]));
  
 diff --git a/src/vs/workbench/contrib/preferences/test/browser/settingsTreeModels.test.ts b/src/vs/workbench/contrib/preferences/test/browser/settingsTreeModels.test.ts
-index b615f5e55bf..e9c4ec0039d 100644
+index b615f5e55bf..b7b410af6f2 100644
 --- a/src/vs/workbench/contrib/preferences/test/browser/settingsTreeModels.test.ts
 +++ b/src/vs/workbench/contrib/preferences/test/browser/settingsTreeModels.test.ts
 @@ -33,8 +33,11 @@ import { LayoutSettings, ModernUIDensity } from '../../../../services/layout/bro
@@ -7886,7 +7886,7 @@ index b615f5e55bf..e9c4ec0039d 100644
 -import { chatNetworkDomainConfigurationProperties } from '../../../chat/browser/chatNetworkConfiguration.js';
 -import { getDefaultModelPolicyDescription } from '../../../chat/common/modelSelection.js';
 +
-+// Shuko (C-1-ai): contrib/chat is removed; a local setting-specific description stands in for its getDefaultModelPolicyDescription.
++// Sukuna (C-1-ai): contrib/chat is removed; a local setting-specific description stands in for its getDefaultModelPolicyDescription.
 +function getDefaultModelPolicyDescription(policyValue: unknown, configuredValue: unknown): string {
 +	return `Policy value "${String(policyValue)}" overrides "${String(configuredValue)}".`;
 +}
@@ -7898,13 +7898,13 @@ index b615f5e55bf..e9c4ec0039d 100644
  	const registry = Registry.as<IConfigurationRegistry>(Extensions.Configuration);
  	assert.ok(terminalContribConfiguration);
 -	const configurationNode = { id: 'sandboxPresentationTest', properties: Object.fromEntries(Object.entries({ ...terminalContribConfiguration, ...chatNetworkDomainConfigurationProperties }).filter(([, property]) => property.managedSettingsPresentation)) };
-+	// Shuko (C-1-ai): contrib/chat (chatNetworkDomainConfigurationProperties) is removed.
++	// Sukuna (C-1-ai): contrib/chat (chatNetworkDomainConfigurationProperties) is removed.
 +	const configurationNode = { id: 'sandboxPresentationTest', properties: Object.fromEntries(Object.entries({ ...terminalContribConfiguration }).filter(([, property]) => property.managedSettingsPresentation)) };
  	suiteSetup(() => registry.registerConfiguration(configurationNode));
  	suiteTeardown(() => registry.deregisterConfigurations([configurationNode]));
  
 diff --git a/src/vs/workbench/contrib/quickaccess/browser/commandsQuickAccess.ts b/src/vs/workbench/contrib/quickaccess/browser/commandsQuickAccess.ts
-index e05b71bd72c..eea8d0af1d9 100644
+index e05b71bd72c..ad3d8c96f45 100644
 --- a/src/vs/workbench/contrib/quickaccess/browser/commandsQuickAccess.ts
 +++ b/src/vs/workbench/contrib/quickaccess/browser/commandsQuickAccess.ts
 @@ -36,10 +36,6 @@ import { IEditorService } from '../../../services/editor/common/editorService.js
@@ -7955,7 +7955,7 @@ index e05b71bd72c..eea8d0af1d9 100644
 -				});
 -			}
 -		}
-+		// Shuko (C-1-ai): the "Ask in Chat" option is removed with contrib/chat.
++		// Sukuna (C-1-ai): the "Ask in Chat" option is removed with contrib/chat.
  
  		return additionalPicks;
  	}
@@ -8039,7 +8039,7 @@ index 40ceaec245d..27f837c781b 100644
  		return this.quickDiffService.getQuickDiffs(uri, this._model.getLanguageId(), isSynchronized);
  	}
 diff --git a/src/vs/workbench/contrib/scm/browser/scm.contribution.ts b/src/vs/workbench/contrib/scm/browser/scm.contribution.ts
-index 22920b5f2d1..f92594bd34e 100644
+index 22920b5f2d1..1534a487f99 100644
 --- a/src/vs/workbench/contrib/scm/browser/scm.contribution.ts
 +++ b/src/vs/workbench/contrib/scm/browser/scm.contribution.ts
 @@ -8,7 +8,7 @@ import { Registry } from '../../../../platform/registry/common/platform.js';
@@ -8120,11 +8120,11 @@ index 22920b5f2d1..f92594bd34e 100644
 -		await commandService.executeCommand(command, ...args);
 -	}
 -});
-+// Shuko (C-1-ai): "Resolve Conflicts with AI" (chat setup) is removed with contrib/chat.
++// Sukuna (C-1-ai): "Resolve Conflicts with AI" (chat setup) is removed with contrib/chat.
  
  AccessibleViewRegistry.register(new SCMAccessibilityHelp());
 diff --git a/src/vs/workbench/contrib/scm/browser/scmHistoryViewPane.ts b/src/vs/workbench/contrib/scm/browser/scmHistoryViewPane.ts
-index 88c5c132598..9c10a85b348 100644
+index 88c5c132598..84549e7e2eb 100644
 --- a/src/vs/workbench/contrib/scm/browser/scmHistoryViewPane.ts
 +++ b/src/vs/workbench/contrib/scm/browser/scmHistoryViewPane.ts
 @@ -63,7 +63,7 @@ import { basename } from '../../../../base/common/path.js';
@@ -8142,7 +8142,7 @@ index 88c5c132598..9c10a85b348 100644
  import { CodeDataTransfers } from '../../../../platform/dnd/browser/dnd.js';
 -import { SCMHistoryItemTransferData } from './scmHistoryChatContext.js';
 +
-+/** Shuko (C-1-ai): moved here from scmHistoryChatContext.ts, which is removed with contrib/chat. */
++/** Sukuna (C-1-ai): moved here from scmHistoryChatContext.ts, which is removed with contrib/chat. */
 +interface SCMHistoryItemTransferData {
 +	readonly name: string;
 +	readonly resource: UriComponents;
@@ -8152,7 +8152,7 @@ index 88c5c132598..9c10a85b348 100644
  import { IMarkdownRendererService } from '../../../../platform/markdown/browser/markdownRenderer.js';
  import { MarkdownString } from '../../../../base/common/htmlContent.js';
 diff --git a/src/vs/workbench/contrib/scm/browser/scmInput.ts b/src/vs/workbench/contrib/scm/browser/scmInput.ts
-index d73da821bec..b7ac427c904 100644
+index d73da821bec..604f3984f45 100644
 --- a/src/vs/workbench/contrib/scm/browser/scmInput.ts
 +++ b/src/vs/workbench/contrib/scm/browser/scmInput.ts
 @@ -8,12 +8,12 @@ import { Event, Emitter } from '../../../../base/common/event.js';
@@ -8236,11 +8236,11 @@ index d73da821bec..b7ac427c904 100644
 -		await commandService.executeCommand(command, ...args);
 -	}
 -});
-+// Shuko (C-1-ai): the "Generate Commit Message" setup action (chat setup) is removed with contrib/chat.
++// Sukuna (C-1-ai): the "Generate Commit Message" setup action (chat setup) is removed with contrib/chat.
  
  setupSimpleEditorSelectionStyling('.scm-view .scm-editor-container');
 diff --git a/src/vs/workbench/contrib/search/browser/anythingQuickAccess.ts b/src/vs/workbench/contrib/search/browser/anythingQuickAccess.ts
-index 82d7aeabb9e..43a6130cf2d 100644
+index 82d7aeabb9e..57392b26f00 100644
 --- a/src/vs/workbench/contrib/search/browser/anythingQuickAccess.ts
 +++ b/src/vs/workbench/contrib/search/browser/anythingQuickAccess.ts
 @@ -57,8 +57,6 @@ import { Registry } from '../../../../platform/registry/common/platform.js';
@@ -8277,7 +8277,7 @@ index 82d7aeabb9e..43a6130cf2d 100644
 -				accept: () => this.quickChatService.toggle()
 -			});
 -		}
-+		// Shuko (C-1-ai): "Open Quick Chat" is removed with contrib/chat.
++		// Sukuna (C-1-ai): "Open Quick Chat" is removed with contrib/chat.
  
  		return providers.sort((a, b) => a.commandCenterOrder - b.commandCenterOrder);
  	}
@@ -8294,12 +8294,12 @@ index 82d7aeabb9e..43a6130cf2d 100644
 -					return;
 -				}
 -
-+				// Shuko (C-1-ai): adding the file to chat is removed with contrib/chat.
++				// Sukuna (C-1-ai): adding the file to chat is removed with contrib/chat.
  				// Fallback to accept behavior.
  				this.openAnything(resourceOrEditor, { keyMods, range: this.pickState.lastRange, preserveFocus: event.inBackground, forcePinned: event.inBackground });
  			}
 diff --git a/src/vs/workbench/contrib/search/browser/search.contribution.ts b/src/vs/workbench/contrib/search/browser/search.contribution.ts
-index f917e335387..bf220c896cf 100644
+index f917e335387..bdd1b0fd32e 100644
 --- a/src/vs/workbench/contrib/search/browser/search.contribution.ts
 +++ b/src/vs/workbench/contrib/search/browser/search.contribution.ts
 @@ -19,7 +19,7 @@ import { SearchView } from './searchView.js';
@@ -8341,7 +8341,7 @@ index f917e335387..bf220c896cf 100644
 -			default: false,
 -			tags: ['preview'],
 -		},
-+		// Shuko (C-1-ai): 'search.searchView.semanticSearchBehavior' and 'search.searchView.keywordSuggestions' (AI results) are removed.
++		// Sukuna (C-1-ai): 'search.searchView.semanticSearchBehavior' and 'search.searchView.keywordSuggestions' (AI results) are removed.
  	}
  });
  
@@ -8376,7 +8376,7 @@ index cae7e01cd2b..b373dfa1890 100644
  			}
  			await viewer.expand(navigator.current());
 diff --git a/src/vs/workbench/contrib/search/browser/searchActionsTopBar.ts b/src/vs/workbench/contrib/search/browser/searchActionsTopBar.ts
-index a85da686835..74f3adb616c 100644
+index a85da686835..05556649c1c 100644
 --- a/src/vs/workbench/contrib/search/browser/searchActionsTopBar.ts
 +++ b/src/vs/workbench/contrib/search/browser/searchActionsTopBar.ts
 @@ -15,7 +15,7 @@ import { VIEW_ID } from '../../../services/search/common/search.js';
@@ -8415,12 +8415,12 @@ index a85da686835..74f3adb616c 100644
 -		}
 -	}
 -});
-+// Shuko (C-1-ai): "Search with AI" is removed with the AI results of the search view.
++// Sukuna (C-1-ai): "Search with AI" is removed with the AI results of the search view.
  
  //#endregion
  
 diff --git a/src/vs/workbench/contrib/search/browser/searchCompare.ts b/src/vs/workbench/contrib/search/browser/searchCompare.ts
-index ada366dee77..25ad68ccc9f 100644
+index ada366dee77..200f5558bad 100644
 --- a/src/vs/workbench/contrib/search/browser/searchCompare.ts
 +++ b/src/vs/workbench/contrib/search/browser/searchCompare.ts
 @@ -8,7 +8,6 @@ import { compareFileExtensions, compareFileNames, comparePaths } from '../../../
@@ -8438,12 +8438,12 @@ index ada366dee77..25ad68ccc9f 100644
 -		if (isSearchTreeAIFileMatch(elementA) && isSearchTreeAIFileMatch(elementB)) {
 -			return elementA.rank - elementB.rank;
 -		}
-+		// Shuko (C-1-ai): AI file matches (ranked) are removed with contrib/search/browser/AISearch.
++		// Sukuna (C-1-ai): AI file matches (ranked) are removed with contrib/search/browser/AISearch.
  		switch (sortOrder) {
  			case SearchSortOrder.CountDescending:
  				return elementB.count() - elementA.count();
 diff --git a/src/vs/workbench/contrib/search/browser/searchResultsView.ts b/src/vs/workbench/contrib/search/browser/searchResultsView.ts
-index 994769dc62c..71ed26add45 100644
+index 994769dc62c..548365a4b0d 100644
 --- a/src/vs/workbench/contrib/search/browser/searchResultsView.ts
 +++ b/src/vs/workbench/contrib/search/browser/searchResultsView.ts
 @@ -34,7 +34,6 @@ import type { IManagedHover } from '../../../../base/browser/ui/hover/hover.js';
@@ -8459,13 +8459,13 @@ index 994769dc62c..71ed26add45 100644
  
  		const decorationConfig = this.configurationService.getValue<ISearchConfigurationProperties>('search').decorations;
 -		templateData.label.setFile(fileMatch.resource, { range: isSearchTreeAIFileMatch(fileMatch) ? fileMatch.getFullRange() : undefined, hidePath: this.searchView.isTreeLayoutViewVisible && !(isSearchTreeFolderMatchNoRoot(fileMatch.parent())), hideIcon: false, fileDecorations: { colors: decorationConfig.colors, badges: decorationConfig.badges } });
-+		// Shuko (C-1-ai): AI file matches (with a full range) are removed with contrib/search/browser/AISearch.
++		// Sukuna (C-1-ai): AI file matches (with a full range) are removed with contrib/search/browser/AISearch.
 +		templateData.label.setFile(fileMatch.resource, { range: undefined, hidePath: this.searchView.isTreeLayoutViewVisible && !(isSearchTreeFolderMatchNoRoot(fileMatch.parent())), hideIcon: false, fileDecorations: { colors: decorationConfig.colors, badges: decorationConfig.badges } });
  		const count = fileMatch.count();
  		templateData.badge.setCount(count);
  		templateData.badge.setTitleFormat(count > 1 ? nls.localize('searchMatches', "{0} matches found", count) : nls.localize('searchMatch', "{0} match found", count));
 diff --git a/src/vs/workbench/contrib/search/browser/searchTreeModel/searchResult.ts b/src/vs/workbench/contrib/search/browser/searchTreeModel/searchResult.ts
-index c55c9aa68da..d9394df8c72 100644
+index c55c9aa68da..630b8f4e4c0 100644
 --- a/src/vs/workbench/contrib/search/browser/searchTreeModel/searchResult.ts
 +++ b/src/vs/workbench/contrib/search/browser/searchTreeModel/searchResult.ts
 @@ -13,11 +13,49 @@ import { IProgress, IProgressStep } from '../../../../../platform/progress/commo
@@ -8482,7 +8482,7 @@ index c55c9aa68da..d9394df8c72 100644
 +import { IUriIdentityService } from '../../../../../platform/uriIdentity/common/uriIdentity.js';
 +
 +/**
-+ * Shuko (C-1-ai): the AI results of the search view (contrib/search/browser/AISearch) are removed.
++ * Sukuna (C-1-ai): the AI results of the search view (contrib/search/browser/AISearch) are removed.
 + * This heading takes the place of the AI heading so that the rest of the search view is unchanged:
 + * it stays hidden and has no folders, so it never shows results. No AI text search provider can
 + * register (vscode.workspace.registerAITextSearchProvider does nothing).
@@ -8540,7 +8540,7 @@ index c55c9aa68da..d9394df8c72 100644
  		this._register(this._plainTextSearchResult.onChange((e) => this._onChange.fire(e)));
  		this._register(this._aiTextSearchResult.onChange((e) => this._onChange.fire(e)));
 diff --git a/src/vs/workbench/contrib/search/browser/searchView.ts b/src/vs/workbench/contrib/search/browser/searchView.ts
-index 164d061b346..86a8af1b75d 100644
+index 164d061b346..d91e95a8fd5 100644
 --- a/src/vs/workbench/contrib/search/browser/searchView.ts
 +++ b/src/vs/workbench/contrib/search/browser/searchView.ts
 @@ -83,7 +83,6 @@ import { ISearchViewModelWorkbenchService } from './searchTreeModel/searchViewMo
@@ -8584,13 +8584,13 @@ index 164d061b346..86a8af1b75d 100644
 -		if (!(folderMatch instanceof AIFolderMatchWorkspaceRootImpl)) {
 -			matches = matchArray.sort((a, b) => searchMatchComparer(a, b, this.searchConfig.sortOrder));
 -		}
-+		// Shuko (C-1-ai): AI folder matches (contrib/search/browser/AISearch) are removed, so every folder is sorted.
++		// Sukuna (C-1-ai): AI folder matches (contrib/search/browser/AISearch) are removed, so every folder is sorted.
 +		const matches = matchArray.sort((a, b) => searchMatchComparer(a, b, this.searchConfig.sortOrder));
  
  		return matches;
  	}
 diff --git a/src/vs/workbench/contrib/search/browser/symbolsQuickAccess.ts b/src/vs/workbench/contrib/search/browser/symbolsQuickAccess.ts
-index 8edf55d5cec..2acb4a1cd7d 100644
+index 8edf55d5cec..5d924020c51 100644
 --- a/src/vs/workbench/contrib/search/browser/symbolsQuickAccess.ts
 +++ b/src/vs/workbench/contrib/search/browser/symbolsQuickAccess.ts
 @@ -24,8 +24,6 @@ import { prepareQuery, IPreparedQuery, scoreFuzzy2, pieceToQuery } from '../../.
@@ -8632,7 +8632,7 @@ index 8edf55d5cec..2acb4a1cd7d 100644
 -						return;
 -					}
 -
-+					// Shuko (C-1-ai): adding the symbol to chat is removed with contrib/chat.
++					// Sukuna (C-1-ai): adding the symbol to chat is removed with contrib/chat.
  					// Fallback to accept behavior.
  					this.openSymbol(provider, symbol, token, { keyMods, preserveFocus: event.inBackground, forcePinned: event.inBackground });
  				},
@@ -8657,7 +8657,7 @@ index c0225ee62a3..87f2c9a83df 100644
  		instantiationService.stub(IOutlineModelService, {});
  		configurationService = new TestConfigurationService({
 diff --git a/src/vs/workbench/contrib/tasks/browser/abstractTaskService.ts b/src/vs/workbench/contrib/tasks/browser/abstractTaskService.ts
-index e4b99d90fe4..ddf8c511af3 100644
+index e4b99d90fe4..90fe1a27a96 100644
 --- a/src/vs/workbench/contrib/tasks/browser/abstractTaskService.ts
 +++ b/src/vs/workbench/contrib/tasks/browser/abstractTaskService.ts
 @@ -48,7 +48,6 @@ import { ITerminalGroupService, ITerminalService } from '../../terminal/browser/
@@ -8692,7 +8692,7 @@ index e4b99d90fe4..ddf8c511af3 100644
  				this._outputService.showChannel(this._outputChannel.id, true);
  			} else {
 -				const chatEnabled = this._chatService.isEnabled(ChatAgentLocation.Chat);
-+				// Shuko (C-1-ai): "Fix with AI" is removed with contrib/chat.
++				// Sukuna (C-1-ai): "Fix with AI" is removed with contrib/chat.
 +				const chatEnabled: boolean = false;
  				const actions = [];
 -				if (chatEnabled && errorMessage) {
@@ -8754,7 +8754,7 @@ index bffaa341d92..92d365a2e27 100644
  		);
  		this._register(lifecycleService.onBeforeShutdown(event => event.veto(this.beforeShutdown(), 'veto.tasks')));
 diff --git a/src/vs/workbench/contrib/terminal/browser/terminal.contribution.ts b/src/vs/workbench/contrib/terminal/browser/terminal.contribution.ts
-index ec00cb43c7e..321c1beeec8 100644
+index ec00cb43c7e..d14c6a32705 100644
 --- a/src/vs/workbench/contrib/terminal/browser/terminal.contribution.ts
 +++ b/src/vs/workbench/contrib/terminal/browser/terminal.contribution.ts
 @@ -4,10 +4,13 @@
@@ -8785,7 +8785,7 @@ index ec00cb43c7e..321c1beeec8 100644
  import { TerminalViewPane } from './terminalView.js';
  
 +/**
-+ * Shuko (C-1-ai): the terminal chat parts are removed (they registered the real service), but the terminal tabs
++ * Sukuna (C-1-ai): the terminal chat parts are removed (they registered the real service), but the terminal tabs
 + * (terminalTabbedView.ts, terminalTabsChatEntry.ts) still inject this service. No terminal is ever registered with
 + * a tool session or a chat session, so there are no hidden chat terminals and nothing to auto approve.
 + */
@@ -8828,14 +8828,14 @@ index ec00cb43c7e..321c1beeec8 100644
  registerSingleton(ITerminalInstanceService, TerminalInstanceService, InstantiationType.Delayed);
  registerSingleton(ITerminalProfileService, TerminalProfileService, InstantiationType.Delayed);
 +registerSingleton(ITerminalChatService, NullTerminalChatService, InstantiationType.Delayed);
-+// Shuko (C-1-ai): the chat entry of the tabs (terminalTabsChatEntry.ts) runs this command. The entry only shows when there
++// Sukuna (C-1-ai): the chat entry of the tabs (terminalTabsChatEntry.ts) runs this command. The entry only shows when there
 +// are hidden chat terminals, and there are none. Keep the id so that it never fails with "command not found".
 +CommandsRegistry.registerCommand('workbench.action.terminal.chat.viewHiddenChatTerminals', () => { });
  
  // Register workbench contributions
  // This contribution blocks startup as it's critical to enable the web embedder window.createTerminal API
 diff --git a/src/vs/workbench/contrib/terminal/browser/terminalMenus.ts b/src/vs/workbench/contrib/terminal/browser/terminalMenus.ts
-index 73e3e335322..71ffa586551 100644
+index 73e3e335322..72df0a8bfb2 100644
 --- a/src/vs/workbench/contrib/terminal/browser/terminalMenus.ts
 +++ b/src/vs/workbench/contrib/terminal/browser/terminalMenus.ts
 @@ -19,7 +19,6 @@ import { terminalStrings } from '../common/terminalStrings.js';
@@ -8853,12 +8853,12 @@ index 73e3e335322..71ffa586551 100644
 -	HasSpeechProvider,
 -	ContextKeyExpr.and(ChatContextKeys.enabled, ChatContextKeys.speechToTextConfigured)
 +	HasSpeechProvider
-+	// Shuko (C-1-ai): the built-in on-device engine (chat speech-to-text) is removed.
++	// Sukuna (C-1-ai): the built-in on-device engine (chat speech-to-text) is removed.
  );
  
  /**
 diff --git a/src/vs/workbench/contrib/terminal/browser/xterm/decorationAddon.ts b/src/vs/workbench/contrib/terminal/browser/xterm/decorationAddon.ts
-index 0294c9fae45..cbced54006a 100644
+index 0294c9fae45..f4a74905ced 100644
 --- a/src/vs/workbench/contrib/terminal/browser/xterm/decorationAddon.ts
 +++ b/src/vs/workbench/contrib/terminal/browser/xterm/decorationAddon.ts
 @@ -26,13 +26,7 @@ import { DecorationSelector, getTerminalCommandDecorationState, getTerminalDecor
@@ -8941,13 +8941,13 @@ index 0294c9fae45..cbced54006a 100644
 -			}
 -		};
 +	private _createAttachToChatAction(_command: ITerminalCommand): IAction | undefined {
-+		// Shuko (C-1-ai): "Attach To Chat" is removed with contrib/chat.
++		// Sukuna (C-1-ai): "Attach To Chat" is removed with contrib/chat.
 +		return undefined;
  	}
  
  	private _showToggleVisibilityQuickPick() {
 diff --git a/src/vs/workbench/contrib/terminal/electron-browser/terminalInstallActions.ts b/src/vs/workbench/contrib/terminal/electron-browser/terminalInstallActions.ts
-index b134e6a4943..b268e540568 100644
+index b134e6a4943..f94b4045f33 100644
 --- a/src/vs/workbench/contrib/terminal/electron-browser/terminalInstallActions.ts
 +++ b/src/vs/workbench/contrib/terminal/electron-browser/terminalInstallActions.ts
 @@ -19,7 +19,8 @@ import { IQuickInputService, IQuickPickItem } from '../../../../platform/quickin
@@ -8955,13 +8955,13 @@ index b134e6a4943..b268e540568 100644
  import product from '../../../../platform/product/common/product.js';
  import { InstallShellScriptAction } from '../../../electron-browser/actions/installActions.js';
 -import { ChatConfiguration } from '../../chat/common/constants.js';
-+// Shuko (C-1-ai): contrib/chat is removed; same value as its ChatConfiguration.CopilotCliCommandEnabled (nothing registers the setting).
++// Sukuna (C-1-ai): contrib/chat is removed; same value as its ChatConfiguration.CopilotCliCommandEnabled (nothing registers the setting).
 +const ChatConfiguration = { CopilotCliCommandEnabled: 'chat.copilotCliCommand.enabled' } as const;
  import { ITerminalGroupService, ITerminalService } from '../browser/terminal.js';
  import { ChatEntitlementContextKeys, IChatEntitlementService } from '../../../services/chat/common/chatEntitlementService.js';
  
 diff --git a/src/vs/workbench/contrib/terminal/terminalContribExports.ts b/src/vs/workbench/contrib/terminal/terminalContribExports.ts
-index 60819ff138b..85904f31935 100644
+index 8e7bb078327..b89cc259dea 100644
 --- a/src/vs/workbench/contrib/terminal/terminalContribExports.ts
 +++ b/src/vs/workbench/contrib/terminal/terminalContribExports.ts
 @@ -7,9 +7,6 @@ import type { IConfigurationNode } from '../../../platform/configuration/common/
@@ -8985,7 +8985,7 @@ index 60819ff138b..85904f31935 100644
 -	ToggleChatTerminalOutput = TerminalChatCommandId.ToggleChatTerminalOutput,
 -	FocusChatInstanceAction = TerminalChatCommandId.FocusChatInstanceAction,
 -	ContinueInBackground = TerminalChatCommandId.ContinueInBackground,
-+	// Shuko (C-1-ai): terminalContrib/chat is removed. The ids are kept for their readers; nothing registers them.
++	// Sukuna (C-1-ai): terminalContrib/chat is removed. The ids are kept for their readers; nothing registers them.
 +	OpenTerminalSettingsLink = 'workbench.action.terminal.chat.openTerminalSettingsLink',
 +	DisableSessionAutoApproval = 'workbench.action.terminal.chat.disableSessionAutoApproval',
 +	FocusMostRecentChatTerminalOutput = 'workbench.action.terminal.chat.focusMostRecentChatTerminalOutput',
@@ -8998,7 +8998,7 @@ index 60819ff138b..85904f31935 100644
  // HACK: Export some settings from `terminalContrib/` that are depended upon elsewhere. These are
 @@ -43,19 +41,20 @@ export const enum TerminalContribSettingId {
  	StickyScrollEnabled = TerminalStickyScrollSettingId.Enabled,
- 	// Shuko (B-7-terminal-suggest): terminalContrib/suggest is removed. The id is kept for its readers; nothing registers it.
+ 	// Sukuna (B-7-terminal-suggest): terminalContrib/suggest is removed. The id is kept for its readers; nothing registers it.
  	SuggestEnabled = 'terminal.integrated.suggest.enabled',
 -	AutoApprove = TerminalChatAgentToolsSettingId.AutoApprove,
 -	EnableAutoApprove = TerminalChatAgentToolsSettingId.EnableAutoApprove,
@@ -9007,7 +9007,7 @@ index 60819ff138b..85904f31935 100644
 -	BlockDetectedFileWrites = TerminalChatAgentToolsSettingId.BlockDetectedFileWrites,
 -	ShellIntegrationTimeout = TerminalChatAgentToolsSettingId.ShellIntegrationTimeout,
 -	OutputLocation = TerminalChatAgentToolsSettingId.OutputLocation,
-+	// Shuko (C-1-ai): terminalContrib/chatAgentTools is removed. The ids are kept for their readers; nothing registers them.
++	// Sukuna (C-1-ai): terminalContrib/chatAgentTools is removed. The ids are kept for their readers; nothing registers them.
 +	AutoApprove = 'chat.tools.terminal.autoApprove',
 +	EnableAutoApprove = 'chat.tools.terminal.enableAutoApprove',
 +	AutoApproveWorkspaceNpmScripts = 'chat.tools.terminal.autoApproveWorkspaceNpmScripts',
@@ -9032,7 +9032,7 @@ index 60819ff138b..85904f31935 100644
  export const enum TerminalContribContextKeyStrings {
 -	ChatHasTerminals = TerminalChatContextKeyStrings.ChatHasTerminals,
 -	ChatHasHiddenTerminals = TerminalChatContextKeyStrings.ChatHasHiddenTerminals,
-+	// Shuko (C-1-ai): terminalContrib/chat is removed. The keys are kept for their readers; nothing sets them.
++	// Sukuna (C-1-ai): terminalContrib/chat is removed. The keys are kept for their readers; nothing sets them.
 +	ChatHasTerminals = 'hasChatTerminals',
 +	ChatHasHiddenTerminals = 'hasHiddenChatTerminals',
  }
@@ -9044,12 +9044,12 @@ index 60819ff138b..85904f31935 100644
  	...terminalAutoRepliesConfiguration,
 -	...terminalChatAgentToolsConfiguration,
 -	...terminalInitialHintConfiguration,
-+	// Shuko (C-1-ai): terminalContrib/inlineHint (the inline chat hint) is removed.
++	// Sukuna (C-1-ai): terminalContrib/inlineHint (the inline chat hint) is removed.
  	...terminalCommandGuideConfiguration,
  	...terminalHistoryConfiguration,
  	...terminalOscNotificationsConfiguration,
 diff --git a/src/vs/workbench/contrib/terminal/test/electron-browser/terminalInstallActions.test.ts b/src/vs/workbench/contrib/terminal/test/electron-browser/terminalInstallActions.test.ts
-index 2f4872f1fe4..a6f104dc9f7 100644
+index 2f4872f1fe4..acf5ccab808 100644
 --- a/src/vs/workbench/contrib/terminal/test/electron-browser/terminalInstallActions.test.ts
 +++ b/src/vs/workbench/contrib/terminal/test/electron-browser/terminalInstallActions.test.ts
 @@ -27,7 +27,8 @@ import { TerminalLocation } from '../../../../../platform/terminal/common/termin
@@ -9057,7 +9057,7 @@ index 2f4872f1fe4..a6f104dc9f7 100644
  import { ICreateTerminalOptions, ITerminalGroupService, ITerminalInstance, ITerminalService } from '../../browser/terminal.js';
  import { InstallShellScriptAction } from '../../../../electron-browser/actions/installActions.js';
 -import { ChatConfiguration } from '../../../chat/common/constants.js';
-+// Shuko (C-1-ai): contrib/chat is removed; same value as its ChatConfiguration.CopilotCliCommandEnabled.
++// Sukuna (C-1-ai): contrib/chat is removed; same value as its ChatConfiguration.CopilotCliCommandEnabled.
 +const ChatConfiguration = { CopilotCliCommandEnabled: 'chat.copilotCliCommand.enabled' } as const;
  import { InstallShellScriptWithCopilotAction, registerInstallShellScriptWithCopilotMenu } from '../../electron-browser/terminalInstallActions.js';
  
@@ -9085,7 +9085,7 @@ index 0f665212bc4..70934016943 100644
  		}
  
 diff --git a/src/vs/workbench/contrib/update/browser/updateTitleBarEntry.ts b/src/vs/workbench/contrib/update/browser/updateTitleBarEntry.ts
-index edaddf9ca88..cd97a2161e2 100644
+index edaddf9ca88..a999db212c1 100644
 --- a/src/vs/workbench/contrib/update/browser/updateTitleBarEntry.ts
 +++ b/src/vs/workbench/contrib/update/browser/updateTitleBarEntry.ts
 @@ -9,7 +9,6 @@ import { IManagedHoverContent, IManagedHoverOptions, IHoverWidget } from '../../
@@ -9122,12 +9122,12 @@ index edaddf9ca88..cd97a2161e2 100644
 -		this._register(autorun(reader => {
 -			chatInProgressContext.set(chatService.requestInProgressObs.read(reader));
 -		}));
-+		// Shuko (C-1-ai): chat is removed, so no chat request is ever in progress (the context key keeps its default).
++		// Sukuna (C-1-ai): chat is removed, so no chat request is ever in progress (the context key keeps its default).
  
  		this.state = updateService.state;
  		this._register(updateService.onStateChange((state) => {
 diff --git a/src/vs/workbench/contrib/workspace/browser/workspace.contribution.ts b/src/vs/workbench/contrib/workspace/browser/workspace.contribution.ts
-index 0eef07ba379..4f2748b4b0d 100644
+index 0eef07ba379..d61e58895bf 100644
 --- a/src/vs/workbench/contrib/workspace/browser/workspace.contribution.ts
 +++ b/src/vs/workbench/contrib/workspace/browser/workspace.contribution.ts
 @@ -13,7 +13,8 @@ import { IDialogService } from '../../../../platform/dialogs/common/dialogs.js';
@@ -9135,13 +9135,13 @@ index 0eef07ba379..4f2748b4b0d 100644
  import { Severity } from '../../../../platform/notification/common/notification.js';
  import { Registry } from '../../../../platform/registry/common/platform.js';
 -import { AGENT_HOST_SCHEME } from '../../../../platform/agentHost/common/agentHostUri.js';
-+// Shuko (C-1-ai): platform/agentHost is removed; same value as its AGENT_HOST_SCHEME, kept so that the trust requests do not change.
++// Sukuna (C-1-ai): platform/agentHost is removed; same value as its AGENT_HOST_SCHEME, kept so that the trust requests do not change.
 +const AGENT_HOST_SCHEME = 'vscode-agent-host';
  import { IWorkspaceTrustEnablementService, IWorkspaceTrustManagementService, IWorkspaceTrustRequestService, WorkspaceTrustUriResponse } from '../../../../platform/workspace/common/workspaceTrust.js';
  import { Extensions as WorkbenchExtensions, IWorkbenchContribution, IWorkbenchContributionsRegistry, WorkbenchPhase, registerWorkbenchContribution2 } from '../../../common/contributions.js';
  import { LifecyclePhase } from '../../../services/lifecycle/common/lifecycle.js';
 diff --git a/src/vs/workbench/contrib/workspace/test/browser/workspaceTrustRequestHandler.test.ts b/src/vs/workbench/contrib/workspace/test/browser/workspaceTrustRequestHandler.test.ts
-index 2240af5c988..1593e929886 100644
+index 2240af5c988..a3ddfa7b989 100644
 --- a/src/vs/workbench/contrib/workspace/test/browser/workspaceTrustRequestHandler.test.ts
 +++ b/src/vs/workbench/contrib/workspace/test/browser/workspaceTrustRequestHandler.test.ts
 @@ -9,7 +9,8 @@ import { Emitter, Event } from '../../../../../base/common/event.js';
@@ -9149,13 +9149,13 @@ index 2240af5c988..1593e929886 100644
  import { mock } from '../../../../../base/test/common/mock.js';
  import { ensureNoDisposablesAreLeakedInTestSuite } from '../../../../../base/test/common/utils.js';
 -import { AGENT_HOST_SCHEME } from '../../../../../platform/agentHost/common/agentHostUri.js';
-+// Shuko (C-1-ai): platform/agentHost is removed; same value as its AGENT_HOST_SCHEME.
++// Sukuna (C-1-ai): platform/agentHost is removed; same value as its AGENT_HOST_SCHEME.
 +const AGENT_HOST_SCHEME = 'vscode-agent-host';
  import { ICommandService } from '../../../../../platform/commands/common/commands.js';
  import { IDialogService, IPrompt } from '../../../../../platform/dialogs/common/dialogs.js';
  import { ILabelService } from '../../../../../platform/label/common/label.js';
 diff --git a/src/vs/workbench/services/accounts/browser/defaultAccount.ts b/src/vs/workbench/services/accounts/browser/defaultAccount.ts
-index 00164eda551..b2d53309523 100644
+index 00164eda551..22c63501d4c 100644
 --- a/src/vs/workbench/services/accounts/browser/defaultAccount.ts
 +++ b/src/vs/workbench/services/accounts/browser/defaultAccount.ts
 @@ -92,7 +92,23 @@ interface IMcpRegistryResponse {
@@ -9164,7 +9164,7 @@ index 00164eda551..b2d53309523 100644
  
 -function toDefaultAccountConfig(defaultChatAgent: IDefaultChatAgent): IDefaultAccountConfig {
 +function toDefaultAccountConfig(defaultChatAgent: IDefaultChatAgent | undefined): IDefaultAccountConfig {
-+	// Shuko (C-1-ai): product.json has no defaultChatAgent. An empty config; no default account provider is set then (DefaultAccountProviderContribution).
++	// Sukuna (C-1-ai): product.json has no defaultChatAgent. An empty config; no default account provider is set then (DefaultAccountProviderContribution).
 +	if (!defaultChatAgent) {
 +		return {
 +			preferredExtensions: [],
@@ -9188,7 +9188,7 @@ index 00164eda551..b2d53309523 100644
  		super();
  		this.defaultAccountConfig = toDefaultAccountConfig(productService.defaultChatAgent);
 +		if (!productService.defaultChatAgent) {
-+			// Shuko (C-1-ai): no default account provider is set without a defaultChatAgent, so nothing waits for one.
++			// Sukuna (C-1-ai): no default account provider is set without a defaultChatAgent, so nothing waits for one.
 +			this.initBarrier.open();
 +		}
  	}
@@ -9205,7 +9205,7 @@ index 00164eda551..b2d53309523 100644
  		defaultAccountService.setDefaultAccountProvider(defaultAccountProvider);
  	}
 diff --git a/src/vs/workbench/services/accounts/test/browser/defaultAccount.test.ts b/src/vs/workbench/services/accounts/test/browser/defaultAccount.test.ts
-index ee042bc05d5..d306caa2779 100644
+index ee042bc05d5..2d971a8e64d 100644
 --- a/src/vs/workbench/services/accounts/test/browser/defaultAccount.test.ts
 +++ b/src/vs/workbench/services/accounts/test/browser/defaultAccount.test.ts
 @@ -19,7 +19,11 @@ import { Configuration, ConfigurationChangeEvent } from '../../../../../platform
@@ -9213,7 +9213,7 @@ index ee042bc05d5..d306caa2779 100644
  import { IContextKeyService } from '../../../../../platform/contextkey/common/contextkey.js';
  import { MockContextKeyService } from '../../../../../platform/keybinding/test/common/mockKeybindingService.js';
 -import { CustomizationMarketplaceConfiguration } from '../../../../../platform/customizationMarketplace/common/customizationMarketplaceSources.js';
-+// Shuko (C-1-ai): platform/customizationMarketplace is removed; same values as its CustomizationMarketplaceConfiguration.
++// Sukuna (C-1-ai): platform/customizationMarketplace is removed; same values as its CustomizationMarketplaceConfiguration.
 +const CustomizationMarketplaceConfiguration = {
 +	AgentFinderPublicFeedEnabled: 'chat.customizations.marketplace.sources.publicFeed.enabled',
 +	CopilotConnectorsEnabled: 'chat.customizations.copilotConnectors.enabled',
@@ -9222,7 +9222,7 @@ index ee042bc05d5..d306caa2779 100644
  import { ILogService, NullLogService } from '../../../../../platform/log/common/log.js';
  import { COPILOT_FORCE_REMOTE_SETTINGS_REFRESH_KEY, IFileManagedSettingsService, INativeManagedSettingsService, ManagedSettingsData, NullFileManagedSettingsService, NullNativeManagedSettingsService } from '../../../../../platform/policy/common/copilotManagedSettings.js';
 diff --git a/src/vs/workbench/services/chat/common/chatEntitlementService.ts b/src/vs/workbench/services/chat/common/chatEntitlementService.ts
-index 29ce4272e78..e09a939d5a4 100644
+index 29ce4272e78..14d16d3eae4 100644
 --- a/src/vs/workbench/services/chat/common/chatEntitlementService.ts
 +++ b/src/vs/workbench/services/chat/common/chatEntitlementService.ts
 @@ -30,7 +30,7 @@ import { isWeb } from '../../../../base/common/platform.js';
@@ -9240,7 +9240,7 @@ index 29ce4272e78..e09a939d5a4 100644
  
 -registerSingleton(IChatEntitlementService, ChatEntitlementService, InstantiationType.Eager /* To ensure context keys are set asap */);
 +/**
-+ * Shuko (C-1-ai): the built-in AI is removed. This implementation never asks for the Copilot
++ * Sukuna (C-1-ai): the built-in AI is removed. This implementation never asks for the Copilot
 + * entitlements (no sign-in lookup, no network request, no telemetry): there is no entitlement,
 + * no quota and no BYOK model, and chat is hidden and disabled. The service id stays because
 + * about twelve remaining parts inject it (for example the extension enablement service).
@@ -9289,10 +9289,10 @@ index 29ce4272e78..e09a939d5a4 100644
 +	async update(): Promise<void> { }
 +}
 +
-+// Shuko (C-1-ai): register the implementation that never asks for the Copilot entitlements.
++// Sukuna (C-1-ai): register the implementation that never asks for the Copilot entitlements.
 +registerSingleton(IChatEntitlementService, NullChatEntitlementService, InstantiationType.Eager /* To ensure context keys are set asap */);
 diff --git a/src/vs/workbench/services/configuration/test/browser/configurationService.test.ts b/src/vs/workbench/services/configuration/test/browser/configurationService.test.ts
-index 98a200087d2..217bd97ebda 100644
+index 98a200087d2..a69977712e9 100644
 --- a/src/vs/workbench/services/configuration/test/browser/configurationService.test.ts
 +++ b/src/vs/workbench/services/configuration/test/browser/configurationService.test.ts
 @@ -10,7 +10,6 @@ import { Registry } from '../../../../../platform/registry/common/platform.js';
@@ -9307,7 +9307,7 @@ index 98a200087d2..217bd97ebda 100644
  import { DisposableStore, toDisposable } from '../../../../../base/common/lifecycle.js';
  import { CancellationError } from '../../../../../base/common/errors.js';
  
-+// Shuko (C-1-ai): platform/agentHost is removed. A minimal stand-in for its getGlobalConfigurationValue
++// Sukuna (C-1-ai): platform/agentHost is removed. A minimal stand-in for its getGlobalConfigurationValue
 +// (policy, user and application values win over the default; the test setting is a boolean).
 +function getGlobalConfigurationValue<T>(configurationService: IConfigurationService, settingId: string): T | undefined {
 +	const inspected = configurationService.inspect<T>(settingId);
@@ -9318,7 +9318,7 @@ index 98a200087d2..217bd97ebda 100644
  
  	const store = ensureNoDisposablesAreLeakedInTestSuite();
 diff --git a/src/vs/workbench/services/dialogs/test/browser/simpleFileDialog.test.ts b/src/vs/workbench/services/dialogs/test/browser/simpleFileDialog.test.ts
-index 5858a6eab90..f86c4470cc5 100644
+index 5858a6eab90..b578bbf415f 100644
 --- a/src/vs/workbench/services/dialogs/test/browser/simpleFileDialog.test.ts
 +++ b/src/vs/workbench/services/dialogs/test/browser/simpleFileDialog.test.ts
 @@ -13,7 +13,8 @@ import * as resources from '../../../../../base/common/resources.js';
@@ -9326,13 +9326,13 @@ index 5858a6eab90..f86c4470cc5 100644
  import { ensureNoDisposablesAreLeakedInTestSuite } from '../../../../../base/test/common/utils.js';
  import { mock } from '../../../../../base/test/common/mock.js';
 -import { AGENT_HOST_SCHEME } from '../../../../../platform/agentHost/common/agentHostUri.js';
-+// Shuko (C-1-ai): platform/agentHost is removed; same value as its AGENT_HOST_SCHEME.
++// Sukuna (C-1-ai): platform/agentHost is removed; same value as its AGENT_HOST_SCHEME.
 +const AGENT_HOST_SCHEME = 'vscode-agent-host';
  import { createFileSystemProviderError, FileSystemProviderErrorCode, IFileService, IFileStat } from '../../../../../platform/files/common/files.js';
  import { FileService } from '../../../../../platform/files/common/fileService.js';
  import { InMemoryFileSystemProvider } from '../../../../../platform/files/common/inMemoryFilesystemProvider.js';
 diff --git a/src/vs/workbench/services/policies/test/browser/accountPolicyService.test.ts b/src/vs/workbench/services/policies/test/browser/accountPolicyService.test.ts
-index 83d5e982e32..14071be1e00 100644
+index 83d5e982e32..a5c8bbf4888 100644
 --- a/src/vs/workbench/services/policies/test/browser/accountPolicyService.test.ts
 +++ b/src/vs/workbench/services/policies/test/browser/accountPolicyService.test.ts
 @@ -10,21 +10,16 @@ import { Emitter, Event } from '../../../../../base/common/event.js';
@@ -9414,12 +9414,12 @@ index 83d5e982e32..14071be1e00 100644
 -			removed: { managedSandboxEnforced: false, computed: localChatSessionType, remembered: localChatSessionType },
 -		});
 -	});
-+	// Shuko (C-1-ai): the test of the Agent Host Copilot session selection is removed with platform/agentHost and contrib/chat.
++	// Sukuna (C-1-ai): the test of the Agent Host Copilot session selection is removed with platform/agentHost and contrib/chat.
  
  	for (const channel of ['nativeMdm', 'server', 'file'] as const) {
  		test(`strictKnownMarketplaces from ${channel} is available without a configuration policy`, async () => {
 diff --git a/src/vs/workbench/services/remote/test/browser/browserRemoteResourceHandler.test.ts b/src/vs/workbench/services/remote/test/browser/browserRemoteResourceHandler.test.ts
-index c52ea55c2b0..4971ee6537d 100644
+index c52ea55c2b0..0eb26cd2d00 100644
 --- a/src/vs/workbench/services/remote/test/browser/browserRemoteResourceHandler.test.ts
 +++ b/src/vs/workbench/services/remote/test/browser/browserRemoteResourceHandler.test.ts
 @@ -11,7 +11,8 @@ import { FileAccess } from '../../../../../base/common/network.js';
@@ -9427,7 +9427,7 @@ index c52ea55c2b0..4971ee6537d 100644
  import { mock } from '../../../../../base/test/common/mock.js';
  import { ensureNoDisposablesAreLeakedInTestSuite } from '../../../../../base/test/common/utils.js';
 -import { AGENT_HOST_SCHEME, toAgentHostUri } from '../../../../../platform/agentHost/common/agentHostUri.js';
-+// Shuko (C-1-ai): platform/agentHost is removed; same value as its AGENT_HOST_SCHEME. The resources are plain URIs of that scheme.
++// Sukuna (C-1-ai): platform/agentHost is removed; same value as its AGENT_HOST_SCHEME. The resources are plain URIs of that scheme.
 +const AGENT_HOST_SCHEME = 'vscode-agent-host';
  import { BrowserResourceService } from '../../../../../platform/files/browser/browserResourceService.js';
  import { createFileSystemProviderError, FileOperationError, FileOperationResult, FileSystemProviderErrorCode, IFileContent, IFileService } from '../../../../../platform/files/common/files.js';
@@ -9464,7 +9464,7 @@ index e735a495109..d97247dbf18 100644
  		keywordSuggestions: boolean;
  	};
 diff --git a/src/vs/workbench/services/search/test/common/fileSystemFileSearchProvider.test.ts b/src/vs/workbench/services/search/test/common/fileSystemFileSearchProvider.test.ts
-index 565fe92e045..96bf8ee14b8 100644
+index 565fe92e045..6a9945da013 100644
 --- a/src/vs/workbench/services/search/test/common/fileSystemFileSearchProvider.test.ts
 +++ b/src/vs/workbench/services/search/test/common/fileSystemFileSearchProvider.test.ts
 @@ -11,7 +11,6 @@ import { CancellationError } from '../../../../../base/common/errors.js';
@@ -9480,7 +9480,7 @@ index 565fe92e045..96bf8ee14b8 100644
  suite('FileSystemFileSearchProvider', () => {
  	const disposables = ensureNoDisposablesAreLeakedInTestSuite();
 -	const root = toAgentHostUri(URI.parse('file:///C:/Users/test/project with spaces'), 'windows-host');
-+	// Shuko (C-1-ai): platform/agentHost is removed, so the folder is a plain URI of a test scheme instead of an agent host URI.
++	// Sukuna (C-1-ai): platform/agentHost is removed, so the folder is a plain URI of a test scheme instead of an agent host URI.
 +	const scheme = 'vscode-test-search';
 +	const root = URI.from({ scheme, authority: 'windows-host', path: '/C:/Users/test/project with spaces' });
  
@@ -9514,7 +9514,7 @@ index 565fe92e045..96bf8ee14b8 100644
  		const listed: string[] = [];
  		const provider = disposables.add(new class extends InMemoryFileSystemProvider {
 diff --git a/src/vs/workbench/services/workspaces/common/workspaceTrust.ts b/src/vs/workbench/services/workspaces/common/workspaceTrust.ts
-index 8cf29bf4a06..fc5f82a98d8 100644
+index 8cf29bf4a06..8720b530b73 100644
 --- a/src/vs/workbench/services/workspaces/common/workspaceTrust.ts
 +++ b/src/vs/workbench/services/workspaces/common/workspaceTrust.ts
 @@ -15,7 +15,8 @@ import { InstantiationType, registerSingleton } from '../../../../platform/insta
@@ -9522,13 +9522,13 @@ index 8cf29bf4a06..fc5f82a98d8 100644
  import { getRemoteAuthority } from '../../../../platform/remote/common/remoteHosts.js';
  import { isVirtualResource } from '../../../../platform/workspace/common/virtualWorkspace.js';
 -import { AGENT_HOST_SCHEME } from '../../../../platform/agentHost/common/agentHostUri.js';
-+// Shuko (C-1-ai): platform/agentHost is removed; same value as its AGENT_HOST_SCHEME, kept so that the trust decisions do not change.
++// Sukuna (C-1-ai): platform/agentHost is removed; same value as its AGENT_HOST_SCHEME, kept so that the trust decisions do not change.
 +const AGENT_HOST_SCHEME = 'vscode-agent-host';
  import { IStorageService, StorageScope, StorageTarget } from '../../../../platform/storage/common/storage.js';
  import { ISingleFolderWorkspaceIdentifier, isSavedWorkspace, isSingleFolderWorkspaceIdentifier, isTemporaryWorkspace, IWorkspace, IWorkspaceContextService, IWorkspaceFolder, toWorkspaceIdentifier, WorkbenchState } from '../../../../platform/workspace/common/workspace.js';
  import { WorkspaceTrustRequestOptions, IWorkspaceTrustManagementService, IWorkspaceTrustInfo, IWorkspaceTrustUriInfo, IWorkspaceTrustRequestService, IWorkspaceTrustTransitionParticipant, WorkspaceTrustUriResponse, IWorkspaceTrustEnablementService, ResourceTrustRequestOptions } from '../../../../platform/workspace/common/workspaceTrust.js';
 diff --git a/src/vs/workbench/services/workspaces/test/common/workspaceTrust.test.ts b/src/vs/workbench/services/workspaces/test/common/workspaceTrust.test.ts
-index fcf5835aa91..284caa9bfb8 100644
+index fcf5835aa91..266d6325fb1 100644
 --- a/src/vs/workbench/services/workspaces/test/common/workspaceTrust.test.ts
 +++ b/src/vs/workbench/services/workspaces/test/common/workspaceTrust.test.ts
 @@ -28,7 +28,6 @@ import { IWorkbenchEnvironmentService } from '../../../environment/common/enviro
@@ -9543,7 +9543,7 @@ index fcf5835aa91..284caa9bfb8 100644
  import { CancellationToken } from '../../../../../base/common/cancellation.js';
  import { runWithFakedTimers } from '../../../../../base/test/common/timeTravelScheduler.js';
  
-+// Shuko (C-1-ai): platform/agentHost is removed. Same value as its AGENT_HOST_SCHEME, and a minimal stand-in for its
++// Sukuna (C-1-ai): platform/agentHost is removed. Same value as its AGENT_HOST_SCHEME, and a minimal stand-in for its
 +// toAgentHostUri (the trust tests only need the scheme, the authority and the path; the metadata query is ignored by trust).
 +const AGENT_HOST_SCHEME = 'vscode-agent-host';
 +function toAgentHostUri(uri: URI, authority: string): URI {
@@ -9554,7 +9554,7 @@ index fcf5835aa91..284caa9bfb8 100644
  	const store = ensureNoDisposablesAreLeakedInTestSuite();
  
 diff --git a/src/vs/workbench/test/browser/actions/policyDiagnosticsMarkdown.test.ts b/src/vs/workbench/test/browser/actions/policyDiagnosticsMarkdown.test.ts
-index 3eb09ceaa35..f06c4beb38f 100644
+index 3eb09ceaa35..00edde2230d 100644
 --- a/src/vs/workbench/test/browser/actions/policyDiagnosticsMarkdown.test.ts
 +++ b/src/vs/workbench/test/browser/actions/policyDiagnosticsMarkdown.test.ts
 @@ -5,132 +5,12 @@
@@ -9688,12 +9688,12 @@ index 3eb09ceaa35..f06c4beb38f 100644
 -			}, { hooks: true, mcp: true, reportOnly: true, selection: true, enforcement: true, requiredSandbox: sandboxRequired, migrationRole: false, acceptance: false, blocker: false });
 -		}
 -	});
-+	// Shuko (C-1-ai): the tests of the Agent Host policy readiness section are removed with platform/agentHost.
++	// Sukuna (C-1-ai): the tests of the Agent Host policy readiness section are removed with platform/agentHost.
  
  	test('renders escaped tables and collapsed details', () => {
  		const output = markdownTable(
 diff --git a/src/vs/workbench/test/browser/componentFixtures/editor/tabs.fixture.ts b/src/vs/workbench/test/browser/componentFixtures/editor/tabs.fixture.ts
-index 6f6675cb89a..374b2d987d4 100644
+index 6f6675cb89a..ec1b718d48e 100644
 --- a/src/vs/workbench/test/browser/componentFixtures/editor/tabs.fixture.ts
 +++ b/src/vs/workbench/test/browser/componentFixtures/editor/tabs.fixture.ts
 @@ -44,7 +44,6 @@ import { IOutlineService } from '../../../../services/outline/browser/outline.js
@@ -9729,12 +9729,12 @@ index 6f6675cb89a..374b2d987d4 100644
 -			render: render(true, { partOptions: CHAT_PART_OPTIONS, editors: longChatTitleEditorSpecs(), width: 640 }),
 -			expectedVisualDescriptions: ['The tabs of a chat window\'s chat part are equally wide, at most as wide as fixed-size editor tabs by default, keep each chat\'s status icon, and ellipsize long chat titles before the Close action.'],
 -		}),
-+		// Shuko (C-1-ai): the ChatPartLongTitles fixture is removed with contrib/chatWindow.
++		// Sukuna (C-1-ai): the ChatPartLongTitles fixture is removed with contrib/chatWindow.
  		ModifiedAndMultiSelected: defineComponentFixture({
  			render: render(true, { editors: multiSelectEditorSpecs() }),
  			expectedVisualDescriptions: ['Modified and multi-selected tabs retain their indicators, selected boundaries, and active document connection.'],
 diff --git a/src/vs/workbench/test/browser/componentFixtures/fixtureUtils.ts b/src/vs/workbench/test/browser/componentFixtures/fixtureUtils.ts
-index febbb9f5ea8..7af0785e57b 100644
+index febbb9f5ea8..483d49bb351 100644
 --- a/src/vs/workbench/test/browser/componentFixtures/fixtureUtils.ts
 +++ b/src/vs/workbench/test/browser/componentFixtures/fixtureUtils.ts
 @@ -64,10 +64,6 @@ import { TestTreeSitterLibraryService } from '../../../../editor/test/common/ser
@@ -9855,7 +9855,7 @@ index febbb9f5ea8..7af0785e57b 100644
 -		resolvePRReviewThread: async () => { },
 -		markPRReviewCommentConverted: () => { },
 -	});
-+	// Shuko (C-1-ai): the agent feedback, chat editing, sessions and code review stubs are removed with contrib/chat and the sessions parts.
++	// Sukuna (C-1-ai): the agent feedback, chat editing, sessions and code review stubs are removed with contrib/chat and the sessions parts.
  
  	definePartialInstance(IPreferencesService, {
  		_serviceBrand: undefined,
@@ -9919,7 +9919,7 @@ index febbb9f5ea8..7af0785e57b 100644
  
  
 diff --git a/src/vs/workbench/test/browser/workbenchTestServices.ts b/src/vs/workbench/test/browser/workbenchTestServices.ts
-index 4be8be97959..d9250c5064e 100644
+index 4be8be97959..389701f592b 100644
 --- a/src/vs/workbench/test/browser/workbenchTestServices.ts
 +++ b/src/vs/workbench/test/browser/workbenchTestServices.ts
 @@ -132,9 +132,6 @@ import { SideBySideEditorInput } from '../../common/editor/sideBySideEditorInput
@@ -9993,9 +9993,9 @@ index 4be8be97959..d9250c5064e 100644
 -	getWidgetsByLocations(location: ChatAgentLocation): ReadonlyArray<IChatWidget> { return []; }
 -	register(newWidget: IChatWidget): IDisposable { return Disposable.None; }
 -}
-+// Shuko (C-1-ai): TestChatWidgetService is removed with contrib/chat.
++// Sukuna (C-1-ai): TestChatWidgetService is removed with contrib/chat.
 diff --git a/test/unit/browser/renderer.html b/test/unit/browser/renderer.html
-index 767d516e74f..ca4e951f1e4 100644
+index 767d516e74f..c976eca4a85 100644
 --- a/test/unit/browser/renderer.html
 +++ b/test/unit/browser/renderer.html
 @@ -101,9 +101,7 @@
@@ -10005,7 +10005,7 @@ index 767d516e74f..ca4e951f1e4 100644
 -		// FileAccess resolves test assets from src, but generated crypto is emitted only to the output tree.
 -		const agentHostCryptoPath = 'vs/platform/agentHost/browser/agentHostCryptoModule.js';
 -		importMap.imports[new URL(`../../../src/${agentHostCryptoPath}`, baseUrl).href] = new URL(`../../../${out}/${agentHostCryptoPath}`, baseUrl).href;
-+		// Shuko (C-1-ai): the agent host crypto module mapping is removed with platform/agentHost.
++		// Sukuna (C-1-ai): the agent host crypto module mapping is removed with platform/agentHost.
  
  		// ---- CSS tricks
  

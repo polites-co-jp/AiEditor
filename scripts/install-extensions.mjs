@@ -54,7 +54,7 @@ export const DAILY_DATA_FOLDERS = Object.freeze([".vscode", ".vscode-oss", ".vsc
 // （この道具は消さない。消すかは 4 の手順どおり人が決める）。
 export const RETIRED_EXTENSIONS = Object.freeze({
   "ms-ceintl.vscode-language-pack-ja":
-    "組み込みの日本語パック shuko.language-pack-ja（本体と同じ版）に置き換えた（docs/04 の7節）。入ったままだと、言語パックの一覧（languagepacks.json）で組み込みのパックより後に読まれて上書きし、古い 1.131.0 の訳に戻る。外すには <CLI> --uninstall-extension MS-CEINTL.vscode-language-pack-ja",
+    "組み込みの日本語パック sukuna.language-pack-ja（本体と同じ版）に置き換えた（docs/04 の7節）。入ったままだと、言語パックの一覧（languagepacks.json）で組み込みのパックより後に読まれて上書きし、古い 1.131.0 の訳に戻る。外すには <CLI> --uninstall-extension MS-CEINTL.vscode-language-pack-ja",
 });
 
 // 台帳に無い拡張のうち、置き換えた拡張の説明。[{ id, version, note }]

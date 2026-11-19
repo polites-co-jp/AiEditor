@@ -4,7 +4,7 @@
 //   2. scripts/check-env.ps1 が本物の環境で起こす pnpm・npm の子の環境の、キャッシュの向け先が <buildRoot> の下(build-env.mjs と同じ向け先)
 //   3. scripts/take-in.mjs の --records-dir が records/take-in/ の外を指したら止まる(判定役の狄仁傑は records/take-in/ しか読めない)
 // 状態: 3つの直しは蒙恬が入れ、大岡越前守が検証して合格した(2026-11-16)。このテストは、直しを外す退行を捕まえる見張りとして残す。
-//   入口: trial.mts の defaultTrialRoot・makeTrialRunDir、scripts/lib/child-cache-env.ps1 の Get-ShukoChildCacheEnv(build-env.mjs の cacheEnvVars の PowerShell 版)、
+//   入口: trial.mts の defaultTrialRoot・makeTrialRunDir、scripts/lib/child-cache-env.ps1 の Get-SukunaChildCacheEnv(build-env.mjs の cacheEnvVars の PowerShell 版)、
 //         scripts/lib/take-in/records.mjs の recordsDirProblem(repoRoot・cwd を渡して、本物の records/ に触れずに直接呼べる)。
 // 試しは <リポジトリ>\tmp\tests\ の下(tests/build/helpers.mjs の makeSandbox)。C:\b・本物の tmp\b・普段使いのデータには触れない。
 // Run: node --test tests/small-fixes.test.mjs
@@ -227,20 +227,20 @@ test('check-env.ps1: 結果の JSON の childEnv.vars は、build-env.mjs の ca
   assert.deepEqual(got, want);
 });
 
-test('child-cache-env.ps1: Get-ShukoChildCacheEnv(PowerShell)と cacheEnvVars(mjs)が、親の名前の大文字小文字が違っても同じ値を返す。絶対でない buildRoot は断る', () => {
+test('child-cache-env.ps1: Get-SukunaChildCacheEnv(PowerShell)と cacheEnvVars(mjs)が、親の名前の大文字小文字が違っても同じ値を返す。絶対でない buildRoot は断る', () => {
   const ps1 = path.join(REPO, 'scripts', 'lib', 'child-cache-env.ps1');
   const br = path.join(sb, 'twin-br');
   const run = (cmd) => spawnSync('powershell.exe', ['-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-Command', `. '${ps1.replace(/'/g, "''")}'; ${cmd}`], { encoding: 'utf8', timeout: 60000, windowsHide: true });
   // 親の名前を小文字・大文字にずらして渡す(Windows の環境変数名は大文字小文字を区別しない)
   const lowered = IF_PRESENT_NAMES.map((n) => n.toLowerCase());
   for (const [label, names] of [['無し', []], ['6つとも(大文字小文字を変えて)', lowered], ['一部', ['COREPACK_HOME', 'electron_config_cache']]]) {
-    const r = run(`Get-ShukoChildCacheEnv -BuildRoot '${br}' -BaseNames @(${names.map((n) => `'${n}'`).join(',')}) | ConvertTo-Json -Compress`);
+    const r = run(`Get-SukunaChildCacheEnv -BuildRoot '${br}' -BaseNames @(${names.map((n) => `'${n}'`).join(',')}) | ConvertTo-Json -Compress`);
     assert.equal(r.status, 0, `${label}: ${r.stderr}`);
     const got = JSON.parse(r.stdout);
     const expected = cacheEnvVars(br, Object.fromEntries(names.map((n) => [n, 'x'])));
     assert.deepEqual(Object.fromEntries(Object.entries(got).map(([k, v]) => [k, v.toLowerCase()])), Object.fromEntries(Object.entries(expected).map(([k, v]) => [k, v.toLowerCase()])), label);
   }
-  const bad = run(`Get-ShukoChildCacheEnv -BuildRoot 'relative\\dir'`);
+  const bad = run(`Get-SukunaChildCacheEnv -BuildRoot 'relative\\dir'`);
   assert.notEqual(bad.status, 0, '絶対でない buildRoot を断らない');
 });
 

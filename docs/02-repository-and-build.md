@@ -10,7 +10,7 @@
 
 ## 2. フォルダの構成
 
-名前は仮。`<editor>` は applicationName（仮 `shuko`）。
+`<editor>` は applicationName（`sukuna`。2026-11-18 に仮の `shuko` から改名）。
 
 ```
 <editor>/                         ビルドリポジトリ（このリポジトリ）
@@ -24,7 +24,7 @@
       README.md                   何を消し、何が残るか、壊れたときの症状
     ...
   patches/                        削除以外の変更（ブランド、テレメトリの差し替えは B-1 の単位に入れる）
-    20-product-configuration-defaults.patch   shukoConfigurationDefaults を既定として登録する（3節）
+    20-product-configuration-defaults.patch   sukunaConfigurationDefaults を既定として登録する（3節）
     30-proxy-direct-without-settings.patch    WPAD の通信を止める
   assets/                         アイコンなど、作業ツリーに写すファイル（ブランド）
   builtin/
@@ -85,15 +85,15 @@
 
 | キー | 扱い | 値（仮） | 理由 |
 |---|---|---|---|
-| nameShort / nameLong | set | `Shuko` | ブランド。本家と並べて計測するため、データの置き場所も分ける |
-| applicationName | set | `shuko` | CLI の名前など |
-| dataFolderName / sharedDataFolderName | set | `.shuko` / `.shuko-shared` | 本家（`.vscode-oss`）と分ける |
-| urlProtocol | set | `shuko` | 本家の `code-oss` と分ける。Claude Code の URI ハンドラ（`vscode://anthropic.claude-code/open`）との関係は [08](08-risks-and-open-items.md) のリスク |
-| win32MutexName、win32DirName、win32NameVersion、win32RegValueName、win32AppUserModelId、win32ShellNameShort | set | `shuko`、`Shuko`、`Shuko`、`Shuko`、`Shuko.Editor`、`&Shuko` | 本家・Code - OSS と衝突させない |
+| nameShort / nameLong | set | `Sukuna` | ブランド。本家と並べて計測するため、データの置き場所も分ける |
+| applicationName | set | `sukuna` | CLI の名前など |
+| dataFolderName / sharedDataFolderName | set | `.sukuna` / `.sukuna-shared` | 本家（`.vscode-oss`）と分ける |
+| urlProtocol | set | `sukuna` | 本家の `code-oss` と分ける。Claude Code の URI ハンドラ（`vscode://anthropic.claude-code/open`）との関係は [08](08-risks-and-open-items.md) のリスク |
+| win32MutexName、win32DirName、win32NameVersion、win32RegValueName、win32AppUserModelId、win32ShellNameShort | set | `sukuna`、`Sukuna`、`Sukuna`、`Sukuna`、`Sukuna.Editor`、`&Sukuna` | 本家・Code - OSS と衝突させない |
 | win32x64AppId、win32x64UserAppId（arm64 も） | set | 新しく作った GUID | 同上。インストーラーは作らないが、値は本家と分ける |
 | licenseName / licenseUrl / licenseFileName | 残す | — | MIT の表示 |
 | reportIssueUrl | remove（B-3 の `productRemove` で消す。単位と時期をそろえるため） | — | 課題報告を消す（B-3） |
-| shukoConfigurationDefaults | set | `{"extensions.allowed": {"*": false, <台帳の ID>: true, ...}, "telemetry.telemetryLevel": "off", "update.mode": "none", "workbench.enableExperiments": false, "extensions.autoUpdate": "off", "extensions.autoCheckUpdates": false}` | application スコープの設定の既定。拡張の `configurationDefaults` では既定にできないので、`patches/` の小さなパッチ（`src/vs/platform/configuration/common/configurationRegistry.ts` の登録の直後で、このキーを既定として登録する）で読む（2026-11-13 リーダーの判断。`tasks/2026-11-13-p1-ledger-mydist-decisions/app-scope-options.md` の案B-2）。`extensions.allowed` の ID が台帳と合っているかを単体テストで照合する |
+| sukunaConfigurationDefaults | set | `{"extensions.allowed": {"*": false, <台帳の ID>: true, ...}, "telemetry.telemetryLevel": "off", "update.mode": "none", "workbench.enableExperiments": false, "extensions.autoUpdate": "off", "extensions.autoCheckUpdates": false}` | application スコープの設定の既定。拡張の `configurationDefaults` では既定にできないので、`patches/` の小さなパッチ（`src/vs/platform/configuration/common/configurationRegistry.ts` の登録の直後で、このキーを既定として登録する）で読む（2026-11-13 リーダーの判断。`tasks/2026-11-13-p1-ledger-mydist-decisions/app-scope-options.md` の案B-2）。`extensions.allowed` の ID が台帳と合っているかを単体テストで照合する |
 | enableTelemetry、aiConfig、updateUrl、tasConfig、extensionsGallery、emergencyAlertUrl、profileTemplatesUrl、appCenter、settingsSearchUrl、npsSurveyUrl、mcpGallery | 本家が足したら remove（`removeIfPresent`） | — | 1.146.0 の OSS の product.json には無く、無いことでテレメトリ・更新の確認・実験・ギャラリーが働かない。本家が足したら `apply.mjs` が外して警告する |
 | server*、tunnel*、win32Tunnel* | remove（C-3） | — | リモートを消すとき。先に消すと参照するコードが値を見失う |
 | builtInExtensions | set（A-3） | `[]` | js-debug 系3件（GitHub から取得される）を入れない。1.146.0 は `extensionsGallery` が無いので、取得元は GitHub [一次] `build/lib/builtInExtensions.ts`（`sources/research-vscode-source.md` の3節） |
@@ -117,7 +117,7 @@
    - 型検査とパッケージ化の子のプロセスには、`BUILD_SOURCEVERSION=<作業ツリーの HEAD の40桁>` を渡す（リーダーの判断 2026-11-14）。作業ツリーの `.git` はファイル（`gitdir: ...`）なので、本家の `build/lib/git.ts` は HEAD を読めず、渡さないと出力の product.json に `commit` が入らない。`commit` が無いと、エディタは自分をビルド済みと見なさず（`isBuilt`）、`node_modules.asar` を使わずにターミナル（xterm）が読めず、言語パックも使われない（`tasks/2026-11-14-p1-smoke-built/`）。本家の commit は `upstream.json` と記録に別に残る。記録の `sourceVersion` に渡した値を書く。
 6. パッケージ化: `pnpm run gulp vscode-win32-x64-min`（1.146.0 は pnpm 12.16.0 だけで動く。npm は preinstall が止める）。gulp は npm 経由で動かす（"Run gulp via npm to avoid potential out of memory issues"）[一次] https://github.com/microsoft/vscode/wiki/How-to-Contribute 。タスク名と出力先（作業ツリーの親の直下の `VSCode-win32-x64`）は 1.146.0 の `build/gulpfile.vscode.ts` で確かめた [一次] `sources/research-vscode-source.md` の4節。
 7. 後処理: 出力の `resources/app/extensions` に、消した拡張のフォルダが残っていないこと、`builtin/keep.json` の拡張がそろっていることを確かめる。出力の product.json の `commit` が40桁で、渡した `BUILD_SOURCEVERSION` と一致することを確かめる（違えば止める）。LICENSE と ThirdPartyNotices を残す。本家 1.146 系の公式の zip は `resources\app\` を commit の先頭10桁のフォルダの下に置く（`<展開先>\69047191fc\resources\app\`）。これは product.json に `win32VersionedUpdate` があるときだけで、OSS の product.json には無いので、自分のビルドは直下に置く（Phase 1 で確かめた。`build/lib/util.ts` の `getVersionedResourcesFolder`）。後処理と `switch.ps1` はどちらの形でも読む。
-8. zip: 本家の gulp には zip を作るタスクが見当たらない。`C:\Windows\System32\tar.exe`（bsdtar。PATH の先頭の Git の GNU tar は zip を作れないのでフルパスで呼ぶ）で作る（2026-11-14 に試して作れた）。bsdtar には名前の置き換え（`-s`）が無いので、出力を改名せず、`<dist>\.stage-<label>\Shuko-win32-x64-<label>` のジャンクションを `tar -H` で包む。zip の SHA-256 を記録する（`tasks/2026-11-13-p2-build-switch/doc-corrections.md` の1）。
+8. zip: 本家の gulp には zip を作るタスクが見当たらない。`C:\Windows\System32\tar.exe`（bsdtar。PATH の先頭の Git の GNU tar は zip を作れないのでフルパスで呼ぶ）で作る（2026-11-14 に試して作れた）。bsdtar には名前の置き換え（`-s`）が無いので、出力を改名せず、`<dist>\.stage-<label>\Sukuna-win32-x64-<label>` のジャンクションを `tar -H` で包む。zip の SHA-256 を記録する（`tasks/2026-11-13-p2-build-switch/doc-corrections.md` の1）。
    - 版の commit（当てた後の作業ツリーの HEAD）に、常設の clone の枝 `builds/<label>` を付ける（`--no-branch` で付けない）。版のソースを後で取り出すため（作業ツリーをタグに戻して当て直すと、枝の無い commit は git の gc で消える）。結果は記録の `branch` に書く。
    - やり直すとき: 当てた後の作業ツリーは `prepare.mjs` が拒むので、`build.mjs --fresh`（作り直す）か `--from <手順>`（途中から）を使う。子のプロセスには `ELECTRON_RUN_AS_NODE`・`ELECTRON_NO_ATTACH_CONSOLE`・`VSCODE_*` を渡さない。
 
@@ -149,7 +149,7 @@
 
 裁定: zip を版ごとのフォルダに展開し、参照先を切り替える。前の版へすぐ戻せる。版のフォルダの場所は設定で変えられるようにする（6.1）。
 
-下の図は既定の場所（`<installRoot>` = `%LOCALAPPDATA%\Programs\Shuko`）のとき。
+下の図は既定の場所（`<installRoot>` = `%LOCALAPPDATA%\Programs\Sukuna`）のとき。
 
 ```
 <installRoot>\
@@ -168,7 +168,7 @@
   3. `current` のジャンクションを付け替え、`history.txt` に書く。
 - **戻し方**: `switch.ps1 <前のラベル>`。`switch.ps1 -Previous` で、`history.txt` を後ろから見て、今の版へ切り替えた最初の行の「前」へ戻す（2回続けると2つの版を行き来する）。新しい版がユーザーのデータを書き換えていて前の版で不具合が出たときは、`backups\` から戻す。
 - 版のフォルダは `keepVersions`（既定3。6.1）の数だけ残す。それより古いものは、`switch.ps1` が一覧を出し、ユーザーが消す。
-- ユーザーのデータの置き場所は、product.json の `nameShort`・`dataFolderName` から決まる（推定: `%APPDATA%\Shuko\User`、拡張は `%USERPROFILE%\.shuko\extensions`）。版のフォルダとは別なので、切り替えても設定と拡張はそのまま。Phase 1 で実際の場所を確かめて、この節を直す。
+- ユーザーのデータの置き場所は、product.json の `nameShort`・`dataFolderName` から決まる（推定: `%APPDATA%\Sukuna\User`、拡張は `%USERPROFILE%\.sukuna\extensions`）。版のフォルダとは別なので、切り替えても設定と拡張はそのまま。Phase 1 で実際の場所を確かめて、この節を直す。
 - 署名はしない。手元でビルドしたものにはダウンロードの印が付かないので、SmartScreen は出にくい（推定）。SmartScreen とは別に、Smart App Control がオンだと署名の無いネイティブのファイルの読み込みが止められる。そのため Smart App Control はオフにする（5節の表。裁定 2026-11-14）。
 - 別案: ポータブルモード（実行ファイルの隣の `data` フォルダ）。OSS のビルドでも Windows で効く見込み（1.146.0 の `src/bootstrap-node.ts` の読み。実機は未確認）。ただし版ごとにデータが分かれ、切り替えのたびに写す必要が出るので採らない。
 
@@ -176,7 +176,7 @@
 
 裁定: 版のフォルダの場所は設定で変えられるようにする。既定値の扱いは設計で決める。
 
-**置き場所**: `%LOCALAPPDATA%\Shuko\local.json`。この1つのパスだけを固定にし、中身で場所を変える。
+**置き場所**: `%LOCALAPPDATA%\Sukuna\local.json`。この1つのパスだけを固定にし、中身で場所を変える。
 
 - PC ごとに違う値なので、ビルドリポジトリには置かない。
 - エディタの外の道具（切り替え、取り込み、更新の検知）が、エディタを起動する前に読む。Notion で同期される `settings.json` にも置かない（ほかの PC の値で上書きされるため）。
@@ -186,16 +186,16 @@
 
 ```json
 {
-  "installRoot": "%LOCALAPPDATA%\\Programs\\Shuko",
+  "installRoot": "%LOCALAPPDATA%\\Programs\\Sukuna",
   "keepVersions": 3,
-  "builderRepo": "E:\\develop\\shuko",
-  "buildRoot": "E:\\develop\\shuko\\tmp\\b"
+  "builderRepo": "E:\\develop\\sukuna",
+  "buildRoot": "E:\\develop\\sukuna\\tmp\\b"
 }
 ```
 
 | キー | 意味 | 既定値 |
 |---|---|---|
-| `installRoot` | 版のフォルダ（`versions\`・`current`・`history.txt`・`backups\`）を置く場所 | `%LOCALAPPDATA%\Programs\Shuko` |
+| `installRoot` | 版のフォルダ（`versions\`・`current`・`history.txt`・`backups\`）を置く場所 | `%LOCALAPPDATA%\Programs\Sukuna` |
 | `keepVersions` | 残す版のフォルダの数 | `3` |
 | `builderRepo` | ビルドリポジトリの場所（台帳 `extensions.lock.json` やスクリプトを読むため） | 既定なし。`configure.ps1` を実行したリポジトリの場所を書く |
 | `buildRoot` | ビルドの作業場所（本家の clone、作業ツリー、キャッシュ、zip。2節） | `<ビルドリポジトリ>\tmp\b`（2026-11-15 まで `C:\b`） |
@@ -203,7 +203,7 @@
 - 値の中の `%NAME%` は、読むときに環境変数で展開する。
 - ファイルやキーが無ければ既定値を使う。JSON として読めない、型が違う、などのときは止めてエラーを出す（推測で既定値に戻さない）。
 - 1回だけ別の場所を使いたいときは、各道具のオプション（例 `-InstallRoot`）で上書きできる。優先の順は「オプション → `local.json` → 既定値」。
-- 更新の検知の状態とトークンの置き場所（`%LOCALAPPDATA%\Shuko\watch\`。[06](06-update-watch-and-take-in.md) の2節）は設定にしない。秘密の置き場所を1つに決めておくため。
+- 更新の検知の状態とトークンの置き場所（`%LOCALAPPDATA%\Sukuna\watch\`。[06](06-update-watch-and-take-in.md) の2節）は設定にしない。秘密の置き場所を1つに決めておくため。
 - `local.json` は Notion で同期しない。
 
 **読む道具**: どれも共通の部品（`scripts/lib/local-config.mjs` と `scripts/lib/local-config.ps1`。既定値と展開の規則を1か所に持つ）を通して読む。

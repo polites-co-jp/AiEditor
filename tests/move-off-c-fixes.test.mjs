@@ -381,7 +381,7 @@ test('guard: 深さの上限（既定3）より下は見ない', () => {
 
 test('guard: 見張る根は C:\\b・既定の <リポジトリ>\\tmp\\b を必ず含み、同じ場所を2回持たない。local.json が壊れていても落ちない', () => {
   const la = path.join(sb, 'la-broken');
-  writeFile(path.join(la, 'Shuko', 'local.json'), '{broken');
+  writeFile(path.join(la, 'Sukuna', 'local.json'), '{broken');
   const saved = process.env.LOCALAPPDATA;
   process.env.LOCALAPPDATA = la;
   try {
@@ -396,7 +396,7 @@ test('guard: 見張る根は C:\\b・既定の <リポジトリ>\\tmp\\b を必�
   }
   // local.json の buildRoot も見張る
   const la2 = path.join(sb, 'la-ok');
-  writeFile(path.join(la2, 'Shuko', 'local.json'), JSON.stringify({ buildRoot: 'D:\\my-guard-root' }));
+  writeFile(path.join(la2, 'Sukuna', 'local.json'), JSON.stringify({ buildRoot: 'D:\\my-guard-root' }));
   process.env.LOCALAPPDATA = la2;
   try {
     assert.ok(guardedRoots().some((r) => r.toLowerCase() === 'd:\\my-guard-root'));

@@ -124,16 +124,16 @@ t('orderUnits', '入力の配列を並べ替えて壊さない', () => {
 const PRODUCT = () => ({ nameShort: 'Code - OSS', applicationName: 'code-oss', reportIssueUrl: 'https://x', licenseName: 'MIT', onboardingThemes: [] });
 
 t('applyOverlay', 'set は値を入れ、既にあるキーは置き換える', () => {
-  const r = api.applyOverlay(PRODUCT(), { set: { nameShort: 'Shuko', urlProtocol: 'shuko' }, remove: [] });
-  assert.equal(r.product.nameShort, 'Shuko');
-  assert.equal(r.product.urlProtocol, 'shuko');
+  const r = api.applyOverlay(PRODUCT(), { set: { nameShort: 'Sukuna', urlProtocol: 'sukuna' }, remove: [] });
+  assert.equal(r.product.nameShort, 'Sukuna');
+  assert.equal(r.product.urlProtocol, 'sukuna');
   assert.deepEqual(r.warnings, []);
 });
 
 t('applyOverlay', 'set の値がオブジェクトのときは丸ごと置き換える（混ぜない）', () => {
-  const p = { ...PRODUCT(), shukoConfigurationDefaults: { old: 1 } };
-  const r = api.applyOverlay(p, { set: { shukoConfigurationDefaults: { 'telemetry.telemetryLevel': 'off' } }, remove: [] });
-  assert.deepEqual(r.product.shukoConfigurationDefaults, { 'telemetry.telemetryLevel': 'off' });
+  const p = { ...PRODUCT(), sukunaConfigurationDefaults: { old: 1 } };
+  const r = api.applyOverlay(p, { set: { sukunaConfigurationDefaults: { 'telemetry.telemetryLevel': 'off' } }, remove: [] });
+  assert.deepEqual(r.product.sukunaConfigurationDefaults, { 'telemetry.telemetryLevel': 'off' });
 });
 
 t('applyOverlay', 'remove はキーを消す。overlay に無いキー（licenseName など）は残す', () => {
@@ -153,7 +153,7 @@ t('applyOverlay', 'remove のキーが本家に無ければ警告する（本家
 
 t('applyOverlay', '入力の product と overlay を書き換えない', () => {
   const p = PRODUCT();
-  const o = { set: { nameShort: 'Shuko' }, remove: ['reportIssueUrl'] };
+  const o = { set: { nameShort: 'Sukuna' }, remove: ['reportIssueUrl'] };
   const p0 = JSON.stringify(p);
   const o0 = JSON.stringify(o);
   api.applyOverlay(p, o);

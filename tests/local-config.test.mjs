@@ -19,7 +19,7 @@ import { NEW_DEFAULT } from './build/root.mjs';
 import { REPO, makeSandbox, removeSandbox, writeFile, runPs } from './build/helpers.mjs';
 
 let sb;
-const ENV = { LOCALAPPDATA: 'C:\\Users\\tester\\AppData\\Local', SHUKO_T_ROOT: 'D:\\base' };
+const ENV = { LOCALAPPDATA: 'C:\\Users\\tester\\AppData\\Local', SUKUNA_T_ROOT: 'D:\\base' };
 const PROBE = path.join(REPO, 'tests', 'build', 'local-config-probe.ps1');
 const LIB_PS = path.join(REPO, 'scripts', 'lib', 'local-config.ps1');
 
@@ -37,20 +37,20 @@ test('DEFAULTS and KNOWN_KEYS', () => {
   assert.deepEqual([...KNOWN_KEYS].sort(), ['buildRoot', 'builderRepo', 'installRoot', 'keepVersions']);
   assert.equal(DEFAULTS.keepVersions, 3);
   assert.equal(path.win32.normalize(DEFAULTS.buildRoot).toLowerCase(), NEW_DEFAULT.toLowerCase());
-  assert.equal(DEFAULTS.installRoot, '%LOCALAPPDATA%\\Programs\\Shuko');
+  assert.equal(DEFAULTS.installRoot, '%LOCALAPPDATA%\\Programs\\Sukuna');
   assert.ok(DEFAULTS.builderRepo == null);
 });
 
-test('localConfigPath: <LOCALAPPDATA>\\Shuko\\local.json, throws without LOCALAPPDATA', () => {
-  assert.equal(localConfigPath({ LOCALAPPDATA: 'C:\\L' }).toLowerCase(), 'c:\\l\\shuko\\local.json');
+test('localConfigPath: <LOCALAPPDATA>\\Sukuna\\local.json, throws without LOCALAPPDATA', () => {
+  assert.equal(localConfigPath({ LOCALAPPDATA: 'C:\\L' }).toLowerCase(), 'c:\\l\\sukuna\\local.json');
   assert.throws(() => localConfigPath({}));
 });
 
 test('expandEnv: expands %NAME% (name case-insensitive), unknown name throws', () => {
-  assert.equal(expandEnv('%SHUKO_T_ROOT%\\x', ENV), 'D:\\base\\x');
-  assert.equal(expandEnv('%shuko_t_root%\\x', ENV), 'D:\\base\\x');
+  assert.equal(expandEnv('%SUKUNA_T_ROOT%\\x', ENV), 'D:\\base\\x');
+  assert.equal(expandEnv('%sukuna_t_root%\\x', ENV), 'D:\\base\\x');
   assert.equal(expandEnv('plain', ENV), 'plain');
-  assert.throws(() => expandEnv('%NO_SUCH_VAR_SHUKO%\\x', ENV));
+  assert.throws(() => expandEnv('%NO_SUCH_VAR_SUKUNA%\\x', ENV));
 });
 
 test('parseLocalConfig: strips a leading BOM; invalid JSON throws', () => {
@@ -72,7 +72,7 @@ test('validateLocalConfig: empty array when valid, strings when not', () => {
 
 test('resolveLocalConfig: missing file gives defaults, all sources "default"', () => {
   const r = resolveLocalConfig({ configPath: path.join(sb, 'nope', 'local.json'), overrides: {}, env: ENV });
-  assert.equal(r.installRoot, 'C:\\Users\\tester\\AppData\\Local\\Programs\\Shuko');
+  assert.equal(r.installRoot, 'C:\\Users\\tester\\AppData\\Local\\Programs\\Sukuna');
   assert.equal(r.keepVersions, 3);
   assert.equal(r.builderRepo, null);
   assert.equal(r.buildRoot.toLowerCase(), NEW_DEFAULT.toLowerCase()); // 既定はプロジェクトの tmp\b（2026-11-15 の裁定）
@@ -117,17 +117,17 @@ const CASES = [
   { name: 'buildRoot empty string', text: '{"buildRoot": ""}', ok: false },
   { name: 'builderRepo null', text: '{"builderRepo": null}', ok: true, exp: { builderRepo: null } },
   { name: 'builderRepo empty string', text: '{"builderRepo": ""}', ok: false },
-  { name: 'builderRepo path', text: '{"builderRepo": "E:\\\\develop\\\\shuko"}', ok: true, exp: { builderRepo: 'E:\\develop\\shuko' } },
-  { name: 'unknown %NAME%', text: '{"installRoot": "%NO_SUCH_VAR_SHUKO%\\\\x"}', ok: false },
+  { name: 'builderRepo path', text: '{"builderRepo": "E:\\\\develop\\\\sukuna"}', ok: true, exp: { builderRepo: 'E:\\develop\\sukuna' } },
+  { name: 'unknown %NAME%', text: '{"installRoot": "%NO_SUCH_VAR_SUKUNA%\\\\x"}', ok: false },
   { name: 'relative path', text: '{"installRoot": "relative\\\\path"}', ok: false },
   { name: 'drive-relative path', text: '{"buildRoot": "C:foo"}', ok: false },
   { name: 'drive root keeps backslash', text: '{"buildRoot": "C:\\\\"}', ok: true, exp: { buildRoot: 'C:\\' } },
   { name: 'trailing backslash removed', text: '{"buildRoot": "C:\\\\x\\\\"}', ok: true, exp: { buildRoot: 'C:\\x' } },
   { name: 'UNC with backslashes', text: '{"installRoot": "\\\\\\\\server\\\\share\\\\x"}', ok: true, exp: { installRoot: '\\\\server\\share\\x' } },
   { name: 'UNC with slashes', text: '{"installRoot": "//server/share/x"}', ok: true },
-  { name: 'expands %NAME%', text: '{"installRoot": "%SHUKO_T_ROOT%\\\\sub"}', ok: true, exp: { installRoot: 'D:\\base\\sub' } },
-  { name: 'expands %name% lower case', text: '{"installRoot": "%shuko_t_root%\\\\sub"}', ok: true, exp: { installRoot: 'D:\\base\\sub' } },
-  { name: 'default installRoot expands LOCALAPPDATA', text: '{"keepVersions": 2}', ok: true, exp: { installRoot: 'C:\\Users\\tester\\AppData\\Local\\Programs\\Shuko' } },
+  { name: 'expands %NAME%', text: '{"installRoot": "%SUKUNA_T_ROOT%\\\\sub"}', ok: true, exp: { installRoot: 'D:\\base\\sub' } },
+  { name: 'expands %name% lower case', text: '{"installRoot": "%sukuna_t_root%\\\\sub"}', ok: true, exp: { installRoot: 'D:\\base\\sub' } },
+  { name: 'default installRoot expands LOCALAPPDATA', text: '{"keepVersions": 2}', ok: true, exp: { installRoot: 'C:\\Users\\tester\\AppData\\Local\\Programs\\Sukuna' } },
   { name: 'top level array', text: '[]', ok: false },
   { name: 'top level null', text: 'null', ok: false },
   { name: 'top level string', text: '"x"', ok: false },

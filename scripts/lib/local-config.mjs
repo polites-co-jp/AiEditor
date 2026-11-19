@@ -2,7 +2,7 @@
 // PowerShell 側の同じ部品は scripts/lib/local-config.ps1。規則を変えるときは両方を同じに直す。
 //
 // 規則（docs/02 の6.1 と、この部品で決めたこと）:
-//   - 置き場所は %LOCALAPPDATA%\Shuko\local.json に固定。試しとテストのために、関数には別のパスを渡せる。
+//   - 置き場所は %LOCALAPPDATA%\Sukuna\local.json に固定。試しとテストのために、関数には別のパスを渡せる。
 //   - ファイルが無い、キーが無い → 既定値。
 //   - JSON として読めない、最上位がオブジェクトでない、知らないキーがある、型が違う → 止めて誤りを出す（既定値に戻さない）。
 //   - キーの名前は大文字小文字を区別する（"InstallRoot" は知らないキー）。
@@ -37,7 +37,7 @@ export const REPO_ROOT = (() => {
 export const DEFAULT_BUILD_ROOT = path.win32.join(REPO_ROOT, "tmp", "b");
 
 export const DEFAULTS = Object.freeze({
-  installRoot: "%LOCALAPPDATA%\\Programs\\Shuko",
+  installRoot: "%LOCALAPPDATA%\\Programs\\Sukuna",
   keepVersions: 3,
   builderRepo: null,
   buildRoot: DEFAULT_BUILD_ROOT,
@@ -49,7 +49,7 @@ const PATH_KEYS = ["installRoot", "buildRoot", "builderRepo"];
 export function localConfigPath(env = process.env) {
   const la = env.LOCALAPPDATA;
   if (!la) throw new Error("環境変数 LOCALAPPDATA が無い。local.json の場所を決められない");
-  return path.win32.join(la, "Shuko", "local.json");
+  return path.win32.join(la, "Sukuna", "local.json");
 }
 
 // %NAME% を環境変数で展開する。名前は大文字小文字を問わない（Windows の環境変数と同じ）。知らない名前は例外。

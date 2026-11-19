@@ -1,6 +1,6 @@
 // switch.ps1 -ExpandOnly と、build.mjs から apply.mjs への受け渡し（applyPassThrough・lockfile の --removals）のテスト。
 // 仕様: docs/06 の3節（取り込みは今使っている版に触らない）・9節、docs/02 の8節（-Zip は取り込みもこの入口を使う）。
-// 試しの installRoot（一時フォルダ）だけを使う。普段使いの %LOCALAPPDATA%\Shuko\ と %APPDATA% には触れない。
+// 試しの installRoot（一時フォルダ）だけを使う。普段使いの %LOCALAPPDATA%\Sukuna\ と %APPDATA% には触れない。
 // Run: node --test tests/switch-expand.test.mjs
 import test, { before, after } from 'node:test';
 import assert from 'node:assert/strict';
@@ -48,9 +48,9 @@ function setup({ labels = [], engines = ['^1.94.0'], version = '1.146.0' } = {})
   };
   const zipFor = (label, v = version) => {
     const src = path.join(root, `src-${label}`);
-    makeFakeEditor(path.join(src, `Shuko-win32-x64-${label}`), { version: v });
+    makeFakeEditor(path.join(src, `Sukuna-win32-x64-${label}`), { version: v });
     const zip = path.join(root, `${label}.zip`);
-    makeZip(zip, src, `Shuko-win32-x64-${label}`);
+    makeZip(zip, src, `Sukuna-win32-x64-${label}`);
     return zip;
   };
   const snapshot = () => {
@@ -78,7 +78,7 @@ test('-ExpandOnly -Zip: 版のフォルダに展開するだけ。current・hist
   assert.equal(r.status, 0, r.stderr + r.stdout);
   assert.equal(r.json.result, 'ok');
   assert.equal(r.json.expandOnly, true);
-  assert.ok(fs.existsSync(path.join(s.ver('1.147.0-1'), 'Shuko.exe')), '展開された');
+  assert.ok(fs.existsSync(path.join(s.ver('1.147.0-1'), 'Sukuna.exe')), '展開された');
   assert.deepEqual(s.snapshot(), before, 'current・history・backups・ユーザーのデータが同じ');
   assert.ok(isJunctionTo(s.current, s.ver('1.146.0-1')), 'current は今の版のまま');
   assert.equal(r.json.current, '1.146.0-1');
@@ -88,7 +88,7 @@ test('-ExpandOnly -Zip: 今の版が無い（初めて）ときも current・his
   const zip = s.zipFor('1.147.0-1', '1.147.0');
   const r = s.run('1.147.0-1', '-Zip', zip, '-ExpandOnly');
   assert.equal(r.status, 0, r.stderr + r.stdout);
-  assert.ok(fs.existsSync(path.join(s.ver('1.147.0-1'), 'Shuko.exe')));
+  assert.ok(fs.existsSync(path.join(s.ver('1.147.0-1'), 'Sukuna.exe')));
   assert.ok(!fs.existsSync(s.current));
   assert.ok(!fs.existsSync(path.join(s.installRoot, 'history.txt')));
   assert.ok(!fs.existsSync(path.join(s.installRoot, 'backups')));

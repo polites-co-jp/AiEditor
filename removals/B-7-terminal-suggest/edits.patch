@@ -1,5 +1,5 @@
-From eff4f50a3cd67b53f753a256ae4125edd732fcd4 Mon Sep 17 00:00:00 2001
-From: shuko-apply <apply@shuko.invalid>
+From 6f087503770f7f8894670939fc1326215d7197c3 Mon Sep 17 00:00:00 2001
+From: sukuna-apply <apply@sukuna.invalid>
 Date: Sat, 14 Nov 2026 00:31:49 +0900
 Subject: [PATCH] unit B-7-terminal-suggest: edits
 
@@ -13,7 +13,7 @@ Drop the references to terminalContrib/suggest from the terminal exports, the in
  5 files changed, 7 insertions(+), 52 deletions(-)
 
 diff --git a/src/vs/workbench/api/browser/mainThreadTerminalService.ts b/src/vs/workbench/api/browser/mainThreadTerminalService.ts
-index cdc75739eac..0bfbc8ac975 100644
+index cdc75739eac..0e696738798 100644
 --- a/src/vs/workbench/api/browser/mainThreadTerminalService.ts
 +++ b/src/vs/workbench/api/browser/mainThreadTerminalService.ts
 @@ -24,7 +24,6 @@ import { ISerializableEnvironmentDescriptionMap, ISerializableEnvironmentVariabl
@@ -23,7 +23,7 @@ index cdc75739eac..0bfbc8ac975 100644
 -import { ITerminalCompletionService } from '../../contrib/terminalContrib/suggest/browser/terminalCompletionService.js';
  import { IWorkbenchEnvironmentService } from '../../services/environment/common/environmentService.js';
  import { hasKey } from '../../../base/common/types.js';
-
+ 
 @@ -73,7 +72,6 @@ export class MainThreadTerminalService extends Disposable implements MainThreadT
  		@ITerminalGroupService private readonly _terminalGroupService: ITerminalGroupService,
  		@ITerminalEditorService private readonly _terminalEditorService: ITerminalEditorService,
@@ -34,7 +34,7 @@ index cdc75739eac..0bfbc8ac975 100644
  		super();
 @@ -285,33 +283,7 @@ export class MainThreadTerminalService extends Disposable implements MainThreadT
  	}
-
+ 
  	public $registerCompletionProvider(id: string, extensionIdentifier: string, ...triggerCharacters: string[]): void {
 -		this._completionProviders.set(id, this._terminalCompletionService.registerTerminalCompletionProvider(extensionIdentifier, id, {
 -			id,
@@ -63,9 +63,9 @@ index cdc75739eac..0bfbc8ac975 100644
 -				}));
 -			}
 -		}, ...triggerCharacters));
-+		// Shuko (B-7-terminal-suggest): terminal suggestions are removed. The provider is accepted and never asked.
++		// Sukuna (B-7-terminal-suggest): terminal suggestions are removed. The provider is accepted and never asked.
  	}
-
+ 
  	public $unregisterCompletionProvider(id: string): void {
 diff --git a/src/vs/workbench/api/test/browser/mainThreadTerminalService.test.ts b/src/vs/workbench/api/test/browser/mainThreadTerminalService.test.ts
 index 7c36efca8ac..2c59d178254 100644
@@ -88,7 +88,7 @@ index 7c36efca8ac..2c59d178254 100644
  			$startExtensionTerminal: async id => {
  				const cwd = terminals.getInstanceFromId(id)?.shellLaunchConfig.cwd;
 diff --git a/src/vs/workbench/contrib/terminal/terminalContribExports.ts b/src/vs/workbench/contrib/terminal/terminalContribExports.ts
-index a6b5c8afe3b..60819ff138b 100644
+index a6b5c8afe3b..8e7bb078327 100644
 --- a/src/vs/workbench/contrib/terminal/terminalContribExports.ts
 +++ b/src/vs/workbench/contrib/terminal/terminalContribExports.ts
 @@ -18,8 +18,6 @@ import { defaultTerminalHistoryCommandsToSkipShell, terminalHistoryConfiguration
@@ -99,13 +99,13 @@ index a6b5c8afe3b..60819ff138b 100644
 -import { TerminalSuggestSettingId, terminalSuggestConfiguration } from '../terminalContrib/suggest/common/terminalSuggestConfiguration.js';
  import { terminalTypeAheadConfiguration } from '../terminalContrib/typeAhead/common/terminalTypeAheadConfiguration.js';
  import { terminalZoomConfiguration } from '../terminalContrib/zoom/common/terminal.zoom.js';
-
+ 
 @@ -43,7 +41,8 @@ export const enum TerminalContribCommandId {
  // removing the dependency. These are explicitly defined here to avoid an eslint line override.
  export const enum TerminalContribSettingId {
  	StickyScrollEnabled = TerminalStickyScrollSettingId.Enabled,
 -	SuggestEnabled = TerminalSuggestSettingId.Enabled,
-+	// Shuko (B-7-terminal-suggest): terminalContrib/suggest is removed. The id is kept for its readers; nothing registers it.
++	// Sukuna (B-7-terminal-suggest): terminalContrib/suggest is removed. The id is kept for its readers; nothing registers it.
 +	SuggestEnabled = 'terminal.integrated.suggest.enabled',
  	AutoApprove = TerminalChatAgentToolsSettingId.AutoApprove,
  	EnableAutoApprove = TerminalChatAgentToolsSettingId.EnableAutoApprove,
@@ -136,11 +136,11 @@ index b386b8ab964..0f665212bc4 100644
 -import { TerminalSuggestSettingId } from '../../suggest/common/terminalSuggestConfiguration.js';
  import { HasSpeechProvider } from '../../../speech/common/speechService.js';
  import { ChatContextKeys } from '../../../chat/common/actions/chatContextKeys.js';
-
+ 
 @@ -71,15 +69,6 @@ export class TerminalAccessibilityHelpProvider extends Disposable implements IAc
  			content.push(localize('focusViewOnExecution', 'Enable `terminal.integrated.accessibleViewFocusOnCommandExecution` to automatically focus the terminal accessible view when a command is executed in the terminal.'));
  		}
-
+ 
 -		if (this._configurationService.getValue(TerminalSuggestSettingId.Enabled)) {
 -			content.push(localize('suggestTrigger', 'The terminal request completions command can be invoked manually<keybinding:{0}>, but also appears while typing.', TerminalSuggestCommandId.TriggerSuggest));
 -			content.push(localize('suggest', 'When the terminal suggest widget is focused:'));
@@ -154,7 +154,7 @@ index b386b8ab964..0f665212bc4 100644
  			content.push(localize('commandPromptMigration', "Consider using powershell instead of command prompt for an improved experience"));
  		}
 diff --git a/src/vs/workbench/contrib/terminalContrib/inlineHint/browser/terminal.initialHint.contribution.ts b/src/vs/workbench/contrib/terminalContrib/inlineHint/browser/terminal.initialHint.contribution.ts
-index d7bb9e3d6a5..fe5b8d3ed95 100644
+index d7bb9e3d6a5..15b865752fe 100644
 --- a/src/vs/workbench/contrib/terminalContrib/inlineHint/browser/terminal.initialHint.contribution.ts
 +++ b/src/vs/workbench/contrib/terminalContrib/inlineHint/browser/terminal.initialHint.contribution.ts
 @@ -29,8 +29,6 @@ import { registerTerminalContribution, type IDetachedCompatibleTerminalContribut
@@ -164,26 +164,27 @@ index d7bb9e3d6a5..fe5b8d3ed95 100644
 -import { TerminalSuggestCommandId } from '../../suggest/common/terminal.suggest.js';
 -import { TerminalSuggestSettingId } from '../../suggest/common/terminalSuggestConfiguration.js';
  import { IChatEntitlementService } from '../../../../services/chat/common/chatEntitlementService.js';
-
+ 
  const $ = dom.$;
 @@ -294,14 +292,15 @@ class TerminalInitialHintWidget extends Disposable {
  		}
-
+ 
  		// Suggest hint - only shown when AI features are hidden (otherwise the Copilot CLI hint takes precedence)
 -		const suggestEnabled = aiFeaturesHidden && this._configurationService.getValue<boolean>(TerminalSuggestSettingId.Enabled);
 -		const suggestKeybinding = suggestEnabled ? this._keybindingService.lookupKeybinding(TerminalSuggestCommandId.TriggerSuggest) : undefined;
-+		// Shuko (B-7-terminal-suggest): terminal suggestions are removed, so this hint is never shown.
++		// Sukuna (B-7-terminal-suggest): terminal suggestions are removed, so this hint is never shown.
 +		const suggestEnabled = false;
 +		const suggestKeybinding = suggestEnabled ? this._keybindingService.lookupKeybinding('workbench.action.terminal.triggerSuggest') : undefined;
  		const suggestKeybindingLabel = suggestKeybinding?.getLabel();
  		if (suggestKeybinding && suggestKeybindingLabel) {
  			const suggestActionPart = localize('showSuggestHint', 'Show suggestions {0}. ', suggestKeybindingLabel);
-
+ 
  			const handleSuggestClick = () => {
 -				this._commandService.executeCommand(TerminalSuggestCommandId.TriggerSuggest);
 +				this._commandService.executeCommand('workbench.action.terminal.triggerSuggest');
  			};
-
+ 
  			const { before: suggestBefore, after: suggestAfter } = this._createWrappedHintElements(suggestActionPart, suggestKeybindingLabel, handleSuggestClick);
---
+-- 
 2.54.0.windows.1
+

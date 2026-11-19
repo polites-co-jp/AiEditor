@@ -1,5 +1,5 @@
-From fd3bbf8a14e1266d631bbdd777302e36aa728af7 Mon Sep 17 00:00:00 2001
-From: shuko-apply <apply@shuko.invalid>
+From 208a39d94566f06e8a81733d36f115469f1670cd Mon Sep 17 00:00:00 2001
+From: sukuna-apply <apply@sukuna.invalid>
 Date: Sat, 14 Nov 2026 00:11:50 +0900
 Subject: [PATCH] unit A-1-copilot-extension: edits
 
@@ -30,7 +30,7 @@ index 52d0f701b65..3ffd7585da7 100644
 @@ -152,32 +152,6 @@ function getRemoteEnv(): NodeJS.ProcessEnv {
  	return env;
  }
-
+ 
 -function ensureAgentHarnessLink(sourceRelativePath: string, linkPath: string): 'existing' | 'junction' | 'symlink' | 'hard link' {
 -	if (fs.existsSync(linkPath)) {
 -		return 'existing';
@@ -62,7 +62,7 @@ index 52d0f701b65..3ffd7585da7 100644
  	let index = 0;
 @@ -278,22 +252,6 @@ async function main() {
  	child_process.execSync('git config blame.ignoreRevsFile .git-blame-ignore-revs');
-
+ 
  	finishCloudSandbox();
 -
 -	// Symlink .claude/ files to their canonical locations to test Claude agent harness
@@ -81,7 +81,7 @@ index 52d0f701b65..3ffd7585da7 100644
 -		log('.', `Created ${claudeSkillsLinkType} .claude/skills -> .agents/skills`);
 -	}
  }
-
+ 
  main().catch(err => {
 diff --git a/package.json b/package.json
 index 6d8a376f844..d1a9efe24f7 100644
@@ -107,6 +107,6 @@ index 6d8a376f844..d1a9efe24f7 100644
      "watchd": "deemon pnpm run watch",
      "watch-webd": "deemon pnpm run watch-web",
      "kill-watchd": "deemon --kill pnpm run watch",
---
+-- 
 2.54.0.windows.1
 

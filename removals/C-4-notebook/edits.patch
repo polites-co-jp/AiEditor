@@ -1,5 +1,5 @@
-From 21079a103f9006607e95336713d2eb57e15dfcc4 Mon Sep 17 00:00:00 2001
-From: shuko-apply <apply@shuko.invalid>
+From 09ba15f4fcb44a5e49adce9a58720957ea581713 Mon Sep 17 00:00:00 2001
+From: sukuna-apply <apply@sukuna.invalid>
 Date: Sun, 15 Nov 2026 12:13:31 +0900
 Subject: [PATCH] unit C-4-notebook: edits
 
@@ -60,7 +60,7 @@ index f96edebfce9..d52a3b11c7d 100644
  			const diffEditors: TextDiffInputDto[] = [];
  			for (const resource of (editor?.resources.get() ?? [])) {
 diff --git a/src/vs/workbench/api/common/extHost.api.impl.ts b/src/vs/workbench/api/common/extHost.api.impl.ts
-index b6233a36300..a6f1100baa2 100644
+index b6233a36300..303eed73222 100644
 --- a/src/vs/workbench/api/common/extHost.api.impl.ts
 +++ b/src/vs/workbench/api/common/extHost.api.impl.ts
 @@ -13,7 +13,7 @@ import { Schemas, matchesScheme } from '../../../base/common/network.js';
@@ -124,7 +124,7 @@ index b6233a36300..a6f1100baa2 100644
 -					notebook = extHostNotebook.notebookDocuments.find(value => value.apiNotebook.getCells().find(c => c.document === document))?.apiNotebook;
 -				}
 -				return score(interalSelector, document.uri, document.languageId, true, notebook?.uri, notebook?.notebookType);
-+				// Shuko (C-4-notebook): there are no notebook documents, so a text document is never a notebook cell
++				// Sukuna (C-4-notebook): there are no notebook documents, so a text document is never a notebook cell
 +				return score(interalSelector, document.uri, document.languageId, true, undefined, undefined);
  			},
  			registerCodeActionsProvider(selector: vscode.DocumentSelector, provider: vscode.CodeActionProvider, metadata?: vscode.CodeActionProviderMetadata): vscode.Disposable {
@@ -133,7 +133,7 @@ index b6233a36300..a6f1100baa2 100644
  			}
  		};
  
-+		// Shuko (C-4-notebook): the notebook parts of the window, workspace and notebooks namespaces do nothing
++		// Sukuna (C-4-notebook): the notebook parts of the window, workspace and notebooks namespaces do nothing
 +		const removedNotebookApi = createRemovedNotebookApi(extension);
 +
  		// namespace: window
@@ -383,7 +383,7 @@ index 6274a567aa5..26336ad1e51 100644
  }
 diff --git a/src/vs/workbench/api/common/extHostRemovedApi.notebook.ts b/src/vs/workbench/api/common/extHostRemovedApi.notebook.ts
 new file mode 100644
-index 00000000000..73fa6d42261
+index 00000000000..91114fba45e
 --- /dev/null
 +++ b/src/vs/workbench/api/common/extHostRemovedApi.notebook.ts
 @@ -0,0 +1,151 @@
@@ -401,7 +401,7 @@ index 00000000000..73fa6d42261
 +import { NotebookControllerAffinity2 } from './extHostTypes.js';
 +
 +/**
-+ * Shuko (C-4-notebook): notebooks (the notebook editor, cell execution, kernels, output renderers),
++ * Sukuna (C-4-notebook): notebooks (the notebook editor, cell execution, kernels, output renderers),
 + * the interactive window and the notebook REPL are removed. The extension API entry points stay,
 + * but do nothing: there are never notebook documents or notebook editors, registrations return a
 + * disposable that does nothing, events never fire, and opening or showing a notebook is refused.
@@ -539,7 +539,7 @@ index 00000000000..73fa6d42261
 +	return { notebooks, window, workspace };
 +}
 diff --git a/src/vs/workbench/contrib/bulkEdit/browser/bulkCellEdits.ts b/src/vs/workbench/contrib/bulkEdit/browser/bulkCellEdits.ts
-index e4e4e3b936d..df56fcaceb1 100644
+index e4e4e3b936d..da02d79bacb 100644
 --- a/src/vs/workbench/contrib/bulkEdit/browser/bulkCellEdits.ts
 +++ b/src/vs/workbench/contrib/bulkEdit/browser/bulkCellEdits.ts
 @@ -3,19 +3,14 @@
@@ -568,7 +568,7 @@ index e4e4e3b936d..df56fcaceb1 100644
  }
  
 +/**
-+ * Shuko (C-4-notebook): notebooks are removed (contrib/notebook/browser and the notebook model resolver).
++ * Sukuna (C-4-notebook): notebooks are removed (contrib/notebook/browser and the notebook model resolver).
 + * Workspace edits that contain notebook cell edits are refused instead of applied.
 + */
  export class BulkCellEdits {
@@ -731,7 +731,7 @@ index 74550971ffe..faf07dfeb77 100644
  
  Registry.as<IConfigurationRegistry>(ConfigurationExtensions.Configuration).registerConfiguration({
 diff --git a/src/vs/workbench/contrib/search/browser/search.contribution.ts b/src/vs/workbench/contrib/search/browser/search.contribution.ts
-index bf220c896cf..ccea25c8d01 100644
+index bdd1b0fd32e..f6473495287 100644
 --- a/src/vs/workbench/contrib/search/browser/search.contribution.ts
 +++ b/src/vs/workbench/contrib/search/browser/search.contribution.ts
 @@ -204,11 +204,6 @@ configurationRegistry.registerConfiguration({
@@ -768,7 +768,7 @@ index b373dfa1890..cdd0844d3f1 100644
  				} else {
  					instantiationService.invokeFunction(accessor => accessor.get(IReplaceService)).openReplacePreview(nextFocusElement, true);
 diff --git a/src/vs/workbench/contrib/search/browser/searchCompare.ts b/src/vs/workbench/contrib/search/browser/searchCompare.ts
-index 25ad68ccc9f..0cdcc6a6003 100644
+index 200f5558bad..e93413de5f4 100644
 --- a/src/vs/workbench/contrib/search/browser/searchCompare.ts
 +++ b/src/vs/workbench/contrib/search/browser/searchCompare.ts
 @@ -3,7 +3,6 @@
@@ -820,7 +820,7 @@ index 25ad68ccc9f..0cdcc6a6003 100644
  	const elemAParents = createParentList(elementA);
  	const elemBParents = createParentList(elementB);
 diff --git a/src/vs/workbench/contrib/search/browser/searchFindInput.ts b/src/vs/workbench/contrib/search/browser/searchFindInput.ts
-index a823eacea8a..c712e8f185c 100644
+index a823eacea8a..ae079440570 100644
 --- a/src/vs/workbench/contrib/search/browser/searchFindInput.ts
 +++ b/src/vs/workbench/contrib/search/browser/searchFindInput.ts
 @@ -9,15 +9,11 @@ import { IContextKeyService } from '../../../../platform/contextkey/common/conte
@@ -833,7 +833,7 @@ index a823eacea8a..c712e8f185c 100644
  import { Emitter } from '../../../../base/common/event.js';
  
  
-+// Shuko (C-4-notebook): the notebook find filter button (contrib/notebook/browser) is removed with the notebooks.
++// Sukuna (C-4-notebook): the notebook find filter button (contrib/notebook/browser) is removed with the notebooks.
  export class SearchFindInput extends ContextScopedFindInput {
 -	private _findFilter: NotebookFindInputFilterButton;
 -	private _filterChecked: boolean = false;
@@ -903,7 +903,7 @@ index a823eacea8a..c712e8f185c 100644
  	}
  }
 diff --git a/src/vs/workbench/contrib/search/browser/searchTreeModel/fileMatch.ts b/src/vs/workbench/contrib/search/browser/searchTreeModel/fileMatch.ts
-index 7ac7a45def6..2599e0c5814 100644
+index 7ac7a45def6..f9e6ad73ca8 100644
 --- a/src/vs/workbench/contrib/search/browser/searchTreeModel/fileMatch.ts
 +++ b/src/vs/workbench/contrib/search/browser/searchTreeModel/fileMatch.ts
 @@ -16,7 +16,6 @@ import { ILabelService } from '../../../../../platform/label/common/label.js';
@@ -927,7 +927,7 @@ index 7ac7a45def6..2599e0c5814 100644
  							.forEach(m => this.add(m));
  					});
  			}
-+			// Shuko (C-4-notebook): the removed NotebookCompatibleFileMatch added the context lines here
++			// Sukuna (C-4-notebook): the removed NotebookCompatibleFileMatch added the context lines here
 +			this.addContext(this.rawMatch.results);
  		}
  	}
@@ -1109,7 +1109,7 @@ index b14e2732a1d..3186fed8000 100644
  				stats: allClosedEditorResults.stats,
  			};
 diff --git a/src/vs/workbench/contrib/search/browser/searchTreeModel/searchResult.ts b/src/vs/workbench/contrib/search/browser/searchTreeModel/searchResult.ts
-index d9394df8c72..1695f05f7c8 100644
+index 630b8f4e4c0..c947c5dc339 100644
 --- a/src/vs/workbench/contrib/search/browser/searchTreeModel/searchResult.ts
 +++ b/src/vs/workbench/contrib/search/browser/searchTreeModel/searchResult.ts
 @@ -4,14 +4,11 @@
@@ -1247,7 +1247,7 @@ index b2a5e1ad1dc..567d0f3266c 100644
  				selectedMatch = fileMatch.getSelectedMatch();
  			}
 diff --git a/src/vs/workbench/contrib/search/browser/searchView.ts b/src/vs/workbench/contrib/search/browser/searchView.ts
-index 3a6b33fa40c..f3133d06941 100644
+index d91e95a8fd5..1f430acbd84 100644
 --- a/src/vs/workbench/contrib/search/browser/searchView.ts
 +++ b/src/vs/workbench/contrib/search/browser/searchView.ts
 @@ -17,7 +17,6 @@ import { Disposable, DisposableMap, DisposableStore, IDisposable, MutableDisposa
@@ -1353,7 +1353,7 @@ index 3a6b33fa40c..f3133d06941 100644
  
  	openEditorWithMultiCursor(element: FileMatchOrMatch): Promise<void> {
 diff --git a/src/vs/workbench/contrib/search/browser/searchWidget.ts b/src/vs/workbench/contrib/search/browser/searchWidget.ts
-index 8c6b39875db..5607970dea7 100644
+index 8c6b39875db..346d2b92bfb 100644
 --- a/src/vs/workbench/contrib/search/browser/searchWidget.ts
 +++ b/src/vs/workbench/contrib/search/browser/searchWidget.ts
 @@ -36,15 +36,10 @@ import { searchReplaceAllIcon, searchHideReplaceIcon, searchShowContextIcon, sea
@@ -1377,7 +1377,7 @@ index 8c6b39875db..5607970dea7 100644
  	public contextLinesInput!: InputBox;
  
 -	private _notebookFilters: NotebookFindFilters;
-+	// Shuko (C-4-notebook): the notebook find filters (contrib/notebook/browser) are removed with the notebooks.
++	// Sukuna (C-4-notebook): the notebook find filters (contrib/notebook/browser) are removed with the notebooks.
 +	// The search view and the search editor still read them, so they stay at their defaults (all on) and never change.
 +	private readonly _notebookFilters = { markupInput: true, markupPreview: true, codeInput: true, codeOutput: true, onDidChange: Event.None };
  	private readonly _toggleReplaceButtonListener: MutableDisposable<IDisposable>;
