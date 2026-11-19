@@ -113,7 +113,7 @@ const EXPLORE_ALLOWLIST = {
   write_paths: [],
   write_paths_deny: [],
   read_paths: ["./"],
-  secret_paths: ["%LOCALAPPDATA%/Shuko/watch/", "%LOCALAPPDATA%/Shuko/secrets/"],
+  secret_paths: ["%LOCALAPPDATA%/Shuko/watch/", "%LOCALAPPDATA%/Shuko/secrets/", "%LOCALAPPDATA%/Sukuna/watch/", "%LOCALAPPDATA%/Sukuna/secrets/"],
   agents: [],
   skills: [],
   delete_paths: [],

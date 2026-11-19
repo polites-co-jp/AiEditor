@@ -31,7 +31,9 @@
   ],
   "secret_paths": [
     "%LOCALAPPDATA%/Shuko/watch/",
-    "%LOCALAPPDATA%/Shuko/secrets/"
+    "%LOCALAPPDATA%/Shuko/secrets/",
+    "%LOCALAPPDATA%/Sukuna/watch/",
+    "%LOCALAPPDATA%/Sukuna/secrets/"
   ],
   "agents": [],
   "skills": [],

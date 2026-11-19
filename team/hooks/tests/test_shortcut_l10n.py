@@ -28,6 +28,12 @@ C:/b/ は v2-2・v2-3 で外れるが、このテストは C:/b/ を除いて照
 出典: Team の同じタスクの perm-tests/（test_f_shape.ScriptTest・test_a_hook_shortcut.py・test_b_hook_uninstall.py・
 test_c_shortcut_effects.py）。
 
+【2026-11-20 改名の段1（Shuko → Sukuna）】Team の tasks/2026-11-20-ai-editor-rename-sukuna-perms/perm-proposal.md の 1.2・1.3。
+Shuko の4行（A_CREATE・A_READ・B_UNINSTALL・B_READ）は残し、Sukuna の組（S_CREATE・S_READ・S_UNINSTALL・S_LANGPACKS）を
+足した。期待は「Shuko の組と Sukuna の組」。sukuna.cmd は移行（switch.ps1）の後にできるので、このテストでは在るかを
+見ない（文字列が %LOCALAPPDATA% と一致することだけを見る）。【段2で】Shuko の組を外し、is_file を Sukuna の CLI に移す。
+秘密の場所の Sukuna の行（1.1）と移行の台本の行（1.5）は test_rename_sukuna.py が見る。
+
 実行: python -m unittest discover -s projects/ai-editor/team/hooks/tests
 """
 
@@ -101,6 +107,42 @@ B_UNINSTALL = f"{SHUKO_CMD} --uninstall-extension=*.*"
 B_READ = "C:/Users/kou_z/AppData/Roaming/Shuko/languagepacks.json"
 B_TODAY = f"{SHUKO_CMD} --uninstall-extension=MS-CEINTL.vscode-language-pack-ja"  # 2026-11-18 に打つ形（B_UNINSTALL に当たる）
 
+# ---- 改名の段1（2026-11-20）の Sukuna の組。台本は Shuko の台本の Shuko を Sukuna にしただけ ----
+
+SUKUNA_INSTALL_ROOT = "C:\\Users\\kou_z\\AppData\\Local\\Programs\\Sukuna"  # local.json の既定 %LOCALAPPDATA%\Programs\Sukuna
+
+S_CREATE_PS = "\n".join([
+    "$ErrorActionPreference = 'Stop'",
+    f"$lnk = '{DESKTOP}\\Sukuna.lnk'",
+    f"$cur = '{SUKUNA_INSTALL_ROOT}\\current'",
+    "[IO.File]::Delete($lnk)",
+    "$ws = New-Object -ComObject WScript.Shell",
+    "$s = $ws.CreateShortcut($lnk)",
+    "$s.TargetPath = $cur + '\\Sukuna.exe'",
+    "$s.WorkingDirectory = $cur",
+    "$s.Save()",
+    "$r = $ws.CreateShortcut($lnk)",
+    "'TargetPath=' + $r.TargetPath",
+    "'WorkingDirectory=' + $r.WorkingDirectory",
+    "'Arguments=' + $r.Arguments",
+]) + "\n"
+
+S_READ_PS = "\n".join([
+    "$ErrorActionPreference = 'Stop'",
+    f"$lnk = '{DESKTOP}\\Sukuna.lnk'",
+    "if (-not [IO.File]::Exists($lnk)) { 'missing'; exit 3 }",
+    "$r = (New-Object -ComObject WScript.Shell).CreateShortcut($lnk)",
+    "'TargetPath=' + $r.TargetPath",
+    "'WorkingDirectory=' + $r.WorkingDirectory",
+]) + "\n"
+
+S_CREATE = ps_line(S_CREATE_PS)
+S_READ = ps_line(S_READ_PS)
+SUKUNA_CMD = "C:/Users/kou_z/AppData/Local/Programs/Sukuna/current/bin/sukuna.cmd"
+S_UNINSTALL = f"{SUKUNA_CMD} --uninstall-extension=*.*"
+S_LANGPACKS = "C:/Users/kou_z/AppData/Roaming/Sukuna/languagepacks.json"
+S_TODAY = f"{SUKUNA_CMD} --uninstall-extension=MS-CEINTL.vscode-language-pack-ja"
+
 
 def real_permissions(member):
     path = next((PROJECT / "team" / "departments").glob(f"*/{member}/permissions.json"))
@@ -141,39 +183,46 @@ def secret_needles(entry, env):
 class RealLinesTest(unittest.TestCase):
     """本物の permissions.json の A・B の行（フックは通さない）。"""
 
-    def test_encoded_command_lines_are_the_two(self):
-        self.assertEqual(rows(lambda x: "encodedcommand" in x.lower()), {(MT, "bash_exact", A_CREATE), (OE, "bash_exact", A_READ)})
+    def test_encoded_command_lines_are_the_four(self):
+        # Shuko の2行と Sukuna の2行（2026-11-20 改名の段1）。【段2で】Shuko の2行を外す
+        self.assertEqual(rows(lambda x: "encodedcommand" in x.lower()),
+                         {(MT, "bash_exact", A_CREATE), (OE, "bash_exact", A_READ),
+                          (MT, "bash_exact", S_CREATE), (OE, "bash_exact", S_READ)})
 
     def test_powershell_lines_unchanged_otherwise(self):
-        # powershell の行は、A の2行のほかは前からの行だけ（-EncodedCommand・-Command の行を足していない）
+        # powershell の行は、A の2行と Sukuna の2行のほかは前からの行だけ（-EncodedCommand・-Command の行を足していない）
         for member, key, line in rows(lambda x: "powershell" in x.lower()):
             with self.subTest(member=member, line=line[:80]):
-                if line not in (A_CREATE, A_READ):
+                if line not in (A_CREATE, A_READ, S_CREATE, S_READ):
                     self.assertNotIn("-command", line.lower())
                     self.assertNotIn("-enc", line.lower())
 
     def test_shuko_cmd_line_is_meng_tian_only(self):
         self.assertEqual(rows(lambda x: "shuko.cmd" in x.lower()), {(MT, "bash_exact", B_UNINSTALL)})
-        self.assertEqual(rows(lambda x: "uninstall-extension" in x.lower()), {(MT, "bash_exact", B_UNINSTALL)})
+        self.assertEqual(rows(lambda x: "sukuna.cmd" in x.lower()), {(MT, "bash_exact", S_UNINSTALL)})
+        self.assertEqual(rows(lambda x: "uninstall-extension" in x.lower()),
+                         {(MT, "bash_exact", B_UNINSTALL), (MT, "bash_exact", S_UNINSTALL)})
         self.assertFalse(rows(lambda x: "--install-extension" in x.lower()))  # 入れる操作の行は無い
 
     def test_outside_read_paths(self):
-        # プロジェクトの外を指す read_paths は、蒙恬の languagepacks.json の1行だけ（C:/b/ は v2-2 までの一時の行。
-        # test_v21_temporary.RealLinesTest.test_read_paths_c_b_until_v2_2 が見る）
+        # プロジェクトの外を指す read_paths は、蒙恬の languagepacks.json の2行（Shuko・Sukuna）だけ（C:/b/ は v2-2 までの
+        # 一時の行。test_v21_temporary.RealLinesTest.test_read_paths_c_b_until_v2_2 が見る）。【段2で】B_READ を外す
         for member in MEMBERS:
             outside = [x for x in real_permissions(member).get("read_paths", []) if is_outside(x) and x != "C:/b/"]
             with self.subTest(member=member):
-                self.assertEqual(outside, [B_READ] if member == MT else [])
+                self.assertEqual(outside, [B_READ, S_LANGPACKS] if member == MT else [])
         self.assertFalse(B_READ.endswith("/"))  # 末尾が / でない要素は、そのファイルだけに一致する
+        self.assertFalse(S_LANGPACKS.endswith("/"))
         for member in MEMBERS:
             p = real_permissions(member)
             with self.subTest(member=member, keys="write・delete"):
                 for key in ("write_paths", "delete_paths", "delete_keep"):
-                    self.assertFalse([x for x in p.get(key, []) if "shuko" in x.lower() or "onedrive" in x.lower()], key)
+                    self.assertFalse([x for x in p.get(key, []) if re.search(r"shuko|sukuna|onedrive", x.lower())], key)
 
     def test_lines_carry_the_scripts(self):
         mt, oe = real_permissions(MT)["bash_exact"], real_permissions(OE)["bash_exact"]
-        for line, script, where in ((A_CREATE, CREATE_PS, mt), (A_READ, READ_PS, oe)):
+        for line, script, where in ((A_CREATE, CREATE_PS, mt), (A_READ, READ_PS, oe), (S_CREATE, S_CREATE_PS, mt),
+                                    (S_READ, S_READ_PS, oe)):
             with self.subTest(script=script.splitlines()[1]):
                 self.assertIn(line, where)
                 self.assertEqual(line, PS_PREFIX + encode(script))
@@ -196,24 +245,30 @@ class RealLinesTest(unittest.TestCase):
         self.assertTrue(DESKTOP.endswith("\\OneDrive\\デスクトップ"))
         self.assertEqual([f"U+{ord(c):04X}" for c in DESKTOP.split("\\")[-1]],
                          ["U+30C7", "U+30B9", "U+30AF", "U+30C8", "U+30C3", "U+30D7"])  # NFC（プ は U+30D7 の1字）
+        # Sukuna の台本は、Shuko の台本の Shuko を Sukuna にしただけ（パスは同じ2つの形）
+        self.assertEqual(S_CREATE_PS, CREATE_PS.replace("Shuko", "Sukuna"))
+        self.assertEqual(S_READ_PS, READ_PS.replace("Shuko", "Sukuna"))
+        self.assertIn(f"'{DESKTOP}\\Sukuna.lnk'", S_READ_PS)
+        self.assertIn(f"'{SUKUNA_INSTALL_ROOT}\\current'", S_CREATE_PS)
 
     def test_base64_starts_and_ends_plainly(self):
         # MSYS の引数の変換の手がかりになる形（/ や - で始まる・=/ を含む）が無い
-        for line in (A_CREATE, A_READ):
+        for line in (A_CREATE, A_READ, S_CREATE, S_READ):
             b64 = line.split(" ")[-1]
             self.assertFalse(b64.startswith(("/", "-")))
             self.assertNotIn("=/", b64)
 
     def test_no_wildcard_in_the_a_lines(self):
-        # bash_exact の * は STAR（区切り1つの一部）として読まれる。決め打ちの2行には * も ? もフックの特別な文字も無い
-        for line in (A_CREATE, A_READ):
+        # bash_exact の * は STAR（区切り1つの一部）として読まれる。決め打ちの4行には * も ? もフックの特別な文字も無い
+        for line in (A_CREATE, A_READ, S_CREATE, S_READ):
             for ch in "*?[]{}$`'\"\\;|&<>()%~":
                 self.assertNotIn(ch, line)
             self.assertTrue(line.isascii())
 
     def test_new_lines_hit_no_secret_needle(self):
-        # secret_paths の文字列の検査（allowlist.js の checkSecretText）に、今回の行が当たらない
-        for member, new in ((MT, [A_CREATE, B_UNINSTALL, B_TODAY]), (OE, [A_READ])):
+        # secret_paths の文字列の検査（allowlist.js の checkSecretText）に、今回の行が当たらない（Sukuna の秘密の場所を
+        # 足した後の secret_paths で照らす）
+        for member, new in ((MT, [A_CREATE, B_UNINSTALL, B_TODAY, S_CREATE, S_UNINSTALL, S_TODAY]), (OE, [A_READ, S_READ])):
             needles = set()
             for entry in real_permissions(member).get("secret_paths", []):
                 needles |= secret_needles(entry, os.environ)
@@ -233,6 +288,10 @@ class RealLinesTest(unittest.TestCase):
         self.assertEqual(B_READ, f"{roaming}/Shuko/languagepacks.json")
         self.assertEqual(INSTALL_ROOT, os.environ["LOCALAPPDATA"] + "\\Programs\\Shuko")
         self.assertTrue(Path(SHUKO_CMD).is_file())
+        # Sukuna の組は文字列だけを照らす（sukuna.cmd は移行の後にできる。【段2で】is_file をこちらに移す）
+        self.assertEqual(SUKUNA_CMD, f"{local}/Programs/Sukuna/current/bin/sukuna.cmd")
+        self.assertEqual(S_LANGPACKS, f"{roaming}/Sukuna/languagepacks.json")
+        self.assertEqual(SUKUNA_INSTALL_ROOT, os.environ["LOCALAPPDATA"] + "\\Programs\\Sukuna")
 
 
 # ---- フックの判定（本物の定義・permissions.json・フックの写しで） ----
@@ -337,20 +396,20 @@ class ShortcutHookTest(CopyHookCase):
     """A の2行の判定。持ち主にだけ通り、1文字でも違う形・足した形・別の台本の形は止まる。"""
 
     def test_lines_pass_for_owners_only(self):
-        self.passes(MT, [A_CREATE])
-        self.passes(OE, [A_READ])
-        self.blocks(MT, [A_READ], contains="ホワイトリストに無い")
-        self.blocks(OE, [A_CREATE], contains="ホワイトリストに無い")
-        self.blocks(CS, [A_CREATE, A_READ])
-        self.blocks(DR, [A_CREATE, A_READ])
+        self.passes(MT, [A_CREATE, S_CREATE])
+        self.passes(OE, [A_READ, S_READ])
+        self.blocks(MT, [A_READ, S_READ], contains="ホワイトリストに無い")
+        self.blocks(OE, [A_CREATE, S_CREATE], contains="ホワイトリストに無い")
+        self.blocks(CS, [A_CREATE, A_READ, S_CREATE, S_READ])
+        self.blocks(DR, [A_CREATE, A_READ, S_CREATE, S_READ])
 
     def test_surrounding_spaces_only(self):
         # フックは断片の前後の空白を落としてから照らす（語は増えない）
-        self.passes(MT, [f" {A_CREATE}", f"{A_CREATE} "])
-        self.passes(OE, [f"{A_READ}  "])
+        self.passes(MT, [f" {A_CREATE}", f"{A_CREATE} ", f" {S_CREATE}"])
+        self.passes(OE, [f"{A_READ}  ", f"{S_READ} "])
 
     def test_mutations_blocked(self):
-        for member, line in ((MT, A_CREATE), (OE, A_READ)):
+        for member, line in ((MT, A_CREATE), (OE, A_READ), (MT, S_CREATE), (OE, S_READ)):
             forms = mutations(line)
             self.assertEqual(len(forms), 29)
             self.assertNotIn(line, forms)
@@ -363,6 +422,11 @@ class ShortcutHookTest(CopyHookCase):
                          ps_line(CREATE_PS.replace("Shuko.lnk", "Shuko2.lnk"))])
         self.blocks(OE, [ps_line(READ_PS.replace("Shuko.lnk", "Shuko2.lnk")), ps_line(READ_PS + "Remove-Item x\n"),
                          ps_line(CREATE_PS)])
+        # Sukuna の行も同じ（名前を取り違えた形・改行を CR LF にした形・NFD の形も止まる）
+        self.blocks(MT, [ps_line(S_CREATE_PS.replace("Sukuna.lnk", "Sukuna2.lnk")), ps_line(S_CREATE_PS + "Remove-Item x\n"),
+                         ps_line(CREATE_PS.replace("Shuko.lnk", "Sukuna.lnk")), ps_line(S_CREATE_PS.replace("\n", "\r\n")),
+                         ps_line(unicodedata.normalize("NFD", S_CREATE_PS))])
+        self.blocks(OE, [ps_line(S_READ_PS.replace("Sukuna.lnk", "Sukuna2.lnk")), ps_line(S_CREATE_PS)])
 
     def test_command_form_blocked(self):
         # -Command の二重引用符の形は、括弧でフックに止まる（採らなかった書き方。perm-proposal.md の 4.1節）
@@ -422,29 +486,41 @@ class UninstallHookTest(CopyHookCase):
         cls.addClassCleanup(_rmtree, tmp)
         cls.shuko = tmp / "AppData" / "Roaming" / "Shuko"
         cls.lp = cls.shuko / "languagepacks.json"
-        for rel in ["languagepacks.json"] + SIBLINGS:
-            (cls.shuko / rel).parent.mkdir(parents=True, exist_ok=True)
-            (cls.shuko / rel).write_text("{}\n", encoding="utf-8")
-        fake = str(cls.lp).replace("\\", "/")
-        if fake.lower() == B_READ.lower():
+        cls.sukuna = tmp / "AppData" / "Roaming" / "Sukuna"
+        cls.slp = cls.sukuna / "languagepacks.json"
+        for base in (cls.shuko, cls.sukuna):
+            for rel in ["languagepacks.json"] + SIBLINGS:
+                (base / rel).parent.mkdir(parents=True, exist_ok=True)
+                (base / rel).write_text("{}\n", encoding="utf-8")
+        fake, sfake = str(cls.lp).replace("\\", "/"), str(cls.slp).replace("\\", "/")
+        if fake.lower() == B_READ.lower() or sfake.lower() == S_LANGPACKS.lower():
             raise AssertionError("置き換えたパスが本物と同じ")
-        cls.SUBST = {B_READ: fake}
-        cls.COUNT = {(MT, B_READ): 1}
+        cls.SUBST = {B_READ: fake, S_LANGPACKS: sfake}
+        cls.COUNT = {(MT, B_READ): 1, (MT, S_LANGPACKS): 1}
         super().setUpClass()
 
     def test_today_line(self):
-        self.passes(MT, [B_TODAY])
+        self.passes(MT, [B_TODAY, S_TODAY])
         for member in (CS, OE, DR):
-            self.blocks(member, [B_TODAY])
-        self.blocks(CS, [B_TODAY], contains="ホワイトリストに無い")
-        self.blocks(OE, [B_TODAY], contains="ホワイトリストに無い")
+            self.blocks(member, [B_TODAY, S_TODAY])
+        self.blocks(CS, [B_TODAY, S_TODAY], contains="ホワイトリストに無い")
+        self.blocks(OE, [B_TODAY, S_TODAY], contains="ホワイトリストに無い")
 
     def test_values_that_pass(self):
         self.passes(MT, [U + v for v in USE + HARMLESS])
+        self.passes(MT, [f"{SUKUNA_CMD} --uninstall-extension={v}" for v in USE + HARMLESS + ["sukuna.notion-sync"]])
 
     def test_blocked_forms(self):
         self.assertEqual(len(BLOCKED), 46)
         self.blocks(MT, BLOCKED)
+        # Sukuna の CLI でも同じ46形が止まる（CLI の場所と名前を Sukuna にした形）
+        sukuna = [b.replace("Shuko", "Sukuna").replace("shuko", "sukuna") for b in BLOCKED]
+        self.assertFalse([b for b in sukuna if "shuko" in b.lower()])
+        self.assertIn(f"{SUKUNA_CMD} --uninstall-extension MS-CEINTL.vscode-language-pack-ja", sukuna)
+        self.blocks(MT, sukuna)
+        # 名前を取り違えた形（Sukuna の場所の shuko.cmd・Shuko の場所の sukuna.cmd）も止まる
+        self.blocks(MT, [f"{SUKUNA_CMD.replace('sukuna.cmd', 'shuko.cmd')} --uninstall-extension=a.b",
+                         f"{SHUKO_CMD.replace('shuko.cmd', 'sukuna.cmd')} --uninstall-extension=a.b"])
 
     def test_env_var_install_root_cannot_be_written(self):
         # installRoot に合わせて %LOCALAPPDATA% や $LOCALAPPDATA で書く形は、secret_paths（%LOCALAPPDATA%/Shuko/…）の
@@ -470,9 +546,25 @@ class UninstallHookTest(CopyHookCase):
         # 大文字小文字だけ違う形は同じファイル（NTFS は区別しない）なので通る
         self.tool_passes(MT, "Read", {"file_path": lp.replace("languagepacks", "LANGUAGEPACKS")})
 
+    def test_read_only_the_sukuna_file(self):
+        # 2026-11-20 改名の段1: Sukuna の languagepacks.json も、そのファイルだけ
+        slp = str(self.slp)
+        self.tool_passes(MT, "Read", {"file_path": slp})
+        self.tool_passes(MT, "Grep", {"pattern": "ja", "path": slp})
+        for member in (CS, OE, DR):
+            self.tool_blocks(member, "Read", {"file_path": slp})
+        for rel in SIBLINGS:
+            self.tool_blocks(MT, "Read", {"file_path": str(self.sukuna / rel)})
+        self.tool_blocks(MT, "Read", {"file_path": str(self.sukuna)})
+        self.tool_blocks(MT, "Glob", {"pattern": "*", "path": str(self.sukuna)})
+        self.tool_blocks(MT, "Grep", {"pattern": "x", "path": str(self.sukuna)})
+        self.tool_blocks(MT, "Read", {"file_path": slp + ":x"})
+        self.tool_blocks(MT, "Read", {"file_path": slp + "x"})
+
     def test_cannot_write_it(self):
         for tool, extra in (("Write", {"content": "{}"}), ("Edit", {"old_string": "a", "new_string": "b"})):
             self.tool_blocks(MT, tool, {"file_path": str(self.lp), **extra})
+            self.tool_blocks(MT, tool, {"file_path": str(self.slp), **extra})
 
 
 # ---- A の行の効き目（tempfile の下の写しの行で） ----
@@ -529,6 +621,11 @@ class ShortcutEffectsTest(unittest.TestCase):
         ver.mkdir(parents=True)
         (ver / "Shuko.exe").write_bytes(b"MZ fake")
         _winapi.CreateJunction(str(ver), str(cls.root / "current"))
+        cls.sroot = cls.tmp / "AppData" / "Local" / "Programs" / "Sukuna"  # 2026-11-20 改名の段1
+        sver = cls.sroot / "versions" / "1.146.0-p5-c-all-r7"
+        sver.mkdir(parents=True)
+        (sver / "Sukuna.exe").write_bytes(b"MZ fake")
+        _winapi.CreateJunction(str(sver), str(cls.sroot / "current"))
         cls.dump = cls.tmp / "dump_args.py"
         cls.dump.write_text(
             "import json, sys\n"
@@ -546,7 +643,7 @@ class ShortcutEffectsTest(unittest.TestCase):
     def safe(self, script):
         """走らせる台本が、本物のデスクトップ・installRoot・%APPDATA% を指さないこと。"""
         low = script.lower()
-        for real in (DESKTOP, INSTALL_ROOT, "\\AppData\\Roaming\\Shuko"):
+        for real in (DESKTOP, INSTALL_ROOT, "\\AppData\\Roaming\\Shuko", SUKUNA_INSTALL_ROOT, "\\AppData\\Roaming\\Sukuna"):
             if real.lower() in low.replace(str(self.tmp).lower(), "<tmp>"):
                 raise AssertionError(f"本物のパスを指す台本は走らせない: {real}")
         return script
@@ -584,6 +681,9 @@ class ShortcutEffectsTest(unittest.TestCase):
         if INSTALL_ROOT in script:
             self.assertEqual(script.count(INSTALL_ROOT), 1)
             out = out.replace(INSTALL_ROOT, str(self.root))
+        if SUKUNA_INSTALL_ROOT in script:
+            self.assertEqual(script.count(SUKUNA_INSTALL_ROOT), 1)
+            out = out.replace(SUKUNA_INSTALL_ROOT, str(self.sroot))
         return ps_line(self.safe(out))
 
     def test_variant_differs_only_in_paths(self):
@@ -688,6 +788,28 @@ class ShortcutEffectsTest(unittest.TestCase):
         self.assertEqual((lnk.read_bytes(), lnk.stat().st_mtime_ns), before)
         self.assertEqual(sorted(p.name for p in self.desk.iterdir()), ["Shuko.lnk", "memo.txt"])
         self.assertNotIn("Save", READ_PS)
+
+    def test_sukuna_lines_make_and_read_one_lnk(self):
+        # 2026-11-20 改名の段1: Sukuna の作る行は Sukuna.lnk だけを作り、Shuko.lnk には触れない。読む行は保存しない
+        old = self.desk / "Shuko.lnk"
+        old.write_bytes(b"old shuko lnk")
+        for script, real_line in ((S_CREATE_PS, S_CREATE), (S_READ_PS, S_READ)):
+            v = self.variant(script)
+            back = decode(v.split(" ")[-1]).replace(str(self.desk), DESKTOP).replace(str(self.sroot), SUKUNA_INSTALL_ROOT)
+            self.assertEqual(back, decode(real_line.split(" ")[-1]))
+        code, out, err = self.run_bash(self.variant(S_CREATE_PS))
+        self.assertEqual(code, 0, err)
+        exe = str(self.sroot / "current" / "Sukuna.exe")
+        self.assertEqual(out.split(), [f"TargetPath={exe}", f"WorkingDirectory={self.sroot / 'current'}", "Arguments="])
+        self.assertEqual(sorted(p.name for p in self.desk.iterdir()), ["Shuko.lnk", "Sukuna.lnk", "memo.txt"])
+        self.assertEqual(old.read_bytes(), b"old shuko lnk")
+        lnk = self.desk / "Sukuna.lnk"
+        before = (lnk.read_bytes(), lnk.stat().st_mtime_ns)
+        code, out, err = self.run_bash(self.variant(S_READ_PS))
+        self.assertEqual(code, 0, err)
+        self.assertEqual(out.split(), [f"TargetPath={exe}", f"WorkingDirectory={self.sroot / 'current'}"])
+        self.assertEqual((lnk.read_bytes(), lnk.stat().st_mtime_ns), before)
+        self.assertEqual(self.args_via_bash(S_CREATE), S_CREATE.split(" ")[1:])
 
     def test_read_line_missing_lnk_exits_3(self):
         code, out, err = self.run_bash(self.variant(READ_PS))

@@ -52,6 +52,8 @@ OLD_WORKTREES = ("1.145.3", "1.146.0", "dev-a", "dev-a-apply", "dev-apply", "dev
                  "trial-bwt", "verify-p2")
 # 蒙恬の read_paths のファイル1つ（2026-11-18 に当てた B。test_shortcut_l10n の B_READ と同じ文字列）
 LANGUAGEPACKS = "C:/Users/kou_z/AppData/Roaming/Shuko/languagepacks.json"
+# 2026-11-20 改名の段1で足した Sukuna の languagepacks.json（test_shortcut_l10n の S_LANGPACKS と同じ文字列）
+LANGUAGEPACKS_SUKUNA = "C:/Users/kou_z/AppData/Roaming/Sukuna/languagepacks.json"
 
 
 def real_permissions(member):
@@ -94,8 +96,10 @@ class RealLinesTest(unittest.TestCase):
         # 【v2-2・v2-3 を当てたときに直す】曹参・大岡越前守は v2-2、蒙恬は v2-3 で C:/b/ が外れる
         # 蒙恬の3行目の languagepacks.json は、2026-11-18 に当てた B（古い日本語パックを外す。Team の
         # tasks/2026-11-17-ai-editor-shortcut-l10n-perms/perm-proposal.md の 2.1節・7.2節）の行。test_shortcut_l10n が見る。
-        # 【v2-3 を当てたときに】蒙恬の期待は ["./", LANGUAGEPACKS] の2行（前回の 8.3 の表の「./ だけ」を読み替える）。
-        expected = {MT: ["./", "C:/b/", LANGUAGEPACKS], CS: ["./", "C:/b/"], OE: ["./", "C:/b/"]}
+        # 4行目の LANGUAGEPACKS_SUKUNA は、2026-11-20 に当てた改名の段1（Team の
+        # tasks/2026-11-20-ai-editor-rename-sukuna-perms/perm-proposal.md の 1.3）の行。【段2で】LANGUAGEPACKS を外す。
+        # 【v2-3 を当てたときに】蒙恬の期待は ["./", LANGUAGEPACKS, LANGUAGEPACKS_SUKUNA]（C:/b/ が外れる）。
+        expected = {MT: ["./", "C:/b/", LANGUAGEPACKS, LANGUAGEPACKS_SUKUNA], CS: ["./", "C:/b/"], OE: ["./", "C:/b/"]}
         for member in (MT, CS, OE):
             with self.subTest(member=member):
                 self.assertEqual(real_permissions(member)["read_paths"], expected[member])
