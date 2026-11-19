@@ -1,0 +1,992 @@
+{
+  "zip": "tmp/b/dist/1.146.0-p5-c-all-r7.zip",
+  "prevZip": "tmp/b/dist/1.146.0-p5-c-all-r6.zip",
+  "sha256": "5b7ea8850c09af457068bf814b0bef113e9280095f8b72ffa4963f8268e451d1",
+  "bytes": 220100121,
+  "entryCount": 2139,
+  "tops": [
+    "Sukuna-win32-x64-1.146.0-p5-c-all-r7"
+  ],
+  "files": {
+    "Sukuna.exe": true,
+    "bin/sukuna.cmd": true,
+    "bin/sukuna": true,
+    "Shuko.exe": false,
+    "bin/shuko.cmd": false,
+    "resources/app/product.json": true,
+    "resources/app/LICENSE.txt": true,
+    "resources/app/ThirdPartyNotices.txt": true
+  },
+  "exeAtTop": [
+    "Sukuna.exe"
+  ],
+  "binEntries": [
+    "bin/sukuna",
+    "bin/sukuna.cmd"
+  ],
+  "cmdHead": [
+    "@echo off",
+    "setlocal",
+    "set VSCODE_DEV=",
+    "set ELECTRON_RUN_AS_NODE=1",
+    "\"%~dp0..\\Sukuna.exe\" \"%~dp0..\\resources\\app\\out\\cli.js\" %*",
+    "IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%",
+    "endlocal",
+    ""
+  ],
+  "product": {
+    "keys": {
+      "nameShort": "Sukuna",
+      "nameLong": "Sukuna",
+      "applicationName": "sukuna",
+      "dataFolderName": ".sukuna",
+      "sharedDataFolderName": ".sukuna-shared",
+      "urlProtocol": "sukuna",
+      "win32MutexName": "sukuna",
+      "win32DirName": "Sukuna",
+      "win32NameVersion": "Sukuna",
+      "win32RegValueName": "Sukuna",
+      "win32AppUserModelId": "Sukuna.Editor",
+      "win32ShellNameShort": "&Sukuna",
+      "win32x64AppId": "{{5B8E2C47-9A1D-4F36-B0E2-7C4D91A3F658}",
+      "win32arm64AppId": "{{A3F17D92-46C8-4E0B-9D25-1B6E8F40C7A3}",
+      "win32x64UserAppId": "{{C9042E6B-7F3A-4D81-A5E9-62B0D8F1347C}",
+      "win32arm64UserAppId": "{{0E7B5A18-D2C4-49F7-8B36-F5A1C09E2D84}"
+    },
+    "mismatches": [],
+    "sukunaConfigurationDefaultsEqualsOverlay": true,
+    "hasShukoConfigurationDefaults": false,
+    "commit": "b76374c6fc633747549a7b1a44a1a5364c7fe8f2",
+    "date": "2026-11-19T11:15:59+09:00",
+    "version": "1.146.0",
+    "builtInExtensions": [],
+    "extensionsAllowed": {
+      "*": false,
+      "anthropic.claude-code": true,
+      "detachhead.basedpyright": true,
+      "ms-vscode.powershell": true,
+      "mads-hartmann.bash-ide-vscode": true,
+      "mechatroner.rainbow-csv": true,
+      "weixu.wx-vsce-dotenv": true,
+      "tomoki1207.pdf": true
+    },
+    "shukoInText": 0
+  },
+  "productDiffFromR6": [
+    {
+      "key": "applicationName",
+      "r6": "shuko",
+      "r7": "sukuna"
+    },
+    {
+      "key": "checksums",
+      "r6": "{\"vs/base/parts/sandbox/electron-browser/preload.js\":\"W2RqVq4hL/UcAWLoSuhDVSHGY4bk0cJNvH72gQtJyTE\",\"vs/workbench/workbench.desktop.main.js\":\"JjNcuM8FyGibqTw+o33ZBeLrldD/vnSnnKQt8GSOssM\",\"vs/workbench/…",
+      "r7": "{\"vs/base/parts/sandbox/electron-browser/preload.js\":\"W2RqVq4hL/UcAWLoSuhDVSHGY4bk0cJNvH72gQtJyTE\",\"vs/workbench/workbench.desktop.main.js\":\"ZNgNCvenzDfN2SIGRUHQt4fBCMWF008r3qG7Umm8q3o\",\"vs/workbench/…"
+    },
+    {
+      "key": "commit",
+      "r6": "3e1e616aa9f1538643a070f0684196c0cd688ddd",
+      "r7": "b76374c6fc633747549a7b1a44a1a5364c7fe8f2"
+    },
+    {
+      "key": "dataFolderName",
+      "r6": ".shuko",
+      "r7": ".sukuna"
+    },
+    {
+      "key": "date",
+      "r6": "2026-11-17T09:33:28+09:00",
+      "r7": "2026-11-19T11:15:59+09:00"
+    },
+    {
+      "key": "nameLong",
+      "r6": "Shuko",
+      "r7": "Sukuna"
+    },
+    {
+      "key": "nameShort",
+      "r6": "Shuko",
+      "r7": "Sukuna"
+    },
+    {
+      "key": "nlsMetadataHash",
+      "r6": "7bd80a13dba3bac63dd13ee1a027d951b78a286e0f6b5d814b5f7475999bdbf3",
+      "r7": "1cc8385d9af0bb269966367073811caef250bc63cd60e349bf588291a0241098"
+    },
+    {
+      "key": "sharedDataFolderName",
+      "r6": ".shuko-shared",
+      "r7": ".sukuna-shared"
+    },
+    {
+      "key": "shukoConfigurationDefaults",
+      "r6": "{\"extensions.allowed\":{\"*\":false,\"anthropic.claude-code\":true,\"detachhead.basedpyright\":true,\"ms-vscode.powershell\":true,\"mads-hartmann.bash-ide-vscode\":true,\"mechatroner.rainbow-csv\":true,\"weixu.wx-v…",
+      "r7": "(なし)"
+    },
+    {
+      "key": "sukunaConfigurationDefaults",
+      "r6": "(なし)",
+      "r7": "{\"extensions.allowed\":{\"*\":false,\"anthropic.claude-code\":true,\"detachhead.basedpyright\":true,\"ms-vscode.powershell\":true,\"mads-hartmann.bash-ide-vscode\":true,\"mechatroner.rainbow-csv\":true,\"weixu.wx-v…"
+    },
+    {
+      "key": "urlProtocol",
+      "r6": "shuko",
+      "r7": "sukuna"
+    },
+    {
+      "key": "win32AppUserModelId",
+      "r6": "Shuko.Editor",
+      "r7": "Sukuna.Editor"
+    },
+    {
+      "key": "win32DirName",
+      "r6": "Shuko",
+      "r7": "Sukuna"
+    },
+    {
+      "key": "win32MutexName",
+      "r6": "shuko",
+      "r7": "sukuna"
+    },
+    {
+      "key": "win32NameVersion",
+      "r6": "Shuko",
+      "r7": "Sukuna"
+    },
+    {
+      "key": "win32RegValueName",
+      "r6": "Shuko",
+      "r7": "Sukuna"
+    },
+    {
+      "key": "win32ShellNameShort",
+      "r6": "&Shuko",
+      "r7": "&Sukuna"
+    }
+  ],
+  "productDiffNameOnly": [
+    "applicationName",
+    "dataFolderName",
+    "nameLong",
+    "nameShort",
+    "sharedDataFolderName",
+    "shukoConfigurationDefaults",
+    "urlProtocol",
+    "win32AppUserModelId",
+    "win32DirName",
+    "win32MutexName",
+    "win32NameVersion",
+    "win32RegValueName",
+    "win32ShellNameShort"
+  ],
+  "builtin": {
+    "mydist": {
+      "present": true,
+      "id": "sukuna.mydist",
+      "publisher": "sukuna",
+      "version": "0.0.1",
+      "displayName": "Sukuna の既定",
+      "localizations": null,
+      "fileCount": 3,
+      "i18nFiles": [],
+      "shukoInPackageJson": 0
+    },
+    "notion-sync": {
+      "present": true,
+      "id": "sukuna.notion-sync",
+      "publisher": "sukuna",
+      "version": "0.0.1",
+      "displayName": "Sukuna Notion 同期",
+      "localizations": [
+        {
+          "languageId": "ja",
+          "translations": [
+            {
+              "id": "sukuna.notion-sync",
+              "path": "./dist/i18n/sukuna.notion-sync.ja.i18n.json"
+            }
+          ]
+        }
+      ],
+      "fileCount": 5,
+      "i18nFiles": [
+        "dist/i18n/sukuna.notion-sync.ja.i18n.json"
+      ],
+      "shukoInPackageJson": 0
+    },
+    "language-pack-ja": {
+      "present": true,
+      "id": "sukuna.language-pack-ja",
+      "publisher": "sukuna",
+      "version": "1.146.0",
+      "displayName": "Sukuna 日本語パック",
+      "localizations": [
+        {
+          "languageId": "ja",
+          "translations": [
+            {
+              "id": "vscode",
+              "path": "./dist/translations/main.i18n.json"
+            },
+            {
+              "id": "ms-vscode.js-debug",
+              "path": "./dist/translations/extensions/ms-vscode.js-debug.i18n.json"
+            },
+            {
+              "id": "vscode.bat",
+              "path": "./dist/translations/extensions/vscode.bat.i18n.json"
+            },
+            {
+              "id": "vscode.builtin-notebook-renderers",
+              "path": "./dist/translations/extensions/vscode.builtin-notebook-renderers.i18n.json"
+            },
+            {
+              "id": "vscode.clojure",
+              "path": "./dist/translations/extensions/vscode.clojure.i18n.json"
+            },
+            {
+              "id": "vscode.coffeescript",
+              "path": "./dist/translations/extensions/vscode.coffeescript.i18n.json"
+            },
+            {
+              "id": "vscode.configuration-editing",
+              "path": "./dist/translations/extensions/vscode.configuration-editing.i18n.json"
+            },
+            {
+              "id": "vscode.cpp",
+              "path": "./dist/translations/extensions/vscode.cpp.i18n.json"
+            },
+            {
+              "id": "vscode.csharp",
+              "path": "./dist/translations/extensions/vscode.csharp.i18n.json"
+            },
+            {
+              "id": "vscode.css",
+              "path": "./dist/translations/extensions/vscode.css.i18n.json"
+            },
+            {
+              "id": "vscode.css-language-features",
+              "path": "./dist/translations/extensions/vscode.css-language-features.i18n.json"
+            },
+            {
+              "id": "vscode.dart",
+              "path": "./dist/translations/extensions/vscode.dart.i18n.json"
+            },
+            {
+              "id": "vscode.debug-auto-launch",
+              "path": "./dist/translations/extensions/vscode.debug-auto-launch.i18n.json"
+            },
+            {
+              "id": "vscode.debug-server-ready",
+              "path": "./dist/translations/extensions/vscode.debug-server-ready.i18n.json"
+            },
+            {
+              "id": "vscode.diff",
+              "path": "./dist/translations/extensions/vscode.diff.i18n.json"
+            },
+            {
+              "id": "vscode.docker",
+              "path": "./dist/translations/extensions/vscode.docker.i18n.json"
+            },
+            {
+              "id": "vscode.dotenv",
+              "path": "./dist/translations/extensions/vscode.dotenv.i18n.json"
+            },
+            {
+              "id": "vscode.emmet",
+              "path": "./dist/translations/extensions/vscode.emmet.i18n.json"
+            },
+            {
+              "id": "vscode.extension-editing",
+              "path": "./dist/translations/extensions/vscode.extension-editing.i18n.json"
+            },
+            {
+              "id": "vscode.fsharp",
+              "path": "./dist/translations/extensions/vscode.fsharp.i18n.json"
+            },
+            {
+              "id": "vscode.git",
+              "path": "./dist/translations/extensions/vscode.git.i18n.json"
+            },
+            {
+              "id": "vscode.git-base",
+              "path": "./dist/translations/extensions/vscode.git-base.i18n.json"
+            },
+            {
+              "id": "vscode.github",
+              "path": "./dist/translations/extensions/vscode.github.i18n.json"
+            },
+            {
+              "id": "vscode.github-authentication",
+              "path": "./dist/translations/extensions/vscode.github-authentication.i18n.json"
+            },
+            {
+              "id": "vscode.go",
+              "path": "./dist/translations/extensions/vscode.go.i18n.json"
+            },
+            {
+              "id": "vscode.groovy",
+              "path": "./dist/translations/extensions/vscode.groovy.i18n.json"
+            },
+            {
+              "id": "vscode.grunt",
+              "path": "./dist/translations/extensions/vscode.grunt.i18n.json"
+            },
+            {
+              "id": "vscode.gulp",
+              "path": "./dist/translations/extensions/vscode.gulp.i18n.json"
+            },
+            {
+              "id": "vscode.handlebars",
+              "path": "./dist/translations/extensions/vscode.handlebars.i18n.json"
+            },
+            {
+              "id": "vscode.hlsl",
+              "path": "./dist/translations/extensions/vscode.hlsl.i18n.json"
+            },
+            {
+              "id": "vscode.html",
+              "path": "./dist/translations/extensions/vscode.html.i18n.json"
+            },
+            {
+              "id": "vscode.html-language-features",
+              "path": "./dist/translations/extensions/vscode.html-language-features.i18n.json"
+            },
+            {
+              "id": "vscode.ini",
+              "path": "./dist/translations/extensions/vscode.ini.i18n.json"
+            },
+            {
+              "id": "vscode.ipynb",
+              "path": "./dist/translations/extensions/vscode.ipynb.i18n.json"
+            },
+            {
+              "id": "vscode.jake",
+              "path": "./dist/translations/extensions/vscode.jake.i18n.json"
+            },
+            {
+              "id": "vscode.java",
+              "path": "./dist/translations/extensions/vscode.java.i18n.json"
+            },
+            {
+              "id": "vscode.javascript",
+              "path": "./dist/translations/extensions/vscode.javascript.i18n.json"
+            },
+            {
+              "id": "vscode.json",
+              "path": "./dist/translations/extensions/vscode.json.i18n.json"
+            },
+            {
+              "id": "vscode.json-language-features",
+              "path": "./dist/translations/extensions/vscode.json-language-features.i18n.json"
+            },
+            {
+              "id": "vscode.julia",
+              "path": "./dist/translations/extensions/vscode.julia.i18n.json"
+            },
+            {
+              "id": "vscode.latex",
+              "path": "./dist/translations/extensions/vscode.latex.i18n.json"
+            },
+            {
+              "id": "vscode.less",
+              "path": "./dist/translations/extensions/vscode.less.i18n.json"
+            },
+            {
+              "id": "vscode.log",
+              "path": "./dist/translations/extensions/vscode.log.i18n.json"
+            },
+            {
+              "id": "vscode.lua",
+              "path": "./dist/translations/extensions/vscode.lua.i18n.json"
+            },
+            {
+              "id": "vscode.make",
+              "path": "./dist/translations/extensions/vscode.make.i18n.json"
+            },
+            {
+              "id": "vscode.markdown",
+              "path": "./dist/translations/extensions/vscode.markdown.i18n.json"
+            },
+            {
+              "id": "vscode.markdown-language-features",
+              "path": "./dist/translations/extensions/vscode.markdown-language-features.i18n.json"
+            },
+            {
+              "id": "vscode.markdown-math",
+              "path": "./dist/translations/extensions/vscode.markdown-math.i18n.json"
+            },
+            {
+              "id": "vscode.media-preview",
+              "path": "./dist/translations/extensions/vscode.media-preview.i18n.json"
+            },
+            {
+              "id": "vscode.merge-conflict",
+              "path": "./dist/translations/extensions/vscode.merge-conflict.i18n.json"
+            },
+            {
+              "id": "vscode.mermaid-chat-features",
+              "path": "./dist/translations/extensions/vscode.mermaid-chat-features.i18n.json"
+            },
+            {
+              "id": "vscode.mermaid-markdown-features",
+              "path": "./dist/translations/extensions/vscode.mermaid-markdown-features.i18n.json"
+            },
+            {
+              "id": "vscode.microsoft-authentication",
+              "path": "./dist/translations/extensions/vscode.microsoft-authentication.i18n.json"
+            },
+            {
+              "id": "vscode.npm",
+              "path": "./dist/translations/extensions/vscode.npm.i18n.json"
+            },
+            {
+              "id": "vscode.objective-c",
+              "path": "./dist/translations/extensions/vscode.objective-c.i18n.json"
+            },
+            {
+              "id": "vscode.perl",
+              "path": "./dist/translations/extensions/vscode.perl.i18n.json"
+            },
+            {
+              "id": "vscode.php",
+              "path": "./dist/translations/extensions/vscode.php.i18n.json"
+            },
+            {
+              "id": "vscode.php-language-features",
+              "path": "./dist/translations/extensions/vscode.php-language-features.i18n.json"
+            },
+            {
+              "id": "vscode.powershell",
+              "path": "./dist/translations/extensions/vscode.powershell.i18n.json"
+            },
+            {
+              "id": "vscode.prompt",
+              "path": "./dist/translations/extensions/vscode.prompt.i18n.json"
+            },
+            {
+              "id": "vscode.pug",
+              "path": "./dist/translations/extensions/vscode.pug.i18n.json"
+            },
+            {
+              "id": "vscode.python",
+              "path": "./dist/translations/extensions/vscode.python.i18n.json"
+            },
+            {
+              "id": "vscode.r",
+              "path": "./dist/translations/extensions/vscode.r.i18n.json"
+            },
+            {
+              "id": "vscode.razor",
+              "path": "./dist/translations/extensions/vscode.razor.i18n.json"
+            },
+            {
+              "id": "vscode.references-view",
+              "path": "./dist/translations/extensions/vscode.references-view.i18n.json"
+            },
+            {
+              "id": "vscode.restructuredtext",
+              "path": "./dist/translations/extensions/vscode.restructuredtext.i18n.json"
+            },
+            {
+              "id": "vscode.ruby",
+              "path": "./dist/translations/extensions/vscode.ruby.i18n.json"
+            },
+            {
+              "id": "vscode.rust",
+              "path": "./dist/translations/extensions/vscode.rust.i18n.json"
+            },
+            {
+              "id": "vscode.scss",
+              "path": "./dist/translations/extensions/vscode.scss.i18n.json"
+            },
+            {
+              "id": "vscode.search-result",
+              "path": "./dist/translations/extensions/vscode.search-result.i18n.json"
+            },
+            {
+              "id": "vscode.shaderlab",
+              "path": "./dist/translations/extensions/vscode.shaderlab.i18n.json"
+            },
+            {
+              "id": "vscode.shellscript",
+              "path": "./dist/translations/extensions/vscode.shellscript.i18n.json"
+            },
+            {
+              "id": "vscode.simple-browser",
+              "path": "./dist/translations/extensions/vscode.simple-browser.i18n.json"
+            },
+            {
+              "id": "vscode.sql",
+              "path": "./dist/translations/extensions/vscode.sql.i18n.json"
+            },
+            {
+              "id": "vscode.swift",
+              "path": "./dist/translations/extensions/vscode.swift.i18n.json"
+            },
+            {
+              "id": "vscode.terminal-suggest",
+              "path": "./dist/translations/extensions/vscode.terminal-suggest.i18n.json"
+            },
+            {
+              "id": "vscode.theme-2026",
+              "path": "./dist/translations/extensions/vscode.theme-2026.i18n.json"
+            },
+            {
+              "id": "vscode.theme-abyss",
+              "path": "./dist/translations/extensions/vscode.theme-abyss.i18n.json"
+            },
+            {
+              "id": "vscode.theme-defaults",
+              "path": "./dist/translations/extensions/vscode.theme-defaults.i18n.json"
+            },
+            {
+              "id": "vscode.theme-kimbie-dark",
+              "path": "./dist/translations/extensions/vscode.theme-kimbie-dark.i18n.json"
+            },
+            {
+              "id": "vscode.theme-monokai",
+              "path": "./dist/translations/extensions/vscode.theme-monokai.i18n.json"
+            },
+            {
+              "id": "vscode.theme-monokai-dimmed",
+              "path": "./dist/translations/extensions/vscode.theme-monokai-dimmed.i18n.json"
+            },
+            {
+              "id": "vscode.theme-quietlight",
+              "path": "./dist/translations/extensions/vscode.theme-quietlight.i18n.json"
+            },
+            {
+              "id": "vscode.theme-red",
+              "path": "./dist/translations/extensions/vscode.theme-red.i18n.json"
+            },
+            {
+              "id": "vscode.theme-solarized-dark",
+              "path": "./dist/translations/extensions/vscode.theme-solarized-dark.i18n.json"
+            },
+            {
+              "id": "vscode.theme-solarized-light",
+              "path": "./dist/translations/extensions/vscode.theme-solarized-light.i18n.json"
+            },
+            {
+              "id": "vscode.theme-tomorrow-night-blue",
+              "path": "./dist/translations/extensions/vscode.theme-tomorrow-night-blue.i18n.json"
+            },
+            {
+              "id": "vscode.tunnel-forwarding",
+              "path": "./dist/translations/extensions/vscode.tunnel-forwarding.i18n.json"
+            },
+            {
+              "id": "vscode.typescript",
+              "path": "./dist/translations/extensions/vscode.typescript.i18n.json"
+            },
+            {
+              "id": "vscode.typescript-language-features",
+              "path": "./dist/translations/extensions/vscode.typescript-language-features.i18n.json"
+            },
+            {
+              "id": "vscode.vb",
+              "path": "./dist/translations/extensions/vscode.vb.i18n.json"
+            },
+            {
+              "id": "vscode.vscode-modern-icons",
+              "path": "./dist/translations/extensions/vscode.vscode-modern-icons.i18n.json"
+            },
+            {
+              "id": "vscode.vscode-theme-seti",
+              "path": "./dist/translations/extensions/vscode.vscode-theme-seti.i18n.json"
+            },
+            {
+              "id": "vscode.xml",
+              "path": "./dist/translations/extensions/vscode.xml.i18n.json"
+            },
+            {
+              "id": "vscode.yaml",
+              "path": "./dist/translations/extensions/vscode.yaml.i18n.json"
+            }
+          ]
+        }
+      ],
+      "fileCount": 98,
+      "i18nFiles": [],
+      "shukoInPackageJson": 0
+    }
+  },
+  "namesWithShuko": [],
+  "namesWithSukuna": [
+    "Sukuna.exe",
+    "Sukuna.VisualElementsManifest.xml",
+    "resources/app/extensions/notion-sync/dist/i18n/sukuna.notion-sync.ja.i18n.json",
+    "bin/sukuna",
+    "bin/sukuna.cmd"
+  ],
+  "contentScan": {
+    "scanned": 1730,
+    "filesWithShuko": 0,
+    "hits": []
+  },
+  "vsR6": {
+    "prevTop": "Shuko-win32-x64-1.146.0-p5-c-all-r6",
+    "r6EntryCount": 2139,
+    "onlyR7": [],
+    "onlyR6": [],
+    "changedCount": 71,
+    "changed": [
+      {
+        "name": "Sukuna.exe",
+        "r6Bytes": 239185408,
+        "r7Bytes": 239185408
+      },
+      {
+        "name": "resources/app/node_modules.asar",
+        "r6Bytes": 52643479,
+        "r7Bytes": 52643475
+      },
+      {
+        "name": "resources/app/package.json",
+        "r6Bytes": 12978,
+        "r7Bytes": 12979
+      },
+      {
+        "name": "resources/app/product.json",
+        "r6Bytes": 2577,
+        "r7Bytes": 2590
+      },
+      {
+        "name": "resources/app/out/bootstrap-fork.js",
+        "r6Bytes": 123057,
+        "r7Bytes": 123058
+      },
+      {
+        "name": "resources/app/out/cli.js",
+        "r6Bytes": 219992,
+        "r7Bytes": 220006
+      },
+      {
+        "name": "resources/app/out/cli.js.map",
+        "r6Bytes": 1181842,
+        "r7Bytes": 1181857
+      },
+      {
+        "name": "resources/app/out/date",
+        "r6Bytes": 25,
+        "r7Bytes": 25
+      },
+      {
+        "name": "resources/app/out/mainImpl.js",
+        "r6Bytes": 1242744,
+        "r7Bytes": 1242759
+      },
+      {
+        "name": "resources/app/out/mainImpl.js.map",
+        "r6Bytes": 6108016,
+        "r7Bytes": 6108045
+      },
+      {
+        "name": "resources/app/out/vs/workbench/workbench.desktop.main.js",
+        "r6Bytes": 11748017,
+        "r7Bytes": 11748031
+      },
+      {
+        "name": "resources/app/out/vs/workbench/workbench.desktop.main.js.map",
+        "r6Bytes": 51990849,
+        "r7Bytes": 51990963
+      },
+      {
+        "name": "resources/app/out/vs/workbench/api/worker/extensionHostWorkerMain.js",
+        "r6Bytes": 1286645,
+        "r7Bytes": 1286659
+      },
+      {
+        "name": "resources/app/out/vs/workbench/api/worker/extensionHostWorkerMain.js.map",
+        "r6Bytes": 6948054,
+        "r7Bytes": 6948083
+      },
+      {
+        "name": "resources/app/out/vs/workbench/api/node/extensionHostProcess.js",
+        "r6Bytes": 1579668,
+        "r7Bytes": 1579682
+      },
+      {
+        "name": "resources/app/out/vs/workbench/api/node/extensionHostProcess.js.map",
+        "r6Bytes": 8355588,
+        "r7Bytes": 8355618
+      },
+      {
+        "name": "resources/app/out/vs/platform/terminal/node/ptyHostMain.js",
+        "r6Bytes": 349525,
+        "r7Bytes": 349538
+      },
+      {
+        "name": "resources/app/out/vs/platform/terminal/node/ptyHostMain.js.map",
+        "r6Bytes": 1893614,
+        "r7Bytes": 1893629
+      },
+      {
+        "name": "resources/app/out/vs/code/node/cliProcessMain.js",
+        "r6Bytes": 657310,
+        "r7Bytes": 657324
+      },
+      {
+        "name": "resources/app/out/vs/code/node/cliProcessMain.js.map",
+        "r6Bytes": 3349536,
+        "r7Bytes": 3349562
+      },
+      {
+        "name": "resources/app/out/vs/code/electron-utility/sharedProcess/sharedProcessMain.js",
+        "r6Bytes": 1250381,
+        "r7Bytes": 1250395
+      },
+      {
+        "name": "resources/app/out/vs/code/electron-utility/sharedProcess/sharedProcessMain.js.map",
+        "r6Bytes": 6098175,
+        "r7Bytes": 6098201
+      },
+      {
+        "name": "resources/app/node_modules.asar.unpacked/windows-foreground-love/build/Release/foreground_love.node",
+        "r6Bytes": 111616,
+        "r7Bytes": 111616
+      },
+      {
+        "name": "resources/app/node_modules.asar.unpacked/node-pty/lib/worker/conoutSocketWorker.js",
+        "r6Bytes": 990,
+        "r7Bytes": 990
+      },
+      {
+        "name": "resources/app/node_modules.asar.unpacked/node-pty/lib/shared/conout.js",
+        "r6Bytes": 434,
+        "r7Bytes": 434
+      },
+      {
+        "name": "resources/app/node_modules.asar.unpacked/node-pty/build/Release/conpty.node",
+        "r6Bytes": 299520,
+        "r7Bytes": 299520
+      },
+      {
+        "name": "resources/app/node_modules.asar.unpacked/node-pty/build/Release/conpty_console_list.node",
+        "r6Bytes": 137216,
+        "r7Bytes": 137216
+      },
+      {
+        "name": "resources/app/node_modules.asar.unpacked/native-keymap/build/Release/keymapping.node",
+        "r6Bytes": 169472,
+        "r7Bytes": 169472
+      },
+      {
+        "name": "resources/app/node_modules.asar.unpacked/native-is-elevated/build/Release/iselevated.node",
+        "r6Bytes": 111104,
+        "r7Bytes": 111104
+      },
+      {
+        "name": "resources/app/node_modules.asar.unpacked/kerberos/build/Release/kerberos.node",
+        "r6Bytes": 200192,
+        "r7Bytes": 200192
+      },
+      {
+        "name": "resources/app/node_modules.asar.unpacked/@vscode/windows-registry/build/Release/winregistry.node",
+        "r6Bytes": 120832,
+        "r7Bytes": 120832
+      },
+      {
+        "name": "resources/app/node_modules.asar.unpacked/@vscode/windows-process-tree/build/Release/windows_process_tree.node",
+        "r6Bytes": 155136,
+        "r7Bytes": 155136
+      },
+      {
+        "name": "resources/app/node_modules.asar.unpacked/@vscode/windows-mutex/build/Release/CreateMutex.node",
+        "r6Bytes": 146432,
+        "r7Bytes": 146432
+      },
+      {
+        "name": "resources/app/node_modules.asar.unpacked/@vscode/windows-ca-certs/build/Release/crypt32.node",
+        "r6Bytes": 145408,
+        "r7Bytes": 145408
+      },
+      {
+        "name": "resources/app/node_modules.asar.unpacked/@vscode/sqlite3/build/Release/vscode-sqlite3.node",
+        "r6Bytes": 1811456,
+        "r7Bytes": 1811456
+      },
+      {
+        "name": "resources/app/node_modules.asar.unpacked/@vscode/spdlog/build/Release/spdlog.node",
+        "r6Bytes": 571392,
+        "r7Bytes": 571392
+      },
+      {
+        "name": "resources/app/node_modules.asar.unpacked/@vscode/ripgrep-universal/bin/win32-x64/rg.exe",
+        "r6Bytes": 5430784,
+        "r7Bytes": 5430784
+      },
+      {
+        "name": "resources/app/node_modules.asar.unpacked/@vscode/policy-watcher/build/Release/vscode-policy-watcher.node",
+        "r6Bytes": 189440,
+        "r7Bytes": 189440
+      },
+      {
+        "name": "resources/app/node_modules.asar.unpacked/@vscode/os-proxy-resolver-win32-x64-msvc/os_proxy_resolver.node",
+        "r6Bytes": 1723904,
+        "r7Bytes": 1723904
+      },
+      {
+        "name": "resources/app/node_modules.asar.unpacked/@vscode/native-watchdog/build/Release/watchdog.node",
+        "r6Bytes": 112640,
+        "r7Bytes": 112640
+      },
+      {
+        "name": "resources/app/node_modules.asar.unpacked/@vscode/deviceid/build/Release/windows.node",
+        "r6Bytes": 116736,
+        "r7Bytes": 116736
+      },
+      {
+        "name": "resources/app/node_modules.asar.unpacked/@parcel/watcher/build/Release/watcher.node",
+        "r6Bytes": 531968,
+        "r7Bytes": 531968
+      },
+      {
+        "name": "resources/app/node_modules/@vscode/sandbox-runtime/dist/cli.js",
+        "r6Bytes": 6838,
+        "r7Bytes": 6838
+      },
+      {
+        "name": "resources/app/node_modules/@vscode/sandbox-runtime/dist/index.js",
+        "r6Bytes": 648,
+        "r7Bytes": 648
+      },
+      {
+        "name": "resources/app/node_modules/@vscode/sandbox-runtime/dist/utils/config-loader.js",
+        "r6Bytes": 1971,
+        "r7Bytes": 1971
+      },
+      {
+        "name": "resources/app/node_modules/@vscode/sandbox-runtime/dist/utils/debug.js",
+        "r6Bytes": 952,
+        "r7Bytes": 952
+      },
+      {
+        "name": "resources/app/node_modules/@vscode/sandbox-runtime/dist/utils/platform.js",
+        "r6Bytes": 1660,
+        "r7Bytes": 1660
+      },
+      {
+        "name": "resources/app/node_modules/@vscode/sandbox-runtime/dist/utils/ripgrep.js",
+        "r6Bytes": 1763,
+        "r7Bytes": 1763
+      },
+      {
+        "name": "resources/app/node_modules/@vscode/sandbox-runtime/dist/utils/which.js",
+        "r6Bytes": 947,
+        "r7Bytes": 947
+      },
+      {
+        "name": "resources/app/node_modules/@vscode/sandbox-runtime/dist/sandbox/generate-seccomp-filter.js",
+        "r6Bytes": 7566,
+        "r7Bytes": 7566
+      },
+      {
+        "name": "resources/app/node_modules/@vscode/sandbox-runtime/dist/sandbox/http-proxy.js",
+        "r6Bytes": 10366,
+        "r7Bytes": 10366
+      },
+      {
+        "name": "resources/app/node_modules/@vscode/sandbox-runtime/dist/sandbox/linux-sandbox-utils.js",
+        "r6Bytes": 46782,
+        "r7Bytes": 46782
+      },
+      {
+        "name": "resources/app/node_modules/@vscode/sandbox-runtime/dist/sandbox/macos-sandbox-utils.js",
+        "r6Bytes": 30682,
+        "r7Bytes": 30682
+      },
+      {
+        "name": "resources/app/node_modules/@vscode/sandbox-runtime/dist/sandbox/parent-proxy.js",
+        "r6Bytes": 17302,
+        "r7Bytes": 17302
+      },
+      {
+        "name": "resources/app/node_modules/@vscode/sandbox-runtime/dist/sandbox/sandbox-config.js",
+        "r6Bytes": 10154,
+        "r7Bytes": 10154
+      },
+      {
+        "name": "resources/app/node_modules/@vscode/sandbox-runtime/dist/sandbox/sandbox-manager.js",
+        "r6Bytes": 34067,
+        "r7Bytes": 34067
+      },
+      {
+        "name": "resources/app/node_modules/@vscode/sandbox-runtime/dist/sandbox/sandbox-schemas.js",
+        "r6Bytes": 267,
+        "r7Bytes": 267
+      },
+      {
+        "name": "resources/app/node_modules/@vscode/sandbox-runtime/dist/sandbox/sandbox-utils.js",
+        "r6Bytes": 19281,
+        "r7Bytes": 19281
+      },
+      {
+        "name": "resources/app/node_modules/@vscode/sandbox-runtime/dist/sandbox/sandbox-violation-store.js",
+        "r6Bytes": 1767,
+        "r7Bytes": 1767
+      },
+      {
+        "name": "resources/app/node_modules/@vscode/sandbox-runtime/dist/sandbox/socks-proxy.js",
+        "r6Bytes": 6876,
+        "r7Bytes": 6876
+      },
+      {
+        "name": "resources/app/extensions/notion-sync/package.json",
+        "r6Bytes": 2151,
+        "r7Bytes": 2155
+      },
+      {
+        "name": "resources/app/extensions/notion-sync/README.md",
+        "r6Bytes": 6490,
+        "r7Bytes": 6494
+      },
+      {
+        "name": "resources/app/extensions/notion-sync/ThirdPartyNotices.txt",
+        "r6Bytes": 1422,
+        "r7Bytes": 1423
+      },
+      {
+        "name": "resources/app/extensions/mydist/package.json",
+        "r6Bytes": 6052,
+        "r7Bytes": 6055
+      },
+      {
+        "name": "resources/app/extensions/mydist/README.md",
+        "r6Bytes": 4964,
+        "r7Bytes": 4965
+      },
+      {
+        "name": "resources/app/extensions/mydist/ThirdPartyNotices.txt",
+        "r6Bytes": 1481,
+        "r7Bytes": 1482
+      },
+      {
+        "name": "resources/app/extensions/language-pack-ja/package.json",
+        "r6Bytes": 9559,
+        "r7Bytes": 9561
+      },
+      {
+        "name": "resources/app/extensions/language-pack-ja/README.md",
+        "r6Bytes": 3592,
+        "r7Bytes": 3936
+      },
+      {
+        "name": "resources/app/extensions/language-pack-ja/ThirdPartyNotices.txt",
+        "r6Bytes": 2602,
+        "r7Bytes": 2604
+      },
+      {
+        "name": "bin/sukuna",
+        "r6Bytes": 2006,
+        "r7Bytes": 2008
+      },
+      {
+        "name": "bin/sukuna.cmd",
+        "r6Bytes": 179,
+        "r7Bytes": 180
+      }
+    ]
+  }
+}
