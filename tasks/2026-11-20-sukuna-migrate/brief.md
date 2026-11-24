@@ -58,7 +58,7 @@
 
 手順1〜6は済んだ（2026-11-24）。大岡越前守の確かめは合格（`verification-sukuna-migrate.md`）。
 - 手順2: `%LOCALAPPDATA%\Sukuna\local.json` を既定の値で作った。
-- 手順3: r7 を `1.146.0-1` として `%LOCALAPPDATA%\Programs\Sukunaersions\` に展開し、`current` を作った（SHA-256 は関門と一致、engines の不足なし）。蒙恬がラベルの誤り（この依頼書の初めの版）を打つ前に指摘した。
+- 手順3: r7 を `1.146.0-1` として `%LOCALAPPDATA%\Programs\Sukuna\versions\` に展開し、`current` を作った（SHA-256 は関門と一致、engines の不足なし）。蒙恬がラベルの誤り（この依頼書の初めの版）を打つ前に指摘した。
 - 手順4: 移行の台本の `-List` をリーダーが確かめた後に `-Apply`。87ファイル・16,793,154 バイトと `argv.json` を写し、照らし合わせは一致。watch・secrets は元が無く、写していない（検知とトークンは初めの設定から）。
 - 手順5: 台帳の7件を入れた（compare.ok）。`argv.json` は写した時点で `"locale": "ja"` を含んでいた（リーダーが中身を読んで確かめた）。
 - 指摘 S1・S4（docs/install.md の r4 の値と拡張の数）はリーダーが直した。S2（Claude Code のフォルダに `-win32-x64` が付いていない）は、動いている Shuko の側も同じ名前なので問題なしとした。S3（switch の出力を全文残す）は次から。
