@@ -3,7 +3,7 @@
 ビルドした zip から Sukuna を日常の利用に入れるまでの手順です（[07](07-phases.md) の7節の3）。普段使いの本家の VS Code は消さず、そのまま残します。Sukuna が合わなかったときに戻る先にするためです（同じ節の4）。
 
 - 対象: Windows 11、x64。利用者はこの PC のユーザー1人
-- 入れる版: `<ビルドリポジトリ>\tmp\b\dist\1.146.0-p5-c-all-r4.zip`（段階 A・B・C の21単位を当てた版。SHA-256 `e3e524699a9994a6507dfa6896eaefb2582ae3fdf75798186c5411e5f91a2e6e`、本体の commit `7fac30e886f79ebe44e1bac93acd7a86fbbafed8`。全桁は `tasks/2026-11-16-p5-c1-product-keys/1.146.0-p5-c-all-r4/build-record.json` の `zip.sha256`。関門は `records/take-in/1.146.0-p5-c-all-r4/gate-p5-c-all-r4.md`。2026-11-16 までは段階 A・B だけの `1.146.0-p2-all` だった）
+- 入れる版: `<ビルドリポジトリ>\tmp\b\dist\1.146.0-p5-c-all-r7.zip`（段階 A・B・C の21単位を当て、名前を Sukuna に改めた版。SHA-256 `5b7ea8850c09af457068bf814b0bef113e9280095f8b72ffa4963f8268e451d1`、本体の commit `b76374c6fc633747549a7b1a44a1a5364c7fe8f2`。ビルドの記録は `tasks/2026-11-19-r7-build/1.146.0-p5-c-all-r7/build-record.json`。関門は `records/take-in/1.146.0-p5-c-all-r7/gate-p5-c-all-r7.md`。2026-11-16 までは段階 A・B だけの `1.146.0-p2-all`、改名の前は Shuko の `1.146.0-p5-c-all-r4` だった）
 - 所要時間: 手順1〜4は10分ほど（zip の展開と拡張の導入はそれぞれ1分弱）。外部ツールと Notion の用意を含めると1時間ほど
 - 管理者の権限: Sukuna の手順はどれも要りません（全部ユーザーごとの場所に書きます）。外部ツール（手順5）の導入で UAC の確認が出ることがあります
 - 前提: [build-env-setup](build-env-setup.md) の道具が入っていて、Smart App Control がオフ。自分でビルドした署名の無いネイティブの部品は、オンだと読み込めません（[02](02-repository-and-build.md) の5節。裁定 2026-11-14）
@@ -90,11 +90,11 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/configure.ps1 -Insta
 ## 2. zip を展開し、`current` を作る（`switch.ps1`）
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/switch.ps1 1.146.0-1 -Zip tmp\b\dist\1.146.0-p5-c-all-r4.zip -Sha256 e3e524699a9994a6507dfa6896eaefb2582ae3fdf75798186c5411e5f91a2e6e
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/switch.ps1 1.146.0-1 -Zip tmp\b\dist\1.146.0-p5-c-all-r7.zip -Sha256 5b7ea8850c09af457068bf814b0bef113e9280095f8b72ffa4963f8268e451d1
 ```
 
 - zip の SHA-256 を確かめてから、`<installRoot>\versions\1.146.0-1\` に展開し、`<installRoot>\current` をそこへ向けるジャンクションを作り、`history.txt` に1行書きます。
-- 版のフォルダの名前（ラベル）は「本家のタグ-ビルドの番号」にします（[02](02-repository-and-build.md) の6節）。zip の名前はビルドのときの `1.146.0-p5-c-all-r4` ですが、ラベルは `1.146.0-1` にしてください。更新の検知は、`current` の指すフォルダの名前から今の版を読みます。読めるのは `1.146.0` か `1.146.0-1` の形だけです。
+- 版のフォルダの名前（ラベル）は「本家のタグ-ビルドの番号」にします（[02](02-repository-and-build.md) の6節）。zip の名前はビルドのときの `1.146.0-p5-c-all-r7` ですが、ラベルは `1.146.0-1` にしてください。更新の検知は、`current` の指すフォルダの名前から今の版を読みます。読めるのは `1.146.0` か `1.146.0-1` の形だけです。
 - 出力の見どころ: `"result": "ok"`、`target.exe` が `...\versions\1.146.0-1\Sukuna.exe`、`engines.unsatisfied` が空、`history` が `<日時>\t-\t1.146.0-1`（`\t` はタブ。`-` は「前の版なし」）。
 - 初めてのときは `backup.missing` に5つ全部が並びますが、写すユーザーのデータがまだ無いだけで、誤りではありません。
 - `switch.ps1` は、どの使い方でも初めに、更新の検知（手順7）が最後に成功した日時を1行出します（[06](06-update-watch-and-take-in.md) の2.3。JSON では `watch`）。警告だけで、切り替えは止めず、終了コードも変えません。
@@ -165,13 +165,13 @@ AppUserModelId=Sukuna.Editor
    sukuna --version
    ```
 
-   `where.exe` が `...\Sukuna\current\bin\sukuna.cmd` を出し、`sukuna --version` が `1.146.0`・`7fac30e886f79ebe44e1bac93acd7a86fbbafed8`・`x64` の3行を出せば済んでいます。
+   `where.exe` が `...\Sukuna\current\bin\sukuna.cmd` を出し、`sukuna --version` が `1.146.0`・`b76374c6fc633747549a7b1a44a1a5364c7fe8f2`・`x64` の3行を出せば済んでいます。
 
 - `setx PATH ...` は使わないでください。1024 文字で切れ、`%LOCALAPPDATA%` などの形も展開されて失われます。
 
 ## 4. 台帳の拡張を入れる（`install-extensions.mjs`）
 
-台帳 `extensions.lock.json` の8つの拡張（Claude Code、basedpyright、PowerShell、bash-ide、Rainbow CSV、.env、PDF、日本語の言語パック）を入れ、`argv.json` に `"locale": "ja"` を書きます（[04](04-bundled-extensions.md) の5節）。Sukuna を起動する前に行います。
+台帳 `extensions.lock.json` の7つの拡張（Claude Code、basedpyright、PowerShell、bash-ide、Rainbow CSV、.env、PDF）を入れ、`argv.json` に `"locale": "ja"` を書きます（[04](04-bundled-extensions.md) の5節）。Sukuna を起動する前に行います。
 
 まず、取得と照合だけを試します（何も入れません。ただし、キャッシュに無い VSIX はこのときに Open VSX から取ります。オフラインだと、キャッシュに無いものがあれば誤りになります）。
 
@@ -179,7 +179,7 @@ AppUserModelId=Sukuna.Editor
 node scripts/install-extensions.mjs --dry-run
 ```
 
-- `"result": "dry-run"`、`vsix` の8件すべてが `"sha256Ok": true`、`argv.path` が `C:\Users\<ユーザー>\.sukuna\argv.json` であることを確かめます。
+- `"result": "dry-run"`、`vsix` の7件すべてが `"sha256Ok": true`、`argv.path` が `C:\Users\<ユーザー>\.sukuna\argv.json` であることを確かめます。
 - VSIX は `<buildRoot>\cache\vsix\` にあればそれを使い、無ければ Open VSX（`open-vsx.org`）から取ってそこに置きます。
 
 続けて、入れます。
@@ -204,12 +204,12 @@ node scripts/install-extensions.mjs
 スタートメニューの「Sukuna」から起動します。新しいユーザーのデータでの初めての起動は、英語で表示されます（[06](06-update-watch-and-take-in.md) の5節。スモークの台本も、一度起動して言語パックを読ませてから起動し直しています）。そのときは一度閉じて、起動し直します。
 
 - 表示が日本語で、テーマが Light Modern になっている。
-- 拡張の画面に、手順4の8つが出ている。
+- 拡張の画面に、手順4の7つが出ている。日本語の言語パックは本体に組み込んだので、組み込みの拡張の側に出る（2026-11-17 に台帳から外した。[04](04-bundled-extensions.md) の7節）。
 - Claude Code のパネルが開き、送信して応答が返る（ログインを求められたら、画面の案内に従う）。
 - エクスプローラーで、`%APPDATA%\Sukuna\User` ができていて、`%APPDATA%\Code` の更新日時が変わっていない。
 - `%USERPROFILE%\.sukuna-shared\` ができているか（できていれば、8節の「すっかり消すとき」の対象。できていなくても誤りではありません）。
 
-ほかに手で見る項目は `records/take-in/1.146.0-p5-c-all-r2/manual-checks-p5-c-all-r2.md`（C1〜C21）と `records/take-in/1.146.0-p5-c-all-r3c/manual-checks-p5-c-all-r3c.md`（C22）にあります。版の名前を `1.146.0-p5-c-all-r4` に読み替えてください。段階 A・B だけの版の項目は `records/phase2/manual-checks-p2-all.md` です。
+ほかに手で見る項目は `records/take-in/1.146.0-p5-c-all-r7/manual-checks-p5-c-all-r7.md`（改名の後の版で、移行の後に見る項目）、`records/take-in/1.146.0-p5-c-all-r2/manual-checks-p5-c-all-r2.md`（C1〜C21）、`records/take-in/1.146.0-p5-c-all-r3c/manual-checks-p5-c-all-r3c.md`（C22）にあります。後の2つは版の名前を `1.146.0-p5-c-all-r7` に読み替えてください。段階 A・B だけの版の項目は `records/phase2/manual-checks-p2-all.md` です。
 
 ### 4.2 拡張を足したいとき
 

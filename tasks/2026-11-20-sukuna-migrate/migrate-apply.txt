@@ -1,0 +1,304 @@
+# command : powershell -NoProfile -ExecutionPolicy Bypass -File scripts/migrate/migrate-from-shuko.ps1 -Apply
+# run at  : 2026-11-24 (cwd = repository root), exit code 0, stderr empty
+# note    : stdout copied verbatim by meng-tian (the permitted line cannot take a redirect)
+{
+    "tool":  "migrate-from-shuko",
+    "mode":  "apply",
+    "sandbox":  false,
+    "result":  "ok",
+    "written":  true,
+    "running":  [
+
+                ],
+    "blockers":  [
+
+                 ],
+    "locations":  [
+                      {
+                          "kind":  "appdata",
+                          "from":  "%APPDATA%\\Shuko",
+                          "to":  "%APPDATA%\\Sukuna",
+                          "sourceExists":  true,
+                          "destState":  "absent",
+                          "files":  87,
+                          "dirs":  45,
+                          "bytes":  16793154,
+                          "entries":  [
+                                          {
+                                              "name":  "Backups",
+                                              "type":  "dir",
+                                              "files":  0,
+                                              "bytes":  0
+                                          },
+                                          {
+                                              "name":  "blob_storage",
+                                              "type":  "dir",
+                                              "files":  0,
+                                              "bytes":  0
+                                          },
+                                          {
+                                              "name":  "CachedConfigurations",
+                                              "type":  "dir",
+                                              "files":  1,
+                                              "bytes":  900
+                                          },
+                                          {
+                                              "name":  "CachedProfilesData",
+                                              "type":  "dir",
+                                              "files":  4,
+                                              "bytes":  1209652
+                                          },
+                                          {
+                                              "name":  "DawnGraphiteCache",
+                                              "type":  "dir",
+                                              "files":  5,
+                                              "bytes":  557424
+                                          },
+                                          {
+                                              "name":  "DawnWebGPUCache",
+                                              "type":  "dir",
+                                              "files":  5,
+                                              "bytes":  557424
+                                          },
+                                          {
+                                              "name":  "DIPS",
+                                              "type":  "file",
+                                              "files":  1,
+                                              "bytes":  36864
+                                          },
+                                          {
+                                              "name":  "Local State",
+                                              "type":  "file",
+                                              "files":  1,
+                                              "bytes":  490
+                                          },
+                                          {
+                                              "name":  "Local Storage",
+                                              "type":  "dir",
+                                              "files":  6,
+                                              "bytes":  1513
+                                          },
+                                          {
+                                              "name":  "machineid",
+                                              "type":  "file",
+                                              "files":  1,
+                                              "bytes":  36
+                                          },
+                                          {
+                                              "name":  "Network",
+                                              "type":  "dir",
+                                              "files":  4,
+                                              "bytes":  36975
+                                          },
+                                          {
+                                              "name":  "Preferences",
+                                              "type":  "file",
+                                              "files":  1,
+                                              "bytes":  57
+                                          },
+                                          {
+                                              "name":  "Service Worker",
+                                              "type":  "dir",
+                                              "files":  10,
+                                              "bytes":  22717
+                                          },
+                                          {
+                                              "name":  "Session Storage",
+                                              "type":  "dir",
+                                              "files":  6,
+                                              "bytes":  2426
+                                          },
+                                          {
+                                              "name":  "Shared Dictionary",
+                                              "type":  "dir",
+                                              "files":  4,
+                                              "bytes":  45128
+                                          },
+                                          {
+                                              "name":  "SharedStorage",
+                                              "type":  "file",
+                                              "files":  1,
+                                              "bytes":  4096
+                                          },
+                                          {
+                                              "name":  "User",
+                                              "type":  "dir",
+                                              "files":  25,
+                                              "bytes":  1227540
+                                          },
+                                          {
+                                              "name":  "WebStorage",
+                                              "type":  "dir",
+                                              "files":  12,
+                                              "bytes":  13089912
+                                          }
+                                      ],
+                          "excluded":  [
+                                           {
+                                               "name":  "Cache",
+                                               "type":  "dir"
+                                           },
+                                           {
+                                               "name":  "CachedData",
+                                               "type":  "dir"
+                                           },
+                                           {
+                                               "name":  "clp",
+                                               "type":  "dir"
+                                           },
+                                           {
+                                               "name":  "Code Cache",
+                                               "type":  "dir"
+                                           },
+                                           {
+                                               "name":  "GPUCache",
+                                               "type":  "dir"
+                                           },
+                                           {
+                                               "name":  "languagepacks.json",
+                                               "type":  "file"
+                                           },
+                                           {
+                                               "name":  "logs",
+                                               "type":  "dir"
+                                           }
+                                       ],
+                          "renamed":  [
+
+                                      ],
+                          "userFiles":  [
+                                            {
+                                                "name":  "User\\settings.json",
+                                                "type":  "file",
+                                                "bytes":  49
+                                            },
+                                            {
+                                                "name":  "User\\globalStorage\\state.vscdb",
+                                                "type":  "file",
+                                                "bytes":  241664
+                                            },
+                                            {
+                                                "name":  "User\\globalStorage\\state.vscdb.backup",
+                                                "type":  "file",
+                                                "bytes":  241664
+                                            },
+                                            {
+                                                "name":  "User\\globalStorage\\storage.json",
+                                                "type":  "file",
+                                                "bytes":  6210
+                                            },
+                                            {
+                                                "name":  "User\\globalStorage\\ms-vscode.powershell\\sessions\\PSES-VSCode-68808-822254.json",
+                                                "type":  "file",
+                                                "bytes":  238
+                                            },
+                                            {
+                                                "name":  "User\\workspaceStorage",
+                                                "type":  "dir",
+                                                "files":  18,
+                                                "bytes":  737508
+                                            },
+                                            {
+                                                "name":  "User\\History",
+                                                "type":  "dir",
+                                                "files":  2,
+                                                "bytes":  207
+                                            }
+                                        ]
+                      },
+                      {
+                          "kind":  "argv",
+                          "from":  "%USERPROFILE%\\.shuko\\argv.json",
+                          "to":  "%USERPROFILE%\\.sukuna\\argv.json",
+                          "sourceExists":  true,
+                          "destState":  "absent",
+                          "files":  1,
+                          "dirs":  0,
+                          "bytes":  309,
+                          "entries":  [
+                                          {
+                                              "name":  "argv.json",
+                                              "type":  "file",
+                                              "bytes":  309
+                                          }
+                                      ],
+                          "excluded":  [
+
+                                       ],
+                          "renamed":  [
+
+                                      ]
+                      },
+                      {
+                          "kind":  "watch",
+                          "from":  "%LOCALAPPDATA%\\Shuko\\watch",
+                          "to":  "%LOCALAPPDATA%\\Sukuna\\watch",
+                          "sourceExists":  false,
+                          "destState":  "absent",
+                          "files":  0,
+                          "dirs":  0,
+                          "bytes":  0,
+                          "entries":  [
+
+                                      ],
+                          "excluded":  [
+
+                                       ],
+                          "renamed":  [
+
+                                      ]
+                      },
+                      {
+                          "kind":  "secrets",
+                          "from":  "%LOCALAPPDATA%\\Shuko\\secrets",
+                          "to":  "%LOCALAPPDATA%\\Sukuna\\secrets",
+                          "sourceExists":  false,
+                          "destState":  "absent",
+                          "files":  0,
+                          "dirs":  0,
+                          "bytes":  0,
+                          "entries":  [
+
+                                      ],
+                          "excluded":  [
+
+                                       ],
+                          "renamed":  [
+
+                                      ]
+                      }
+                  ],
+    "writtenTo":  [
+                      "%APPDATA%\\Sukuna",
+                      "%USERPROFILE%\\.sukuna\\argv.json"
+                  ],
+    "copied":  [
+                   {
+                       "kind":  "appdata",
+                       "files":  87,
+                       "dirs":  45,
+                       "bytes":  16793154,
+                       "expectedFiles":  87,
+                       "expectedDirs":  45,
+                       "expectedBytes":  16793154,
+                       "verified":  true,
+                       "mismatches":  [
+
+                                      ]
+                   },
+                   {
+                       "kind":  "argv",
+                       "files":  1,
+                       "dirs":  0,
+                       "bytes":  309,
+                       "expectedFiles":  1,
+                       "expectedDirs":  0,
+                       "expectedBytes":  309,
+                       "verified":  true,
+                       "mismatches":  [
+
+                                      ]
+                   }
+               ],
+    "createdCount":  135
+}

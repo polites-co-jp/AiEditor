@@ -2,7 +2,7 @@
 
 - 担当: meng-tian（蒙恬）。確かめは ooka-echizen（大岡越前守）とリーダー
 - 依頼日: 2026-11-20
-- 状態: 依頼中（2026-11-24 権限の段1が当たったのを確かめた。手順2は済み（`migrate-notes.md`）。手順3はラベルの誤りの指摘で止め、手順1の後に回した。手順1はユーザー待ち）
+- 状態: 依頼中（2026-11-24 手順1〜6は済み・大岡越前守が合格。手順7（ユーザーの手の確かめ）待ち）
 
 ## 目的
 
@@ -13,7 +13,7 @@
 - ユーザーは r7 の zip を `E:\application\sukuna` に展開して起動していた。課の道具（`switch.ps1`）を通していない。
 - ある: `%APPDATA%\Sukuna`（`User\settings.json` 150 バイト、`globalStorage`、`workspaceStorage` など）、`%USERPROFILE%\.sukuna\argv.json`（`locale` が無い）、`%USERPROFILE%\.sukuna\extensions\extensions.json`（2 バイト）、`%USERPROFILE%\.sukuna-shared`
 - 無い: `%LOCALAPPDATA%\Sukuna`（`local.json`・`watch\`）、`%LOCALAPPDATA%\Programs\Sukuna`
-- 旧: `%LOCALAPPDATA%\Shuko\local.json` は既定の値（`installRoot` = `%LOCALAPPDATA%\Programs\Shuko`、`keepVersions` 3、`buildRoot` = `tmp\b`）。`%USERPROFILE%\.shuko\extensions` に台帳の8つ
+- 旧: `%LOCALAPPDATA%\Shuko\local.json` は既定の値（`installRoot` = `%LOCALAPPDATA%\Programs\Shuko`、`keepVersions` 3、`buildRoot` = `tmp\b`）。`%USERPROFILE%\.shuko\extensions` に8つ（台帳の7つと、2026-11-17 に台帳から外した古い日本語パック）
 - 権限の段1（`tasks/2026-11-18-rename-sukuna-survey/permission-requests.md` の1.1〜1.5。2026-11-18 にユーザーが承認）は、まだ当たっていない。蒙恬の許可に、移行の台本の行（1.5）と Sukuna の秘密の場所（1.1）が無い
 
 ## 手順（rename-plan.md の3.3 に今の状態を当てたもの）
@@ -41,7 +41,7 @@
 
 - `%LOCALAPPDATA%\Sukuna\local.json` があり、`%LOCALAPPDATA%\Programs\Sukuna\current` が r7 を指す。
 - 移行の台本の `-List` と `-Apply` の出力（名前・有無・数・大きさだけ）がこのフォルダにあり、写した後の照らし合わせが一致している。
-- `install-extensions.mjs` の結果（台帳の8つが入り、`argv.json` に `"locale": "ja"`）がこのフォルダにある。
+- `install-extensions.mjs` の結果（台帳の7つが入り、`argv.json` に `"locale": "ja"`）がこのフォルダにある。
 - 大岡越前守の確かめの記録がある。
 - ユーザーが Sukuna で Claude Code のパネルが動くことを確かめた。
 
@@ -56,7 +56,12 @@
 
 ## 結果
 
-（未記入）
+手順1〜6は済んだ（2026-11-24）。大岡越前守の確かめは合格（`verification-sukuna-migrate.md`）。
+- 手順2: `%LOCALAPPDATA%\Sukuna\local.json` を既定の値で作った。
+- 手順3: r7 を `1.146.0-1` として `%LOCALAPPDATA%\Programs\Sukunaersions\` に展開し、`current` を作った（SHA-256 は関門と一致、engines の不足なし）。蒙恬がラベルの誤り（この依頼書の初めの版）を打つ前に指摘した。
+- 手順4: 移行の台本の `-List` をリーダーが確かめた後に `-Apply`。87ファイル・16,793,154 バイトと `argv.json` を写し、照らし合わせは一致。watch・secrets は元が無く、写していない（検知とトークンは初めの設定から）。
+- 手順5: 台帳の7件を入れた（compare.ok）。`argv.json` は写した時点で `"locale": "ja"` を含んでいた（リーダーが中身を読んで確かめた）。
+- 指摘 S1・S4（docs/install.md の r4 の値と拡張の数）はリーダーが直した。S2（Claude Code のフォルダに `-win32-x64` が付いていない）は、動いている Shuko の側も同じ名前なので問題なしとした。S3（switch の出力を全文残す）は次から。
 
 ## 未解決
 
