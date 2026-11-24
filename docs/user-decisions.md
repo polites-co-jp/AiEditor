@@ -773,3 +773,4 @@
 | 直し方 | **計画どおり移行する**（ユーザーの答え「計画どおり移行する（推奨）」）。ユーザーが Shuko と Sukuna を閉じ、今日できた `%APPDATA%\Sukuna` と `%USERPROFILE%\.sukuna` を別の名前に変えて退ける。その後、課が移行の台本（`-List` → リーダーの確かめ → `-Apply`）と `install-extensions.mjs`（`--dry-run` → 本番）を打つ。別案（拡張だけすぐ入れる。設定とログイン情報は引き継がない）は採らない |
 | Sukuna の置き場所 | **設計どおり `%LOCALAPPDATA%\Programs\Sukuna`**（ユーザーの答え「設計どおりの場所へ（推奨）」）。課が `configure.ps1` で `local.json` を作り、`switch.ps1` で r7 を展開する。`E:\application\sukuna` は使わなくなり、ユーザーが消す。別案（`E:\application\sukuna` を `installRoot` にする）は採らない |
 | 移行が済むまでの間 | Shuko を使い続ける（Shuko の Claude Code 拡張は動く）。リーダーの判断 |
+| 新しい場所での版の名前（ラベル） | `1.146.0-1`（設計どおり。docs/install.md の2、docs/02 の6節、`rename-plan.md` の6節）。上の「裁定（2026-11-18、改名の進め方）」の「版のラベルは `1.146.0-p5-c-all-r7`」はビルドのラベルのことで、計画の文の後半「新しい場所での版の名前は `1.146.0-1`」が写しで欠けていた。2026-11-24 に蒙恬が指摘し、リーダーが原文で確かめた。新しく諮る論点ではない |

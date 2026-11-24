@@ -2,7 +2,7 @@
 
 - 担当: meng-tian（蒙恬）。確かめは ooka-echizen（大岡越前守）とリーダー
 - 依頼日: 2026-11-20
-- 状態: 依頼中（権限の段1を待っている）
+- 状態: 依頼中（2026-11-24 権限の段1が当たったのを確かめた。手順2は済み（`migrate-notes.md`）。手順3はラベルの誤りの指摘で止め、手順1の後に回した。手順1はユーザー待ち）
 
 ## 目的
 
@@ -21,7 +21,7 @@
 0. （ユーザー）Team の張良に、権限の段1を当てるよう頼む。当たったらリーダーに知らせる。
 1. （ユーザー）Shuko と Sukuna を全部閉じる。今日できた `%APPDATA%\Sukuna` と `%USERPROFILE%\.sukuna` を、別の名前（例 `Sukuna.old-20261120`・`.sukuna.old-20261120`）に変えて退ける。消さない（課の削除の許可の外。要らなければ後でユーザーが消す）。
 2. （蒙恬）`configure.ps1` で `%LOCALAPPDATA%\Sukuna\local.json` を既定の値で作る（旧の値は既定と同じ）。
-3. （蒙恬）`switch.ps1 1.146.0-p5-c-all-r7 -Zip <buildRoot>\dist\1.146.0-p5-c-all-r7.zip -Sha256 5b7ea8850c09af457068bf814b0bef113e9280095f8b72ffa4963f8268e451d1` で `%LOCALAPPDATA%\Programs\Sukuna\versions\` に展開し、`current` を作る。
+3. （蒙恬）手順1の後に打つ（先に打つと、今日できた不要な settings.json などが `backups\` に控えられるため）。ラベルは `1.146.0-1`（docs/install.md の2、docs/02 の6節、rename-plan.md の6節。2026-11-24 に蒙恬の指摘で直した。前の版のこの欄はラベルを誤って `1.146.0-p5-c-all-r7` と書いていた）。`switch.ps1 1.146.0-1 -Zip <buildRoot>\dist\1.146.0-p5-c-all-r7.zip -Sha256 5b7ea8850c09af457068bf814b0bef113e9280095f8b72ffa4963f8268e451d1` で `%LOCALAPPDATA%\Programs\Sukuna\versions\` に展開し、`current` を作る。
 4. （蒙恬）`scripts/migrate/migrate-from-shuko.ps1 -List` を打ち、出力をこのフォルダに残す。リーダーが確かめてから `-Apply` を打つ。止まったら（終了コード 3）理由を報告し、自分で場所を片づけない。
 5. （蒙恬）`node scripts/install-extensions.mjs --dry-run` の後に本番。CLI は `current\bin\sukuna.cmd`（`local.json` から求まる）。
 6. （大岡越前守とリーダー）許可の範囲で確かめる（rename-plan.md の4節の手順7）。リーダーは `ls` で Sukuna の場所の有無と名前を見て渡す（2026-11-19 の記録 P1）。
